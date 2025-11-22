@@ -13,6 +13,144 @@ The given scripts will output CSV, TSV, and JSON indexes for auditing.
 # On categories
 Works are categorised by major nation. With respect to China, Wikisource's dynasty divisions are used. I went from earliest/leftmost categories on their [dynasty division template](https://zh.wikisource.org/wiki/Template:%E6%8C%89%E7%85%A7%E6%9C%9D%E4%BB%A3%E5%88%86%E7%B1%BB) after downloading Siku Quanshu with automatic de-duplication implemented. I did this for efficiency and ease of scraping. I will not pretend to be a historian here, and any disputes regarding any of these divisions (e.g. The two pieces of Tang dynasty literature that was within Empress Wu of Zhou's reign) would fall outside of the data scope to me. 
 
+When scraping the Yuan, Ming, and Qing dynasties, as well as the Republic of China (which has been merged with Taiwanese literature for logistics reasons), I used a Literary Chinese scorer:
+```py
+# Modern-ish function words (single characters).
+# We explicitly *exclude* 在 and 我.
+MODERN_UNIGRAMS = [
+    "的", "得", "地", "了", "著", "吗", "嗎", "啊", "呀", "呢", "吧", "啦",
+    "把", "被", "給", "給", "還", "就", "才", "再", "對",
+]
+
+# Common disyllabic / colloquial-ish constructions.
+MODERN_BIGRAMS = [
+    "時候", "東西", "沒有", "可以", "覺得", "觉得", "知道",
+    "怎麼", "為什麼", "怎樣", "怎样", "怎麼樣", "怎么样",
+    "一個", "一樣", "已經", "正在", "必須", 
+    "需要", "可能", "那麼", "所以", "如果", "就是", "那個", 
+    "這個", "這些", "这些", "那些", "一起", "比較", "比较", "然後", "然后",
+    "因為", "比如", "比如說", "特別", "非常", "有點", "有点", "有些",
+    "有時候", "有时候", "今天", "現在", "以後", "以后",
+]
+
+# Classical sentence-final particles / markers.
+CLASSICAL_FINALS = [
+    "也", "矣", "焉", "乎", "哉", "耳", "歟", "歟", "云", "歟",
+]
+
+# Other classical-ish function words that often cluster near句 boundaries.
+CLASSICAL_FN = [
+    "者", "之", "其", "若", "乃", "蓋", "蓋", "雖", "尚", "焉", "乎",
+    # If a text uses the below then it is almost definitely classical. 
+    "猶", "允", "聿", "繄", "粵", "吾", "毋", "無", "惡"
+]
+
+CLASSICAL_BIGRAMS = [
+    "焉哉", "云云", "何以", "何為", "未嘗", "未有", "無不",
+]
+
+
+def compute_wenyan_score(
+    text: str, min_chars: int = 200
+) -> Tuple[float, Dict[str, Any]]:
+    """
+    Compute a rough Wenyan-vs-Baihua score for CLEAN text.
+
+    Returns (score, metrics_dict).
+
+    - score > 0  => Wenyan-like
+    - score < 0  => Baihua-like
+    - For very short texts (len < min_chars), we mark label='unknown'
+      and treat score as 0 for routing purposes.
+    """
+    # Strip whitespace for length statistics
+    chars_only = [c for c in text if not c.isspace()]
+    n_chars = len(chars_only)
+
+    metrics: Dict[str, Any] = {
+        "n_chars": n_chars,
+        "modern_density": 0.0,
+        "classical_density": 0.0,
+        "avg_sentence_len": 0.0,
+        "is_poetry": False,
+        "label": "unknown",
+        "short_text": n_chars < min_chars,
+    }
+
+    if n_chars == 0:
+        return 0.0, metrics
+
+    # Modern side
+    mod_uni = sum(text.count(ch) for ch in MODERN_UNIGRAMS)
+    mod_bi = sum(text.count(bg) for bg in MODERN_BIGRAMS)
+    modern_density = (mod_uni + 2 * mod_bi) / n_chars
+    metrics["modern_density"] = modern_density
+
+    # Classical side
+    cls_uni = sum(text.count(ch) for ch in CLASSICAL_FINALS + CLASSICAL_FN)
+    cls_bi = sum(text.count(bg) for bg in CLASSICAL_BIGRAMS)
+    classical_density = (cls_uni + 2 * cls_bi) / n_chars
+    metrics["classical_density"] = classical_density
+
+    # Sentence length (using 。！？ and newlines as crude boundaries)
+    sentences = [s.strip() for s in re.split(r"[。！？!?]+|\n+", text) if s.strip()]
+    if sentences:
+        total_len = sum(len(s) for s in sentences)
+        avg_len = total_len / len(sentences)
+    else:
+        avg_len = 0.0
+    metrics["avg_sentence_len"] = avg_len
+
+    # Rough poetry detector: lots of short lines
+    lines = [ln.strip() for ln in text.splitlines() if ln.strip()]
+    if lines:
+        short_lines = [ln for ln in lines if 4 <= len(ln) <= 10]
+        poetry_ratio = len(short_lines) / len(lines)
+        is_poetry = (len(lines) >= 20 and poetry_ratio >= 0.6)
+    else:
+        is_poetry = False
+    metrics["is_poetry"] = is_poetry
+
+    # Combine into a single score.
+    # Tuned more by intuition than science:
+    #   - classical pushes score up
+    #   - modern pushes score down (stronger weight)
+    #   - longer sentences & poetry give a small Wenyan boost
+    len_score = 0.0
+    if avg_len >= 25:
+        len_score = 0.3
+    elif avg_len >= 15:
+        len_score = 0.15
+
+    # It is difficult to make a script that doesn't bias itself against poetry.
+    # Some use parataxis, omitting function words a lot.
+    # Ergo, our standard definition does not work.
+
+    poetry_boost = 0.25 if is_poetry else 0.0
+
+    score = (
+        2.0 * classical_density
+        - 3.0 * modern_density
+        + len_score
+        + poetry_boost
+    )
+
+    # For very short texts, we don't trust the decision.
+    if n_chars < min_chars:
+        metrics["label"] = "unknown"
+        return score, metrics
+
+    # Decide label
+    if score >= 0:
+        metrics["label"] = "wenyan-like"
+    else:
+        metrics["label"] = "baihua-like"
+
+    return score, metrics
+```
+
+The tester could be much, MUCH better, but I wanted something quick and dirty to get some decent filtering in. Anything that failed this test goes into `suspected_baihua`, wherein it is subject to human testing to see if it is or not. This is to ensure no early topolect usage gets into the corpus by mistake. This is also useful for diachronic study, of course, so anything that outright fails stays there. As of 22nd Nov '25, I have not yet looked at these myself.
+
 # Siku Quanshu Scraper
 
 ## Usage
