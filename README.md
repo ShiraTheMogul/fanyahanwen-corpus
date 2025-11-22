@@ -10,9 +10,17 @@ A Chengyu list by Aun (2025) is included as well.
 
 The given scripts will output CSV, TSV, and JSON indexes for auditing. 
 
+# Frequency list findings
+The corpus overall contains 2,32 billion tokens. Use `tokens_and_usage_thresholds.py` after producing a frequency list to replicate.
+- 1,817 characters (at 宏) make up 90% of the commonly-used characters in the corpus.
+- 2,863 characters make up 95% at 义, a simplified variant character; we include simplified variants to be realistic given the lexical diversity within Literary Chinese.
+- 4,543 characters make up 98% at 錐; this is the threshold necessary for comfortable extensive reading as is defined in i+1 comprehensible input theory.
+- 5,945 characters make up 99% at 么.
+
 # On categories
 Works are categorised by major nation. With respect to China, Wikisource's dynasty divisions are used. I went from earliest/leftmost categories on their [dynasty division template](https://zh.wikisource.org/wiki/Template:%E6%8C%89%E7%85%A7%E6%9C%9D%E4%BB%A3%E5%88%86%E7%B1%BB) after downloading Siku Quanshu with automatic de-duplication implemented. I did this for efficiency and ease of scraping. I will not pretend to be a historian here, and any disputes regarding any of these divisions (e.g. The two pieces of Tang dynasty literature that was within Empress Wu of Zhou's reign) would fall outside of the data scope to me. 
 
+## How do we know it is Literary Chinese?
 When scraping the Yuan, Ming, and Qing dynasties, as well as the Republic of China (which has been merged with Taiwanese literature for logistics reasons), I used a Literary Chinese scorer:
 ```py
 # Modern-ish function words (single characters).
@@ -343,6 +351,7 @@ While this is a dizzying level of information, some limitations exist:
 - Editorial Board of the Encyclopedia of China. (2009). 《四庫七閣·四庫全書·四庫全書總目提要》. In 中国大百科全书 [Encyclopedia of China] (2nd ed). 中國大 [China Publishing House].
 - Dai, L., Li, T., Yang, Y., Jia, L., Magically Asia Limited, TudorTech System Co., Ltd, & Founder Electronics Company Limited. (1999). Siku Quanshu Online (Version 3.0 (Wenyuange Ed.)) [Computer software]. Digital Heritage Publishing Ltd, East View Information Services. http://skqs.com/
 - Guy, R. K. (1987). The emperor’s four treasuries: Scholars and the state in the late Chʻien-lung era. Council on East Asian Studies, Harvard University.
+- Lichtman, K., & VanPatten, B. (2021). Was Krashen right? Forty years later. Foreign Language Annals, 54(2), 283–305. https://doi.org/10.1111/flan.12552
 - Matsumoto J. (2025). 日本漢文の世界 [Nihon kanbun no sekai]. Kambun.jp. https://kambun.jp/
 - Meng, K. (2016). 孟子 [The Works of Mencius] (J. Legge & Y. Shi., Trans.; 1st ed.). 中州古籍出版社 [Zhongzhou Ancient Books Publishing House].
 - Sturgeon, D. (2020). Digitizing Premodern Text with the Chinese Text Project. Journal of Chinese History, 4(2), 486–498. https://doi.org/10.1017/jch.2020.19
