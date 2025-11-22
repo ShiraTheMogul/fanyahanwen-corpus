@@ -213,6 +213,8 @@ def discover_juan_from_toc(root_title: str) -> List[str]:
             last = t.split("/", 1)[-1]
             if "卷" in last or re.search(r"\d+", last):
                 juan_pages.append(t)
+            if "第" in last or re.search(r"\d+", last):
+                juan_pages.append(t)
 
     juan_pages = sorted(set(juan_pages))
     print(f"  -> Found {len(juan_pages)} juan pages for {root_title}")
@@ -397,34 +399,28 @@ def run_special_scrape(base_output: str,
     # You can expand this list later.
     WORKS = [
         {
-            "name": "九雲夢",
-            "root_title": "九雲夢",       # https://zh.wikisource.org/wiki/九雲夢
+            "name": "大越史略",
+            "root_title": "大越史略",       # https://zh.wikisource.org/wiki/九雲夢
             "mode": "toc_juan",
-            "work_id": "九雲夢",
+            "work_id": "大越史略",
         },
         {
-            "name": "芝峰類說",
-            "root_title": "芝峰類說",   # https://zh.wikisource.org/wiki/芝峰類說
+            "name": "皇黎一統志",
+            "root_title": "皇黎一統志",   # https://zh.wikisource.org/wiki/芝峰類說
             "mode": "toc_juan",
-            "work_id": "芝峰類說",
+            "work_id": "皇黎一統志",
         },
         {
-            "name": "高麗史",
-            "root_title": "高麗史",     # https://zh.wikisource.org/wiki/高麗史
+            "name": "越史略",
+            "root_title": "越史略",     # https://zh.wikisource.org/wiki/高麗史
             "mode": "toc_juan",
-            "work_id": "高麗史",
+            "work_id": "越史略",
         },
         {
-            "name": "三國史記",
-            "root_title": "三國史記",   # https://zh.wikisource.org/wiki/三國史記
+            "name": "鄭氏世家",
+            "root_title": "鄭氏世家",   # https://zh.wikisource.org/wiki/三國史記
             "mode": "toc_juan",
-            "work_id": "三國史記",
-        },
-        {
-            "name": "金雲翹傳",
-            "root_title": "金雲翹傳",   # https://zh.wikisource.org/wiki/金雲翹傳
-            "mode": "toc_juan",
-            "work_id": "金雲翹傳",
+            "work_id": "鄭氏世家",
         },
     ]
 
