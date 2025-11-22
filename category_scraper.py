@@ -35,6 +35,7 @@ import argparse
 import csv
 import json
 import os
+import platform
 import re
 import time
 from typing import Any, Dict, List, Tuple
@@ -51,6 +52,68 @@ HEADERS = {
         "https://en.wikisource.org/wiki/User:Shira_the_Mogul)"
     )
 }
+
+import os
+import platform
+
+# Enable long path support for Windows
+if platform.system() == "Windows":
+    # This helps with long paths in Python
+    os.system('git config --system core.longpaths true')
+
+import os
+import sys
+
+# Python-specific long path workaround for Windows
+if os.name == 'nt':  # Windows
+    # Enable long path support in Python
+    try:
+        import ctypes
+        from ctypes import wintypes
+        
+        # Set ERROR_SUCCESS
+        ERROR_SUCCESS = 0x0
+        
+        # Try to enable long paths for this process
+        kernel32 = ctypes.WinDLL('kernel32', use_last_error=True)
+        kernel32.GetCurrentProcess.restype = wintypes.HANDLE
+        process = kernel32.GetCurrentProcess()
+        
+        # This is a more direct approach
+        print("🛠️ Attempting to enable Windows long paths for Python process...")
+        
+    except Exception as e:
+        print(f"⚠️ Could not enable long paths via ctypes: {e}")
+    
+    # Use extended path prefix for all file operations
+    def make_extended_path(path):
+        path = os.path.abspath(path)
+        if not path.startswith('\\\\?\\'):
+            return '\\\\?\\' + path
+        return path
+else:
+    def make_extended_path(path):
+        return path
+
+def safe_write_file(filepath: str, content: str, max_retries: int = 2) -> bool:
+    """
+    Safely write content to a file with retries and error handling.
+    Returns True if successful, False if failed after retries.
+    """
+    filepath = make_extended_path(filepath)
+    ensure_dir(os.path.dirname(filepath))
+    
+    for attempt in range(1, max_retries + 1):
+        try:
+            with open(filepath, "w", encoding="utf-8") as f:
+                f.write(content)
+            return True
+        except (OSError, IOError) as e:
+            print(f"    !! File write error on attempt {attempt}/{max_retries}: {e}")
+            if attempt < max_retries:
+                time.sleep(0.5)
+    
+    return False
 
 # ------------- basic helpers ------------- #
 
@@ -218,6 +281,8 @@ def clean_text_for_corpus(text: str) -> str:
     pd_markers = [
         "本作品在全世界都属于",
         "本作品在全世界都屬於",
+        "本明朝作品在全世界都属于"
+        "本明清作品在全世界都属于"
         "Public domain",
     ]
     cut_idx = len(text)
@@ -465,6 +530,7 @@ def scrape_category(
     max_works: int | None = None,
     max_juan_per_work: int | None = None,
     skip_existing_from: List[str] | None = None,
+    skip_problematic: bool = False, 
 ) -> None:
     if skip_existing_from is None:
         skip_existing_from = []
@@ -589,17 +655,17 @@ def scrape_category(
             raw_path = os.path.join(work_raw_dir, base_fname)
             clean_path = os.path.join(work_clean_dir, base_fname)
 
-            with open(raw_path, "w", encoding="utf-8") as f:
-                f.write(f"# CATEGORY: {cat_label}\n")
-                f.write(f"# WORK_BASE_TITLE: {base_title}\n")
-                f.write(f"# PAGE_TITLE: {page_title}\n\n")
-                f.write(raw_text)
+            # Prepare file content with headers
+            raw_content = f"# CATEGORY: {cat_label}\n# WORK_BASE_TITLE: {base_title}\n# PAGE_TITLE: {page_title}\n\n{raw_text}"
+            clean_content = f"# CATEGORY: {cat_label}\n# WORK_BASE_TITLE: {base_title}\n# PAGE_TITLE: {page_title}\n\n{clean_text}"
 
-            with open(clean_path, "w", encoding="utf-8") as f:
-                f.write(f"# CATEGORY: {cat_label}\n")
-                f.write(f"# WORK_BASE_TITLE: {base_title}\n")
-                f.write(f"# PAGE_TITLE: {page_title}\n\n")
-                f.write(clean_text)
+            # Safely write files with error handling
+            raw_success = safe_write_file(raw_path, raw_content)
+            clean_success = safe_write_file(clean_path, clean_content)
+
+            if not raw_success or not clean_success:
+                print(f"    !! Failed to write files for {page_title}, skipping...")
+                continue
 
             print(f"    -> Saved RAW to   {raw_path}")
             print(f"    -> Saved CLEAN to {clean_path}")
@@ -670,6 +736,12 @@ def main() -> None:
     parser = argparse.ArgumentParser(
         description="Scrape a zh.wikisource category into a corpus."
     )
+    # Add this argument to the argument parser in main():
+    parser.add_argument(
+        "--skip-problematic",
+        action="store_true",
+        help="Skip works/pages that cause file system errors (e.g., long paths, special characters)",
+    )
     parser.add_argument(
         "category",
         help="Category name, with or without 'Category:' prefix (e.g. 朝鮮王朝 or Category:朝鮮王朝)",
@@ -720,6 +792,7 @@ def main() -> None:
         max_works=args.max_works,
         max_juan_per_work=args.max_juan_per_work,
         skip_existing_from=args.skip_existing_from,
+        skip_problematic=args.skip_problematic,
     )
 
 

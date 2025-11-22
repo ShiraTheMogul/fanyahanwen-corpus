@@ -220,6 +220,8 @@ def clean_text_for_corpus(text: str) -> str:
     pd_markers = [
         "本作品在全世界都属于",
         "本作品在全世界都屬於",
+        "本明朝作品在全世界都属于"
+        "本明清作品在全世界都属于"
         "Public domain",
     ]
     cut_idx = len(text)
@@ -514,6 +516,8 @@ def discover_juan_pages(root_title: str, pageid: int) -> List[str]:
             continue
         last = t.split("/", 1)[-1]
         if "卷" in last or re.search(r"\d+", last):
+            candidates.append(t)
+        if "第" in last or re.search(r"\d+", last):
             candidates.append(t)
 
     uniq = sorted(set(candidates), key=juan_sort_key)

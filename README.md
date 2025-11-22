@@ -1,6 +1,6 @@
 # 泛亞漢文語料庫 pan-Asian Literary Chinese Corpus (PALCC)
 
-This is a Literary Chinese corpus that represents the language as a pan-Asian lingua franca. It includes a significant body of major, gigantic Chinese texts (Yongle Encyclopaedia's extant transcriptions, Siku Quanshu, etc), and adds texts from Japan, Korea, the Ryukyu Islands, and Vietnam, all of which used Literary Chinese at some point. With respect to China, a diachronic corpus is made; anything from the Shang to modern China, so long as they use Literary Chinese, so long as it is not under copyright or equivalent, is acceptable here. 
+This is a Literary Chinese corpus that represents the language as a pan-Asian lingua franca. It includes a significant body of major, gigantic Chinese texts (Yongle Encyclopaedia's extant transcriptions, Siku Quanshu, etc), and adds texts from Japan, Korea, the Ryukyu Islands, and Vietnam, all of which used Literary Chinese at some point. With respect to China, a diachronic corpus is made; anything from the Shang to modern China, so long as they use Literary Chinese, so long as it is not under copyright or equivalent, is acceptable here. Translations into Literary Chinese are included, accepted, and encouraged. As Yan Fu had said in his translation of Huxley's Theory of Evolution: 「一、譯事三難：信、達、雅。求其信已大難矣，顧信矣不達，雖譯猶不譯也，則達尚焉。」 they must be faithful, fluent, and beautiful. It is very difficult to earn a reader's trust, but if a translator is concerned about it, they will not reach it. There is no reason to exclude such well-thought-out work.
 
 I extend a heartfelt thank you to the tireless contributors at Wikisource for its astounding quantity of Literary Chinese works. To transcribe even a fraction of the leviathan that us Siku Quanshu is a truly remarkable feat, let alone everything else. I have nothing but the utmost respect for those anyone doing any of this for free, let alone releasing it in such an accessible fashion, thus why I chose it. 
 
@@ -10,15 +10,25 @@ A Chengyu list by Aun (2025) is included as well.
 
 The given scripts will output CSV, TSV, and JSON indexes for auditing. 
 
+# On categories
+Works are categorised by major nation. With respect to China, Wikisource's dynasty divisions are used. I went from earliest/leftmost categories on their [dynasty division template](https://zh.wikisource.org/wiki/Template:%E6%8C%89%E7%85%A7%E6%9C%9D%E4%BB%A3%E5%88%86%E7%B1%BB) after downloading Siku Quanshu with automatic de-duplication implemented. I did this for efficiency and ease of scraping. I will not pretend to be a historian here, and any disputes regarding any of these divisions (e.g. The two pieces of Tang dynasty literature that was within Empress Wu of Zhou's reign) would fall outside of the data scope to me. 
+
 # Siku Quanshu Scraper
 
 ## Usage
 This program is usable from CLI and the Python Shell.
 
 ### Dependencies
+Use this before running anything Python-related:
 ```bash
-pip install requests bs4
+pip install requests bs4 opencc
 ```
+
+A lot of filenames are also really really long, so on Windows, you'll want to run your cmd as administrator and smack this in;
+```cmd
+reg add "HKLM\SYSTEM\CurrentControlSet\Control\FileSystem" /v "LongPathsEnabled" /t REG_DWORD /d 1 /f
+```
+
 
 ### Run
 ```bash
@@ -178,6 +188,9 @@ While this is a dizzying level of information, some limitations exist:
 - A lot of Wikisource's texts are unpunctuated. While accurate, this will not be representative of how contemporary Literary Chinese is read.
 - OCR errors from preliminary documentation of some works may exist. 
 - Transcription prejudices by contributors may exist (e.g. A more common character may be used over what the actual text has). This is rare.
+- When starting out, I did not account for 第 chapters, only 卷 chapters. Therefore, some works may have slipped through the cracks. I'll probably fix this eventually.
+- There may be some Early Mandarin works amongst all this. I do have a topolect-scoring system, but only used it for Yuan, Ming, and Qing dynasty literature as it is outright necessary.
+- Chu speech is argued to potentially be a distinct language: Mencius particularly speaks to this effect. However, it remains included in this work as this matter is not *fully* established yet; I am not an expert on this matter, I just know it is discussed and that this corpus may be of use for it. For information, view the bibiography.
 
 # Possible improvements
 - Improved identification of authors and locations via regex: Right now, we use boilerplates that directly state author and dynasty/time/location which are not used on every page. Possibility for many, MANY false flags left this out for now. Manual addition is difficult given the sheer amount of works. 
@@ -188,17 +201,20 @@ While this is a dizzying level of information, some limitations exist:
 # Bibliography
 - Aisin-Gioro H., Ji Y., & Lu X. (Eds). (2007). 四庫全書 [Complete Library of the Four Treasuries] (Vol. 1–36,381). Wikisource. https://zh.wikisource.org/wiki/%E5%9B%9B%E5%BA%AB%E5%85%A8%E6%9B%B8
 - Aun, C. (2025). Cheeaun/chengyu-wordle [JavaScript]. https://github.com/cheeaun/chengyu-wordle (Original work published 2022)
+- Behr, W. (2008). Dialects, diachrony, diglossia or all three? Tomb text glimpses into the language(s) of Chǔ [Lecture].
 - Editorial Board of the Encyclopedia of China. (2009). 《四庫七閣·四庫全書·四庫全書總目提要》. In 中国大百科全书 [Encyclopedia of China] (2nd ed). 中國大 [China Publishing House].
 - Dai, L., Li, T., Yang, Y., Jia, L., Magically Asia Limited, TudorTech System Co., Ltd, & Founder Electronics Company Limited. (1999). Siku Quanshu Online (Version 3.0 (Wenyuange Ed.)) [Computer software]. Digital Heritage Publishing Ltd, East View Information Services. http://skqs.com/
 - Guy, R. K. (1987). The emperor’s four treasuries: Scholars and the state in the late Chʻien-lung era. Council on East Asian Studies, Harvard University.
 - Matsumoto J. (2025). 日本漢文の世界 [Nihon kanbun no sekai]. Kambun.jp. https://kambun.jp/
+- Meng, K. (2016). 孟子 [The Works of Mencius] (J. Legge & Y. Shi., Trans.; 1st ed.). 中州古籍出版社 [Zhongzhou Ancient Books Publishing House].
 - Sturgeon, D. (2020). Digitizing Premodern Text with the Chinese Text Project. Journal of Chinese History, 4(2), 486–498. https://doi.org/10.1017/jch.2020.19
 - Sturgeon, D. (2021). Chinese Text Project: A dynamic digital library of premodern Chinese. Digital Scholarship in the Humanities, 36(Supplement_1), i101–i112. https://doi.org/10.1093/llc/fqz046
 - Wang D., Liu C., Liu L., Liu J., Hu H., Shen S., & Li B. (2022). SikuBERT与SikuRoBERTa:面向数字人文的《四库全书》预训练模型构建及应用研究 [Construction and Application of Pre-trained Models of Siku Quanshu in Orientation to Digital Humanities]. 图书馆论坛 [Literary Tribune], 42(6), 14. https://doi.org/10.3969/j.issn.1002-1167.2022.06.005
 - Wang, D., Liu, C., & Zhu, Z. (2021). SikuBERT (Version 2.0) [Computer software]. Nanjing Agricultural University. https://huggingface.co/SIKU-BERT/sikubert, https://github.com/hsc748NLP/SikuBERT-for-digital-humanities-and-classical-Chinese-information-processing, https://gitee.com/onesleepyjoker/SikuBERT-for-digital-humanities-and-classical-Chinese-information-processing
 
+
 # Acknowledgements
 As I am not experienced with API usage, ChatGPT 5.1 was used to assist the creation of this work. 
 
 # Licence
-Wikisource distributes its texts under a [Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA) Licence](https://creativecommons.org/licenses/by-sa/4.0/). Therefore, this code is also provided under this licence. See the [Legal Code](https://creativecommons.org/licenses/by-sa/4.0/legalcode.en) for more information.
+Wikisource distributes its texts under a [Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA) Licence](https://creativecommons.org/licenses/by-sa/4.0/). Therefore, this code is also provided under that licence. See the [Legal Code](https://creativecommons.org/licenses/by-sa/4.0/legalcode.en) and [LICENCE](/LICENCE) for more information.
