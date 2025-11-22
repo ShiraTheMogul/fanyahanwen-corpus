@@ -132,6 +132,25 @@ def extract_juan(filename: str) -> int:
 # Indexing logic
 # ─────────────────────────────────────────────────────────────────────────────
 
+def get_superfolder(path: str, root: str, levels_up: int = 2) -> str:
+    """
+    Return the folder 'levels_up' above the file in the path, relative to root.
+    Example:
+      root = fanyahanwen-corpus
+      path = fanyahanwen-corpus/中國漢文/clean/三國/七佛父母姓字經/__juan_1.txt
+      levels_up = 2 -> '三國'
+    """
+    try:
+        rel = os.path.relpath(path, start=root)
+        parts = rel.split(os.sep)
+        # filename is parts[-1]; levels_up=2 -> parts[-3]
+        if len(parts) > levels_up:
+            return parts[-(levels_up + 1)]
+        return ""
+    except Exception:
+        return ""
+
+
 def index_one_corpus(corpus_dir: str, root: str) -> List[Dict[str, Any]]:
     """
     Index structure:
@@ -162,6 +181,7 @@ def index_one_corpus(corpus_dir: str, root: str) -> List[Dict[str, Any]]:
                 if not os.path.isdir(work_path):
                     continue
 
+                # Loop over every .txt file
                 for fname in sorted(os.listdir(work_path)):
                     if not fname.lower().endswith(".txt"):
                         continue
@@ -169,7 +189,7 @@ def index_one_corpus(corpus_dir: str, root: str) -> List[Dict[str, Any]]:
                     clean_path = os.path.join(work_path, fname)
                     rel_clean = os.path.relpath(clean_path, start=root)
 
-                    # locate matching raw file *if* raw exists
+                    # Locate matching RAW file if raw exists
                     if raw_exists:
                         raw_counterpart = os.path.join(
                             raw_dir,
@@ -180,55 +200,55 @@ def index_one_corpus(corpus_dir: str, root: str) -> List[Dict[str, Any]]:
                             raw_char = count_chars_without_header(raw_counterpart)
                         else:
                             rel_raw = ""
+                            raw_counterpart = ""
                             raw_char = 0
                     else:
+                        raw_counterpart = ""
                         rel_raw = ""
                         raw_char = 0
 
                     meta = parse_header(clean_path)
 
                     row: Dict[str, Any] = {
-                        "folder_type": folder_type,     # clean OR suspected_baihua
+                        "folder_type": folder_type,
                         "corpus_root": os.path.relpath(corpus_dir, start=root),
                         "category": category,
                         "work_folder": work_folder,
 
                         "work_title": meta.get("WORK_TITLE", work_folder),
-                        "display_title": meta.get(
-                            "DISPLAY_TITLE",
-                            meta.get("WORK_TITLE", work_folder)
-                        ),
+                        "display_title": meta.get("DISPLAY_TITLE", meta.get("WORK_TITLE", work_folder)),
                         "author": meta.get("AUTHOR", ""),
                         "times": meta.get("TIMES", ""),
-                        "page_title": meta.get(
-                            "PAGE_TITLE",
-                            meta.get("WORK_TITLE", work_folder)
-                        ),
+                        "page_title": meta.get("PAGE_TITLE", meta.get("WORK_TITLE", work_folder)),
 
-                        "pageid": int(meta["PAGEID"])
-                        if meta.get("PAGEID", "").isdigit()
-                        else None,
+                        "pageid": int(meta["PAGEID"]) if meta.get("PAGEID", "").isdigit() else None,
 
                         "juan_index": extract_juan(fname),
+
                         "clean_path": rel_clean,
                         "raw_path": rel_raw,
+
+                        "filename": fname,
+                        "superfolder": get_superfolder(clean_path, root, levels_up=2),
 
                         "char_count_clean": count_chars_without_header(clean_path),
                         "char_count_raw": raw_char,
                     }
 
                     row["is_empty_page"] = 1 if row["char_count_clean"] == 0 else 0
+
                     rows.append(row)
 
-    # always process CLEAN
+    # Process CLEAN first
     if os.path.isdir(clean_dir):
         process_folder(clean_dir, "clean")
 
-    # also process suspected_baihua if present
+    # Process suspected_baihua second
     if sb_exists:
         process_folder(sb_dir, "suspected_baihua")
 
     return rows
+
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -362,25 +382,31 @@ def write_detailed_index(rows: List[Dict[str, Any]], prefix: str):
         return
 
     fields = [
-        "folder_type",
-        "corpus_root",
-        "category",
-        "work_folder",
+    "folder_type",
+    "corpus_root",
+    "category",
+    "work_folder",
 
-        "pageid",
-        "work_title",
-        "display_title",
-        "page_title",
-        "author",
-        "times",
+    "pageid",
+    "work_title",
+    "display_title",
+    "page_title",
+    "author",
+    "times",
 
-        "juan_index",
-        "raw_path",
-        "clean_path",
-        "char_count_raw",
-        "char_count_clean",
-        "is_empty_page",
-    ]
+    "juan_index",
+    "raw_path",
+    "clean_path",
+
+    # NEW fields
+    "filename",
+    "superfolder",
+
+    "char_count_raw",
+    "char_count_clean",
+    "is_empty_page",
+]
+
 
     # JSON
     with open(prefix + ".json", "w", encoding="utf-8") as f:
