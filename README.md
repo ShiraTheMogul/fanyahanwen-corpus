@@ -349,7 +349,7 @@ While this is a dizzying level of information, some limitations exist:
 - Sturgeon, D. (2021). Chinese Text Project: A dynamic digital library of premodern Chinese. Digital Scholarship in the Humanities, 36(Supplement_1), i101–i112. https://doi.org/10.1093/llc/fqz046
 - Wang D., Liu C., Liu L., Liu J., Hu H., Shen S., & Li B. (2022). SikuBERT与SikuRoBERTa:面向数字人文的《四库全书》预训练模型构建及应用研究 [Construction and Application of Pre-trained Models of Siku Quanshu in Orientation to Digital Humanities]. 图书馆论坛 [Literary Tribune], 42(6), 14. https://doi.org/10.3969/j.issn.1002-1167.2022.06.005
 - Wang, D., Liu, C., & Zhu, Z. (2021). SikuBERT (Version 2.0) [Computer software]. Nanjing Agricultural University. https://huggingface.co/SIKU-BERT/sikubert, https://github.com/hsc748NLP/SikuBERT-for-digital-humanities-and-classical-Chinese-information-processing, https://gitee.com/onesleepyjoker/SikuBERT-for-digital-humanities-and-classical-Chinese-information-processing
-
+- Huxley, T. H. (1898). 天演論 [Theory of Evolution] (F. Yan, Trans.). In 譯例言 [Evolution and Ethics] (Digitized ed.). Wikisource. https://zh.wikisource.org/wiki/%E5%A4%A9%E6%BC%94%E8%AB%96/%E8%AD%AF%E4%BE%8B%E8%A8%80
 
 # Acknowledgements
 As I am not experienced with API usage, ChatGPT 5.1 was used to assist the creation of this work. 
