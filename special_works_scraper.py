@@ -5,7 +5,7 @@ special_works_scraper.py
 
 Produces the following output:
   base_output/
-    raw/<work_id>/... <- the raw page output, including wiki formatting and legal notices
+    raw/<work_id>/...   <- the raw page output, including wiki formatting and legal notices
     clean/<work_id>/... <- just the content
     special_index.csv
     special_index.json
@@ -171,6 +171,22 @@ def fetch_html_for_page(title: str) -> str:
     return ""
 
 
+def fetch_wikitext_for_page(title: str) -> str:
+    """
+    Fetch raw wikitext for a page using parse&prop=wikitext.
+    """
+    try:
+        data = api_get({
+            "action": "parse",
+            "page": title,
+            "prop": "wikitext",
+        })
+        return data["parse"]["wikitext"]["*"]
+    except Exception as e:
+        print(f"    !! API error (wikitext) for {title}: {e}")
+        return ""
+
+
 def extract_links_from_page(title: str) -> List[str]:
     """
     Return a list of *page titles* that this page links to.
@@ -199,8 +215,9 @@ def extract_links_from_page(title: str) -> List[str]:
 
 def discover_juan_from_toc(root_title: str) -> List[str]:
     """
-    For works like 皇明從信錄: main page is a TOC listing '卷一', '卷二', ...
-    We read links from the root page and filter by titles starting with 'root_title/'.
+    For works whose main page is a TOC listing '卷一', '卷二', ...
+    We read links from the root page and filter by titles starting
+    with 'root_title/'.
     """
     print(f"Discovering juan pages for {root_title} via TOC links...")
     links = extract_links_from_page(root_title)
@@ -209,11 +226,9 @@ def discover_juan_from_toc(root_title: str) -> List[str]:
 
     for t in links:
         if t.startswith(prefix):
-            # Heuristic: if the last part contains '卷', treat as a juan
             last = t.split("/", 1)[-1]
+            # treat things with 卷 or digits as "juan-like"
             if "卷" in last or re.search(r"\d+", last):
-                juan_pages.append(t)
-            if "第" in last or re.search(r"\d+", last):
                 juan_pages.append(t)
 
     juan_pages = sorted(set(juan_pages))
@@ -256,7 +271,8 @@ def discover_yongle_volumes() -> List[str]:
     return titles
 
 
-def discover_gujin_bfs(root_title: str, max_pages: Optional[int] = None) -> List[str]:
+def discover_gujin_bfs(root_title: str,
+                       max_pages: Optional[int] = None) -> List[str]:
     """
     OLD MODE (kept for reference): BFS starting at root_title, walking all links
     whose title starts with root_title. This hits a *lot* of pages and is slow
@@ -292,9 +308,9 @@ def discover_gujin_bfs(root_title: str, max_pages: Optional[int] = None) -> List
 def discover_gujin_hierarchy(root_title: str,
                              max_pages: Optional[int] = None) -> List[str]:
     """
-    New, structured discovery for 欽定古今圖書集成.
+    Structured discovery for 欽定古今圖書集成.
 
-    Hierarchy (as on Wikisource):
+    Hierarchy:
         root (欽定古今圖書集成)
           -> 彙編 pages (e.g. 欽定古今圖書集成/曆象彙編)
               -> 典 pages (e.g. 欽定古今圖書集成/曆象彙編/乾象典)
@@ -320,7 +336,6 @@ def discover_gujin_hierarchy(root_title: str,
     for hui in hui_pages:
         links_hui = extract_links_from_page(hui)
         for t in links_hui:
-            # Example: 欽定古今圖書集成/曆象彙編/乾象典
             if t.startswith(hui + "/") and t.endswith("典"):
                 dian_pages.append(t)
 
@@ -352,20 +367,117 @@ def discover_gujin_hierarchy(root_title: str,
 
 
 # -------------------------------------------------------------------
+# 高麗版大藏經 index parsing
+# -------------------------------------------------------------------
+
+def parse_gaoli_index(root_title: str) -> List[Dict]:
+    """
+    Parse the 高麗版大藏經 index page to extract work metadata.
+
+    Expected line pattern (wikitext):
+
+        0001 [[大般若波羅蜜多經]](六百卷) 唐‧玄奘譯
+
+    We extract:
+        index_no, work_title, display_title, times, author
+    """
+    print(f"Parsing 高麗版大藏經 index from {root_title} ...")
+    wikitext = fetch_wikitext_for_page(root_title)
+    if not wikitext:
+        print("  !! No wikitext returned for 高麗版大藏經 index.")
+        return []
+
+    entries: List[Dict] = []
+
+    for raw_line in wikitext.splitlines():
+        line = raw_line.strip()
+        if not line:
+            continue
+
+        # Lines we care about begin with a 4-digit code.
+        if not re.match(r"^\d{4}\s", line):
+            continue
+
+        m = re.match(
+            r"^(?P<num>\d+)\s*"
+            r"\[\[(?P<link>[^|\]]+)(?:\|(?P<display>[^]]+))?\]\]\s*"
+            r"\((?P<juaninfo>[^)]*)\)\s*"
+            r"(?P<meta>.*)$",
+            line
+        )
+        if not m:
+            continue
+
+        index_no = m.group("num").strip()
+        work_title = m.group("link").strip()
+        display_title = (m.group("display") or work_title).strip()
+        meta = m.group("meta").strip()
+
+        times = ""
+        author = ""
+
+        # meta typically looks like: "唐‧玄奘譯" or "西晉‧無羅叉譯"
+        if meta:
+            m2 = re.search(
+                r"(?P<times>[^\s‧·]+)\s*[‧·]\s*(?P<author>.+?)(?:譯|$)",
+                meta
+            )
+            if m2:
+                times = m2.group("times").strip()
+                author = m2.group("author").strip()
+
+        entries.append({
+            "index_no": index_no,
+            "work_title": work_title,
+            "display_title": display_title,
+            "times": times,
+            "author": author,
+            "raw_line": raw_line,
+        })
+
+    print(f"  -> Parsed {len(entries)} entries from 高麗版大藏經 index.")
+    return entries
+
+
+# -------------------------------------------------------------------
 # Scraping + index
 # -------------------------------------------------------------------
 
 def save_text_pair(base_output: str,
                    work_id: str,
                    page_title: str,
-                   juan_index: int) -> Tuple[str, str, int, int]:
+                   juan_index: int,
+                   meta: Optional[Dict] = None) -> Tuple[str, str, int, int]:
     """
-    Fetch HTML, convert to RAW/CLEAN text, save to disk.
+    Fetch HTML, convert to RAW/CLEAN text, optionally prepend metadata
+    header, then save to disk.
+
     Returns (raw_relpath, clean_relpath, chars_raw, chars_clean)
     """
     html = fetch_html_for_page(page_title)
-    raw_text = clean_html_to_text(html) if html else ""
-    clean_text = raw_text  # you can add further cleaning here if you like
+    body_text = clean_html_to_text(html) if html else ""
+
+    header = ""
+    if meta is not None:
+        # Ensure all keys exist to avoid KeyError
+        work_title = meta.get("work_title", "")
+        display_title = meta.get("display_title", "")
+        author = meta.get("author", "")
+        times = meta.get("times", "")
+        page_title_meta = meta.get("page_title", page_title)
+
+        header_lines = [
+            f"# WORK_TITLE: {work_title}",
+            f"# DISPLAY_TITLE: {display_title}",
+            f"# AUTHOR: {author}",
+            f"# TIMES: {times}",
+            f"# PAGE_TITLE: {page_title_meta}",
+            "",
+        ]
+        header = "\n".join(header_lines) + "\n"
+
+    raw_text = header + body_text
+    clean_text = header + body_text  # further cleaning could differ if desired
 
     # Folder per work_id
     raw_dir = os.path.join(base_output, "raw", work_id)
@@ -393,35 +505,44 @@ def run_special_scrape(base_output: str,
                        test_mode: bool = False,
                        max_pages_per_work: Optional[int] = None) -> None:
     """
-    Orchestrates scraping of the three target works.
+    Orchestrates scraping of special target works, including
+    高麗版大藏經 via its index.
     """
 
-    # You can expand this list later.
+    # You can expand or tweak this list later.
     WORKS = [
         {
             "name": "大越史略",
-            "root_title": "大越史略",       # https://zh.wikisource.org/wiki/九雲夢
+            "root_title": "大越史略",
             "mode": "toc_juan",
             "work_id": "大越史略",
         },
         {
             "name": "皇黎一統志",
-            "root_title": "皇黎一統志",   # https://zh.wikisource.org/wiki/芝峰類說
+            "root_title": "皇黎一統志",
             "mode": "toc_juan",
             "work_id": "皇黎一統志",
         },
         {
             "name": "越史略",
-            "root_title": "越史略",     # https://zh.wikisource.org/wiki/高麗史
+            "root_title": "越史略",
             "mode": "toc_juan",
             "work_id": "越史略",
         },
         {
             "name": "鄭氏世家",
-            "root_title": "鄭氏世家",   # https://zh.wikisource.org/wiki/三國史記
+            "root_title": "鄭氏世家",
             "mode": "toc_juan",
             "work_id": "鄭氏世家",
         },
+        {
+            "name": "高麗版大藏經",
+            "root_title": "高麗版大藏經",
+            "mode": "gaoli_index",
+            "work_id": "高麗版大藏經",
+        },
+        # You can still add 永樂大典 / 古今圖書集成 entries here
+        # using modes "yongle_allpages", "gujin_hierarchy" etc.
     ]
 
     ensure_dir(base_output)
@@ -439,15 +560,90 @@ def run_special_scrape(base_output: str,
 
     for wi, work in enumerate(WORKS, start=1):
         root_title = work["root_title"]
-        work_id = work["work_id"]
+        top_work_id = work["work_id"]
         mode = work["mode"]
-
         display_name = work.get("name", root_title)
 
         print(f"### [{wi}/{len(WORKS)}] {display_name} ###")
         print(f"== Work: {root_title} (mode: {mode}) ==")
-        
-        # Discover pages for this work
+
+        # ------------------------------------------------------------------
+        # 高麗版大藏經 mode: special handling
+        # ------------------------------------------------------------------
+        if mode == "gaoli_index":
+            gaoli_entries = parse_gaoli_index(root_title)
+            print(f"  -> {len(gaoli_entries)} works to scrape from 高麗版大藏經 index.")
+            print()
+
+            for wj, entry in enumerate(gaoli_entries, start=1):
+                work_title = entry["work_title"]
+                display_title = entry["display_title"]
+                author = entry["author"]
+                times = entry["times"]
+
+                work_id = normalise_title_for_path(work_title)
+
+                print(f"  -- [{wj}/{len(gaoli_entries)}] {display_title} ({work_title}) --")
+
+                pages = discover_juan_from_toc(work_title)
+
+                if max_pages_per_work is not None and test_mode:
+                    pages = pages[:max_pages_per_work]
+
+                print(f"     -> {len(pages)} juan pages for {work_title}")
+                for j, page_title in enumerate(pages, start=1):
+                    juan_index = j
+                    print(f"       [{j}/{len(pages)}] {page_title} (juan {juan_index}) ...")
+
+                    meta = {
+                        "work_title": work_title,
+                        "display_title": display_title,
+                        "author": author,
+                        "times": times,
+                        "page_title": page_title,
+                    }
+
+                    try:
+                        raw_rel, clean_rel, cr, cc = save_text_pair(
+                            base_output=base_output,
+                            work_id=work_id,
+                            page_title=page_title,
+                            juan_index=juan_index,
+                            meta=meta,
+                        )
+                    except Exception as e:
+                        print(f"         !! Error while scraping {page_title}: {e}")
+                        continue
+
+                    print(f"         -> Saved RAW to   {raw_rel}")
+                    print(f"         -> Saved CLEAN to {clean_rel}")
+
+                    index_rows.append({
+                        "root_title": root_title,
+                        "work_id": work_id,
+                        "work_title": work_title,
+                        "display_title": display_title,
+                        "author": author,
+                        "times": times,
+                        "mode": mode,
+                        "page_title": page_title,
+                        "juan_index": juan_index,
+                        "raw_path": raw_rel,
+                        "clean_path": clean_rel,
+                        "chars_raw": cr,
+                        "chars_clean": cc,
+                    })
+
+                    time.sleep(sleep_sec)
+
+                print()
+
+            # Done with gaoli_index, continue to next WORKS entry.
+            continue
+
+        # ------------------------------------------------------------------
+        # Other modes as before
+        # ------------------------------------------------------------------
         if mode == "toc_juan":
             pages = discover_juan_from_toc(root_title)
         elif mode == "yongle_allpages":
@@ -458,13 +654,13 @@ def run_special_scrape(base_output: str,
                 max_pages=(50 if test_mode and max_pages_per_work is None else max_pages_per_work)
             )
         elif mode == "gujin_bfs":
-            # legacy option if you ever want to use BFS explicitly
             pages = discover_gujin_bfs(
                 root_title,
                 max_pages=(50 if test_mode and max_pages_per_work is None else max_pages_per_work)
             )
         else:
             print(f"  !! Unknown mode {mode}, skipping.")
+            print()
             continue
 
         if test_mode and max_pages_per_work is not None:
@@ -473,25 +669,41 @@ def run_special_scrape(base_output: str,
         print(f"  -> {len(pages)} pages to scrape for {root_title}")
         print()
 
+        # For non-Gaoli modes, we don't have good author/times metadata
+        # at this script level, so we leave those blank.
+        work_title = root_title
+        display_title = display_name
+        author = ""
+        times = ""
+
         for j, page_title in enumerate(pages, start=1):
-            # SPECIAL: parse juan_index from 永樂大典/卷NNN
             if mode == "yongle_allpages":
+                # parse juan_index from 永樂大典/卷NNN
                 m = re.search(r"/卷0*([0-9]+)$", page_title)
                 if m:
                     juan_index = int(m.group(1))
                 else:
-                    juan_index = j  # fallback if pattern fails
+                    juan_index = j
             else:
                 juan_index = j
 
             print(f"  [{j}/{len(pages)}] {page_title} (juan {juan_index}) ...")
 
+            meta = {
+                "work_title": work_title,
+                "display_title": display_title,
+                "author": author,
+                "times": times,
+                "page_title": page_title,
+            }
+
             try:
                 raw_rel, clean_rel, cr, cc = save_text_pair(
                     base_output=base_output,
-                    work_id=work_id,
+                    work_id=top_work_id,
                     page_title=page_title,
                     juan_index=juan_index,
+                    meta=meta,
                 )
             except Exception as e:
                 print(f"    !! Error while scraping {page_title}: {e}")
@@ -502,10 +714,14 @@ def run_special_scrape(base_output: str,
 
             index_rows.append({
                 "root_title": root_title,
-                "work_id": work_id,
+                "work_id": top_work_id,
+                "work_title": work_title,
+                "display_title": display_title,
+                "author": author,
+                "times": times,
                 "mode": mode,
                 "page_title": page_title,
-                "juan_index": juan_index,  # use parsed value here
+                "juan_index": juan_index,
                 "raw_path": raw_rel,
                 "clean_path": clean_rel,
                 "chars_raw": cr,
@@ -523,6 +739,10 @@ def run_special_scrape(base_output: str,
     fieldnames = [
         "root_title",
         "work_id",
+        "work_title",
+        "display_title",
+        "author",
+        "times",
         "mode",
         "page_title",
         "juan_index",
@@ -554,7 +774,7 @@ def main(argv: List[str]) -> None:
     import argparse
 
     parser = argparse.ArgumentParser(
-        description="Scrape 皇明從信錄, 永樂大典, 欽定古今圖書集成 from zh.wikisource"
+        description="Scrape special works (e.g. 越史類, 高麗版大藏經) from zh.wikisource"
     )
     parser.add_argument(
         "output_dir",
@@ -571,7 +791,7 @@ def main(argv: List[str]) -> None:
     parser.add_argument(
         "--test",
         action="store_true",
-        help="Test mode: smaller 古今圖書集成 scrape (via max-pages-per-work).",
+        help="Test mode: smaller scrape for very large works (via max-pages-per-work).",
     )
     parser.add_argument(
         "--max-pages-per-work",

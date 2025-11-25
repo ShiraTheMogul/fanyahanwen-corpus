@@ -351,6 +351,7 @@ While this is a dizzying level of information, some limitations exist:
 - Editorial Board of the Encyclopedia of China. (2009). 《四庫七閣·四庫全書·四庫全書總目提要》. In 中国大百科全书 [Encyclopedia of China] (2nd ed). 中國大 [China Publishing House].
 - Dai, L., Li, T., Yang, Y., Jia, L., Magically Asia Limited, TudorTech System Co., Ltd, & Founder Electronics Company Limited. (1999). Siku Quanshu Online (Version 3.0 (Wenyuange Ed.)) [Computer software]. Digital Heritage Publishing Ltd, East View Information Services. http://skqs.com/
 - Guy, R. K. (1987). The emperor’s four treasuries: Scholars and the state in the late Chʻien-lung era. Council on East Asian Studies, Harvard University.
+- Lee, J., & Jung, Y. (2025). A Variant Character Dataset for Historical Narratives of Middle and Late Imperial China. Journal of Open Humanities Data, 11, 33. https://doi.org/10.5334/johd.325
 - Lichtman, K., & VanPatten, B. (2021). Was Krashen right? Forty years later. Foreign Language Annals, 54(2), 283–305. https://doi.org/10.1111/flan.12552
 - Matsumoto J. (2025). 日本漢文の世界 [Nihon kanbun no sekai]. Kambun.jp. https://kambun.jp/
 - Meng, K. (2016). 孟子 [The Works of Mencius] (J. Legge & Y. Shi., Trans.; 1st ed.). 中州古籍出版社 [Zhongzhou Ancient Books Publishing House].
