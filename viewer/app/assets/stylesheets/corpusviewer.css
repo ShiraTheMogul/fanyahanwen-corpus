@@ -1,0 +1,15 @@
+.corpus-list { line-height: 1.8; }
+
+.corpus-reader {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 12px;
+  max-height: calc(100vh - 220px);
+  overflow: auto;
+}
+
+.corpus-reader pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}

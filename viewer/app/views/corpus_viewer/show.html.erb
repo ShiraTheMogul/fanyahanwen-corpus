@@ -1,0 +1,26 @@
+<h1>Corpus Viewer</h1>
+
+<p class="crumbs">
+  <% if @rel_path.present? %>
+    <%= link_to "Root", corpus_viewer_path %> /
+    <%= @rel_path %>
+  <% else %>
+    Root
+  <% end %>
+</p>
+
+<% if @kind == :dir %>
+  <ul class="corpus-list">
+    <% @children.each do |name| %>
+      <% child_rel = @rel_path.present? ? "#{@rel_path}/#{name}" : name %>
+      <li>
+        <%= link_to "Root", corpus_viewer_path(format: nil) %>
+      </li>
+    <% end %>
+  </ul>
+
+<% elsif @kind == :file %>
+  <div class="corpus-reader">
+    <pre><%= @text %></pre>
+  </div>
+<% end %>
