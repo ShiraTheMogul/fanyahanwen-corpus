@@ -1,0 +1,427 @@
+/*
+ * This is a manifest file that'll be compiled into application.css.
+ *
+ * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
+ * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
+ * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
+ * depending on specificity.
+ *
+ * Consider organizing styles into separate files for maintainability.
+ */
+
+/* Fonts are declared dynamically in layouts/_dynamic_fonts.html.erb
+   so adding a new font is just "drop file into app/assets/fonts".
+   We only apply the selected font to .maincol/.han-tooltip (see bottom). */
+
+:root {
+  --han-font-primary: "WenJin Mincho";
+  --han-font-fallback: "WenJin Mincho";
+  --han-font-stack: "WenJin Mincho", serif;
+}
+
+/* --- Han character tooltip (Yomitan-ish) --- */
+.han-tooltip {
+  position: fixed;
+  z-index: 9999;
+  width: 360px;
+  max-width: calc(100vw - 16px);
+  max-height: calc(100vh - 16px);
+  overflow: auto;
+  background: rgba(22, 22, 24, 0.98);
+  color: rgba(255,255,255,0.92);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 14px;
+  box-shadow: 0 14px 50px rgba(0,0,0,0.38);
+  padding: 12px;
+}
+
+.han-tooltip-head {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 12px;
+  align-items: center;
+}
+
+.han-tooltip-char {
+  font-size: 46px;
+  line-height: 1;
+  text-align: center;
+}
+
+.han-tooltip-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+.han-tooltip-actions { display: flex; gap: 6px; }
+
+.han-tooltip-btn {
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.06);
+  color: inherit;
+  border-radius: 10px;
+  padding: 2px 8px;
+  cursor: pointer;
+}
+
+.han-tooltip-btn.is-active {
+  background: rgba(255,255,255,0.16);
+  border-color: rgba(255,255,255,0.24);
+}
+
+.han-tooltip-tabs { display: flex; gap: 8px; margin: 10px 0; }
+
+.han-tooltip-tab {
+  flex: 1;
+  padding: 6px 8px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.06);
+  color: inherit;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.han-tooltip-tab.is-active {
+  background: rgba(255,255,255,0.14);
+  border-color: rgba(255,255,255,0.22);
+}
+
+.han-tooltip-panel { display: none; font-size: 13px; line-height: 1.35; }
+.han-tooltip-panel.is-active { display: block; }
+.han-tooltip-panel ol { margin: 0; padding-left: 18px; }
+
+.han-tooltip-foot { margin-top: 10px; font-size: 12px; opacity: 0.75; }
+
+.muted { opacity: 0.75; }
+
+/* --- Header layout: character + HanziWriter --- */
+.char-header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 12px;
+}
+
+.char-glyph {
+  font-size: 4rem;
+  line-height: 1;
+  margin: 0;
+}
+
+/* Make it stack vertically on narrow screens */
+@media (max-width: 600px) {
+  .char-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* --- HanziWriter widget --- */
+.hw-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hanzi-writer-box {
+  width: 120px;
+  height: 120px;
+}
+
+.hw-fallback {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+/* --- HKCards decomposition card widget --- */
+.cj-card {
+  padding: 8px;
+  border-radius: 12px;
+  margin-top: 6px;
+}
+
+.cjimg {
+  display: block;
+  height: auto;
+}
+
+.cjimg-small {
+  width: 300px;
+  max-width: 100%;
+}
+
+/* --- Small helper text used in the Variants section --- */
+.variant-note {
+  font-size: 0.9em;
+  font-style: italic;
+  opacity: 0.85;
+}
+
+
+
+/* --- Global header (site title + search) --- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  padding: 10px 16px;
+
+  /* Layout: left title/nav + centered search bar */
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  justify-content: flex-start;
+}
+
+.site-title {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.site-nav {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.site-nav-link {
+  text-decoration: none;
+  opacity: 0.85;
+}
+
+.site-nav-link:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+.site-title a {
+  text-decoration: none;
+  color: inherit;
+  font-weight: 600;
+}
+
+.header-search {
+  /* Take the remaining width so we can center the form */
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+}
+
+.header-search-input {
+  width: min(420px, 55vw);
+  padding: 6px 10px;
+  font-size: 1rem;
+}
+
+.header-search-button {
+  padding: 6px 10px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+/* --- Page shell: main content + right sidebar --- */
+.page-shell {
+  display: flex;
+  align-items: flex-start;
+}
+
+.site-main {
+  padding: 16px;
+  flex: 1;
+  min-width: 0; /* prevents overflow in flex layouts */
+}
+
+.site-rightbar {
+  width: 280px;
+  padding: 16px 16px 16px 0;
+}
+
+/* Keep the right bar visible while scrolling */
+.rightbar-sticky {
+  position: sticky;
+  top: 72px; /* header height + a bit of breathing room */
+}
+
+/* Stack sidebar below main content on narrow screens */
+@media (max-width: 920px) {
+  .page-shell {
+    flex-direction: column;
+  }
+
+  .site-rightbar {
+    width: 100%;
+    padding: 0 16px 16px 16px;
+  }
+
+  .rightbar-sticky {
+    position: static;
+  }
+}
+
+/* Screen-reader-only text (visually hidden, still accessible) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* --- Collapsible "Variant-specific definitions" --- */
+.variant-defs {
+  margin-top: 16px;
+}
+
+.variant-defs summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.variant-defs[open] summary {
+  margin-bottom: 10px;
+}
+
+
+/* --- Right sidebar controls (romanisation / ruby / script) --- */
+.rightbar-box {
+  border: 1px solid rgba(0,0,0,0.12);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.rightbar-box h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.0rem;
+}
+
+.rightbar-section {
+  margin-bottom: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+.rightbar-section:last-child {
+  border-bottom: 0;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.rightbar-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  margin: 6px 0;
+}
+
+.rightbar-label {
+  font-size: 0.92rem;
+  opacity: 0.85;
+}
+
+.rightbar-select {
+  width: 160px;
+}
+
+.rightbar-button {
+  margin-top: 8px;
+  padding: 6px 10px;
+  width: 100%;
+}
+
+/* --- Ruby annotations ---
+   Ruby layout across browsers is famously "a bit haunted".
+   We do two simple, predictable modes:
+   - horizontal: ruby text sits above the glyph, left-to-right
+   - vertical: ruby text sits above the glyph, but the ruby itself stacks top-to-bottom
+              (so long readings don't become wider than the character)
+
+   NOTE: We anchor the <rt> with absolute positioning because the browser-native ruby
+   layout can vary a lot and tends to jump around with big font sizes.
+*/
+.char-glyph ruby.ruby-annot {
+  position: relative;
+  display: inline-block;
+}
+
+.char-glyph ruby.ruby-annot rt {
+  position: absolute;
+  top: -20px;              /* requested offset (~20px) */
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.28em;
+  font-style: italic;
+  opacity: 0.9;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.char-glyph ruby.ruby-annot.ruby-vertical rt {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  white-space: normal;
+}
+
+.char-glyph ruby.ruby-annot.ruby-vertical.ruby-side-right rt {
+  top: 0;
+  left: calc(100% + 6px); /* right side of the glyph */
+  transform: none;
+}
+
+.char-glyph ruby.ruby-annot.ruby-vertical.ruby-side-left rt {
+  top: 0;
+  left: -6px;             /* left side of the glyph */
+  transform: translateX(-100%);
+}
+
+/* Han-script font switching
+   The selected Han font is restricted by @font-face unicode-range so Latin
+   letters/numerals keep the UI font even when applied to a container.
+
+   Scope modes:
+   - all: apply to main content + tooltip body
+   - headwords: apply only to dictionary headwords + tooltip headword
+*/
+body.han-font-scope-all .maincol,
+body.han-font-scope-all .han-tooltip {
+  font-family: var(--han-font-stack, serif);
+}
+
+body.han-font-scope-headwords .char-glyph,
+body.han-font-scope-headwords .han-tooltip-char {
+  font-family: var(--han-font-stack, serif);
+}
+
+.han-font-warning {
+  margin-top: 6px;
+  font-size: 0.85em;
+  opacity: 0.85;
+}
+
+.han-font-warning strong {
+  font-weight: 600;
+}
+
+.han-font-warning code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.95em;
+}
+
+
+/* Ensure the header logo/title uses WenJin Mincho (independent of user-selected study fonts). */
+.site-title-link {
+  font-family: "WenJin Mincho", serif;
+}

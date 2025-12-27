@@ -1,0 +1,224 @@
+<% if @character.nil? %>
+  <h1>Character not found (yet)</h1>
+  <p>I looked for codepoint <%= params[:id] %>, but it isn’t in the database.</p>
+  <p>Try importing more Unihan lines, or check the input format.</p>
+
+  <p>Let's try inputting another character or Unicode identifier!</p>
+
+  <%= form_with url: characters_path, method: :get, local: true do %>
+    <label for="query">Character or codepoint:</label>
+    <%= text_field_tag :query %>
+    <%= submit_tag "Submit" %>
+  <% end %>
+
+	<% else %>
+	<%= render "rightbar" %>
+
+  <div class="char-header">
+    <h1 class="char-glyph" data-controller="font-guard" data-font-guard-char-value="<%= view_text(@character.chr) %>"><%= character_glyph_with_ruby(view_text(@character.chr)) %></h1>
+
+    <div id="hw-wrap" class="hw-wrap">
+      <div id="hanzi-writer" class="hanzi-writer-box"></div>
+      <div id="hw-fallback" class="hw-fallback">
+        <em>Stroke animation unavailable for this character.</em>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3/dist/hanzi-writer.min.js"></script>
+  <script>
+    (function () {
+      var ch = "<%= @character.chr %>";
+      var targetId = "hanzi-writer";
+      var fallbackEl = document.getElementById("hw-fallback");
+
+      function showFallback(msg) {
+        fallbackEl.innerHTML = "<em>" + msg + "</em>";
+        fallbackEl.style.display = "block";
+      }
+
+      function hideFallback() {
+        fallbackEl.style.display = "none";
+      }
+
+      // Failsafe: library didn't load :( (CSP/offline/etc.)
+      if (typeof HanziWriter === "undefined") {
+        showFallback("Stroke animation unavailable (HanziWriter failed to load).");
+        return;
+      }
+
+      try {
+        var writer = HanziWriter.create(targetId, ch, {
+          width: 140,
+          height: 140,
+          padding: 8
+        });
+
+        hideFallback();
+
+        // Stroke demo - we have the character and font, so this is all we want it for.
+        writer.loopCharacterAnimation();
+      } catch (e) {
+        // Failsafe 2: library loaded, but no stroke data / unsupported char
+        showFallback("No stroke data available for this character.");
+      }
+    })();
+  </script>
+
+  <p>
+    Codepoint:
+    U+<%= @character.codepoint.to_s(16).upcase.rjust(4, "0") %>
+    (<%= @character.codepoint %>)
+	<% block = UnicodeRanges.han_block_label(@character.codepoint) %>
+	<% if block %>
+		<span class="unicode-block-badge" title="Unicode block"><%= block %></span>
+	<% end %>
+
+  </p>
+
+  <% if @base_character.present? %>
+    <h2>Base character</h2>
+    <p>
+      <%= link_to "#{@base_character.chr} (U+#{@base_character.codepoint.to_s(16).upcase})",
+                  character_path("U+#{@base_character.codepoint.to_s(16).upcase}") %>
+    </p>
+  <% end %>
+
+  <% if @variants.present? %>
+    <h2>Variants</h2>
+    <ul>
+      <% @variants.each do |v| %>
+        <li>
+          <%= v[:kind] %>:
+          <%= link_to v[:label], character_path("U+#{v[:codepoint].to_s(16).upcase}") %>
+          <% if v[:has_own_entry] %>
+            <span class="variant-note">(has its own definition text)</span>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <h2>Definitions</h2>
+
+  <% if @cedict_defs.present? %>
+    <h3>CC-CEDICT</h3>
+    <% if @cedict_defs_inherited && @cedict_defs_from.present? %>
+      <p>
+        Showing CC-CEDICT definitions from
+        <%= link_to "#{@cedict_defs_from.chr} (U+#{@cedict_defs_from.codepoint.to_s(16).upcase})",
+                    character_path("U+#{@cedict_defs_from.codepoint.to_s(16).upcase}") %>
+        because this character is treated as a variant.
+      </p>
+    <% end %>
+    <ol>
+      <% @cedict_defs.each do |d| %>
+        <li><%= view_text(d) %></li>
+      <% end %>
+    </ol>
+  <% end %>
+
+  <% if @unihan_definition.present? %>
+    <h3>Unihan definition</h3>
+    <% if @unihan_definition_inherited && @unihan_definition_from.present? %>
+      <p>
+        Showing Unihan definition from
+        <%= link_to "#{@unihan_definition_from.chr} (U+#{@unihan_definition_from.codepoint.to_s(16).upcase})",
+                    character_path("U+#{@unihan_definition_from.codepoint.to_s(16).upcase}") %>
+        because this character is treated as a variant.
+      </p>
+    <% end %>
+    <div class="unihan-def">
+      <%= simple_format(h(view_text(@unihan_definition))) %>
+      <%# File: app/views/characters/show.html.erb
+          h(...) escapes HTML to keep dictionary text from being interpreted as markup. %>
+    </div>
+  <% end %>
+
+  <% if @kangxi_text.present? %>
+    <h3>康熙字典</h3>
+    <% if @kangxi_text_inherited && @kangxi_text_from.present? %>
+      <p>
+        Showing Kangxi text from
+        <%= link_to "#{@kangxi_text_from.chr} (U+#{@kangxi_text_from.codepoint.to_s(16).upcase})",
+                    character_path("U+#{@kangxi_text_from.codepoint.to_s(16).upcase}") %>
+        because this character is treated as a variant.
+      </p>
+    <% end %>
+    <div class="kangxi">
+      <%= simple_format(h(view_text(FieldLens.format_kangxi(@kangxi_text)))) %>
+    </div>
+  <% end %>
+
+  <% if @variant_definition_blocks.present? %>
+    <details class="variant-defs">
+      <summary>
+        Variant-specific definitions (<%= @variant_definition_blocks.length %>)
+      </summary>
+
+      <% @variant_definition_blocks.each do |blk| %>
+        <% cc = blk[:character] %>
+        <h4>
+          <%= link_to "#{cc.chr} (U+#{cc.codepoint.to_s(16).upcase})",
+                      character_path("U+#{cc.codepoint.to_s(16).upcase}") %>
+        </h4>
+
+        <% if blk[:cedict_defs].present? %>
+          <h5>CC-CEDICT</h5>
+          <ol>
+            <% blk[:cedict_defs].each do |d| %>
+              <li><%= view_text(d) %></li>
+            <% end %>
+          </ol>
+        <% end %>
+
+        <% if blk[:unihan_definition].present? %>
+          <h5>Unihan definition</h5>
+          <div class="unihan-def">
+            <%= simple_format(h(view_text(blk[:unihan_definition]))) %>
+          </div>
+        <% end %>
+
+        <% if blk[:kangxi_text].present? %>
+          <h5>康熙字典</h5>
+          <div class="kangxi">
+            <%= simple_format(h(view_text(FieldLens.format_kangxi(blk[:kangxi_text])))) %>
+          </div>
+        <% end %>
+      <% end %>
+    </details>
+  <% end %>
+
+  <h2>Properties</h2>
+  <% hkcards_image_rendered = false %>
+  <% (@grouped_properties || {}).each do |group_name, props| %>
+    <h3><%= group_name %></h3>
+    <ul>
+      <% (props || []).each do |prop| %>
+        <li>
+          <strong><%= FieldLens.label_for(prop.field) %></strong>:
+          <%= view_text(romanise_unihan_value(prop.field, prop.value)) %>
+
+          <% if prop.field == "kCangjie" %>
+            <span class="cj-shapes">(<%= CangjieKeymap.latin_to_han(prop.value) %>)</span>
+
+            <% unless hkcards_image_rendered %>
+              <div class="imgwrap cj-card">
+                <img class="cjimg cjimg-small"
+                     src="https://www.hkcards.com/img/cj/<%= @character.chr %>.png"
+                     alt="Cangjie decomposition"
+                     loading="lazy"
+                     onerror="this.outerHTML='<em>No HKCards decomposition available for this character.</em>'">
+              </div>
+              <% hkcards_image_rendered = true %>
+            <% end %>
+          <% end %>
+
+          <em>(<%= prop.source %>)</em>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <p><a href="/home/index">Return to home</a></p>
+<% end %>

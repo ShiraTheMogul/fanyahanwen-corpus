@@ -1,0 +1,39 @@
+<%#
+  Dynamic @font-face injection.
+
+  We generate font faces based on files found in app/assets/fonts so
+  adding a new font (e.g. Oracle Bone / Seal Script) is as simple as
+  dropping a new folder into that folder.
+
+  We keep the selected "Han font" in session[:han_font].
+%>
+
+<% selected_key = (session[:han_font].presence || HanFonts.default_key).to_s.strip.downcase.tr(" ", "_").to_sym %>
+<% selected_family = HanFonts.family_for(selected_key) || "serif" %>
+<% selected_stack = HanFonts.stack_for(selected_key) %>
+
+<style id="dynamic-han-font-faces">
+  <% HanFonts.faces.each do |f| %>
+  <% href = (asset_path(f.asset_path) rescue nil) %>
+  <% unless href %>
+    /* Skipping missing font asset: <%= f.asset_path %> */
+    <% next %>
+  <% end %>
+  @font-face {
+    font-family: "<%= f.family %>";
+    src: url("<%= href %>") format("<%= f.format %>");
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    <% if f.unicode_range.present? %>
+    unicode-range: <%= f.unicode_range %>;
+    <% end %>
+  }
+  <% end %>
+
+  :root {
+    --han-font-primary: "<%= selected_family %>";
+    --han-font-fallback: "WenJin Mincho";
+    --han-font-stack: <%= raw(selected_stack) %>;
+  }
+</style>

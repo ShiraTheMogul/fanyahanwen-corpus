@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hanwen Corpus Viewer</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "rightbar", "data-turbo-track": "reload" %>
+
+    <%= render "layouts/dynamic_fonts" %>
+
+    <%= javascript_importmap_tags %>
+  </head>
+
+
+	  <% _han_font_key = (session[:han_font].presence || HanFonts.default_key).to_s.strip.downcase.tr(" ", "_") %>
+  <% _han_scope = (session[:han_font_scope].presence || :all).to_s.strip.downcase.tr(" ", "_") %>
+  <% _han_scope = %w[all headwords].include?(_han_scope) ? _han_scope : "all" %>
+  <% _han_warn = session.key?(:han_font_warn_missing) ? (session[:han_font_warn_missing] == true) : true %>
+	  <% _han_family = HanFonts.family_for(_han_font_key) %>
+	  <% _han_stack = HanFonts.stack_for(_han_font_key) %>
+
+	  <body
+	    data-controller="han-font-bootstrap"
+	    class="han-font-scope-<%= _han_scope %>"
+	    data-han-font-key="<%= _han_font_key %>"
+	    data-han-font-family="<%= _han_family %>"
+	    data-han-font-primary="<%= _han_family %>"
+	    data-han-font-stack="<%= _han_stack %>"
+	    data-han-font-warn-missing="<%= _han_warn ? "1" : "0" %>">
+    <header class="site-header">
+      <div class="site-header-inner">
+        <div class="site-header-left">
+          <div class="site-title"><%= link_to "泛亚汉文语料库", root_path, class: "site-title-link" %></div>
+          <nav class="site-nav" aria-label="Primary navigation">
+            <%= link_to "Dictionary", characters_path, class: "site-nav-link" %>
+            <%= link_to "Tools", tools_path, class: "site-nav-link" %>
+            <%= link_to "Corpus Viewer", corpus_viewer_path, class: "site-nav-link" %>
+          </nav>
+        </div>
+
+        <div class="site-header-center">
+          <%= form_with url: characters_path, method: :get, local: true, class: "site-search" do %>
+            <label class="sr-only" for="query">Search</label>
+            <%= text_field_tag :query, params[:query], placeholder: "Search: 泛 or U+6CDB!", class: "site-search-input" %>
+            <%= submit_tag "Go", class: "site-search-submit" %>
+          <% end %>
+        </div>
+
+        <div class="site-header-right">
+          <!-- Reserved for future header controls -->
+        </div>
+      </div>
+    </header>
+
+    <div class="page-shell">
+      <main class="maincol"
+        data-controller="han-tooltip"
+        data-action="click->han-tooltip#click dblclick->han-tooltip#dblclick">
+        <%= yield %>
+      </main>
+
+      <% if content_for?(:rightbar) %>
+        <aside class="rightbar" aria-label="View options">
+          <%= yield :rightbar %>
+        </aside>
+      <% end %>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,10 @@
+<h1>字典 Dictionary</h1>
+<p>Comment to be written.</p>
+
+<p>Let's try inputting a character or Unicode identifier!</p>
+
+<%= form_with url: characters_path, method: :get, local: true do %>
+  <label for="query">Character or codepoint:</label>
+  <%= text_field_tag :query %>
+  <%= submit_tag "Submit" %>
+<% end %>

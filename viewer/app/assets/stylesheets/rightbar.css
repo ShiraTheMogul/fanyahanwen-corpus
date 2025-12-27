@@ -1,0 +1,142 @@
+
+/* Keep this stylesheet boring: clean, readable, no auto dark-mode yet */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #ffffff;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.site-header-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 520px) minmax(0, 1fr);
+  align-items: center;
+  gap: 16px;
+  padding: 10px 16px;
+}
+
+
+.site-header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.site-title-link {
+  text-decoration: none;
+  color: #111;
+  font-weight: 700;
+  font-size: 1.6rem;
+  line-height: 1;
+}
+.site-nav { display: inline-flex; gap: 12px; margin-left: 12px; }
+.site-nav-link { text-decoration: none; color: #111; }
+.site-nav-link:hover { text-decoration: underline; }
+
+.site-header-center { display: flex; justify-content: center; }
+.site-search { display: flex; gap: 8px; width: 100%; }
+.site-search-input { flex: 1; padding: 8px 10px; border: 1px solid #bbb; border-radius: 3px; }
+.site-search-submit { padding: 8px 12px; border: 1px solid #888; background: #f6f6f6; border-radius: 3px; cursor: pointer; }
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0);
+  white-space: nowrap; border: 0;
+}
+
+/* Two-column layout: content + rightbar */
+.page-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 24px;
+  padding: 18px 16px;
+}
+
+.maincol { min-width: 0; }
+
+.rightbar {
+  position: sticky;
+  top: 70px; /* sits under the header */
+  align-self: start;
+  border: 1px solid #e6e6e6;
+  border-radius: 10px;
+  padding: 14px;
+  background: #fff;
+  width: 320px;
+  max-width: 320px;
+
+  /*
+    Rightbar scrolling
+    - The rightbar is sticky, so it needs its own scroll container for long option lists.
+    - max-height uses viewport units so the header remains visible.
+    - overscroll-behavior avoids scroll chaining into the page when the rightbar reaches its end.
+  */
+  max-height: calc(100vh - 90px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  box-sizing: border-box;
+}
+
+.rightbar h3 { margin-top: 0; margin-bottom: 10px; }
+.rightbar-section { margin-top: 12px; padding-top: 12px; border-top: 1px solid #eee; }
+.rightbar-summary { cursor: pointer; }
+
+/* Collapsible option groups (details/summary) */
+.rightbar-group > summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  list-style: none;
+}
+.rightbar-group > summary::-webkit-details-marker { display: none; }
+.rightbar-group > summary::before {
+  content: "▸";
+  display: inline-block;
+  width: 1em;
+}
+.rightbar-group[open] > summary::before {
+  content: "▾";
+}
+.rightbar-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-items: center; margin: 8px 0; }
+.rightbar-select { width: 100%; padding: 6px 8px; border: 1px solid #bbb; border-radius: 3px; }
+.rightbar-apply { width: 100%; padding: 8px 10px; border: 1px solid #888; background: #f6f6f6; border-radius: 4px; cursor: pointer; }
+
+.rightbar-note {
+  grid-column: 1 / -1;
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+.rightbar-credits {
+  margin-top: 8px;
+}
+
+.rightbar-credits summary {
+  cursor: pointer;
+}
+
+.rightbar-credits pre {
+  white-space: pre-wrap;
+  font-size: 11px;
+  max-height: 180px;
+  overflow: auto;
+  background: #fafafa;
+  padding: 8px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+}
+
+@media (max-width: 980px) {
+  .site-header-inner { grid-template-columns: 1fr; }
+  .site-header-center { justify-content: stretch; }
+  .page-shell { grid-template-columns: 1fr; }
+  .rightbar { position: static; }
+}
+
+/* Ruby styles live in application.css (scoped to .char-glyph). */
