@@ -365,5 +365,7 @@ While this is a dizzying level of information, some limitations exist:
 # Acknowledgements
 As I am not experienced with API usage, ChatGPT 5.1 was used to assist the creation of this work. 
 
+Thank you to Maxim Klyashtornyy 修朙 for their incredible assistance in the development of the variant mapping used in this project. I also thank them for their persistent, patient, and insightful feedback to ensure the quality of this work.
+
 # Licence
 Wikisource distributes its texts under a [Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA) Licence](https://creativecommons.org/licenses/by-sa/4.0/). Therefore, this code is also provided under that licence. See the [Legal Code](https://creativecommons.org/licenses/by-sa/4.0/legalcode.en) and [LICENCE](/LICENCE) for more information.
