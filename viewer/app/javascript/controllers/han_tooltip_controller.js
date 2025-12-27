@@ -220,15 +220,33 @@ export default class extends Controller {
       this.hide()
     }
 
+    // Some parts of the reader UI may stop bubbling dblclick events (e.g. to avoid
+    // accidental navigation during selection). We *want* dblclick to open the
+    // character page, so we listen in capture phase as a safety net.
+    this._onDblClickCapture = (e) => {
+      // Don't hijack dblclicks inside the tooltip itself.
+      if (e.target?.closest?.(".han-tooltip")) return
+      if (e.target?.closest?.("a, button, input, textarea, select, [contenteditable='true']")) return
+
+      const picked = pickHanAtPoint(e)
+      if (!picked) return
+
+      clearTimeout(this._clickTimer)
+      this.hide()
+      window.location.href = `/characters/${encodeURIComponent(picked.ch)}`
+    }
+
     document.addEventListener("click", this._onDocClick)
     document.addEventListener("keydown", this._onKeyDown)
     document.addEventListener("wheel", this._onWheel, { passive: true })
+    document.addEventListener("dblclick", this._onDblClickCapture, true)
   }
 
   disconnect() {
     document.removeEventListener("click", this._onDocClick)
     document.removeEventListener("keydown", this._onKeyDown)
     document.removeEventListener("wheel", this._onWheel)
+    document.removeEventListener("dblclick", this._onDblClickCapture, true)
     this.hide()
   }
 
@@ -305,6 +323,13 @@ export default class extends Controller {
       this._pinned = false
       this.hide()
     })
+
+    el.querySelector("[data-open]")?.addEventListener("click", (e) => {
+      e.preventDefault()
+      e.stopPropagation()
+      window.location.href = `/characters/${encodeURIComponent(ch)}`
+    })
+
     el.querySelector("[data-pin]")?.addEventListener("click", (e) => {
       e.preventDefault()
       e.stopPropagation()
@@ -385,6 +410,7 @@ export default class extends Controller {
     const ced = Array.isArray(data.dictionaries?.cedict) ? data.dictionaries.cedict : []
     const unihan = data.dictionaries?.unihan || ""
     const kangxi = data.dictionaries?.kangxi || ""
+    // Tooltip reading is independent of whether ruby is enabled in the reader.
     const reading = data.ruby?.reading || ""
 
     return `
@@ -395,6 +421,7 @@ export default class extends Controller {
           ${reading ? `<div class="han-tooltip-reading muted">${escapeHTML(reading)}</div>` : ``}
           <div class="han-tooltip-warning muted" data-missing-glyph style="display:none;"></div>
           <div class="han-tooltip-actions">
+            <button class="han-tooltip-btn" data-open title="Open entry">↗</button>
             <button class="han-tooltip-btn" data-pin title="Pin">📌</button>
             <button class="han-tooltip-btn" data-close title="Close">×</button>
           </div>

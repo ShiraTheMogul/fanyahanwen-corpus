@@ -1,0 +1,77 @@
+<%# Right sidebar for the corpus viewer.
+    Reuses the dictionary's view options form and adds viewer-only toggles.
+%>
+
+<% content_for :rightbar do %>
+  <h3>View options</h3>
+  <details class="rightbar-section rightbar-group" open data-controller="corpus-rightbar">
+    <summary class="rightbar-summary"><strong>Corpus viewer</strong></summary>
+
+    <div class="rightbar-row">
+      <label for="cv_theme">Reader theme</label>
+      <select id="cv_theme" class="rightbar-select"
+              data-corpus-rightbar-target="theme"
+              data-action="change->corpus-rightbar#change">
+        <option value="light">White</option>
+        <option value="bamboo">Bamboo</option>
+        <option value="dark">Dark</option>
+      </select>
+    </div>
+
+    <div class="rightbar-row">
+      <label for="cv_vertical">Vertical text</label>
+      <input id="cv_vertical" type="checkbox"
+             data-corpus-rightbar-target="vertical"
+             data-action="change->corpus-rightbar#change">
+    </div>
+
+    <div class="rightbar-row">
+      <label for="cv_vflow">Vertical flow</label>
+      <select id="cv_vflow" class="rightbar-select"
+              data-corpus-rightbar-target="vflow"
+              data-action="change->corpus-rightbar#change">
+        <option value="rl">Right-to-left (standard)</option>
+        <option value="lr">Left-to-right</option>
+      </select>
+    </div>
+
+    <div class="rightbar-row rightbar-row-stack">
+      <label>Font size</label>
+      <div class="rightbar-inline">
+        <button type="button" class="rightbar-btn" data-size="16" data-action="click->corpus-rightbar#setSize">Small</button>
+        <button type="button" class="rightbar-btn" data-size="20" data-action="click->corpus-rightbar#setSize">Medium</button>
+        <button type="button" class="rightbar-btn" data-size="24" data-action="click->corpus-rightbar#setSize">Large</button>
+      </div>
+      <div class="rightbar-inline">
+        <input id="cv_fontsize" type="number" min="10" max="72" step="1"
+               class="rightbar-input"
+               inputmode="numeric"
+               aria-label="Font size in pixels"
+               data-corpus-rightbar-target="fontsize"
+               data-action="input->corpus-rightbar#change">
+        <span class="rightbar-unit">px</span>
+      </div>
+    </div>
+
+    <div class="rightbar-row">
+      <label for="cv_strip">Remove punctuation</label>
+      <input id="cv_strip" type="checkbox"
+             data-corpus-rightbar-target="strip"
+             data-action="change->corpus-rightbar#change">
+    </div>
+
+
+    <div class="rightbar-row">
+      <label for="cv_ruby_ondemand">Right-click ruby</label>
+      <input id="cv_ruby_ondemand" type="checkbox"
+             data-corpus-rightbar-target="rubyOnDemand"
+             data-action="change->corpus-rightbar#change">
+    </div>
+
+    <p class="rightbar-note">
+      These toggles are client-side only and don’t need “Apply”.
+    </p>
+  </details>
+
+  <%= render "shared/view_options_rightbar" %>
+<% end %>

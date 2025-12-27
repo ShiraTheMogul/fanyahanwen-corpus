@@ -130,7 +130,7 @@ class CharactersController < ApplicationController
 			   .pluck(:value)
 			   .first
 
-	  # If we got a trad character AND it's a single char AND it's different, prefer it as base.
+	  # If we got a trad character AND it's a single char AND it's different, prefer it as base. This is probably the canonical character. 
 	  if trad.present? && trad.length == 1 && trad != character.chr
 		return trad.ord
 	  end
@@ -151,7 +151,7 @@ class CharactersController < ApplicationController
 		raw = params[:id].to_s.strip
 
 		# --- 1) Parse the URL param into an Integer codepoint ---
-		# We accept three input shapes:
+		# Accepts three input shapes:
 		#   A) "U+8BF4"   (common Unicode notation)
 		#   B) "8BF4"     (hex without the "U+")
 		#   C) "说"        (a literal character)
@@ -450,6 +450,8 @@ class CharactersController < ApplicationController
 		kangxi_text = props.find { |p| p.source == "Kangxi" && p.field == "kangxi_gloss" }&.value
 
 		# Ruby/pronunciation (best-effort; mirrors the "ruby" headword choice)
+		# Tooltip pronunciation should NOT depend on whether ruby is enabled on the page.
+		# Still report ruby_enabled for UI state, but always compute a best-effort reading. If all else fails, Mandarin is the fallback. 
 		ruby_enabled = (session[:ruby_enabled] == true || session[:ruby_enabled].to_s == "1" || session[:ruby_enabled].to_s == "true")
 		ruby_source = (session[:ruby_source].presence || :mandarin).to_s.strip.downcase.tr(" ", "_").to_sym
 
@@ -472,7 +474,7 @@ class CharactersController < ApplicationController
 			end
 
 		ruby_reading = nil
-		if ruby_enabled && field_name
+		if field_name
 			raw_reading = props.find { |p| ["Unihan_Readings", "Unihan"].include?(p.source) && p.field == field_name }&.value.to_s
 			tokens = raw_reading.strip.split(/\s+/).map(&:strip).reject(&:blank?)
 			desired = session[:ruby_token].to_s.strip

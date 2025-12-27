@@ -1,16 +1,191 @@
 .corpus-list { line-height: 1.8; }
 
+/*
+  Corpus reader styling
+  - The toolbar holds local-only toggles (vertical/bamboo/punct)
+  - The viewbox is the scroll container
+  - The textflow holds rendered HTML (ruby, spans, etc.)
+*/
+
 .corpus-reader {
   border: 1px solid #ddd;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 12px;
-  max-height: calc(100vh - 220px);
-  overflow: auto;
+  background: #fff;
 }
 
-.corpus-reader pre {
+.corpus-toolbar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.corpus-btn {
+  padding: 6px 10px;
+  border: 1px solid #bbb;
+  background: #f6f6f6;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.corpus-btn[aria-pressed="true"] {
+  background: #e9e9e9;
+  border-color: #999;
+}
+
+.corpus-viewbox {
+  /* Default theme + typography */
+  background: #ffffff;
+  color: #111111;
+  border: 1px solid rgba(0,0,0,0.10);
+  border-radius: 12px;
+  padding: 16px;
+  max-height: calc(100vh - 260px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+}
+
+/* When vertical: the writing-mode makes columns; scroll sideways */
+.corpus-viewbox.is-vertical {
+  overflow-x: auto;
+  overflow-y: hidden;
+  /* Fix: constrain height so vertical text wraps into new columns instead of running off the bottom. */
+  height: calc(100vh - 260px);
+}
+
+/* JS scrolls to the "first" column based on vflow; no flex tricks needed. */
+
+.corpus-textflow {
   margin: 0;
   white-space: pre-wrap;
   word-break: break-word;
-  line-height: 1.9;
+  line-height: calc(var(--cv-font-size, 20px) * 1.8);
+  font-size: var(--cv-font-size, 20px);
+  flex: 0 0 auto;
+}
+
+.corpus-textflow.has-ruby {
+  /* Extra breathing room so ruby never collides with line breaks */
+  line-height: calc(var(--cv-font-size, 20px) * 1.8 + 8px);
+}
+
+.corpus-textflow.is-vertical {
+  writing-mode: vertical-rl; /* default: columns advance right-to-left */
+  text-orientation: mixed;
+  white-space: pre-wrap;
+  /* Fix: constrain the block size so vertical writing wraps into additional columns. */
+  height: 100%;
+  max-height: 100%;
+  overflow: visible;
+  /* Let the vertical layout grow to its natural width so the viewbox
+     can actually scroll horizontally when the text spans many columns. */
+  display: inline-block;
+  inline-size: max-content;
+  /* When vertical, "lines" become columns, so we need a little more spacing! Helps with the Chinese comma too. */
+  letter-spacing: 0.02em;
+}
+
+.corpus-textflow.is-vertical.has-ruby {
+  /* Ruby to the side needs a touch more air */
+  letter-spacing: 0.03em;
+}
+
+.corpus-textflow.is-vertical.is-vflow-lr {
+  writing-mode: vertical-lr;
+}
+
+/* Reader themes */
+.corpus-viewbox.theme-light {
+  background: #ffffff;
+  color: #111111;
+}
+
+.corpus-viewbox.theme-bamboo {
+  background-color: #f2dfb0; /* warm paper */
+  color: #111111;
+  border-color: #d1b46f;
+}
+
+.corpus-viewbox.theme-dark {
+  background: #111111;
+  color: #f3f3f3;
+  border-color: rgba(255,255,255,0.18);
+}
+
+/* Breadcrumb spacing */
+.crumbs { margin: 6px 0 12px; }
+.crumbs .crumb-sep { margin: 0 6px; opacity: 0.6; }
+
+
+
+/* --- Corpus viewer ruby annotations ---
+   Reuse the dictionary ruby positioning rules, but scoped to the reader.
+*/
+.corpus-textflow ruby.ruby-annot {
+  position: relative;
+  display: inline-block;
+}
+
+.corpus-textflow ruby.ruby-annot rt {
+  position: absolute;
+  top: -1.2em;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.28em;
+  font-style: italic;
+  opacity: 0.9;
+  line-height: 1;
+  white-space: normal;
+}
+
+.corpus-textflow ruby.ruby-annot.ruby-vertical rt {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  white-space: normal;
+}
+
+.corpus-textflow ruby.ruby-annot.ruby-vertical.ruby-side-right rt {
+  top: 0;
+  left: calc(100% + 6px);
+  transform: none;
+}
+
+.corpus-textflow ruby.ruby-annot.ruby-vertical.ruby-side-left rt {
+  top: 0;
+  left: -6px;
+  transform: translateX(-100%);
+}
+
+/* On-demand ruby inserted by right-click */
+.corpus-textflow ruby.ruby-ondemand rt {
+  pointer-events: none;
+}
+
+/* --- Better ruby in vertical writing ---
+   The absolute-position ruby used for horizontal text can collapse in vertical writing-mode.
+   Prefer native ruby layout: place readings inter-character (to the right of glyphs).
+*/
+.corpus-textflow.is-vertical ruby.ruby-annot,
+.corpus-textflow.is-vertical ruby.ruby-ondemand {
+  position: static;
+  display: inline;
+  ruby-position: inter-character;
+  ruby-align: start;
+}
+
+.corpus-textflow.is-vertical ruby.ruby-annot rt,
+.corpus-textflow.is-vertical ruby.ruby-ondemand rt {
+  position: static;
+  top: auto;
+  left: auto;
+  right: auto;
+  transform: none;
+  font-size: 0.45em;
+  line-height: 1;
+  white-space: normal;
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  letter-spacing: 0;
 }

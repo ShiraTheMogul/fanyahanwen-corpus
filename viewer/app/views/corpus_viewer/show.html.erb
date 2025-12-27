@@ -2,8 +2,14 @@
 
 <p class="crumbs">
   <% if @rel_path.present? %>
-    <%= link_to "Root", corpus_viewer_path %> /
-    <%= @rel_path %>
+    <% parts = @rel_path.to_s.split("/") %>
+    <%= link_to "Root", corpus_viewer_path %>
+    <% acc = [] %>
+    <% parts.each do |part| %>
+      <% acc << part %>
+      <span class="crumb-sep">/</span>
+      <%= link_to part, corpus_viewer_path(acc, format: nil) %>
+    <% end %>
   <% end %>
 </p>
 
@@ -20,8 +26,44 @@
   </ul>
 
 <% elsif @kind == :file %>
-  <div class="corpus-reader corpus-text">
-    <%= raw @text %>
+  <%= render "rightbar" %>
+
+  <div class="corpus-reader" data-controller="corpus-reader">
+    <div class="corpus-toolbar" role="toolbar" aria-label="Corpus viewer tools">
+      <button type="button"
+              class="corpus-btn"
+              data-action="corpus-reader#toggleVertical"
+              data-corpus-reader-target="verticalBtn"
+              aria-pressed="false">
+        Vertical
+      </button>
+
+      <button type="button"
+              class="corpus-btn"
+              data-action="corpus-reader#cycleTheme"
+              data-corpus-reader-target="themeBtn"
+              aria-pressed="false">
+        Theme
+      </button>
+
+      <button type="button"
+              class="corpus-btn"
+              data-action="corpus-reader#togglePunct"
+              data-corpus-reader-target="punctBtn"
+              aria-pressed="false">
+        No punct
+      </button>
+    </div>
+
+    <div class="corpus-viewbox" data-corpus-reader-target="viewbox">
+      <div class="corpus-textflow"
+           data-corpus-reader-target="content"
+           data-action="contextmenu->corpus-reader#onContextMenu">
+        <%# Ruby markup must be generated server-side so it can use session preferences.
+            The helper returns an html_safe buffer, so do NOT escape it. %>
+        <%= corpus_text_with_optional_ruby(@text) %>
+      </div>
+    </div>
   </div>
 
 <% else %>

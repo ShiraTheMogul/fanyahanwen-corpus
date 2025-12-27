@@ -94,19 +94,41 @@ export default class extends Controller {
       })
   }
 
+  autosubmit() {
+    // Debounced autosubmit for end users: changing an option applies it without
+    // needing to click "Apply". Font-only changes stay client-side; server
+    // dependent changes will reload (see _needsReload).
+    clearTimeout(this._autosubmitTimer)
+    this._autosubmitTimer = setTimeout(() => {
+      // requestSubmit triggers our submit handler.
+      if (this.element?.requestSubmit) this.element.requestSubmit()
+    }, 200)
+  }
+
   _needsReload(curr, next) {
-    const keysThatNeedServerRender = [
+    // Some preferences change server-rendered HTML (ruby wrapping, script conversion).
+    // If the change does not affect the current view, we can avoid a reload.
+
+    const forceServerKeys = [
       "mandarin_scheme",
       "cantonese_scheme",
-      "ruby_enabled",
-      "ruby_source",
-      "ruby_orientation",
-      "ruby_side",
-      "ruby_token",
       "script_mode",
+      // "Show all ruby" toggles whether the page is pre-wrapped in <ruby>.
+      "ruby_enabled",
     ]
 
-    return keysThatNeedServerRender.some((k) => (curr[k] || "") !== (next[k] || ""))
+    if (forceServerKeys.some((k) => (curr[k] || "") !== (next[k] || ""))) return true
+
+    const showAllNext = (next.ruby_enabled || "0") === "1"
+
+    // Ruby sub-options only need a reload when "Show all ruby" is ON,
+    // because that's when the page is actually pre-wrapped in ruby markup.
+    if (showAllNext) {
+      const rubyKeys = ["ruby_source", "ruby_orientation", "ruby_side", "ruby_token"]
+      if (rubyKeys.some((k) => (curr[k] || "") !== (next[k] || ""))) return true
+    }
+
+    return false
   }
 
   _snapshotFromValues() {

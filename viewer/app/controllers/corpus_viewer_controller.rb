@@ -2,6 +2,7 @@
 
 class CorpusViewerController < ApplicationController
   include ApplicationHelper
+  helper CorpusTextHelper
 
   def show
     root = Rails.configuration.x.corpus_root

@@ -104,7 +104,20 @@
   content: "▾";
 }
 .rightbar-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-items: center; margin: 8px 0; }
+.rightbar-row-stack {
+  grid-template-columns: 1fr;
+}
 .rightbar-select { width: 100%; padding: 6px 8px; border: 1px solid #bbb; border-radius: 3px; }
+.rightbar-input { width: 100%; padding: 6px 8px; border: 1px solid #bbb; border-radius: 3px; }
+.rightbar-inline { display: inline-flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.rightbar-btn {
+  padding: 6px 10px;
+  border: 1px solid #888;
+  background: #f6f6f6;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.rightbar-unit { font-size: 12px; opacity: 0.85; }
 .rightbar-apply { width: 100%; padding: 8px 10px; border: 1px solid #888; background: #f6f6f6; border-radius: 4px; cursor: pointer; }
 
 .rightbar-note {
