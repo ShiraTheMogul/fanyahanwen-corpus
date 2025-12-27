@@ -4,23 +4,27 @@
   <% if @rel_path.present? %>
     <%= link_to "Root", corpus_viewer_path %> /
     <%= @rel_path %>
-  <% else %>
-    Root
   <% end %>
 </p>
 
 <% if @kind == :dir %>
+  <p><strong><%= @rel_path.present? ? @rel_path : "Root" %></strong></p>
+
   <ul class="corpus-list">
     <% @children.each do |name| %>
       <% child_rel = @rel_path.present? ? "#{@rel_path}/#{name}" : name %>
       <li>
-        <%= link_to "Root", corpus_viewer_path(format: nil) %>
+        <%= link_to name, corpus_viewer_path(child_rel.split("/"), format: nil) %>
       </li>
     <% end %>
   </ul>
 
 <% elsif @kind == :file %>
-  <div class="corpus-reader">
-    <pre><%= @text %></pre>
+  <div class="corpus-reader corpus-text">
+    <%= raw @text %>
   </div>
+
+<% else %>
+  <p>Minecraft How did we get here advancement</p>
 <% end %>
+
