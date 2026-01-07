@@ -1,0 +1,21 @@
+<style id="xiangqi-font-faces">
+  <%# Xiangqi pieces are U+1FA60..U+1FA6F (🩠..🩯). Keep the unicode-range tight. %>
+
+  @font-face {
+    font-family: "BabelStone Xiangqi";
+    src: url("<%= asset_path("babelstone_xiangqi/BabelStoneXiangqi.woff") %>") format("woff");
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    unicode-range: U+1FA60-1FA6F;
+  }
+
+  @font-face {
+    font-family: "BabelStone Xiangqi Colour";
+    src: url("<%= asset_path("babelstone_xiangqi/BabelStoneXiangqiColour.woff") %>") format("woff");
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    unicode-range: U+1FA60-1FA6F;
+  }
+</style>

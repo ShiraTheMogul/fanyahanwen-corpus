@@ -228,6 +228,26 @@
   cursor: pointer;
 }
 
+.site-header-inner{
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.site-header-right{
+  margin-left: auto;          /* push ganzhi to far right */
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* GanZhi Date */
+.lunar-date{
+  white-space:nowrap;
+  font-size:0.9rem;
+  opacity:0.85;
+}
+
 /* --- Page shell: main content + right sidebar --- */
 .page-shell {
   display: flex;
@@ -420,6 +440,65 @@ body.han-font-scope-headwords .han-tooltip-char {
   font-size: 0.95em;
 }
 
+/* Xiangqi Minigame */
+
+pre.xiangqi-board {
+  line-height: 1;
+  letter-spacing: 0;
+  font-size: 22px;
+  white-space: pre;
+}
+
+pre.xiangqi-board.theme-colour {
+  font-family: "BabelStone Xiangqi Colour", "BabelStone Xiangqi";
+}
+
+pre.xiangqi-board.theme-mono {
+  font-family: "BabelStone Xiangqi", "BabelStone Xiangqi Colour";
+}
+
+.xiangqi-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.xiangqi-toolbar .label {
+  font-weight: 600;
+}
+
+.xiangqi-toolbar form {
+  display: inline;
+  margin: 0;
+}
+
+.xiangqi-toolbar button.active {
+  outline: 2px solid currentColor;
+}
+
+.xq-grid {
+  display: grid;
+  grid-template-columns: 30px repeat(9, 40px);
+  grid-auto-rows: 40px;
+  align-items: center;
+  justify-items: center;
+  gap: 2px;
+}
+
+.xq-top-label, .xq-left-label {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.xq-cell {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #999;
+  font-size: 20px;
+}
 
 /* Ensure the header logo/title uses WenJin Mincho (independent of user-selected study fonts). */
 .site-title-link {

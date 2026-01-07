@@ -1,3 +1,9 @@
+GIT
+  remote: https://github.com/elct9620/lunar_calendar.git
+  revision: f00d4047c28ac1eb4595cbb117198c3a1b1d862e
+  specs:
+    lunar_calendar (0.1.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -101,7 +107,6 @@ GEM
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
     chinese_convt (0.1.3)
-    chinese_lunar (0.1.0)
     chinese_numerals (0.0.3)
     chinese_permalink (1.3.1)
     concurrent-ruby (1.3.6)
@@ -430,7 +435,6 @@ DEPENDENCIES
   bundler-audit
   capybara
   chinese_convt (= 0.1.3)
-  chinese_lunar (= 0.1.0)
   chinese_numerals (= 0.0.3)
   chinese_permalink (= 1.3.1)
   csv
@@ -440,6 +444,7 @@ DEPENDENCIES
   importmap-rails
   jbuilder
   kamal
+  lunar_calendar!
   pg
   propshaft
   puma (>= 5.0)
@@ -488,7 +493,6 @@ CHECKSUMS
   bundler-audit (0.9.3) sha256=81c8766c71e47d0d28a0f98c7eed028539f21a6ea3cd8f685eb6f42333c9b4e9
   capybara (3.40.0) sha256=42dba720578ea1ca65fd7a41d163dd368502c191804558f6e0f71b391054aeef
   chinese_convt (0.1.3) sha256=17a141f14b411d295c0da8bb81fc97f4718db6b7fb93628498e9c41195fa862b
-  chinese_lunar (0.1.0) sha256=d6c8dfbb9487dfc5dbe2d3508bf0dd08ea56cca2f46b1b8eb6e0c8de581215b2
   chinese_numerals (0.0.3) sha256=a6db003c1475ef01e6da233c9dc452d772034ef8e330f84ed0b775f741f57ff5
   chinese_permalink (1.3.1) sha256=aa75bc14e7843387b76bbd4dd6bab52debd22f0b5a1fe557ad42361ede455de4
   concurrent-ruby (1.3.6) sha256=6b56837e1e7e5292f9864f34b69c5a2cbc75c0cf5338f1ce9903d10fa762d5ab
@@ -524,6 +528,7 @@ CHECKSUMS
   lint_roller (1.1.0) sha256=2c0c845b632a7d172cb849cc90c1bce937a28c5c8ccccb50dfd46a485003cc87
   logger (1.7.0) sha256=196edec7cc44b66cfb40f9755ce11b392f21f7967696af15d274dde7edff0203
   loofah (2.25.0) sha256=df5ed7ac3bac6a4ec802df3877ee5cc86d027299f8952e6243b3dac446b060e6
+  lunar_calendar (0.1.1)
   mail (2.9.0) sha256=6fa6673ecd71c60c2d996260f9ee3dd387d4673b8169b502134659ece6d34941
   marcel (1.1.0) sha256=fdcfcfa33cc52e93c4308d40e4090a5d4ea279e160a7f6af988260fa970e0bee
   matrix (0.4.3) sha256=a0d5ab7ddcc1973ff690ab361b67f359acbb16958d1dc072b8b956a286564c5b

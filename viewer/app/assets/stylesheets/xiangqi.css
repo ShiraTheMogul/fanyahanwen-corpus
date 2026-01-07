@@ -1,0 +1,495 @@
+/* Xiangqi page-only styles.
+   Loaded conditionally in layouts/application.html.erb when controller_name == "xiangqi". */
+
+.is-hidden { display: none !important; }
+
+.xiangqi-toolbar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 12px 0;
+}
+
+.xq-btn {
+  appearance: none;
+  border: 1px solid rgba(255,255,255,0.20);
+  background: rgba(255,255,255,0.06);
+  color: inherit;
+  border-radius: 10px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.xq-btn.is-active {
+  background: rgba(255,255,255,0.16);
+  border-color: rgba(255,255,255,0.30);
+}
+
+.xq-spacer { flex: 1; }
+
+.xq-alert {
+  padding: 8px 10px;
+  border: 1px solid rgba(204,0,0,0.65);
+  color: rgba(255,120,120,0.95);
+  border-radius: 12px;
+  margin: 10px 0;
+  background: rgba(204,0,0,0.12);
+}
+
+.xq-layout {
+  display: grid;
+  grid-template-columns: auto min(420px, 40vw);
+  gap: 18px;
+  align-items: start;
+}
+
+@media (max-width: 980px) {
+  .xq-layout { grid-template-columns: 1fr; }
+}
+
+.xq-board-wrap { margin: 8px 0 8px; }
+
+.xq-hintline { margin: 6px 0 0; opacity: 0.85; }
+.xq-hint { font-size: 14px; }
+
+.xq-muted { opacity: 0.65; }
+
+.xq-status {
+  display: inline-block;
+  margin-left: 10px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.06);
+}
+.xq-status-check { border-color: rgba(120,200,255,0.45); }
+.xq-status-mate { border-color: rgba(255,120,120,0.55); }
+
+/* Pretty board (BabelStone) */
+
+.xq-pretty-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+pre.xiangqi-board {
+  display: inline-block;
+  white-space: pre;
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.04);
+  line-height: 1;
+  font-size: clamp(34px, 6.2vw, 64px);
+  position: relative;
+  z-index: 1;
+}
+
+pre.xiangqi-board.theme-colour {
+  font-family: "BabelStone Xiangqi Colour", "BabelStone Xiangqi", serif;
+}
+
+pre.xiangqi-board.theme-mono {
+  font-family: "BabelStone Xiangqi", serif;
+}
+
+.xq-pretty-overlay {
+  position: absolute;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  /* Geometry (left/top/width/height) is set by JS so we align to the inner 9x10. */
+}
+
+.xq-square {
+  appearance: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+/* Grid board (fallback/debug) */
+
+.xq-grid {
+  display: grid;
+  grid-template-columns: 32px repeat(9, 44px);
+  gap: 4px;
+  align-items: center;
+}
+
+.xq-top-label,
+.xq-left-label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 13px;
+  opacity: 0.85;
+  text-align: center;
+}
+
+.xq-cell {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 10px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 18px;
+  background: rgba(255,255,255,0.04);
+}
+
+.xq-cellbtn {
+  cursor: pointer;
+  padding: 0;
+}
+
+/* Shared square highlighting (works for overlay squares and grid buttons) */
+
+.xq-square.is-palace,
+.xq-cellbtn.is-palace {
+  background: rgba(255, 220, 120, 0.38);
+  box-shadow: inset 0 0 0 2px rgba(255, 220, 120, 0.60);
+}
+
+.xq-square.is-selected,
+.xq-cellbtn.is-selected {
+  outline: 2px solid rgba(120,200,255,0.70);
+  outline-offset: -2px;
+  background: rgba(120,200,255,0.18);
+}
+
+.xq-square.is-legal,
+.xq-cellbtn.is-legal {
+  background: rgba(120, 255, 160, 0.42);
+  box-shadow: inset 0 0 0 2px rgba(120, 255, 160, 0.75);
+}
+
+.xq-square.is-capture,
+.xq-cellbtn.is-capture {
+  background: rgba(255, 120, 120, 0.42);
+  box-shadow: inset 0 0 0 2px rgba(255, 120, 120, 0.80);
+}
+
+.xq-square:hover,
+.xq-cellbtn:hover {
+  background: rgba(255,255,255,0.06);
+}
+
+/* Right panel (move list + input) */
+
+.xq-side {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: calc(100vh - 220px);
+}
+
+@media (max-width: 980px) {
+  .xq-side { max-height: none; }
+}
+
+.xq-moves {
+  flex: 1;
+  overflow: auto;
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 14px;
+  background: rgba(255,255,255,0.04);
+  padding: 10px 10px;
+}
+
+.xq-move-row {
+  display: flex;
+  gap: 10px;
+  padding: 6px 6px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.xq-move-row:last-child { border-bottom: 0; }
+
+.xq-move-no {
+  width: 34px;
+  text-align: right;
+  opacity: 0.75;
+  font-variant-numeric: tabular-nums;
+}
+
+.xq-move-tag {
+  opacity: 0.75;
+  font-size: 12px;
+  margin-right: 6px;
+}
+
+.xq-compose {
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 14px;
+  background: rgba(255,255,255,0.04);
+  padding: 10px 10px;
+}
+
+.xq-moveform {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.xq-label { margin-right: 6px; }
+
+.xq-input {
+  flex: 1;
+  min-width: min(320px, 88vw);
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(255,255,255,0.05);
+  color: inherit;
+}
+
+.xq-meta {
+  display: grid;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+code { font-size: 0.95em; }
+
+
+/* Turn badge */
+.xq-turnbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 6px 0 10px;
+}
+
+.xq-turnbadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.18);
+  background: rgba(255,255,255,0.90);
+}
+
+.xq-turnbadge.is-red { border-color: rgba(220,0,0,0.35); }
+.xq-turnbadge.is-black { border-color: rgba(0,0,0,0.28); }
+
+.xq-turndot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,0.75);
+}
+
+.xq-turnbadge.is-red { color: rgba(220,0,0,0.95); }
+.xq-turnbadge.is-black { color: rgba(0,0,0,0.80); }
+
+.xq-turnhan { font-size: 22px; font-weight: 700; line-height: 1; }
+.xq-turnen { font-size: 16px; font-weight: 700; color: rgba(0,0,0,0.75); }
+.xq-turnbadge.is-red .xq-turnen { color: rgba(220,0,0,0.85); }
+.xq-turnsmall { font-size: 12px; color: rgba(0,0,0,0.60); }
+
+/* Small buttons (side panel tools) */
+.xq-btn.xq-btn-small {
+  padding: 6px 9px;
+  font-size: 12px;
+}
+
+/* Move list header */
+.xq-moveshead {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* Move rows as small boxes */
+.xq-move-row {
+  display: grid;
+  grid-template-columns: 26px 22px 1fr;
+  gap: 10px;
+  align-items: start;
+}
+
+.xq-move-side {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.18);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1;
+  background: rgba(255,255,255,0.75);
+}
+
+.xq-move-side.is-red { color: rgba(220,0,0,0.90); border-color: rgba(220,0,0,0.28); }
+.xq-move-side.is-black { color: rgba(0,0,0,0.75); border-color: rgba(0,0,0,0.22); }
+
+.xq-move-boxes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.xq-box {
+  border: 1px solid rgba(0,0,0,0.12);
+  border-radius: 10px;
+  padding: 8px 8px 7px;
+  background: rgba(255,255,255,0.85);
+}
+
+.xq-box-wide {
+  grid-column: 1 / -1;
+}
+
+.xq-box-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.xq-box-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(0,0,0,0.70);
+  letter-spacing: 0.02em;
+}
+
+.xq-copy {
+  appearance: none;
+  border: 1px solid rgba(0,0,0,0.16);
+  background: rgba(255,255,255,0.80);
+  border-radius: 8px;
+  padding: 3px 6px;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.xq-copy:hover { background: rgba(255,255,255,1.0); }
+
+.xq-code-ellip {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Transcript blocks (ICCS line + 中文 line) */
+
+.xq-transcripts {
+  display: grid;
+  gap: 10px;
+}
+
+.xq-transcript-box .xq-box-head {
+  margin-bottom: 8px;
+}
+
+textarea.xq-transcript {
+  width: 100%;
+  min-height: 64px;
+  resize: vertical;
+  padding: 10px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.14);
+  background: rgba(255,255,255,0.92);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.xq-transcript-sub {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 8px;
+  font-size: 12px;
+  color: rgba(0,0,0,0.65);
+}
+
+.xq-details {
+  margin-top: 10px;
+  border-top: 1px dashed rgba(0,0,0,0.15);
+  padding-top: 10px;
+}
+
+.xq-details > summary {
+  cursor: pointer;
+  user-select: none;
+  font-weight: 700;
+  color: rgba(0,0,0,0.70);
+}
+
+.xq-details[open] > summary {
+  margin-bottom: 8px;
+}
+
+/* Transcript boxes (all ICCS / all Chinese in one place) */
+
+.xq-transcripts {
+  display: grid;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.xq-transcript-box {
+  background: rgba(255,255,255,0.90);
+}
+
+textarea.xq-transcript {
+  width: 100%;
+  min-height: 76px;
+  resize: vertical;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.14);
+  background: rgba(255,255,255,0.95);
+  color: rgba(0,0,0,0.85);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.xq-transcript-sub {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+  font-size: 12px;
+}
+
+.xq-details {
+  margin-top: 10px;
+}
+
+.xq-details summary {
+  cursor: pointer;
+  user-select: none;
+  font-weight: 700;
+  color: rgba(0,0,0,0.75);
+  padding: 6px 2px;
+}
+
+/* Make the right panel boxes readable on dark page backgrounds */
+.xq-moves,
+.xq-compose {
+  color: rgba(0,0,0,0.86);
+}
+
