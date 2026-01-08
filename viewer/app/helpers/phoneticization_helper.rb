@@ -77,6 +77,22 @@ module PhoneticizationHelper
         tokens.map do |tok|
           Phoneticization::Converters.cantonese(tok, from: :jyutping, to: current_cantonese_scheme) || tok
         end
+      when "kKorean"
+        # Unihan uses uppercase Yale-ish romanisation; show it in a more readable form.
+        tokens.map { |tok| tok.downcase }
+      when "kJapaneseKun"
+        # Unihan often stores romanised kun readings in ALLCAPS.
+        tokens.map { |tok| tok.downcase }
+      when "kHangul"
+        # Unihan sometimes appends romanisation after a colon, e.g. "트:OE".
+        tokens.map do |tok|
+          if tok.include?(":")
+            left, _right = tok.split(":", 2)
+            left.match?(/\p{Hangul}/) ? left : tok
+          else
+            tok
+          end
+        end
       else
         tokens
       end

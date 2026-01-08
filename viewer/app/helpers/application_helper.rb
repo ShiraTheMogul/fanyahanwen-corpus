@@ -227,4 +227,11 @@ module ApplicationHelper
   rescue RangeError
     nil
   end
+  
+  def render_source(source)
+	  url = PropertySources.url_for(source)
+	  return source.to_s if url.nil?
+
+	  link_to(source.to_s, url, target: "_blank", rel: "noopener")
+	end
 end

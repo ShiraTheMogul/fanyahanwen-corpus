@@ -504,3 +504,51 @@ pre.xiangqi-board.theme-mono {
 .site-title-link {
   font-family: "WenJin Mincho", serif;
 }
+
+
+/* --- Pronunciation sub-sections (collapsible language families) --- */
+.pronun-sections { margin: 0.25rem 0 1rem; }
+
+.pronun-section {
+  border: 1px solid rgba(0,0,0,0.12);
+  border-radius: 12px;
+  padding: 6px 10px;
+  margin: 8px 0;
+  background: rgba(0,0,0,0.02);
+}
+
+.pronun-section > summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-weight: 600;
+}
+
+.pronun-section > summary::-webkit-details-marker { display: none; }
+
+.pronun-section-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pronun-section-count {
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.15);
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+.pronun-section-list { margin: 8px 0 0; padding-left: 22px; }
+
+.pronun-tooltip {
+  margin-left: 6px;
+  cursor: help;
+  font-size: 0.95em;
+  opacity: 0.85;
+}

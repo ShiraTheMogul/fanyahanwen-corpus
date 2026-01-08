@@ -11,6 +11,8 @@ module FieldLens
     "Other"
   ].freeze
   
+  # Internal order
+  # Sort of deprecated?
   FIELD_ORDER_BY_GROUP = {
 	  "Pronunciation" => {
 		exact: %w[
@@ -33,8 +35,58 @@ module FieldLens
 	}
 }.freeze
 	
+
+
+# Pronunciation is a giant bucket, so we use language families. 
+#
+# Each section declares:
+# - key: stable identifier used for cookie persistence
+# - label: header shown in UI
+# - fields: ordered list of CharacterProperty.field values that belong here
+# - default_open: whether the section starts expanded when the user has no saved preference
+#
+# Any pronunciation fields not claimed by a section will be shown under "Other".
+PRONUNCIATION_SECTIONS = [
+  { key: "translingual", label: "Translingual", fields: %w[kFanqie general_chinese], default_open: true },
+  { key: "mandarin", label: "Mandarin Chinese", fields: %w[kMandarin kHanyuPinyin kHanyuPinlu kTGHZ2013 kXHC1983 laoguoyin], default_open: true },
+  { key: "yue", label: "Yue Chinese", fields: %w[kCantonese], default_open: true },
+  { key: "middle_chinese", label: "Middle Chinese", fields: %w[kTang bs2014_mc bs2006_mc], default_open: false },
+  { key: "old_chinese", label: "Old Chinese", fields: %w[bs2014_oc], default_open: false },
+  { key: "japonic", label: "Japonic", fields: %w[kJapanese kJapaneseOn kJapaneseKun], default_open: true },
+  { key: "koreanic", label: "Koreanic", fields: %w[kHangul kKorean], default_open: true },
+  { key: "austroasiatic", label: "Austroasiatic", fields: %w[kVietnamese], default_open: true },
+  { key: "kra_dai", label: "Kra–Dai", fields: %w[kZhuang], default_open: true },
+].freeze
+
+# Partition pronunciation props into the above sections.
+# Returns an array of hashes: { key:, label:, default_open:, props: [...] }.
+def self.pronunciation_sections(props)
+  props ||= []
+
+  remaining = props.dup
+  out = []
+
+  PRONUNCIATION_SECTIONS.each do |sec|
+    claimed = []
+    sec[:fields].each do |field|
+      hits = remaining.select { |p| p.field == field }
+      next if hits.empty?
+      claimed.concat(hits)
+      remaining -= hits
+    end
+
+    out << { key: sec[:key], label: sec[:label], default_open: !!sec[:default_open], props: claimed }
+  end
+
+  if remaining.any?
+    out << { key: "other", label: "Other", default_open: false, props: remaining }
+  end
+
+  out
+end
 	# These fields go unused; either because they're superseded by better data or because they're handled by something else. 
 	HIDDEN_FIELDS = %w[
+		bs2014_mc_detail
 		kDefinition
 		kSimplifiedVariant
 		kTraditionalVariant
@@ -248,16 +300,16 @@ module FieldLens
   # 3) Decide group for any given field
 	def self.group_for(field)
 		return "Strokes & radicals" if field.start_with?("kRS") || field == "kTotalStrokes"
+		return "Education notes" if field.match?("kGradeLevel") || field.match?("kKoreanEducationHanja")
 		return "Pronunciation" if 
 			field.start_with?("kFanqie") || field.start_with?("kMandarin") || field.start_with?("kHanyuPinyin") ||
 			field.start_with?("kHanyuPinlu") || field.start_with?("kTGHZ2013") || field.start_with?("kXHC1983") ||
 			field.start_with?("kCantonese") || field.start_with?("kJapanese") || field.start_with?("kKorean") ||
-			field.start_with?("kHangul") || field.start_with?("kVietnamese") || field.start_with?("kZhuang") || field == "laoguoyin"
+			field.start_with?("kHangul") || field.start_with?("kVietnamese") || field.start_with?("kZhuang") || field == "laoguoyin" || field == "general_chinese" || field == "kTang" || field.start_with?("bs2014_") || field == "bs2006_mc"
 		return "Input" if %w[kCangjie kFourCornerCode kMainlandTelegraph kTaiwanTelegraph].include?(field)
 		return "Variants" if field.include?("Variant") || field.start_with?("kSemantic") || field.start_with?("kSimplified") || field.start_with?("cedict_simp") || field.start_with?("kTraditional")
 		return "Dictionary indices" if field.include?("kPhonetic") || field.match?(/hanyu/i) || field.start_with?("kMorohashi") || field.include?("kCihai") || field.start_with?("kFenn") || field.match?("kCowles") || field.include?("DaeJaweon") || field.start_with?("kFennIndex") || field.start_with?("kGSR") || field.include?("KangXi") || field.match?("kLau") || field.match?("kMatthews") || field.match?("kMeyerWempe") || field.match?("kNelson") || field.start_with?("kSBGY") || field.match?("kSMSZD2003Index") || field.start_with?("kSMSZD2003Index") || field.start_with?("kHKGlyph") || field.match?("kKarlgren")
-		return "Education notes" if field.match?("kGradeLevel") || field.match?("kKoreanEducationHanja")
-		return "Ideographic Research Group (IRG) sources" if field.start_with?("kIRG_") || field == "kIICore"
+				return "Ideographic Research Group (IRG) sources" if field.start_with?("kIRG_") || field == "kIICore"
 		return "Encodings & mappings" if field.match?(/\A(kBigFive|kUnihanCore2020|kJis|kCCCII|kEACC|kTGH|kJoyoKanji|kMojiJoho|kXerox)\b/) || field.start_with?("kRSUnicode") || field.start_with?("kCNS") || field.start_with?("kGB") || field.start_with?(/kjis/i)
 		
 		"Other"
@@ -305,7 +357,6 @@ module FieldLens
 			pinyin_chunks: [2, 2],
 		},
 	"kHanyuPinlu" => "漢語頻率 Hànyǔ Pínlǜ (Pronunciation + Frequency)",
-	"kTang" => "Tang dynasty pronunciation", # T’ang Poetic Vocabulary by Hugh M. Stimson, Far Eastern Publications, Yale University 1976. Method unclear.
 	"laoguoyin" => "Old National Pronunciation 老國音",
     "kCangjie" => "倉頡輸入法 Cāngjié input method",
     "kFourCornerCode" => "角號碼檢字法 Four-corner input method",
@@ -321,6 +372,11 @@ module FieldLens
 	  pinyin: true,
 	  pinyin_chunks: [2]
 	},
+	"general_chinese" => "General Chinese",
+	"bs2014_mc" => "Middle Chinese",
+	"bs2006_mc" => "Middle Chinese",
+	"bs2014_oc" => "Old Chinese",
+	"kTang" => "Middle Chinese (Stimson, 1976)", # T’ang Poetic Vocabulary by Hugh M. Stimson, Far Eastern Publications, Yale University 1976. Method unclear.
 	"kangxi_gloss" => "康熙字典解釋",
 	"kKoreanName" => "Official Korean name since", # 인명용 한자 (人名用漢字) - 1,800 glyph set used for educational purposes. Unihan says it is a year that corresponds to the list; 2015 or 2018. There have been updates in 2022 and 2024 but they do not have the data: Improve? 
 	"kGradeLevel" => "Hong Kong Primary School Grade (朗文初級中文詞典, 2001)",

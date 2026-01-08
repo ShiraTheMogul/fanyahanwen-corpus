@@ -1,0 +1,67 @@
+# Maps a CharacterProperty.source string to optional display metadata.
+# If url is absent/blank, the UI will just show the source text.
+# Basically, make the citations look nice when possible. 
+
+# Format:
+# "<source label>":
+#   url: "https://..."
+#   link_text: "what to click"
+
+Chao 1983:
+  url: "https://github.com/lotem/zime/blob/master/zime-data/tungdzih/tungdzih-keywords.txt"
+  link_text: "tungdzih-keywords.txt"
+
+CC-CEDICT:
+  url: https://cc-cedict.org/wiki/   # CC-CEDICT wiki 
+
+Kangxi:
+  url: https://zh.wikisource.org/wiki/%E5%BA%B7%E7%86%99%E5%AD%97%E5%85%B8   # Wikisource Kangxi :contentReference[oaicite:1]{index=1}
+
+Unihan_Readings:
+  url: https://www.unicode.org/Public/UCD/latest/ucd/Unihan.zip   # Unihan.zip 
+  note: Unihan_Readings.txt
+
+Unihan_Variants:
+  url: https://www.unicode.org/Public/UCD/latest/ucd/Unihan.zip 
+  note: Unihan_Variants.txt
+
+Unihan_DictionaryIndices:
+  url: https://www.unicode.org/Public/UCD/latest/ucd/Unihan.zip 
+  note: Unihan_DictionaryIndices.txt
+
+Unihan_DictionaryLikeData:
+  url: https://www.unicode.org/Public/UCD/latest/ucd/Unihan.zip 
+  note: Unihan_DictionaryLikeData.txt
+
+Unihan_IRGSources:
+  url: https://www.unicode.org/Public/UCD/latest/ucd/Unihan.zip 
+  note: Unihan_IRGSources.txt
+
+Unihan_NumericValues:
+  url: https://www.unicode.org/Public/UCD/latest/ucd/Unihan.zip 
+  note: Unihan_NumericValues.txt
+
+Unihan_OtherMappings:
+  url: https://www.unicode.org/Public/UCD/latest/ucd/Unihan.zip 
+  note: Unihan_OtherMappings.txt
+
+Unihan_RadicalStrokeCounts:
+  url: https://www.unicode.org/Public/UCD/latest/ucd/Unihan.zip 
+  note: Unihan_RadicalStrokeCounts.txt
+
+Wikiversity & Chao 1922:
+  url: https://zh.wikiversity.org/wiki/Subject:%E8%80%81%E5%9C%8B%E9%9F%B3 
+  
+Trilateral Cooperation Secretariat, 2015:
+  url: https://tcs-asia.org/data/etcData/PUB_1570754349.pdf
+  link_text: PUB_1570754349.pdf
+  
+Baxter & Sagart, 2014:
+    url: https://sites.lsa.umich.edu/ocbaxtersagart/wp-content/uploads/sites/1415/2025/03/BaxterSagartOCbyGSR2014-09-20.pdf
+    link_text: BaxterSagartOCbyGSR2014-09-20.pdf
+
+Baxter (with Sagart), 2006:
+    url: https://web.archive.org/web/20250304010612/http://lodel.ehess.fr/crlao/docannexe.php?id=1227
+    link_text: 
+
+

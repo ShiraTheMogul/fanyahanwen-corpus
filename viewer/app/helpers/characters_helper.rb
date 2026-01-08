@@ -22,6 +22,38 @@ module CharactersHelper
     raw.to_sym
   end
 
+# Render links based on citations.
+# Determined in config/property_sources.yml
+def render_property_source(prop)
+  label = prop.source.to_s
+  cfg = Rails.application.config_for(:property_sources)
+  meta = cfg[label] || {}
+
+  url = meta["url"].to_s.strip
+  text = meta["link_text"].to_s.strip
+
+  return h(label) if url.empty?
+
+  # Safety: only link http/https
+  begin
+    uri = URI.parse(url)
+    return h(label) unless uri.is_a?(URI::HTTP) || uri.is_a?(URI::HTTPS)
+  rescue URI::InvalidURIError
+    return h(label)
+  end
+
+  link_label = text.empty? ? label : text
+
+  # If link_text is different, show "(Chao 1983)" after the link.
+  if link_label != label
+    safe_join([
+      link_to(link_label, url, target: "_blank", rel: "noopener"),
+      " (#{label})"
+    ])
+  else
+    link_to(label, url, target: "_blank", rel: "noopener")
+  end
+end
   
 # --- Ruby reading sub-options ---------------------------------------
 # Japanese readings in Unihan are typically *Hepburn romanization* (not kana),
@@ -150,6 +182,17 @@ def current_ruby_orientation
       return laoguoyin_ruby_tokens
     end
 
+	# Baxter & Sagart 2014 readings live in character_properties, not Unihan.
+	if source_sym.to_sym == :bs2014_mc
+	  return bs2014_property_ruby_tokens(field: "bs2014_mc")
+	end
+	if source_sym.to_sym == :bs2014_oc
+	  # For ruby display, remove the square bracket markers but keep the content.
+	  return bs2014_property_ruby_tokens(field: "bs2014_oc") do |tok|
+		tok.to_s.gsub(/[\[\]]/, "").strip
+	  end
+	end
+
     field_name =
       case source_sym
       when :mandarin then "kMandarin"
@@ -195,6 +238,40 @@ def current_ruby_orientation
       out << t
     end
   end
+
+	# Return possible BS2014 ruby tokens for a given character_properties field.
+	# We prefer current -> base -> variants to match the rest of the UI.
+	def bs2014_property_ruby_tokens(field:)
+	  props = Array(@properties)
+	  return [] if props.empty?
+
+	  preferred_ids = [@character&.id, @base_character&.id, *@variant_characters&.map(&:id)].compact
+
+	  out = []
+	  preferred_ids.each do |cid|
+		vals = props
+		  .select { |p| p.character_codepoint_id == cid && p.source == "Baxter & Sagart, 2014" && p.field == field }
+		  .map { |p| p.value.to_s.strip }
+		  .reject(&:blank?)
+
+		next if vals.empty?
+
+		vals.each do |v|
+			v = yield(v) if block_given?
+			next if v.blank?
+			out << v
+		end
+		break if out.any?
+	  end
+
+	  # De-dupe while preserving order
+	  seen = {}
+	  out.each_with_object([]) do |t, arr|
+		next if seen[t]
+		seen[t] = true
+		arr << t
+	  end
+	end
 
   # Return possible Old National Pronunciation ruby tokens for the current
   # character family.

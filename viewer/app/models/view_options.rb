@@ -21,7 +21,10 @@ module ViewOptions
     :vietnamese,
 	:zhuang, # Ancient Zhuang Character Dictionary (古壮字字典), 1989, ISBN 7-5363-0614-8
 	:tang,
-	:fanqie
+		:fanqie,
+		# Historical reconstructions (imported to character_properties)
+		:bs2014_mc,
+		:bs2014_oc
   ].freeze
 
   # CSS/layout choice for ruby rendering.

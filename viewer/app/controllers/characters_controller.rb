@@ -234,6 +234,23 @@ class CharactersController < ApplicationController
 				.order(:field, :source, :value)
 				.to_a
 
+		# Tooltip support: Baxter & Sagart 2014 MC analysis info.
+		# We keep these rows hidden in the main list, and attach them to the
+		# plain MC line via a hoverable info icon.
+		@bs2014_mc_tooltips = {}
+		begin
+			details = @properties.select { |p| p.source == "Baxter & Sagart, 2014" && p.field == "bs2014_mc_detail" }
+			by_mc = Hash.new { |h, k| h[k] = [] }
+			details.each do |p|
+				mc = p.value.to_s.strip.split(/\s+/, 2).first
+				next if mc.blank?
+				by_mc[mc] << p.value.to_s.strip
+			end
+			@bs2014_mc_tooltips = by_mc.transform_values { |arr| arr.uniq.join("\n") }
+		rescue StandardError
+			@bs2014_mc_tooltips = {}
+		end
+
 		
 
 		# --- 5b) Old National Pronunciation (老國音 / Laoguoyin) ---

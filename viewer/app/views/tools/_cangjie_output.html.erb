@@ -1,0 +1,19 @@
+<%= turbo_frame_tag "cangjie_out" do %>
+  <% if message.present? %>
+    <p><em><%= h(message) %></em></p>
+  <% end %>
+
+  <% if char.present? %>
+    <p><strong><%= h(char) %></strong> (U+<%= codepoint.to_i.to_s(16).upcase %>)</p>
+
+    <div class="imgwrap cj-card">
+      <img class="cjimg cjimg-small"
+           src="https://www.hkcards.com/img/cj/<%= h(char) %>.png"
+           alt="HKCards Cangjie decomposition"
+           loading="lazy"
+           onerror="this.outerHTML='<em>No HKCards decomposition available for this character.</em>'">
+    </div>
+  <% end %>
+
+  <pre class="tool-output"><%= h(lines.join("\n")) %></pre>
+<% end %>

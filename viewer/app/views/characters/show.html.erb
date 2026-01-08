@@ -192,32 +192,38 @@
   <h2>Properties</h2>
   <% hkcards_image_rendered = false %>
   <% (@grouped_properties || {}).each do |group_name, props| %>
-    <h3><%= group_name %></h3>
-    <ul>
-      <% (props || []).each do |prop| %>
-        <li>
-          <strong><%= FieldLens.label_for(prop.field) %></strong>:
-          <%= view_text(romanise_unihan_value(prop.field, prop.value)) %>
+    
+<h3><%= group_name %></h3>
 
-          <% if prop.field == "kCangjie" %>
-            <span class="cj-shapes">(<%= CangjieKeymap.latin_to_han(prop.value) %>)</span>
+<% if group_name == "Pronunciation" %>
+  <%= render partial: "pronunciation_sections", locals: { props: (props || []), character: @character } %>
+<% else %>
+  <ul>
+    <% (props || []).each do |prop| %>
+      <li>
+        <strong><%= FieldLens.label_for(prop.field) %></strong>:
+        <%= view_text(romanise_unihan_value(prop.field, prop.value)) %>
 
-            <% unless hkcards_image_rendered %>
-              <div class="imgwrap cj-card">
-                <img class="cjimg cjimg-small"
-                     src="https://www.hkcards.com/img/cj/<%= @character.chr %>.png"
-                     alt="Cangjie decomposition"
-                     loading="lazy"
-                     onerror="this.outerHTML='<em>No HKCards decomposition available for this character.</em>'">
-              </div>
-              <% hkcards_image_rendered = true %>
-            <% end %>
+        <% if prop.field == "kCangjie" %>
+          <span class="cj-shapes">(<%= CangjieKeymap.latin_to_han(prop.value) %>)</span>
+
+          <% unless hkcards_image_rendered %>
+            <div class="imgwrap cj-card">
+              <img class="cjimg cjimg-small"
+                   src="https://www.hkcards.com/img/cj/<%= @character.chr %>.png"
+                   alt="Cangjie decomposition"
+                   loading="lazy"
+                   onerror="this.outerHTML='<em>No HKCards decomposition available for this character.</em>'">
+            </div>
+            <% hkcards_image_rendered = true %>
           <% end %>
+        <% end %>
 
-          <em>(<%= prop.source %>)</em>
-        </li>
-      <% end %>
-    </ul>
+        <em>(<%= prop.source %>)</em>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
   <% end %>
 
   <p><a href="/home/index">Return to home</a></p>

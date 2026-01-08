@@ -63,6 +63,8 @@ module CorpusTextHelper
     when :zhuang then "kZhuang"
     when :fanqie then "kFanqie"
     when :tang then "kTang"
+    when :bs2014_mc then "bs2014_mc"
+    when :bs2014_oc then "bs2014_oc"
     else nil
     end
   end
@@ -76,6 +78,10 @@ module CorpusTextHelper
       respond_to?(:hepburn_to_kana, true) ? hepburn_to_kana(tok) : tok
     when :korean_hangul
       tok.to_s.sub(/[：:].*$/, "").strip
+    when :bs2014_oc
+      tok.to_s.gsub(/[\[\]]/, "").strip
+	when :bs2014_mc
+		tok.to_s.strip
     else
       tok
     end
@@ -138,7 +144,33 @@ module CorpusTextHelper
     field = ruby_field_name_for(source)
     return {} if field.nil?
 
-    rows = []
+	# Baxter & Sagart 2014 readings are stored in character_properties with a
+	# single fixed source string, not in Unihan.
+	if source == :bs2014_mc || source == :bs2014_oc
+		rows = []
+		ids.each_slice(500) do |id_slice|
+			rows.concat(
+				CharacterProperty
+					.where(character_codepoint_id: id_slice, source: "Baxter & Sagart, 2014", field: field)
+					.pluck(:character_codepoint_id, :value)
+			)
+		end
+
+		best_value = {}
+		rows.each do |cid, v|
+			best_value[cid] ||= v
+		end
+
+		out = {}
+		ids_by_chr.each do |chr, cid|
+			raw = best_value[cid].to_s
+			tok = raw.strip.split(/\s+/).reject(&:blank?).first
+			next if tok.blank?
+			out[chr] = format_ruby_token(source, field, tok)
+		end
+		return out
+	end
+	rows = []
     ids.each_slice(500) do |id_slice|
       rows.concat(
         CharacterProperty

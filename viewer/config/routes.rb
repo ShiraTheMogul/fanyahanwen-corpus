@@ -5,7 +5,14 @@ Rails.application.routes.draw do
 	  get :preview, on: :member
 	end
 
-	get "/tools", to: "tools#index", as: :tools
+	get  "/tools",          to: "tools#index",       as: :tools
+	post "/tools/numerals", to: "tools#numerals",    as: :tools_numerals
+	post "/tools/cangjie",  to: "tools#cangjie",     as: :tools_cangjie
+	post "/tools/lunar", to: "tools#lunar", as: :tools_lunar
+	post "/tools/phonetic/mandarin", to: "tools#phonetic_mandarin", as: :tools_phonetic_mandarin
+	post "/tools/phonetic/cantonese", to: "tools#phonetic_cantonese", as: :tools_phonetic_cantonese
+
+	
 	get "/dictionary", to:"characters#index"
 	get "/corpus_viewer(/*path)", to: "corpus_viewer#show", as: :corpus_viewer, format: false # stop a silly attempt to output a txt file
 	get "/fun", to: "fun#index", as: :fun # Minigame section

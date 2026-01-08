@@ -4,26 +4,81 @@
   This page is dedicated to various tools this website uses, presenting them in isolation for ease of use. Other websites with useful components will also be linked.
 </p>
 
-<h2>Phoneticisation converter</h2>
+<% mandarin_opts = ([:original] + Phoneticization::Converters::MANDARIN_SCHEMES.keys).map { |k| [k.to_s.tr("_"," "), k] } %>
+<% cantonese_opts = ([:original] + Phoneticization::Converters::CANTONESE_SCHEMES.keys).map { |k| [k.to_s.tr("_"," "), k] } %>
 
-<p>
-  Coming soon.
-</p>
+<h2>Mandarin phoneticisation</h2>
+<p>Mandarin has among the most amount of phoneticisations, which can be a bit overwhelming for some. This uses dohliam's <%= link_to "pinyin-rb", "https://github.com/dohliam/pinyin-rb" %> to display 13 of them.</p>
+
+<%= form_with url: tools_phonetic_mandarin_path, method: :post, data: { turbo_frame: "mandarin_out" } do %>
+  <label>From: <%= select_tag :from, options_for_select(mandarin_opts, :pinyin_numbers) %></label>
+  <label style="margin-left:1em;">To: <%= select_tag :to, options_for_select(mandarin_opts, :pinyin_diacritics) %></label>
+  <textarea name="input" rows="4" style="width:100%;" placeholder="han4 yu3 ..."></textarea>
+  <button type="submit">Convert</button>
+<% end %>
+<%= turbo_frame_tag "mandarin_out" do %><pre class="tool-output"></pre><% end %>
+
+<h2>Cantonese phoneticisation</h2>
+<%= form_with url: tools_phonetic_cantonese_path, method: :post, data: { turbo_frame: "cantonese_out" } do %>
+  <label>From: <%= select_tag :from, options_for_select(cantonese_opts, :jyutping) %></label>
+  <label style="margin-left:1em;">To: <%= select_tag :to, options_for_select(cantonese_opts, :ipa) %></label>
+  <textarea name="input" rows="4" style="width:100%;" placeholder="gwong2 dung1 waa2 ..."></textarea>
+  <button type="submit">Convert</button>
+<% end %>
+<%= turbo_frame_tag "cantonese_out" do %><pre class="tool-output"></pre><% end %>
 
 <h2>Cangjie input lookup</h2>
 
-<p>
-  Coming soon.
-</p>
+<p>This fetches Cangjie 3 input data from the Unihan database, then maps it to Han characters and grabs <%= link_to "HKCards", "https://www.hkcards.com" %>'s decomposition images to aid understanding.</p>
+
+<%= form_with url: tools_cangjie_path, method: :post, data: { turbo_frame: "cangjie_out" } do %>
+  <input name="input" style="width: 100%;" placeholder="Character (e.g. 說) or U+8BF4 or Cangjie letters (e.g. ABC)">
+  <p><button type="submit">Lookup</button></p>
+<% end %>
+
+<%= turbo_frame_tag "cangjie_out" do %>
+  <pre class="tool-output"></pre>
+<% end %>
 
 <h2>Lunar calendar date converter</h2>
 
-<p>
-  Coming soon.
-</p>
+<p>The Chinese lunar calendar uses the GanZhi system for formatting dates. This uses <%= link_to "a gem by elct9620", "https://github.com/elct9620/lunar_calendar" %> to easily convert between the Gregorian and Chinese dating systems. 
+
+<%= form_with url: tools_lunar_path, method: :post, data: { turbo_frame: "lunar_out" } do %>
+  <p>
+    <label>Date picker:
+      <input type="date" name="date_iso">
+    </label>
+  </p>
+
+  <p>
+    <label>Or paste a date:
+      <input name="input" style="width: 100%;" placeholder="Examples: 2026-01-07 | 07/01/2026 | 7 Jan 2026 | today">
+    </label>
+  </p>
+
+  <p><button type="submit">Convert</button></p>
+<% end %>
+
+<%= turbo_frame_tag "lunar_out" do %>
+  <pre class="tool-output"></pre>
+<% end %>
 
 <h2>Numeral converter</h2>
 
-<p>
-  Coming soon.
-</p>
+<p>A simple mapper for Chinese numerals, accounting for some of the outliers and variant forms that occasionally pop up. It isn't perfect but will work for most things. I used this to produce a more robust Lunar calendar representation that you see on the site header!</p>
+
+<%= form_with url: tools_numerals_path, method: :post, data: { turbo_frame: "numerals_out" } do %>
+  <textarea name="input" rows="4" style="width: 100%;" placeholder="Paste text with numbers…"></textarea>
+
+  <label><input type="checkbox" name="use_you" value="1"> use 有 for gaps</label>
+  <label style="margin-left: 1em;"><input type="checkbox" name="use_abbrev" value="1"> use 廿/卅/卌</label>
+
+  <div style="margin-top: 0.5em;">
+    <button type="submit">Convert</button>
+  </div>
+<% end %>
+
+<%= turbo_frame_tag "numerals_out" do %>
+  <pre class="tool-output"></pre>
+<% end %>

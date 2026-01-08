@@ -114,6 +114,10 @@
                   "Tang pronunciation"
                 when :zhuang
                   "Zhuang"
+                when :bs2014_mc
+                  "Middle Chinese (Baxter & Sagart, 2014)"
+                when :bs2014_oc
+                  "Old Chinese (Baxter & Sagart, 2014)"
                 else
                   k.to_s.tr("_", " ").split.map(&:capitalize).join(" ")
                 end

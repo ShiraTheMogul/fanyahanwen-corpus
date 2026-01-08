@@ -1,0 +1,45 @@
+<div class="pronun-sections" data-controller="pronunciation-sections">
+  <% all_props = (props || []) %>
+
+  <%# Collect B&S MC analysis strings for tooltip use (we don't show this as its own row). %>
+  <% bs_mc_detail_by_source =
+       all_props
+         .select { |p| p.field == "bs2014_mc_detail" }
+         .group_by(&:source)
+         .transform_values { |arr| arr.map(&:value).compact.map(&:to_s).map(&:strip).reject(&:empty?).uniq } %>
+
+  <% FieldLens.pronunciation_sections(all_props).each do |sec| %>
+    <% next if sec[:props].blank? %>
+
+    <details class="pronun-section"
+             data-pref-key="pronun_sec_<%= sec[:key] %>"
+             data-default-open="<%= sec[:default_open] ? "1" : "0" %>">
+      <summary>
+        <span class="pronun-section-title"><%= sec[:label] %></span>
+        <span class="pronun-section-count"><%= sec[:props].length %></span>
+      </summary>
+
+      <ul class="pronun-section-list">
+        <% sec[:props].each do |prop| %>
+          <% next if prop.field == "bs2014_mc_detail" %>
+
+          <li class="pronun-item">
+            <strong><%= FieldLens.label_for(prop.field) %></strong>:
+            <%= view_text(romanise_unihan_value(prop.field, prop.value)) %>
+
+            <%# Tooltip for B&S 2014 Middle Chinese analysis (e.g. nr- + -ik D) %>
+            <% if prop.field == "bs2014_mc" %>
+              <% details = bs_mc_detail_by_source[prop.source] || [] %>
+              <% if details.any? %>
+                <span class="pronun-tooltip"
+                      title="<%= h(details.join(" / ")) %>">ⓘ</span>
+              <% end %>
+            <% end %>
+
+            <em>(<%= prop.source %>)</em>
+          </li>
+        <% end %>
+      </ul>
+    </details>
+  <% end %>
+</div>
