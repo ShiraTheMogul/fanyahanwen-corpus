@@ -90,6 +90,7 @@ end
 		kDefinition
 		kSimplifiedVariant
 		kTraditionalVariant
+		kCompatibilityVariant
 		# When we have a user-selected romanisation display, these become noisy
 		# duplicates. We keep the "canonical" readings (kMandarin/kCantonese) and
 		# hide the extra Mandarin reading sources by default.

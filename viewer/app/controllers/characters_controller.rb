@@ -207,6 +207,28 @@ class CharactersController < ApplicationController
 		partner_cp = cedict_partner_codepoint(base_cp)
 		variant_cps << partner_cp if partner_cp
 
+
+		# B2) Unihan compatibility variants (legacy: sometimes stored as "U+25BAB").
+		# These should behave like the rest of the variant links, not as a standalone property row.
+		ids_for_compat = [@character&.id, @base_character&.id].compact.uniq
+		if ids_for_compat.any?
+			CharacterProperty
+				.where(character_codepoint_id: ids_for_compat, field: "kCompatibilityVariant")
+				.pluck(:value)
+				.each do |raw|
+					next if raw.blank?
+					s = raw.to_s.strip
+					# Prefer explicit U+XXXX tokens (can be multiple per value)
+					s.scan(/U\+[0-9A-Fa-f]{4,6}/).each do |u|
+						variant_cps << u.delete_prefix("U+").to_i(16)
+					end
+					# Fallback: single-character values
+					if s !~ /U\+[0-9A-Fa-f]{4,6}/ && s.length == 1
+						variant_cps << s.ord
+					end
+				end
+		end
+
 		# C) Clean up the list: remove nils, duplicates, and "do not list self" items.
 		variant_cps = variant_cps.compact.uniq
 		variant_cps -= [base_cp, current_cp]
