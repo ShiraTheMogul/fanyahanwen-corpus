@@ -27,8 +27,8 @@
 	  <% _han_family = HanFonts.family_for(_han_font_key) %>
 	  <% _han_stack = HanFonts.stack_for(_han_font_key) %>
 
-	  <body
-	    data-controller="han-font-bootstrap"
+		  <body
+		    data-controller="han-font-bootstrap rightbar-layout"
 	    class="han-font-scope-<%= _han_scope %>"
 	    data-han-font-key="<%= _han_font_key %>"
 	    data-han-font-family="<%= _han_family %>"
@@ -55,9 +55,18 @@
           <% end %>
         </div>
 
-        <div class="site-header-right">
-          <span class="lunar-date"><%= lunar_today_string %></span>
-        </div>
+		        <div class="site-header-right">
+		          <button
+		            type="button"
+		            class="rightbar-toggle"
+		            data-action="rightbar-layout#toggle"
+		            aria-label="Toggle options panel"
+		          >
+		            Options
+		          </button>
+		
+		          <span class="lunar-date"><%= lunar_today_string %></span>
+		        </div>
       </div>
     </header>
 

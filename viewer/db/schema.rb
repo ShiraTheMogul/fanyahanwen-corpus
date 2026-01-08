@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_26_132100) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_08_123000) do
   create_table "character_codepoints", force: :cascade do |t|
     t.string "chr", null: false
     t.integer "codepoint", null: false
@@ -52,6 +52,32 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_26_132100) do
     t.integer "variant_codepoint"
   end
 
+  create_table "xuanji_cells", force: :cascade do |t|
+    t.string "char", null: false
+    t.integer "color", default: 5, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "x", null: false
+    t.integer "xuanji_grid_id", null: false
+    t.integer "y", null: false
+    t.index ["xuanji_grid_id", "color"], name: "index_xuanji_cells_on_xuanji_grid_id_and_color"
+    t.index ["xuanji_grid_id", "x", "y"], name: "index_xuanji_cells_on_xuanji_grid_id_and_x_and_y", unique: true
+    t.index ["xuanji_grid_id", "y"], name: "index_xuanji_cells_on_xuanji_grid_id_and_y"
+    t.index ["xuanji_grid_id"], name: "index_xuanji_cells_on_xuanji_grid_id"
+  end
+
+  create_table "xuanji_grids", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "height", default: 29, null: false
+    t.string "name", null: false
+    t.text "notes"
+    t.datetime "updated_at", null: false
+    t.string "variant", default: "trad", null: false
+    t.integer "width", default: 29, null: false
+    t.index ["name", "variant"], name: "index_xuanji_grids_on_name_and_variant", unique: true
+  end
+
   add_foreign_key "character_properties", "character_codepoints"
   add_foreign_key "laoguoyin_readings", "character_codepoints"
+  add_foreign_key "xuanji_cells", "xuanji_grids"
 end

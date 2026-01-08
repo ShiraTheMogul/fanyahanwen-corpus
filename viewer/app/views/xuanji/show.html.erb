@@ -1,0 +1,101 @@
+<h1>璇璣圖 Xuanji Tu</h1>
+
+<p>
+  This is the 29×29 brocade palindrome-poem attributed to 蘇蕙. Pick a reading rule below to trace a path through the grid and extract text.
+</p>
+
+<div class="xuanji-toolbar">
+  <div class="xuanji-variant">
+    <strong>Variant:</strong>
+    <%= link_to "Traditional", xuanji_path(variant: "trad"), class: (@variant == "trad" ? "active" : "") %>
+    <%= link_to "Simplified", xuanji_path(variant: "simp"), class: (@variant == "simp" ? "active" : "") %>
+  </div>
+</div>
+
+<div
+  data-controller="xuanji"
+  data-xuanji-cells-value='<%= raw @cells_json %>'
+  data-xuanji-width-value="<%= @grid.width %>"
+  data-xuanji-height-value="<%= @grid.height %>"
+>
+	<%= render "rightbar" %>
+
+  <div class="xuanji-controls">
+    <label>
+      Rule
+      <select data-xuanji-target="rule" data-action="change->xuanji#ruleChanged">
+        <option value="rows_lr">Rows: L→R</option>
+        <option value="rows_rl">Rows: R→L</option>
+        <option value="cols_tb">Columns: T→B</option>
+        <option value="cols_bt">Columns: B→T</option>
+        <option value="snake_rows">Snake rows</option>
+        <option value="snake_cols">Snake columns</option>
+        <option value="kang_perimeter">Kang: Perimeter (outer ring)</option>
+        <option value="kang_boundary">Kang: Boundary (inner ring)</option>
+      </select>
+    </label>
+
+    <label>
+      Line length
+      <input type="number" min="1" max="29" value="7" data-xuanji-target="lineLen" data-action="input->xuanji#ruleChanged">
+    </label>
+
+    <label>
+      Couplets → comma
+      <input type="checkbox" data-xuanji-target="coupletComma" data-action="change->xuanji#ruleChanged">
+    </label>
+
+    <label>
+      Speed (ms)
+      <input type="number" min="10" max="2000" value="40" data-xuanji-target="speed">
+    </label>
+
+    <button type="button" data-action="xuanji#play" data-xuanji-target="playBtn">Play</button>
+    <button type="button" data-action="xuanji#pause">Pause</button>
+    <button type="button" data-action="xuanji#step">Step</button>
+    <button type="button" data-action="xuanji#reset">Reset</button>
+  </div>
+
+  <div class="xuanji-main">
+    <div class="xuanji-gridwrap">
+      <% cell_size = 22 %>
+      <% pad = 10 %>
+      <% w = pad*2 + cell_size*@grid.width %>
+      <% h = pad*2 + cell_size*@grid.height %>
+
+      <svg class="xuanji-svg" viewBox="0 0 <%= w %> <%= h %>" width="<%= w %>" height="<%= h %>">
+        <% indexed = @grid.xuanji_cells.index_by { |c| [c.x, c.y] } %>
+        <% @grid.height.times do |y| %>
+          <% @grid.width.times do |x| %>
+            <% c = indexed.fetch([x,y]) %>
+            <% canonical_color =
+              case c.color
+              when "red", "maroon" then "red"
+              when "black" then "black"
+              when "blue", "navy", "teal" then "blue"
+              when "yellow", "olive" then "yellow"
+              when "purple" then "purple"
+              else nil
+              end
+            %>
+            <% fill = canonical_color ? "var(--xuanji-#{canonical_color})" : "#333333" %>
+            <% rx = pad + x*cell_size %>
+            <% ry = pad + y*cell_size %>
+
+            <g class="xuanji-cell" data-x="<%= x %>" data-y="<%= y %>">
+              <rect class="xuanji-rect" id="xuanji-rect-<%= x %>-<%= y %>" x="<%= rx %>" y="<%= ry %>" width="<%= cell_size %>" height="<%= cell_size %>" />
+              <text class="xuanji-text" id="xuanji-text-<%= x %>-<%= y %>" x="<%= rx + cell_size*0.5 %>" y="<%= ry + cell_size*0.75 %>" text-anchor="middle" fill="<%= fill %>"><%= c.char %></text>
+            </g>
+          <% end %>
+        <% end %>
+      </svg>
+    </div>
+
+    <div class="xuanji-output">
+      <h2>Extracted text</h2>
+		<div class="corpus-reader" data-controller="corpus-reader" data-corpus-reader-target="viewbox">
+			<pre data-xuanji-target="output" data-corpus-reader-target="content"></pre>
+		</div>
+    </div>
+  </div>
+</div>

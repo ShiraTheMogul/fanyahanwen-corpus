@@ -1,0 +1,28 @@
+<%#
+  Xuanji rightbar
+  - Uses the shared view-options UI for ruby + fonts.
+  - Adds a client-side punctuation toggle that affects extracted readings.
+%>
+
+<% content_for :rightbar do %>
+  <div class="rightbar" data-controller="corpus-rightbar">
+    <%= render "shared/view_options_rightbar" %>
+
+    <details open>
+      <summary>Punctuation</summary>
+      <div class="opt-group">
+        <label class="opt-row">
+          <input
+            type="checkbox"
+            data-corpus-rightbar-target="stripPunctuationToggle"
+            data-action="corpus-rightbar#toggleStripPunctuation"
+          />
+          <span>Remove punctuation (commas, full-stops, etc.)</span>
+        </label>
+        <p class="opt-help">
+          The extractor inserts commas between couplet lines so the structure is visible; use this toggle to hide them.
+        </p>
+      </div>
+    </details>
+  </div>
+<% end %>

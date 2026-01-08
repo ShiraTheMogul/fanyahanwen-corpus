@@ -16,6 +16,8 @@ Rails.application.routes.draw do
 	get "/dictionary", to:"characters#index"
 	get "/corpus_viewer(/*path)", to: "corpus_viewer#show", as: :corpus_viewer, format: false # stop a silly attempt to output a txt file
 	get "/fun", to: "fun#index", as: :fun # Minigame section
+	get "/fun/xuanji", to: "xuanji#show", as: :xuanji
+	post "/fun/xuanji/sync_colors", to: "xuanji#sync_colors", as: :xuanji_sync_colors
 	
 	get "/xiangqi", to: "xiangqi#show"
 	post "/xiangqi/theme", to: "xiangqi#theme"

@@ -1,3 +1,13 @@
+/* --- Xuanji Tu --- */
+:root {
+  /* Five-colour scheme used by the Xuanji Tu SVG via CSS vars like var(--xuanji-red). */
+  --xuanji-red: #c41e3a;
+  --xuanji-black: #111111;
+  --xuanji-blue: #1f5fbf;
+  --xuanji-purple: #6a3fbf;
+  --xuanji-yellow: #b88a00;
+}
+
 /*
  * This is a manifest file that'll be compiled into application.css.
  *
@@ -550,5 +560,109 @@ pre.xiangqi-board.theme-mono {
   margin-left: 6px;
   cursor: help;
   font-size: 0.95em;
+  opacity: 0.85;
+}
+
+/* --- Xuanji Tu --- */
+.xuanji-toolbar {
+  margin: 0 0 12px;
+}
+
+.xuanji-variant a {
+  margin-left: 8px;
+  text-decoration: none;
+}
+
+.xuanji-variant a.active {
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.xuanji-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin: 12px 0 16px;
+}
+
+.xuanji-controls label {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.xuanji-main {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.xuanji-gridwrap {
+  overflow: auto;
+  border: 1px solid rgba(0,0,0,0.12);
+  border-radius: 12px;
+  padding: 10px;
+  background: #fff;
+}
+
+.xuanji-svg {
+  display: block;
+}
+
+.xuanji-rect {
+  fill: white;
+  stroke: rgba(0,0,0,0.06);
+}
+
+.xuanji-text {
+  font-family: var(--han-font-stack);
+  font-size: 16px;
+}
+
+.xuanji-rect.is-active {
+  stroke: rgba(0,0,0,0.6);
+  stroke-width: 1.5;
+}
+
+.xuanji-rect.is-traced {
+  fill: rgba(255, 230, 150, 0.6);
+}
+
+.xuanji-output pre {
+  max-height: 70vh;
+  overflow: auto;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.12);
+  background: rgba(0,0,0,0.03);
+  white-space: pre-wrap;
+}
+
+/* --- Collapsible rightbar --- */
+body.rightbar-collapsed .page-shell {
+  grid-template-columns: 1fr;
+}
+
+body.rightbar-collapsed .rightbar {
+  display: none;
+}
+
+.rightbar-toggle {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.10);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 10px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.rightbar-toggle:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.rightbar-toggle.is-collapsed {
   opacity: 0.85;
 }
