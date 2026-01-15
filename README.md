@@ -188,22 +188,28 @@ While this is a dizzying level of information, some limitations exist:
 - Add Qing dynasty translations of western texts (e.g. 天演論, 歇洛克奇案開場...)
 
 # Bibliography
+The following texts were used or otherwise had an influence in the making of the website, the corpus, and more.
+
 - Aisin-Gioro H., Ji Y., & Lu X. (Eds). (2007). 四庫全書 [Complete Library of the Four Treasuries] (Vol. 1–36,381). Wikisource. https://zh.wikisource.org/wiki/%E5%9B%9B%E5%BA%AB%E5%85%A8%E6%9B%B8
 - Aun, C. (2025). Cheeaun/chengyu-wordle [JavaScript]. https://github.com/cheeaun/chengyu-wordle (Original work published 2022)
 - Behr, W. (2008). Dialects, diachrony, diglossia or all three? Tomb text glimpses into the language(s) of Chǔ [Lecture].
 - Editorial Board of the Encyclopedia of China. (2009). 《四庫七閣·四庫全書·四庫全書總目提要》. In 中国大百科全书 [Encyclopedia of China] (2nd ed). 中國大 [China Publishing House].
 - Dai, L., Li, T., Yang, Y., Jia, L., Magically Asia Limited, TudorTech System Co., Ltd, & Founder Electronics Company Limited. (1999). Siku Quanshu Online (Version 3.0 (Wenyuange Ed.)) [Computer software]. Digital Heritage Publishing Ltd, East View Information Services. http://skqs.com/
 - Guy, R. K. (1987). The emperor’s four treasuries: Scholars and the state in the late Chʻien-lung era. Council on East Asian Studies, Harvard University.
+- Han, D. (2022). 朝鲜汉诗选 [Anthology of Korean Sinitic Poetry] (1st ed). 江西教育出版社 [Jiangxi Education Press].
 - Lee, J., & Jung, Y. (2025). A Variant Character Dataset for Historical Narratives of Middle and Late Imperial China. Journal of Open Humanities Data, 11, 33. https://doi.org/10.5334/johd.325
 - Lichtman, K., & VanPatten, B. (2021). Was Krashen right? Forty years later. Foreign Language Annals, 54(2), 283–305. https://doi.org/10.1111/flan.12552
 - Matsumoto J. (2025). 日本漢文の世界 [Nihon kanbun no sekai]. Kambun.jp. https://kambun.jp/
 - Meng, K. (2016). 孟子 [The Works of Mencius] (J. Legge & Y. Shi., Trans.; 1st ed.). 中州古籍出版社 [Zhongzhou Ancient Books Publishing House].
+- Shi, K. (Ed.). (2024). 日本汉诗选 [Anthology of Japanese Sinitic Poetry] (1st ed, Vols 1–2). 江西教育出版社 [Jiangxi Education Press].
 - Sturgeon, D. (2020). Digitizing Premodern Text with the Chinese Text Project. Journal of Chinese History, 4(2), 486–498. https://doi.org/10.1017/jch.2020.19
 - Sturgeon, D. (2021). Chinese Text Project: A dynamic digital library of premodern Chinese. Digital Scholarship in the Humanities, 36(Supplement_1), i101–i112. https://doi.org/10.1093/llc/fqz046
 - Trilateral Cooperation Secretariat. (2015). 中日韩共同常用八百八汉字表 [Booklet of the 808 Commonly Used Chinese Characters in China, Japan and the ROK]. Trilateral Cooperation Secretariat.
 - Wang D., Liu C., Liu L., Liu J., Hu H., Shen S., & Li B. (2022). SikuBERT与SikuRoBERTa:面向数字人文的《四库全书》预训练模型构建及应用研究 [Construction and Application of Pre-trained Models of Siku Quanshu in Orientation to Digital Humanities]. 图书馆论坛 [Literary Tribune], 42(6), 14. https://doi.org/10.3969/j.issn.1002-1167.2022.06.005
 - Wang, D., Liu, C., & Zhu, Z. (2021). SikuBERT (Version 2.0) [Computer software]. Nanjing Agricultural University. https://huggingface.co/SIKU-BERT/sikubert, https://github.com/hsc748NLP/SikuBERT-for-digital-humanities-and-classical-Chinese-information-processing, https://gitee.com/onesleepyjoker/SikuBERT-for-digital-humanities-and-classical-Chinese-information-processing
+- Wu, L. 吴留营 (2022). 琉球汉诗选 [Anthology of Ryukyu Sinitic Poetry] (1st ed). 江西教育出版社 [Jiangxi Education Press].
 - Huxley, T. H. (1898). 天演論 [Theory of Evolution] (F. Yan, Trans.). In 譯例言 [Evolution and Ethics] (Digitized ed.). Wikisource. https://zh.wikisource.org/wiki/%E5%A4%A9%E6%BC%94%E8%AB%96/%E8%AD%AF%E4%BE%8B%E8%A8%80
+- Yan, Y. (2023). 越南汉诗选 [Anthology of Vietnamese Sinitic Poetry] (1st ed, Vols 1–2). 江西教育出版社 [Jiangxi Education Press].
 
 # Acknowledgements
 As I am not experienced with API usage, ChatGPT 5.1 was used to assist the creation of this work. 
