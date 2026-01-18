@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_08_123000) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_18_175500) do
   create_table "character_codepoints", force: :cascade do |t|
     t.string "chr", null: false
     t.integer "codepoint", null: false
@@ -50,6 +50,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_08_123000) do
     t.string "source"
     t.datetime "updated_at", null: false
     t.integer "variant_codepoint"
+    t.index ["base_codepoint"], name: "index_variant_mappings_on_base_codepoint"
+    t.index ["variant_codepoint"], name: "index_variant_mappings_on_variant_codepoint", unique: true
   end
 
   create_table "xuanji_cells", force: :cascade do |t|

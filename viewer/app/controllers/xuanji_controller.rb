@@ -1,4 +1,5 @@
 class XuanjiController < ApplicationController
+  include PhoneticizationHelper
   # Display the Xuanji Tu grid + a small reader for extracting paths.
   #
   # Patch 2: allow rule/line_len/speed to be driven by query params so a
@@ -15,9 +16,23 @@ class XuanjiController < ApplicationController
 
     # Allowed reading rules (must match Stimulus controller keys)
     allowed_rules = %w[
-      rows_lr rows_rl cols_tb cols_bt snake_rows snake_cols
-      kang_first_red kang_second_red kang_third_red kang_third_plus_red
-      kang_fourth_perimeter kang_fifth_blue kang_sixth_purple kang_seventh_yellow
+      rows_lr 
+      rows_rl 
+      cols_tb 
+      cols_bt 
+      snake_rows 
+      snake_cols 
+      kang_first_red 
+      kang_second_red 
+      kang_third_red 
+      kang_third_plus_red 
+      kang_fourth_perimeter 
+      kang_fifth_blue 
+      kang_sixth_purple 
+      kang_seventh_yellow 
+      kang_perimeter 
+      kang_boundary 
+      manual
     ]
 
     @initial_rule = allowed_rules.include?(params[:rule]) ? params[:rule] : "rows_lr"
@@ -74,6 +89,78 @@ class XuanjiController < ApplicationController
     Xuanji::SyncColors.call(trad:, simp: grid)
     render json: { ok: true }
   end
+
+  # Phoneticize an array of output lines (used by the Xuanji Tu page).
+  #
+  # Params (JSON or form):
+  #   lines:  ["...", "..."]
+  #   system: "mandarin" | "cantonese" | "tang" | "fanqie"
+  #
+  # Returns:
+  #   { ok: true, lines: ["...", ...] }
+  def phoneticize
+    system = params[:system].to_s
+
+    field =
+      case system
+      when "cantonese" then "kCantonese"
+      when "tang" then "kTang"
+      when "fanqie" then "kFanqie"
+      else "kMandarin"
+      end
+
+    lines = Array(params[:lines]).map(&:to_s)
+
+    # Collect unique Han characters to batch-query.
+    uniq = {}
+    lines.each do |ln|
+      ln.each_char do |ch|
+        next unless ch.match?(/\p{Han}/)
+        uniq[ch] = true
+      end
+    end
+    chars = uniq.keys
+
+    reading_by_chr = {}
+    if chars.any?
+      ids_by_chr = CharacterCodepoint.where(chr: chars).pluck(:chr, :id).to_h
+      ids = ids_by_chr.values
+
+      if ids.any?
+        rows = CharacterProperty.where(character_codepoint_id: ids, field: field)
+                                .pluck(:character_codepoint_id, :source, :value)
+
+        pri = { "Unihan_Readings" => 0, "Unihan" => 1 }
+        best_by_id = {}
+        rows.sort_by { |cid, src, _val| [cid, pri.fetch(src.to_s, 99)] }.each do |cid, _src, val|
+          next if best_by_id.key?(cid)
+          best_by_id[cid] = val.to_s
+        end
+
+        ids_by_chr.each do |chr, cid|
+          raw = best_by_id[cid].to_s.strip
+          next if raw.blank?
+          tok = raw.split(/\s+/).first.to_s
+          tok = phoneticize_unihan_value(field, tok)
+          reading_by_chr[chr] = tok
+        end
+      end
+    end
+
+    out_lines = lines.map do |ln|
+      toks = []
+      ln.each_char do |ch|
+        next unless ch.match?(/\p{Han}/)
+        toks << (reading_by_chr[ch].presence || ch)
+      end
+      toks.join(" ")
+    end
+
+    render json: { ok: true, lines: out_lines }
+  rescue StandardError => e
+    render json: { ok: false, error: "#{e.class}: #{e.message}" }, status: :unprocessable_entity
+  end
+
 
   private
 

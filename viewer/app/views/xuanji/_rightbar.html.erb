@@ -1,28 +1,28 @@
 <%#
-  Xuanji rightbar
-  - Uses the shared view-options UI for ruby + fonts.
-  - Adds a client-side punctuation toggle that affects extracted readings.
+  Xuanji Tu right sidebar.
+
+  Goals:
+  - Keep the global viewer layout intact (layout provides <aside class="rightbar">).
+  - Provide a working punctuation toggle for the extracted output.
+  - Reuse the shared view-options form (ruby, fonts, phoneticization conventions).
 %>
 
 <% content_for :rightbar do %>
-  <div class="rightbar" data-controller="corpus-rightbar">
-    <%= render "shared/view_options_rightbar" %>
+  <details class="rightbar-section rightbar-group" open data-controller="xuanji-rightbar">
+    <summary class="rightbar-summary"><strong>Xuanji output</strong></summary>
 
-    <details open>
-      <summary>Punctuation</summary>
-      <div class="opt-group">
-        <label class="opt-row">
-          <input
-            type="checkbox"
-            data-corpus-rightbar-target="stripPunctuationToggle"
-            data-action="corpus-rightbar#toggleStripPunctuation"
-          />
-          <span>Remove punctuation (commas, full-stops, etc.)</span>
-        </label>
-        <p class="opt-help">
-          The extractor inserts commas between couplet lines so the structure is visible; use this toggle to hide them.
-        </p>
-      </div>
-    </details>
-  </div>
+    <div class="rightbar-row">
+      <label for="xj_strip">Remove punctuation</label>
+      <input id="xj_strip" type="checkbox"
+             data-xuanji-rightbar-target="strip"
+             data-action="change->xuanji-rightbar#change">
+    </div>
+
+    <p class="rightbar-note">
+      This affects the extracted output only (not the SVG grid). It uses the same
+      punctuation stripping logic as the Corpus Viewer.
+    </p>
+  </details>
+
+  <%= render "shared/view_options_rightbar" %>
 <% end %>

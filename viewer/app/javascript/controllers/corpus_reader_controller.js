@@ -19,6 +19,14 @@ export default class extends Controller {
     }
     window.addEventListener("corpus-view-options", this._onExternalOptions)
 
+    // Some pages (e.g., Xuanji Tu) replace the reader content dynamically.
+    // When that happens, refresh the baseline so option toggles never revert
+    // to a stale cached version.
+    this._onRefreshBaseline = () => {
+      this.refreshBaseline()
+    }
+    window.addEventListener("corpus-reader-refresh", this._onRefreshBaseline)
+
     this._originalHTML = this.contentTarget.innerHTML
     this._strippedHTML = null
     this._state = this._loadState()
@@ -27,6 +35,7 @@ export default class extends Controller {
 
   disconnect() {
     window.removeEventListener("corpus-view-options", this._onExternalOptions)
+    window.removeEventListener("corpus-reader-refresh", this._onRefreshBaseline)
   }
 
   toggleVertical() {
@@ -50,6 +59,15 @@ export default class extends Controller {
     this._saveState()
     this._apply()
     this._broadcast()
+  }
+
+  refreshBaseline() {
+    // Update the cached baseline HTML to whatever is currently rendered.
+    // This keeps punctuation stripping and other options consistent after
+    // pages replace content (e.g., Xuanji output re-render).
+    this._originalHTML = this.contentTarget.innerHTML
+    this._strippedHTML = null
+    this._apply()
   }
 
   // ---- internals ----
@@ -350,7 +368,7 @@ _getStrippedHTML() {
       // Never strip punctuation inside ruby readings.
 	  // This protects reconstructed pronunciations, Wade-Giles, etc, where you'll see asterisks and apostrophes. Maybe there's a topolect that uses ! for a glottal or something. 
       const p = node.parentElement
-      if (p && p.closest && p.closest("rt, rp")) continue
+      if (p && p.closest && (p.closest("rt, rp") || p.closest(".xuanji-phon"))) continue
       node.nodeValue = (node.nodeValue || "").replace(PUNCT_RE, "")
     }
   }

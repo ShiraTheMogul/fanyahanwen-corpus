@@ -18,6 +18,7 @@ Rails.application.routes.draw do
 	get "/fun", to: "fun#index", as: :fun # Minigame section
 	get "/fun/xuanji", to: "xuanji#show", as: :xuanji
 	post "/fun/xuanji/sync_colors", to: "xuanji#sync_colors", as: :xuanji_sync_colors
+post "/fun/xuanji/phoneticize", to: "xuanji#phoneticize", as: :xuanji_phoneticize
 	
 	get "/xiangqi", to: "xiangqi#show"
 	post "/xiangqi/theme", to: "xiangqi#theme"

@@ -14,30 +14,41 @@
 
 <div
   data-controller="xuanji"
+  data-xuanji-variant-value="<%= @variant %>"
   data-xuanji-cells-value='<%= raw @cells_json %>'
   data-xuanji-width-value="<%= @grid.width %>"
   data-xuanji-height-value="<%= @grid.height %>"
 >
-	<%= render "rightbar" %>
+  <%= render "rightbar" %>
 
   <div class="xuanji-controls">
+    <% rules = [
+      ["Manual selection", "manual"],
+      ["Rows: L→R", "rows_lr"],
+      ["Rows: R→L", "rows_rl"],
+      ["Columns: T→B", "cols_tb"],
+      ["Columns: B→T", "cols_bt"],
+      ["Snake rows", "snake_rows"],
+      ["Snake columns", "snake_cols"],
+      ["Kang: Perimeter (outer ring)", "kang_perimeter"],
+      ["Kang: Boundary (inner ring)", "kang_boundary"],
+    ] %>
+
     <label>
       Rule
-      <select data-xuanji-target="rule" data-action="change->xuanji#ruleChanged">
-        <option value="rows_lr">Rows: L→R</option>
-        <option value="rows_rl">Rows: R→L</option>
-        <option value="cols_tb">Columns: T→B</option>
-        <option value="cols_bt">Columns: B→T</option>
-        <option value="snake_rows">Snake rows</option>
-        <option value="snake_cols">Snake columns</option>
-        <option value="kang_perimeter">Kang: Perimeter (outer ring)</option>
-        <option value="kang_boundary">Kang: Boundary (inner ring)</option>
-      </select>
+      <%= select_tag :rule,
+            options_for_select(rules, @initial_rule || "rows_lr"),
+            data: { xuanji_target: "rule", action: "change->xuanji#ruleChanged" } %>
     </label>
 
     <label>
       Line length
-      <input type="number" min="1" max="29" value="7" data-xuanji-target="lineLen" data-action="input->xuanji#ruleChanged">
+      <input type="number" min="1" max="29" value="<%= @initial_line_len || 7 %>" data-xuanji-target="lineLen" data-action="input->xuanji#ruleChanged">
+    </label>
+
+    <label>
+      Speed (ms)
+      <input type="number" min="10" max="2000" value="<%= @initial_speed || 40 %>" data-xuanji-target="speed">
     </label>
 
     <label>
@@ -46,14 +57,26 @@
     </label>
 
     <label>
-      Speed (ms)
-      <input type="number" min="10" max="2000" value="40" data-xuanji-target="speed">
+      Show phoneticization
+      <input type="checkbox" data-xuanji-target="showPhon" data-action="change->xuanji#phonSettingsChanged">
+    </label>
+
+    <label>
+      Reading system
+      <select data-xuanji-target="readingSystem" data-action="change->xuanji#phonSettingsChanged">
+        <option value="mandarin">Mandarin (Unihan kMandarin)</option>
+        <option value="cantonese">Cantonese (Unihan kCantonese)</option>
+        <option value="tang">Tang pronunciation (kTang)</option>
+        <option value="fanqie">Fanqie (kFanqie)</option>
+      </select>
     </label>
 
     <button type="button" data-action="xuanji#play" data-xuanji-target="playBtn">Play</button>
     <button type="button" data-action="xuanji#pause">Pause</button>
     <button type="button" data-action="xuanji#step">Step</button>
     <button type="button" data-action="xuanji#reset">Reset</button>
+
+    <button type="button" data-action="xuanji#clearManual" data-xuanji-target="clearManualBtn">Clear manual</button>
   </div>
 
   <div class="xuanji-main">
@@ -63,7 +86,13 @@
       <% w = pad*2 + cell_size*@grid.width %>
       <% h = pad*2 + cell_size*@grid.height %>
 
-      <svg class="xuanji-svg" viewBox="0 0 <%= w %> <%= h %>" width="<%= w %>" height="<%= h %>">
+      <svg
+        class="xuanji-svg"
+        viewBox="0 0 <%= w %> <%= h %>"
+        width="<%= w %>"
+        height="<%= h %>"
+        data-action="pointerdown->xuanji#pointerDown pointermove->xuanji#pointerMove pointerup->xuanji#pointerUp pointercancel->xuanji#pointerUp"
+      >
         <% indexed = @grid.xuanji_cells.index_by { |c| [c.x, c.y] } %>
         <% @grid.height.times do |y| %>
           <% @grid.width.times do |x| %>
@@ -93,9 +122,9 @@
 
     <div class="xuanji-output">
       <h2>Extracted text</h2>
-		<div class="corpus-reader" data-controller="corpus-reader" data-corpus-reader-target="viewbox">
-			<pre data-xuanji-target="output" data-corpus-reader-target="content"></pre>
-		</div>
+      <div class="corpus-reader" data-controller="corpus-reader" data-corpus-reader-target="viewbox">
+        <pre data-xuanji-target="output" data-corpus-reader-target="content"></pre>
+      </div>
     </div>
   </div>
 </div>
