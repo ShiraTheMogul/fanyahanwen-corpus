@@ -241,20 +241,55 @@ class CharactersController < ApplicationController
 		# whether the variant has its own definitions.
 		@variants = []
 
-		# --- 5) Load properties for current + base + variants ---
-		# We pull properties for the whole "family" so we can:
-		#   - show inherited definitions
-		#   - show variants that have their own readings
-		family_rows = [@character, @base_character, *@variant_characters].compact
-		family_ids = family_rows.map(&:id).uniq
+			# --- 5) Load properties ---
+			# Variant families can be huge, and most properties are character-specific (e.g. dict indices, radicals, strokes, readings). This is especially dangerous when the Taiwan MoE sometimes doesn't intend for variants to be absolute (sometimes they are semantically different, esp. historically like 王/壬). 
+			# Overinheritance causes a really really long article that may not even be relevant.
+			# The ONLY inheritance rule (for now) is the definition section as that actually matters:
+			# - If the current character has no definitions at all, we may borrow definition
+			# - Text from the canonical/base character.
+			# - Never borrow non-definition metadata.
+			
+			# 19-1-26 - Fixed bug where overinheritance would occur.
+			family_rows = [@character, @base_character, *@variant_characters].compact
+			family_ids = family_rows.map(&:id).uniq
+			@cp_by_id = family_rows.index_by(&:id)
 
-		@cp_by_id = family_rows.index_by(&:id)
+			definition_pairs = [
+				["CC-CEDICT", "cedict_def"],
+				["Unihan_Readings", "kDefinition"],
+				["Kangxi", "kangxi_gloss"],
+				["Shuowen Jiezi", "shuowen_entry"]
+			]
+			definition_pair_set = definition_pairs.to_h { |src, fld| [[src, fld], true] }
+			is_definition_prop = lambda do |prop|
+				definition_pair_set[[prop.source.to_s, prop.field.to_s]] == true
+			end
 
-		@properties =
-			CharacterProperty
-				.where(character_codepoint_id: family_ids)
-				.order(:field, :source, :value)
-				.to_a
+			current_props =
+				CharacterProperty
+					.where(character_codepoint_id: @character.id)
+					.order(:field, :source, :value)
+					.to_a
+
+			current_has_any_definition = current_props.any? { |p| is_definition_prop.call(p) && p.value.to_s.strip.present? }
+
+			inherited_definition_props = []
+			if !current_has_any_definition && @base_character.present?
+				# Pull ONLY definition fields from the base character.
+				# (Nothing else should leak across variants.)
+				# I can maybe add stuff for this later...
+				inherited_definition_props = CharacterProperty
+					.where(character_codepoint_id: @base_character.id)
+					.where(
+						definition_pairs.map { |src, fld| "(source = ? AND field = ?)" }.join(" OR "),
+						*definition_pairs.flatten
+					)
+					.order(:field, :source, :value)
+					.to_a
+			end
+
+			@properties = (current_props + inherited_definition_props)
+			@properties.sort_by! { |p| [p.field.to_s, p.source.to_s, p.value.to_s] }
 
 		# Tooltip support: Baxter & Sagart 2014 MC analysis info.
 		# We keep these rows hidden in the main list, and attach them to the
@@ -284,7 +319,7 @@ class CharactersController < ApplicationController
 		# Value shape (best-effort): "<latin> <zhuyin> /<ipa>/"
 		if defined?(LaoguoyinReading)
 			LaoguoyinReading
-				.where(character_codepoint_id: family_ids)
+					.where(character_codepoint_id: [@character.id])
 				.order(:character_codepoint_id, :laoguoyin, :zhuyin, :ipa, :source)
 				.each do |r|
 					parts = []
@@ -308,15 +343,24 @@ class CharactersController < ApplicationController
 		# Keep ordering stable after injecting virtual properties.
 		@properties.sort_by! { |p| [p.field.to_s, p.source.to_s, p.value.to_s] }
 
-# Prefer base -> current -> variants when we have to pick ONE "best" source.
-		preferred_id_order = [@base_character&.id, @character.id] + @variant_characters.map(&:id)
-		preferred_id_order.compact!
+			# Prefer current character's own definitions.
+			# Only if the current character has NO definitions at all do we fall back to base.
+			preferred_id_order =
+				if current_has_any_definition
+					[@character.id]
+				else
+					[@base_character&.id, @character.id].compact
+				end
 
 		# --- 6) Definition blocks (special sections on the page) ---
 		# CC-CEDICT definitions can exist on multiple rows in the family.
 		# We pick ONE "best" source row (usually the base), but we also record
 		# where the definitions came from so the UI can say "inherited from X".
-		cedict_rows = @properties.select { |p| p.source == "CC-CEDICT" && p.field == "cedict_def" }
+			# Variant-specific definition blocks need access to variant rows, but we do NOT
+			# want to load *all* variant properties (indices, strokes, radicals, etc.).
+			# So we query only definition fields here.
+			definition_ids = ([@character.id, @base_character&.id].compact + @variant_characters.map(&:id)).uniq
+			cedict_rows = CharacterProperty.where(character_codepoint_id: definition_ids, source: "CC-CEDICT", field: "cedict_def").to_a
 		cedict_defs_by_id = cedict_rows.group_by(&:character_codepoint_id).transform_values do |rows|
 			rows.map(&:value).uniq
 		end
@@ -355,7 +399,7 @@ class CharactersController < ApplicationController
 			[nil, nil]
 		end
 
-		@unihan_definition, @unihan_definition_from_id = pick_first_with_source.call(source: "Unihan_Readings", field: "kDefinition")
+			@unihan_definition, @unihan_definition_from_id = pick_first_with_source.call(source: "Unihan_Readings", field: "kDefinition")
 		@unihan_definition = @unihan_definition.to_s.strip.presence
 		@unihan_definition_from = @cp_by_id[@unihan_definition_from_id]
 		@unihan_definition_inherited = @unihan_definition_from_id.present? && @unihan_definition_from_id != @character.id
@@ -370,6 +414,16 @@ class CharactersController < ApplicationController
 		@kangxi_text_from = @cp_by_id[@kangxi_text_from_id]
 		@kangxi_text_inherited = @kangxi_text_from_id.present? && @kangxi_text_from_id != @character.id
 
+		@shuowen_entry, @shuowen_entry_from_id = pick_first_with_source.call(source: "Shuowen Jiezi", field: "shuowen_entry")
+		@shuowen_entry = @shuowen_entry.to_s.strip.presence
+		@shuowen_entry_from = @cp_by_id[@shuowen_entry_from_id]
+		@shuowen_entry_inherited = @shuowen_entry_from_id.present? && @shuowen_entry_from_id != @character.id
+
+		@shuowen_category, @shuowen_category_from_id = pick_first_with_source.call(source: "Shuowen Jiezi", field: "shuowen_category")
+		@shuowen_category = @shuowen_category.to_s.strip.presence
+		@shuowen_category_from = @cp_by_id[@shuowen_category_from_id]
+		@shuowen_category_inherited = @shuowen_category_from_id.present? && @shuowen_category_from_id != @character.id
+
 		# --- 6b) Build "variant-specific definition blocks" ---
 		# File: app/controllers/characters_controller.rb
 		# Purpose: mark variants that have dictionary text which is:
@@ -378,15 +432,17 @@ class CharactersController < ApplicationController
 		#
 		# The view layer (app/views/characters/show.html.erb) uses these blocks to
 		# render a dedicated "variant-specific" section.
-		unihan_by_id = @properties
-			.select { |p| p.source == "Unihan_Readings" && p.field == "kDefinition" }
-			.group_by(&:character_codepoint_id)
-			.transform_values { |rows| rows.map { |r| r.value.to_s.strip }.find(&:present?) }
+			unihan_by_id = CharacterProperty
+				.where(character_codepoint_id: definition_ids, source: "Unihan_Readings", field: "kDefinition")
+				.to_a
+				.group_by(&:character_codepoint_id)
+				.transform_values { |rows| rows.map { |r| r.value.to_s.strip }.find(&:present?) }
 
-		kangxi_by_id = @properties
-			.select { |p| p.field == "kangxi_gloss" }
-			.group_by(&:character_codepoint_id)
-			.transform_values { |rows| rows.map { |r| r.value.to_s.strip }.find(&:present?) }
+			kangxi_by_id = CharacterProperty
+				.where(character_codepoint_id: definition_ids, field: "kangxi_gloss")
+				.to_a
+				.group_by(&:character_codepoint_id)
+				.transform_values { |rows| rows.map { |r| r.value.to_s.strip }.find(&:present?) }
 
 		primary_cedict_defs = normalise_defs.call(@cedict_defs)
 		primary_unihan_def = @unihan_definition.to_s.strip

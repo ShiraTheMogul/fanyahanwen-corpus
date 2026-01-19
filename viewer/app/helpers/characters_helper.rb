@@ -245,7 +245,8 @@ def current_ruby_orientation
 	  props = Array(@properties)
 	  return [] if props.empty?
 
-	  preferred_ids = [@character&.id, @base_character&.id, *@variant_characters&.map(&:id)].compact
+	  # IMPORTANT: Readings are character-specific. Do not fall back to base/variants.
+	  preferred_ids = [@character&.id].compact
 
 	  out = []
 	  preferred_ids.each do |cid|
@@ -397,12 +398,8 @@ def current_ruby_orientation
     props = @properties
     return nil unless props.respond_to?(:select)
 
-    # Prefer: current -> base -> variants
-    preferred_ids = []
-    preferred_ids << @character&.id
-    preferred_ids << @base_character&.id
-    preferred_ids.concat(Array(@variant_characters).map(&:id))
-    preferred_ids.compact!
+	    # IMPORTANT: Unihan reading fields are character-specific. Do not fall back.
+	    preferred_ids = [@character&.id].compact
 
     # Filter down to the field we care about.
     #

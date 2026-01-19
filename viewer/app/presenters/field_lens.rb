@@ -101,6 +101,7 @@ end
 		cedict_pinyin
 		kangxi_gloss
 		cedict_def
+		shuowen_entry
 	].freeze
 	
 	# Pinyin helpers. 
@@ -300,7 +301,7 @@ end
 
   # 3) Decide group for any given field
 	def self.group_for(field)
-		return "Strokes & radicals" if field.start_with?("kRS") || field == "kTotalStrokes"
+		return "Strokes & radicals" if field.start_with?("kRS") || field == "kTotalStrokes" || field == "shuowen_category"
 		return "Education notes" if field.match?("kGradeLevel") || field.match?("kKoreanEducationHanja")
 		return "Pronunciation" if 
 			field.start_with?("kFanqie") || field.start_with?("kMandarin") || field.start_with?("kHanyuPinyin") ||
@@ -383,8 +384,14 @@ end
 	"kGradeLevel" => "Hong Kong Primary School Grade (朗文初級中文詞典, 2001)",
 	"cedict_def" => "CC-CEDICT Definition",
 	"cedict_simp" => "CC-CEDICT Simplified",
-	"kPhonetic" => "Phonetic class" # Ten Thousand Characters: An Analytic Dictionary, by G. Hugh Casey, S.J. Hong Kong: Kelly and Walsh, 1980. https://analyticphysics.com/Language/Chinese%20Phonetic%20Groups.htm
-  }.freeze
+	"kPhonetic" => "Phonetic class", # Ten Thousand Characters: An Analytic Dictionary, by G. Hugh Casey, S.J. Hong Kong: Kelly and Walsh, 1980. https://analyticphysics.com/Language/Chinese%20Phonetic%20Groups.htm
+  
+	"shuowen_category" => {
+	  han: "說文部首",
+	  pinyin: true,
+	  pinyin_chunks: [2, 2]
+	},
+}.freeze
 	
 	# and some automatic stuff in case
 	def self.label_for(field)

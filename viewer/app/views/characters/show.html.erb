@@ -135,7 +135,27 @@
     </div>
   <% end %>
 
-  <% if @kangxi_text.present? %>
+    <% if @shuowen_entry.present? %>
+    <h3>說文解字</h3>
+    <% if @shuowen_entry_inherited && @shuowen_entry_from.present? %>
+      <p>
+        Showing Shuowen text from
+        <%= link_to "#{@shuowen_entry_from.chr} (U+#{@shuowen_entry_from.codepoint.to_s(16).upcase})",
+                    character_path("U+#{@shuowen_entry_from.codepoint.to_s(16).upcase}") %>
+        because this character is treated as a variant.
+      </p>
+    <% end %>
+
+    <% if @shuowen_category.present? %>
+      <p><strong>部:</strong> <%= view_text(@shuowen_category) %></p>
+    <% end %>
+
+    <div class="shuowen">
+      <%= simple_format(h(view_text(@shuowen_entry))) %>
+    </div>
+  <% end %>
+
+<% if @kangxi_text.present? %>
     <h3>康熙字典</h3>
     <% if @kangxi_text_inherited && @kangxi_text_from.present? %>
       <p>
