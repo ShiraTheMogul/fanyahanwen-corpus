@@ -157,6 +157,16 @@
 
 <% if @kangxi_text.present? %>
     <h3>康熙字典</h3>
+
+    <% if @kangxi_rsunicode_display.present? %>
+      <p><strong>部:</strong>
+        <% if @kangxi_rsunicode_tooltip.present? %>
+          <span title="<%= @kangxi_rsunicode_tooltip %>"><%= view_text(@kangxi_rsunicode_display) %></span>
+        <% else %>
+          <%= view_text(@kangxi_rsunicode_display) %>
+        <% end %>
+      </p>
+    <% end %>
     <% if @kangxi_text_inherited && @kangxi_text_from.present? %>
       <p>
         Showing Kangxi text from
@@ -222,7 +232,16 @@
     <% (props || []).each do |prop| %>
       <li>
         <strong><%= FieldLens.label_for(prop.field) %></strong>:
-        <%= view_text(romanise_unihan_value(prop.field, prop.value)) %>
+        <% display_text, tooltip = FieldLens.display_value_and_tooltip(
+             prop.field,
+             romanise_unihan_value(prop.field, prop.value),
+             context: :property_list
+           ) %>
+        <% if tooltip.present? %>
+          <span title="<%= tooltip %>"><%= view_text(display_text) %></span>
+        <% else %>
+          <%= view_text(display_text) %>
+        <% end %>
 
         <% if prop.field == "kCangjie" %>
           <span class="cj-shapes">(<%= CangjieKeymap.latin_to_han(prop.value) %>)</span>

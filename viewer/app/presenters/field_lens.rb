@@ -10,6 +10,172 @@ module FieldLens
     "Ideographic Research Group (IRG) sources",
     "Other"
   ].freeze
+
+	# ------------------------------------------------------------------
+	# kRSUnicode / kRSAdobe_Japan1_6 (radical-stroke) formatting
+	# ------------------------------------------------------------------
+	# These Unihan fields are compact index strings. For most users we want
+	# something close to how zi.tools presents it:
+	#   土部8畫 共11畫
+	#	This is standard formatting seen in a lot of dictionaries and makes Kangxi more interactive. We also have an English version for the Properties section. 
+	#
+	# We also return a tooltip string so the radical number can be shown on hover.
+	# The radical number is useful, but isn't really huge for the average learner. They want to know how to search a dictionary if they're looking at this, not how to recite radicals. 
+	#
+	# Display contract:
+	# - text: short and scannable
+	# - tooltip: contains radical number(s) and any extra technical details
+	#
+	# kRSUnicode gives "radical.additional" only; to compute total strokes we
+	# look up the base radical stroke count via the compatibility Kangxi radical
+	# block (U+2F00..U+2FD5) and the radical ideograph's kTotalStrokes.
+	
+	@__kangxi_radical_base_strokes = nil
+
+	# Turn compact property strings into something friendly.
+	#
+	# context:
+	# - :dictionary (default) keeps the short Chinese display used in dictionary blocks
+	#   e.g. "土部8畫 共11畫"
+	# - :property_list uses a translated/stat style suitable for the Properties list
+	#   e.g. "土部 + 8 strokes" (total strokes are typically shown separately)
+	def self.display_value_and_tooltip(field, value, context: :dictionary)
+		return ["", nil] if value.nil?
+		v = value.to_s
+
+		if field.start_with?("kRSUnicode")
+			format_krsunicode(v, context: context)
+		elsif field == "kRSAdobe_Japan1_6"
+			format_krsadobe(v, context: context)
+		else
+			[v, nil]
+		end
+	end
+
+	def self.format_krsunicode(raw, context: :dictionary)
+		tokens = raw.strip.split(/\s+/)
+		parts = []
+		tips  = []
+
+		tokens.each do |tok|
+			m = tok.match(/\A(?<rad>\d{1,3})(?<apos>'{0,3})\.(?<add>-?\d{1,2})\z/)
+			next unless m
+
+			rad = m[:rad].to_i
+			apos = m[:apos]
+			add = m[:add].to_i
+
+			rad_ideo = kangxi_radical_ideograph(rad)
+			base = kangxi_radical_base_strokes(rad)
+			total = base.nil? ? nil : (base + add)
+
+			text = if context == :property_list
+				"#{rad_ideo}部 + #{add} #{add == 1 ? 'stroke' : 'strokes'}"
+			else
+				ch = "#{rad_ideo}部#{add}畫"
+				ch += " 共#{total}畫" if total
+				ch
+			end
+			parts << text
+
+			tip = "Kangxi radical ##{rad}"
+			unless apos.empty?
+				tip += " (#{apostrophe_meaning(apos)})"
+			end
+			tips << tip
+		end
+
+		return [raw, nil] if parts.empty?
+		[parts.join(" / "), tips.uniq.join("; ")]
+	end
+
+	def self.format_krsadobe(raw, context: :dictionary)
+		tokens = raw.strip.split(/\s+/)
+		parts = []
+		tips  = []
+
+		tokens.each do |tok|
+			m = tok.match(/\A(?<cv>[CV])\+(?<cid>\d{1,5})\+(?<rad>\d{1,3})\.(?<form>\d{1,2})\.(?<res>\d{1,2})\z/)
+			next unless m
+
+			cv = m[:cv]
+			cid = m[:cid].to_i
+			rad = m[:rad].to_i
+			form = m[:form].to_i
+			res = m[:res].to_i
+			total = form + res
+
+			rad_ideo = kangxi_radical_ideograph(rad)
+			parts << if context == :property_list
+				"#{rad_ideo}部 + #{res} #{res == 1 ? 'stroke' : 'strokes'}"
+			else
+				"#{rad_ideo}部#{res}畫 共#{total}畫"
+			end
+
+			type = (cv == "C") ? "direct" : "variant"
+			tips << "Adobe-Japan1-6 #{type}: CID #{cid}; radical ##{rad}"
+		end
+
+		return [raw, nil] if parts.empty?
+		[parts.join(" / "), tips.uniq.join("; ")]
+	end
+
+	# Back-compat alias: some controller/view code may still call the older name.
+	# "radical strokes" here means "base strokes of the radical".
+	def self.kangxi_radical_strokes(radical_number)
+		kangxi_radical_base_strokes(radical_number)
+	end
+
+	def self.kangxi_radical_symbol(radical_number)
+		return nil unless radical_number.is_a?(Integer) && radical_number >= 1 && radical_number <= 214
+		(0x2F00 + (radical_number - 1)).chr(Encoding::UTF_8)
+	end
+
+	def self.kangxi_radical_ideograph(radical_number)
+		sym = kangxi_radical_symbol(radical_number)
+		return "" if sym.nil?
+		# The Kangxi radical block is compatibility characters; NFKC yields the
+		# representative CJK ideograph (e.g. "⼟" -> "土").
+		require "unicode_normalize/tables"
+		sym.unicode_normalize(:nfkc)
+	end
+
+	def self.kangxi_radical_base_strokes(radical_number)
+		# Lazy cache: { 1 => 1, 2 => 1, ... }
+		@__kangxi_radical_base_strokes ||= {}
+		return @__kangxi_radical_base_strokes[radical_number] if @__kangxi_radical_base_strokes.key?(radical_number)
+
+		ideo = kangxi_radical_ideograph(radical_number)
+		if ideo.nil? || ideo.empty?
+			@__kangxi_radical_base_strokes[radical_number] = nil
+			return nil
+		end
+
+		cc = CharacterCodepoint.find_by(codepoint: ideo.ord)
+		unless cc
+			@__kangxi_radical_base_strokes[radical_number] = nil
+			return nil
+		end
+
+		# kTotalStrokes can exist in different Unihan source buckets; we only care about the value.
+		prop = CharacterProperty.where(character_codepoint_id: cc.id, field: "kTotalStrokes").first
+		val = prop&.value.to_s.strip
+		strokes = val.split(/\s+/).first
+		@__kangxi_radical_base_strokes[radical_number] = strokes&.to_i
+	end
+
+	def self.apostrophe_meaning(apos)
+		case apos
+		when "'"
+			"Chinese simplified radical"
+		when "''"
+			"non-Chinese simplified radical"
+		when "'''"
+			"second non-Chinese simplified radical"
+		else
+			"radical variant"
+		end
+	end
   
   # Internal order
   # Sort of deprecated?
@@ -102,6 +268,7 @@ end
 		kangxi_gloss
 		cedict_def
 		shuowen_entry
+		kRSAdobe_Japan1_6 # duplicate of kRSUnicode, only it is contributed by Adobe. This isn't very useful.
 	].freeze
 	
 	# Pinyin helpers. 
@@ -385,7 +552,7 @@ end
 	"cedict_def" => "CC-CEDICT Definition",
 	"cedict_simp" => "CC-CEDICT Simplified",
 	"kPhonetic" => "Phonetic class", # Ten Thousand Characters: An Analytic Dictionary, by G. Hugh Casey, S.J. Hong Kong: Kelly and Walsh, 1980. https://analyticphysics.com/Language/Chinese%20Phonetic%20Groups.htm
-  
+	"kRSUnicode" => "康熙字典 Kangxi Radicals & Strokes",
 	"shuowen_category" => {
 	  han: "說文部首",
 	  pinyin: true,
