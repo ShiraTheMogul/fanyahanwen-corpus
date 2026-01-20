@@ -73,6 +73,12 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+
+  # DB + view profiling overlay. Great for finding slow queries and slow partials.
+  gem "rack-mini-profiler", require: false
+
+  # N+1 query detector (logs warnings when associations are lazily loaded).
+  gem "bullet", require: false
 end
 
 group :test do

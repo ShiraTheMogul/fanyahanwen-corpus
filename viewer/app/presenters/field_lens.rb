@@ -1,7 +1,7 @@
 module FieldLens
   GROUP_ORDER = [
 	"Strokes & radicals", # TODO: Component listings.
-	"Variants", # TODO: Make these hyperlink to new pages. 
+	 # TODO: Make these hyperlink to new pages. 
 	"Pronunciation",
     "Input", # TODO: Wubi, SKIP
 	"Education notes", # Education system; include Japanese, HSK, etc information later. Qianziwen / Baijiaxing No.?
@@ -469,16 +469,16 @@ end
   # 3) Decide group for any given field
 	def self.group_for(field)
 		return "Strokes & radicals" if field.start_with?("kRS") || field == "kTotalStrokes" || field == "shuowen_category"
-		return "Education notes" if field.match?("kGradeLevel") || field.match?("kKoreanEducationHanja")
+		return "Education notes" if field.match?("kGradeLevel") || field.match?("kKoreanEducationHanja") || field == "cjk_808_common"
 		return "Pronunciation" if 
 			field.start_with?("kFanqie") || field.start_with?("kMandarin") || field.start_with?("kHanyuPinyin") ||
 			field.start_with?("kHanyuPinlu") || field.start_with?("kTGHZ2013") || field.start_with?("kXHC1983") ||
 			field.start_with?("kCantonese") || field.start_with?("kJapanese") || field.start_with?("kKorean") ||
 			field.start_with?("kHangul") || field.start_with?("kVietnamese") || field.start_with?("kZhuang") || field == "laoguoyin" || field == "general_chinese" || field == "kTang" || field.start_with?("bs2014_") || field == "bs2006_mc"
 		return "Input" if %w[kCangjie kFourCornerCode kMainlandTelegraph kTaiwanTelegraph].include?(field)
-		return "Variants" if field.include?("Variant") || field.start_with?("kSemantic") || field.start_with?("kSimplified") || field.start_with?("cedict_simp") || field.start_with?("kTraditional")
+		return "Encodings & mappings" if field.include?("Variant") || field.start_with?("kSemantic") || field.start_with?("kSimplified") || field.start_with?("cedict_simp") || field.start_with?("kTraditional")
 		return "Dictionary indices" if field.include?("kPhonetic") || field.match?(/hanyu/i) || field.start_with?("kMorohashi") || field.include?("kCihai") || field.start_with?("kFenn") || field.match?("kCowles") || field.include?("DaeJaweon") || field.start_with?("kFennIndex") || field.start_with?("kGSR") || field.include?("KangXi") || field.match?("kLau") || field.match?("kMatthews") || field.match?("kMeyerWempe") || field.match?("kNelson") || field.start_with?("kSBGY") || field.match?("kSMSZD2003Index") || field.start_with?("kSMSZD2003Index") || field.start_with?("kHKGlyph") || field.match?("kKarlgren")
-				return "Ideographic Research Group (IRG) sources" if field.start_with?("kIRG_") || field == "kIICore"
+		return "Ideographic Research Group (IRG) sources" if field.start_with?("kIRG_") || field == "kIICore"
 		return "Encodings & mappings" if field.match?(/\A(kBigFive|kUnihanCore2020|kJis|kCCCII|kEACC|kTGH|kJoyoKanji|kMojiJoho|kXerox)\b/) || field.start_with?("kRSUnicode") || field.start_with?("kCNS") || field.start_with?("kGB") || field.start_with?(/kjis/i)
 		
 		"Other"
@@ -558,6 +558,7 @@ end
 	  pinyin: true,
 	  pinyin_chunks: [2, 2]
 	},
+	"cjk_808_common" => "808 Commonly Used CJK Characters",
 }.freeze
 	
 	# and some automatic stuff in case

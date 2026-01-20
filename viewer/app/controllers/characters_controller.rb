@@ -1,4 +1,9 @@
 class CharactersController < ApplicationController
+	# NOTE: This controller powers a page that can easily become DB-bound once the
+	# character_properties table grows large (Unihan/Kangxi/Shuowen, etc.).
+	# The helpers below are written to minimise round-trips and to keep common
+	# lookups index-friendly.
+
 	def index
 		# If the user submitted the form, redirect to a clean URL like /characters/U+3400 or /characters/反
 		if params[:query].present?
@@ -8,6 +13,15 @@ class CharactersController < ApplicationController
 		end
 
 		# Otherwise Rails renders index.html.erb
+	end
+
+	# Memoised CharacterCodepoint lookup by integer codepoint.
+	# Pattern: use this when a request may call find_by(codepoint: X) multiple times.
+	# Why: even with Rails query cache, this avoids extra object allocations.
+	def cc_for_codepoint(cp)
+		@cc_by_codepoint ||= {}
+		return @cc_by_codepoint[cp] if @cc_by_codepoint.key?(cp)
+		@cc_by_codepoint[cp] = CharacterCodepoint.find_by(codepoint: cp)
 	end
 
   # --- CC-CEDICT helpers -------------------------------------------------
@@ -22,37 +36,47 @@ class CharactersController < ApplicationController
   #
   # This method returns the traditional codepoint when CC-CEDICT can tell us one.
   # If CC-CEDICT has no idea, it returns nil.
-  def cedict_trad_codepoint_for(cp)
-    cc = CharacterCodepoint.find_by(codepoint: cp)
-    return nil unless cc
+  # Pull the CC-CEDICT mapping fields for a CharacterCodepoint row in ONE query.
+  # Returns a Hash like {"cedict_trad"=>"說", "cedict_simp"=>"说"}
+  def cedict_fields_for_character_id(character_codepoint_id)
+    @cedict_fields_by_cc_id ||= {}
+    return @cedict_fields_by_cc_id[character_codepoint_id] if @cedict_fields_by_cc_id.key?(character_codepoint_id)
 
-    # Case 1: Some datasets store a direct "cedict_trad" field.
-    trad = CharacterProperty
-      .where(character_codepoint_id: cc.id, source: "CC-CEDICT", field: ["cedict_trad", "ccdict_trad"])
-      .limit(1)
-      .pluck(:value)
-      .first
+    rows = CharacterProperty
+      .where(character_codepoint_id: character_codepoint_id, source: "CC-CEDICT")
+      .where(field: ["cedict_trad", "ccdict_trad", "cedict_simp", "ccdict_simp"])
+      .pluck(:field, :value)
 
-    if trad.present? && trad.length == 1
-      return trad.ord
+    # Keep the first value per field (stable enough for our use).
+    out = {}
+    rows.each do |fld, val|
+      out[fld.to_s] ||= val
     end
 
-    # Case 2: If this row has cedict_simp, it is already the traditional entry.
-    simp = CharacterProperty
-      .where(character_codepoint_id: cc.id, source: "CC-CEDICT", field: ["cedict_simp", "ccdict_simp"])
-      .limit(1)
-      .pluck(:value)
-      .first
+    @cedict_fields_by_cc_id[character_codepoint_id] = out
+  end
 
+  def cedict_trad_codepoint_for(cp)
+    cc = cc_for_codepoint(cp)
+    return nil unless cc
+
+    fields = cedict_fields_for_character_id(cc.id)
+
+    # Case 1: Some datasets store a direct "cedict_trad" field.
+    trad = fields["cedict_trad"].presence || fields["ccdict_trad"].presence
+    return trad.ord if trad.present? && trad.length == 1
+
+    # Case 2: If this row has cedict_simp, it is already the traditional entry.
+    simp = fields["cedict_simp"].presence || fields["ccdict_simp"].presence
     return cp if simp.present? && simp.length == 1
 
     # Case 3: Reverse lookup.
     # Find the traditional entry that points to THIS character as its simplified form.
     trad_id = CharacterProperty
       .where(source: "CC-CEDICT", field: ["cedict_simp", "ccdict_simp"], value: cc.chr)
+      .order(:id)
       .limit(1)
-      .pluck(:character_codepoint_id)
-      .first
+      .pick(:character_codepoint_id)
 
     return nil unless trad_id
 
@@ -91,19 +115,14 @@ class CharactersController < ApplicationController
   #   說 -> 说
   #   说 -> 說
   def cedict_partner_codepoint(cp)
-    cc = CharacterCodepoint.find_by(codepoint: cp)
+    cc = cc_for_codepoint(cp)
     return nil unless cc
 
-    # If THIS row has cedict_simp, we are already on the traditional entry.
-    simp = CharacterProperty
-      .where(character_codepoint_id: cc.id, source: "CC-CEDICT", field: ["cedict_simp", "ccdict_simp"])
-      .limit(1)
-      .pluck(:value)
-      .first
+    fields = cedict_fields_for_character_id(cc.id)
 
-    if simp.present? && simp.length == 1 && simp != cc.chr
-      return simp.ord
-    end
+    # If THIS row has cedict_simp, we are already on the traditional entry.
+    simp = fields["cedict_simp"].presence || fields["ccdict_simp"].presence
+    return simp.ord if simp.present? && simp.length == 1 && simp != cc.chr
 
     # Otherwise, try to locate the traditional entry and return its codepoint.
     trad_cp = cedict_trad_codepoint_for(cp)
@@ -346,6 +365,15 @@ class CharactersController < ApplicationController
 		# Keep ordering stable after injecting virtual properties.
 		@properties.sort_by! { |p| [p.field.to_s, p.source.to_s, p.value.to_s] }
 
+		# Build a fast lookup for "give me the first row for (cid, source, field)".
+		# Pattern: when you need to repeatedly fetch one value out of a big array,
+		# build an index once, then do O(1) hash lookups.
+		@first_prop_by_triplet = {}
+		@properties.each do |p|
+			key = [p.character_codepoint_id, p.source.to_s, p.field.to_s]
+			@first_prop_by_triplet[key] ||= p
+		end
+
 		# Prefer current character's own definitions.
 		# Only if the current character has NO definitions at all do we fall back to base.
 		preferred_id_order =
@@ -396,7 +424,7 @@ class CharactersController < ApplicationController
 		# For single-value fields, we want both the value AND the row it came from.
 		pick_first_with_source = lambda do |source:, field:|
 			preferred_id_order.each do |cid|
-				row = @properties.find { |p| p.character_codepoint_id == cid && p.source == source && p.field == field }
+				row = @first_prop_by_triplet[[cid, source.to_s, field.to_s]]
 				return [row.value, cid] if row
 			end
 			[nil, nil]
@@ -474,11 +502,24 @@ class CharactersController < ApplicationController
 				.group_by(&:character_codepoint_id)
 				.transform_values { |rows| rows.map { |r| r.value.to_s.strip }.find(&:present?) }
 
-			kangxi_by_id = CharacterProperty
-				.where(character_codepoint_id: definition_ids, field: "kangxi_gloss")
+		# Prefer the explicit Kangxi source when present.
+		# This keeps the query index-friendly (character_codepoint_id + source + field).
+		kangxi_by_id = CharacterProperty
+			.where(character_codepoint_id: definition_ids, source: "Kangxi", field: "kangxi_gloss")
+			.to_a
+			.group_by(&:character_codepoint_id)
+			.transform_values { |rows| rows.map { |r| r.value.to_s.strip }.find(&:present?) }
+
+		# Back-compat: older imports may have kangxi_gloss rows without a source.
+		missing_kangxi_ids = definition_ids - kangxi_by_id.keys
+		if missing_kangxi_ids.any?
+			fallback = CharacterProperty
+				.where(character_codepoint_id: missing_kangxi_ids, field: "kangxi_gloss")
 				.to_a
 				.group_by(&:character_codepoint_id)
 				.transform_values { |rows| rows.map { |r| r.value.to_s.strip }.find(&:present?) }
+			kangxi_by_id.merge!(fallback)
+		end
 
 		primary_cedict_defs = normalise_defs.call(@cedict_defs)
 		primary_unihan_def = @unihan_definition.to_s.strip

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_18_175500) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_20_182000) do
   create_table "character_codepoints", force: :cascade do |t|
     t.string "chr", null: false
     t.integer "codepoint", null: false
@@ -27,7 +27,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_18_175500) do
     t.string "source", null: false
     t.datetime "updated_at", null: false
     t.text "value", null: false
+    t.index ["character_codepoint_id", "field"], name: "index_character_properties_on_ccid_field"
     t.index ["character_codepoint_id", "source", "field", "value"], name: "idx_character_properties_unique", unique: true
+    t.index ["character_codepoint_id", "source", "field"], name: "index_character_properties_on_ccid_source_field"
     t.index ["character_codepoint_id"], name: "index_character_properties_on_character_codepoint_id"
     t.index ["source", "field", "value"], name: "index_character_properties_on_source_field_value"
   end
