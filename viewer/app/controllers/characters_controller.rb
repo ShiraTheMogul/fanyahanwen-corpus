@@ -224,7 +224,9 @@ class CharactersController < ApplicationController
 
 		# --- 4) Collect variants to display (as clickable links) ---
 		# A) Variants from VariantMapping that point to the base.
-		variant_cps = VariantMapping.where(base_codepoint: base_cp).pluck(:variant_codepoint)
+		moe_variant_cps = VariantMapping.where(base_codepoint: base_cp).pluck(:variant_codepoint)
+		variant_cps = moe_variant_cps.dup
+		compat_variant_cps = []
 
 		# B) The CC-CEDICT partner, so we always show trad<->simp when it exists.
 		partner_cp = cedict_partner_codepoint(base_cp)
@@ -243,14 +245,17 @@ class CharactersController < ApplicationController
 					s = raw.to_s.strip
 					# Prefer explicit U+XXXX tokens (can be multiple per value)
 					s.scan(/U\+[0-9A-Fa-f]{4,6}/).each do |u|
-						variant_cps << u.delete_prefix("U+").to_i(16)
+						compat_variant_cps << u.delete_prefix("U+").to_i(16)
 					end
 					# Fallback: single-character values
 					if s !~ /U\+[0-9A-Fa-f]{4,6}/ && s.length == 1
-						variant_cps << s.ord
+						compat_variant_cps << s.ord
 					end
 				end
 		end
+
+		# Merge Unihan compatibility variants (if any)
+		variant_cps.concat(compat_variant_cps) if compat_variant_cps.any?
 
 		# C) Clean up the list: remove nils, duplicates, and "do not list self" items.
 		variant_cps = variant_cps.compact.uniq
@@ -564,12 +569,26 @@ class CharactersController < ApplicationController
 			# block under the Definitions section.
 			has_variant_specific_defs = @variant_definition_blocks.any? { |blk| blk[:character].id == cc.id }
 
-			{
-				codepoint: cc.codepoint,
-				label: "#{cc.chr} (U+#{helper_hex})",
-				kind: kind,
-				has_own_entry: has_variant_specific_defs
-			}
+			source =
+	if moe_variant_cps.include?(cc.codepoint)
+		"MOE 異典收字清單"
+	elsif partner_cp.present? && cc.codepoint == partner_cp
+		"CC-CEDICT"
+	elsif compat_variant_cps.include?(cc.codepoint)
+		"Unihan_Variants"
+	else
+		"VariantMapping"
+	end
+
+{
+	codepoint: cc.codepoint,
+	hex: helper_hex,
+	glyph: cc.chr,
+	label: "#{cc.chr} (U+#{helper_hex})",
+	kind: kind,
+	source: source,
+	has_own_entry: has_variant_specific_defs
+}
 		end
 
 		# --- Everything else goes through FieldLens grouping/sorting ---

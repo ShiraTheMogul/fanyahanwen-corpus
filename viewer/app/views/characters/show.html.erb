@@ -1,5 +1,3 @@
-<%# File: app/views/characters/show.html.erb %>
-
 <% if @character.nil? %>
   <h1>Character not found (yet)</h1>
   <p><%= params[:id] %> isn’t in the database!</p>
@@ -12,13 +10,11 @@
     <%= submit_tag "Submit" %>
   <% end %>
 
-<% else %>
-  <%= render "rightbar" %>
+	<% else %>
+	<%= render "rightbar" %>
 
   <div class="char-header">
-    <h1 class="char-glyph"
-        data-controller="font-guard"
-        data-font-guard-char-value="<%= view_text(@character.chr) %>"><%= character_glyph_with_ruby(view_text(@character.chr)) %></h1>
+    <h1 class="char-glyph" data-controller="font-guard" data-font-guard-char-value="<%= view_text(@character.chr) %>"><%= character_glyph_with_ruby(view_text(@character.chr)) %></h1>
 
     <div id="hw-wrap" class="hw-wrap">
       <div id="hanzi-writer" class="hanzi-writer-box"></div>
@@ -72,10 +68,11 @@
     Codepoint:
     U+<%= @character.codepoint.to_s(16).upcase.rjust(4, "0") %>
     (<%= @character.codepoint %>)
-    <% block = UnicodeRanges.han_block_label(@character.codepoint) %>
-    <% if block %>
-      <span class="unicode-block-badge" title="Unicode block"><%= block %></span>
-    <% end %>
+	<% block = UnicodeRanges.han_block_label(@character.codepoint) %>
+	<% if block %>
+		<span class="unicode-block-badge" title="Unicode block"><%= block %></span>
+	<% end %>
+
   </p>
 
   <% if @base_character.present? %>
@@ -86,8 +83,16 @@
     </p>
   <% end %>
 
-  <%# Pull Unihan variant fields (kSemanticVariant / kSpecializedSemanticVariant) out of the Properties list
-      and show them inside the top "Variants" section instead. %>
+  <%#
+    Variants
+    - @variants (computed links: VariantMapping + CC-CEDICT partner + kCompatibilityVariant)
+    - Unihan semantic variant fields are folded into THIS list so they don't clutter Properties.
+
+    Formatting goal:
+    - Each entry starts with the variant kind (bold)
+    - The simplified glyph (when present) is bolded inside the link text
+  %>
+
   <% unihan_variant_props = [] %>
   <% grouped = @grouped_properties %>
   <% prop_lists =
@@ -106,24 +111,60 @@
     <% unihan_variant_props << p %>
   <% end %>
 
-  <% if (@variants.present? || unihan_variant_props.any?) %>
+  <% parse_variant_cps = lambda do |raw|
+       s = raw.to_s
+       cps = []
+       s.scan(/U\+[0-9A-Fa-f]{4,6}/).each { |u| cps << u.delete_prefix("U+").to_i(16) }
+       if cps.empty?
+         s.each_char { |ch| cps << ch.ord if ch.match?(/\p{Han}/) }
+       end
+       cps.uniq
+     end %>
+
+  <% unihan_variant_entries = [] %>
+  <% unihan_variant_props.each do |p| %>
+    <% kind = (p.field.to_s == "kSemanticVariant") ? "Semantic variant" : "Specialised semantic variant" %>
+    <% parse_variant_cps.call(p.value).each do |cp| %>
+      <% unihan_variant_entries << { codepoint: cp, kind: kind, source: p.source.to_s } %>
+    <% end %>
+  <% end %>
+
+  <% if @variants.present? || unihan_variant_entries.any? %>
     <h2>Variants</h2>
     <ul>
       <% (@variants || []).each do |v| %>
+        <% hex = (v[:hex].presence rescue nil) || v[:codepoint].to_i.to_s(16).upcase %>
+        <% glyph = (v[:glyph].presence rescue nil) || v[:label].to_s.each_char.first %>
+        <% rest = v[:label].to_s.sub(/^#{Regexp.escape(glyph)}\s*/, "") %>
         <li>
-          <%= v[:kind] %>:
-          <%= link_to v[:label], character_path("U+#{v[:codepoint].to_s(16).upcase}") %>
+          <strong><%= v[:kind] %></strong>:
+          <%= link_to character_path("U+#{hex}") do %>
+            <% if v[:kind].to_s == "Simplified variant" %>
+              <strong><%= view_text(glyph) %></strong> <%= view_text(rest) %>
+            <% else %>
+              <%= view_text(v[:label]) %>
+            <% end %>
+          <% end %>
           <% if v[:has_own_entry] %>
             <span class="variant-note">(has its own definition text)</span>
           <% end %>
+          <em>(<%= v[:source].presence || "MOE 異典收字清單" %>)</em>
         </li>
       <% end %>
 
-      <% unihan_variant_props.each do |p| %>
+      <% unihan_variant_entries.each do |e| %>
+        <% hex = e[:codepoint].to_i.to_s(16).upcase %>
+        <% glyph = begin
+                     [e[:codepoint].to_i].pack("U")
+                   rescue StandardError
+                     nil
+                   end %>
         <li>
-          <strong><%= FieldLens.label_for(p.field) %></strong>:
-          <%= view_text(p.value) %>
-          <em>(<%= p.source %>)</em>
+          <strong><%= e[:kind] %></strong>:
+          <%= link_to character_path("U+#{hex}") do %>
+            <%= view_text(glyph.present? ? "#{glyph} (U+#{hex})" : "U+#{hex}") %>
+          <% end %>
+          <em>(<%= e[:source] %>)</em>
         </li>
       <% end %>
     </ul>
@@ -160,11 +201,12 @@
     <% end %>
     <div class="unihan-def">
       <%= simple_format(h(view_text(@unihan_definition))) %>
-      <%# h(...) escapes HTML to keep dictionary text from being interpreted as markup. %>
+      <%# File: app/views/characters/show.html.erb
+          h(...) escapes HTML to keep dictionary text from being interpreted as markup. %>
     </div>
   <% end %>
 
-  <% if @shuowen_entry.present? %>
+    <% if @shuowen_entry.present? %>
     <h3>說文解字</h3>
     <% if @shuowen_entry_inherited && @shuowen_entry_from.present? %>
       <p>
@@ -184,7 +226,7 @@
     </div>
   <% end %>
 
-  <% if @kangxi_text.present? %>
+<% if @kangxi_text.present? %>
     <h3>康熙字典</h3>
 
     <% if @kangxi_rsunicode_display.present? %>
@@ -196,7 +238,6 @@
         <% end %>
       </p>
     <% end %>
-
     <% if @kangxi_text_inherited && @kangxi_text_from.present? %>
       <p>
         Showing Kangxi text from
@@ -205,7 +246,6 @@
         because this character is treated as a variant.
       </p>
     <% end %>
-
     <div class="kangxi">
       <%= simple_format(h(view_text(FieldLens.format_kangxi(@kangxi_text)))) %>
     </div>
@@ -251,67 +291,52 @@
   <% end %>
 
   <h2>Properties</h2>
-
   <% hkcards_image_rendered = false %>
-  <% grouped_for_each =
-       if grouped.respond_to?(:each_pair)
-         grouped
-       elsif grouped.is_a?(Array)
-         grouped
-       else
-         []
-       end %>
+  <% (@grouped_properties || {}).each do |group_name, props| %>
+    
+<h3><%= group_name %></h3>
 
-  <% grouped_for_each.each do |group_name, props| %>
-    <h3><%= group_name %></h3>
-
-    <% if group_name == "Pronunciation" %>
-      <%= render partial: "pronunciation_sections", locals: { props: (props || []), character: @character } %>
-    <% else %>
-      <ul>
-        <% (props || []).each do |prop| %>
-          <%# Skip the Unihan variant fields here; they are shown in the top "Variants" section. %>
-          <% next if prop.respond_to?(:source) && prop.respond_to?(:field) &&
-                    prop.source.to_s == "Unihan_Variants" &&
-                    ["kSemanticVariant", "kSpecializedSemanticVariant"].include?(prop.field.to_s) %>
-
-          <li>
-            <strong><%= FieldLens.label_for(prop.field) %></strong>:
-            <% display_text, tooltip = FieldLens.display_value_and_tooltip(
-                 prop.field,
-                 romanise_unihan_value(prop.field, prop.value),
-                 context: :property_list
-               ) %>
-
-            <% if tooltip.present? %>
-              <span title="<%= tooltip %>"><%= view_text(display_text) %></span>
-            <% else %>
-              <%= view_text(display_text) %>
-            <% end %>
-
-            <% if prop.field == "kCangjie" %>
-              <span class="cj-shapes">(<%= CangjieKeymap.latin_to_han(prop.value) %>)</span>
-
-              <% unless hkcards_image_rendered %>
-                <div class="imgwrap cj-card">
-                  <img class="cjimg cjimg-small"
-                       src="https://www.hkcards.com/img/cj/<%= @character.chr %>.png"
-                       alt="Cangjie decomposition"
-                       loading="lazy"
-                       onerror="this.outerHTML='<em>No HKCards decomposition available for this character.</em>'">
-                </div>
-                <% hkcards_image_rendered = true %>
-              <% end %>
-            <% end %>
-
-            <em>(<%= prop.source %>)</em>
-          </li>
+<% if group_name == "Pronunciation" %>
+  <%= render partial: "pronunciation_sections", locals: { props: (props || []), character: @character } %>
+<% else %>
+  <ul>
+    <% (props || []).each do |prop| %>
+      <%# These variant fields are shown in the top "Variants" section instead (see above). %>
+      <% next if prop.source.to_s == "Unihan_Variants" && ["kSemanticVariant", "kSpecializedSemanticVariant"].include?(prop.field.to_s) %>
+      <li>
+        <strong><%= FieldLens.label_for(prop.field) %></strong>:
+        <% display_text, tooltip = FieldLens.display_value_and_tooltip(
+             prop.field,
+             romanise_unihan_value(prop.field, prop.value),
+             context: :property_list
+           ) %>
+        <% if tooltip.present? %>
+          <span title="<%= tooltip %>"><%= view_text(display_text) %></span>
+        <% else %>
+          <%= view_text(display_text) %>
         <% end %>
-      </ul>
+
+        <% if prop.field == "kCangjie" %>
+          <span class="cj-shapes">(<%= CangjieKeymap.latin_to_han(prop.value) %>)</span>
+
+          <% unless hkcards_image_rendered %>
+            <div class="imgwrap cj-card">
+              <img class="cjimg cjimg-small"
+                   src="https://www.hkcards.com/img/cj/<%= @character.chr %>.png"
+                   alt="Cangjie decomposition"
+                   loading="lazy"
+                   onerror="this.outerHTML='<em>No HKCards decomposition available for this character.</em>'">
+            </div>
+            <% hkcards_image_rendered = true %>
+          <% end %>
+        <% end %>
+
+        <em>(<%= prop.source %>)</em>
+      </li>
     <% end %>
+  </ul>
+<% end %>
   <% end %>
 
   <p><a href="/home/index">Return to home</a></p>
 <% end %>
-
-<!-- END app/views/characters/show.html.erb -->
