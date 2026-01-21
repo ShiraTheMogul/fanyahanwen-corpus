@@ -7,3 +7,16 @@
   <%= text_field_tag :query %>
   <%= submit_tag "Submit" %>
 <% end %>
+
+<hr>
+
+<h2>Browse by component</h2>
+
+<p>
+  If you don't know the character you can use radicals and components to narrow things down. The radical pages also show the radical's own readings and meanings, as well as writing, which can be useful for further study. Radical awareness is known to assist with character recognition. 
+</p>
+
+<ul>
+  <li><%= link_to "Kangxi radicals (Unihan kRSUnicode)", kangxi_radicals_path %></li>
+  <li>Shuowen Jiezi components (coming next)</li>
+</ul>

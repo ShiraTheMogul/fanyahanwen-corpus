@@ -1,0 +1,63 @@
+<% content_for :title, "Kangxi radicals" %>
+
+<% content_for :rightbar do %>
+  <h3>View options</h3>
+  <%= render "shared/view_options_rightbar" %>
+<% end %>
+
+<h1>Kangxi radicals</h1>
+
+<p>
+	Browse characters by Kangxi radical using Unihan <code>kRSUnicode</code>. 
+</p>
+
+<p>
+	Kangxi Radicals (康熙部首) were first promulgated in 1615 by Mei Yingzuo 梅膺祚 in the dictionary Zihui 字彙. They are a system of categorisation for characters based on one of their visually prominent components; these are usually the semantic components that carry meaning. 
+</p>
+
+<p>
+	Kangxi Radicals are not the same as Shuowen Jiezi's categories, which were more about shared graphical elements rather than a consistent broader set of strokes forming a semantically or phonetically meaningful component. 
+</p>
+
+<div class="kangxi-radicals-grid">
+  <% @radicals.each do |r| %>
+    <%= link_to "/dictionary/radicals/#{r.number}",
+      class: "kangxi-radical-card",
+      data: { turbo: false, turbo_prefetch: false } do %>
+
+      <div class="kx-glyph"><%= r.radical %></div>
+      <div class="kx-num"><%= r.number %></div>
+
+    <% end %>
+  <% end %>
+</div>
+
+<style>
+  .kangxi-radicals-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .kangxi-radical-card{
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+    justify-content:center;
+    padding: 10px 8px 8px 8px;
+    border: 1px solid rgba(0,0,0,0.18);
+    border-radius: 12px;
+    text-decoration:none;
+    min-height: 74px;
+  }
+  .kx-glyph{
+    font-size: 1.9rem;
+    line-height: 1;
+  }
+  .kx-num{
+    margin-top: 6px;
+    font-size: 0.85rem;
+    opacity: 0.65;
+    font-variant-numeric: tabular-nums;
+  }
+</style>

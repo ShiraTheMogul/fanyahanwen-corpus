@@ -6,12 +6,26 @@
   dropping a new folder into that folder.
 
   We keep the selected "Han font" in session[:han_font].
+
+  PERFORMANCE NOTE:
+  Rendering this partial can be expensive because it loops all faces and calls asset_path.
+  We fragment-cache the generated <style> block keyed by:
+    - selected font key
+    - a digest of HanFonts.faces metadata
+  so most requests reuse the same HTML.
 %>
 
 <% selected_key = (session[:han_font].presence || HanFonts.default_key).to_s.strip.downcase.tr(" ", "_").to_sym %>
 <% selected_family = HanFonts.family_for(selected_key) || "serif" %>
 <% selected_stack = HanFonts.stack_for(selected_key) %>
 
+<% faces_digest = HanFonts.faces.map { |f|
+  [f.family, f.asset_path, f.format, f.unicode_range].join("|")
+}.join(";;") %>
+
+<% cache_key = ["dynamic-han-font-faces-v1", selected_key, faces_digest] %>
+
+<% cache(cache_key) do %>
 <style id="dynamic-han-font-faces">
   <% HanFonts.faces.each do |f| %>
   <% href = (asset_path(f.asset_path) rescue nil) %>
@@ -37,3 +51,4 @@
     --han-font-stack: <%= raw(selected_stack) %>;
   }
 </style>
+<% end %>

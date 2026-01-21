@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_20_182000) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_21_023000) do
   create_table "character_codepoints", force: :cascade do |t|
     t.string "chr", null: false
     t.integer "codepoint", null: false
@@ -32,6 +32,37 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_20_182000) do
     t.index ["character_codepoint_id", "source", "field"], name: "index_character_properties_on_ccid_source_field"
     t.index ["character_codepoint_id"], name: "index_character_properties_on_character_codepoint_id"
     t.index ["source", "field", "value"], name: "index_character_properties_on_source_field_value"
+  end
+
+  create_table "character_radical_memberships", force: :cascade do |t|
+    t.integer "additional_strokes", null: false
+    t.integer "character_codepoint_id", null: false
+    t.datetime "created_at", null: false
+    t.integer "radical_number", null: false
+    t.string "raw_token"
+    t.datetime "updated_at", null: false
+    t.index ["character_codepoint_id"], name: "index_character_radical_memberships_on_character_codepoint_id"
+    t.index ["radical_number", "additional_strokes", "character_codepoint_id"], name: "idx_crm_radical_strokes_ccid"
+  end
+
+  create_table "kangxi_radicals", force: :cascade do |t|
+    t.string "colloquial_names"
+    t.datetime "created_at", null: false
+    t.string "examples"
+    t.integer "frequency"
+    t.string "japanese"
+    t.string "korean"
+    t.string "meaning"
+    t.integer "number", null: false
+    t.string "pinyin"
+    t.string "radical", null: false
+    t.string "simplified"
+    t.string "sino_vietnamese"
+    t.integer "stroke_count"
+    t.datetime "updated_at", null: false
+    t.string "variants"
+    t.index ["number"], name: "index_kangxi_radicals_on_number", unique: true
+    t.index ["radical"], name: "index_kangxi_radicals_on_radical"
   end
 
   create_table "laoguoyin_readings", force: :cascade do |t|
@@ -82,6 +113,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_20_182000) do
   end
 
   add_foreign_key "character_properties", "character_codepoints"
+  add_foreign_key "character_radical_memberships", "character_codepoints"
   add_foreign_key "laoguoyin_readings", "character_codepoints"
   add_foreign_key "xuanji_cells", "xuanji_grids"
 end

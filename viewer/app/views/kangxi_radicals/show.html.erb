@@ -1,0 +1,78 @@
+<% content_for :title, "Radical #{@radical.number} #{@radical.radical}" %>
+
+<% content_for :rightbar do %>
+  <h3>View options</h3>
+  <%= render "shared/view_options_rightbar" %>
+<% end %>
+
+<h1>
+  Radical <%= @radical.number %>:
+  <span style="font-size:2.2rem;"><%= @radical.radical %></span>
+</h1>
+
+<% unless @memberships_exist %>
+  <div style="padding:10px 12px; border:1px solid rgba(0,0,0,0.18); border-radius:10px; background: rgba(255,240,200,0.35); margin: 10px 0 14px 0;">
+    <strong>Radical membership index is empty.</strong>
+    Run <code>bin/rails kangxi:rebuild_memberships</code> to build it from Unihan <code>kRSUnicode</code>.
+  </div>
+<% end %>
+
+<div style="display:flex; gap: 24px; align-items:flex-start; flex-wrap:wrap;">
+  <div style="min-width: 280px; max-width: 420px;">
+
+    <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.7.0/dist/hanzi-writer.min.js"></script>
+    <div id="hanzi-writer-target" style="margin: 4px 0 14px 0;"></div>
+    <script>
+      (function(){
+        try {
+          var ch = "<%= j @radical.radical.to_s %>".trim();
+          if (!ch) return;
+          HanziWriter.create('hanzi-writer-target', ch, {
+            width: 140,
+            height: 140,
+            padding: 6
+          }).loopCharacterAnimation();
+        } catch(e) {}
+      })();
+    </script>
+
+    <h2>About this radical</h2>
+
+    <p><strong>Radical:</strong> <span style="font-size:2rem;"><%= @radical.radical %></span></p>
+
+    <% seal_family = HanFonts.family_for(:chongxi_seal) %>
+    <p><strong>Seal font (Chongxi):</strong>
+      <span style='font-size:2rem; font-family:"<%= seal_family %>", serif;'>
+        <%= @radical.radical %>
+      </span>
+    </p>
+
+    <p><strong>Stroke count:</strong> <%= @radical.stroke_count.presence || "—" %></p>
+    <p><strong>Meaning:</strong> <%= @radical.meaning.presence || "—" %></p>
+    <p><strong>Variants:</strong> <%= @radical.variants.presence || "—" %></p>
+
+    <h3>Readings</h3>
+    <p><strong>Mandarin (pinyin):</strong> <%= @radical.mandarin_pinyin.presence || "—" %></p>
+    <p><strong>Sino-Vietnamese:</strong> <%= @radical.vietnamese.presence || "—" %></p>
+    <p><strong>Japanese:</strong> <%= @radical.japanese.presence || "—" %></p>
+    <p><strong>Korean:</strong> <%= @radical.korean.presence || "—" %></p>
+
+    <p style="margin-top: 18px;">
+      <%= link_to "Back to radicals index", "/dictionary/radicals", data: { turbo: false } %>
+    </p>
+  </div>
+
+  <div style="flex: 1 1 520px; min-width: 360px;">
+    <h2>Characters</h2>
+
+    <p>
+      Total: <%= @total %>. Page <%= @page %>. Per page: <%= @per %>.
+    </p>
+
+    <turbo-frame id="radical_chars" src="/dictionary/radicals/<%= @radical.number %>/chars?page=<%= @page %>&per=<%= @per %>">
+      <div style="padding: 10px 0; opacity: 0.75;">
+        Loading characters…
+      </div>
+    </turbo-frame>
+  </div>
+</div>

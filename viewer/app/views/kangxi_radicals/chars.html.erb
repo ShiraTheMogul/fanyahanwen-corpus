@@ -1,0 +1,10 @@
+<turbo-frame id="radical_chars">
+  <%= render "characters_table",
+    radical: @radical,
+    characters: @characters,
+    unihan_defs: @unihan_defs,
+    total: @total,
+    page: @page,
+    per: @per
+  %>
+</turbo-frame>

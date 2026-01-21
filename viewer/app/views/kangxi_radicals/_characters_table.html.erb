@@ -1,0 +1,52 @@
+<%# Locals: radical:, characters:, unihan_defs:, total:, page:, per: %>
+
+<div style="display:flex; gap: 12px; align-items:center; flex-wrap:wrap; margin: 6px 0 12px 0;">
+  <% if page > 1 %>
+    <%= link_to "← Prev",
+      "/dictionary/radicals/#{radical.number}/chars?page=#{page - 1}&per=#{per}",
+      data: { turbo_frame: "radical_chars" } %>
+  <% end %>
+
+  <% if (page * per) < total %>
+    <%= link_to "Next →",
+      "/dictionary/radicals/#{radical.number}/chars?page=#{page + 1}&per=#{per}",
+      data: { turbo_frame: "radical_chars" } %>
+  <% end %>
+
+  <span style="opacity:0.75;">
+    Jump:
+    <%= link_to "50",  "/dictionary/radicals/#{radical.number}/chars?page=#{page}&per=50",  data: { turbo_frame: "radical_chars" } %> |
+    <%= link_to "100", "/dictionary/radicals/#{radical.number}/chars?page=#{page}&per=100", data: { turbo_frame: "radical_chars" } %> |
+    <%= link_to "200", "/dictionary/radicals/#{radical.number}/chars?page=#{page}&per=200", data: { turbo_frame: "radical_chars" } %>
+  </span>
+</div>
+
+<table style="width:100%; border-collapse: collapse;">
+  <thead>
+    <tr>
+      <th style="text-align:left; padding: 6px 4px; border-bottom: 1px solid rgba(0,0,0,0.15);">Glyph</th>
+      <th style="text-align:left; padding: 6px 4px; border-bottom: 1px solid rgba(0,0,0,0.15);">Unihan definition</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% characters.each do |ch| %>
+      <tr>
+        <td style="padding: 10px 4px; vertical-align: top; width: 110px;">
+          <div style="font-size: 2.2rem; line-height: 1.1;">
+            <%# IMPORTANT: link by Unicode identifier (U+XXXX), not DB row id. %>
+            <%= link_to ch.chr,
+              character_path("U+#{ch.codepoint.to_s(16).upcase.rjust(4, "0")}"),
+              data: { turbo: false } %>
+          </div>
+          <div style="opacity:0.7; font-size: 0.85rem;">
+            U+<%= ch.codepoint.to_s(16).upcase.rjust(4, "0") %>
+            <% if ch.respond_to?(:additional_strokes) && ch.additional_strokes %>(+<%= ch.additional_strokes %>)<% end %>
+          </div>
+        </td>
+        <td style="padding: 10px 4px; vertical-align: top;">
+          <%= (unihan_defs[ch.id].presence || "—") %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
