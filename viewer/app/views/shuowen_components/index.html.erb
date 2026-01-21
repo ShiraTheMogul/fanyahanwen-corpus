@@ -1,0 +1,64 @@
+<% content_for :title, "Shuowen components" %>
+
+<% content_for :rightbar do %>
+  <h3>View options</h3>
+  <%= render "shared/view_options_rightbar" %>
+<% end %>
+
+<h1><a href="/corpus_viewer/中國漢文/clean/東漢/說文解字/">Shuowen Jiezi</a> components 說文解字部首</h1>
+
+<p>
+	Browse characters by Shuowen Jiezi components. These were designed by Xu Shen 許慎 in the 2nd Century in Eastern Han 東漢, and used in his <i>Shuowen Jiezi</i> 說文解字 dictionary, and is a landmark piece of lexicography. There are 540 components in total. <a href="/corpus_viewer/中國漢文/clean/東漢/說文解字/">The text itself</a> analyzes and documents characters based chiefly on their structure; Xu would provide rationales for them based on <i>Zhengming</i> 正名 "Rectification of Names" theory. It was therefore sociopolitical, not just lexicographical. Xu famously stated this in the preface:
+</p>
+<p>
+		蓋文字者，經藝之本，王政之始。前人所以垂後，後人所以識古。故曰：“本立而道生。”知天下之至賾而不可亂也。
+</p>
+	<i>"Written language is the foundation of the Chinese classics and arts; the start of the kingly way. It is how our ancestors passed down their knowledge, and how we learn from the past. Therefore, it is said that "When the foundation is established, the Dao is born." This, therefore, means knowing the truths of All Under Heaven and not allowing them to fall into disorder."</i>
+</p>
+<p>
+	It is a deeply Confucian idea, and by being rooted in <i>Zhengming</i>, it is inherently prescriptive in nature. Xu is not immune to making mistakes, either: This work is almost 2,000 years old, and much modern palaeographic evidence (particularly Oracle Bone Script 甲骨文) has been uncovered that Xu did not have access to. 
+</p>
+<p>
+	It should be stressed that Shuowen components are not the same as Kangxi radicals in that they are broad categorisations based on visual similarity; they can be phonetic, semantic, or even a mere stroke. This is why I use the term "component"!
+</p>
+
+<div class="sw-grid">
+  <% @components.each do |c| %>
+    <%= link_to "/dictionary/shuowen/#{c.number}",
+      class: "sw-card",
+      data: { turbo: false, turbo_prefetch: false } do %>
+      <div class="sw-glyph"><%= c.glyph %></div>
+      <div class="sw-num"><%= c.number %></div>
+    <% end %>
+  <% end %>
+</div>
+
+<style>
+  .sw-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .sw-card{
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+    justify-content:center;
+    padding: 10px 8px 8px 8px;
+    border: 1px solid rgba(0,0,0,0.18);
+    border-radius: 12px;
+    text-decoration:none;
+    min-height: 74px;
+  }
+  .sw-glyph{
+    font-size: 1.9rem;
+    line-height: 1;
+  }
+  .sw-num{
+    margin-top: 6px;
+    font-size: 0.85rem;
+    opacity: 0.65;
+    font-variant-numeric: tabular-nums;
+  }
+</style>

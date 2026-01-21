@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_21_023000) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_21_031100) do
   create_table "character_codepoints", force: :cascade do |t|
     t.string "chr", null: false
     t.integer "codepoint", null: false
@@ -18,6 +18,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_21_023000) do
     t.datetime "updated_at", null: false
     t.index ["chr"], name: "index_character_codepoints_on_chr"
     t.index ["codepoint"], name: "index_character_codepoints_on_codepoint", unique: true
+  end
+
+  create_table "character_component_memberships", force: :cascade do |t|
+    t.integer "character_codepoint_id", null: false
+    t.integer "component_number", null: false
+    t.datetime "created_at", null: false
+    t.string "raw_token"
+    t.datetime "updated_at", null: false
+    t.index ["character_codepoint_id"], name: "idx_on_character_codepoint_id_50d573bd3b"
+    t.index ["component_number", "character_codepoint_id"], name: "idx_ccm_component_ccid"
+    t.index ["component_number"], name: "index_character_component_memberships_on_component_number"
   end
 
   create_table "character_properties", force: :cascade do |t|
@@ -77,6 +88,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_21_023000) do
     t.index ["character_codepoint_id"], name: "index_laoguoyin_readings_on_character_codepoint_id"
   end
 
+  create_table "shuowen_components", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "glyph", null: false
+    t.integer "number", null: false
+    t.datetime "updated_at", null: false
+    t.index ["glyph"], name: "index_shuowen_components_on_glyph"
+    t.index ["number"], name: "index_shuowen_components_on_number", unique: true
+  end
+
   create_table "variant_mappings", force: :cascade do |t|
     t.integer "base_codepoint"
     t.datetime "created_at", null: false
@@ -112,6 +132,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_21_023000) do
     t.index ["name", "variant"], name: "index_xuanji_grids_on_name_and_variant", unique: true
   end
 
+  add_foreign_key "character_component_memberships", "character_codepoints"
   add_foreign_key "character_properties", "character_codepoints"
   add_foreign_key "character_radical_memberships", "character_codepoints"
   add_foreign_key "laoguoyin_readings", "character_codepoints"

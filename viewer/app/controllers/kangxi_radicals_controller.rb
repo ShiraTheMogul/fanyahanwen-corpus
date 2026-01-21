@@ -17,6 +17,11 @@ class KangxiRadicalsController < ApplicationController
     base = CharacterRadicalMembership.where(radical_number: @radical.number)
     @total = base.count(:all)
 
+    @def_source = params[:def].to_s.strip
+    @def_source = "unihan" unless %w[unihan kangxi].include?(@def_source)
+
+    @total = base.count(:all)
+
     # For the "is the index built?" banner, don't do COUNT(*) over 100k rows.
     @memberships_exist = CharacterRadicalMembership.exists?
   end
@@ -25,6 +30,9 @@ class KangxiRadicalsController < ApplicationController
   def chars
     base = CharacterRadicalMembership.where(radical_number: @radical.number)
     @total = base.count(:all)
+
+    @def_source = params[:def].to_s.strip
+    @def_source = "unihan" unless %w[unihan kangxi].include?(@def_source)
 
     memberships = CharacterRadicalMembership
       .joins(:character_codepoint)
@@ -38,15 +46,37 @@ class KangxiRadicalsController < ApplicationController
     @characters = memberships
     cc_ids = @characters.map(&:id)
 
-    @unihan_defs =
+    @defs =
       if cc_ids.empty?
         {}
       else
-        CharacterProperty
-          .where(character_codepoint_id: cc_ids, field: "kDefinition")
-          .pluck(:character_codepoint_id, :value)
-          .to_h
+        if @def_source == "kangxi"
+          by_id = CharacterProperty
+            .where(character_codepoint_id: cc_ids, source: "Kangxi", field: "kangxi_gloss")
+            .pluck(:character_codepoint_id, :value)
+            .to_h
+
+          # Back-compat: older imports may have kangxi_gloss rows without a source.
+          missing = cc_ids - by_id.keys
+          if missing.any?
+            fallback = CharacterProperty
+              .where(character_codepoint_id: missing, field: "kangxi_gloss")
+              .pluck(:character_codepoint_id, :value)
+              .to_h
+            by_id.merge!(fallback)
+          end
+
+          by_id
+        else
+          CharacterProperty
+            .where(character_codepoint_id: cc_ids, field: "kDefinition")
+            .pluck(:character_codepoint_id, :value)
+            .to_h
+        end
       end
+
+    @def_label = (@def_source == "kangxi") ? "Kangxi definition" : "Unihan definition"
+
 
     render layout: false
   end

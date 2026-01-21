@@ -1,0 +1,11 @@
+<turbo-frame id="shuowen_chars">
+  <%= render "characters_table",
+    component: @component,
+    characters: (@characters || []),
+    defs: (@defs || {}),
+    total: @total,
+    page: @page,
+    per: @per,
+    def_source: @def_source
+  %>
+</turbo-frame>

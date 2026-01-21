@@ -17,11 +17,16 @@ Rails.application.routes.draw do
 	get "/dictionary/radicals/:number", to: "kangxi_radicals#show", as: :dictionary_radical
 	get "/dictionary/radicals/:number/chars", to: "kangxi_radicals#chars", as: :dictionary_radical_chars
 	
+	# Shuowen category browser
+	get "/dictionary/shuowen", to: "shuowen_components#index", as: :dictionary_components
+	get "/dictionary/shuowen/:number", to: "shuowen_components#show", as: :dictionary_component
+	get "/dictionary/shuowen/:number/chars", to: "shuowen_components#chars", as: :dictionary_component_chars
+	
 	get "/corpus_viewer(/*path)", to: "corpus_viewer#show", as: :corpus_viewer, format: false # stop a silly attempt to output a txt file
 	get "/fun", to: "fun#index", as: :fun # Minigame section
 	get "/fun/xuanji", to: "xuanji#show", as: :xuanji
 	post "/fun/xuanji/sync_colors", to: "xuanji#sync_colors", as: :xuanji_sync_colors
-post "/fun/xuanji/phoneticize", to: "xuanji#phoneticize", as: :xuanji_phoneticize
+	post "/fun/xuanji/phoneticize", to: "xuanji#phoneticize", as: :xuanji_phoneticize
 	
 	get "/xiangqi", to: "xiangqi#show"
 	post "/xiangqi/theme", to: "xiangqi#theme"

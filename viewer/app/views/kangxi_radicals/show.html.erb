@@ -65,11 +65,22 @@
   <div style="flex: 1 1 520px; min-width: 360px;">
     <h2>Characters</h2>
 
+    <div style="margin: 8px 0 10px 0; opacity: 0.9;">
+      <span style="margin-right: 10px;">Definition source:</span>
+      <% unihan_on = (@def_source != "kangxi") %>
+      <% kangxi_on  = (@def_source == "kangxi") %>
+      <%= link_to (unihan_on ? "●" : "○"), "/dictionary/radicals/#{@radical.number}?def=unihan", data: { turbo: false }, style: "text-decoration:none; margin-right: 6px;" %>
+      <%= link_to "Unihan", "/dictionary/radicals/#{@radical.number}?def=unihan", data: { turbo: false }, style: "margin-right: 12px;" %>
+
+      <%= link_to (kangxi_on ? "●" : "○"), "/dictionary/radicals/#{@radical.number}?def=kangxi", data: { turbo: false }, style: "text-decoration:none; margin-right: 6px;" %>
+      <%= link_to "Kangxi", "/dictionary/radicals/#{@radical.number}?def=kangxi", data: { turbo: false } %>
+    </div>
+
     <p>
       Total: <%= @total %>. Page <%= @page %>. Per page: <%= @per %>.
     </p>
 
-    <turbo-frame id="radical_chars" src="/dictionary/radicals/<%= @radical.number %>/chars?page=<%= @page %>&per=<%= @per %>">
+    <turbo-frame id="radical_chars" src="/dictionary/radicals/<%= @radical.number %>/chars?page=<%= @page %>&per=<%= @per %>&def=<%= @def_source %>">
       <div style="padding: 10px 0; opacity: 0.75;">
         Loading characters…
       </div>
