@@ -87,6 +87,86 @@
 .rightbar-section { margin-top: 12px; padding-top: 12px; border-top: 1px solid #eee; }
 .rightbar-summary { cursor: pointer; }
 
+/* --- 今日誦詩 (Daily Shijing) widget --- */
+.daily-reading {
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 12px;
+  background: #fafafa;
+}
+
+/* Home page variant: wide enough for 4-character lines, but responsive. */
+.daily-reading--home {
+  width: clamp(360px, 28vw, 460px);
+}
+
+.daily-reading-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.daily-reading-title {
+  font-weight: 700;
+}
+
+.daily-reading-period {
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+.daily-reading-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0;
+  font-size: 13px;
+}
+
+.daily-reading-mao {
+  border: 1px solid #ddd;
+  border-radius: 999px;
+  padding: 2px 8px;
+  background: #fff;
+}
+
+.daily-reading-excerpt {
+  border: 1px solid #e6e6e6;
+  border-radius: 10px;
+  padding: 10px;
+  background: #fff;
+}
+
+.daily-reading-line {
+  white-space: pre-wrap;
+  line-height: 1.6;
+}
+
+.daily-reading-line-muted {
+  opacity: 0.7;
+}
+
+.daily-reading-actions {
+  margin-top: 10px;
+}
+
+.daily-reading-link {
+  display: inline-block;
+  padding: 6px 10px;
+  border: 1px solid #888;
+  background: #f6f6f6;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #111;
+  font-size: 13px;
+}
+
+.daily-reading-link:hover {
+  text-decoration: underline;
+}
+
 /* Collapsible option groups (details/summary) */
 .rightbar-group > summary {
   display: flex;

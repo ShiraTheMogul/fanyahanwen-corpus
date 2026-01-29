@@ -55,33 +55,39 @@
           <% end %>
         </div>
 
-		        <div class="site-header-right">
-		          <button
-		            type="button"
-		            class="rightbar-toggle"
-		            data-action="rightbar-layout#toggle"
-		            aria-label="Toggle options panel"
-		          >
-		            Options
-		          </button>
-		
-		          <span class="lunar-date"><%= lunar_today_string %></span>
-		        </div>
-      </div>
-    </header>
+	        <div class="site-header-right">
+	          <%# Only show the options toggle when a rightbar is actually present on the page. %>
+	          <% if content_for?(:rightbar) %>
+	            <button
+	              type="button"
+	              class="rightbar-toggle"
+	              data-action="rightbar-layout#toggle"
+	              aria-label="Toggle options panel"
+	            >
+	              Options
+	            </button>
+	          <% end %>
 
-    <div class="page-shell">
+	          <span class="lunar-date"><%= lunar_today_string %></span>
+	        </div>
+
+	      </div>
+	    </header>
+
+	    <div class="page-shell <%= content_for?(:rightbar) ? "has-rightbar" : "no-rightbar" %>">
       <main class="maincol"
         data-controller="han-tooltip"
         data-action="click->han-tooltip#click dblclick->han-tooltip#dblclick">
         <%= yield %>
       </main>
 
-      <% if content_for?(:rightbar) %>
-        <aside class="rightbar" aria-label="View options">
-          <%= yield :rightbar %>
-        </aside>
-      <% end %>
+	      <% if content_for?(:rightbar) %>
+	        <aside class="rightbar site-rightbar" aria-label="View options">
+	          <div class="rightbar-section">
+	            <%= yield :rightbar %>
+	          </div>
+	        </aside>
+	      <% end %>
     </div>
   </body>
 </html>

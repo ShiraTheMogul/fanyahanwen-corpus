@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_21_031100) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_28_150445) do
   create_table "character_codepoints", force: :cascade do |t|
     t.string "chr", null: false
     t.integer "codepoint", null: false
@@ -54,6 +54,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_21_031100) do
     t.datetime "updated_at", null: false
     t.index ["character_codepoint_id"], name: "index_character_radical_memberships_on_character_codepoint_id"
     t.index ["radical_number", "additional_strokes", "character_codepoint_id"], name: "idx_crm_radical_strokes_ccid"
+  end
+
+  create_table "daily_readings", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.boolean "has_text", default: true, null: false
+    t.string "mother", null: false
+    t.integer "order_index", null: false
+    t.text "path", null: false
+    t.string "series_key", null: false
+    t.string "subgroup"
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.index ["series_key", "has_text", "order_index"], name: "idx_on_series_key_has_text_order_index_30cf074536"
+    t.index ["series_key", "order_index"], name: "index_daily_readings_on_series_key_and_order_index", unique: true
   end
 
   create_table "kangxi_radicals", force: :cascade do |t|

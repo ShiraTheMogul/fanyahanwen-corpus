@@ -1,0 +1,170 @@
+/* Daily Shijing widget (home page)
+   Self-contained styling (no positioning/layout rules).
+*/
+
+.daily-shijing-card {
+  border: 1px solid #e6e6e6;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.10);
+  background: #ffffff;
+  overflow: hidden;
+  font-size: 1.05rem; /* slightly larger for readability */
+  line-height: 1.5;
+}
+
+.daily-shijing-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-bottom: 1px solid #efefef;
+}
+
+.daily-shijing-label {
+  font-weight: 700;
+  font-size: 1.05em;
+}
+
+.daily-shijing-period {
+  font-size: 0.95em;
+  opacity: 0.75;
+}
+
+.daily-shijing-body {
+  padding: 12px 14px 10px;
+}
+
+.daily-shijing-title {
+  margin: 0 0 6px;
+  font-weight: 700;
+  font-size: 1.05em;
+}
+
+.daily-shijing-group {
+  margin: 0 0 10px;
+  opacity: 0.8;
+  font-size: 0.95em;
+}
+
+.daily-shijing-text {
+  margin: 0;
+  white-space: pre-wrap; /* keep lines, allow wrap */
+  font-family: inherit; /* do NOT force a font */
+}
+
+.daily-shijing-footer {
+  border-top: 1px solid #efefef;
+  padding: 10px 14px 12px;
+}
+
+.daily-shijing-open {
+  text-decoration: none;
+}
+
+.daily-shijing-open:hover {
+  text-decoration: underline;
+}
+
+.daily-shijing-open:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+  .daily-shijing-card {
+    font-size: 1rem;
+  }
+}
+
+/* --- Home page wrapping layout for Daily Shijing (float-right, text wraps) --- */
+.home-hero {
+  display: block !important; /* override any flex/grid home hero */
+}
+.home-hero::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+.home-hero-right {
+  float: right;
+  width: min(520px, 42%);
+  margin: 0 0 1.5rem 2rem;
+}
+.home-hero-left {
+  display: block !important;
+}
+
+@media (max-width: 900px) {
+  .home-hero-right {
+    float: none;
+    width: 100%;
+    margin: 0 0 1rem 0;
+  }
+}
+
+/* Home page layout: float the daily poem into the dead whitespace on wide screens,
+   and let the left text wrap naturally (no hard-coded positioning). */
+.home-hero {
+  display: block !important; /* override any flex/grid home hero styling */
+}
+
+.home-hero::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.home-hero-right {
+  float: right;
+  /* wide enough for 4-character lines, but responsive */
+  width: min(520px, 42%);
+  margin: 0 0 1.5rem 2rem;
+}
+
+.home-hero-left {
+  display: block !important;
+}
+
+@media (max-width: 900px) {
+  .home-hero-right {
+    float: none;
+    width: 100%;
+    margin: 0 0 1rem 0;
+  }
+}
+
+/* Home page layout: float the daily poem into the dead whitespace on wide screens,
+   and let the left text wrap naturally (no hard-coded positioning). */
+.home-hero {
+  display: block !important; /* override any flex/grid home hero styling */
+}
+
+.home-hero::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.home-hero-left {
+  display: block !important;
+}
+
+.home-hero-right {
+  float: right;
+  width: min(520px, 42%);
+  margin: 0 0 1.25rem 2rem;
+}
+
+/* Slightly larger reading text on the home page */
+.daily-shijing-card--home {
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 900px) {
+  .home-hero-right {
+    float: none;
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto 1rem auto;
+  }
+}

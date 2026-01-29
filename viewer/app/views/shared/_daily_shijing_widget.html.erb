@@ -1,0 +1,58 @@
+<%# app/views/shared/_daily_shijing_widget.html.erb %>
+<%#
+  Home-page widget for 今日誦詩 (Daily Shijing).
+
+  This widget must be:
+  - embeddable (no popups, no rightbar dependency)
+  - complete (phase + Mao number + mother/subgroup + title + full text)
+  - tooltip-enabled (han-tooltip controller)
+%>
+
+<% payload = daily_shijing_payload %>
+
+<% if payload[:reading].present? %>
+  <% r = payload[:reading] %>
+
+  <section class="daily-shijing-card" aria-label="今日誦詩">
+    <div class="daily-shijing-card-header">
+      <div class="daily-shijing-card-name">今日誦詩</div>
+      <% if payload[:display_period].present? %>
+        <div class="daily-shijing-card-phase"><%= payload[:display_period] %></div>
+      <% end %>
+    </div>
+
+    <div class="daily-shijing-card-meta">
+      <div class="daily-shijing-card-mao">毛<%= r.order_index %></div>
+      <div class="daily-shijing-card-title"><%= r.title %></div>
+    </div>
+
+    <div class="daily-shijing-card-cats">
+      <span class="daily-shijing-card-mother"><%= r.mother %></span>
+      <% if r.subgroup.present? %>
+        <span class="daily-shijing-card-sep">·</span>
+        <span class="daily-shijing-card-subgroup"><%= r.subgroup %></span>
+      <% end %>
+    </div>
+
+    <div
+      class="daily-shijing-card-text"
+      data-controller="han-tooltip"
+      data-action="click->han-tooltip#click dblclick->han-tooltip#dblclick"
+    >
+      <pre><%= payload[:text].to_s %></pre>
+    </div>
+
+    <div class="daily-shijing-card-footer">
+      <%= link_to "在語料庫中開啟",
+                  corpus_viewer_path(path: payload[:viewer_path]),
+                  class: "daily-shijing-card-link" %>
+    </div>
+  </section>
+<% else %>
+  <section class="daily-shijing-card" aria-label="今日誦詩">
+    <div class="daily-shijing-card-header">
+      <div class="daily-shijing-card-name">今日誦詩</div>
+    </div>
+    <div class="daily-shijing-card-empty">No daily poem is available yet.</div>
+  </section>
+<% end %>

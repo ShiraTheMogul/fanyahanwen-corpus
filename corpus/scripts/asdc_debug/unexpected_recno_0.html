@@ -1,0 +1,2395 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang='zh-tw'>
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+<title></title>
+<link type='text/css' rel='stylesheet' href='dore.css' />
+</head>
+<body  onload='initQ()'>
+<form name='_f0' method='post' action='listm.php'>
+<link href="../css/style.css" rel="stylesheet" type="text/css">
+<div align="center">
+<body background="../image/lbb_cont_bg.jpg">
+<p align="center"><img src="../image/lbb_cont_title.jpg" width="440" height="100" class="mid"></p>
+共計 169174 筆, 限查 3000 筆, 每頁 <select name="_pieceLen" onChange="nextL(0)"><option value="30">30</option><option value="50">50</option><option value="100" selected>100</option></select>
+筆, 排序依 <select name="_orderBy">
+<option value="bookNum,objNum" selected>材質/書籍/編號</option>
+<option value="wordTypeA,wordTypeB,wordTypeC,bookNum">詞類</option>
+<option value="obb_expl.dynNum,obb_expl.objPart,bookNum">時代</option>
+</select>
+<input type="checkbox" name="_desc" value="1" />
+遞減 <script src='js/common.js?x=1'></script>
+<script src='js/multiple.js?x=1'></script>
+<script src='js/str_ch.js' charset='big5'></script>
+<script src='js/dom.js'></script>
+<script>
+_doreUrl = '';
+_apUrl = '../';
+_path = '../inscription', _session = 'lD4Zg52NFmbPS11';
+_check = false;
+_method = 'post';
+_list = 'listm.php';
+_uriDiff = '';
+_colList = 'wordYan,wordKuan,wordTypeA,wordTypeB,wordTypeC,award,materNum,bookNum,objNum';
+</script>
+<input type='hidden' name='_session' value='z8X56dE3KLvb9*1'/>
+<input type="hidden" name="_path" value="../inscription" />
+<input type="hidden" name="_op" value="" />
+<input type="hidden" name="_resVer" value="289467609" />
+<input type='hidden' name='_section' value='1' />
+<input type="hidden" name="_recNo" value="0" />
+<input type='button' value='查詢' class='button' onclick="return _queryL()" />
+<input type='button' value='再查詢' class='button' onclick="toQueryL('word_search.php')" />
+<br>
+<input type='button' value='下頁' class='button' onclick="nextL(100)" />
+<input type='button' value='末頁' class='button' onclick="nextL(2900)" />
+<script language='javascript'>
+function myAct(recNo, id) {
+   var f = document._f0, s;
+   f._op.value = 'f';
+   f._recNo.value = recNo;
+   var i, elems = f._link;
+   if(elems) {
+      for(i = 0; i < elems.length && !elems[i].checked; i++);
+      s = elems[i].value;
+      if(i === 0)  id = null;
+   }
+   else  s = 'show_text.php';
+   if(id)  s += '?' + id;
+   f.action = _apUrl + s;
+   f.submit();
+}
+</script>
+<table summary="list" border="1"  bordercolor="#669999" style ="border-collapse: collapse; font-family:Time New Roman ; font-size: 16px; color: black; width:90%; box-shadow:3px 3px 3px dimgray;">
+<thead style ="background-color:#D1BA94;"><tr>
+<th>NO.</th>
+<th>嚴 式</th>
+<th>寬 式</th>
+<th>詞 類(1)</th>
+<th>詞 類(2)</th>
+<th>詞 類(3)</th>
+<th>時 代</th>
+<th>材 質</th>
+<th>書 籍</th>
+<th>編 號</th>
+<th>備註</th>
+</tr></thead>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">1&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(0)">五</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00014正.1</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">2&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(1)">羊</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">動物</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00014正.2</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">3&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(2)">南庚</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">稱謂</td>
+<td 
+    width="5%" align="left">親屬</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00014正.2</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">4&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(3)">南庚</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">稱謂</td>
+<td 
+    width="5%" align="left">鬼神</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00014正.2</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">5&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(4)">明</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">時間</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00014正.3</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">6&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(5)">三十</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00021反</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">7&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(6)">我</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">代詞</td>
+<td 
+    width="4%" align="left">人稱代詞</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00032反.0</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">8&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(7)">月</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">時間</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00046正.2</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">9&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(8)">翌</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">時間</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00046正.2</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">10&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(9)">二</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00046正.2</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">11&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(10)">多</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">形容詞</td>
+<td 
+    width="4%" align="left">一般形容詞</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00046正.2</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">12&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(11)">十二</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00046正.3</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">13&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(12)">月</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">時間</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00046正.3</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">14&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(13)">我</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">代詞</td>
+<td 
+    width="4%" align="left">人稱代詞</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00050正.0</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">15&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(14)">翌</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">時間</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00063正.5</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">16&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(15)">五</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00067反.0</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">17&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(16)">翌</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">時間</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00067正.3</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">18&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(17)">余</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">代詞</td>
+<td 
+    width="4%" align="left">人稱代詞</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00072反.0</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">19&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(18)">翌</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">時間</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00072正.1</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">20&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(19)">二</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00072正.2</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">21&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(20)">月</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">時間</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00072正.2</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">22&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(21)">二</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00083正.2</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">23&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(22)">二</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00084正.0</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">24&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(23)">牛</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">動物</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00093反.2</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">25&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(24)">五百</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00093正.1</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">26&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(25)">六</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00093正.1</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">27&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(26)">五百</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00093正.2</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">28&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(27)">六</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00093正.2</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">29&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(28)">二</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00093正.3</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">30&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(29)">二</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00093正.4</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">31&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(30)">茲</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">代詞</td>
+<td 
+    width="4%" align="left">指示代詞</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00094反.1</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">32&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(31)">帝</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">稱謂</td>
+<td 
+    width="5%" align="left">鬼神</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00094反.1</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">33&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(32)">茲</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">代詞</td>
+<td 
+    width="4%" align="left">指示代詞</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00094反.2</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">34&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(33)">月</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">時間</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00094正.1</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">35&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(34)">三</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00094正.1</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">36&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(35)">婦好</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">稱謂</td>
+<td 
+    width="5%" align="left">親屬</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00094正.1</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">37&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(36)">茲</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">代詞</td>
+<td 
+    width="4%" align="left">指示代詞</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00094正.3</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">38&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(37)">二</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00094正.3</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">39&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(38)">月</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">時間</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00094正.3</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">40&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(39)">帝</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">稱謂</td>
+<td 
+    width="5%" align="left">鬼神</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00094正.3</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">41&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(40)">五十</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00094正.4</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">42&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(41)">三</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00094正.4</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">43&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(42)">二</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00094正.4</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">44&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(43)">旬</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">時間</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00094正.4</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">45&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(44)">月</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">時間</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00094正.4</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">46&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(45)">日</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">時間</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00094正.4</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">47&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(46)">今</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">時間</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00094正.4</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">48&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(47)">羌</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">動物</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00094正.4</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">49&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(48)">妣癸</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">稱謂</td>
+<td 
+    width="5%" align="left">親屬</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00094正.5</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">50&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(49)">婦好</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">稱謂</td>
+<td 
+    width="5%" align="left">親屬</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00094正.5</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">51&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(50)">妣癸</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">稱謂</td>
+<td 
+    width="5%" align="left">鬼神</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00094正.5</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">52&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(51)">月</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">時間</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00094正.6</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">53&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(52)">牛</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">動物</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00097正.2</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">54&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(53)">二</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00097正.3</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">55&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(54)">二</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00097正.4</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">56&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(55)">二</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00097正.5</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">57&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(56)">十一</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00106反.0</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">58&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(57)">月</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">時間</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00106反.0</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">59&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(58)">月</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">時間</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00106正.0</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">60&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(59)">二</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00106正.0</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">61&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(60)">十一</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00106正.0</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">62&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(61)">日</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">時間</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00110反.1</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">63&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(62)">五</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00110反.1</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">64&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(63)">二</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00110正.2</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">65&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(64)">月</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">時間</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00110正.2</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">66&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(65)">妣己</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">稱謂</td>
+<td 
+    width="5%" align="left">親屬</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00110正.8</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">67&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(66)">妣己</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">稱謂</td>
+<td 
+    width="5%" align="left">鬼神</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00110正.8</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">68&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(67)">二</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00110正.9</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">69&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(68)">羌</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">動物</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00113甲正.1</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">70&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(69)">我</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">代詞</td>
+<td 
+    width="4%" align="left">人稱代詞</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00113甲正.1</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">71&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(70)">二</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00113甲正.3</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">72&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(71)">蔑</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">稱謂</td>
+<td 
+    width="5%" align="left">鬼神</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00116反.1</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">73&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(72)">我</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">代詞</td>
+<td 
+    width="4%" align="left">人稱代詞</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00116反.3</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">74&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(73)">婦井</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">稱謂</td>
+<td 
+    width="5%" align="left">親屬</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00116反.4</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">75&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(74)">三十</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00116反.4</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">76&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(75)">月</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">時間</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00116正.1</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">77&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(76)">六</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00116正.1</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">78&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(77)">今</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">時間</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00116正.2</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">79&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(78)">月</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">時間</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00116正.2</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">80&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(79)">五</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00116正.2</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">81&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(80)">六</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00116正.3</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">82&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(81)">月</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">時間</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00116正.3</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">83&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(82)">今</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">時間</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00116正.4</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">84&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(83)">月</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">時間</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00116正.4</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">85&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(84)">五</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00116正.4</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">86&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(85)">月</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">時間</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00116正.5</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">87&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(86)">六</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00116正.5</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">88&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(87)">五</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00116正.6</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">89&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(88)">月</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">時間</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00116正.6</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">90&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(89)">今</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">時間</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00116正.6</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">91&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(90)">二</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00130正.1</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">92&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(91)">羊</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">動物</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00130正.2</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">93&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(92)">翌</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">時間</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00130正.2</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">94&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(93)">父乙</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">稱謂</td>
+<td 
+    width="5%" align="left">親屬</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00130正.2</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">95&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(94)">子漁</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">稱謂</td>
+<td 
+    width="5%" align="left">親屬</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00130正.2</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">96&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(95)">父乙</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">稱謂</td>
+<td 
+    width="5%" align="left">鬼神</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00130正.2</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">97&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(96)">婦井</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">名詞</td>
+<td 
+    width="4%" align="left">稱謂</td>
+<td 
+    width="5%" align="left">親屬</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00130臼</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">98&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(97)">一</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00130臼</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#FFFFFF;"><td 
+    width="2%" align="center" align="right">99&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(98)">二</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00136正.1</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+<tr align="left" style="background-color:#F9F6F1;"><td 
+    width="2%" align="center" align="right">100&nbsp;</td>
+<td 
+    width="10%" align="left"><a href="javascript:myAct(99)">二</a></td>
+<td 
+    width="10%" align="left">&nbsp;</td>
+<td 
+    width="4%" align="left">數詞</td>
+<td 
+    width="4%" align="left">&nbsp;</td>
+<td 
+    width="5%" align="left">&nbsp;</td>
+<td 
+    width="8%" align="left">商</td>
+<td 
+    width="2%" align="left">甲骨</td>
+<td 
+    width="10%" align="left">甲骨文合集</td>
+<td 
+    width="5%" align="left">00136正.4</td>
+<td 
+    width="3%" align="left">&nbsp;</td>
+</tr>
+</table>
+<a href='#top' class='top'>Top</a>
+
+<script src="http://char.iis.sinica.edu.tw/API/ics.js" language="javascript"></script>
+<script LANGUAGE="JavaScript">
+<!--
+processPage('Black','13','','','Mingliu');
+//-->
+</script> 
+<style>
+img {
+  margin-top: 0px;
+  margin-right: -2px;
+  margin-left: -1px;
+}
+</style>
+</form>
+</body>
+</html>

@@ -8,6 +8,7 @@
   --xuanji-yellow: #b88a00;
 }
 
+
 /*
  * This is a manifest file that'll be compiled into application.css.
  *
@@ -681,3 +682,140 @@ body.rightbar-collapsed .rightbar {
   font-size: 0.92em;
 }
 
+
+/* --- Daily Shijing widget (home page) ---
+   NOTE: Widget chrome uses the BEM class names from app.zip:
+   .daily-shijing-card-header, .daily-shijing-card-link, etc.
+   This block contains ONLY widget visuals (no positioning).
+*/
+
+.daily-shijing-card {
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  overflow: hidden;
+  max-width: 520px;
+}
+
+/* Header strip */
+.daily-shijing-card-header,
+.daily-shijing-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 12px 14px;
+  border-bottom: 1px solid #efefef;
+}
+
+.daily-shijing-card-name,
+.daily-shijing-label {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.daily-shijing-card-phase,
+.daily-shijing-period {
+  font-size: 14px;
+  opacity: 0.75;
+  white-space: nowrap;
+}
+
+/* Meta row (毛59 竹竿) */
+.daily-shijing-card-meta {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  padding: 12px 14px 4px 14px;
+}
+
+.daily-shijing-card-mao {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.daily-shijing-card-title {
+  font-size: 18px;
+}
+
+/* Categories (國風 · 衛風) */
+.daily-shijing-card-cats,
+.daily-shijing-group {
+  padding: 0 14px 10px 14px;
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+.daily-shijing-card-text,
+.daily-shijing-text {
+  padding: 0 14px 12px 14px;
+}
+
+.daily-shijing-card-text pre,
+.daily-shijing-text pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.6;
+  font-size: 16px;
+  font-family: inherit;
+}
+
+/* Footer + button */
+.daily-shijing-card-footer,
+.daily-shijing-footer {
+  padding: 10px 14px;
+  border-top: 1px solid #efefef;
+}
+
+.daily-shijing-card-link,
+.daily-shijing-open {
+  display: inline-block;
+  padding: 6px 10px;
+  border: 1px solid #bdbdbd;
+  border-radius: 10px;
+  text-decoration: none;
+}
+
+.daily-shijing-card-link:hover,
+.daily-shijing-open:hover {
+  text-decoration: underline;
+}
+
+.daily-shijing-card-empty {
+  padding: 12px 14px;
+  opacity: 0.7;
+}
+
+/* Make the card shrink nicely on small screens */
+@media (max-width: 900px) {
+  .daily-shijing-card { max-width: 100%; }
+}
+/* --- Home page wrapping layout for Daily Shijing (float-right, text wraps) --- */
+.home-hero {
+  display: block !important; /* override any flex/grid home hero */
+}
+
+.home-hero::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.home-hero-right {
+  float: right;
+  width: min(520px, 42%);
+  margin: 0 0 1.5rem 2rem;
+}
+
+.home-hero-left {
+  display: block !important;
+}
+
+@media (max-width: 900px) {
+  .home-hero-right {
+    float: none;
+    width: 100%;
+    margin: 0 0 1rem 0;
+  }
+}

@@ -2,6 +2,7 @@
 
 class ApplicationController < ActionController::Base
   helper PhoneticizationHelper
+  helper DailyReadingsHelper
 
   before_action :ensure_font_defaults
 

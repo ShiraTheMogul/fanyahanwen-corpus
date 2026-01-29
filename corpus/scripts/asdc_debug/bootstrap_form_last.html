@@ -1,0 +1,138 @@
+<!DOCTYPE HTML>
+<html lang="zh_TW">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta charset="UTF-8">
+	<title>數位文化中心</title>
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&family=Open+Sans&display=swap" rel="stylesheet">
+	<style type="text/css">
+		*{
+			font-family: 'Noto Sans TC', 'Open Sans', sans-serif;
+      	}
+		.logo{
+			width: 410px;
+			height: 90px;
+			margin: 0 auto;
+			margin-top: 200px;
+			padding-left: 80px;
+			border-bottom: 2px solid #eee;
+			margin-bottom: 10px;
+		}
+		.center{
+			width: 485px;
+			height: 500px;
+			margin: 0 auto;
+		}
+		.content{
+			float: left;
+			padding-left: 10px;
+			width: 322px;
+		}
+		.menu{
+			border-left: 2px solid #eee;
+			float: left;
+			margin-left: 10px;
+			padding-left: 10px;
+			width: 130px;
+			height: 258px;
+			overflow: hidden;
+		}
+		a{
+			cursor: pointer;
+			text-decoration: none;
+			color: #3AF;
+		}
+		#line1, #line2{
+			font-size: 28px;
+			float: left;
+			display: block;
+			width: 64px;
+			height: 64px;
+			line-height: 32px;
+		}
+		.ann {
+			animation-duration: 3s;
+			animation-name: slidein;
+			animation-iteration-count: infinite;
+		}
+
+		@keyframes slidein {
+			0% {
+				opacity:1.0;
+			}
+
+			25% {
+				opacity:1.0;
+			}
+
+			50% {
+				opacity:0.6;
+			}
+
+			75% {
+				opacity:1.0;
+			}
+
+			100% {
+				opacity:1.0;
+			}
+		}
+	</style>
+	<script>
+        function updateLinkHref(event) {
+            event.preventDefault(); // 防止連結的預設行為
+            const baseUrl = "https://report.ascdc.tw/report.php";
+            const refererParam = typeof window.location.href !== "undefined" ? "?referer=" + encodeURIComponent(window.location.href) : "";
+
+            const link = event.currentTarget;
+            link.href = baseUrl + refererParam;
+
+            // 設置 href 後觸發點擊事件
+            link.removeEventListener('click', updateLinkHref);
+            link.click();
+        }
+		window.onload = function() {
+            const links = document.querySelectorAll("#report1, #report2, #report3, #report4");
+
+            links.forEach(link => {
+                link.addEventListener('click', updateLinkHref);
+            });		
+			fetch("https://api.ipify.org?format=json")
+			.then(response => response.json())
+			.then(data => {
+			  const userIP = data.ip;
+			  document.getElementById('ip').textContent = userIP;
+			});
+			
+			let now = new Date();
+			let gmt8 = new Date(now.getTime() + (8 * 60 * 60 * 1000));
+			let gmt8String = gmt8.toUTCString();
+			document.getElementById('time').textContent = gmt8String;
+		};
+	</script>
+</head>
+<body>
+	<div class="logo">
+		<a href="https://ascdc.sinica.edu.tw/contact" target="_blank"><img src="https://report.ascdc.tw/image/logo.png" alt="" title="contact us"></a>
+	</div>
+	<div class="center">
+		<div class="content">
+			<span style="font-style:oblique; color: #666;">台灣時間 <span id="time"></span></span><br/>
+			<span style="font-style:oblique; color: #666;">IP地址 <span id="ip"></span></span><br/>
+			您好：<br/><br/>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;關於該<font color="red">網址失效</font>，造成您使用不便，
+			在此敬上萬分歉意，敬請見諒！<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			請您利用「<a href="#" id="report1" target="_blank" class="ann">問題回報</a>」功能，您的回饋可以讓我們提供更好的服務！
+			<br/>
+			<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			ASCDC團隊敬上<br/>
+		</div>
+		<div class="menu">
+			<a href="#" id="report4" target="_blank"><img src="https://report.ascdc.tw/image/wrench.jpg" alt="" title="維護中"></a>
+			<div id="line1" class="ann"><a href="#" id="report2" target="_blank"><img style="width:64px; height: 64px;" src="https://report.ascdc.tw/image/face.png" alt="" title="蘇先生 (02)2652-1885 分機107"></a></div>
+			<div id="line2" class="ann"><a href="#" id="report3" target="_blank">問題回報</a></div>
+		</div>
+	</div>
+</body>
+</html>
