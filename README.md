@@ -8,12 +8,10 @@ This originally began as a corpus of Siku Quanshu 四庫全書 sources taken fro
 
 The given scripts will output CSV, TSV, and JSON indexes for auditing. 
 
-# Frequency list findings
-The corpus overall contains 2,32 billion tokens. Use `tokens_and_usage_thresholds.py` after producing a frequency list to replicate.
-- 1,817 characters (at 宏) make up 90% of the commonly-used characters in the corpus.
-- 2,863 characters make up 95% at 义, a simplified variant character; we include simplified variants to be realistic given the lexical diversity within Literary Chinese.
-- 4,543 characters make up 98% at 錐; this is the threshold necessary for comfortable extensive reading as is defined in i+1 comprehensible input theory.
-- 5,945 characters make up 99% at 么.
+# Statistics
+As of 31st January 2026, the corpus contains 744,312,022 characters, comprised of 172,613 chapters amongst 81,323 distinct works. Works range from Wu Ding's reign during the Shang dynasty all the way to works produced this year, from over 10 different countries. This makes it the most inclusive Literary Chinese corpus that I am aware of.
+
+The largest texts are generally encyclopaedias and histories. For example, what remains of the the Yongle Encyclopaedia contains 313,103,58 characters. The History of Korea reaches 57,319,61. 
 
 # On categories
 Works are categorised by major nation. With respect to China, Wikisource's dynasty divisions are used. I went from earliest/leftmost categories on their [dynasty division template](https://zh.wikisource.org/wiki/Template:%E6%8C%89%E7%85%A7%E6%9C%9D%E4%BB%A3%E5%88%86%E7%B1%BB) after downloading Siku Quanshu with automatic de-duplication implemented. I did this for efficiency and ease of scraping. I will not pretend to be a historian here, and any disputes regarding any of these divisions (e.g. The two pieces of Tang dynasty literature that was within Empress Wu of Zhou's reign) would fall outside of the data scope to me. 
