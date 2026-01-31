@@ -85,6 +85,22 @@
   inline-size: max-content;
   /* When vertical, "lines" become columns, so we need a little more spacing! Helps with the Chinese comma too. */
   letter-spacing: 0.02em;
+  /* Column unit: in vertical-rl, line-height becomes column width */
+  --cv-col: calc(var(--cv-font-size, 20px) * 1.8);
+  line-height: var(--cv-col);
+
+  /* Ruled grid aligned to column width */
+  background-origin: content-box;
+  background-clip: content-box;
+  background-position: 0 0;
+  background: repeating-linear-gradient(
+    270deg,
+    rgba(0,0,0,0.00) 0,
+    rgba(0,0,0,0.00) calc(var(--cv-col) - 0.06em),
+    var(--cv-rule-color, rgba(0,0,0,0.12)) calc(var(--cv-col) - 0.06em),
+    var(--cv-rule-color, rgba(0,0,0,0.12)) var(--cv-col)
+  );
+
 }
 
 .corpus-textflow.is-vertical.has-ruby {
@@ -113,6 +129,12 @@
   color: #f3f3f3;
   border-color: rgba(255,255,255,0.18);
 }
+
+/* Ruled grid colours per theme */
+.corpus-viewbox.theme-light { --cv-rule-color: rgba(0,0,0,0.12); }
+.corpus-viewbox.theme-bamboo { --cv-rule-color: rgba(0,0,0,0.14); }
+.corpus-viewbox.theme-dark { --cv-rule-color: rgba(255,255,255,0.10); }
+
 
 /* Breadcrumb spacing */
 .crumbs { margin: 6px 0 12px; }
@@ -188,4 +210,21 @@
   writing-mode: vertical-rl;
   text-orientation: upright;
   letter-spacing: 0;
+}
+
+/* Judou styling (toggleable): keep spacing stable, optionally nudge into gutter */
+.corpus-textflow .cv-judou {
+  color: var(--cv-judou-color, #b00000);
+}
+
+.corpus-textflow.is-vertical.judou-on .cv-judou {
+  display: inline-block;
+  inline-size: 1em;
+  text-align: center;
+  position: relative;
+  transform: translateX(0.25em);
+}
+
+.corpus-textflow.is-vertical.is-vflow-lr.judou-on .cv-judou {
+  transform: translateX(-0.25em);
 }

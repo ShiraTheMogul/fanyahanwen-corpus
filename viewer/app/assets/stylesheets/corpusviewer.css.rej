@@ -1,0 +1,12 @@
+diff a/viewer/app/assets/stylesheets/corpusviewer.css b/viewer/app/assets/stylesheets/corpusviewer.css	(rejected hunks)
+@@ -99,6 +99,10 @@
+ /* Astro-style “ruled page” effect: only on light/bamboo, and aligned to column width. */
+ .corpus-viewbox.theme-light .corpus-textflow.is-vertical,
+ .corpus-viewbox.theme-bamboo .corpus-textflow.is-vertical {
++  background-origin: content-box;
++  background-clip: content-box;
++  background-position: 0 0;
++
+   background: repeating-linear-gradient(
+     270deg,
+     rgba(0,0,0,0.00) 0,

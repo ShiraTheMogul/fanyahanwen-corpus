@@ -9,7 +9,7 @@ import { Controller } from "@hotwired/stimulus"
 //
 // State is stored in localStorage so it persists across page loads.
 export default class extends Controller {
-  static targets = ["viewbox", "content", "verticalBtn", "themeBtn", "punctBtn"]
+  static targets = ["viewbox", "content", "verticalBtn", "themeBtn", "punctBtn", "punctColorBtn", "judouBtn"]
 
   connect() {
     this._onExternalOptions = (ev) => {
@@ -30,12 +30,31 @@ export default class extends Controller {
     this._originalHTML = this.contentTarget.innerHTML
     this._strippedHTML = null
     this._state = this._loadState()
+
+    this._onScroll = () => { this._saveScrollLeft() }
+    this.viewboxTarget.addEventListener("scroll", this._onScroll, { passive: true })
+
+    this._onWheel = (ev) => {
+      if (!this._state.vertical) return
+      // In vertical writing-mode we want mousewheel to advance columns.
+      // Translate vertical wheel delta into horizontal scroll.
+      const box = this.viewboxTarget
+      if (!box) return
+      if (Math.abs(ev.deltaY) < 0.01) return
+      ev.preventDefault()
+      box.scrollLeft += ev.deltaY
+      this._saveScrollLeft()
+    }
+    this.viewboxTarget.addEventListener("wheel", this._onWheel, { passive: false })
+
     this._apply()
   }
 
   disconnect() {
     window.removeEventListener("corpus-view-options", this._onExternalOptions)
     window.removeEventListener("corpus-reader-refresh", this._onRefreshBaseline)
+    if (this._onScroll) this.viewboxTarget.removeEventListener("scroll", this._onScroll)
+    if (this._onWheel) this.viewboxTarget.removeEventListener("wheel", this._onWheel)
   }
 
   toggleVertical() {
@@ -49,6 +68,23 @@ export default class extends Controller {
     const order = ["light", "bamboo", "dark"]
     const idx = order.indexOf(this._state.theme)
     this._state.theme = order[(idx + 1) % order.length]
+    this._saveState()
+    this._apply()
+    this._broadcast()
+  }
+
+  toggleJudou() {
+    this._state.judouOn = !this._state.judouOn
+    this._saveState()
+    this._apply()
+    this._broadcast()
+  }
+
+  cyclePunctColor() {
+    const order = ["red", "black", "white", "blue", "yellow"]
+    const cur = (this._state.punctColor || "red").toString()
+    const idx = order.indexOf(cur)
+    this._state.punctColor = order[(idx + 1) % order.length]
     this._saveState()
     this._apply()
     this._broadcast()
@@ -98,6 +134,8 @@ export default class extends Controller {
       strip: getBool("corpus.stripPunct", false),
       fontSizePx: getInt("corpus.fontSizePx", 20),
       rubyOnDemand: getBool("corpus.rubyOnDemand", false),
+      judouOn: getBool("corpus.judouOn", true),
+      punctColor: getStr("corpus.punctColor", "red"),
     }
   }
 
@@ -145,6 +183,7 @@ export default class extends Controller {
     // Orientation class on the content.
     this.contentTarget.classList.toggle("is-vertical", vertical)
     this.contentTarget.classList.toggle("is-vflow-lr", vertical && (vflow === "lr"))
+    this.contentTarget.classList.toggle("judou-on", vertical && !!this._state.judouOn)
 
     // Buttons are optional targets (defensive in case the toolbar is removed).
     if (this.hasVerticalBtnTarget) this.verticalBtnTarget.setAttribute("aria-pressed", vertical ? "true" : "false")
@@ -155,9 +194,19 @@ export default class extends Controller {
       this.themeBtnTarget.textContent = `Theme: ${label}`
     }
     if (this.hasPunctBtnTarget) this.punctBtnTarget.setAttribute("aria-pressed", strip ? "true" : "false")
+    if (this.hasJudouBtnTarget) {
+      this.judouBtnTarget.setAttribute("aria-pressed", this._state.judouOn ? "true" : "false")
+      this.judouBtnTarget.textContent = this._state.judouOn ? "Judou: On" : "Judou: Off"
+    }
+    if (this.hasPunctColorBtnTarget) {
+      const c = (this._state.punctColor || "red").toString()
+      this.punctColorBtnTarget.textContent = `Dot: ${c[0].toUpperCase()}${c.slice(1)}`
+    }
 
     // Punctuation stripping (cached)
     this.contentTarget.innerHTML = strip ? this._getStrippedHTML() : this._originalHTML
+    this._applyJudouColor()
+    this._applyJudouWrappers()
 
 
     this._updateRubySpacing()
@@ -174,6 +223,72 @@ export default class extends Controller {
   
 
   
+  // === Scroll persistence per page ===
+  _scrollKey() { return `corpus.scrollLeft:${window.location.pathname}` }
+  _maxScrollLeft() {
+    const maxLeft = this.viewboxTarget.scrollWidth - this.viewboxTarget.clientWidth
+    return (maxLeft > 0) ? maxLeft : 0
+  }
+  _saveScrollLeft() {
+    try { sessionStorage.setItem(this._scrollKey(), String(this.viewboxTarget.scrollLeft)) } catch (_) {}
+  }
+  _restoreScrollLeft() {
+    try {
+      const v = sessionStorage.getItem(this._scrollKey())
+      if (v === null) return false
+      const n = Number(v)
+      if (!Number.isFinite(n)) return false
+      this.viewboxTarget.scrollLeft = n
+      return true
+    } catch (_) { return false }
+  }
+
+  // === Judou wrapping + colour ===
+  _applyJudouColor() {
+    const cur = (this._state.punctColor || "red").toString()
+    const map = { red:"#b00000", black:"#111111", white:"#f3f3f3", blue:"#1b4fd6", yellow:"#c9a100" }
+    this.viewboxTarget.style.setProperty("--cv-judou-color", map[cur] || map.red)
+  }
+
+  _wrapJudouInNode(node) {
+    const re = /[。、，；：？！,.;:?!]/g
+    const txt = node.nodeValue
+    if (!txt || !re.test(txt)) return
+    re.lastIndex = 0
+    const frag = document.createDocumentFragment()
+    let last = 0
+    for (const m of txt.matchAll(re)) {
+      const i = m.index
+      if (i > last) frag.appendChild(document.createTextNode(txt.slice(last, i)))
+      const span = document.createElement("span")
+      span.className = "cv-judou"
+      span.textContent = m[0]
+      frag.appendChild(span)
+      last = i + m[0].length
+    }
+    if (last < txt.length) frag.appendChild(document.createTextNode(txt.slice(last)))
+    node.parentNode.replaceChild(frag, node)
+  }
+
+  _applyJudouWrappers() {
+    // Wrap punctuation in spans so CSS can position/style it in vertical mode.
+    const root = this.contentTarget
+    if (!root) return
+    // Avoid double-wrapping: if we already have cv-judou spans, assume wrapped.
+    if (root.querySelector(".cv-judou")) return
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode: (n) => {
+        const p = n.parentElement
+        if (!p) return NodeFilter.FILTER_REJECT
+        if (p.closest("rt, rp")) return NodeFilter.FILTER_REJECT
+        return NodeFilter.FILTER_ACCEPT
+      }
+    })
+    const nodes = []
+    while (walker.nextNode()) nodes.push(walker.currentNode)
+    nodes.forEach(n => this._wrapJudouInNode(n))
+  }
+
   _updateRubySpacing() {
     // When ruby is present, give the reader a little extra line spacing so
     // readings never collide with line breaks. Works for both full ruby and
