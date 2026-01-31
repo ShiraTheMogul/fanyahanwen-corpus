@@ -1,0 +1,2219 @@
+--- a/viewer/app/javascript/controllers/corpus_annotations_controller.js
++++ b/viewer/app/javascript/controllers/corpus_annotations_controller.js
+@@ -1,477 +1,517 @@
+-import { Controller } from "@hotwired/stimulus"
+-
+-// User-contributed named-entity annotations for the corpus reader.
+-//
+-// How it works (high-level):
+-// 1) Server renders each original character as:
+-//      <span class="cch" data-corpus-idx="123">字</span>
+-//    (even when ruby <rt> exists)
+-// 2) When the user selects some text, we find the first/last cch spans in the
+-//    selection and treat that as a [start, end) character range.
+-// 3) We store ranges in JSON next to the corpus file and reload/re-apply later.
+-//
+-// Kinds:
+-// - title  (blue)
+-// - person (yellow)
+-// - place  (green)
+-// - office (red)
+-//
+-// Colours are controlled with CSS variables so users can override them (and use
+-// colourblind presets). This controller stores palette + options in localStorage.
+-export default class extends Controller {
+-  static targets = ["content"]
+-  static values = {
+-    path: String,
+-    url: String
+-  }
+-
+-  connect() {
+-    // Find the corpus textflow node; it already exists in the corpus-reader controller.
+-    this.contentTarget = this.element.querySelector(".corpus-textflow")
+-    if (!this.contentTarget) return
+-
+-    this._items = []
+-    this._palette = this._loadPalette()
+-    this._titleMode = this._loadTitleMode()
+-
+-    this._applyPaletteToRoot()
+-    this._ensureUI()
+-    this._wireEvents()
+-
+-    this._loadFromServer().then(() => {
+-      this._applyAllHighlights()
+-      this._applyAutoTitles()
+-    })
+-  }
+-
+-  disconnect() {
+-    this._unwireEvents()
+-    this._hideMenu()
+-  }
+-
+-  // ---------- events ----------
+-
+-  _wireEvents() {
+-    this._onMouseUp = (ev) => {
+-      // Small delay so window.getSelection() stabilizes.
+-      window.setTimeout(() => this._maybeOpenMenu(ev), 0)
+-    }
+-    this.contentTarget.addEventListener("mouseup", this._onMouseUp)
+-
+-    this._onKeyDown = (ev) => {
+-      if (ev.key === "Escape") this._hideMenu()
+-    }
+-    document.addEventListener("keydown", this._onKeyDown)
+-  }
+-
+-  _unwireEvents() {
+-    if (this._onMouseUp) this.contentTarget.removeEventListener("mouseup", this._onMouseUp)
+-    if (this._onKeyDown) document.removeEventListener("keydown", this._onKeyDown)
+-  }
+-
+-  // ---------- loading / saving ----------
+-
+-  async _loadFromServer() {
+-    const base = (this.urlValue || "/corpus_annotations").replace(/\/+$/, "")
+-    const url = `${base}?path=${encodeURIComponent(this.pathValue || "")}`
+-    try {
+-      const res = await fetch(url, { headers: { "Accept": "application/json" } })
+-      if (!res.ok) return
+-      const data = await res.json()
+-      this._items = Array.isArray(data?.items) ? data.items : []
+-    } catch (_) {
+-      // ignore: offline / no route yet
+-    }
+-  }
+-
+-  async _saveToServer() {
+-    const base = (this.urlValue || "/corpus_annotations").replace(/\/+$/, "")
+-    const url = `${base}?path=${encodeURIComponent(this.pathValue || "")}`
+-
+-    const token = document.querySelector("meta[name='csrf-token']")?.getAttribute("content") || ""
+-
+-    const payload = { annotations: { version: 1, items: this._items } }
+-
+-    const res = await fetch(url, {
+-      method: "POST",
+-      headers: {
+-        "Content-Type": "application/json",
+-        "Accept": "application/json",
+-        "X-CSRF-Token": token
+-      },
+-      body: JSON.stringify(payload)
+-    })
+-    return res.ok
+-  }
+-
+-  // ---------- selection -> range ----------
+-
+-  _maybeOpenMenu(ev) {
+-    const sel = window.getSelection()
+-    if (!sel || sel.isCollapsed) {
+-      this._hideMenu()
+-      return
+-    }
+-
+-    const range = sel.getRangeAt(0)
+-    if (!range) return
+-
+-    // Ensure the selection is within the corpus content.
+-    const common = range.commonAncestorContainer
+-    if (!this.contentTarget.contains(common.nodeType === 1 ? common : common.parentElement)) return
+-
+-    const bounds = range.getBoundingClientRect()
+-    if (!bounds || (bounds.width === 0 && bounds.height === 0)) return
+-
+-    const [start, end] = this._selectionToCorpusRange(range)
+-    if (start == null || end == null || end <= start) return
+-
+-    this._openMenuAt(bounds.left + window.scrollX, bounds.bottom + window.scrollY, start, end)
+-  }
+-
+-  _selectionToCorpusRange(range) {
+-    const spans = this.contentTarget.querySelectorAll("span.cch[data-corpus-idx]")
+-    if (!spans.length) return [null, null]
+-
+-    // Collect all selected cch spans by intersecting the selection range with each span.
+-    // This is O(n) but fine for typical selection sizes; plus spans are cheap nodes.
+-    let min = null
+-    let max = null
+-
+-    for (const sp of spans) {
+-      if (!range.intersectsNode(sp)) continue
+-      const idx = parseInt(sp.dataset.corpusIdx, 10)
+-      if (Number.isNaN(idx)) continue
+-      if (min == null || idx < min) min = idx
+-      if (max == null || idx > max) max = idx
+-    }
+-
+-    if (min == null || max == null) return [null, null]
+-    return [min, max + 1] // convert to [start, end)
+-  }
+-
+-  // ---------- applying highlights ----------
+-
+-  _clearAllSpanClasses() {
+-    const spans = this.contentTarget.querySelectorAll("span.cch")
+-    spans.forEach(sp => {
+-      sp.classList.remove("ne-title", "ne-person", "ne-place", "ne-office", "ne-title-auto")
+-    })
+-  }
+-
+-  _applyAllHighlights() {
+-    this._clearAllSpanClasses()
+-    for (const it of this._items) {
+-      this._applyItem(it)
+-    }
+-  }
+-
+-  _applyItem(it) {
+-    const kind = (it?.kind || "").toString()
+-    const start = parseInt(it?.start, 10)
+-    const end = parseInt(it?.end, 10)
+-    if (!Number.isFinite(start) || !Number.isFinite(end) || end <= start) return
+-
+-    const cls = this._kindToClass(kind)
+-    if (!cls) return
+-
+-    const spans = this.contentTarget.querySelectorAll("span.cch[data-corpus-idx]")
+-    for (const sp of spans) {
+-      const idx = parseInt(sp.dataset.corpusIdx, 10)
+-      if (idx >= start && idx < end) sp.classList.add(cls)
+-    }
+-  }
+-
+-  _kindToClass(kind) {
+-    switch (kind) {
+-      case "title": return "ne-title"
+-      case "person": return "ne-person"
+-      case "place": return "ne-place"
+-      case "office": return "ne-office"
+-      default: return null
+-    }
+-  }
+-
+-  // ---------- auto-title highlighting by brackets ----------
+-
+-  _applyAutoTitles() {
+-    // Remove only auto class, keep user annotations.
+-    this.contentTarget.querySelectorAll("span.cch.ne-title-auto").forEach(sp => sp.classList.remove("ne-title-auto"))
+-    if (this._titleMode === "off") return
+-
+-    const map = new Map()
+-    // Build an array of chars by idx.
+-    this.contentTarget.querySelectorAll("span.cch[data-corpus-idx]").forEach(sp => {
+-      const idx = parseInt(sp.dataset.corpusIdx, 10)
+-      if (!Number.isNaN(idx)) map.set(idx, sp)
+-    })
+-
+-    const getChar = (idx) => map.get(idx)?.textContent || ""
+-    const maxIdx = Math.max(...map.keys())
+-
+-    const pairs = []
+-    if (this._titleMode === "square" || this._titleMode === "both") {
+-      pairs.push(["〖", "〗"])
+-      pairs.push(["【", "】"])
+-    }
+-    if (this._titleMode === "angle" || this._titleMode === "both") {
+-      pairs.push(["《", "》"])
+-    }
+-
+-    // Scan left-to-right by index. (Treat each char as unit.)
+-    for (const [open, close] of pairs) {
+-      let i = 0
+-      while (i <= maxIdx) {
+-        if (getChar(i) !== open) { i += 1; continue }
+-        let j = i + 1
+-        while (j <= maxIdx && getChar(j) !== close) j += 1
+-        if (j <= maxIdx && getChar(j) === close) {
+-          for (let k = i; k <= j; k += 1) {
+-            const sp = map.get(k)
+-            if (sp) sp.classList.add("ne-title-auto")
+-          }
+-          i = j + 1
+-        } else {
+-          i += 1
+-        }
+-      }
+-    }
+-  }
+-
+-  // ---------- UI ----------
+-
+-  _ensureUI() {
+-    if (this._menuEl) return
+-
+-    const menu = document.createElement("div")
+-    menu.className = "corpus-annot-menu"
+-    menu.innerHTML = `
+-      <div class="corpus-annot-row">
+-        <button type="button" data-kind="title">Title</button>
+-        <button type="button" data-kind="person">Person</button>
+-        <button type="button" data-kind="place">Place</button>
+-        <button type="button" data-kind="office">Office</button>
+-        <button type="button" data-kind="clear" class="danger">Clear</button>
+-      </div>
+-      <div class="corpus-annot-row">
+-        <label class="corpus-annot-label">Note</label>
+-        <input type="text" class="corpus-annot-note" placeholder="optional" />
+-      </div>
+-      <div class="corpus-annot-row">
+-        <button type="button" data-action="save" class="primary">Save</button>
+-        <button type="button" data-action="cancel">Cancel</button>
+-      </div>
+-      <hr />
+-      <div class="corpus-annot-row">
+-        <label class="corpus-annot-label">Auto titles</label>
+-        <select class="corpus-annot-select" data-action="titleMode">
+-          <option value="both">〖〗/【】 + 《》</option>
+-          <option value="square">〖〗/【】 only</option>
+-          <option value="angle">《》 only</option>
+-          <option value="off">Off</option>
+-        </select>
+-      </div>
+-      <div class="corpus-annot-row">
+-        <button type="button" data-action="colors">Colours…</button>
+-      </div>
+-    `
+-    document.body.appendChild(menu)
+-    this._menuEl = menu
+-
+-    // Palette dialog
+-    const dlg = document.createElement("dialog")
+-    dlg.className = "corpus-annot-colors"
+-    dlg.innerHTML = `
+-      <form method="dialog">
+-        <h3>Entity colours</h3>
+-        <div class="corpus-annot-grid">
+-          <label>Title <input type="color" name="title" /></label>
+-          <label>Person <input type="color" name="person" /></label>
+-          <label>Place <input type="color" name="place" /></label>
+-          <label>Office <input type="color" name="office" /></label>
+-        </div>
+-        <div class="corpus-annot-row">
+-          <label class="corpus-annot-label">Preset</label>
+-          <select name="preset">
+-            <option value="default">Default</option>
+-            <option value="deuteranopia">Deuteranopia</option>
+-            <option value="protanopia">Protanopia</option>
+-            <option value="tritanopia">Tritanopia</option>
+-          </select>
+-        </div>
+-        <div class="corpus-annot-row">
+-          <button value="apply" class="primary">Apply</button>
+-          <button value="close">Close</button>
+-        </div>
+-      </form>
+-    `
+-    document.body.appendChild(dlg)
+-    this._colorsDlg = dlg
+-  }
+-
+-  _openMenuAt(x, y, start, end) {
+-    this._activeRange = { start, end }
+-
+-    // Prefill: if an item already exists matching this range, load its note.
+-    const existing = this._items.find(it => it.start === start && it.end === end)
+-    this._menuEl.querySelector(".corpus-annot-note").value = existing?.note || ""
+-
+-    // Title mode select
+-    const sel = this._menuEl.querySelector("select[data-action='titleMode']")
+-    sel.value = this._titleMode
+-
+-    // Position + show
+-    this._menuEl.style.left = `${Math.max(8, x)}px`
+-    this._menuEl.style.top = `${Math.max(8, y + 6)}px`
+-    this._menuEl.style.display = "block"
+-
+-    // Button handlers (set once)
+-    if (!this._menuWired) {
+-      this._menuEl.addEventListener("click", (ev) => {
+-        const btn = ev.target.closest("button")
+-        if (!btn) return
+-        const kind = btn.dataset.kind
+-        const act = btn.dataset.action
+-
+-        if (kind) this._chooseKind(kind)
+-        if (act === "save") this._saveActive()
+-        if (act === "cancel") this._hideMenu()
+-        if (act === "colors") this._openColors()
+-      })
+-
+-      this._menuEl.querySelector("select[data-action='titleMode']").addEventListener("change", (ev) => {
+-        this._titleMode = ev.target.value
+-        this._saveTitleMode(this._titleMode)
+-        this._applyAutoTitles()
+-      })
+-
+-      this._menuWired = true
+-    }
+-  }
+-
+-  _hideMenu() {
+-    if (this._menuEl) this._menuEl.style.display = "none"
+-    this._activeRange = null
+-  }
+-
+-  _chooseKind(kind) {
+-    if (!this._activeRange) return
+-    this._activeKind = kind
+-    // Light UI feedback (pressed state)
+-    this._menuEl.querySelectorAll("button[data-kind]").forEach(b => b.classList.toggle("selected", b.dataset.kind === kind))
+-  }
+-
+-  async _saveActive() {
+-    if (!this._activeRange) return
+-    const { start, end } = this._activeRange
+-    const note = this._menuEl.querySelector(".corpus-annot-note").value || ""
+-
+-    const kind = this._activeKind || "person"
+-
+-    // Remove any existing item that overlaps exactly.
+-    this._items = this._items.filter(it => !(it.start === start && it.end === end))
+-
+-    if (kind !== "clear") {
+-      this._items.push({ start, end, kind, note: note.trim() || undefined })
+-    }
+-
+-    this._applyAllHighlights()
+-    this._applyAutoTitles()
+-
+-    await this._saveToServer()
+-    this._hideMenu()
+-    window.getSelection()?.removeAllRanges()
+-  }
+-
+-  _openColors() {
+-    if (!this._colorsDlg) return
+-
+-    // Fill current palette
+-    this._colorsDlg.querySelector("input[name='title']").value = this._palette.title
+-    this._colorsDlg.querySelector("input[name='person']").value = this._palette.person
+-    this._colorsDlg.querySelector("input[name='place']").value = this._palette.place
+-    this._colorsDlg.querySelector("input[name='office']").value = this._palette.office
+-    this._colorsDlg.querySelector("select[name='preset']").value = "default"
+-
+-    const form = this._colorsDlg.querySelector("form")
+-    const onClose = () => {
+-      form.removeEventListener("close", onClose)
+-    }
+-
+-    form.addEventListener("submit", (ev) => {
+-      // Apply either preset or custom colours.
+-      const preset = this._colorsDlg.querySelector("select[name='preset']").value
+-      if (preset && preset !== "default") {
+-        this._palette = this._presetPalette(preset)
+-      } else {
+-        this._palette = {
+-          title: this._colorsDlg.querySelector("input[name='title']").value,
+-          person: this._colorsDlg.querySelector("input[name='person']").value,
+-          place: this._colorsDlg.querySelector("input[name='place']").value,
+-          office: this._colorsDlg.querySelector("input[name='office']").value
+-        }
+-      }
+-      this._savePalette(this._palette)
+-      this._applyPaletteToRoot()
+-    }, { once: true })
+-
+-    this._colorsDlg.showModal()
+-  }
+-
+-  // ---------- palette persistence ----------
+-
+-  _paletteKey() { return "corpus.annot.palette.v1" }
+-  _titleModeKey() { return "corpus.annot.titlemode.v1" }
+-
+-  _loadPalette() {
+-    try {
+-      const raw = localStorage.getItem(this._paletteKey())
+-      if (!raw) return this._presetPalette("default")
+-      const obj = JSON.parse(raw)
+-      if (!obj) return this._presetPalette("default")
+-      return {
+-        title: obj.title || "#2b6cb0",
+-        person: obj.person || "#d69e2e",
+-        place: obj.place || "#2f855a",
+-        office: obj.office || "#c53030"
+-      }
+-    } catch (_) {
+-      return this._presetPalette("default")
+-    }
+-  }
+-
+-  _savePalette(pal) {
+-    try { localStorage.setItem(this._paletteKey(), JSON.stringify(pal)) } catch (_) {}
+-  }
+-
+-  _loadTitleMode() {
+-    try { return localStorage.getItem(this._titleModeKey()) || "both" } catch (_) { return "both" }
+-  }
+-
+-  _saveTitleMode(mode) {
+-    try { localStorage.setItem(this._titleModeKey(), mode) } catch (_) {}
+-  }
+-
+-  _presetPalette(name) {
+-    // These are intentionally high-contrast and not purely red/green.
+-    // They are *heuristics*; users can override with the colour picker.
+-    switch (name) {
+-      case "deuteranopia":
+-        return { title: "#1f77b4", person: "#ff7f0e", place: "#9467bd", office: "#2ca02c" }
+-      case "protanopia":
+-        return { title: "#1f77b4", person: "#ff7f0e", place: "#8c564b", office: "#2ca02c" }
+-      case "tritanopia":
+-        return { title: "#e377c2", person: "#7f7f7f", place: "#17becf", office: "#bcbd22" }
+-      default:
+-        return { title: "#2b6cb0", person: "#d69e2e", place: "#2f855a", office: "#c53030" }
+-    }
+-  }
+-
+-  _applyPaletteToRoot() {
+-    const root = document.documentElement
+-    root.style.setProperty("--ne-title", this._palette.title)
+-    root.style.setProperty("--ne-person", this._palette.person)
+-    root.style.setProperty("--ne-place", this._palette.place)
+-    root.style.setProperty("--ne-office", this._palette.office)
+-  }
+-}
++import { Controller } from "@hotwired/stimulus"
++
++// User-contributed named-entity annotations for the corpus reader.
++//
++// How it works (high-level):
++// 1) Server renders each original character as:
++//      <span class="cch" data-corpus-idx="123">字</span>
++//    (even when ruby <rt> exists)
++// 2) When the user selects some text, we find the first/last cch spans in the
++//    selection and treat that as a [start, end) character range.
++// 3) We store ranges in JSON next to the corpus file and reload/re-apply later.
++//
++// Kinds:
++// - title  (blue)
++// - person (yellow)
++// - place  (green)
++// - office (red)
++//
++// Colours are controlled with CSS variables so users can override them (and use
++// colourblind presets). This controller stores palette + options in localStorage.
++export default class extends Controller {
++  static targets = ["content"]
++  static values = {
++    path: String,
++    url: String
++  }
++
++  connect() {
++    // Find the corpus textflow node; it already exists in the corpus-reader controller.
++    // IMPORTANT: Stimulus targets like `contentTarget` are read-only getters.
++    // Use a normal property so we do not crash connect().
++    this._contentEl = this.element.querySelector(".corpus-textflow")
++    if (!this._contentEl) return
++
++    this._modeEnabled = this._loadModeEnabled()
++
++    this._items = []
++    this._palette = this._loadPalette()
++    this._titleMode = this._loadTitleMode()
++
++    this._applyPaletteToRoot()
++    this._ensureUI()
++    this._syncAnnotateButton()
++    this._wireEvents()
++
++    this._loadFromServer().then(() => {
++      this._applyAllHighlights()
++      this._applyAutoTitles()
++    })
++  }
++
++  disconnect() {
++    this._unwireEvents()
++    this._hideMenu()
++  }
++
++  
++// Toggle annotate mode from the toolbar button.
++toggleAnnotate() {
++  this._modeEnabled = !this._modeEnabled
++  this._storeModeEnabled(this._modeEnabled)
++  this._syncAnnotateButton()
++  if (!this._modeEnabled) this._hideMenu()
++}
++
++// ---------- events ----------
++
++  _wireEvents() {
++    this._onMouseUp = (ev) => {
++      // Small delay so window.getSelection() stabilizes.
++      window.setTimeout(() => this._maybeOpenMenu(ev), 0)
++    }
++    this._contentEl.addEventListener("mouseup", this._onMouseUp)
++
++    this._onKeyDown = (ev) => {
++      if (ev.key === "Escape") this._hideMenu()
++    }
++    document.addEventListener("keydown", this._onKeyDown)
++  }
++
++  _unwireEvents() {
++    if (this._onMouseUp) this._contentEl.removeEventListener("mouseup", this._onMouseUp)
++    if (this._onKeyDown) document.removeEventListener("keydown", this._onKeyDown)
++  }
++
++  // ---------- loading / saving ----------
++
++  async _loadFromServer() {
++    const base = (this.urlValue || "/corpus_annotations").replace(/\/+$/, "")
++    const url = `${base}?path=${encodeURIComponent(this.pathValue || "")}`
++    try {
++      const res = await fetch(url, { headers: { "Accept": "application/json" } })
++      if (!res.ok) return
++      const data = await res.json()
++      this._items = Array.isArray(data?.items) ? data.items : []
++    } catch (_) {
++      // ignore: offline / no route yet
++    }
++  }
++
++  async _saveToServer() {
++    const base = (this.urlValue || "/corpus_annotations").replace(/\/+$/, "")
++    const url = `${base}?path=${encodeURIComponent(this.pathValue || "")}`
++
++    const token = document.querySelector("meta[name='csrf-token']")?.getAttribute("content") || ""
++
++    const payload = { annotations: { version: 1, items: this._items } }
++
++    const res = await fetch(url, {
++      method: "POST",
++      headers: {
++        "Content-Type": "application/json",
++        "Accept": "application/json",
++        "X-CSRF-Token": token
++      },
++      body: JSON.stringify(payload)
++    })
++    return res.ok
++  }
++
++  // ---------- selection -> range ----------
++
++  _maybeOpenMenu(ev) {
++    if (!this._modeEnabled) return
++
++    const sel = window.getSelection()
++    if (!sel || sel.isCollapsed) {
++      this._hideMenu()
++      return
++    }
++
++    const range = sel.getRangeAt(0)
++    if (!range) return
++
++    // Ensure the selection is within the corpus content.
++    const common = range.commonAncestorContainer
++    if (!this.contentTarget.contains(common.nodeType === 1 ? common : common.parentElement)) return
++
++    const bounds = range.getBoundingClientRect()
++    if (!bounds || (bounds.width === 0 && bounds.height === 0)) return
++
++    const [start, end] = this._selectionToCorpusRange(range)
++    if (start == null || end == null || end <= start) return
++
++    this._openMenuAt(bounds.left + window.scrollX, bounds.bottom + window.scrollY, start, end)
++  }
++
++  _selectionToCorpusRange(range) {
++    const spans = this.contentTarget.querySelectorAll("span.cch[data-corpus-idx]")
++    if (!spans.length) return [null, null]
++
++    // Collect all selected cch spans by intersecting the selection range with each span.
++    // This is O(n) but fine for typical selection sizes; plus spans are cheap nodes.
++    let min = null
++    let max = null
++
++    for (const sp of spans) {
++      if (!range.intersectsNode(sp)) continue
++      const idx = parseInt(sp.dataset.corpusIdx, 10)
++      if (Number.isNaN(idx)) continue
++      if (min == null || idx < min) min = idx
++      if (max == null || idx > max) max = idx
++    }
++
++    if (min == null || max == null) return [null, null]
++    return [min, max + 1] // convert to [start, end)
++  }
++
++  // ---------- applying highlights ----------
++
++  _clearAllSpanClasses() {
++    const spans = this.contentTarget.querySelectorAll("span.cch")
++    spans.forEach(sp => {
++      sp.classList.remove("ne-title", "ne-person", "ne-place", "ne-office", "ne-title-auto")
++    })
++  }
++
++  _applyAllHighlights() {
++    this._clearAllSpanClasses()
++    for (const it of this._items) {
++      this._applyItem(it)
++    }
++  }
++
++  _applyItem(it) {
++    const kind = (it?.kind || "").toString()
++    const start = parseInt(it?.start, 10)
++    const end = parseInt(it?.end, 10)
++    if (!Number.isFinite(start) || !Number.isFinite(end) || end <= start) return
++
++    const cls = this._kindToClass(kind)
++    if (!cls) return
++
++    const spans = this.contentTarget.querySelectorAll("span.cch[data-corpus-idx]")
++    for (const sp of spans) {
++      const idx = parseInt(sp.dataset.corpusIdx, 10)
++      if (idx >= start && idx < end) sp.classList.add(cls)
++    }
++  }
++
++  _kindToClass(kind) {
++    switch (kind) {
++      case "title": return "ne-title"
++      case "person": return "ne-person"
++      case "place": return "ne-place"
++      case "office": return "ne-office"
++      default: return null
++    }
++  }
++
++  // ---------- auto-title highlighting by brackets ----------
++
++  _applyAutoTitles() {
++    // Remove only auto class, keep user annotations.
++    this.contentTarget.querySelectorAll("span.cch.ne-title-auto").forEach(sp => sp.classList.remove("ne-title-auto"))
++    if (this._titleMode === "off") return
++
++    const map = new Map()
++    // Build an array of chars by idx.
++    this.contentTarget.querySelectorAll("span.cch[data-corpus-idx]").forEach(sp => {
++      const idx = parseInt(sp.dataset.corpusIdx, 10)
++      if (!Number.isNaN(idx)) map.set(idx, sp)
++    })
++
++    const getChar = (idx) => map.get(idx)?.textContent || ""
++    const maxIdx = Math.max(...map.keys())
++
++    const pairs = []
++    if (this._titleMode === "square" || this._titleMode === "both") {
++      pairs.push(["〖", "〗"])
++      pairs.push(["【", "】"])
++    }
++    if (this._titleMode === "angle" || this._titleMode === "both") {
++      pairs.push(["《", "》"])
++    }
++
++    // Scan left-to-right by index. (Treat each char as unit.)
++    for (const [open, close] of pairs) {
++      let i = 0
++      while (i <= maxIdx) {
++        if (getChar(i) !== open) { i += 1; continue }
++        let j = i + 1
++        while (j <= maxIdx && getChar(j) !== close) j += 1
++        if (j <= maxIdx && getChar(j) === close) {
++          for (let k = i; k <= j; k += 1) {
++            const sp = map.get(k)
++            if (sp) sp.classList.add("ne-title-auto")
++          }
++          i = j + 1
++        } else {
++          i += 1
++        }
++      }
++    }
++  }
++
++  // ---------- UI ----------
++
++  _ensureUI() {
++    if (this._menuEl) return
++
++    const menu = document.createElement("div")
++    menu.className = "corpus-annot-menu"
++    menu.innerHTML = `
++      <div class="corpus-annot-row">
++        <button type="button" data-kind="title">Title</button>
++        <button type="button" data-kind="person">Person</button>
++        <button type="button" data-kind="place">Place</button>
++        <button type="button" data-kind="office">Office</button>
++        <button type="button" data-kind="clear" class="danger">Clear</button>
++      </div>
++      <div class="corpus-annot-row">
++        <label class="corpus-annot-label">Note</label>
++        <input type="text" class="corpus-annot-note" placeholder="optional" />
++      </div>
++      <div class="corpus-annot-row">
++        <button type="button" data-action="save" class="primary">Save</button>
++        <button type="button" data-action="cancel">Cancel</button>
++      </div>
++      <hr />
++      <div class="corpus-annot-row">
++        <label class="corpus-annot-label">Auto titles</label>
++        <select class="corpus-annot-select" data-action="titleMode">
++          <option value="both">〖〗/【】 + 《》</option>
++          <option value="square">〖〗/【】 only</option>
++          <option value="angle">《》 only</option>
++          <option value="off">Off</option>
++        </select>
++      </div>
++      <div class="corpus-annot-row">
++        <button type="button" data-action="colors">Colours…</button>
++      </div>
++    `
++    document.body.appendChild(menu)
++    this._menuEl = menu
++
++    // Palette dialog
++    const dlg = document.createElement("dialog")
++    dlg.className = "corpus-annot-colors"
++    dlg.innerHTML = `
++      <form method="dialog">
++        <h3>Entity colours</h3>
++        <div class="corpus-annot-grid">
++          <label>Title <input type="color" name="title" /></label>
++          <label>Person <input type="color" name="person" /></label>
++          <label>Place <input type="color" name="place" /></label>
++          <label>Office <input type="color" name="office" /></label>
++        </div>
++        <div class="corpus-annot-row">
++          <label class="corpus-annot-label">Preset</label>
++          <select name="preset">
++            <option value="default">Default</option>
++            <option value="deuteranopia">Deuteranopia</option>
++            <option value="protanopia">Protanopia</option>
++            <option value="tritanopia">Tritanopia</option>
++          </select>
++        </div>
++        <div class="corpus-annot-row">
++          <button value="apply" class="primary">Apply</button>
++          <button value="close">Close</button>
++        </div>
++      </form>
++    `
++    document.body.appendChild(dlg)
++    this._colorsDlg = dlg
++  }
++
++  _openMenuAt(x, y, start, end) {
++    this._activeRange = { start, end }
++
++    // Prefill: if an item already exists matching this range, load its note.
++    const existing = this._items.find(it => it.start === start && it.end === end)
++    this._menuEl.querySelector(".corpus-annot-note").value = existing?.note || ""
++
++    // Title mode select
++    const sel = this._menuEl.querySelector("select[data-action='titleMode']")
++    sel.value = this._titleMode
++
++    // Position + show
++    this._menuEl.style.left = `${Math.max(8, x)}px`
++    this._menuEl.style.top = `${Math.max(8, y + 6)}px`
++    this._menuEl.style.display = "block"
++
++    // Button handlers (set once)
++    if (!this._menuWired) {
++      this._menuEl.addEventListener("click", (ev) => {
++        const btn = ev.target.closest("button")
++        if (!btn) return
++        const kind = btn.dataset.kind
++        const act = btn.dataset.action
++
++        if (kind) this._chooseKind(kind)
++        if (act === "save") this._saveActive()
++        if (act === "cancel") this._hideMenu()
++        if (act === "colors") this._openColors()
++      })
++
++      this._menuEl.querySelector("select[data-action='titleMode']").addEventListener("change", (ev) => {
++        this._titleMode = ev.target.value
++        this._saveTitleMode(this._titleMode)
++        this._applyAutoTitles()
++      })
++
++      this._menuWired = true
++    }
++  }
++
++  _hideMenu() {
++    if (this._menuEl) this._menuEl.style.display = "none"
++    this._activeRange = null
++  }
++
++  _chooseKind(kind) {
++    if (!this._activeRange) return
++    this._activeKind = kind
++    // Light UI feedback (pressed state)
++    this._menuEl.querySelectorAll("button[data-kind]").forEach(b => b.classList.toggle("selected", b.dataset.kind === kind))
++  }
++
++  async _saveActive() {
++    if (!this._activeRange) return
++    const { start, end } = this._activeRange
++    const note = this._menuEl.querySelector(".corpus-annot-note").value || ""
++
++    const kind = this._activeKind || "person"
++
++    // Remove any existing item that overlaps exactly.
++    this._items = this._items.filter(it => !(it.start === start && it.end === end))
++
++    if (kind !== "clear") {
++      this._items.push({ start, end, kind, note: note.trim() || undefined })
++    }
++
++    this._applyAllHighlights()
++    this._applyAutoTitles()
++
++    await this._saveToServer()
++    this._hideMenu()
++    window.getSelection()?.removeAllRanges()
++  }
++
++  _openColors() {
++    if (!this._colorsDlg) return
++
++    // Fill current palette
++    this._colorsDlg.querySelector("input[name='title']").value = this._palette.title
++    this._colorsDlg.querySelector("input[name='person']").value = this._palette.person
++    this._colorsDlg.querySelector("input[name='place']").value = this._palette.place
++    this._colorsDlg.querySelector("input[name='office']").value = this._palette.office
++    this._colorsDlg.querySelector("select[name='preset']").value = "default"
++
++    const form = this._colorsDlg.querySelector("form")
++    const onClose = () => {
++      form.removeEventListener("close", onClose)
++    }
++
++    form.addEventListener("submit", (ev) => {
++      // Apply either preset or custom colours.
++      const preset = this._colorsDlg.querySelector("select[name='preset']").value
++      if (preset && preset !== "default") {
++        this._palette = this._presetPalette(preset)
++      } else {
++        this._palette = {
++          title: this._colorsDlg.querySelector("input[name='title']").value,
++          person: this._colorsDlg.querySelector("input[name='person']").value,
++          place: this._colorsDlg.querySelector("input[name='place']").value,
++          office: this._colorsDlg.querySelector("input[name='office']").value
++        }
++      }
++      this._savePalette(this._palette)
++      this._applyPaletteToRoot()
++    }, { once: true })
++
++    this._colorsDlg.showModal()
++  }
++
++  // ---------- palette persistence ----------
++
++  _paletteKey() { return "corpus.annot.palette.v1" }
++  _titleModeKey() { return "corpus.annot.titlemode.v1" }
++
++  _loadPalette() {
++    try {
++      const raw = localStorage.getItem(this._paletteKey())
++      if (!raw) return this._presetPalette("default")
++      const obj = JSON.parse(raw)
++      if (!obj) return this._presetPalette("default")
++      return {
++        title: obj.title || "#2b6cb0",
++        person: obj.person || "#d69e2e",
++        place: obj.place || "#2f855a",
++        office: obj.office || "#c53030"
++      }
++    } catch (_) {
++      return this._presetPalette("default")
++    }
++  }
++
++  _savePalette(pal) {
++    try { localStorage.setItem(this._paletteKey(), JSON.stringify(pal)) } catch (_) {}
++  }
++
++  _loadTitleMode() {
++    try { return localStorage.getItem(this._titleModeKey()) || "both" } catch (_) { return "both" }
++  }
++
++  _saveTitleMode(mode) {
++    try { localStorage.setItem(this._titleModeKey(), mode) } catch (_) {}
++  }
++
++  _presetPalette(name) {
++    // These are intentionally high-contrast and not purely red/green.
++    // They are *heuristics*; users can override with the colour picker.
++    switch (name) {
++      case "deuteranopia":
++        return { title: "#1f77b4", person: "#ff7f0e", place: "#9467bd", office: "#2ca02c" }
++      case "protanopia":
++        return { title: "#1f77b4", person: "#ff7f0e", place: "#8c564b", office: "#2ca02c" }
++      case "tritanopia":
++        return { title: "#e377c2", person: "#7f7f7f", place: "#17becf", office: "#bcbd22" }
++      default:
++        return { title: "#2b6cb0", person: "#d69e2e", place: "#2f855a", office: "#c53030" }
++    }
++  }
++
++  _applyPaletteToRoot() {
++    const root = document.documentElement
++    root.style.setProperty("--ne-title", this._palette.title)
++    root.style.setProperty("--ne-person", this._palette.person)
++    root.style.setProperty("--ne-place", this._palette.place)
++    root.style.setProperty("--ne-office", this._palette.office)
++  }
++
++_loadModeEnabled() {
++  try {
++    const v = localStorage.getItem("cv_annot_mode")
++    if (v === null) return false
++    return v === "1"
++  } catch (_) {
++    return false
++  }
++}
++
++_storeModeEnabled(on) {
++  try { localStorage.setItem("cv_annot_mode", on ? "1" : "0") } catch (_) {}
++}
++
++_syncAnnotateButton() {
++  const btn = this.element.querySelector("[data-corpus-annotations-annotate-btn]")
++  if (!btn) return
++  btn.setAttribute("aria-pressed", this._modeEnabled ? "true" : "false")
++  btn.classList.toggle("is-active", !!this._modeEnabled)
++  btn.textContent = this._modeEnabled ? "Annotate: On" : "Annotate: Off"
++}
++
++
++}
+--- a/viewer/app/views/corpus_viewer/show.html.erb
++++ b/viewer/app/views/corpus_viewer/show.html.erb
+@@ -1,168 +1,177 @@
+-<h1>Corpus Viewer</h1>
+-
+-<p class="crumbs">
+-  <% if @rel_path.present? %>
+-    <% parts = @rel_path.to_s.split("/") %>
+-    <%= link_to "Root", corpus_viewer_path %>
+-    <% acc = [] %>
+-    <% parts.each do |part| %>
+-      <% acc << part %>
+-      <span class="crumb-sep">/</span>
+-      <%= link_to part, corpus_viewer_path(acc, format: nil) %>
+-    <% end %>
+-  <% end %>
+-</p>
+-
+-<% if @kind == :dir %>
+-  <p><strong><%= @rel_path.present? ? @rel_path : "Root" %></strong></p>
+-
+-  <ul class="corpus-list">
+-    <% @children.each do |name| %>
+-      <% child_rel = @rel_path.present? ? "#{@rel_path}/#{name}" : name %>
+-      <li>
+-        <%= link_to name, corpus_viewer_path(child_rel.split("/"), format: nil) %>
+-      </li>
+-    <% end %>
+-  </ul>
+-
+-<% elsif @kind == :file %>
+-  <%= render "rightbar" %>
+-
+-  <div class="corpus-reader" data-controller="corpus-reader corpus-annotations"
+-       data-corpus-annotations-path-value="<%= @rel_path %>"
+-       data-corpus-annotations-url-value="/corpus_annotations">
+-    <div class="corpus-toolbar" role="toolbar" aria-label="Corpus viewer tools">
+-      <button type="button"
+-              class="corpus-btn"
+-              data-action="corpus-reader#toggleVertical"
+-              data-corpus-reader-target="verticalBtn"
+-              aria-pressed="false">
+-        Vertical
+-      </button>
+-
+-      <button type="button"
+-              class="corpus-btn"
+-              data-action="corpus-reader#cycleTheme"
+-              data-corpus-reader-target="themeBtn"
+-              aria-pressed="false">
+-        Theme
+-      </button>
+-      <button type="button"
+-              class="corpus-btn"
+-              data-action="corpus-reader#cyclePunctPreset"
+-              data-corpus-reader-target="punctPresetBtn"
+-              aria-pressed="false">
+-        Punct: Source
+-      </button>
+-
+-      <button type="button"
+-              class="corpus-btn corpus-btn-split"
+-              title="Punctuation options"
+-              aria-label="Punctuation options"
+-              data-action="corpus-reader#togglePunctMenu"
+-              data-corpus-reader-target="punctMenuBtn">
+-        ▾
+-      </button>
+-
+-      <button type="button"
+-              class="corpus-btn"
+-              data-action="corpus-reader#toggleJudou"
+-              data-corpus-reader-target="judouBtn"
+-              aria-pressed="true">
+-        Judou: On
+-      </button>
+-
+-      <button type="button"
+-              class="corpus-btn"
+-              data-action="corpus-reader#cyclePunctColor"
+-              data-corpus-reader-target="punctColorBtn"
+-              aria-pressed="false">
+-        Dot: Red
+-      </button>
+-    </div>
+-
+-    
+-    <div class="corpus-punct-overlay"
+-         data-corpus-reader-target="punctOverlay"
+-         data-action="click->corpus-reader#onPunctOverlayClick"
+-         hidden>
+-      <div class="corpus-punct-panel"
+-           data-corpus-reader-target="punctPanel"
+-           role="dialog"
+-           aria-label="Punctuation options">
+-        <div class="corpus-punct-header">
+-          <div class="corpus-punct-title">Punctuation options</div>
+-          <div class="corpus-punct-actions">
+-            <button type="button" class="corpus-btn corpus-btn-ghost" data-action="click->corpus-reader#okPunctMenu" data-corpus-reader-target="punctOkBtn">OK</button>
+-            <button type="button" class="corpus-btn corpus-btn-ghost" data-action="click->corpus-reader#closePunctMenu" data-corpus-reader-target="punctCloseBtn">✕</button>
+-          </div>
+-        </div>
+-
+-        <div class="corpus-punct-grid">
+-          <fieldset class="corpus-fieldset preset-box">
+-            <legend>Preset</legend>
+-            <label><input type="radio" name="cv_preset" value="source" data-action="change->corpus-reader#setPunctPresetRadio"> Source</label>
+-            <label><input type="radio" name="cv_preset" value="modern_trad" data-action="change->corpus-reader#setPunctPresetRadio"> Modern CJK (Traditional)</label>
+-            <label><input type="radio" name="cv_preset" value="modern_prc" data-action="change->corpus-reader#setPunctPresetRadio"> Modern CJK (Simplified / PRC)</label>
+-            <label><input type="radio" name="cv_preset" value="pure" data-action="change->corpus-reader#setPunctPresetRadio"> Pure classical</label>
+-            <label><input type="radio" name="cv_preset" value="strip" data-action="change->corpus-reader#setPunctPresetRadio"> Strip</label>
+-            <label><input type="radio" name="cv_preset" value="custom" data-action="change->corpus-reader#setPunctPresetRadio"> Custom</label>
+-          </fieldset>
+-
+-          <fieldset class="corpus-fieldset">
+-            <legend>Quotes</legend>
+-            <div class="corpus-subtitle">Family</div>
+-            <label><input type="radio" name="cv_quote_family" value="corner" data-action="change->corpus-reader#setPunctOptionRadio"> Chinese quotation marks 「」『』</label>
+-            <label><input type="radio" name="cv_quote_family" value="speech_curly" data-action="change->corpus-reader#setPunctOptionRadio"> Latin speech marks “ ” ‘ ’</label>
+-            <label><input type="radio" name="cv_quote_family" value="speech_fullwidth" data-action="change->corpus-reader#setPunctOptionRadio"> Chinese speech marks ＂ ＇</label>
+-            <label><input type="radio" name="cv_quote_family" value="off" data-action="change->corpus-reader#setPunctOptionRadio"> Off</label>
+-
+-            <div class="corpus-subtitle">Ordering</div>
+-            <label><input type="radio" name="cv_quote_order" value="trad" data-action="change->corpus-reader#setPunctOptionRadio"> Traditional: 「甲『乙』丙」</label>
+-            <label><input type="radio" name="cv_quote_order" value="simp" data-action="change->corpus-reader#setPunctOptionRadio"> Simplified: 『甲「乙」丙』</label>
+-
+-            <label class="corpus-check"><input type="checkbox" data-corpus-reader-target="verticalQuoteFormsChk" data-action="change->corpus-reader#toggleVerticalQuoteForms"> Vertical quote forms (﹁﹂﹃﹄)</label>
+-          </fieldset>
+-
+-          <fieldset class="corpus-fieldset">
+-            <legend>Question / Exclamation</legend>
+-            <label><input type="radio" name="cv_q" value="keep" data-action="change->corpus-reader#setPunctOptionRadio"> Keep ？</label>
+-            <label><input type="radio" name="cv_q" value="collapse" data-action="change->corpus-reader#setPunctOptionRadio"> Collapse ? → 。</label>
+-            <div style="height:6px"></div>
+-            <label><input type="radio" name="cv_ex" value="keep" data-action="change->corpus-reader#setPunctOptionRadio"> Keep ！</label>
+-            <label><input type="radio" name="cv_ex" value="collapse" data-action="change->corpus-reader#setPunctOptionRadio"> Collapse ! → 。</label>
+-          </fieldset>
+-
+-          <fieldset class="corpus-fieldset">
+-            <legend>Semicolon / Colon</legend>
+-            <label><input type="radio" name="cv_semi" value="keep" data-action="change->corpus-reader#setPunctOptionRadio"> Keep ；</label>
+-            <label><input type="radio" name="cv_semi" value="collapse" data-action="change->corpus-reader#setPunctOptionRadio"> Collapse ; → 。</label>
+-            <div style="height:6px"></div>
+-            <label><input type="radio" name="cv_colon" value="keep" data-action="change->corpus-reader#setPunctOptionRadio"> Keep ：</label>
+-            <label><input type="radio" name="cv_colon" value="collapse" data-action="change->corpus-reader#setPunctOptionRadio"> Collapse : → 。</label>
+-          </fieldset>
+-
+-          <fieldset class="corpus-fieldset">
+-            <legend>Comma</legend>
+-            <label><input type="radio" name="cv_comma" value="keep" data-action="change->corpus-reader#setPunctOptionRadio"> Use ，</label>
+-            <label><input type="radio" name="cv_comma" value="dunhao" data-action="change->corpus-reader#setPunctOptionRadio"> Use 、</label>
+-          </fieldset>
+-        </div>
+-      </div>
+-    </div>
+-
+-<div class="corpus-viewbox" data-corpus-reader-target="viewbox">
+-      <div class="corpus-textflow"
+-           data-corpus-reader-target="content"
+-           data-action="contextmenu->corpus-reader#onContextMenu">
+-        <%# Ruby markup must be generated server-side so it can use session preferences.
+-            The helper returns an html_safe buffer, so do NOT escape it. %>
+-        <%= corpus_text_with_optional_ruby(@text) %>
+-      </div>
+-    </div>
+-  </div>
+-
+-<% else %>
+-  <p>Minecraft How did we get here advancement</p>
+-<% end %>
+-
++<h1>Corpus Viewer</h1>
++
++<p class="crumbs">
++  <% if @rel_path.present? %>
++    <% parts = @rel_path.to_s.split("/") %>
++    <%= link_to "Root", corpus_viewer_path %>
++    <% acc = [] %>
++    <% parts.each do |part| %>
++      <% acc << part %>
++      <span class="crumb-sep">/</span>
++      <%= link_to part, corpus_viewer_path(acc, format: nil) %>
++    <% end %>
++  <% end %>
++</p>
++
++<% if @kind == :dir %>
++  <p><strong><%= @rel_path.present? ? @rel_path : "Root" %></strong></p>
++
++  <ul class="corpus-list">
++    <% @children.each do |name| %>
++      <% child_rel = @rel_path.present? ? "#{@rel_path}/#{name}" : name %>
++      <li>
++        <%= link_to name, corpus_viewer_path(child_rel.split("/"), format: nil) %>
++      </li>
++    <% end %>
++  </ul>
++
++<% elsif @kind == :file %>
++  <%= render "rightbar" %>
++
++  <div class="corpus-reader" data-controller="corpus-reader corpus-annotations"
++       data-corpus-annotations-path-value="<%= @rel_path %>"
++       data-corpus-annotations-url-value="/corpus_annotations">
++    <div class="corpus-toolbar" role="toolbar" aria-label="Corpus viewer tools">
++      <button type="button"
++              class="corpus-btn"
++              data-action="corpus-reader#toggleVertical"
++              data-corpus-reader-target="verticalBtn"
++              aria-pressed="false">
++        Vertical
++      </button>
++
++      <button type="button"
++              class="corpus-btn"
++              data-action="corpus-reader#cycleTheme"
++              data-corpus-reader-target="themeBtn"
++              aria-pressed="false">
++        Theme
++      </button>
++      <button type="button"
++              class="corpus-btn"
++              data-action="corpus-reader#cyclePunctPreset"
++              data-corpus-reader-target="punctPresetBtn"
++              aria-pressed="false">
++        Punct: Source
++      </button>
++
++      <button type="button"
++              class="corpus-btn corpus-btn-split"
++              title="Punctuation options"
++              aria-label="Punctuation options"
++              data-action="corpus-reader#togglePunctMenu"
++              data-corpus-reader-target="punctMenuBtn">
++        ▾
++      </button>
++
++      <button type="button"
++              class="corpus-btn"
++              data-action="corpus-reader#toggleJudou"
++              data-corpus-reader-target="judouBtn"
++              aria-pressed="true">
++        Judou: On
++      </button>
++
++      <button type="button"
++              class="corpus-btn"
++              data-action="corpus-reader#cyclePunctColor"
++              data-corpus-reader-target="punctColorBtn"
++              aria-pressed="false">
++        Dot: Red
++      </button>
++      <button type="button"
++              class="corpus-btn corpus-btn-annotate"
++              data-action="corpus-annotations#toggleAnnotate"
++              data-corpus-annotations-annotate-btn
++              aria-pressed="false">
++        Annotate: Off
++      </button>
++
++
++    </div>
++
++    
++    <div class="corpus-punct-overlay"
++         data-corpus-reader-target="punctOverlay"
++         data-action="click->corpus-reader#onPunctOverlayClick"
++         hidden>
++      <div class="corpus-punct-panel"
++           data-corpus-reader-target="punctPanel"
++           role="dialog"
++           aria-label="Punctuation options">
++        <div class="corpus-punct-header">
++          <div class="corpus-punct-title">Punctuation options</div>
++          <div class="corpus-punct-actions">
++            <button type="button" class="corpus-btn corpus-btn-ghost" data-action="click->corpus-reader#okPunctMenu" data-corpus-reader-target="punctOkBtn">OK</button>
++            <button type="button" class="corpus-btn corpus-btn-ghost" data-action="click->corpus-reader#closePunctMenu" data-corpus-reader-target="punctCloseBtn">✕</button>
++          </div>
++        </div>
++
++        <div class="corpus-punct-grid">
++          <fieldset class="corpus-fieldset preset-box">
++            <legend>Preset</legend>
++            <label><input type="radio" name="cv_preset" value="source" data-action="change->corpus-reader#setPunctPresetRadio"> Source</label>
++            <label><input type="radio" name="cv_preset" value="modern_trad" data-action="change->corpus-reader#setPunctPresetRadio"> Modern CJK (Traditional)</label>
++            <label><input type="radio" name="cv_preset" value="modern_prc" data-action="change->corpus-reader#setPunctPresetRadio"> Modern CJK (Simplified / PRC)</label>
++            <label><input type="radio" name="cv_preset" value="pure" data-action="change->corpus-reader#setPunctPresetRadio"> Pure classical</label>
++            <label><input type="radio" name="cv_preset" value="strip" data-action="change->corpus-reader#setPunctPresetRadio"> Strip</label>
++            <label><input type="radio" name="cv_preset" value="custom" data-action="change->corpus-reader#setPunctPresetRadio"> Custom</label>
++          </fieldset>
++
++          <fieldset class="corpus-fieldset">
++            <legend>Quotes</legend>
++            <div class="corpus-subtitle">Family</div>
++            <label><input type="radio" name="cv_quote_family" value="corner" data-action="change->corpus-reader#setPunctOptionRadio"> Chinese quotation marks 「」『』</label>
++            <label><input type="radio" name="cv_quote_family" value="speech_curly" data-action="change->corpus-reader#setPunctOptionRadio"> Latin speech marks “ ” ‘ ’</label>
++            <label><input type="radio" name="cv_quote_family" value="speech_fullwidth" data-action="change->corpus-reader#setPunctOptionRadio"> Chinese speech marks ＂ ＇</label>
++            <label><input type="radio" name="cv_quote_family" value="off" data-action="change->corpus-reader#setPunctOptionRadio"> Off</label>
++
++            <div class="corpus-subtitle">Ordering</div>
++            <label><input type="radio" name="cv_quote_order" value="trad" data-action="change->corpus-reader#setPunctOptionRadio"> Traditional: 「甲『乙』丙」</label>
++            <label><input type="radio" name="cv_quote_order" value="simp" data-action="change->corpus-reader#setPunctOptionRadio"> Simplified: 『甲「乙」丙』</label>
++
++            <label class="corpus-check"><input type="checkbox" data-corpus-reader-target="verticalQuoteFormsChk" data-action="change->corpus-reader#toggleVerticalQuoteForms"> Vertical quote forms (﹁﹂﹃﹄)</label>
++          </fieldset>
++
++          <fieldset class="corpus-fieldset">
++            <legend>Question / Exclamation</legend>
++            <label><input type="radio" name="cv_q" value="keep" data-action="change->corpus-reader#setPunctOptionRadio"> Keep ？</label>
++            <label><input type="radio" name="cv_q" value="collapse" data-action="change->corpus-reader#setPunctOptionRadio"> Collapse ? → 。</label>
++            <div style="height:6px"></div>
++            <label><input type="radio" name="cv_ex" value="keep" data-action="change->corpus-reader#setPunctOptionRadio"> Keep ！</label>
++            <label><input type="radio" name="cv_ex" value="collapse" data-action="change->corpus-reader#setPunctOptionRadio"> Collapse ! → 。</label>
++          </fieldset>
++
++          <fieldset class="corpus-fieldset">
++            <legend>Semicolon / Colon</legend>
++            <label><input type="radio" name="cv_semi" value="keep" data-action="change->corpus-reader#setPunctOptionRadio"> Keep ；</label>
++            <label><input type="radio" name="cv_semi" value="collapse" data-action="change->corpus-reader#setPunctOptionRadio"> Collapse ; → 。</label>
++            <div style="height:6px"></div>
++            <label><input type="radio" name="cv_colon" value="keep" data-action="change->corpus-reader#setPunctOptionRadio"> Keep ：</label>
++            <label><input type="radio" name="cv_colon" value="collapse" data-action="change->corpus-reader#setPunctOptionRadio"> Collapse : → 。</label>
++          </fieldset>
++
++          <fieldset class="corpus-fieldset">
++            <legend>Comma</legend>
++            <label><input type="radio" name="cv_comma" value="keep" data-action="change->corpus-reader#setPunctOptionRadio"> Use ，</label>
++            <label><input type="radio" name="cv_comma" value="dunhao" data-action="change->corpus-reader#setPunctOptionRadio"> Use 、</label>
++          </fieldset>
++        </div>
++      </div>
++    </div>
++
++<div class="corpus-viewbox" data-corpus-reader-target="viewbox">
++      <div class="corpus-textflow"
++           data-corpus-reader-target="content"
++           data-action="contextmenu->corpus-reader#onContextMenu">
++        <%# Ruby markup must be generated server-side so it can use session preferences.
++            The helper returns an html_safe buffer, so do NOT escape it. %>
++        <%= corpus_text_with_optional_ruby(@text) %>
++      </div>
++    </div>
++  </div>
++
++<% else %>
++  <p>Minecraft How did we get here advancement</p>
++<% end %>
++
+--- a/viewer/app/assets/stylesheets/corpusviewer.css
++++ b/viewer/app/assets/stylesheets/corpusviewer.css
+@@ -1,428 +1,443 @@
+-.corpus-list { line-height: 1.8; }
+-
+-/*
+-  Corpus reader styling
+-  - The toolbar holds local-only toggles (vertical/bamboo/punct)
+-  - The viewbox is the scroll container
+-  - The textflow holds rendered HTML (ruby, spans, etc.)
+-*/
+-
+-.corpus-reader {
+-  border: 1px solid #ddd;
+-  border-radius: 12px;
+-  padding: 12px;
+-  background: #fff;
+-}
+-
+-.corpus-toolbar {
+-  display: flex;
+-  gap: 8px;
+-  flex-wrap: wrap;
+-  margin-bottom: 10px;
+-}
+-
+-.corpus-btn {
+-  padding: 6px 10px;
+-  border: 1px solid #bbb;
+-  background: #f6f6f6;
+-  border-radius: 4px;
+-  cursor: pointer;
+-}
+-
+-.corpus-btn[aria-pressed="true"] {
+-  background: #e9e9e9;
+-  border-color: #999;
+-}
+-
+-.corpus-viewbox {
+-  /* Default theme + typography */
+-  background: #ffffff;
+-  color: #111111;
+-  border: 1px solid rgba(0,0,0,0.10);
+-  border-radius: 12px;
+-  padding: 16px;
+-  max-height: calc(100vh - 260px);
+-  overflow-y: auto;
+-  overflow-x: hidden;
+-  scrollbar-gutter: stable;
+-}
+-
+-/* When vertical: the writing-mode makes columns; scroll sideways */
+-.corpus-viewbox.is-vertical {
+-  overflow-x: auto;
+-  overflow-y: hidden;
+-  /* Fix: constrain height so vertical text wraps into new columns instead of running off the bottom. */
+-  height: calc(100vh - 260px);
+-}
+-
+-/* JS scrolls to the "first" column based on vflow; no flex tricks needed. */
+-
+-.corpus-textflow {
+-  margin: 0;
+-  white-space: pre-wrap;
+-  word-break: break-word;
+-  line-height: calc(var(--cv-font-size, 20px) * 1.8);
+-  font-size: var(--cv-font-size, 20px);
+-  flex: 0 0 auto;
+-}
+-
+-.corpus-textflow.has-ruby {
+-  /* Extra breathing room so ruby never collides with line breaks */
+-  line-height: calc(var(--cv-font-size, 20px) * 1.8 + 8px);
+-}
+-
+-.corpus-textflow.is-vertical {
+-  writing-mode: vertical-rl; /* default: columns advance right-to-left */
+-  text-orientation: mixed;
+-  white-space: pre-wrap;
+-  /* Fix: constrain the block size so vertical writing wraps into additional columns. */
+-  height: 100%;
+-  max-height: 100%;
+-  overflow: visible;
+-  /* Let the vertical layout grow to its natural width so the viewbox
+-     can actually scroll horizontally when the text spans many columns. */
+-  display: inline-block;
+-  inline-size: max-content;
+-  /* When vertical, "lines" become columns, so we need a little more spacing! Helps with the Chinese comma too. */
+-  letter-spacing: 0.02em;
+-  /* Column unit: in vertical-rl, line-height becomes column width */
+-  --cv-col: calc(var(--cv-font-size, 20px) * 1.8);
+-  line-height: var(--cv-col);
+-
+-  /* Ruled grid aligned to column width */
+-  background-origin: content-box;
+-  background-clip: content-box;
+-  background-position: 0 0;
+-  background: repeating-linear-gradient(
+-    270deg,
+-    rgba(0,0,0,0.00) 0,
+-    rgba(0,0,0,0.00) calc(var(--cv-col) - 0.06em),
+-    var(--cv-rule-color, rgba(0,0,0,0.12)) calc(var(--cv-col) - 0.06em),
+-    var(--cv-rule-color, rgba(0,0,0,0.12)) var(--cv-col)
+-  );
+-
+-}
+-
+-.corpus-textflow.is-vertical.has-ruby {
+-  /* Ruby to the side needs a touch more air */
+-  letter-spacing: 0.03em;
+-}
+-
+-.corpus-textflow.is-vertical.is-vflow-lr {
+-  writing-mode: vertical-lr;
+-}
+-
+-/* Reader themes */
+-.corpus-viewbox.theme-light {
+-  background: #ffffff;
+-  color: #111111;
+-}
+-
+-.corpus-viewbox.theme-bamboo {
+-  background-color: #f2dfb0; /* warm paper */
+-  color: #111111;
+-  border-color: #d1b46f;
+-}
+-
+-.corpus-viewbox.theme-dark {
+-  background: #111111;
+-  color: #f3f3f3;
+-  border-color: rgba(255,255,255,0.18);
+-}
+-
+-/* Ruled grid colours per theme */
+-.corpus-viewbox.theme-light { --cv-rule-color: rgba(0,0,0,0.12); }
+-.corpus-viewbox.theme-bamboo { --cv-rule-color: rgba(0,0,0,0.14); }
+-.corpus-viewbox.theme-dark { --cv-rule-color: rgba(255,255,255,0.10); }
+-
+-
+-/* Breadcrumb spacing */
+-.crumbs { margin: 6px 0 12px; }
+-.crumbs .crumb-sep { margin: 0 6px; opacity: 0.6; }
+-
+-
+-
+-/* --- Corpus viewer ruby annotations ---
+-   Reuse the dictionary ruby positioning rules, but scoped to the reader.
+-*/
+-.corpus-textflow ruby.ruby-annot {
+-  position: relative;
+-  display: inline-block;
+-}
+-
+-.corpus-textflow ruby.ruby-annot rt {
+-  position: absolute;
+-  top: -1.2em;
+-  left: 50%;
+-  transform: translateX(-50%);
+-  font-size: 0.28em;
+-  font-style: italic;
+-  opacity: 0.9;
+-  line-height: 1;
+-  white-space: normal;
+-}
+-
+-.corpus-textflow ruby.ruby-annot.ruby-vertical rt {
+-  writing-mode: vertical-rl;
+-  text-orientation: upright;
+-  white-space: normal;
+-}
+-
+-.corpus-textflow ruby.ruby-annot.ruby-vertical.ruby-side-right rt {
+-  top: 0;
+-  left: calc(100% + 6px);
+-  transform: none;
+-}
+-
+-.corpus-textflow ruby.ruby-annot.ruby-vertical.ruby-side-left rt {
+-  top: 0;
+-  left: -6px;
+-  transform: translateX(-100%);
+-}
+-
+-/* On-demand ruby inserted by right-click */
+-.corpus-textflow ruby.ruby-ondemand rt {
+-  pointer-events: none;
+-}
+-
+-/* --- Better ruby in vertical writing ---
+-   The absolute-position ruby used for horizontal text can collapse in vertical writing-mode.
+-   Prefer native ruby layout: place readings inter-character (to the right of glyphs).
+-*/
+-.corpus-textflow.is-vertical ruby.ruby-annot,
+-.corpus-textflow.is-vertical ruby.ruby-ondemand {
+-  position: static;
+-  display: inline;
+-  ruby-position: inter-character;
+-  ruby-align: start;
+-}
+-
+-.corpus-textflow.is-vertical ruby.ruby-annot rt,
+-.corpus-textflow.is-vertical ruby.ruby-ondemand rt {
+-  position: static;
+-  top: auto;
+-  left: auto;
+-  right: auto;
+-  transform: none;
+-  font-size: 0.45em;
+-  line-height: 1;
+-  white-space: normal;
+-  writing-mode: vertical-rl;
+-  text-orientation: upright;
+-  letter-spacing: 0;
+-}
+-
+-/* Judou styling (toggleable): keep spacing stable, optionally nudge into gutter */
+-.corpus-textflow .cv-judou {
+-  color: var(--cv-judou-color, #b00000);
+-}
+-
+-.corpus-textflow.is-vertical.judou-on .cv-judou {
+-  display: inline-block;
+-  inline-size: 1em;
+-  text-align: center;
+-  position: relative;
+-  transform: translateX(0.25em);
+-}
+-
+-.corpus-textflow.is-vertical.is-vflow-lr.judou-on .cv-judou {
+-  transform: translateX(-0.25em);
+-}
+-
+-/* Punctuation options overlay */
+-.corpus-punct-overlay[hidden] { display: none !important; }
+-.corpus-punct-overlay {
+-  position: fixed;
+-  inset: 0;
+-  background: rgba(0,0,0,0.14);
+-  z-index: 9999;
+-}
+-.corpus-punct-panel {
+-  width: min(1100px, 94vw);
+-  margin: 60px auto 0 auto;
+-  background: rgba(255,255,255,0.98);
+-  border: 1px solid rgba(0,0,0,0.18);
+-  border-radius: 14px;
+-  box-shadow: 0 18px 40px rgba(0,0,0,0.28);
+-  padding: 12px 14px;
+-}
+-.theme-dark .corpus-punct-panel { background: rgba(20,20,20,0.98); border-color: rgba(255,255,255,0.18); color: #eee; }
+-.corpus-punct-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 10px; }
+-.corpus-punct-title { font-weight: 700; }
+-.corpus-punct-actions { display: flex; gap: 8px; }
+-.corpus-btn-ghost { background: transparent; border: 1px solid rgba(0,0,0,0.25); }
+-.theme-dark .corpus-btn-ghost { border-color: rgba(255,255,255,0.25); color: #eee; }
+-
+-.corpus-punct-grid {
+-  display: grid;
+-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+-  gap: 10px 12px;
+-}
+-.corpus-fieldset { border: 1px solid rgba(0,0,0,0.14); border-radius: 12px; padding: 10px; }
+-.theme-dark .corpus-fieldset { border-color: rgba(255,255,255,0.16); }
+-.corpus-fieldset legend { padding: 0 6px; font-weight: 700; }
+-.corpus-fieldset label { display: block; margin: 4px 0; }
+-.preset-box { background: rgba(0,0,0,0.04); }
+-.theme-dark .preset-box { background: rgba(255,255,255,0.06); }
+-.corpus-subtitle { margin-top: 6px; font-size: 12px; opacity: 0.85; font-weight: 600; }
+-.corpus-check { margin-top: 8px; }
+-
+-.corpus-btn-split { padding-left: 10px; padding-right: 10px; }
+-
+-
+-/* ---------- Named entity annotations ---------- */
+-/* Colours are CSS variables so users can override (including colourblind presets). */
+-:root {
+-  --ne-title: #2b6cb0;
+-  --ne-person: #d69e2e;
+-  --ne-place: #2f855a;
+-  --ne-office: #c53030;
+-}
+-
+-/* Per-character spans for stable offset mapping */
+-.corpus-textflow .cch {
+-  display: inline;
+-}
+-
+-/* Underline styles (derived from judou-like marking, but without inserting symbols) */
+-.corpus-textflow .ne-title,
+-.corpus-textflow .ne-title-auto {
+-  text-decoration: underline;
+-  text-decoration-color: var(--ne-title);
+-  text-decoration-thickness: 2px;
+-  text-underline-offset: 0.15em;
+-}
+-
+-.corpus-textflow .ne-person {
+-  text-decoration: underline;
+-  text-decoration-color: var(--ne-person);
+-  text-decoration-style: solid;
+-  text-decoration-thickness: 3px;
+-  text-underline-offset: 0.15em;
+-}
+-
+-.corpus-textflow .ne-place {
+-  text-decoration: underline;
+-  text-decoration-color: var(--ne-place);
+-  text-decoration-style: double;
+-  text-decoration-thickness: 2px;
+-  text-underline-offset: 0.15em;
+-}
+-
+-.corpus-textflow .ne-office {
+-  text-decoration: underline;
+-  text-decoration-color: var(--ne-office);
+-  text-decoration-style: wavy;
+-  text-decoration-thickness: 2px;
+-  text-underline-offset: 0.15em;
+-}
+-
+-/* Auto titles should be visually slightly lighter than manual titles */
+-.corpus-textflow .ne-title-auto {
+-  opacity: 0.9;
+-}
+-
+-/* Annotation popover menu */
+-.corpus-annot-menu {
+-  position: absolute;
+-  z-index: 9999;
+-  background: #ffffff;
+-  border: 1px solid rgba(0,0,0,0.25);
+-  border-radius: 10px;
+-  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+-  padding: 10px;
+-  display: none;
+-  max-width: 360px;
+-}
+-
+-.corpus-annot-row {
+-  display: flex;
+-  gap: 8px;
+-  align-items: center;
+-  margin: 6px 0;
+-  flex-wrap: wrap;
+-}
+-
+-.corpus-annot-menu button {
+-  padding: 6px 10px;
+-  border: 1px solid #bbb;
+-  background: #f6f6f6;
+-  border-radius: 6px;
+-  cursor: pointer;
+-}
+-
+-.corpus-annot-menu button.primary {
+-  background: #111;
+-  color: #fff;
+-  border-color: #111;
+-}
+-
+-.corpus-annot-menu button.danger {
+-  background: #fff5f5;
+-  border-color: #fed7d7;
+-}
+-
+-.corpus-annot-menu button.selected {
+-  outline: 2px solid rgba(0,0,0,0.25);
+-}
+-
+-.corpus-annot-label {
+-  font-size: 12px;
+-  opacity: 0.8;
+-}
+-
+-.corpus-annot-note {
+-  flex: 1 1 auto;
+-  min-width: 180px;
+-  padding: 6px 8px;
+-  border: 1px solid #bbb;
+-  border-radius: 6px;
+-}
+-
+-.corpus-annot-select {
+-  padding: 6px 8px;
+-  border: 1px solid #bbb;
+-  border-radius: 6px;
+-}
+-
+-.corpus-annot-colors {
+-  border: 1px solid rgba(0,0,0,0.25);
+-  border-radius: 12px;
+-  padding: 14px 16px;
+-}
+-
+-.corpus-annot-colors h3 {
+-  margin: 0 0 10px 0;
+-}
+-
+-.corpus-annot-grid {
+-  display: grid;
+-  grid-template-columns: 1fr 1fr;
+-  gap: 10px 14px;
+-  margin-bottom: 10px;
+-}
+-
+-.corpus-annot-grid label {
+-  display: flex;
+-  align-items: center;
+-  justify-content: space-between;
+-  gap: 10px;
+-}
+-
+-/* ---------- Notes: smaller + (optionally) multi-column ---------- */
+-.corpus-note-block {
+-  font-size: 0.70em;
+-  line-height: 1.35;
+-  opacity: 0.95;
+-  display: inline-block;
+-  vertical-align: baseline;
+-  /* Traditional notes often stack; columns makes dense notes more readable. */
+-  column-count: 2;
+-  column-gap: 1.2em;
+-}
+-
+-/* Give different note types slightly different tint (subtle, not required for meaning) */
+-.corpus-note-fang { opacity: 0.95; }
+-.corpus-note-brace { opacity: 0.92; }
+-.corpus-note-angle { opacity: 0.92; }
+-.corpus-note-square { opacity: 0.92; }
++.corpus-list { line-height: 1.8; }
++
++/*
++  Corpus reader styling
++  - The toolbar holds local-only toggles (vertical/bamboo/punct)
++  - The viewbox is the scroll container
++  - The textflow holds rendered HTML (ruby, spans, etc.)
++*/
++
++.corpus-reader {
++  border: 1px solid #ddd;
++  border-radius: 12px;
++  padding: 12px;
++  background: #fff;
++}
++
++.corpus-toolbar {
++  display: flex;
++  gap: 8px;
++  flex-wrap: wrap;
++  margin-bottom: 10px;
++}
++
++.corpus-btn {
++  padding: 6px 10px;
++  border: 1px solid #bbb;
++  background: #f6f6f6;
++  border-radius: 4px;
++  cursor: pointer;
++}
++
++.corpus-btn[aria-pressed="true"] {
++  background: #e9e9e9;
++  border-color: #999;
++}
++
++.corpus-viewbox {
++  /* Default theme + typography */
++  background: #ffffff;
++  color: #111111;
++  border: 1px solid rgba(0,0,0,0.10);
++  border-radius: 12px;
++  padding: 16px;
++  max-height: calc(100vh - 260px);
++  overflow-y: auto;
++  overflow-x: hidden;
++  scrollbar-gutter: stable;
++}
++
++/* When vertical: the writing-mode makes columns; scroll sideways */
++.corpus-viewbox.is-vertical {
++  overflow-x: auto;
++  overflow-y: hidden;
++  /* Fix: constrain height so vertical text wraps into new columns instead of running off the bottom. */
++  height: calc(100vh - 260px);
++}
++
++/* JS scrolls to the "first" column based on vflow; no flex tricks needed. */
++
++.corpus-textflow {
++  margin: 0;
++  white-space: pre-wrap;
++  word-break: break-word;
++  line-height: calc(var(--cv-font-size, 20px) * 1.8);
++  font-size: var(--cv-font-size, 20px);
++  flex: 0 0 auto;
++}
++
++.corpus-textflow.has-ruby {
++  /* Extra breathing room so ruby never collides with line breaks */
++  line-height: calc(var(--cv-font-size, 20px) * 1.8 + 8px);
++}
++
++.corpus-textflow.is-vertical {
++  writing-mode: vertical-rl; /* default: columns advance right-to-left */
++  text-orientation: mixed;
++  white-space: pre-wrap;
++  /* Fix: constrain the block size so vertical writing wraps into additional columns. */
++  height: 100%;
++  max-height: 100%;
++  overflow: visible;
++  /* Let the vertical layout grow to its natural width so the viewbox
++     can actually scroll horizontally when the text spans many columns. */
++  display: inline-block;
++  inline-size: max-content;
++  /* When vertical, "lines" become columns, so we need a little more spacing! Helps with the Chinese comma too. */
++  letter-spacing: 0.02em;
++  /* Column unit: in vertical-rl, line-height becomes column width */
++  --cv-col: calc(var(--cv-font-size, 20px) * 1.8);
++  line-height: var(--cv-col);
++
++  /* Ruled grid aligned to column width */
++  background-origin: content-box;
++  background-clip: content-box;
++  background-position: 0 0;
++  background: repeating-linear-gradient(
++    270deg,
++    rgba(0,0,0,0.00) 0,
++    rgba(0,0,0,0.00) calc(var(--cv-col) - 0.06em),
++    var(--cv-rule-color, rgba(0,0,0,0.12)) calc(var(--cv-col) - 0.06em),
++    var(--cv-rule-color, rgba(0,0,0,0.12)) var(--cv-col)
++  );
++
++}
++
++.corpus-textflow.is-vertical.has-ruby {
++  /* Ruby to the side needs a touch more air */
++  letter-spacing: 0.03em;
++}
++
++.corpus-textflow.is-vertical.is-vflow-lr {
++  writing-mode: vertical-lr;
++}
++
++/* Reader themes */
++.corpus-viewbox.theme-light {
++  background: #ffffff;
++  color: #111111;
++}
++
++.corpus-viewbox.theme-bamboo {
++  background-color: #f2dfb0; /* warm paper */
++  color: #111111;
++  border-color: #d1b46f;
++}
++
++.corpus-viewbox.theme-dark {
++  background: #111111;
++  color: #f3f3f3;
++  border-color: rgba(255,255,255,0.18);
++}
++
++/* Ruled grid colours per theme */
++.corpus-viewbox.theme-light { --cv-rule-color: rgba(0,0,0,0.12); }
++.corpus-viewbox.theme-bamboo { --cv-rule-color: rgba(0,0,0,0.14); }
++.corpus-viewbox.theme-dark { --cv-rule-color: rgba(255,255,255,0.10); }
++
++
++/* Breadcrumb spacing */
++.crumbs { margin: 6px 0 12px; }
++.crumbs .crumb-sep { margin: 0 6px; opacity: 0.6; }
++
++
++
++/* --- Corpus viewer ruby annotations ---
++   Reuse the dictionary ruby positioning rules, but scoped to the reader.
++*/
++.corpus-textflow ruby.ruby-annot {
++  position: relative;
++  display: inline-block;
++}
++
++.corpus-textflow ruby.ruby-annot rt {
++  position: absolute;
++  top: -1.2em;
++  left: 50%;
++  transform: translateX(-50%);
++  font-size: 0.28em;
++  font-style: italic;
++  opacity: 0.9;
++  line-height: 1;
++  white-space: normal;
++}
++
++.corpus-textflow ruby.ruby-annot.ruby-vertical rt {
++  writing-mode: vertical-rl;
++  text-orientation: upright;
++  white-space: normal;
++}
++
++.corpus-textflow ruby.ruby-annot.ruby-vertical.ruby-side-right rt {
++  top: 0;
++  left: calc(100% + 6px);
++  transform: none;
++}
++
++.corpus-textflow ruby.ruby-annot.ruby-vertical.ruby-side-left rt {
++  top: 0;
++  left: -6px;
++  transform: translateX(-100%);
++}
++
++/* On-demand ruby inserted by right-click */
++.corpus-textflow ruby.ruby-ondemand rt {
++  pointer-events: none;
++}
++
++/* --- Better ruby in vertical writing ---
++   The absolute-position ruby used for horizontal text can collapse in vertical writing-mode.
++   Prefer native ruby layout: place readings inter-character (to the right of glyphs).
++*/
++.corpus-textflow.is-vertical ruby.ruby-annot,
++.corpus-textflow.is-vertical ruby.ruby-ondemand {
++  position: static;
++  display: inline;
++  ruby-position: inter-character;
++  ruby-align: start;
++}
++
++.corpus-textflow.is-vertical ruby.ruby-annot rt,
++.corpus-textflow.is-vertical ruby.ruby-ondemand rt {
++  position: static;
++  top: auto;
++  left: auto;
++  right: auto;
++  transform: none;
++  font-size: 0.45em;
++  line-height: 1;
++  white-space: normal;
++  writing-mode: vertical-rl;
++  text-orientation: upright;
++  letter-spacing: 0;
++}
++
++/* Judou styling (toggleable): keep spacing stable, optionally nudge into gutter */
++.corpus-textflow .cv-judou {
++  color: var(--cv-judou-color, #b00000);
++}
++
++.corpus-textflow.is-vertical.judou-on .cv-judou {
++  display: inline-block;
++  inline-size: 1em;
++  text-align: center;
++  position: relative;
++  transform: translateX(0.25em);
++}
++
++.corpus-textflow.is-vertical.is-vflow-lr.judou-on .cv-judou {
++  transform: translateX(-0.25em);
++}
++
++/* Punctuation options overlay */
++.corpus-punct-overlay[hidden] { display: none !important; }
++.corpus-punct-overlay {
++  position: fixed;
++  inset: 0;
++  background: rgba(0,0,0,0.14);
++  z-index: 9999;
++}
++.corpus-punct-panel {
++  width: min(1100px, 94vw);
++  margin: 60px auto 0 auto;
++  background: rgba(255,255,255,0.98);
++  border: 1px solid rgba(0,0,0,0.18);
++  border-radius: 14px;
++  box-shadow: 0 18px 40px rgba(0,0,0,0.28);
++  padding: 12px 14px;
++}
++.theme-dark .corpus-punct-panel { background: rgba(20,20,20,0.98); border-color: rgba(255,255,255,0.18); color: #eee; }
++.corpus-punct-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 10px; }
++.corpus-punct-title { font-weight: 700; }
++.corpus-punct-actions { display: flex; gap: 8px; }
++.corpus-btn-ghost { background: transparent; border: 1px solid rgba(0,0,0,0.25); }
++.theme-dark .corpus-btn-ghost { border-color: rgba(255,255,255,0.25); color: #eee; }
++
++.corpus-punct-grid {
++  display: grid;
++  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
++  gap: 10px 12px;
++}
++.corpus-fieldset { border: 1px solid rgba(0,0,0,0.14); border-radius: 12px; padding: 10px; }
++.theme-dark .corpus-fieldset { border-color: rgba(255,255,255,0.16); }
++.corpus-fieldset legend { padding: 0 6px; font-weight: 700; }
++.corpus-fieldset label { display: block; margin: 4px 0; }
++.preset-box { background: rgba(0,0,0,0.04); }
++.theme-dark .preset-box { background: rgba(255,255,255,0.06); }
++.corpus-subtitle { margin-top: 6px; font-size: 12px; opacity: 0.85; font-weight: 600; }
++.corpus-check { margin-top: 8px; }
++
++.corpus-btn-split { padding-left: 10px; padding-right: 10px; }
++
++
++/* ---------- Named entity annotations ---------- */
++/* Colours are CSS variables so users can override (including colourblind presets). */
++:root {
++  --ne-title: #2b6cb0;
++  --ne-person: #d69e2e;
++  --ne-place: #2f855a;
++  --ne-office: #c53030;
++}
++
++/* Per-character spans for stable offset mapping */
++.corpus-textflow .cch {
++  display: inline;
++}
++
++/* Underline styles (derived from judou-like marking, but without inserting symbols) */
++.corpus-textflow .ne-title,
++.corpus-textflow .ne-title-auto {
++  text-decoration: underline;
++  text-decoration-color: var(--ne-title);
++  text-decoration-thickness: 2px;
++  text-underline-offset: 0.15em;
++}
++
++.corpus-textflow .ne-person {
++  text-decoration: underline;
++  text-decoration-color: var(--ne-person);
++  text-decoration-style: solid;
++  text-decoration-thickness: 3px;
++  text-underline-offset: 0.15em;
++}
++
++.corpus-textflow .ne-place {
++  text-decoration: underline;
++  text-decoration-color: var(--ne-place);
++  text-decoration-style: double;
++  text-decoration-thickness: 2px;
++  text-underline-offset: 0.15em;
++}
++
++.corpus-textflow .ne-office {
++  text-decoration: underline;
++  text-decoration-color: var(--ne-office);
++  text-decoration-style: wavy;
++  text-decoration-thickness: 2px;
++  text-underline-offset: 0.15em;
++}
++
++/* Auto titles should be visually slightly lighter than manual titles */
++.corpus-textflow .ne-title-auto {
++  opacity: 0.9;
++}
++
++/* Annotation popover menu */
++.corpus-annot-menu {
++  position: absolute;
++  z-index: 9999;
++  background: #ffffff;
++  border: 1px solid rgba(0,0,0,0.25);
++  border-radius: 10px;
++  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
++  padding: 10px;
++  display: none;
++  max-width: 360px;
++}
++
++.corpus-annot-row {
++  display: flex;
++  gap: 8px;
++  align-items: center;
++  margin: 6px 0;
++  flex-wrap: wrap;
++}
++
++.corpus-annot-menu button {
++  padding: 6px 10px;
++  border: 1px solid #bbb;
++  background: #f6f6f6;
++  border-radius: 6px;
++  cursor: pointer;
++}
++
++.corpus-annot-menu button.primary {
++  background: #111;
++  color: #fff;
++  border-color: #111;
++}
++
++.corpus-annot-menu button.danger {
++  background: #fff5f5;
++  border-color: #fed7d7;
++}
++
++.corpus-annot-menu button.selected {
++  outline: 2px solid rgba(0,0,0,0.25);
++}
++
++.corpus-annot-label {
++  font-size: 12px;
++  opacity: 0.8;
++}
++
++.corpus-annot-note {
++  flex: 1 1 auto;
++  min-width: 180px;
++  padding: 6px 8px;
++  border: 1px solid #bbb;
++  border-radius: 6px;
++}
++
++.corpus-annot-select {
++  padding: 6px 8px;
++  border: 1px solid #bbb;
++  border-radius: 6px;
++}
++
++.corpus-annot-colors {
++  border: 1px solid rgba(0,0,0,0.25);
++  border-radius: 12px;
++  padding: 14px 16px;
++}
++
++.corpus-annot-colors h3 {
++  margin: 0 0 10px 0;
++}
++
++.corpus-annot-grid {
++  display: grid;
++  grid-template-columns: 1fr 1fr;
++  gap: 10px 14px;
++  margin-bottom: 10px;
++}
++
++.corpus-annot-grid label {
++  display: flex;
++  align-items: center;
++  justify-content: space-between;
++  gap: 10px;
++}
++
++/* ---------- Notes: smaller + (optionally) multi-column ---------- */
++.corpus-note-block {
++  font-size: 0.70em;
++  line-height: 1.35;
++  opacity: 0.95;
++  display: inline-block;
++  vertical-align: baseline;
++  /* Traditional notes often stack; columns makes dense notes more readable. */
++  column-count: 2;
++  column-gap: 1.2em;
++}
++
++
++/* In vertical mode, CSS columns can create huge spacing; keep notes compact. */
++.corpus-textflow.is-vertical .corpus-note-block {
++  column-count: 1;
++  column-gap: 0;
++  display: inline;
++}
++
++/* Give different note types slightly different tint (subtle, not required for meaning) */
++.corpus-note-fang { opacity: 0.95; }
++.corpus-note-brace { opacity: 0.92; }
++.corpus-note-angle { opacity: 0.92; }
++.corpus-note-square { opacity: 0.92; }
++
++
++/* Annotation mode button */
++.corpus-btn-annotate.is-active {
++  outline: 2px solid var(--ne-title, #1f66ff);
++  outline-offset: 2px;
++}

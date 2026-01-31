@@ -23,6 +23,11 @@ Rails.application.routes.draw do
 	get "/dictionary/shuowen/:number/chars", to: "shuowen_components#chars", as: :dictionary_component_chars
 	
 	get "/corpus_viewer(/*path)", to: "corpus_viewer#show", as: :corpus_viewer, format: false # stop a silly attempt to output a txt file
+	
+	# config/routes.rb
+	get  "/corpus_annotations", to: "corpus_annotations#show"
+	post "/corpus_annotations", to: "corpus_annotations#update"
+	
 	get "/fun", to: "fun#index", as: :fun # Minigame section
 	get "/fun/xuanji", to: "xuanji#show", as: :xuanji
 	post "/fun/xuanji/sync_colors", to: "xuanji#sync_colors", as: :xuanji_sync_colors

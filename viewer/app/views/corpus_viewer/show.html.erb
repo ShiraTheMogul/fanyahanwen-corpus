@@ -28,7 +28,9 @@
 <% elsif @kind == :file %>
   <%= render "rightbar" %>
 
-  <div class="corpus-reader" data-controller="corpus-reader">
+  <div class="corpus-reader" data-controller="corpus-reader corpus-annotations"
+       data-corpus-annotations-path-value="<%= @rel_path %>"
+       data-corpus-annotations-url-value="/corpus_annotations">
     <div class="corpus-toolbar" role="toolbar" aria-label="Corpus viewer tools">
       <button type="button"
               class="corpus-btn"
@@ -70,7 +72,16 @@
         Judou: On
       </button>
 
+      
       <button type="button"
+              class="corpus-btn"
+              data-action="corpus-annotations#toggleAnnotate"
+              data-corpus-annotations-target="annotateBtn"
+              aria-pressed="false">
+        Annotate: Off
+      </button>
+
+<button type="button"
               class="corpus-btn"
               data-action="corpus-reader#cyclePunctColor"
               data-corpus-reader-target="punctColorBtn"
@@ -163,4 +174,3 @@
 <% else %>
   <p>Minecraft How did we get here advancement</p>
 <% end %>
-

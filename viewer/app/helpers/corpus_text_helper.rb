@@ -6,12 +6,18 @@ module CorpusTextHelper
   UNIHAN_READING_SOURCES = ["Unihan_Readings", "Unihan"].freeze
 
   def corpus_text_with_optional_ruby(text)
-    s = text.to_s
-    return ERB::Util.html_escape(s).html_safe unless ruby_enabled_in_session?
-    corpus_text_with_ruby(s)
+  s = text.to_s
+  # Always render indexed spans so client-side annotations can map selections
+  # back to corpus character offsets.
+  if ruby_enabled_in_session?
+    corpus_text_with_ruby_indexed(s)
+  else
+    corpus_text_without_ruby_indexed(s)
   end
+end
 
-  private
+private
+
 
   def ruby_enabled_in_session?
     v = session[:ruby_enabled]
@@ -200,30 +206,110 @@ module CorpusTextHelper
   end
 
 
-  def corpus_text_with_ruby(text)
-    chars = unique_han_chars(text)
-    return ERB::Util.html_escape(text).html_safe if chars.empty?
+  # Render text as HTML where each original character is wrapped with a span:
+#   <span class="cch" data-corpus-idx="123">字</span>
+#
+# This makes it possible to store user annotations in terms of character
+# offsets and later re-apply them reliably, even when ruby <rt> tags exist.
+#
+# Notes (〔〕, {}, 〈〉, []) are wrapped in a container so CSS can render them
+# smaller and (optionally) multi-column.
+def corpus_text_without_ruby_indexed(text)
+  buf = ActiveSupport::SafeBuffer.new
+  idx = 0
 
-    readings = corpus_ruby_readings_for(chars)
-    ruby_class = corpus_ruby_class
+  note_stack = []
 
-    buf = ActiveSupport::SafeBuffer.new
+  text.each_char do |ch|
+    opener = note_opener_kind(ch)
+    closer = note_closer_kind(ch)
 
-    text.each_char do |ch|
-      reading = readings[ch]
-      if reading.present?
-        # IMPORTANT: SafeBuffer will *escape* unsafe strings appended via <<.
-        # Use safe_concat for literal HTML tags, and keep user/DB content escaped.
-        buf.safe_concat(%(<ruby class="#{ruby_class}">).html_safe)
-        buf << ERB::Util.html_escape(ch)
-        buf.safe_concat("<rt>".html_safe)
-        buf << ERB::Util.html_escape(reading)
-        buf.safe_concat("</rt></ruby>".html_safe)
-      else
-        buf << ERB::Util.html_escape(ch)
-      end
+    if opener
+      note_stack << opener
+      buf.safe_concat(%(<span class="corpus-note-block corpus-note-#{opener}" data-note-kind="#{opener}">).html_safe)
     end
 
-    buf
+    buf.safe_concat(%(<span class="cch" data-corpus-idx="#{idx}">).html_safe)
+    buf << ERB::Util.html_escape(ch)
+    buf.safe_concat("</span>".html_safe)
+
+    if closer && note_stack.any?
+      note_stack.pop
+      buf.safe_concat("</span>".html_safe)
+    end
+
+    idx += 1
   end
+
+  buf
+end
+
+def corpus_text_with_ruby_indexed(text)
+  chars = unique_han_chars(text)
+  return corpus_text_without_ruby_indexed(text) if chars.empty?
+
+  readings = corpus_ruby_readings_for(chars)
+  ruby_class = corpus_ruby_class
+
+  buf = ActiveSupport::SafeBuffer.new
+  idx = 0
+  note_stack = []
+
+  text.each_char do |ch|
+    opener = note_opener_kind(ch)
+    closer = note_closer_kind(ch)
+
+    if opener
+      note_stack << opener
+      buf.safe_concat(%(<span class="corpus-note-block corpus-note-#{opener}" data-note-kind="#{opener}">).html_safe)
+    end
+
+    reading = readings[ch]
+    if reading.present?
+      buf.safe_concat(%(<ruby class="#{ruby_class}">).html_safe)
+      buf.safe_concat(%(<span class="cch" data-corpus-idx="#{idx}">).html_safe)
+      buf << ERB::Util.html_escape(ch)
+      buf.safe_concat("</span>".html_safe)
+      buf.safe_concat("<rt>".html_safe)
+      buf << ERB::Util.html_escape(reading)
+      buf.safe_concat("</rt></ruby>".html_safe)
+    else
+      buf.safe_concat(%(<span class="cch" data-corpus-idx="#{idx}">).html_safe)
+      buf << ERB::Util.html_escape(ch)
+      buf.safe_concat("</span>".html_safe)
+    end
+
+    if closer && note_stack.any?
+      note_stack.pop
+      buf.safe_concat("</span>".html_safe)
+    end
+
+    idx += 1
+  end
+
+  buf
+end
+
+NOTE_OPENERS = {
+  "〔" => :fang,
+  "{"  => :brace,
+  "〈" => :angle,
+  "["  => :square
+}.freeze
+
+NOTE_CLOSERS = {
+  "〕" => :fang,
+  "}"  => :brace,
+  "〉" => :angle,
+  "]"  => :square
+}.freeze
+
+def note_opener_kind(ch)
+  NOTE_OPENERS[ch]
+end
+
+def note_closer_kind(ch)
+  NOTE_CLOSERS[ch]
+end
+
 end
