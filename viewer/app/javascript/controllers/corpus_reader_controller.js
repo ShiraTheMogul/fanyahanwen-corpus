@@ -9,12 +9,14 @@ import { Controller } from "@hotwired/stimulus"
 //
 // State is stored in localStorage so it persists across page loads.
 export default class extends Controller {
-  static targets = ["viewbox", "content", "verticalBtn", "themeBtn", "punctBtn", "punctColorBtn", "judouBtn"]
+    static targets = ["viewbox", "content", "verticalBtn", "themeBtn", "punctBtn", "punctColorBtn", "judouBtn", "punctPresetBtn", "punctMenuBtn", "punctOverlay", "punctPanel", "punctOkBtn", "punctCloseBtn", "verticalQuoteFormsChk"]
+
 
   connect() {
     this._onExternalOptions = (ev) => {
       if (!ev?.detail) return
       this._setState(ev.detail)
+      this._syncPunctButtons()
       this._apply()
     }
     window.addEventListener("corpus-view-options", this._onExternalOptions)
@@ -30,6 +32,8 @@ export default class extends Controller {
     this._originalHTML = this.contentTarget.innerHTML
     this._strippedHTML = null
     this._state = this._loadState()
+    this._punct = this._loadPunct()
+    this._justToggledOrientation = false
 
     this._onScroll = () => { this._saveScrollLeft() }
     this.viewboxTarget.addEventListener("scroll", this._onScroll, { passive: true })
@@ -47,6 +51,9 @@ export default class extends Controller {
     }
     this.viewboxTarget.addEventListener("wheel", this._onWheel, { passive: false })
 
+    this._onKeydown = (e) => { if (e.key === "Escape" && this._isPunctOpen()) { e.preventDefault(); this.closePunctMenu() } }
+    window.addEventListener("keydown", this._onKeydown)
+
     this._apply()
   }
 
@@ -55,11 +62,278 @@ export default class extends Controller {
     window.removeEventListener("corpus-reader-refresh", this._onRefreshBaseline)
     if (this._onScroll) this.viewboxTarget.removeEventListener("scroll", this._onScroll)
     if (this._onWheel) this.viewboxTarget.removeEventListener("wheel", this._onWheel)
+    if (this._onKeydown) window.removeEventListener("keydown", this._onKeydown)
   }
+
+  // ---- punctuation presets + options (display-only) ----
+  // Stored separately from core layout state so we can evolve the UI without breaking older saves.
+
+  _loadPunct() {
+    const getStr = (k, fallback) => {
+      const v = window.localStorage.getItem(k)
+      if (v === null || v === undefined || v === "") return fallback
+      return v.toString()
+    }
+    const getBool = (k, fallback) => {
+      const v = window.localStorage.getItem(k)
+      if (v === null || v === undefined || v === "") return fallback
+      return v === "1"
+    }
+
+    return {
+      preset: getStr("corpus.punctPreset", "source"),
+      userOverrodeVerticalQuotes: getBool("corpus.punctUserOverrodeVQ", false),
+      options: {
+        quoteFamily: getStr("corpus.quoteFamily", "corner"),     // corner | speech_curly | speech_fullwidth | off
+        quoteOrder: getStr("corpus.quoteOrder", "trad"),         // trad | simp
+        verticalQuoteForms: getBool("corpus.verticalQuoteForms", false),
+        semicolon: getStr("corpus.punctSemi", "keep"),           // keep | collapse
+        colon: getStr("corpus.punctColon", "keep"),
+        question: getStr("corpus.punctQ", "keep"),
+        exclamation: getStr("corpus.punctEx", "keep"),
+        comma: getStr("corpus.punctComma", "keep"),              // keep | dunhao
+      }
+    }
+  }
+
+  _savePunct() {
+    const p = (this._punct?.preset || "source").toString()
+    window.localStorage.setItem("corpus.punctPreset", p)
+    window.localStorage.setItem("corpus.punctUserOverrodeVQ", this._punct?.userOverrodeVerticalQuotes ? "1" : "0")
+    const o = this._punct?.options || {}
+    window.localStorage.setItem("corpus.quoteFamily", (o.quoteFamily || "corner").toString())
+    window.localStorage.setItem("corpus.quoteOrder", (o.quoteOrder || "trad").toString())
+    window.localStorage.setItem("corpus.verticalQuoteForms", o.verticalQuoteForms ? "1" : "0")
+    window.localStorage.setItem("corpus.punctSemi", (o.semicolon || "keep").toString())
+    window.localStorage.setItem("corpus.punctColon", (o.colon || "keep").toString())
+    window.localStorage.setItem("corpus.punctQ", (o.question || "keep").toString())
+    window.localStorage.setItem("corpus.punctEx", (o.exclamation || "keep").toString())
+    window.localStorage.setItem("corpus.punctComma", (o.comma || "keep").toString())
+  }
+
+  _presetOptions(preset) {
+    const o = {
+      quoteFamily: "corner",
+      quoteOrder: "trad",
+      verticalQuoteForms: false,
+      semicolon: "keep",
+      colon: "keep",
+      question: "keep",
+      exclamation: "keep",
+      comma: "keep",
+    }
+
+    if (preset === "source") return o
+    if (preset === "strip") return o
+
+    if (preset === "modern_trad") {
+      o.quoteFamily = "corner"
+      o.quoteOrder = "trad"
+      return o
+    }
+
+    if (preset === "modern_prc") {
+      // PRC: horizontal prefers speech marks, vertical prefers corner brackets.
+      o.quoteFamily = "speech_curly"
+      o.quoteOrder = "simp"
+      return o
+    }
+
+    if (preset === "pure") {
+      o.quoteFamily = "corner"
+      o.quoteOrder = "trad"
+      o.comma = "dunhao"
+      o.semicolon = "collapse"
+      o.colon = "collapse"
+      o.question = "collapse"
+      o.exclamation = "collapse"
+      return o
+    }
+
+    return o
+  }
+
+  _syncPunctButtons() {
+    if (!this.hasPunctPresetBtnTarget) return
+    const p = (this._punct?.preset || "source").toString()
+    const label = {
+      source: "Punct: Source",
+      modern_trad: "Punct: Modern (Trad)",
+      modern_prc: "Punct: Modern (PRC)",
+      pure: "Punct: Pure",
+      strip: "Punct: Strip",
+      custom: "Punct: Custom",
+    }[p] || "Punct"
+    this.punctPresetBtnTarget.textContent = label
+  }
+
+  _isPunctOpen() {
+    return this.hasPunctOverlayTarget && !this.punctOverlayTarget.hasAttribute("hidden")
+  }
+
+  _setPunctOpen(open) {
+    if (!this.hasPunctOverlayTarget) return
+    if (open) {
+      this.punctOverlayTarget.removeAttribute("hidden")
+      this._syncPunctMenuInputs()
+    } else {
+      this.punctOverlayTarget.setAttribute("hidden", "")
+    }
+  }
+
+  _syncPunctMenuInputs() {
+    const setRadio = (name, value) => {
+      const el = this.element.querySelector(`input[name="${name}"][value="${value}"]`)
+      if (el) el.checked = true
+    }
+
+    setRadio("cv_preset", this._punct?.preset || "source")
+    const o = this._punct?.options || this._presetOptions("source")
+    setRadio("cv_quote_family", o.quoteFamily)
+    setRadio("cv_quote_order", o.quoteOrder)
+    setRadio("cv_semi", o.semicolon)
+    setRadio("cv_colon", o.colon)
+    setRadio("cv_q", o.question)
+    setRadio("cv_ex", o.exclamation)
+    setRadio("cv_comma", o.comma)
+
+    if (this.hasVerticalQuoteFormsChkTarget) {
+      this.verticalQuoteFormsChkTarget.checked = !!o.verticalQuoteForms
+    }
+  }
+
+  _ensureVerticalQuoteDefaultOnce() {
+    if (!this._state?.vertical) return
+    if (this._punct?.userOverrodeVerticalQuotes) return
+    if (!this._punct?.options?.verticalQuoteForms) {
+      this._punct.options = { ...this._punct.options, verticalQuoteForms: true }
+      this._savePunct()
+    }
+  }
+
+  _convertPunctuationHTML(html, preset) {
+    const parser = new DOMParser()
+    const doc = parser.parseFromString(`<div>${html}</div>`, "text/html")
+    const root = doc.body.firstElementChild
+
+    let opts = this._punct?.options || this._presetOptions("source")
+    if (preset !== "custom") opts = this._presetOptions(preset)
+
+    if (preset === "modern_prc" && this._state?.vertical) {
+      opts = { ...opts, quoteFamily: "corner" }
+    }
+
+    if (this._state?.vertical) {
+      this._ensureVerticalQuoteDefaultOnce()
+      opts = { ...opts, verticalQuoteForms: this._punct?.options?.verticalQuoteForms }
+    }
+
+    const qc = new QuoteConverter(opts)
+
+    const walker = doc.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode: (n) => {
+        const p = n.parentElement
+        if (!p) return NodeFilter.FILTER_REJECT
+        if (p.closest("rt, rp")) return NodeFilter.FILTER_REJECT
+        return NodeFilter.FILTER_ACCEPT
+      }
+    })
+
+    while (walker.nextNode()) {
+      const n = walker.currentNode
+      let t = n.nodeValue || ""
+      t = convertPuncText(t, opts)
+      t = qc.convert(t)
+      n.nodeValue = t
+    }
+
+    return root.innerHTML
+  }
+
+  // ---- punctuation UI actions ----
+
+  cyclePunctPreset() {
+    const order = ["source", "modern_trad", "modern_prc", "pure", "strip", "custom"]
+    const cur = (this._punct?.preset || "source").toString()
+    const idx = order.indexOf(cur)
+    const nxt = order[(idx + 1) % order.length]
+
+    this._punct.preset = nxt
+    if (nxt !== "custom") this._punct.options = this._presetOptions(nxt)
+
+    // keep legacy strip state in sync (rightbar may still toggle it)
+    this._state.strip = (nxt === "strip")
+
+    this._saveState()
+    this._savePunct()
+    this._syncPunctButtons()
+    this._apply()
+    this._broadcast()
+  }
+
+  togglePunctMenu() { this._setPunctOpen(!this._isPunctOpen()) }
+  closePunctMenu() { this._setPunctOpen(false) }
+  okPunctMenu() { this._setPunctOpen(false) }
+
+  onPunctOverlayClick(e) {
+    if (e.target === this.punctOverlayTarget) this.closePunctMenu()
+  }
+
+  setPunctPresetRadio(e) {
+    const v = e?.target?.value || "source"
+    this._punct.preset = v
+    if (v !== "custom") this._punct.options = this._presetOptions(v)
+    this._state.strip = (v === "strip")
+
+    this._saveState()
+    this._savePunct()
+    this._syncPunctButtons()
+    this._apply()
+    this._broadcast()
+  }
+
+  setPunctOptionRadio() {
+    this._punct.preset = "custom"
+    const pick = (name) => {
+      const el = this.element.querySelector(`input[name="${name}"]:checked`)
+      return el ? el.value : null
+    }
+
+    const o = { ...(this._punct.options || this._presetOptions("source")) }
+    const fam = pick("cv_quote_family"); if (fam) o.quoteFamily = fam
+    const ord = pick("cv_quote_order"); if (ord) o.quoteOrder = ord
+    const semi = pick("cv_semi"); if (semi) o.semicolon = semi
+    const colon = pick("cv_colon"); if (colon) o.colon = colon
+    const q = pick("cv_q"); if (q) o.question = q
+    const ex = pick("cv_ex"); if (ex) o.exclamation = ex
+    const comma = pick("cv_comma"); if (comma) o.comma = comma
+
+    this._punct.options = o
+    this._state.strip = false
+
+    this._saveState()
+    this._savePunct()
+    this._syncPunctButtons()
+    this._apply()
+    this._broadcast()
+  }
+
+  toggleVerticalQuoteForms() {
+    this._punct.preset = "custom"
+    this._punct.userOverrodeVerticalQuotes = true
+    this._punct.options = { ...(this._punct.options || {}), verticalQuoteForms: !!this.verticalQuoteFormsChkTarget.checked }
+    this._savePunct()
+    this._syncPunctButtons()
+    this._apply()
+    this._broadcast()
+  }
+
+
 
   toggleVertical() {
     this._state.vertical = !this._state.vertical
     this._saveState()
+    this._justToggledOrientation = true
     this._apply()
     this._broadcast()
   }
@@ -90,10 +364,105 @@ export default class extends Controller {
     this._broadcast()
   }
 
-  togglePunct() {
-    this._state.strip = !this._state.strip
+
+  // ---- Punctuation presets + options (display-only) ----
+  // We keep the legacy `strip` boolean for compatibility with the rightbar,
+  // but the toolbar no longer exposes a separate "No punct" button: "Strip"
+  // is now just a preset.
+
+  cyclePunctPreset() {
+    const order = ["source", "modern_trad", "modern_prc", "pure", "strip", "custom"]
+    const cur = (this._punct.preset || "source").toString()
+    const idx = order.indexOf(cur)
+    const nxt = order[(idx + 1) % order.length]
+
+    this._punct.preset = nxt
+    if (nxt !== "custom") this._punct.options = this._presetOptions(nxt)
+
+    // Keep legacy strip in sync (rightbar checkbox etc.)
+    this._state.strip = (nxt === "strip")
     this._saveState()
-    this._apply()
+    this._savePunct()
+
+    this._syncPunctButtons()
+      this._apply()
+    this._broadcast()
+  }
+
+  togglePunctMenu() {
+    this._setPunctOpen(!this._isPunctOpen())
+  }
+
+  closePunctMenu() { this._setPunctOpen(false) }
+  okPunctMenu() { this._setPunctOpen(false) }
+
+  onPunctOverlayClick(e) {
+    if (e.target === this.punctOverlayTarget) this.closePunctMenu()
+  }
+
+  setPunctPresetRadio(e) {
+    const v = e?.target?.value || "source"
+    this._punct.preset = v
+    if (v !== "custom") this._punct.options = this._presetOptions(v)
+
+    this._state.strip = (v === "strip")
+    this._saveState()
+    this._savePunct()
+
+    this._syncPunctButtons()
+      this._apply()
+    this._broadcast()
+  }
+
+  setPunctOptionRadio() {
+    this._punct.preset = "custom"
+    const pick = (name) => {
+      const el = this.element.querySelector(`input[name="${name}"]:checked`)
+      return el ? el.value : null
+    }
+    const o = { ...this._punct.options }
+
+    const fam = pick("cv_quote_family"); if (fam) o.quoteFamily = fam
+    const ord = pick("cv_quote_order"); if (ord) o.quoteOrder = ord
+
+    const semi = pick("cv_semi"); if (semi) o.semicolon = semi
+    const colon = pick("cv_colon"); if (colon) o.colon = colon
+    const q = pick("cv_q"); if (q) o.question = q
+    const ex = pick("cv_ex"); if (ex) o.exclamation = ex
+    const comma = pick("cv_comma"); if (comma) o.comma = comma
+
+    this._punct.options = o
+    this._state.strip = false
+    this._saveState()
+    this._savePunct()
+
+    this._syncPunctButtons()
+      this._apply()
+    this._broadcast()
+  }
+
+  toggleVerticalQuoteForms() {
+    this._punct.preset = "custom"
+    this._punct.userOverrodeVerticalQuotes = true
+    this._punct.options = { ...this._punct.options, verticalQuoteForms: !!this.verticalQuoteFormsChkTarget.checked }
+    this._savePunct()
+
+    this._syncPunctButtons()
+      this._apply()
+    this._broadcast()
+  }
+
+
+  togglePunct() {
+    // Legacy: rightbar may still call this. Map to preset.
+    const nowStrip = !this._state.strip
+    this._state.strip = nowStrip
+    this._punct.preset = nowStrip ? "strip" : "source"
+    if (this._punct.preset !== "custom") this._punct.options = this._presetOptions(this._punct.preset)
+    this._saveState()
+    this._savePunct()
+    this._syncPunctButtons()
+      this._apply()
     this._broadcast()
   }
 
@@ -130,7 +499,7 @@ export default class extends Controller {
     return {
       vertical: getBool("corpus.vertical", false),
       vflow: getStr("corpus.verticalFlow", "rl"),
-      theme: getStr("corpus.theme", "bamboo"),
+      theme: getStr("corpus.theme", "dark"),
       strip: getBool("corpus.stripPunct", false),
       fontSizePx: getInt("corpus.fontSizePx", 20),
       rubyOnDemand: getBool("corpus.rubyOnDemand", false),
@@ -165,9 +534,40 @@ export default class extends Controller {
     // Notify the rightbar controller (and any other listeners) of state changes.
     window.dispatchEvent(new CustomEvent("corpus-view-options", { detail: { ...this._state } }))
   }
+  _captureScrollState() {
+    // Preserve reading position across re-renders (changing punctuation, ruby spacing, etc.)
+    const el = this.viewboxTarget
+    const maxX = Math.max(1, el.scrollWidth - el.clientWidth)
+    const maxY = Math.max(1, el.scrollHeight - el.clientHeight)
+    return {
+      x: el.scrollLeft,
+      y: el.scrollTop,
+      rx: el.scrollLeft / maxX,
+      ry: el.scrollTop / maxY,
+      vertical: !!this._state.vertical,
+      vflow: (this._state.vflow || "rl").toString(),
+    }
+  }
+
+  _restoreScrollState(s) {
+    if (!s) return
+    const el = this.viewboxTarget
+    const maxX = Math.max(0, el.scrollWidth - el.clientWidth)
+    const maxY = Math.max(0, el.scrollHeight - el.clientHeight)
+
+    // Prefer ratio restore (handles layout width/height changes). Fall back to absolute.
+    const nx = Number.isFinite(s.rx) ? Math.round(s.rx * maxX) : (Number.isFinite(s.x) ? s.x : 0)
+    const ny = Number.isFinite(s.ry) ? Math.round(s.ry * maxY) : (Number.isFinite(s.y) ? s.y : 0)
+
+    el.scrollLeft = Math.max(0, Math.min(maxX, nx))
+    el.scrollTop  = Math.max(0, Math.min(maxY, ny))
+  }
+
 
   _apply() {
     const { vertical, vflow, theme, strip, fontSizePx } = this._state
+
+    const scrollState = this._captureScrollState()
 
     // Layout classes on the scroll box.
     this.viewboxTarget.classList.toggle("is-vertical", vertical)
@@ -203,21 +603,37 @@ export default class extends Controller {
       this.punctColorBtnTarget.textContent = `Dot: ${c[0].toUpperCase()}${c.slice(1)}`
     }
 
-    // Punctuation stripping (cached)
-    this.contentTarget.innerHTML = strip ? this._getStrippedHTML() : this._originalHTML
+    // Punctuation rendering:
+    // - "Source" = untouched
+    // - "Strip" = legacy safe stripping
+    // - Others = display-only conversion of punctuation + quotes
+    const preset = (this._punct?.preset || "source").toString()
+
+    if (strip || preset === "strip") {
+      this.contentTarget.innerHTML = this._getStrippedHTML()
+    } else if (preset === "source") {
+      this.contentTarget.innerHTML = this._originalHTML
+    } else {
+      this.contentTarget.innerHTML = this._convertPunctuationHTML(this._originalHTML, preset)
+    }
     this._applyJudouColor()
     this._applyJudouWrappers()
 
 
     this._updateRubySpacing()
-    // When switching to vertical layout, ensure the "first" column is visible.
-    // For the standard right-to-left vertical flow, that means scrolling to the far right.
-    if (vertical) {
-      const wantRight = (vflow !== "lr")
-      window.requestAnimationFrame(() => {
+
+    // Restore reading position after re-render.
+    window.requestAnimationFrame(() => {
+      this._restoreScrollState(scrollState)
+
+      // Only do the "jump to edge" behavior when the user actually toggled orientation/flow.
+      if (this._justToggledOrientation && vertical) {
+        const wantRight = (vflow !== "lr")
         this.viewboxTarget.scrollLeft = wantRight ? this.viewboxTarget.scrollWidth : 0
-      })
-    }
+      }
+      this._justToggledOrientation = false
+    })
+
   }
 
   
@@ -486,5 +902,140 @@ _getStrippedHTML() {
       if (p && p.closest && (p.closest("rt, rp") || p.closest(".xuanji-phon"))) continue
       node.nodeValue = (node.nodeValue || "").replace(PUNCT_RE, "")
     }
+  }
+}
+
+
+// ---- Punctuation / quotation conversion helpers ----
+function convertStrong(full, mode) { return (mode === "collapse") ? "。" : full }
+
+function convertPuncText(text, opts) {
+  let t = text
+
+  // commas
+  if (opts.comma === "dunhao") {
+    t = t.replace(/,/g, "、").replace(/，/g, "、")
+  } else {
+    t = t.replace(/,/g, "，")
+  }
+
+  // periods (non-decimal)
+  t = t.replace(/(?<!\d)\.(?!\d)/g, "。")
+
+  // semicolon / colon / question / exclamation
+  t = t.replace(/;/g, convertStrong("；", opts.semicolon)).replace(/；/g, convertStrong("；", opts.semicolon))
+  t = t.replace(/:/g, convertStrong("：", opts.colon)).replace(/：/g, convertStrong("：", opts.colon))
+  t = t.replace(/\?/g, convertStrong("？", opts.question)).replace(/？/g, convertStrong("？", opts.question))
+  t = t.replace(/!/g, convertStrong("！", opts.exclamation)).replace(/！/g, convertStrong("！", opts.exclamation))
+
+  return t
+}
+
+class QuoteConverter {
+  constructor(opts) {
+    this.opts = opts || {}
+    // Stack stores the nesting kinds we opened: "outer" or "inner"
+    this.stack = []
+  }
+
+  _isQuoteChar(ch) {
+    return (
+      ch === '"' || ch === "'" ||
+      ch === "「" || ch === "」" || ch === "『" || ch === "』" ||
+      ch === "﹁" || ch === "﹂" || ch === "﹃" || ch === "﹄" ||
+      ch === "“" || ch === "”" || ch === "‘" || ch === "’" ||
+      ch === "＂" || ch === "＇"
+    )
+  }
+
+  _isOpenish(ch) {
+    return (ch === "「" || ch === "『" || ch === "﹁" || ch === "﹃" || ch === "“" || ch === "‘")
+  }
+
+  _isCloseish(ch) {
+    return (ch === "」" || ch === "』" || ch === "﹂" || ch === "﹄" || ch === "”" || ch === "’")
+  }
+
+  glyphs() {
+    const fam = (this.opts.quoteFamily || "corner").toString()
+    if (fam === "off") return null
+
+    const order = (this.opts.quoteOrder || "trad").toString()
+
+    // Corner brackets:
+    // A = 「」 (or ﹁﹂), B = 『』 (or ﹃﹄)
+    let A_open = "「", A_close = "」"
+    let B_open = "『", B_close = "』"
+    if (fam === "corner" && !!this.opts.verticalQuoteForms) {
+      A_open = "﹁"; A_close = "﹂"
+      B_open = "﹃"; B_close = "﹄"
+    }
+
+    if (fam === "speech_curly") {
+      // Latin speech marks: outer=“”, inner=‘’
+      const outO = "“", outC = "”", inO = "‘", inC = "’"
+      // "simp" ordering means outer uses single quotes, inner uses double quotes
+      if (order === "simp") return { outerOpen: inO, outerClose: inC, innerOpen: outO, innerClose: outC }
+      return { outerOpen: outO, outerClose: outC, innerOpen: inO, innerClose: inC }
+    }
+
+    if (fam === "speech_fullwidth") {
+      // Chinese fullwidth speech marks: outer=＂＂, inner=＇＇
+      const outO = "＂", outC = "＂", inO = "＇", inC = "＇"
+      if (order === "simp") return { outerOpen: inO, outerClose: inC, innerOpen: outO, innerClose: outC }
+      return { outerOpen: outO, outerClose: outC, innerOpen: inO, innerClose: inC }
+    }
+
+    // corner family ordering
+    if (order === "simp") {
+      // Simplified ordering: outer=『』, inner=「」
+      return { outerOpen: B_open, outerClose: B_close, innerOpen: A_open, innerClose: A_close }
+    }
+    // Traditional: outer=「」, inner=『』
+    return { outerOpen: A_open, outerClose: A_close, innerOpen: B_open, innerClose: B_close }
+  }
+
+  convert(text) {
+    const g = this.glyphs()
+    if (!g) return text
+
+    let out = ""
+    for (const ch of text) {
+      if (!this._isQuoteChar(ch)) { out += ch; continue }
+
+      // Determine whether this is an open or close based on the source char when possible.
+      const isOpen = this._isOpenish(ch)
+      const isClose = this._isCloseish(ch)
+
+      if (isOpen) {
+        const kind = (this.stack.length === 0) ? "outer" : "inner"
+        this.stack.push(kind)
+        out += (kind === "outer") ? g.outerOpen : g.innerOpen
+        continue
+      }
+
+      if (isClose) {
+        const kind = this.stack.pop() || ((this.stack.length === 0) ? "outer" : "inner")
+        out += (kind === "outer") ? g.outerClose : g.innerClose
+        continue
+      }
+
+      // Neutral quotes (", ', ＂, ＇): toggle heuristically.
+      // If we are inside outer but not yet inside inner, assume open inner first.
+      if (this.stack.length === 1 && this.stack[0] === "outer") {
+        this.stack.push("inner")
+        out += g.innerOpen
+        continue
+      }
+
+      if (this.stack.length > 0) {
+        const kind = this.stack.pop()
+        out += (kind === "outer") ? g.outerClose : g.innerClose
+      } else {
+        this.stack.push("outer")
+        out += g.outerOpen
+      }
+    }
+    return out
   }
 }

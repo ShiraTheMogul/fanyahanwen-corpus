@@ -45,13 +45,21 @@
               aria-pressed="false">
         Theme
       </button>
-
       <button type="button"
               class="corpus-btn"
-              data-action="corpus-reader#togglePunct"
-              data-corpus-reader-target="punctBtn"
+              data-action="corpus-reader#cyclePunctPreset"
+              data-corpus-reader-target="punctPresetBtn"
               aria-pressed="false">
-        No punct
+        Punct: Source
+      </button>
+
+      <button type="button"
+              class="corpus-btn corpus-btn-split"
+              title="Punctuation options"
+              aria-label="Punctuation options"
+              data-action="corpus-reader#togglePunctMenu"
+              data-corpus-reader-target="punctMenuBtn">
+        ▾
       </button>
 
       <button type="button"
@@ -71,7 +79,77 @@
       </button>
     </div>
 
-    <div class="corpus-viewbox" data-corpus-reader-target="viewbox">
+    
+    <div class="corpus-punct-overlay"
+         data-corpus-reader-target="punctOverlay"
+         data-action="click->corpus-reader#onPunctOverlayClick"
+         hidden>
+      <div class="corpus-punct-panel"
+           data-corpus-reader-target="punctPanel"
+           role="dialog"
+           aria-label="Punctuation options">
+        <div class="corpus-punct-header">
+          <div class="corpus-punct-title">Punctuation options</div>
+          <div class="corpus-punct-actions">
+            <button type="button" class="corpus-btn corpus-btn-ghost" data-action="click->corpus-reader#okPunctMenu" data-corpus-reader-target="punctOkBtn">OK</button>
+            <button type="button" class="corpus-btn corpus-btn-ghost" data-action="click->corpus-reader#closePunctMenu" data-corpus-reader-target="punctCloseBtn">✕</button>
+          </div>
+        </div>
+
+        <div class="corpus-punct-grid">
+          <fieldset class="corpus-fieldset preset-box">
+            <legend>Preset</legend>
+            <label><input type="radio" name="cv_preset" value="source" data-action="change->corpus-reader#setPunctPresetRadio"> Source</label>
+            <label><input type="radio" name="cv_preset" value="modern_trad" data-action="change->corpus-reader#setPunctPresetRadio"> Modern CJK (Traditional)</label>
+            <label><input type="radio" name="cv_preset" value="modern_prc" data-action="change->corpus-reader#setPunctPresetRadio"> Modern CJK (Simplified / PRC)</label>
+            <label><input type="radio" name="cv_preset" value="pure" data-action="change->corpus-reader#setPunctPresetRadio"> Pure classical</label>
+            <label><input type="radio" name="cv_preset" value="strip" data-action="change->corpus-reader#setPunctPresetRadio"> Strip</label>
+            <label><input type="radio" name="cv_preset" value="custom" data-action="change->corpus-reader#setPunctPresetRadio"> Custom</label>
+          </fieldset>
+
+          <fieldset class="corpus-fieldset">
+            <legend>Quotes</legend>
+            <div class="corpus-subtitle">Family</div>
+            <label><input type="radio" name="cv_quote_family" value="corner" data-action="change->corpus-reader#setPunctOptionRadio"> Chinese quotation marks 「」『』</label>
+            <label><input type="radio" name="cv_quote_family" value="speech_curly" data-action="change->corpus-reader#setPunctOptionRadio"> Latin speech marks “ ” ‘ ’</label>
+            <label><input type="radio" name="cv_quote_family" value="speech_fullwidth" data-action="change->corpus-reader#setPunctOptionRadio"> Chinese speech marks ＂ ＇</label>
+            <label><input type="radio" name="cv_quote_family" value="off" data-action="change->corpus-reader#setPunctOptionRadio"> Off</label>
+
+            <div class="corpus-subtitle">Ordering</div>
+            <label><input type="radio" name="cv_quote_order" value="trad" data-action="change->corpus-reader#setPunctOptionRadio"> Traditional: 「甲『乙』丙」</label>
+            <label><input type="radio" name="cv_quote_order" value="simp" data-action="change->corpus-reader#setPunctOptionRadio"> Simplified: 『甲「乙」丙』</label>
+
+            <label class="corpus-check"><input type="checkbox" data-corpus-reader-target="verticalQuoteFormsChk" data-action="change->corpus-reader#toggleVerticalQuoteForms"> Vertical quote forms (﹁﹂﹃﹄)</label>
+          </fieldset>
+
+          <fieldset class="corpus-fieldset">
+            <legend>Question / Exclamation</legend>
+            <label><input type="radio" name="cv_q" value="keep" data-action="change->corpus-reader#setPunctOptionRadio"> Keep ？</label>
+            <label><input type="radio" name="cv_q" value="collapse" data-action="change->corpus-reader#setPunctOptionRadio"> Collapse ? → 。</label>
+            <div style="height:6px"></div>
+            <label><input type="radio" name="cv_ex" value="keep" data-action="change->corpus-reader#setPunctOptionRadio"> Keep ！</label>
+            <label><input type="radio" name="cv_ex" value="collapse" data-action="change->corpus-reader#setPunctOptionRadio"> Collapse ! → 。</label>
+          </fieldset>
+
+          <fieldset class="corpus-fieldset">
+            <legend>Semicolon / Colon</legend>
+            <label><input type="radio" name="cv_semi" value="keep" data-action="change->corpus-reader#setPunctOptionRadio"> Keep ；</label>
+            <label><input type="radio" name="cv_semi" value="collapse" data-action="change->corpus-reader#setPunctOptionRadio"> Collapse ; → 。</label>
+            <div style="height:6px"></div>
+            <label><input type="radio" name="cv_colon" value="keep" data-action="change->corpus-reader#setPunctOptionRadio"> Keep ：</label>
+            <label><input type="radio" name="cv_colon" value="collapse" data-action="change->corpus-reader#setPunctOptionRadio"> Collapse : → 。</label>
+          </fieldset>
+
+          <fieldset class="corpus-fieldset">
+            <legend>Comma</legend>
+            <label><input type="radio" name="cv_comma" value="keep" data-action="change->corpus-reader#setPunctOptionRadio"> Use ，</label>
+            <label><input type="radio" name="cv_comma" value="dunhao" data-action="change->corpus-reader#setPunctOptionRadio"> Use 、</label>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+
+<div class="corpus-viewbox" data-corpus-reader-target="viewbox">
       <div class="corpus-textflow"
            data-corpus-reader-target="content"
            data-action="contextmenu->corpus-reader#onContextMenu">
