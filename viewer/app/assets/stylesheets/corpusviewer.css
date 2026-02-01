@@ -658,3 +658,20 @@ html.dark-mode .cv-annotate-note {
 .cv-judou-opt{ display:block; margin:4px 0; font-size: 14px; }
 
 .corpus-toolbar{ position: relative; }
+
+
+/* Annotate popover kind buttons: colour cues */
+.cv-annotate-popover .cv-annotate-kinds { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+.cv-annotate-popover button.cv-annotate-kind { padding: 4px 8px; border-radius: 6px; border: 1px solid #666; background: rgba(0,0,0,0.15); cursor: pointer; font-size: 12px; }
+.cv-annotate-popover button.cv-annotate-kind[data-kind="title"] { border-color: var(--ne-title, #3b82f6); }
+.cv-annotate-popover button.cv-annotate-kind[data-kind="person"] { border-color: var(--ne-person, #facc15); }
+.cv-annotate-popover button.cv-annotate-kind[data-kind="place"] { border-color: var(--ne-place, #22c55e); }
+.cv-annotate-popover button.cv-annotate-kind[data-kind="office"] { border-color: var(--ne-office, #ef4444); }
+
+/* Blue Chinese numerals for out-of-text note anchors */
+.ne-note-anchor { position: relative; }
+.ne-note-anchor::after { content: attr(data-ne-numeral); position: absolute; top: -0.6em; right: -0.2em; font-size: 0.75em; color: var(--ne-note-marker, #3b82f6); }
+
+/* Reduce trailing-space blowout */
+.corpus-textflow { white-space: pre-line; }
+.corpus-note-block { white-space: normal; }
