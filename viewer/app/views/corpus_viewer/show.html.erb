@@ -80,15 +80,30 @@
               aria-pressed="false">
         Annotate: Off
       </button>
-
-<button type="button"
+      <button type="button"
               class="corpus-btn"
-              data-action="corpus-reader#cyclePunctColor"
-              data-corpus-reader-target="punctColorBtn"
+              data-action="corpus-annotations#toggleNotes"
+              data-corpus-annotations-target="notesBtn"
               aria-pressed="false">
-        Dot: Red
+        Notes: Off
       </button>
-    </div>
+
+      <button type="button"
+              class="corpus-btn"
+              data-action="corpus-annotations#openColorSettings"
+              title="Colour settings"
+              aria-label="Colour settings">
+        Colour settings
+      </button>
+
+      <button type="button"
+              class="corpus-btn corpus-btn-primary"
+              data-action="corpus-annotations#saveDraft"
+              data-corpus-annotations-target="saveBtn"
+              hidden>
+        Save
+      </button>
+</div>
 
     
     <div class="corpus-punct-overlay"

@@ -224,6 +224,7 @@ export default class extends Controller {
     // accidental navigation during selection). We *want* dblclick to open the
     // character page, so we listen in capture phase as a safety net.
     this._onDblClickCapture = (e) => {
+      if (document.documentElement.classList.contains("cv-annotate-mode")) return
       // Don't hijack dblclicks inside the tooltip itself.
       if (e.target?.closest?.(".han-tooltip")) return
       if (e.target?.closest?.("a, button, input, textarea, select, [contenteditable='true']")) return
@@ -251,6 +252,7 @@ export default class extends Controller {
   }
 
   click(event) {
+    if (document.documentElement.classList.contains("cv-annotate-mode")) return
     if (this._pinned) return
     if (event.target.closest("a, button, input, textarea, select, [contenteditable='true']")) return
 
@@ -264,6 +266,8 @@ export default class extends Controller {
   }
 
   dblclick(event) {
+    if (document.documentElement.classList.contains("cv-annotate-mode")) return
+    if (document.documentElement.classList.contains("cv-annotate-mode")) return
     const picked = pickHanAtPoint(event)
     if (!picked) return
 

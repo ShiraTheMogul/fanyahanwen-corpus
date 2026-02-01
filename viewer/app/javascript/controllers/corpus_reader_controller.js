@@ -17,6 +17,8 @@ export default class extends Controller {
       if (!ev?.detail) return
       this._setState(ev.detail)
       this._syncPunctButtons()
+      const nxt = (ev.detail?.punctPreset || ev.detail?.punct?.preset || "").toString()
+      if (nxt === "custom") this._setPunctOpen(true)
       this._apply()
     }
     window.addEventListener("corpus-view-options", this._onExternalOptions)
@@ -81,7 +83,7 @@ export default class extends Controller {
     }
 
     return {
-      preset: getStr("corpus.punctPreset", "source"),
+      preset: getStr("corpus.punctPreset", "modern_trad"),
       userOverrodeVerticalQuotes: getBool("corpus.punctUserOverrodeVQ", false),
       options: {
         quoteFamily: getStr("corpus.quoteFamily", "corner"),     // corner | speech_curly | speech_fullwidth | off
@@ -497,9 +499,9 @@ export default class extends Controller {
     }
 
     return {
-      vertical: getBool("corpus.vertical", false),
+      vertical: getBool("corpus.vertical", true),
       vflow: getStr("corpus.verticalFlow", "rl"),
-      theme: getStr("corpus.theme", "dark"),
+      theme: getStr("corpus.theme", "bamboo"),
       strip: getBool("corpus.stripPunct", false),
       fontSizePx: getInt("corpus.fontSizePx", 20),
       rubyOnDemand: getBool("corpus.rubyOnDemand", false),
@@ -533,7 +535,9 @@ export default class extends Controller {
   _broadcast() {
     // Notify the rightbar controller (and any other listeners) of state changes.
     window.dispatchEvent(new CustomEvent("corpus-view-options", { detail: { ...this._state } }))
-  }
+  
+    this.element.dispatchEvent(new CustomEvent("corpus-reader-options", { detail: { judouOn: this._judouOn, punctPreset: this._punctPreset }, bubbles: true }))
+}
   _captureScrollState() {
     // Preserve reading position across re-renders (changing punctuation, ruby spacing, etc.)
     const el = this.viewboxTarget

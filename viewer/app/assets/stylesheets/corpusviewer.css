@@ -59,7 +59,7 @@
 
 .corpus-textflow {
   margin: 0;
-  white-space: pre-wrap;
+  white-space: pre-line;
   word-break: break-word;
   line-height: calc(var(--cv-font-size, 20px) * 1.8);
   font-size: var(--cv-font-size, 20px);
@@ -74,7 +74,7 @@
 .corpus-textflow.is-vertical {
   writing-mode: vertical-rl; /* default: columns advance right-to-left */
   text-orientation: mixed;
-  white-space: pre-wrap;
+  white-space: pre-line;
   /* Fix: constrain the block size so vertical writing wraps into additional columns. */
   height: 100%;
   max-height: 100%;
@@ -269,6 +269,9 @@
 
 .corpus-btn-split { padding-left: 10px; padding-right: 10px; }
 
+.corpus-btn-primary { background: #111; color: #fff; border-color: #111; }
+.theme-dark .corpus-btn-primary { background: #f3f3f3; color: #111; border-color: #f3f3f3; }
+
 
 /* ---------- Named entity annotations ---------- */
 /* Colours are CSS variables so users can override (including colourblind presets). */
@@ -277,6 +280,7 @@
   --ne-person: #d69e2e;
   --ne-place: #2f855a;
   --ne-office: #c53030;
+  --ne-note: #2b6cb0;
 }
 
 /* Per-character spans for stable offset mapping */
@@ -285,8 +289,8 @@
 }
 
 /* Underline styles (derived from judou-like marking, but without inserting symbols) */
-.corpus-textflow .ne-title,
-.corpus-textflow .ne-title-auto {
+html.cv-annotations-on .corpus-textflow .ne-title,
+html.cv-annotations-on .corpus-textflow .ne-title-auto {
   text-decoration: underline;
   text-decoration-color: var(--ne-title);
   text-decoration-thickness: 2px;
@@ -344,7 +348,7 @@
 }
 
 .corpus-annot-menu button {
-  padding: 6px 10px;
+  padding: 7px 10px;
   border: 1px solid #bbb;
   background: #f6f6f6;
   border-radius: 6px;
@@ -426,3 +430,214 @@
 .corpus-note-brace { opacity: 0.92; }
 .corpus-note-angle { opacity: 0.92; }
 .corpus-note-square { opacity: 0.92; }
+
+/* Hide bracket glyphs inside note blocks (keeps corpus indices stable, but removes visual noise). */
+.corpus-note-block .note-bracket { display: none; }
+
+/* Columns fight vertical writing-mode and cause large spacing gaps. Disable columns in vertical. */
+.corpus-textflow.is-vertical .corpus-note-block {
+  column-count: 1;
+  display: inline;
+}
+
+
+
+
+/* Annotation viewing toggle: default is ON. When OFF, remove underline styling without touching DOM classes. */
+html.cv-annotations-off .corpus-textflow .ne-title,
+html.cv-annotations-off .corpus-textflow .ne-title-auto,
+html.cv-annotations-off .corpus-textflow .ne-person,
+html.cv-annotations-off .corpus-textflow .ne-place,
+html.cv-annotations-off .corpus-textflow .ne-office {
+  text-decoration: none !important;
+}
+
+
+/* Notes layer (footnote-style) */
+.corpus-note-block.notes-collapsed {
+  display: none;
+}
+
+/* Hide bracket glyph spans when notes are shown (keeps indices stable but removes visual clutter) */
+html.cv-notes-on .corpus-textflow .note-bracket {
+  display: none;
+}
+
+.corpus-note-marker {
+  display: inline-block;
+  font-size: 0.65em;
+  line-height: 1;
+  vertical-align: super;
+  margin-right: 0.1em;
+  color: var(--ne-note);
+  opacity: 0.95;
+}
+
+.corpus-footnotes {
+  margin-top: 24px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(0,0,0,0.15);
+  font-size: 0.95em;
+}
+
+.corpus-footnotes h3 {
+  margin: 0 0 10px 0;
+  font-size: 1em;
+}
+
+.corpus-footnotes-list {
+  margin: 0;
+  padding-left: 1.4em;
+}
+
+.corpus-footnotes-list li {
+  margin: 6px 0;
+}
+
+.corpus-footnote-n {
+  color: var(--ne-note);
+  font-weight: 600;
+}
+
+
+.corpus-annot-menu button:hover {
+  filter: brightness(0.98);
+}
+
+.corpus-annot-menu button:focus {
+  outline: 2px solid rgba(43,108,176,0.35);
+  outline-offset: 2px;
+}
+
+/* Inline corpus note blocks: hide bracket glyph spans to avoid visual gaps */
+.corpus-note-block .note-bracket {
+  display: none;
+}
+
+/* Prevent awkward trailing spacing inside inline notes */
+.corpus-note-block {
+  white-space: normal;
+}
+
+/* Corpus toolbar buttons: clearer on/off states */
+.corpus-btn[aria-pressed="true"] {
+  font-weight: 600;
+}
+
+
+
+/* ---- User-added annotation notes (bottom panel) ---- */
+.cv-user-note-anchor { position: relative; }
+.cv-user-note-anchor::after {
+  content: attr(data-note-marker);
+  position: absolute;
+  top: -0.6em;
+  right: -0.3em;
+  font-size: 0.6em;
+  line-height: 1;
+  color: var(--cv-color-title, #1b4fff);
+}
+
+.cv-user-notes-panel {
+  margin-top: 1.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(0,0,0,0.15);
+}
+.cv-user-notes-title { margin: 0 0 0.5rem 0; font-size: 1.05rem; }
+.cv-user-notes-list { margin: 0; padding-left: 1.25rem; }
+.cv-user-note-marker { color: var(--cv-color-title, #1b4fff); font-weight: 600; }
+
+/* Inline corpus bracket notes: reduce ugly spacing inflation */
+.corpus-note-block { white-space: normal; }
+
+
+/* ---- Annotation popover (edit mode) ---- */
+.cv-annotate-popover {
+  position: absolute;
+  z-index: 9999;
+  background: rgba(255,255,255,0.98);
+  border: 1px solid rgba(0,0,0,0.25);
+  border-radius: 10px;
+  padding: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+  font-size: 14px;
+  max-width: 280px;
+}
+html.dark-mode .cv-annotate-popover {
+  background: rgba(20,20,20,0.98);
+  color: rgba(255,255,255,0.92);
+  border-color: rgba(255,255,255,0.18);
+}
+.cv-annotate-row { display: flex; gap: 6px; margin: 6px 0; flex-wrap: wrap; }
+.cv-annotate-row button {
+  border: 1px solid rgba(0,0,0,0.25);
+  border-radius: 8px;
+  padding: 4px 8px;
+  background: rgba(255,255,255,0.85);
+  cursor: pointer;
+}
+html.dark-mode .cv-annotate-row button {
+  background: rgba(30,30,30,0.85);
+  border-color: rgba(255,255,255,0.18);
+  color: rgba(255,255,255,0.92);
+}
+.cv-annotate-note {
+  width: 100%;
+  border: 1px solid rgba(0,0,0,0.25);
+  border-radius: 8px;
+  padding: 6px 8px;
+}
+html.dark-mode .cv-annotate-note {
+  background: rgba(30,30,30,0.85);
+  border-color: rgba(255,255,255,0.18);
+  color: rgba(255,255,255,0.92);
+}
+.cv-annotate-actions { justify-content: flex-end; }
+.cv-annotate-actions .cv-cancel { opacity: 0.9; }
+
+
+
+/* User-added note markers (out-of-text notes) */
+.corpus-textflow .cv-user-note-anchor {
+  position: relative;
+}
+
+.corpus-textflow .cv-user-note-anchor::after {
+  content: attr(data-note-marker);
+  position: absolute;
+  top: -0.6em;
+  right: -0.4em;
+  font-size: 0.65em;
+  color: #2b6cb0; /* blue */
+  font-weight: 600;
+  line-height: 1;
+}
+
+.cv-user-notes-panel {
+  margin-top: 18px;
+  padding: 12px 14px;
+  border: 1px solid rgba(0,0,0,0.18);
+  border-radius: 12px;
+  background: rgba(255,255,255,0.9);
+}
+
+.cv-user-notes-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.cv-user-notes-list {
+  margin: 0;
+  padding-left: 22px;
+}
+
+.cv-user-note-marker {
+  color: #2b6cb0;
+  font-weight: 700;
+}
+
+/* Reduce ugly trailing-space widening in inline bracket notes */
+.corpus-note-block {
+  white-space: normal;
+}

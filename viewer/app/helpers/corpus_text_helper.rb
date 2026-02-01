@@ -229,7 +229,9 @@ def corpus_text_without_ruby_indexed(text)
       buf.safe_concat(%(<span class="corpus-note-block corpus-note-#{opener}" data-note-kind="#{opener}">).html_safe)
     end
 
-    buf.safe_concat(%(<span class="cch" data-corpus-idx="#{idx}">).html_safe)
+    bracket_class = (opener || closer) ? " note-bracket" : ""
+
+    buf.safe_concat(%(<span class="cch#{bracket_class}" data-corpus-idx="#{idx}">).html_safe)
     buf << ERB::Util.html_escape(ch)
     buf.safe_concat("</span>".html_safe)
 
@@ -264,17 +266,20 @@ def corpus_text_with_ruby_indexed(text)
       buf.safe_concat(%(<span class="corpus-note-block corpus-note-#{opener}" data-note-kind="#{opener}">).html_safe)
     end
 
+    bracket_class = (opener || closer) ? " note-bracket" : ""
+
     reading = readings[ch]
     if reading.present?
       buf.safe_concat(%(<ruby class="#{ruby_class}">).html_safe)
-      buf.safe_concat(%(<span class="cch" data-corpus-idx="#{idx}">).html_safe)
+
+      buf.safe_concat(%(<span class="cch#{bracket_class}" data-corpus-idx="#{idx}">).html_safe)
       buf << ERB::Util.html_escape(ch)
       buf.safe_concat("</span>".html_safe)
       buf.safe_concat("<rt>".html_safe)
       buf << ERB::Util.html_escape(reading)
       buf.safe_concat("</rt></ruby>".html_safe)
     else
-      buf.safe_concat(%(<span class="cch" data-corpus-idx="#{idx}">).html_safe)
+      buf.safe_concat(%(<span class="cch#{bracket_class}" data-corpus-idx="#{idx}">).html_safe)
       buf << ERB::Util.html_escape(ch)
       buf.safe_concat("</span>".html_safe)
     end

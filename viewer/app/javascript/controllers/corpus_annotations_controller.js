@@ -1,460 +1,598 @@
 import { Controller } from "@hotwired/stimulus"
 
-// User-contributed named-entity annotations for the corpus reader.
+// corpus-annotations: user-contributed named-entity annotations for corpus viewer.
 //
-// How it works (high-level):
-// 1) Server renders each original character as:
-//      <span class="cch" data-corpus-idx="123">字</span>
-//    (even when ruby <rt> exists)
-// 2) When the user selects some text, we find the first/last cch spans in the
-//    selection and treat that as a [start, end) character range.
-// 3) We store ranges in JSON next to the corpus file and reload/re-apply later.
-//
-// Kinds:
-// - title  (blue)
-// - person (yellow)
-// - place  (green)
-// - office (red)
-//
-// Colours are controlled with CSS variables so users can override them (and use
-// colourblind presets). This controller stores palette + options in localStorage.
+// IMPORTANT COMPATIBILITY NOTES
+// - Avoid optional chaining (?.), nullish coalescing (??), and class field syntax,
+//   because some asset pipelines/minifiers choke on them.
+// - Keep Stimulus action method names stable: toggleView, toggleNotes, openColorSettings, etc.
+
 export default class extends Controller {
   static shouldLoad() { return true }
 
-  static targets = ["annotateBtn"]
-  static values = {
-    path: String,
-    url: String
+  static get targets() {
+    return ["annotateBtn", "saveBtn"]
+  }
+
+  static get values() {
+    return {
+      path: String,
+      url: String
+    }
   }
 
   connect() {
-    // Find the corpus textflow node; it already exists in the corpus-reader controller.
     this._contentEl = this.element.querySelector(".corpus-textflow")
     if (!this._contentEl) return
 
+    // state
     this._items = []
+    this._dirty = false
+    this._judouOn = true
+
+    // view toggles
+    this._viewEnabled = this._loadBool("corpus.annot.view.v1", true)
+    this._notesEnabled = this._loadBool("corpus.annot.notes.v1", false)
+    this._annotateEnabled = this._loadBool("corpus.annot.edit.v1", false)
+
+    // palette
     this._palette = this._loadPalette()
-    this._titleMode = this._loadTitleMode()
 
-    this._annotateEnabled = this._loadAnnotateEnabled()
-    this._syncAnnotateBtn()
+    // hook buttons (label reflects state)
+    this._syncButtons()
 
+    this._syncAnnotateModeClass()
+    this._bindAnnotateSelection()
+
+    // listen for reader option changes (judou on/off)
+    this._onReaderOptionsBound = (ev) => this._onReaderOptions(ev)
+    window.addEventListener("corpus-reader-options", this._onReaderOptionsBound)
+    window.addEventListener("corpus-view-options", this._onReaderOptionsBound)
+
+    // re-apply after reader re-renders text DOM
+    this._onReaderAppliedBound = () => this._applyAll()
+    window.addEventListener("corpus-reader-applied", this._onReaderAppliedBound)
+
+    // load saved annotations
+    this._loadFromServer()
+      .then(() => this._applyAll())
+      .catch((e) => console.warn("[corpus-annotations] load failed", e))
+
+    // apply palette to root
     this._applyPaletteToRoot()
-    this._ensureUI()
-    this._wireEvents()
-
-    this._loadFromServer().then(() => {
-      this._applyAllHighlights()
-      this._applyAutoTitles()
-    })
   }
 
   disconnect() {
-    this._unwireEvents()
-    this._hideMenu()
+    if (this._onReaderOptionsBound) {
+      window.removeEventListener("corpus-reader-options", this._onReaderOptionsBound)
+      window.removeEventListener("corpus-view-options", this._onReaderOptionsBound)
+    }
+    if (this._onReaderAppliedBound) {
+      window.removeEventListener("corpus-reader-applied", this._onReaderAppliedBound)
+    }
+  
+    this._hideAnnotatePopup()
+    this._unbindAnnotateSelection()
+    // ensure class removed
+    document.documentElement.classList.remove("cv-annotate-mode")
   }
 
-  // ---------- annotate mode toggle ----------
+  // ---------------- Stimulus action entrypoints ----------------
+
+  toggleView() {
+    this._viewEnabled = !this._viewEnabled
+    this._storeBool("corpus.annot.view.v1", this._viewEnabled)
+    this._syncButtons()
+    this._applyAll()
+  }
+
+  toggleNotes() {
+    this._notesEnabled = !this._notesEnabled
+    this._storeBool("corpus.annot.notes.v1", this._notesEnabled)
+    this._syncButtons()
+    this._applyAll()
+  }
 
   toggleAnnotate() {
     this._annotateEnabled = !this._annotateEnabled
-    try { localStorage.setItem("corpus.annotate.enabled", this._annotateEnabled ? "1" : "0") } catch (_) {}
-    this._syncAnnotateBtn()
-    if (!this._annotateEnabled) this._hideMenu()
+    this._storeBool("corpus.annot.edit.v1", this._annotateEnabled)
+    this._syncAnnotateModeClass()
+    this._syncButtons()
   }
 
-  _loadAnnotateEnabled() {
+  openColorSettings() {
+    this._openColors()
+  }
+
+  closeColorSettings() {
+    if (this._colorsDlg && this._colorsDlg.open) this._colorsDlg.close()
+  }
+
+  
+// ---------------- Annotate mode (interactive selection) ----------------
+
+_syncAnnotateModeClass() {
+  // Annotate mode disables dictionary tooltip interactions via han_tooltip_controller.
+  const root = document.documentElement
+  if (!root) return
+  if (this._annotateEnabled) {
+    root.classList.add("cv-annotate-mode")
+  } else {
+    root.classList.remove("cv-annotate-mode")
+  }
+}
+
+_bindAnnotateSelection() {
+  if (this._onMouseUpBound) return
+  this._onMouseUpBound = (ev) => this._onMouseUp(ev)
+  document.addEventListener("mouseup", this._onMouseUpBound)
+  document.addEventListener("keydown", (ev) => {
+    if (!this._annotateEnabled) return
+    if (ev.key === "Escape") this._hideAnnotatePopup()
+  })
+}
+
+_unbindAnnotateSelection() {
+  if (!this._onMouseUpBound) return
+  document.removeEventListener("mouseup", this._onMouseUpBound)
+  this._onMouseUpBound = null
+}
+
+_onMouseUp(ev) {
+  if (!this._annotateEnabled) return
+  if (!this._contentEl) return
+
+  // Only act if selection touches the corpus textflow.
+  const sel = window.getSelection ? window.getSelection() : null
+  if (!sel || sel.rangeCount === 0) return
+  const range = sel.getRangeAt(0)
+  if (!range) return
+
+  // Ignore empty selection.
+  const text = (sel.toString ? sel.toString() : "").trim()
+  if (!text) return
+
+  // Ensure selection is inside corpus textflow.
+  const container = range.commonAncestorContainer
+  const node = (container && container.nodeType === 1) ? container : (container ? container.parentElement : null)
+  if (!node) return
+  if (!this._contentEl.contains(node)) return
+
+  const r = this._selectionToIdxRange(range)
+  if (!r) return
+
+  this._showAnnotatePopup(r, range)
+}
+
+_selectionToIdxRange(range) {
+  // Convert DOM Range -> corpus idx span bounds.
+  const spans = this._spans()
+  if (!spans.length) return null
+
+  let minIdx = null
+  let maxIdx = null
+
+  for (let i = 0; i < spans.length; i++) {
+    const el = spans[i]
     try {
-      const v = localStorage.getItem("corpus.annotate.enabled")
-      if (v === "1") return true
-      if (v === "0") return false
-    } catch (_) {}
-    return false
-  }
-
-  _syncAnnotateBtn() {
-    if (!this.hasAnnotateBtnTarget) return
-    const on = !!this._annotateEnabled
-    this.annotateBtnTarget.textContent = on ? "Annotate: On" : "Annotate: Off"
-    this.annotateBtnTarget.setAttribute("aria-pressed", on ? "true" : "false")
-  }
-
-
-  // ---------- events ----------
-
-  _wireEvents() {
-    this._onMouseUp = (ev) => {
-      // Small delay so window.getSelection() stabilizes.
-      window.setTimeout(() => this._maybeOpenMenu(ev), 0)
-    }
-    this._contentEl.addEventListener("mouseup", this._onMouseUp)
-
-    this._onKeyDown = (ev) => {
-      if (ev.key === "Escape") this._hideMenu()
-    }
-    document.addEventListener("keydown", this._onKeyDown)
-  }
-
-  _unwireEvents() {
-    if (this._onMouseUp) this._contentEl.removeEventListener("mouseup", this._onMouseUp)
-    if (this._onKeyDown) document.removeEventListener("keydown", this._onKeyDown)
-  }
-
-  // ---------- loading / saving ----------
-
-  async _loadFromServer() {
-    const base = (this.urlValue || "/corpus_annotations").replace(/\/+$/, "")
-    const url = `${base}?path=${encodeURIComponent(this.pathValue || "")}`
-    try {
-      const res = await fetch(url, { headers: { "Accept": "application/json" } })
-      if (!res.ok) return
-      const data = await res.json()
-      this._items = Array.isArray(data?.items) ? data.items : []
+      // intersectsNode exists on Range in all modern browsers.
+      if (!range.intersectsNode(el)) continue
     } catch (_) {
-      // ignore: offline / no route yet
+      continue
     }
+    const idx = Number(el.getAttribute("data-corpus-idx"))
+    if (Number.isNaN(idx)) continue
+    if (minIdx === null || idx < minIdx) minIdx = idx
+    if (maxIdx === null || idx > maxIdx) maxIdx = idx
   }
 
-  async _saveToServer() {
-    const base = (this.urlValue || "/corpus_annotations").replace(/\/+$/, "")
-    const url = `${base}?path=${encodeURIComponent(this.pathValue || "")}`
+  if (minIdx === null || maxIdx === null) return null
+  return { start: minIdx, end: maxIdx }
+}
 
-    const token = document.querySelector("meta[name='csrf-token']")?.getAttribute("content") || ""
+_showAnnotatePopup(bounds, range) {
+  this._hideAnnotatePopup()
 
-    const payload = { annotations: { version: 1, items: this._items } }
+  const rect = range.getBoundingClientRect ? range.getBoundingClientRect() : null
+  const x = rect ? (rect.left + window.scrollX) : 20
+  const y = rect ? (rect.bottom + window.scrollY + 6) : 20
 
-    const res = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-        "X-CSRF-Token": token
-      },
-      body: JSON.stringify(payload)
-    })
-    return res.ok
-  }
+  const pop = document.createElement("div")
+  pop.className = "cv-annotate-popover"
+  pop.style.position = "absolute"
+  pop.style.left = Math.max(8, x) + "px"
+  pop.style.top = Math.max(8, y) + "px"
+  pop.style.zIndex = "9999"
 
-  // ---------- selection -> range ----------
+  pop.innerHTML = `
+    <div class="cv-annotate-row">
+      <button type="button" data-kind="title"  class="cv-annotate-kind">〖Title〗</button>
+      <button type="button" data-kind="person" class="cv-annotate-kind">丨Person</button>
+      <button type="button" data-kind="place"  class="cv-annotate-kind">‖Place</button>
+      <button type="button" data-kind="office" class="cv-annotate-kind">﹏Office</button>
+    </div>
+    <div class="cv-annotate-row">
+      <textarea class="cv-annotate-note" rows="2" placeholder="Note (optional)"></textarea>
+    </div>
+    <div class="cv-annotate-row cv-annotate-actions">
+      <button type="button" class="cv-annotate-cancel">Cancel</button>
+      <button type="button" class="cv-annotate-apply primary">Apply</button>
+    </div>
+  `
 
-  _maybeOpenMenu(ev) {
-    if (!this._annotateEnabled) { this._hideMenu(); return }
+  const onClick = (ev) => {
+    const t = ev.target
+    if (!t) return
 
-    const sel = window.getSelection()
-    if (!sel || sel.isCollapsed) {
-      this._hideMenu()
+    if (t.classList.contains("cv-annotate-cancel")) {
+      this._hideAnnotatePopup()
       return
     }
 
-    const range = sel.getRangeAt(0)
-    if (!range) return
-
-    // Ensure the selection is within the corpus content.
-    const common = range.commonAncestorContainer
-    if (!this._contentEl.contains(common.nodeType === 1 ? common : common.parentElement)) return
-
-    const bounds = range.getBoundingClientRect()
-    if (!bounds || (bounds.width === 0 && bounds.height === 0)) return
-
-    const [start, end] = this._selectionToCorpusRange(range)
-    if (start == null || end == null || end <= start) return
-
-    this._openMenuAt(bounds.left + window.scrollX, bounds.bottom + window.scrollY, start, end)
-  }
-
-  _selectionToCorpusRange(range) {
-    const spans = this._contentEl.querySelectorAll("span.cch[data-corpus-idx]")
-    if (!spans.length) return [null, null]
-
-    // Collect all selected cch spans by intersecting the selection range with each span.
-    // This is O(n) but fine for typical selection sizes; plus spans are cheap nodes.
-    let min = null
-    let max = null
-
-    for (const sp of spans) {
-      if (!range.intersectsNode(sp)) continue
-      const idx = parseInt(sp.dataset.corpusIdx, 10)
-      if (Number.isNaN(idx)) continue
-      if (min == null || idx < min) min = idx
-      if (max == null || idx > max) max = idx
+    if (t.classList.contains("cv-annotate-kind")) {
+      // highlight selected kind button
+      const btns = pop.querySelectorAll(".cv-annotate-kind")
+      btns.forEach((b) => b.classList.remove("active"))
+      t.classList.add("active")
+      return
     }
 
-    if (min == null || max == null) return [null, null]
-    return [min, max + 1] // convert to [start, end)
+    if (t.classList.contains("cv-annotate-apply")) {
+      const active = pop.querySelector(".cv-annotate-kind.active")
+      const kind = active ? active.getAttribute("data-kind") : null
+      if (!kind) return
+
+      const noteEl = pop.querySelector(".cv-annotate-note")
+      const note = noteEl ? String(noteEl.value || "").trim() : ""
+
+      this._items.push({ start: bounds.start, end: bounds.end, kind: kind, note: note })
+      this._dirty = true
+      this._syncButtons()
+      this._applyAll()
+      this._hideAnnotatePopup()
+
+      // clear selection
+      const sel = window.getSelection ? window.getSelection() : null
+      if (sel && sel.removeAllRanges) sel.removeAllRanges()
+    }
   }
 
-  // ---------- applying highlights ----------
+  pop.addEventListener("click", onClick)
 
-  _clearAllSpanClasses() {
-    const spans = this._contentEl.querySelectorAll("span.cch")
-    spans.forEach(sp => {
-      sp.classList.remove("ne-title", "ne-person", "ne-place", "ne-office", "ne-title-auto")
+  // Click outside closes.
+  this._onDocClickClose = (ev) => {
+    if (!pop.isConnected) return
+    if (pop.contains(ev.target)) return
+    this._hideAnnotatePopup()
+  }
+  setTimeout(() => document.addEventListener("mousedown", this._onDocClickClose), 0)
+
+  document.body.appendChild(pop)
+  this._popupEl = pop
+}
+
+_hideAnnotatePopup() {
+  if (this._onDocClickClose) {
+    document.removeEventListener("mousedown", this._onDocClickClose)
+    this._onDocClickClose = null
+  }
+  if (this._popupEl && this._popupEl.isConnected) {
+    this._popupEl.remove()
+  }
+  this._popupEl = null
+}
+
+// ---------------- Reader option integration ----------------
+
+  _onReaderOptions(ev) {
+    const detail = (ev && ev.detail) ? ev.detail : {}
+    // accept both judouOn and judou
+    const judou = (typeof detail.judouOn === "boolean") ? detail.judouOn
+                : (typeof detail.judou === "boolean") ? detail.judou
+                : null
+    if (judou === null) return
+
+    this._judouOn = judou
+
+    // Hard rule: these underlines are judou-derived, so follow judou master switch.
+    // Judou OFF => hide; Judou ON => show (if view enabled).
+    this._applyAll()
+    this._syncButtons()
+  }
+
+  // ---------------- Persistence ----------------
+
+  _endpoint() {
+    // Prefer explicit urlValue; fallback to /corpus_annotations
+    const url = (this.hasUrlValue && this.urlValue) ? this.urlValue : "/corpus_annotations"
+    const path = (this.hasPathValue && this.pathValue) ? this.pathValue : null
+    if (!path) return null
+    const u = new URL(url, window.location.origin)
+    u.searchParams.set("path", path)
+    return u.toString()
+  }
+
+  async _loadFromServer() {
+    const ep = this._endpoint()
+    if (!ep) return
+    const res = await fetch(ep, { headers: { "Accept": "application/json" } })
+    if (!res.ok) return
+    const data = await res.json()
+    const items = (data && data.items && Array.isArray(data.items)) ? data.items : []
+    this._items = items
+    this._dirty = false
+    this._syncButtons()
+  }
+
+  async save() {
+    const ep = this._endpoint()
+    if (!ep) return
+    const payload = { version: 1, items: this._items }
+    const res = await fetch(ep, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify(payload)
     })
+    if (!res.ok) {
+      console.warn("[corpus-annotations] save failed", res.status)
+      return
+    }
+    this._dirty = false
+    this._syncButtons()
   }
 
-  _applyAllHighlights() {
-    this._clearAllSpanClasses()
-    for (const it of this._items) {
-      this._applyItem(it)
+  // ---------------- Rendering ----------------
+
+  _applyAll() {
+    if (!this._contentEl) return
+
+    // If judou is off, hide everything (master switch).
+    if (!this._judouOn) {
+      this._clearAllHighlights()
+      this._removeNotesPanel()
+      return
+    }
+
+    // Judou is on.
+    this._clearAllHighlights()
+
+    if (this._viewEnabled) {
+      this._applyHighlights()
+    }
+
+    if (this._notesEnabled) {
+      this._renderNotesPanel()
+    } else {
+      this._removeNotesPanel()
     }
   }
 
-  _applyItem(it) {
-    const kind = (it?.kind || "").toString()
-    const start = parseInt(it?.start, 10)
-    const end = parseInt(it?.end, 10)
-    if (!Number.isFinite(start) || !Number.isFinite(end) || end <= start) return
+  _spans() {
+    return Array.from(this._contentEl.querySelectorAll("span.cch[data-corpus-idx]"))
+  }
 
-    const cls = this._kindToClass(kind)
-    if (!cls) return
-
-    const spans = this._contentEl.querySelectorAll("span.cch[data-corpus-idx]")
-    for (const sp of spans) {
-      const idx = parseInt(sp.dataset.corpusIdx, 10)
-      if (idx >= start && idx < end) sp.classList.add(cls)
+  _clearAllHighlights() {
+    const spans = this._spans()
+    for (let i = 0; i < spans.length; i++) {
+      const el = spans[i]
+      el.classList.remove("ne-title", "ne-person", "ne-place", "ne-office", "ne-auto-title", "ne-note-anchor")
+      el.removeAttribute("data-ne-note")
     }
   }
 
-  _kindToClass(kind) {
-    switch (kind) {
-      case "title": return "ne-title"
-      case "person": return "ne-person"
-      case "place": return "ne-place"
-      case "office": return "ne-office"
-      default: return null
-    }
-  }
+  _applyHighlights() {
+    // Apply underline classes for saved items.
+    // Expected item shape: { start, end, kind, note? }
+    const spans = this._spans()
+    if (!spans.length) return
 
-  // ---------- auto-title highlighting by brackets ----------
+    for (let k = 0; k < this._items.length; k++) {
+      const it = this._items[k]
+      if (!it) continue
+      const start = Number(it.start)
+      const end = Number(it.end)
+      if (!Number.isFinite(start) || !Number.isFinite(end) || end <= start) continue
 
-  _applyAutoTitles() {
-    // Remove only auto class, keep user annotations.
-    this._contentEl.querySelectorAll("span.cch.ne-title-auto").forEach(sp => sp.classList.remove("ne-title-auto"))
-    if (this._titleMode === "off") return
+      const cls = this._kindToClass(it.kind)
+      if (!cls) continue
 
-    const map = new Map()
-    // Build an array of chars by idx.
-    this._contentEl.querySelectorAll("span.cch[data-corpus-idx]").forEach(sp => {
-      const idx = parseInt(sp.dataset.corpusIdx, 10)
-      if (!Number.isNaN(idx)) map.set(idx, sp)
-    })
+      for (let i = 0; i < spans.length; i++) {
+        const idx = Number(spans[i].getAttribute("data-corpus-idx"))
+        if (idx >= start && idx < end) spans[i].classList.add(cls)
+      }
 
-    const getChar = (idx) => map.get(idx)?.textContent || ""
-    const maxIdx = Math.max(...map.keys())
-
-    const pairs = []
-    if (this._titleMode === "square" || this._titleMode === "both") {
-      pairs.push(["〖", "〗"])
-      pairs.push(["【", "】"])
-    }
-    if (this._titleMode === "angle" || this._titleMode === "both") {
-      pairs.push(["《", "》"])
-    }
-
-    // Scan left-to-right by index. (Treat each char as unit.)
-    for (const [open, close] of pairs) {
-      let i = 0
-      while (i <= maxIdx) {
-        if (getChar(i) !== open) { i += 1; continue }
-        let j = i + 1
-        while (j <= maxIdx && getChar(j) !== close) j += 1
-        if (j <= maxIdx && getChar(j) === close) {
-          for (let k = i; k <= j; k += 1) {
-            const sp = map.get(k)
-            if (sp) sp.classList.add("ne-title-auto")
-          }
-          i = j + 1
-        } else {
-          i += 1
+      // If it has a user note, mark the first char with an anchor marker.
+      if (it.note && typeof it.note === "string" && it.note.trim() !== "") {
+        const anchor = this._findSpanByIdx(start)
+        if (anchor) {
+          anchor.classList.add("ne-note-anchor")
+          anchor.setAttribute("data-ne-note", it.note)
         }
       }
     }
   }
 
-  // ---------- UI ----------
+  _findSpanByIdx(idx) {
+    const spans = this._spans()
+    for (let i = 0; i < spans.length; i++) {
+      const n = Number(spans[i].getAttribute("data-corpus-idx"))
+      if (n === idx) return spans[i]
+    }
+    return null
+  }
 
-  _ensureUI() {
-    if (this._menuEl) return
+  _kindToClass(kind) {
+    if (kind === "title") return "ne-title"
+    if (kind === "person") return "ne-person"
+    if (kind === "place") return "ne-place"
+    if (kind === "office") return "ne-office"
+    return null
+  }
 
-    const menu = document.createElement("div")
-    menu.className = "corpus-annot-menu"
-    menu.innerHTML = `
-      <div class="corpus-annot-row">
-        <button type="button" data-kind="title">Title</button>
-        <button type="button" data-kind="person">Person</button>
-        <button type="button" data-kind="place">Place</button>
-        <button type="button" data-kind="office">Office</button>
-        <button type="button" data-kind="clear" class="danger">Clear</button>
-      </div>
-      <div class="corpus-annot-row">
-        <label class="corpus-annot-label">Note</label>
-        <input type="text" class="corpus-annot-note" placeholder="optional" />
-      </div>
-      <div class="corpus-annot-row">
-        <button type="button" data-action="save" class="primary">Save</button>
-        <button type="button" data-action="cancel">Cancel</button>
-      </div>
-      <hr />
-      <div class="corpus-annot-row">
-        <label class="corpus-annot-label">Auto titles</label>
-        <select class="corpus-annot-select" data-action="titleMode">
-          <option value="both">〖〗/【】 + 《》</option>
-          <option value="square">〖〗/【】 only</option>
-          <option value="angle">《》 only</option>
-          <option value="off">Off</option>
-        </select>
-      </div>
-      <div class="corpus-annot-row">
-        <button type="button" data-action="colors">Colours…</button>
-      </div>
-    `
-    document.body.appendChild(menu)
-    this._menuEl = menu
+  // ---------------- Notes panel (user-added annotation notes) ----------------
 
-    // Palette dialog
+  _renderNotesPanel() {
+    // Collect anchors (spans with data-ne-note)
+    const anchors = Array.from(this._contentEl.querySelectorAll("span.cch[data-ne-note]"))
+    if (!anchors.length) { this._removeNotesPanel(); return }
+
+    // Ensure panel exists
+    let panel = this.element.querySelector(".cv-user-notes")
+    if (!panel) {
+      panel = document.createElement("div")
+      panel.className = "cv-user-notes"
+      panel.innerHTML = '<div class="cv-user-notes-title">注</div><ol class="cv-user-notes-list"></ol>'
+      this.element.appendChild(panel)
+    }
+
+    const list = panel.querySelector(".cv-user-notes-list")
+    if (!list) return
+    list.innerHTML = ""
+
+    for (let i = 0; i < anchors.length; i++) {
+      const note = anchors[i].getAttribute("data-ne-note") || ""
+      const marker = this._chineseNumeral(i + 1)
+      // mark anchor with marker
+      anchors[i].setAttribute("data-note-marker", marker)
+
+      const li = document.createElement("li")
+      li.innerHTML = '<span class="cv-note-marker">' + marker + "</span> " + this._escapeHtml(note)
+      list.appendChild(li)
+    }
+  }
+
+  _removeNotesPanel() {
+  const panel = this.element.querySelector(".cv-user-notes")
+  if (panel) panel.remove()
+
+  // Remove numeric markers from anchored characters.
+  if (!this._contentEl) return
+  const anchors = Array.from(this._contentEl.querySelectorAll('span.cch[data-note-marker]'))
+  anchors.forEach((el) => el.removeAttribute("data-note-marker"))
+}
+
+_chineseNumeral(n) {
+    // 1-99 is enough for now.
+    const digits = ["零","一","二","三","四","五","六","七","八","九"]
+    if (n < 10) return digits[n]
+    if (n === 10) return "十"
+    if (n < 20) return "十" + digits[n % 10]
+    const tens = Math.floor(n / 10)
+    const ones = n % 10
+    return digits[tens] + "十" + (ones === 0 ? "" : digits[ones])
+  }
+
+  _escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;")
+  }
+
+  // ---------------- Colour settings ----------------
+
+  _openColors() {
+    this._ensureColorsDialog()
+    if (!this._colorsDlg) return
+
+    const presetSel = this._colorsDlg.querySelector("#cv_color_preset")
+    const inTitle  = this._colorsDlg.querySelector("#cv_color_title")
+    const inPerson = this._colorsDlg.querySelector("#cv_color_person")
+    const inPlace  = this._colorsDlg.querySelector("#cv_color_place")
+    const inOffice = this._colorsDlg.querySelector("#cv_color_office")
+    const inNote   = this._colorsDlg.querySelector("#cv_color_note")
+
+    if (!presetSel || !inTitle || !inPerson || !inPlace || !inOffice || !inNote) return
+
+    inTitle.value  = this._palette.title
+    inPerson.value = this._palette.person
+    inPlace.value  = this._palette.place
+    inOffice.value = this._palette.office
+    inNote.value   = this._palette.note
+    presetSel.value = "default"
+
+    const form = this._colorsDlg.querySelector("form")
+    if (form) {
+      // Replace the form node to drop old listeners (simple + robust).
+      const clone = form.cloneNode(true)
+      form.parentNode.replaceChild(clone, form)
+
+      clone.addEventListener("submit", () => {
+        const preset = presetSel.value
+        if (preset && preset !== "default") {
+          this._palette = this._presetPalette(preset)
+        } else {
+          this._palette = {
+            title: inTitle.value,
+            person: inPerson.value,
+            place: inPlace.value,
+            office: inOffice.value,
+            note: inNote.value
+          }
+        }
+        this._savePalette(this._palette)
+        this._applyPaletteToRoot()
+        this._applyAll()
+      })
+    }
+
+    this._colorsDlg.showModal()
+  }
+
+  _ensureColorsDialog() {
+    if (this._colorsDlg && this._colorsDlg.isConnected) return
+    const existing = this.element.querySelector("dialog.corpus-colors-dialog")
+    if (existing) { this._colorsDlg = existing; return }
+
     const dlg = document.createElement("dialog")
-    dlg.className = "corpus-annot-colors"
+    dlg.className = "corpus-colors-dialog"
     dlg.innerHTML = `
-      <form method="dialog">
-        <h3>Entity colours</h3>
-        <div class="corpus-annot-grid">
-          <label>Title <input type="color" name="title" /></label>
-          <label>Person <input type="color" name="person" /></label>
-          <label>Place <input type="color" name="place" /></label>
-          <label>Office <input type="color" name="office" /></label>
+      <form method="dialog" class="corpus-colors-form">
+        <div class="corpus-colors-header">
+          <div class="corpus-colors-title">Colour settings</div>
+          <button type="button" class="corpus-colors-close" data-action="click->corpus-annotations#closeColorSettings">×</button>
         </div>
-        <div class="corpus-annot-row">
-          <label class="corpus-annot-label">Preset</label>
-          <select name="preset">
+
+        <div class="corpus-colors-row">
+          <label>Preset</label>
+          <select id="cv_color_preset">
             <option value="default">Default</option>
             <option value="deuteranopia">Deuteranopia</option>
             <option value="protanopia">Protanopia</option>
             <option value="tritanopia">Tritanopia</option>
           </select>
         </div>
-        <div class="corpus-annot-row">
-          <button value="apply" class="primary">Apply</button>
-          <button value="close">Close</button>
+
+        <div class="corpus-colors-row"><label>Title</label><input id="cv_color_title" type="color" /></div>
+        <div class="corpus-colors-row"><label>Person</label><input id="cv_color_person" type="color" /></div>
+        <div class="corpus-colors-row"><label>Place</label><input id="cv_color_place" type="color" /></div>
+        <div class="corpus-colors-row"><label>Office</label><input id="cv_color_office" type="color" /></div>
+        <div class="corpus-colors-row"><label>Note marker</label><input id="cv_color_note" type="color" /></div>
+
+        <div class="corpus-colors-actions">
+          <button value="cancel" type="button" data-action="click->corpus-annotations#closeColorSettings">Cancel</button>
+          <button value="apply" type="submit" class="primary">Apply</button>
         </div>
       </form>
     `
-    document.body.appendChild(dlg)
+    this.element.appendChild(dlg)
     this._colorsDlg = dlg
   }
 
-  _openMenuAt(x, y, start, end) {
-    this._activeRange = { start, end }
-
-    // Prefill: if an item already exists matching this range, load its note.
-    const existing = this._items.find(it => it.start === start && it.end === end)
-    this._menuEl.querySelector(".corpus-annot-note").value = existing?.note || ""
-
-    // Title mode select
-    const sel = this._menuEl.querySelector("select[data-action='titleMode']")
-    sel.value = this._titleMode
-
-    // Position + show
-    this._menuEl.style.left = `${Math.max(8, x)}px`
-    this._menuEl.style.top = `${Math.max(8, y + 6)}px`
-    this._menuEl.style.display = "block"
-
-    // Button handlers (set once)
-    if (!this._menuWired) {
-      this._menuEl.addEventListener("click", (ev) => {
-        const btn = ev.target.closest("button")
-        if (!btn) return
-        const kind = btn.dataset.kind
-        const act = btn.dataset.action
-
-        if (kind) this._chooseKind(kind)
-        if (act === "save") this._saveActive()
-        if (act === "cancel") this._hideMenu()
-        if (act === "colors") this._openColors()
-      })
-
-      this._menuEl.querySelector("select[data-action='titleMode']").addEventListener("change", (ev) => {
-        this._titleMode = ev.target.value
-        this._saveTitleMode(this._titleMode)
-        this._applyAutoTitles()
-      })
-
-      this._menuWired = true
-    }
+  _applyPaletteToRoot() {
+    // Use CSS variables on the reader root element.
+    const root = this._contentEl
+    if (!root) return
+    root.style.setProperty("--ne-title", this._palette.title)
+    root.style.setProperty("--ne-person", this._palette.person)
+    root.style.setProperty("--ne-place", this._palette.place)
+    root.style.setProperty("--ne-office", this._palette.office)
+    root.style.setProperty("--ne-note", this._palette.note)
   }
 
-  _hideMenu() {
-    if (this._menuEl) this._menuEl.style.display = "none"
-    this._activeRange = null
-  }
-
-  _chooseKind(kind) {
-    if (!this._activeRange) return
-    this._activeKind = kind
-    // Light UI feedback (pressed state)
-    this._menuEl.querySelectorAll("button[data-kind]").forEach(b => b.classList.toggle("selected", b.dataset.kind === kind))
-  }
-
-  async _saveActive() {
-    if (!this._activeRange) return
-    const { start, end } = this._activeRange
-    const note = this._menuEl.querySelector(".corpus-annot-note").value || ""
-
-    const kind = this._activeKind || "person"
-
-    // Remove any existing item that overlaps exactly.
-    this._items = this._items.filter(it => !(it.start === start && it.end === end))
-
-    if (kind !== "clear") {
-      this._items.push({ start, end, kind, note: note.trim() || undefined })
-    }
-
-    this._applyAllHighlights()
-    this._applyAutoTitles()
-
-    await this._saveToServer()
-    this._hideMenu()
-    window.getSelection()?.removeAllRanges()
-  }
-
-  _openColors() {
-    if (!this._colorsDlg) return
-
-    // Fill current palette
-    this._colorsDlg.querySelector("input[name='title']").value = this._palette.title
-    this._colorsDlg.querySelector("input[name='person']").value = this._palette.person
-    this._colorsDlg.querySelector("input[name='place']").value = this._palette.place
-    this._colorsDlg.querySelector("input[name='office']").value = this._palette.office
-    this._colorsDlg.querySelector("select[name='preset']").value = "default"
-
-    const form = this._colorsDlg.querySelector("form")
-    const onClose = () => {
-      form.removeEventListener("close", onClose)
-    }
-
-    form.addEventListener("submit", (ev) => {
-      // Apply either preset or custom colours.
-      const preset = this._colorsDlg.querySelector("select[name='preset']").value
-      if (preset && preset !== "default") {
-        this._palette = this._presetPalette(preset)
-      } else {
-        this._palette = {
-          title: this._colorsDlg.querySelector("input[name='title']").value,
-          person: this._colorsDlg.querySelector("input[name='person']").value,
-          place: this._colorsDlg.querySelector("input[name='place']").value,
-          office: this._colorsDlg.querySelector("input[name='office']").value
-        }
-      }
-      this._savePalette(this._palette)
-      this._applyPaletteToRoot()
-    }, { once: true })
-
-    this._colorsDlg.showModal()
-  }
-
-  // ---------- palette persistence ----------
-
-  _paletteKey() { return "corpus.annot.palette.v1" }
-  _titleModeKey() { return "corpus.annot.titlemode.v1" }
+  _paletteKey() { return "corpus.annot.palette.v2" }
 
   _loadPalette() {
     try {
@@ -466,7 +604,8 @@ export default class extends Controller {
         title: obj.title || "#2b6cb0",
         person: obj.person || "#d69e2e",
         place: obj.place || "#2f855a",
-        office: obj.office || "#c53030"
+        office: obj.office || "#c53030",
+        note: obj.note || "#2b6cb0"
       }
     } catch (_) {
       return this._presetPalette("default")
@@ -477,34 +616,49 @@ export default class extends Controller {
     try { localStorage.setItem(this._paletteKey(), JSON.stringify(pal)) } catch (_) {}
   }
 
-  _loadTitleMode() {
-    try { return localStorage.getItem(this._titleModeKey()) || "both" } catch (_) { return "both" }
-  }
-
-  _saveTitleMode(mode) {
-    try { localStorage.setItem(this._titleModeKey(), mode) } catch (_) {}
-  }
-
   _presetPalette(name) {
-    // These are intentionally high-contrast and not purely red/green.
-    // They are *heuristics*; users can override with the colour picker.
-    switch (name) {
-      case "deuteranopia":
-        return { title: "#1f77b4", person: "#ff7f0e", place: "#9467bd", office: "#2ca02c" }
-      case "protanopia":
-        return { title: "#1f77b4", person: "#ff7f0e", place: "#8c564b", office: "#2ca02c" }
-      case "tritanopia":
-        return { title: "#e377c2", person: "#7f7f7f", place: "#17becf", office: "#bcbd22" }
-      default:
-        return { title: "#2b6cb0", person: "#d69e2e", place: "#2f855a", office: "#c53030" }
+    if (name === "deuteranopia") {
+      return { title:"#3b82f6", person:"#f59e0b", place:"#10b981", office:"#ef4444", note:"#3b82f6" }
     }
+    if (name === "protanopia") {
+      return { title:"#2563eb", person:"#f97316", place:"#14b8a6", office:"#a855f7", note:"#2563eb" }
+    }
+    if (name === "tritanopia") {
+      return { title:"#1d4ed8", person:"#eab308", place:"#22c55e", office:"#f43f5e", note:"#1d4ed8" }
+    }
+    return { title:"#2b6cb0", person:"#d69e2e", place:"#2f855a", office:"#c53030", note:"#2b6cb0" }
   }
 
-  _applyPaletteToRoot() {
-    const root = document.documentElement
-    root.style.setProperty("--ne-title", this._palette.title)
-    root.style.setProperty("--ne-person", this._palette.person)
-    root.style.setProperty("--ne-place", this._palette.place)
-    root.style.setProperty("--ne-office", this._palette.office)
+  // ---------------- UI helpers ----------------
+
+  _syncButtons() {
+    // Reflect state in any toolbar buttons that exist.
+    const setLabel = (selector, onText, offText, isOn) => {
+      const btn = this.element.querySelector(selector)
+      if (!btn) return
+      btn.textContent = isOn ? onText : offText
+      btn.setAttribute("aria-pressed", isOn ? "true" : "false")
+    }
+
+    // These selectors are robust: match data-action strings used in your ERB.
+    setLabel('[data-action*="corpus-annotations#toggleView"]', "Annotations: On", "Annotations: Off", (this._judouOn && this._viewEnabled))
+    setLabel('[data-action*="corpus-annotations#toggleNotes"]', "Notes: On", "Notes: Off", (this._judouOn && this._notesEnabled))
+    setLabel('[data-action*="corpus-annotations#toggleAnnotate"]', "Annotate: On", "Annotate: Off", this._annotateEnabled)
+
+    // Save button only if dirty
+    const saveBtn = this.element.querySelector('[data-action*="corpus-annotations#save"]')
+    if (saveBtn) saveBtn.style.display = this._dirty ? "" : "none"
+  }
+
+  _loadBool(key, fallback) {
+    try {
+      const raw = localStorage.getItem(key)
+      if (raw === null || raw === undefined) return fallback
+      return raw === "1"
+    } catch (_) { return fallback }
+  }
+
+  _storeBool(key, v) {
+    try { localStorage.setItem(key, v ? "1" : "0") } catch (_) {}
   }
 }
