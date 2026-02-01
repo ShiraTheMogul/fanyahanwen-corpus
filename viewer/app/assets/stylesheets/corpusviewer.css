@@ -641,3 +641,20 @@ html.dark-mode .cv-annotate-note {
 .corpus-note-block {
   white-space: normal;
 }
+
+
+/* Judou submenu (punctuation vs underlining) */
+.cv-judou-menu{
+  position: absolute;
+  z-index: 40;
+  margin-top: 6px;
+  padding: 8px 10px;
+  border: 1px solid rgba(0,0,0,0.2);
+  background: var(--cv-toolbar-bg, #fff);
+  color: var(--cv-toolbar-fg, #111);
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+}
+.cv-judou-opt{ display:block; margin:4px 0; font-size: 14px; }
+
+.corpus-toolbar{ position: relative; }

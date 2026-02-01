@@ -9,7 +9,7 @@ import { Controller } from "@hotwired/stimulus"
 //
 // State is stored in localStorage so it persists across page loads.
 export default class extends Controller {
-    static targets = ["viewbox", "content", "verticalBtn", "themeBtn", "punctBtn", "punctColorBtn", "judouBtn", "punctPresetBtn", "punctMenuBtn", "punctOverlay", "punctPanel", "punctOkBtn", "punctCloseBtn", "verticalQuoteFormsChk"]
+    static targets = ["viewbox", "content", "verticalBtn", "themeBtn", "punctBtn", "punctColorBtn", "judouBtn", "judouMenuBtn", "punctPresetBtn", "punctMenuBtn", "judouMenu", "punctOverlay", "punctPanel", "punctOkBtn", "punctCloseBtn", "verticalQuoteFormsChk"]
 
 
   connect() {
@@ -356,6 +356,38 @@ export default class extends Controller {
     this._broadcast()
   }
 
+  toggleJudouMenu() {
+    if (!this.hasJudouMenuTarget) return
+    const isHidden = this.judouMenuTarget.hasAttribute("hidden")
+    if (isHidden) {
+      this.judouMenuTarget.removeAttribute("hidden")
+    } else {
+      this.judouMenuTarget.setAttribute("hidden", "")
+    }
+  }
+
+  closeJudouMenu() {
+    if (!this.hasJudouMenuTarget) return
+    this.judouMenuTarget.setAttribute("hidden", "")
+  }
+
+  setJudouOption(ev) {
+    const t = ev && ev.target ? ev.target : null
+    if (!t) return
+    const key = t.getAttribute("data-judou-key")
+    const checked = !!t.checked
+    if (key === "punct") {
+      this._state.judouPunctOn = checked
+    } else if (key === "underline") {
+      this._state.judouUnderlineOn = checked
+    } else {
+      return
+    }
+    this._saveState()
+    this._apply()
+    this._broadcast()
+  }
+
   cyclePunctColor() {
     const order = ["red", "black", "white", "blue", "yellow"]
     const cur = (this._state.punctColor || "red").toString()
@@ -368,9 +400,7 @@ export default class extends Controller {
 
 
   // ---- Punctuation presets + options (display-only) ----
-  // We keep the legacy `strip` boolean for compatibility with the rightbar,
-  // but the toolbar no longer exposes a separate "No punct" button: "Strip"
-  // is now just a preset.
+  // "Strip" is identical to the rightbar option.
 
   cyclePunctPreset() {
     const order = ["source", "modern_trad", "modern_prc", "pure", "strip", "custom"]
@@ -381,7 +411,6 @@ export default class extends Controller {
     this._punct.preset = nxt
     if (nxt !== "custom") this._punct.options = this._presetOptions(nxt)
 
-    // Keep legacy strip in sync (rightbar checkbox etc.)
     this._state.strip = (nxt === "strip")
     this._saveState()
     this._savePunct()
@@ -456,7 +485,7 @@ export default class extends Controller {
 
 
   togglePunct() {
-    // Legacy: rightbar may still call this. Map to preset.
+    // Legacy: rightbar may still call this.
     const nowStrip = !this._state.strip
     this._state.strip = nowStrip
     this._punct.preset = nowStrip ? "strip" : "source"
@@ -506,6 +535,8 @@ export default class extends Controller {
       fontSizePx: getInt("corpus.fontSizePx", 20),
       rubyOnDemand: getBool("corpus.rubyOnDemand", false),
       judouOn: getBool("corpus.judouOn", true),
+      judouPunctOn: getBool("corpus.judouPunctOn", true),
+      judouUnderlineOn: getBool("corpus.judouUnderlineOn", true),
       punctColor: getStr("corpus.punctColor", "red"),
     }
   }
@@ -517,6 +548,11 @@ export default class extends Controller {
     window.localStorage.setItem("corpus.stripPunct", this._state.strip ? "1" : "0")
     window.localStorage.setItem("corpus.fontSizePx", (this._state.fontSizePx || 20).toString())
     window.localStorage.setItem("corpus.rubyOnDemand", this._state.rubyOnDemand ? "1" : "0")
+
+    window.localStorage.setItem("corpus.judouOn", this._state.judouOn ? "1" : "0")
+    window.localStorage.setItem("corpus.judouPunctOn", this._state.judouPunctOn ? "1" : "0")
+    window.localStorage.setItem("corpus.judouUnderlineOn", this._state.judouUnderlineOn ? "1" : "0")
+    window.localStorage.setItem("corpus.punctColor", (this._state.punctColor || "red").toString())
   }
 
   _setState(next) {
@@ -533,11 +569,20 @@ export default class extends Controller {
   }
 
   _broadcast() {
-    // Notify the rightbar controller (and any other listeners) of state changes.
+    // Global broadcast (listeners may include annotations controller).
     window.dispatchEvent(new CustomEvent("corpus-view-options", { detail: { ...this._state } }))
-  
-    this.element.dispatchEvent(new CustomEvent("corpus-reader-options", { detail: { judouOn: this._judouOn, punctPreset: this._punctPreset }, bubbles: true }))
-}
+
+    // Local bubble for any nested listeners.
+    this.element.dispatchEvent(new CustomEvent("corpus-reader-options", {
+      detail: {
+        judouOn: !!this._state.judouOn,
+        judouPunctOn: !!this._state.judouPunctOn,
+        judouUnderlineOn: !!this._state.judouUnderlineOn,
+        punctPreset: this._punctPreset
+      },
+      bubbles: true
+    }))
+  }
   _captureScrollState() {
     // Preserve reading position across re-renders (changing punctuation, ruby spacing, etc.)
     const el = this.viewboxTarget
@@ -587,9 +632,10 @@ export default class extends Controller {
     // Orientation class on the content.
     this.contentTarget.classList.toggle("is-vertical", vertical)
     this.contentTarget.classList.toggle("is-vflow-lr", vertical && (vflow === "lr"))
-    this.contentTarget.classList.toggle("judou-on", vertical && !!this._state.judouOn)
+    this.contentTarget.classList.toggle("judou-on", vertical && !!this._state.judouOn && !!this._state.judouPunctOn)
+    this.contentTarget.classList.toggle("judou-underline-on", vertical && !!this._state.judouOn && !!this._state.judouUnderlineOn)
 
-    // Buttons are optional targets (defensive in case the toolbar is removed).
+    // Buttons are optional targets.
     if (this.hasVerticalBtnTarget) this.verticalBtnTarget.setAttribute("aria-pressed", vertical ? "true" : "false")
     if (this.hasThemeBtnTarget) {
       this.themeBtnTarget.setAttribute("aria-pressed", "true")
@@ -602,6 +648,14 @@ export default class extends Controller {
       this.judouBtnTarget.setAttribute("aria-pressed", this._state.judouOn ? "true" : "false")
       this.judouBtnTarget.textContent = this._state.judouOn ? "Judou: On" : "Judou: Off"
     }
+
+    // Sync Judou submenu checkboxes (punctuation vs underlining)
+    if (this.hasJudouMenuTarget) {
+      const punctChk = this.judouMenuTarget.querySelector('input[data-judou-opt="punct"]')
+      const ulChk = this.judouMenuTarget.querySelector('input[data-judou-opt="underline"]')
+      if (punctChk) punctChk.checked = !!this._state.judouPunctOn
+      if (ulChk) ulChk.checked = !!this._state.judouUnderlineOn
+    }
     if (this.hasPunctColorBtnTarget) {
       const c = (this._state.punctColor || "red").toString()
       this.punctColorBtnTarget.textContent = `Dot: ${c[0].toUpperCase()}${c.slice(1)}`
@@ -609,7 +663,7 @@ export default class extends Controller {
 
     // Punctuation rendering:
     // - "Source" = untouched
-    // - "Strip" = legacy safe stripping
+    // - "Strip" = get rid of punctuation
     // - Others = display-only conversion of punctuation + quotes
     const preset = (this._punct?.preset || "source").toString()
 

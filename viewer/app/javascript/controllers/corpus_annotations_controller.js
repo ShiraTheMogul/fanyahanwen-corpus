@@ -29,6 +29,7 @@ export default class extends Controller {
     this._items = []
     this._dirty = false
     this._judouOn = true
+    this._judouUnderlineOn = true
 
     // view toggles
     this._viewEnabled = this._loadBool("corpus.annot.view.v1", true)
@@ -286,16 +287,18 @@ _hideAnnotatePopup() {
 
   _onReaderOptions(ev) {
     const detail = (ev && ev.detail) ? ev.detail : {}
-    // accept both judouOn and judou
+
     const judou = (typeof detail.judouOn === "boolean") ? detail.judouOn
                 : (typeof detail.judou === "boolean") ? detail.judou
                 : null
-    if (judou === null) return
+    if (judou !== null) this._judouOn = judou
 
-    this._judouOn = judou
+    const ul = (typeof detail.judouUnderlineOn === "boolean") ? detail.judouUnderlineOn
+             : (typeof detail.judouUnderline === "boolean") ? detail.judouUnderline
+             : null
+    if (ul !== null) this._judouUnderlineOn = ul
 
-    // Hard rule: these underlines are judou-derived, so follow judou master switch.
-    // Judou OFF => hide; Judou ON => show (if view enabled).
+    // Re-apply layers after option change.
     this._applyAll()
     this._syncButtons()
   }
@@ -346,25 +349,15 @@ _hideAnnotatePopup() {
   _applyAll() {
     if (!this._contentEl) return
 
-    // If judou is off, hide everything (master switch).
-    if (!this._judouOn) {
-      this._clearAllHighlights()
-      this._removeNotesPanel()
-      return
-    }
-
-    // Judou is on.
+    // Underlines are judou-derived: they follow Judou master switch and the Judou-underlining option.
     this._clearAllHighlights()
-
-    if (this._viewEnabled) {
+    if (this._judouOn && this._judouUnderlineOn) {
       this._applyHighlights()
     }
 
-    if (this._notesEnabled) {
-      this._renderNotesPanel()
-    } else {
-      this._removeNotesPanel()
-    }
+    // Out-of-text notes are independent of Judou.
+    if (this._notesEnabled) this._renderNotesPanel()
+    else this._removeNotesPanel()
   }
 
   _spans() {
