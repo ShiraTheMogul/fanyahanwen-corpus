@@ -7,13 +7,14 @@ Dependencies:
   pip install requests beautifulsoup4
 
 Examples:
-  # scrape only 梁啟超's 文 section, and split into 清/民國 folders using year>=1912
-  python wikisource_author_scraper.py scrape-author 作者:梁啟超 ../scrape_output --section 文 --era-divider qing_roc
 
-  # normal scrape behavior (categorymembers / whole author page, no era divider)
-  python wikisource_author_scraper.py scrape-author 作者:林紓 ../scrape_output
+  # Scrape only a specific section (e.g. 文) from an Author page:
+  python wikisource_author_scraper.py scrape-author 作者:梁啟超 ../scrape_output --section 文
 
-  # Refresh WS categories in an existing corpus
+  # Stamp nation into metadata (optional; no inference):
+  python wikisource_author_scraper.py scrape-author 作者:梁啟超 ../scrape_output --section 文 --nation 中國
+
+  # Refresh WS categories inside an existing corpus:
   python wikisource_author_scraper.py enrich-categories ./corpus --promote-category-to-nation
 """
 from __future__ import annotations
@@ -35,7 +36,7 @@ API_ENDPOINT = "https://zh.wikisource.org/w/api.php"
 
 HEADERS = {
     "User-Agent": (
-        "FanyaHanwenCorpusScraper/1.1 "
+        "FanyaHanwenCorpusScraper/1.3 "
         "(chippy2001@live.co.uk; https://github.com/ShiraTheMogul; "
         "https://en.wikisource.org/wiki/User:Shira_the_Mogul)"
     )
@@ -44,12 +45,12 @@ HEADERS = {
 # Public-domain cutoff markers (CLEAN output only)
 PD_MARKERS = [
     "本作品在全世界都属于",
+    "此作品在全世界都属于",
     "本作品在全世界都屬於",
     "Public domain",
 ]
 
 # Heuristic: titles in these namespaces are not content pages.
-# (MediaWiki uses ":" to separate namespaces.)
 DISALLOWED_NS_PREFIXES = (
     "Author:",
     "作者:",
@@ -80,6 +81,8 @@ def safe_request(params: Dict[str, Any], *, sleep: float = 0.5, max_retries: int
     """GET zh.wikisource.org/w/api.php with retries, returning {} on failure."""
     params = dict(params)
     params.setdefault("format", "json")
+    params.setdefault("formatversion", "2")
+
     for attempt in range(1, max_retries + 1):
         try:
             time.sleep(sleep)
@@ -103,7 +106,7 @@ def safe_request(params: Dict[str, Any], *, sleep: float = 0.5, max_retries: int
 def resolve_title(s: str) -> str:
     """
     Accept either:
-      - "Author:嚴復" / "作者:嚴復"
+      - "Author:嚴復" / "作者:梁啟超"
       - "https://zh.wikisource.org/wiki/Author:%E5%9A%B4%E5%BE%A9"
       - "https://zh.wikisource.org/zh-hant/Author%3A%E5%9A%B4%E5%BE%A9"
     and return a MediaWiki title like "Author:嚴復".
@@ -127,7 +130,7 @@ def title_is_content_page(title: str) -> bool:
     """Reject obvious non-content namespaces (anything with a disallowed prefix)."""
     t = title.strip()
 
-    # Reject edit-section UI titles (full-width colon is common here)
+    # Reject edit-section pseudo titles that show up in parse links sometimes
     if t.startswith(("编辑章节", "編輯章節", "Edit section")):
         return False
 
@@ -136,21 +139,65 @@ def title_is_content_page(title: str) -> bool:
             return False
 
     # Also exclude any other namespaces we didn't list.
-    # MediaWiki namespaces have a colon early on; mainspace titles usually don't.
-    # Include full-width colon too.
-    if (":" in t) or ("：" in t):
+    if ":" in t and not t.startswith("https://"):
         return False
 
     return True
 
 
+def resolve_redirect_title(title: str, *, sleep: float, max_hops: int = 5) -> Optional[str]:
+    """
+    Follow MediaWiki redirects using the API.
+
+    Returns:
+      - final title if page exists (possibly same as input)
+      - None if the page is missing
+
+    Pattern (general MediaWiki):
+      action=query&titles=...&redirects=1
+    """
+    cur = title.strip()
+    if not cur:
+        return None
+
+    for _ in range(max_hops):
+        data = safe_request({"action": "query", "titles": cur, "redirects": "1"}, sleep=sleep)
+        pages = (data.get("query") or {}).get("pages") or []
+        if not pages:
+            return None
+        pg0 = pages[0]
+        if "missing" in pg0:
+            return None
+
+        # If redirects occurred, query.redirects is a list of {from,to}
+        redirects = (data.get("query") or {}).get("redirects") or []
+        if redirects:
+            # Apply the last hop
+            to_title = redirects[-1].get("to") or ""
+            to_title = to_title.strip()
+            if not to_title:
+                return cur
+            if to_title == cur:
+                return cur
+            cur = to_title
+            continue
+
+        # No redirect reported; final
+        return cur
+
+    return cur
+
+
 def get_pageid(title: str, *, sleep: float) -> Optional[int]:
     """Resolve a title -> pageid, or None if missing."""
-    data = safe_request({"action": "query", "titles": title}, sleep=sleep)
-    pages = (data.get("query") or {}).get("pages") or {}
+    resolved = resolve_redirect_title(title, sleep=sleep)
+    if resolved is None:
+        return None
+    data = safe_request({"action": "query", "titles": resolved}, sleep=sleep)
+    pages = (data.get("query") or {}).get("pages") or []
     if not pages:
         return None
-    pg = next(iter(pages.values()))
+    pg = pages[0]
     if "missing" in pg:
         return None
     pid = pg.get("pageid")
@@ -158,16 +205,19 @@ def get_pageid(title: str, *, sleep: float) -> Optional[int]:
 
 
 def fetch_html(title: str, *, sleep: float) -> str:
-    """Fetch HTML for a title via action=parse&prop=text."""
-    data = safe_request(
-        {"action": "parse", "page": title, "prop": "text", "formatversion": "2"},
-        sleep=sleep,
-    )
+    """Fetch HTML for a title via action=parse&prop=text (after resolving redirects)."""
+    resolved = resolve_redirect_title(title, sleep=sleep)
+    if resolved is None:
+        return ""
+    data = safe_request({"action": "parse", "page": resolved, "prop": "text"}, sleep=sleep)
     parse = data.get("parse") or {}
-    html = parse.get("text") or ""
-    if isinstance(html, dict):
-        html = html.get("*", "") or html.get("html", "")
-    return html or ""
+    text_block = parse.get("text")
+
+    if isinstance(text_block, dict):
+        return text_block.get("*", "") or text_block.get("html", "") or ""
+    if isinstance(text_block, str):
+        return text_block
+    return ""
 
 
 def fetch_links(title_or_pageid: str | int, *, sleep: float) -> List[str]:
@@ -175,11 +225,14 @@ def fetch_links(title_or_pageid: str | int, *, sleep: float) -> List[str]:
     Return list of MediaWiki link targets from a page.
     Uses action=parse&prop=links. (No context, but canonical titles.)
     """
-    params: Dict[str, Any] = {"action": "parse", "prop": "links", "formatversion": "2"}
+    params: Dict[str, Any] = {"action": "parse", "prop": "links"}
     if isinstance(title_or_pageid, int):
         params["pageid"] = title_or_pageid
     else:
-        params["page"] = title_or_pageid
+        resolved = resolve_redirect_title(title_or_pageid, sleep=sleep)
+        if resolved is None:
+            return []
+        params["page"] = resolved
 
     data = safe_request(params, sleep=sleep)
     parse = data.get("parse") or {}
@@ -197,14 +250,17 @@ def fetch_categories(title: str, *, sleep: float) -> List[str]:
     Return non-hidden categories for a page as plain titles (without 'Category:').
     Uses action=query&prop=categories with clshow=!hidden.
     """
+    resolved = resolve_redirect_title(title, sleep=sleep)
+    if resolved is None:
+        return []
+
     data = safe_request(
         {
             "action": "query",
             "prop": "categories",
-            "titles": title,
+            "titles": resolved,
             "cllimit": "max",
             "clshow": "!hidden",
-            "formatversion": "2",
         },
         sleep=sleep,
     )
@@ -212,10 +268,12 @@ def fetch_categories(title: str, *, sleep: float) -> List[str]:
     if not pages:
         return []
     pg = pages[0]
+    if "missing" in pg:
+        return []
     cats = pg.get("categories") or []
-    out = []
+    out: List[str] = []
     for c in cats:
-        name = c.get("title", "")
+        name = c.get("title", "") or ""
         if name.startswith("Category:"):
             name = name.split(":", 1)[1]
         if name:
@@ -228,7 +286,9 @@ def fetch_categories(title: str, *, sleep: float) -> List[str]:
 # -----------------------------
 
 def extract_visible_text_from_html(html: str) -> str:
-    """Convert MediaWiki HTML to plain text, dropping common nav/table/toc clutter."""
+    """
+    Convert MediaWiki HTML to plain text, dropping common nav/table/toc clutter.
+    """
     if not html:
         return ""
     soup = BeautifulSoup(html, "html.parser")
@@ -268,7 +328,7 @@ def clean_text_for_corpus(text: str) -> str:
     Conservative clean pass:
     - Normalise full-width spaces.
     - Cut public-domain boilerplate.
-    - Fix bracket artefacts: 〈\nX\n〉 -> 〈X〉 and 《\nX\n》 -> 《X〉
+    - Fix common vertical bracket artefacts: 〈\nX\n〉 -> 〈X〉 and 《\nX\n》 -> 《X》
     - Remove short editorial 【...】 (<=10 chars) and inline [1] refs.
     - Collapse excessive blank lines.
     """
@@ -312,6 +372,118 @@ def safe_filename(name: str) -> str:
     """Windows-safe path component (keeps CJK, removes forbidden chars)."""
     name = name.strip()
     return re.sub(r'[\\/:*?"<>|]', "_", name)
+
+
+# -----------------------------
+# Date parsing for TIMES (flexible)
+# -----------------------------
+
+DATE_FULL_RE = re.compile(r"(?P<y>\d{4})\s*年\s*(?P<m>\d{1,2})\s*月\s*(?P<d>\d{1,2})\s*日")
+DATE_YM_RE = re.compile(r"(?P<y>\d{4})\s*年\s*(?P<m>\d{1,2})\s*月")
+DATE_Y_RE = re.compile(r"(?P<y>\d{4})\s*年")
+YEAR_4_RE = re.compile(r"\b(18\d{2}|19\d{2}|20\d{2})\b")
+
+
+def extract_year_from_any(s: str) -> Optional[int]:
+    if not s:
+        return None
+    m = DATE_Y_RE.search(s)
+    if m:
+        try:
+            return int(m.group("y"))
+        except ValueError:
+            return None
+    m = YEAR_4_RE.search(s)
+    if m:
+        try:
+            return int(m.group(1))
+        except ValueError:
+            return None
+    return None
+
+
+def normalize_times_value(raw: str) -> Tuple[str, Optional[int]]:
+    """
+    TIMES is flexible. If it contains a Gregorian date, normalize to modern Chinese forms:
+      YYYY年M月D日, YYYY年M月, YYYY年
+    and keep any trailing phrase (e.g. '午夜') after the date.
+    Otherwise preserve raw unchanged.
+    """
+    s = (raw or "").strip()
+    if not s:
+        return ("", None)
+
+    m = DATE_FULL_RE.search(s)
+    if m:
+        y = int(m.group("y"))
+        mm = int(m.group("m"))
+        dd = int(m.group("d"))
+        prefix = f"{y}年{mm}月{dd}日"
+        rest = s[m.end():].strip()
+        out = f"{prefix}{rest}" if rest else prefix
+        return (out, y)
+
+    m = DATE_YM_RE.search(s)
+    if m:
+        y = int(m.group("y"))
+        mm = int(m.group("m"))
+        prefix = f"{y}年{mm}月"
+        rest = s[m.end():].strip()
+        out = f"{prefix}{rest}" if rest else prefix
+        return (out, y)
+
+    m = DATE_Y_RE.search(s)
+    if m:
+        y = int(m.group("y"))
+        prefix = f"{y}年"
+        rest = s[m.end():].strip()
+        out = f"{prefix}{rest}" if rest else prefix
+        return (out, y)
+
+    return (s, extract_year_from_any(s))
+
+
+def sniff_times_from_work_page(work_title: str, *, sleep: float) -> Tuple[str, Optional[int]]:
+    """
+    Fallback for TIMES when author list item has no date.
+
+    Conservative approach:
+      - Read a small prefix of visible text (avoid random years deep in body)
+      - Prefer full dates if present, else year, else blank
+    """
+    html = fetch_html(work_title, sleep=sleep)
+    if not html:
+        return ("", None)
+
+    text = extract_visible_text_from_html(html)
+    if "页面不存在" in text:
+        return ("", None)
+
+    head = text[:2500]
+
+    m = DATE_FULL_RE.search(head)
+    if m:
+        return normalize_times_value(m.group(0))
+
+    m = DATE_YM_RE.search(head)
+    if m:
+        return normalize_times_value(m.group(0))
+
+    m = DATE_Y_RE.search(head)
+    if m:
+        return normalize_times_value(m.group(0))
+
+    m = YEAR_4_RE.search(head)
+    if m:
+        return normalize_times_value(m.group(1) + "年")
+
+    return ("", None)
+
+
+def qing_roc_from_year(year: Optional[int]) -> str:
+    if year is None:
+        return ""
+    return "民國" if year >= ROC_START_YEAR else "清"
 
 
 # -----------------------------
@@ -419,7 +591,6 @@ def discover_parts_via_allpages_prefix(work_title: str, *, sleep: float) -> List
             "gapnamespace": 0,
             "gapprefix": prefix,
             "gaplimit": "max",
-            "formatversion": "2",
         }
         if gapcontinue:
             params["gapcontinue"] = gapcontinue
@@ -456,8 +627,32 @@ def discover_work_parts(work_title: str, *, sleep: float) -> List[str]:
 
 
 # -----------------------------
-# Section-only discovery + era divider support
+# Dedupe / existing work scan
 # -----------------------------
+
+def collect_existing_work_ids(base_out: str, extra_roots: List[str]) -> set[str]:
+    existing: set[str] = set()
+    roots = [base_out] + list(extra_roots)
+
+    for root in roots:
+        root_path = Path(root)
+        if not root_path.exists():
+            continue
+        for dirpath, _dirnames, filenames in os.walk(root_path):
+            if any(fn.lower().endswith(".txt") for fn in filenames):
+                existing.add(Path(dirpath).name)
+    return existing
+
+
+# -----------------------------
+# Section scraping (robust)
+# -----------------------------
+
+def _norm(s: str) -> str:
+    s = (s or "").replace("\xa0", " ")
+    s = re.sub(r"\s+", " ", s)
+    return s.strip()
+
 
 def _heading_level(tag: Tag) -> Optional[int]:
     if not isinstance(tag, Tag) or not tag.name:
@@ -468,61 +663,13 @@ def _heading_level(tag: Tag) -> Optional[int]:
     return int(m.group(1))
 
 
-def _norm(s: str) -> str:
-    s = (s or "").replace("\xa0", " ")
-    s = re.sub(r"\s+", " ", s)
-    return s.strip()
-
-
-def is_editsection_link(a: Tag) -> bool:
-    if not isinstance(a, Tag):
-        return False
-    if a.find_parent(class_="mw-editsection") is not None:
-        return True
-    href = a.get("href") or ""
-    if "action=edit" in href and "section=" in href:
-        return True
-    title = (a.get("title") or "").strip()
-    if title.startswith(("编辑章节", "編輯章節", "Edit section")):
-        return True
-    return False
-
-
-_YEAR_RE = re.compile(r"(18\d{2}|19\d{2}|20\d{2})")
-
-
-def _extract_year_from_text(s: str) -> Optional[int]:
-    """
-    Pull a 4-digit year from the surrounding list item text, if present.
-    This is how we split 梁啟超 into 清/民國 without touching metadata.
-    """
-    s = s or ""
-    m = _YEAR_RE.search(s)
-    if not m:
-        return None
-    try:
-        return int(m.group(1))
-    except ValueError:
-        return None
-
-
 @dataclass
 class WorkRef:
     title: str
-    year: Optional[int] = None
+    list_times_raw: str = ""
 
 
 def discover_works_from_author_section(author_title: str, section_name: str, *, sleep: float) -> List[WorkRef]:
-    """
-    Discover works ONLY from a specific heading section on the Author page.
-    Also tries to capture a year from the list item text for era-divider use.
-
-    IMPORTANT DETAIL:
-    On Wikisource, headings are often wrapped like:
-      <div class="mw-heading"><h2>...</h2><span class="mw-editsection">...</span></div>
-    The section content is a sibling of the *mw-heading div*, not a sibling of the h2.
-    So we anchor on the wrapper div when present.
-    """
     html = fetch_html(author_title, sleep=sleep)
     if not html:
         return []
@@ -542,13 +689,12 @@ def discover_works_from_author_section(author_title: str, section_name: str, *, 
         print(f"!! Could not find section heading '{section_name}' on {author_title}", file=sys.stderr)
         return []
 
-    # Anchor on wrapper div if present (this is the core fix)
+    start_level = _heading_level(found_h) or 2
+
     anchor: Tag = found_h
     parent = found_h.parent
     if isinstance(parent, Tag) and parent.name == "div" and "mw-heading" in (parent.get("class") or []):
         anchor = parent
-
-    start_level = _heading_level(found_h) or 2
 
     works: List[WorkRef] = []
     seen: set[str] = set()
@@ -557,21 +703,22 @@ def discover_works_from_author_section(author_title: str, section_name: str, *, 
         if not isinstance(sib, Tag):
             continue
 
-        # Stop when we hit the next heading of same or higher level
-        # (usually another div.mw-heading that contains an h2/h3...)
-        for h in sib.find_all(re.compile(r"^h[1-6]$"), recursive=True):
-            lvl = _heading_level(h)
-            if lvl is not None and lvl <= start_level:
-                return works
+        if sib.name == "div" and "mw-heading" in (sib.get("class") or []):
+            h2 = sib.find(re.compile(r"^h[1-6]$"))
+            if h2 is not None:
+                lvl = _heading_level(h2)
+                if lvl is not None and lvl <= start_level:
+                    break
 
-        # We want list items because the year is usually in the li text.
         for li in sib.select("li"):
             li_text = li.get_text(" ", strip=True)
-            li_year = _extract_year_from_text(li_text)
+
+            list_times_raw = ""
+            m = re.search(r"（([^（）]{1,60}?)）", li_text)
+            if m:
+                list_times_raw = (m.group(1) or "").strip()
 
             for a in li.select("a[title]"):
-                if is_editsection_link(a):
-                    continue
                 t = (a.get("title") or "").strip()
                 if not t:
                     continue
@@ -579,92 +726,15 @@ def discover_works_from_author_section(author_title: str, section_name: str, *, 
                     continue
                 if t.startswith("Author:") or t.startswith("作者:"):
                     continue
+
                 if t not in seen:
-                    works.append(WorkRef(title=t, year=li_year))
+                    works.append(WorkRef(title=t, list_times_raw=list_times_raw))
                     seen.add(t)
 
     return works
 
 
-def era_folder_for_year(year: Optional[int], mode: Optional[str]) -> Optional[str]:
-    """
-    mode == 'qing_roc' -> return 清 / 民國 / 未詳
-    """
-    if mode is None:
-        return None
-    if mode != "qing_roc":
-        return None
-    if year is None:
-        return "未詳"
-    return "民國" if year >= ROC_START_YEAR else "清"
-
-
-# -----------------------------
-# Scraping orchestration
-# -----------------------------
-
-@dataclass
-class SaveConfig:
-    base_out: Path
-    sleep: float
-    skip_existing_from: List[str]
-    test: bool = False
-    max_works: Optional[int] = None
-    max_parts_per_work: Optional[int] = None
-    author_section: Optional[str] = None
-    era_divider: Optional[str] = None  # e.g. qing_roc
-
-
-def ensure_dir(p: Path) -> None:
-    p.mkdir(parents=True, exist_ok=True)
-
-
-def write_text(path: Path, content: str) -> None:
-    ensure_dir(path.parent)
-    path.write_text(content, encoding="utf-8")
-
-
-def build_header(meta: Dict[str, str]) -> str:
-    """
-    Build a metadata header '# KEY: value' — this is the format you rely on.
-    We keep it exactly.
-    """
-    lines = []
-    for k, v in meta.items():
-        if v is None:
-            continue
-        v2 = str(v).strip()
-        if v2 == "":
-            continue
-        lines.append(f"# {k}: {v2}")
-    return "\n".join(lines) + "\n\n"
-
-
-def scrape_one_page(
-    page_title: str,
-    *,
-    out_raw_path: Path,
-    out_clean_path: Path,
-    meta: Dict[str, str],
-    sleep: float,
-) -> Tuple[int, int]:
-    """Fetch -> extract text -> write RAW and CLEAN with identical headers."""
-    html = fetch_html(page_title, sleep=sleep)
-    raw_body = extract_visible_text_from_html(html) if html else ""
-    clean_body = clean_text_for_corpus(raw_body) if raw_body else ""
-
-    header = build_header(meta)
-    write_text(out_raw_path, header + raw_body)
-    write_text(out_clean_path, header + clean_body)
-
-    return len(raw_body), len(clean_body)
-
-
 def discover_works_from_author(author_title: str, *, sleep: float) -> List[str]:
-    """
-    Prefer Category:<name> if it exists (usually the most complete).
-    Fallback: parse HTML and collect mainspace links from list items.
-    """
     name = author_title.split(":", 1)[-1].strip()
     cat_title = f"Category:{name}"
 
@@ -675,7 +745,6 @@ def discover_works_from_author(author_title: str, *, sleep: float) -> List[str]:
             "cmtitle": cat_title,
             "cmnamespace": 0,
             "cmlimit": "max",
-            "formatversion": "2",
         },
         sleep=sleep,
     )
@@ -699,12 +768,10 @@ def discover_works_from_author(author_title: str, *, sleep: float) -> List[str]:
     soup = BeautifulSoup(html, "html.parser")
     body = soup.find("div", class_="mw-parser-output") or soup
 
-    works: List[str] = []
-    seen: set[str] = set()
+    works2: List[str] = []
+    seen2: set[str] = set()
     for li in body.select("ol li, ul li"):
         for a in li.select("a[title]"):
-            if is_editsection_link(a):
-                continue
             t = (a.get("title") or "").strip()
             if not t:
                 continue
@@ -712,10 +779,127 @@ def discover_works_from_author(author_title: str, *, sleep: float) -> List[str]:
                 continue
             if t.startswith("Author:") or t.startswith("作者:"):
                 continue
-            if t not in seen:
-                works.append(t)
-                seen.add(t)
-    return works
+            if t not in seen2:
+                works2.append(t)
+                seen2.add(t)
+    return works2
+
+
+# -----------------------------
+# Scraping orchestration
+# -----------------------------
+
+@dataclass
+class SaveConfig:
+    base_out: Path
+    sleep: float
+    skip_existing_from: List[str]
+    section: Optional[str] = None
+    nation: Optional[str] = None
+    era_divider: bool = False
+    test: bool = False
+    max_works: Optional[int] = None
+    max_parts_per_work: Optional[int] = None
+
+
+def ensure_dir(p: Path) -> None:
+    p.mkdir(parents=True, exist_ok=True)
+
+
+def write_text(path: Path, content: str) -> None:
+    ensure_dir(path.parent)
+    path.write_text(content, encoding="utf-8")
+
+
+def build_header(meta: Dict[str, str]) -> str:
+    """
+    Build metadata header '# KEY: value' lines.
+    DO NOT change the format.
+    """
+    lines: List[str] = []
+    for k, v in meta.items():
+        if v is None:
+            continue
+        v2 = str(v).strip()
+        if v2 == "":
+            continue
+        lines.append(f"# {k}: {v2}")
+    return "\n".join(lines) + "\n\n"
+
+
+def _looks_like_redirect_text(text: str) -> Optional[str]:
+    """
+    Fallback redirect detection for pages that render as:
+      重定向到：
+      <TARGET TITLE>
+    Returns target title if detected, else None.
+    """
+    if not text:
+        return None
+    lines = [ln.strip() for ln in text.splitlines() if ln.strip()]
+    if len(lines) >= 2 and lines[0].startswith("重定向到"):
+        # next non-empty line is usually the target title (exactly as in your example) :contentReference[oaicite:1]{index=1}
+        return lines[1].strip()
+    return None
+
+
+def scrape_one_page(
+    page_title: str,
+    *,
+    out_raw_path: Path,
+    out_clean_path: Path,
+    meta: Dict[str, str],
+    sleep: float,
+) -> Tuple[int, int]:
+    """
+    Fetch -> extract text -> write RAW and CLEAN with identical headers.
+    Redirects are followed; missing pages are skipped (no file written).
+    """
+    resolved = resolve_redirect_title(page_title, sleep=sleep)
+    if resolved is None:
+        print(f"      !! Missing page (skipping): {page_title}")
+        return (0, 0)
+
+    html = fetch_html(resolved, sleep=sleep)
+    if not html:
+        print(f"      !! Empty HTML (skipping): {resolved}")
+        return (0, 0)
+
+    raw_body = extract_visible_text_from_html(html)
+    if not raw_body:
+        print(f"      !! Empty text (skipping): {resolved}")
+        return (0, 0)
+
+    # Skip explicit missing marker in rendered text
+    if "页面不存在" in raw_body:
+        print(f"      !! Page does not exist marker (skipping): {resolved}")
+        return (0, 0)
+
+    # Fallback: if it looks like a redirect page (rendered redirect), follow it
+    rt = _looks_like_redirect_text(raw_body)
+    if rt:
+        resolved2 = resolve_redirect_title(rt, sleep=sleep)
+        if resolved2 is None:
+            print(f"      !! Redirect target missing (skipping): {rt}")
+            return (0, 0)
+        html2 = fetch_html(resolved2, sleep=sleep)
+        raw_body2 = extract_visible_text_from_html(html2) if html2 else ""
+        if not raw_body2 or "页面不存在" in raw_body2:
+            print(f"      !! Redirect target invalid (skipping): {resolved2}")
+            return (0, 0)
+        resolved = resolved2
+        raw_body = raw_body2
+
+    # Ensure metadata PAGE_TITLE matches the resolved title we actually scraped
+    meta["PAGE_TITLE"] = resolved
+
+    clean_body = clean_text_for_corpus(raw_body)
+
+    header = build_header(meta)
+    write_text(out_raw_path, header + raw_body)
+    write_text(out_clean_path, header + clean_body)
+
+    return (len(raw_body), len(clean_body))
 
 
 def scrape_author(author_title_or_url: str, cfg: SaveConfig) -> None:
@@ -726,56 +910,59 @@ def scrape_author(author_title_or_url: str, cfg: SaveConfig) -> None:
     author_name = author_title.split(":", 1)[-1].strip()
     author_dir = safe_filename(author_name)
 
-    # Discover works
-    work_refs: List[WorkRef] = []
-    if cfg.author_section:
-        work_refs = discover_works_from_author_section(author_title, cfg.author_section, sleep=cfg.sleep)
+    base_raw_root = cfg.base_out / "raw" / author_dir
+    base_clean_root = cfg.base_out / "clean" / author_dir
+    ensure_dir(base_raw_root)
+    ensure_dir(base_clean_root)
+
+    if cfg.section:
+        work_refs = discover_works_from_author_section(author_title, cfg.section, sleep=cfg.sleep)
     else:
-        work_refs = [WorkRef(title=t) for t in discover_works_from_author(author_title, sleep=cfg.sleep)]
+        work_refs = [WorkRef(title=t, list_times_raw="") for t in discover_works_from_author(author_title, sleep=cfg.sleep)]
 
     if cfg.test and cfg.max_works is not None:
         work_refs = work_refs[: cfg.max_works]
 
-    # Print header
     print(f"Author page: {author_title}")
-    if cfg.author_section:
-        print(f"Section:    {cfg.author_section}")
-    if cfg.era_divider == "qing_roc":
-        print(f"Era divider: 清 (<{ROC_START_YEAR}) / 民國 (≥{ROC_START_YEAR}) / 未詳")
+    print(f"Section:    {cfg.section or '(all)'}")
     print(f"Resolved works: {len(work_refs)}")
-
-    # We no longer use the old "existing_ids" heuristic here, because with era
-    # folders it becomes ambiguous. We instead skip based on exact target path existence.
+    print(f"Output RAW:   {base_raw_root}")
+    print(f"Output CLEAN: {base_clean_root}")
     print()
+
+    existing_ids = collect_existing_work_ids(str(cfg.base_out), cfg.skip_existing_from)
 
     for wi, wr in enumerate(work_refs, start=1):
         work_title = wr.title
         work_id = safe_filename(work_title)
 
-        era_folder = era_folder_for_year(wr.year, cfg.era_divider)
-        raw_root = cfg.base_out / "raw" / author_dir
-        clean_root = cfg.base_out / "clean" / author_dir
-        if era_folder:
-            raw_root = raw_root / era_folder
-            clean_root = clean_root / era_folder
-
-        ensure_dir(raw_root)
-        ensure_dir(clean_root)
-
         print(f"== [{wi}/{len(work_refs)}] Work: {work_title} ==")
-        if era_folder:
-            yr = wr.year if wr.year is not None else "unknown"
-            print(f"  -> era folder: {era_folder} (year={yr})")
 
-        # Work folder per base title (this is what your annotation pipeline needs)
-        work_raw_dir = raw_root / work_id
-        work_clean_dir = clean_root / work_id
+        # Determine TIMES value:
+        times_value = ""
+        year_for_divider: Optional[int] = None
 
-        # Skip if already scraped (either side exists)
-        if work_raw_dir.exists() or work_clean_dir.exists():
-            print("  !! Skipping: work folder already exists")
+        if wr.list_times_raw.strip():
+            times_value, year_for_divider = normalize_times_value(wr.list_times_raw.strip())
+        else:
+            times_value, year_for_divider = sniff_times_from_work_page(work_title, sleep=cfg.sleep)
+
+        raw_root = base_raw_root
+        clean_root = base_clean_root
+        if cfg.era_divider:
+            era = qing_roc_from_year(year_for_divider)
+            if era:
+                raw_root = raw_root / era
+                clean_root = clean_root / era
+                ensure_dir(raw_root)
+                ensure_dir(clean_root)
+
+        if work_id in existing_ids:
+            print(f"  !! Skipping: work folder '{work_id}' already exists in corpus roots.")
             continue
 
+        work_raw_dir = raw_root / work_id
+        work_clean_dir = clean_root / work_id
         ensure_dir(work_raw_dir)
         ensure_dir(work_clean_dir)
 
@@ -788,17 +975,24 @@ def scrape_author(author_title_or_url: str, cfg: SaveConfig) -> None:
         for pi, page_title in enumerate(parts, start=1):
             print(f"    [{pi}/{len(parts)}] {page_title}")
 
-            cats = fetch_categories(page_title, sleep=cfg.sleep)
+            # Resolve redirects before category lookup so categories match the actual content page
+            resolved_for_cats = resolve_redirect_title(page_title, sleep=cfg.sleep) or page_title
+            cats = fetch_categories(resolved_for_cats, sleep=cfg.sleep)
             cat_str = ";".join(cats)
 
-            # IMPORTANT: metadata preserved in your exact old format
-            meta = {
+            meta: Dict[str, str] = {
                 "AUTHOR": author_name,
                 "AUTHOR_PAGE": author_title,
                 "WORK_BASE_TITLE": work_title,
-                "PAGE_TITLE": page_title,
+                "PAGE_TITLE": page_title,  # will be overwritten in scrape_one_page if redirected
                 "WS_CATEGORIES": cat_str,
             }
+
+            if cfg.nation:
+                meta["NATION"] = cfg.nation
+
+            if times_value:
+                meta["TIMES"] = times_value
 
             fname = f"{safe_filename(work_title)}__juan_{pi:02d}.txt"
             out_raw = work_raw_dir / fname
@@ -812,6 +1006,9 @@ def scrape_author(author_title_or_url: str, cfg: SaveConfig) -> None:
                     meta=meta,
                     sleep=cfg.sleep,
                 )
+                if cr == 0 and cc == 0:
+                    # skipped
+                    continue
                 print(f"      -> wrote {fname} (raw {cr} chars, clean {cc} chars)")
             except Exception as e:
                 print(f"      !! Error scraping {page_title}: {e}", file=sys.stderr)
@@ -825,7 +1022,10 @@ HEADER_LINE_RE = re.compile(r"^#\s*([A-Z0-9_]+)\s*:\s*(.*)\s*$")
 
 
 def parse_header(text: str) -> Tuple[Dict[str, str], str]:
-    """Split into (header_dict, body_text)."""
+    """
+    Split into (header_dict, body_text).
+    Header is consecutive '# KEY: value' lines from start, until first blank line.
+    """
     lines = text.splitlines()
     meta: Dict[str, str] = {}
     body_start = 0
@@ -854,6 +1054,7 @@ def enrich_categories(corpus_root: str, *, sleep: float, promote_category_to_nat
     """
     Walk .txt files; for each:
       - read # PAGE_TITLE
+      - follow redirects
       - query WS categories
       - write/replace # WS_CATEGORIES
       - optionally promote CATEGORY->NATION by path heuristic
@@ -880,7 +1081,13 @@ def enrich_categories(corpus_root: str, *, sleep: float, promote_category_to_nat
             skipped += 1
             continue
 
-        cats = fetch_categories(page_title, sleep=sleep)
+        resolved = resolve_redirect_title(page_title, sleep=sleep)
+        if resolved is None:
+            # page missing; skip updating categories for this file
+            skipped += 1
+            continue
+
+        cats = fetch_categories(resolved, sleep=sleep)
         meta["WS_CATEGORIES"] = ";".join(cats)
 
         if promote_category_to_nation:
@@ -903,7 +1110,7 @@ def enrich_categories(corpus_root: str, *, sleep: float, promote_category_to_nat
             p.write_text(new_text, encoding="utf-8")
             updated += 1
 
-    print(f"Done. Updated {updated} files. Skipped {skipped} files (no PAGE_TITLE).")
+    print(f"Done. Updated {updated} files. Skipped {skipped} files (no PAGE_TITLE or missing page).")
 
 
 # -----------------------------
@@ -917,11 +1124,11 @@ def main() -> None:
     ap_a = sub.add_parser("scrape-author", help="Scrape an Author: page into per-work folders.")
     ap_a.add_argument("author", help="Author: title or URL (e.g. 作者:梁啟超)")
     ap_a.add_argument("out", help="Output folder (will create raw/ and clean/ under it)")
+    ap_a.add_argument("--section", default=None, help="Only scrape works listed under a specific heading (e.g. 文).")
+    ap_a.add_argument("--nation", default=None, help="Optional: set # NATION: ... (no inference).")
     ap_a.add_argument("--sleep", type=float, default=0.5, help="Seconds between requests")
-    ap_a.add_argument("--skip-existing-from", action="append", default=[], help="(kept for compatibility; unused in era mode)")
-    ap_a.add_argument("--section", type=str, default=None, help="Only scrape works listed under a specific heading (e.g. 文).")
-    ap_a.add_argument("--era-divider", type=str, default=None, choices=["qing_roc"],
-                      help="Split output into era folders based on year in the author list (qing_roc uses 1912).")
+    ap_a.add_argument("--skip-existing-from", action="append", default=[], help="Extra corpus roots to dedupe against")
+    ap_a.add_argument("--era-divider", action="store_true", help="Split into 清/民國 folders when a year can be derived.")
     ap_a.add_argument("--test", action="store_true", help="Test mode (limit works/parts)")
     ap_a.add_argument("--max-works", type=int, default=5, help="Test mode: max works")
     ap_a.add_argument("--max-parts", type=int, default=10, help="Test mode: max parts per work")
@@ -929,8 +1136,11 @@ def main() -> None:
     ap_e = sub.add_parser("enrich-categories", help="Add/refresh # WS_CATEGORIES in an existing corpus.")
     ap_e.add_argument("corpus_root", help="Root folder containing your .txt corpus")
     ap_e.add_argument("--sleep", type=float, default=0.5, help="Seconds between requests")
-    ap_e.add_argument("--promote-category-to-nation", action="store_true",
-                      help="If path is .../(raw|clean)/X/... and # CATEGORY: X, also set # NATION: X")
+    ap_e.add_argument(
+        "--promote-category-to-nation",
+        action="store_true",
+        help="If path is .../(raw|clean)/X/... and # CATEGORY: X, also set # NATION: X",
+    )
 
     args = ap.parse_args()
 
@@ -939,11 +1149,12 @@ def main() -> None:
             base_out=Path(args.out).expanduser().resolve(),
             sleep=float(args.sleep),
             skip_existing_from=list(args.skip_existing_from),
+            section=(args.section.strip() if args.section else None),
+            nation=(args.nation.strip() if args.nation else None),
+            era_divider=bool(args.era_divider),
             test=bool(args.test),
             max_works=int(args.max_works) if args.test else None,
             max_parts_per_work=int(args.max_parts) if args.test else None,
-            author_section=(args.section.strip() if args.section else None),
-            era_divider=args.era_divider,
         )
         ensure_dir(cfg.base_out)
         scrape_author(args.author, cfg)

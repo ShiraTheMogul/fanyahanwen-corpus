@@ -1,13 +1,5 @@
 # frozen_string_literal: true
 
-# Rake tasks to run supplemental script imports.
-#
-# Pattern you can reuse:
-#   bin/rails "namespace:task KEY=/path/to/file.csv OTHER=value"
-#
-# In Rake, ENV[...] reads those KEY=VALUE pairs.
-# That lets you keep the tasks stable while swapping input files.
-
 namespace :supplements do
   def required_env!(key)
     v = ENV[key]
@@ -64,7 +56,7 @@ namespace :supplements do
     puts "[supplements] imported Manyogana katakana etym from #{path} (field=#{field}, source=#{source})"
   end
 
-  desc "Import Manyogana mora table (XLSX) (requires lookup XLSX for kana mapping)"
+  desc "Import Manyogana mora table (XLSX) (requires lookup XLSX for kana mapping), then build reverse index"
   task import_manyogana_mora: :environment do
     path = required_env!("MANYO_MORA_XLSX")
     lookup = required_env!("KANA_LOOKUP_XLSX")
@@ -73,8 +65,21 @@ namespace :supplements do
 
     importer = Importers::SupplementalScriptsImporter.new
     importer.import_manyogana_mora_table_xlsx!(path, kana_lookup_xlsx: lookup, field: field, source: source)
+    # Critical: build kanji-side "this kanji can represent these morae" properties.
+    importer.build_manyogana_reverse_from_mora_table!(mora_table_field: field, source: source)
 
-    puts "[supplements] imported Manyogana mora table from #{path} (lookup=#{lookup}, field=#{field}, source=#{source})"
+    puts "[supplements] imported Manyogana mora table from #{path} (lookup=#{lookup}, field=#{field}, source=#{source}) and built reverse index"
+  end
+
+  desc "Build Manyogana reverse index (kanji -> mora) from already-imported mora table"
+  task build_manyogana_reverse: :environment do
+    field = ENV["MANYO_MORA_FIELD"] || "jp_manyogana_mora_table"
+    source = ENV["MANYO_MORA_SOURCE"] || "manyogana_wiki"
+
+    importer = Importers::SupplementalScriptsImporter.new
+    importer.build_manyogana_reverse_from_mora_table!(mora_table_field: field, source: source)
+
+    puts "[supplements] built Manyogana reverse index from field=#{field} (source=#{source})"
   end
 
   desc "Import Shakuon kana (借音仮名) (CSV)"
@@ -99,16 +104,5 @@ namespace :supplements do
     importer.import_kana_borrowing_csv!(path, field: field, source: source)
 
     puts "[supplements] imported Shakkun CSV from #{path} (field=#{field}, source=#{source})"
-  end
-
-  desc "Import all supplemental datasets (requires all relevant ENV vars)"
-  task import_all: :environment do
-    Rake::Task["supplements:import_slavonic"].invoke
-    Rake::Task["supplements:import_zetian"].invoke
-    Rake::Task["supplements:import_manyogana_hiragana"].invoke
-    Rake::Task["supplements:import_manyogana_katakana"].invoke
-    Rake::Task["supplements:import_manyogana_mora"].invoke
-    Rake::Task["supplements:import_shakuon"].invoke
-    Rake::Task["supplements:import_shakkun"].invoke
   end
 end

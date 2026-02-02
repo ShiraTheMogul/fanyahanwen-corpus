@@ -224,12 +224,29 @@ class CharactersController < ApplicationController
 
 		# --- 4) Collect variants to display (as clickable links) ---
 		# A) Variants from VariantMapping that point to the base.
-		moe_variant_cps = VariantMapping.where(base_codepoint: base_cp).pluck(:variant_codepoint)
+		# We keep BOTH the list of codepoints and a lookup of per-variant sources.
+		# This matters because some variant families (e.g. Zetian Script) have a
+		# meaningful source label that should be shown in the Variants section.
+		# B) The CC-CEDICT partner, so we always show trad<->simp when it exists.
+		partner_cp = cedict_partner_codepoint(base_cp)
+
+		# Collect VariantMapping variants for any reasonable "base" candidate.
+		# This matters because base_cp can drift due to other canonicalisation rules
+		# (e.g. CC-CEDICT partner), but the user still expects Zetian/other families
+		# to appear as variants on the page they're viewing.
+		base_candidates = [base_cp, current_cp, partner_cp].compact.uniq
+		variant_mapping_rows = VariantMapping.where(base_codepoint: base_candidates).pluck(:variant_codepoint, :source)
+		variant_mapping_source_by_cp = {}
+		variant_mapping_rows.each do |cp, src|
+			# Keep first non-blank source per codepoint (stable enough for display).
+			next if cp.nil?
+			variant_mapping_source_by_cp[cp] ||= src
+		end
+		moe_variant_cps = variant_mapping_rows.map { |cp, _| cp }.compact
 		variant_cps = moe_variant_cps.dup
 		compat_variant_cps = []
 
-		# B) The CC-CEDICT partner, so we always show trad<->simp when it exists.
-		partner_cp = cedict_partner_codepoint(base_cp)
+		# Add the CC-CEDICT partner as a clickable variant link.
 		variant_cps << partner_cp if partner_cp
 
 
@@ -569,16 +586,22 @@ class CharactersController < ApplicationController
 			# block under the Definitions section.
 			has_variant_specific_defs = @variant_definition_blocks.any? { |blk| blk[:character].id == cc.id }
 
+			# Source label priority:
+			# 1) If this variant came from VariantMapping and has a meaningful source
+			#    (e.g. "Zetian Script (則天文字)"), show that.
+			# 2) Otherwise, preserve the existing buckets.
 			source =
-	if moe_variant_cps.include?(cc.codepoint)
-		"MOE 異典收字清單"
-	elsif partner_cp.present? && cc.codepoint == partner_cp
-		"CC-CEDICT"
-	elsif compat_variant_cps.include?(cc.codepoint)
-		"Unihan_Variants"
-	else
-		"VariantMapping"
-	end
+				if variant_mapping_source_by_cp[cc.codepoint].present?
+					variant_mapping_source_by_cp[cc.codepoint]
+				elsif moe_variant_cps.include?(cc.codepoint)
+					"MOE 異典收字清單"
+				elsif partner_cp.present? && cc.codepoint == partner_cp
+					"CC-CEDICT"
+				elsif compat_variant_cps.include?(cc.codepoint)
+					"Unihan_Variants"
+				else
+					"VariantMapping"
+				end
 
 {
 	codepoint: cc.codepoint,
