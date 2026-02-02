@@ -1,0 +1,42 @@
+profiles:
+  - key: arabic_to_han_basic
+    label: Arabic → 正書 (basic)
+    engine: numerals
+    direction: arabic_to_han
+    options:
+      use_you: false
+      use_abbrev: false
+
+  - key: arabic_to_han_with_you
+    label: Arabic → 正書 (uses 有)
+    engine: numerals
+    direction: arabic_to_han
+    options:
+      use_you: true
+      use_abbrev: false
+
+  - key: arabic_to_han_with_abbrev
+    label: Arabic → 正書 (abbrev tens)
+    engine: numerals
+    direction: arabic_to_han
+    options:
+      use_you: false
+      use_abbrev: true
+
+  - key: han_to_arabic_basic
+    label: 正書 → Arabic (basic)
+    engine: numerals
+    direction: han_to_arabic
+    options:
+      allow_you: true
+      allow_abbrev: true
+      allow_variants: true
+
+  - key: han_to_arabic_strict
+    label: 正書 → Arabic (strict)
+    engine: numerals
+    direction: han_to_arabic
+    options:
+      allow_you: false
+      allow_abbrev: false
+      allow_variants: false

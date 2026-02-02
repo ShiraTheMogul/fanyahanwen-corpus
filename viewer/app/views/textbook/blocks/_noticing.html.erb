@@ -1,0 +1,28 @@
+<% text_ref = block.fetch("text_ref") %>
+<% mode = (block["mode"].presence || "indices") %>
+
+<section class="tb-block tb-noticing"
+  data-controller="textbook-noticing"
+  data-textbook-noticing-text-ref-value="<%= text_ref %>"
+  data-textbook-noticing-mode-value="<%= mode %>"
+  data-textbook-noticing-target-indices-value="<%= Array(block["target_indices"]).map(&:to_i).join(",") %>"
+  data-textbook-noticing-target-chars-value="<%= Array(block["target_chars"]).join("|") %>">
+  <% if block["title"].present? %>
+    <h2 class="tb-block-title"><%= block["title"] %></h2>
+  <% end %>
+
+  <p class="tb-instruction"><%= block["prompt"].presence || "Click the items you think match." %></p>
+
+  <div class="tb-noticing-actions">
+    <button type="button" class="tb-btn" data-action="textbook-noticing#check">Check</button>
+    <button type="button" class="tb-btn tb-btn-secondary" data-action="textbook-noticing#reset">Reset</button>
+    <span class="tb-feedback" data-textbook-noticing-target="feedback"></span>
+  </div>
+
+  <% if block["explain"].present? %>
+    <details class="tb-details">
+      <summary>Explanation</summary>
+      <div class="tb-details-body"><%= simple_format(block["explain"].to_s) %></div>
+    </details>
+  <% end %>
+</section>

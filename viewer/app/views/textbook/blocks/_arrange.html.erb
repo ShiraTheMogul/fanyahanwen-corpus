@@ -1,0 +1,76 @@
+<%# ArrangeBlock: order tiles into slots. %>
+<%
+  options = block["options"].is_a?(Hash) ? block["options"] : {}
+  tile_scale = options["tile_scale"].to_s
+  tile_scale = "md" if tile_scale.blank?
+  shuffle = options["shuffle"] != false
+  show_check = options["show_check"] != false
+
+  bank = Array(block["bank"]).map do |it|
+    it.is_a?(Hash) ? it : { "id" => it.to_s, "text" => it.to_s }
+  end
+
+  answer = Array(block["answer"]).map(&:to_s)
+  slot_count =
+    if block["slots"].present?
+      block["slots"].to_i
+    else
+      answer.length
+    end
+  slot_count = 1 if slot_count <= 0
+
+  rng = Random.new(lesson["slug"].to_s.hash ^ bank.length)
+  bank_for_render = shuffle ? bank.shuffle(random: rng) : bank
+
+  root_classes = ["tb-block", "tb-arrange", "tb-tile-scale-#{tile_scale}"].join(" ")
+%>
+
+<section class="<%= root_classes %>"
+         data-controller="textbook-arrange"
+         data-textbook-arrange-answer-value="<%= answer.to_json %>">
+  <% if block["title"].present? %>
+    <h2 class="tb-block-title"><%= block["title"] %></h2>
+  <% end %>
+
+  <% if block["prompt"].present? %>
+    <p class="tb-instruction"><%= block["prompt"] %></p>
+  <% end %>
+
+  <div class="tb-arrange-rail">
+    <% slot_count.times do |i| %>
+      <div class="tb-arrange-slot"
+           data-textbook-arrange-target="slot"
+           data-slot-index="<%= i %>">
+        <span class="tb-arrange-placeholder">Drop here (or tap a tile, then tap here)</span>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="tb-arrange-bank" data-textbook-arrange-target="bank">
+    <% bank_for_render.each do |item| %>
+      <div class="tb-arrange-tile <%= item["class"].to_s %>"
+           data-tile-id="<%= item["id"] %>"
+           draggable="true">
+        <% if item["img"].present? %>
+          <img class="tb-arrange-tile-img" src="<%= item["img"] %>" alt="" loading="lazy" />
+        <% end %>
+        <% if item["text"].present? %>
+          <span class="tb-arrange-tile-text"><%= item["text"] %></span>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="tb-arrange-actions">
+    <% if show_check %>
+      <button type="button" class="tb-btn" data-action="textbook-arrange#check">Check</button>
+    <% end %>
+    <button type="button" class="tb-btn tb-btn-secondary" data-action="textbook-arrange#reset">Reset</button>
+  </div>
+
+  <div class="tb-feedback" data-textbook-arrange-target="feedback"></div>
+
+  <div class="tb-muted" style="margin-top: 0.75rem;">
+    Tip: to remove a tile from a slot, drag it back to the bank or tap the tile.
+  </div>
+</section>

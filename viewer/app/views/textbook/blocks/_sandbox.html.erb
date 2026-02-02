@@ -1,0 +1,15 @@
+<section class="tb-block tb-sandbox" data-controller="textbook-sandbox"
+  data-textbook-sandbox-profile-value="<%= block["profile"].presence || "arabic_to_han_basic" %>"
+  data-textbook-sandbox-parse-profile-value="<%= block["parse_profile"].presence || "han_to_arabic_basic" %>"
+  data-textbook-sandbox-min-value="<%= (block["min"] || 1).to_i %>"
+  data-textbook-sandbox-max-value="<%= (block["max"] || 99).to_i %>">
+  <% if block["title"].present? %><h2 class="tb-block-title"><%= block["title"] %></h2><% end %>
+
+  <div class="tb-sandbox-prompt" data-textbook-sandbox-target="prompt"></div>
+  <div class="tb-sandbox-row">
+    <input class="tb-input" data-textbook-sandbox-target="answer" placeholder="Type Arabic or 正書" />
+    <button type="button" class="tb-btn" data-action="textbook-sandbox#check">Check</button>
+    <button type="button" class="tb-btn" data-action="textbook-sandbox#next">Next</button>
+  </div>
+  <div class="tb-feedback" data-textbook-sandbox-target="feedback"></div>
+</section>

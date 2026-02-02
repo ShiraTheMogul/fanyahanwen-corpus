@@ -1,0 +1,4 @@
+<section class="tb-block tb-context">
+  <% if block["title"].present? %><h2 class="tb-block-title"><%= block["title"] %></h2><% end %>
+  <div class="tb-body"><%= simple_format(block["body"].to_s) %></div>
+</section>

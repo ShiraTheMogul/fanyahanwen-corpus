@@ -1,0 +1,61 @@
+<%# Textbook editor: Edit lesson %>
+
+<% require "yaml" %>
+<%
+  lesson_hash =
+    if @lesson.is_a?(Hash)
+      @lesson
+    else
+      begin
+        parsed = YAML.safe_load(@raw_yaml.to_s)
+        parsed.is_a?(Hash) ? parsed : {}
+      rescue
+        {}
+      end
+    end
+
+  lesson_title = lesson_hash["title"].to_s.strip
+%>
+
+<div class="tb-editor" data-controller="textbook-editor">
+  <h1 class="tb-editor-title">Edit lesson: <%= lesson_title.presence || @slug %></h1>
+
+  <% if flash[:alert].present? %>
+    <div class="tb-editor-alert"><%= flash[:alert] %></div>
+  <% end %>
+
+  <div class="tb-editor-grid">
+    <div class="tb-editor-pane">
+      <%= form_with url: update_textbook_lesson_path(@slug), method: :patch, data: { turbo: false } do %>
+        <label class="tb-label" for="lesson_raw_yaml">Lesson YAML</label>
+        <textarea id="lesson_raw_yaml" name="lesson[yaml]" class="tb-editor-textarea" rows="26" data-textbook-editor-target="yaml"><%= @raw_yaml %></textarea>
+
+        <div class="tb-editor-actions">
+          <button type="submit" class="tb-btn">Save</button>
+        </div>
+      <% end %>
+
+      <%= form_with url: preview_textbook_lesson_path, method: :post,
+            html: { target: "_blank", rel: "noopener" },
+            data: { turbo: false, action: "submit->textbook-editor#syncPreview" } do %>
+        <input type="hidden" name="lesson[yaml]" value="" data-textbook-editor-target="previewYaml" />
+        <div class="tb-editor-actions">
+          <button type="submit" class="tb-btn tb-btn-secondary">Preview (new tab)</button>
+        </div>
+      <% end %>
+
+      <div class="tb-muted" style="margin-top: 0.75rem;">
+        Tip: Preview opens in a new tab so you can keep editing without losing your place.
+      </div>
+    </div>
+
+    <div class="tb-editor-pane">
+      <h2 class="tb-editor-subtitle">Help</h2>
+      <ul class="tb-editor-help">
+        <li><strong>YAML indentation:</strong> use 2 spaces, never tabs.</li>
+        <li><strong>Blocks are a list:</strong> each block starts with <code>- type: ...</code>.</li>
+        <li><strong>Preview:</strong> uses whatever is currently in the box (even unsaved).</li>
+      </ul>
+    </div>
+  </div>
+</div>

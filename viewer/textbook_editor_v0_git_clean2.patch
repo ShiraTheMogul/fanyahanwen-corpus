@@ -1,0 +1,1394 @@
+diff --git a/app/assets/stylesheets/textbook.css b/app/assets/stylesheets/textbook.css
+index 91a6839..391ca13 100644
+--- a/app/assets/stylesheets/textbook.css
++++ b/app/assets/stylesheets/textbook.css
+@@ -1,225 +1,366 @@
+-/* Textbook UI: intentionally calm and text-first.
+-   Keep styles scoped to .textbook-page / .tb-* to avoid impacting other parts of the viewer. */
+-
+-.textbook-page {
+-  max-width: 1000px;
+-  margin: 0 auto;
+-  padding: 1.2rem;
+-}
+-
+-.textbook-title {
+-  margin: 0.2rem 0 0.6rem;
+-  font-size: 1.9rem;
+-}
+-
+-.textbook-lede {
+-  margin: 0 0 1.2rem;
+-  opacity: 0.85;
+-}
+-
+-.textbook-breadcrumb {
+-  font-size: 0.95rem;
+-  opacity: 0.8;
+-  margin-bottom: 0.6rem;
+-}
+-
+-.textbook-breadcrumb-sep {
+-  margin: 0 0.35rem;
+-}
+-
+-.textbook-lesson-list {
+-  display: grid;
+-  gap: 0.9rem;
+-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+-}
+-
+-.textbook-lesson-card {
+-  border: 1px solid rgba(0,0,0,0.12);
+-  border-radius: 12px;
+-  padding: 0.9rem 1rem;
+-  background: rgba(255,255,255,0.7);
+-}
+-
+-.textbook-lesson-card-title {
+-  margin: 0 0 0.2rem;
+-  font-size: 1.2rem;
+-}
+-
+-.textbook-lesson-card-desc {
+-  margin: 0.2rem 0 0.8rem;
+-  opacity: 0.85;
+-}
+-
+-.textbook-lesson-card-meta {
+-  display: flex;
+-  gap: 0.4rem;
+-  flex-wrap: wrap;
+-  font-size: 0.9rem;
+-  opacity: 0.8;
+-}
+-
+-.tb-block {
+-  margin: 1.2rem 0;
+-  padding: 0.9rem 1rem;
+-  border: 1px solid rgba(0,0,0,0.10);
+-  border-radius: 14px;
+-  background: rgba(255,255,255,0.6);
+-}
+-
+-.tb-block-title {
+-  margin: 0 0 0.6rem;
+-  font-size: 1.2rem;
+-}
+-
+-.tb-instruction {
+-  margin: 0 0 0.8rem;
+-}
+-
+-.tb-text-pane {
+-  font-size: 1.6rem;
+-  line-height: 2.2rem;
+-  padding: 0.5rem 0.3rem;
+-  border-radius: 10px;
+-  border: 1px solid rgba(0,0,0,0.10);
+-  background: rgba(255,255,255,0.65);
+-  word-break: break-word;
+-}
+-
+-.tb-ch {
+-  cursor: pointer;
+-  padding: 0.05rem 0.08rem;
+-  border-radius: 6px;
+-}
+-
+-.tb-ch.is-picked {
+-  outline: 2px solid rgba(0,0,0,0.25);
+-}
+-
+-.tb-ch.is-correct {
+-  background: rgba(0, 140, 70, 0.15);
+-}
+-
+-.tb-ch.is-wrong {
+-  background: rgba(200, 0, 0, 0.12);
+-}
+-
+-.tb-btn {
+-  border: 1px solid rgba(0,0,0,0.18);
+-  border-radius: 10px;
+-  padding: 0.35rem 0.65rem;
+-  background: rgba(255,255,255,0.9);
+-  cursor: pointer;
+-}
+-
+-.tb-btn:hover {
+-  background: rgba(255,255,255,1);
+-}
+-
+-.tb-btn-secondary {
+-  opacity: 0.85;
+-}
+-
+-.tb-feedback {
+-  margin-left: 0.6rem;
+-  font-weight: 600;
+-}
+-
+-.tb-details {
+-  margin-top: 0.8rem;
+-}
+-
+-.tb-details-body {
+-  margin-top: 0.6rem;
+-  opacity: 0.92;
+-}
+-
+-.tb-diagram-grid {
+-  overflow-x: auto;
+-  margin-top: 0.7rem;
+-}
+-
+-.textbook-grid {
+-  border-collapse: collapse;
+-}
+-
+-.textbook-grid td {
+-  border: 1px solid rgba(0,0,0,0.16);
+-  padding: 0.35rem 0.55rem;
+-  white-space: nowrap;
+-}
+-
+-.tb-convert-grid {
+-  display: grid;
+-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+-  gap: 0.8rem;
+-}
+-
+-.tb-label {
+-  display: block;
+-  font-size: 0.9rem;
+-  opacity: 0.85;
+-  margin-bottom: 0.25rem;
+-}
+-
+-.tb-input {
+-  width: 100%;
+-  padding: 0.45rem 0.55rem;
+-  border-radius: 10px;
+-  border: 1px solid rgba(0,0,0,0.18);
+-  background: rgba(255,255,255,0.9);
+-  font-size: 1.05rem;
+-}
+-
+-.tb-convert-panel button {
+-  margin-top: 0.5rem;
+-}
+-
+-.tb-convert-feedback {
+-  margin-top: 0.7rem;
+-}
+-
+-.tb-reveal-card {
+-  display: none;
+-  border-left: 3px solid rgba(0,0,0,0.25);
+-  padding-left: 0.8rem;
+-  margin: 0.6rem 0;
+-}
+-
+-.tb-reveal-card.is-visible {
+-  display: block;
+-}
+-
+-.tb-sandbox-row {
+-  display: flex;
+-  gap: 1rem;
+-  flex-wrap: wrap;
+-  align-items: center;
+-}
+-
+-.tb-sandbox-q {
+-  font-size: 1.2rem;
+-}
+-
+-.tb-sandbox-value {
+-  font-size: 1.5rem;
+-  padding: 0 0.25rem;
+-}
+-
+-.tb-pseudokeyboard {
+-  display: flex;
+-  flex-wrap: wrap;
+-  gap: 0.35rem;
+-  margin-top: 0.8rem;
+-}
+-
+-.tb-key {
+-  border: 1px solid rgba(0,0,0,0.18);
+-  border-radius: 10px;
+-  padding: 0.35rem 0.5rem;
+-  background: rgba(255,255,255,0.9);
+-  cursor: pointer;
+-}
+-
+-.tb-key-wide {
+-  padding: 0.35rem 0.75rem;
+-}
++/* Textbook UI: intentionally calm and text-first.
++   Keep styles scoped to .textbook-page / .tb-* to avoid impacting other parts of the viewer. */
++
++.textbook-page {
++  max-width: 1000px;
++  margin: 0 auto;
++  padding: 1.2rem;
++}
++
++.textbook-title {
++  margin: 0.2rem 0 0.6rem;
++  font-size: 1.9rem;
++}
++
++.textbook-lede {
++  margin: 0 0 1.2rem;
++  opacity: 0.85;
++}
++
++.textbook-breadcrumb {
++  font-size: 0.95rem;
++  opacity: 0.8;
++  margin-bottom: 0.6rem;
++}
++
++.textbook-breadcrumb-sep {
++  margin: 0 0.35rem;
++}
++
++.textbook-lesson-list {
++  display: grid;
++  gap: 0.9rem;
++  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
++}
++
++.textbook-lesson-card {
++  border: 1px solid rgba(0,0,0,0.12);
++  border-radius: 12px;
++  padding: 0.9rem 1rem;
++  background: rgba(255,255,255,0.7);
++}
++
++.textbook-lesson-card-title {
++  margin: 0 0 0.2rem;
++  font-size: 1.2rem;
++}
++
++.textbook-lesson-card-desc {
++  margin: 0.2rem 0 0.8rem;
++  opacity: 0.85;
++}
++
++.textbook-lesson-card-meta {
++  display: flex;
++  gap: 0.4rem;
++  flex-wrap: wrap;
++  font-size: 0.9rem;
++  opacity: 0.8;
++}
++
++.tb-block {
++  margin: 1.2rem 0;
++  padding: 0.9rem 1rem;
++  border: 1px solid rgba(0,0,0,0.10);
++  border-radius: 14px;
++  background: rgba(255,255,255,0.6);
++}
++
++.tb-block-title {
++  margin: 0 0 0.6rem;
++  font-size: 1.2rem;
++}
++
++.tb-instruction {
++  margin: 0 0 0.8rem;
++}
++
++.tb-text-pane {
++  font-size: 1.6rem;
++  line-height: 2.2rem;
++  padding: 0.5rem 0.3rem;
++  border-radius: 10px;
++  border: 1px solid rgba(0,0,0,0.10);
++  background: rgba(255,255,255,0.65);
++  word-break: break-word;
++}
++
++.tb-ch {
++  cursor: pointer;
++  padding: 0.05rem 0.08rem;
++  border-radius: 6px;
++}
++
++.tb-ch.is-picked {
++  outline: 2px solid rgba(0,0,0,0.25);
++}
++
++.tb-ch.is-correct {
++  background: rgba(0, 140, 70, 0.15);
++}
++
++.tb-ch.is-wrong {
++  background: rgba(200, 0, 0, 0.12);
++}
++
++.tb-btn {
++  border: 1px solid rgba(0,0,0,0.18);
++  border-radius: 10px;
++  padding: 0.35rem 0.65rem;
++  background: rgba(255,255,255,0.9);
++  cursor: pointer;
++}
++
++.tb-btn:hover {
++  background: rgba(255,255,255,1);
++}
++
++.tb-btn-secondary {
++  opacity: 0.85;
++}
++
++.tb-feedback {
++  margin-left: 0.6rem;
++  font-weight: 600;
++}
++
++.tb-details {
++  margin-top: 0.8rem;
++}
++
++.tb-details-body {
++  margin-top: 0.6rem;
++  opacity: 0.92;
++}
++
++.tb-diagram-grid {
++  overflow-x: auto;
++  margin-top: 0.7rem;
++}
++
++.textbook-grid {
++  border-collapse: collapse;
++}
++
++.textbook-grid td {
++  border: 1px solid rgba(0,0,0,0.16);
++  padding: 0.35rem 0.55rem;
++  white-space: nowrap;
++}
++
++.tb-convert-grid {
++  display: grid;
++  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
++  gap: 0.8rem;
++}
++
++.tb-label {
++  display: block;
++  font-size: 0.9rem;
++  opacity: 0.85;
++  margin-bottom: 0.25rem;
++}
++
++.tb-input {
++  width: 100%;
++  padding: 0.45rem 0.55rem;
++  border-radius: 10px;
++  border: 1px solid rgba(0,0,0,0.18);
++  background: rgba(255,255,255,0.9);
++  font-size: 1.05rem;
++}
++
++.tb-convert-panel button {
++  margin-top: 0.5rem;
++}
++
++.tb-convert-feedback {
++  margin-top: 0.7rem;
++}
++
++.tb-reveal-card {
++  display: none;
++  border-left: 3px solid rgba(0,0,0,0.25);
++  padding-left: 0.8rem;
++  margin: 0.6rem 0;
++}
++
++.tb-reveal-card.is-visible {
++  display: block;
++}
++
++.tb-sandbox-row {
++  display: flex;
++  gap: 1rem;
++  flex-wrap: wrap;
++  align-items: center;
++}
++
++.tb-sandbox-q {
++  font-size: 1.2rem;
++}
++
++.tb-sandbox-value {
++  font-size: 1.5rem;
++  padding: 0 0.25rem;
++}
++
++.tb-pseudokeyboard {
++  display: flex;
++  flex-wrap: wrap;
++  gap: 0.35rem;
++  margin-top: 0.8rem;
++}
++
++.tb-key {
++  border: 1px solid rgba(0,0,0,0.18);
++  border-radius: 10px;
++  padding: 0.35rem 0.5rem;
++  background: rgba(255,255,255,0.9);
++  cursor: pointer;
++}
++
++.tb-key-wide {
++  padding: 0.35rem 0.75rem;
++}
++
++/* ===== Textbook editor (authoring UI) ===== */
++
++.tb-muted {
++  opacity: 0.75;
++}
++
++.tb-alert {
++  border: 1px solid rgba(200, 0, 0, 0.35);
++  background: rgba(200, 0, 0, 0.08);
++  border-radius: 12px;
++  padding: 0.7rem 0.9rem;
++  margin: 0.8rem 0;
++}
++
++.tb-notice {
++  border: 1px solid rgba(0, 120, 60, 0.28);
++  background: rgba(0, 120, 60, 0.08);
++  border-radius: 12px;
++  padding: 0.7rem 0.9rem;
++  margin: 0.8rem 0;
++}
++
++.tb-editor-grid {
++  display: grid;
++  grid-template-columns: 1fr;
++  gap: 1rem;
++  margin-top: 0.8rem;
++}
++
++@media (min-width: 1100px) {
++  .tb-editor-grid {
++    grid-template-columns: 1fr 1fr;
++  }
++}
++
++.tb-editor-pane {
++  border: 1px solid rgba(0,0,0,0.10);
++  border-radius: 14px;
++  padding: 0.9rem 1rem;
++  background: rgba(255,255,255,0.55);
++}
++
++.tb-editor-preview .textbook-page {
++  max-width: 100%;
++  padding: 0;
++}
++
++.tb-preview-surface {
++  margin-top: 0.8rem;
++}
++
++.tb-h2 {
++  margin: 1rem 0 0.4rem;
++  font-size: 1.2rem;
++}
++
++.tb-form-row {
++  margin: 0.7rem 0;
++}
++
++.tb-textarea {
++  width: 100%;
++  padding: 0.55rem;
++  border-radius: 10px;
++  border: 1px solid rgba(0,0,0,0.18);
++  background: rgba(255,255,255,0.9);
++  font-size: 1rem;
++}
++
++.tb-select {
++  width: 100%;
++  padding: 0.45rem 0.55rem;
++  border-radius: 10px;
++  border: 1px solid rgba(0,0,0,0.18);
++  background: rgba(255,255,255,0.9);
++  font-size: 1rem;
++}
++
++.tb-inline {
++  display: grid;
++  grid-template-columns: 1fr 1fr;
++  gap: 0.7rem;
++}
++
++.tb-editor-block {
++  border: 1px solid rgba(0,0,0,0.10);
++  border-radius: 12px;
++  padding: 0.8rem;
++  background: rgba(255,255,255,0.55);
++  margin: 0.8rem 0;
++}
++
++.tb-editor-block-head {
++  display: flex;
++  align-items: center;
++  justify-content: space-between;
++  gap: 0.7rem;
++  margin-bottom: 0.5rem;
++}
++
++.tb-cards {
++  display: flex;
++  flex-direction: column;
++  gap: 0.6rem;
++  margin: 0.4rem 0 0.6rem;
++}
++
++.tb-card {
++  border: 1px solid rgba(0,0,0,0.10);
++  border-radius: 12px;
++  padding: 0.7rem;
++  background: rgba(255,255,255,0.6);
++}
++
++.tb-add-block {
++  display: grid;
++  grid-template-columns: 1fr auto;
++  gap: 0.6rem;
++  align-items: end;
++  margin-top: 0.7rem;
++}
++
++.tb-editor-submit {
++  margin-top: 1rem;
++  display: flex;
++  gap: 0.6rem;
++  flex-wrap: wrap;
++}
++
++.tb-table {
++  width: 100%;
++  border-collapse: collapse;
++}
++
++.tb-table th,
++.tb-table td {
++  border-bottom: 1px solid rgba(0,0,0,0.12);
++  padding: 0.5rem 0.4rem;
++  text-align: left;
++}
+diff --git a/app/controllers/textbook_editor_controller.rb b/app/controllers/textbook_editor_controller.rb
+new file mode 100644
+index 0000000..4a89a81
+--- /dev/null
++++ b/app/controllers/textbook_editor_controller.rb
+@@ -0,0 +1,132 @@
++class TextbookEditorController < ApplicationController
++  # Minimal authoring UI for textbook lessons.
++  #
++  # Design goal: no YAML editing, no assumed linguistics.
++  # You assemble lessons from reusable blocks (context, text, diagram, convert...).
++
++  def index
++    @lessons = Textbook::LessonStore.all
++  end
++
++  def new
++    @lesson = default_lesson
++    render :edit
++  end
++
++  def edit
++    @lesson = Textbook::LessonStore.find!(params[:slug])
++  end
++
++  def create
++    @lesson = build_lesson_from_params
++    Textbook::LessonStore.write!(@lesson)
++    redirect_to edit_textbook_lesson_path(@lesson["slug"]), notice: "Lesson created."
++  rescue => e
++    flash.now[:alert] = e.message
++    render :edit, status: :unprocessable_entity
++  end
++
++  def update
++    @lesson = build_lesson_from_params
++    @lesson["slug"] = params[:slug]
++    Textbook::LessonStore.write!(@lesson)
++    redirect_to edit_textbook_lesson_path(@lesson["slug"]), notice: "Lesson saved."
++  rescue => e
++    flash.now[:alert] = e.message
++    render :edit, status: :unprocessable_entity
++  end
++
++  # Renders a preview without saving.
++  def preview
++    @lesson = build_lesson_from_params
++    @preview = true
++    render :edit
++  rescue => e
++    flash.now[:alert] = e.message
++    @lesson ||= default_lesson
++    render :edit, status: :unprocessable_entity
++  end
++
++  private
++
++  def default_lesson
++    {
++      "schema_version" => 1,
++      "title" => "Untitled lesson",
++      "slug" => "",
++      "summary" => "",
++      "blocks" => [
++        {
++          "type" => "context",
++          "title" => "Context",
++          "body" => "",
++        }
++      ]
++    }
++  end
++
++  def build_lesson_from_params
++    lp = params.fetch(:lesson, {}).to_unsafe_h
++
++    lesson = {
++      "schema_version" => (lp["schema_version"].presence || 1).to_i,
++      "title" => lp["title"].to_s,
++      "slug" => lp["slug"].to_s,
++      "summary" => lp["summary"].to_s,
++      "blocks" => build_blocks(lp["blocks"])
++    }
++
++    lesson.delete("summary") if lesson["summary"].blank?
++    lesson
++  end
++
++  def build_blocks(blocks_param)
++    blocks_hash = blocks_param.is_a?(Hash) ? blocks_param : {}
++    blocks = blocks_hash.keys.sort_by { |k| k.to_i }.map do |idx|
++      b = blocks_hash[idx].is_a?(Hash) ? blocks_hash[idx] : {}
++      type = b["type"].to_s
++      next if type.blank?
++
++      out = { "type" => type }
++      %w[title prompt body text grid_tsv explain text_ref target_chars].each do |k|
++        out[k] = b[k].to_s if b[k].present?
++      end
++
++      if type == "convert"
++        out["show_profile_picker"] = (b["show_profile_picker"] == "1" || b["show_profile_picker"] == true)
++        out["profiles"] = {
++          "format" => b.dig("profiles", "format").to_s.presence || "arabic_to_han_basic",
++          "parse" => b.dig("profiles", "parse").to_s.presence || "han_to_arabic_basic",
++        }
++        if b["pseudo_keyboard"].present?
++          out["pseudo_keyboard"] = b["pseudo_keyboard"].to_s.split(//).uniq
++        end
++      end
++
++      if type == "sandbox"
++        out["min"] = (b["min"].presence || 1).to_i
++        out["max"] = (b["max"].presence || 99).to_i
++        out["profile"] = b["profile"].to_s.presence || "arabic_to_han_basic"
++        out["parse_profile"] = b["parse_profile"].to_s.presence || "han_to_arabic_basic"
++        out["variants"] = (b["variants"] == "1" || b["variants"] == true)
++        out["allow_you"] = (b["allow_you"] == "1" || b["allow_you"] == true)
++      end
++
++      if type == "reveal"
++        cards = b["cards"].is_a?(Hash) ? b["cards"] : {}
++        out["cards"] = cards.keys.sort_by { |k| k.to_i }.map do |ck|
++          c = cards[ck].is_a?(Hash) ? cards[ck] : {}
++          next if c["body"].to_s.strip.blank?
++          {
++            "title" => c["title"].to_s,
++            "body" => c["body"].to_s,
++          }.compact
++        end.compact
++      end
++
++      out
++    end
++
++    blocks.compact
++  end
++end
+diff --git a/app/javascript/controllers/textbook_editor_controller.js b/app/javascript/controllers/textbook_editor_controller.js
+new file mode 100644
+index 0000000..3114d4b
+--- /dev/null
++++ b/app/javascript/controllers/textbook_editor_controller.js
+@@ -0,0 +1,87 @@
++import { Controller } from "@hotwired/stimulus";
++
++// Authoring UI helpers.
++//
++// This controller is intentionally small:
++// - it adds/removes blocks client-side (so you don't fight YAML)
++// - it can add/remove reveal cards
++// - everything is still submitted as normal HTML form params
++export default class extends Controller {
++  static targets = ["blockList", "newBlockType", "blockTemplate"];
++
++  addBlock() {
++    const type = this.newBlockTypeTarget.value;
++    const index = this._nextBlockIndex();
++    const template = this.blockTemplateTarget.innerHTML
++      .replaceAll("__INDEX__", String(index))
++      .replaceAll("__TYPE__", type);
++
++    this.blockListTarget.insertAdjacentHTML("beforeend", template);
++  }
++
++  removeBlock(event) {
++    const blockEl = event.target.closest(".tb-editor-block");
++    if (!blockEl) return;
++    blockEl.remove();
++  }
++
++  changeType(event) {
++    // For v0, we keep this simple:
++    // type changes require re-adding the block so the right fields appear.
++    // This avoids the UI getting desynchronised from what will be saved.
++    const select = event.target;
++    const blockEl = select.closest(".tb-editor-block");
++    if (!blockEl) return;
++    const index = this._blockIndexFromNames(blockEl) || this._nextBlockIndex();
++    const newType = select.value;
++
++    const template = this.blockTemplateTarget.innerHTML
++      .replaceAll("__INDEX__", String(index))
++      .replaceAll("__TYPE__", newType);
++
++    blockEl.outerHTML = template;
++  }
++
++  addCard(event) {
++    const blockIndex = event.target.getAttribute("data-block-index");
++    if (blockIndex == null) return;
++
++    const blockEl = event.target.closest(".tb-editor-block");
++    if (!blockEl) return;
++    const cardsEl = blockEl.querySelector(".tb-cards");
++    if (!cardsEl) return;
++
++    const next = cardsEl.querySelectorAll(".tb-card").length;
++    const titleName = `lesson[blocks][${blockIndex}][cards][${next}][title]`;
++    const bodyName = `lesson[blocks][${blockIndex}][cards][${next}][body]`;
++
++    cardsEl.insertAdjacentHTML(
++      "beforeend",
++      `
++      <div class="tb-card">
++        <input class="tb-input" type="text" name="${titleName}" placeholder="Card title" />
++        <textarea class="tb-textarea" rows="4" name="${bodyName}" placeholder="Card body"></textarea>
++        <button type="button" class="tb-btn tb-btn-secondary" data-action="textbook-editor#removeCard">Remove card</button>
++      </div>
++      `
++    );
++  }
++
++  removeCard(event) {
++    const cardEl = event.target.closest(".tb-card");
++    if (!cardEl) return;
++    cardEl.remove();
++  }
++
++  _nextBlockIndex() {
++    const blocks = this.blockListTarget.querySelectorAll(".tb-editor-block");
++    return blocks.length;
++  }
++
++  _blockIndexFromNames(blockEl) {
++    const input = blockEl.querySelector("[name^='lesson[blocks]']");
++    if (!input) return null;
++    const m = input.getAttribute("name").match(/lesson\[blocks\]\[(\d+)\]/);
++    return m ? Number.parseInt(m[1], 10) : null;
++  }
++}
+diff --git a/app/services/textbook/lesson_store.rb b/app/services/textbook/lesson_store.rb
+index d76620d..b358451 100644
+--- a/app/services/textbook/lesson_store.rb
++++ b/app/services/textbook/lesson_store.rb
+@@ -1,26 +1,69 @@
+-require "yaml"
+-
+-module Textbook
+-  class LessonStore
+-    LESSONS_DIR = Rails.root.join("config", "textbook", "lessons")
+-
+-    def self.all
+-      Dir.glob(LESSONS_DIR.join("*.yml")).sort.map { |p| load_lesson(p) }
+-    end
+-
+-    def self.find!(slug)
+-      path = LESSONS_DIR.join("#{slug}.yml")
+-      raise ActiveRecord::RecordNotFound, "Unknown lesson" unless File.exist?(path)
+-      load_lesson(path)
+-    end
+-
+-    def self.load_lesson(path)
+-      raw = YAML.safe_load(File.read(path), permitted_classes: [Date], aliases: true)
+-      unless raw.is_a?(Hash)
+-        raise "Lesson YAML must be a mapping: #{path}"
+-      end
+-      raw["slug"] ||= File.basename(path, ".yml")
+-      raw
+-    end
+-  end
+-end
++require "yaml"
++
++module Textbook
++  class LessonStore
++    LESSONS_DIR = Rails.root.join("config", "textbook", "lessons")
++
++    def self.all
++      Dir.glob(LESSONS_DIR.join("*.yml")).sort.map { |p| load_lesson(p) }
++    end
++
++    def self.find!(slug)
++      path = LESSONS_DIR.join("#{slug}.yml")
++      raise ActiveRecord::RecordNotFound, "Unknown lesson" unless File.exist?(path)
++      load_lesson(path)
++    end
++
++    def self.load_lesson(path)
++      raw = YAML.safe_load(File.read(path), permitted_classes: [Date], aliases: true)
++      unless raw.is_a?(Hash)
++        raise "Lesson YAML must be a mapping: #{path}"
++      end
++      raw["slug"] ||= File.basename(path, ".yml")
++      raw
++    end
++
++    # Writes a lesson Hash back to YAML on disk.
++    #
++    # Expected shape:
++    # {
++    #   "title"=>"...",
++    #   "slug"=>"...",
++    #   "summary"=>"...",
++    #   "blocks"=>[ {"type"=>"context", ...}, ... ]
++    # }
++    def self.write!(lesson)
++      unless lesson.is_a?(Hash)
++        raise ArgumentError, "lesson must be a Hash"
++      end
++
++      slug = lesson["slug"].to_s.strip
++      raise ArgumentError, "slug is required" if slug.blank?
++      unless slug.match?(/\A[a-z0-9_\-]+\z/)
++        raise ArgumentError, "slug must be lowercase letters, numbers, _ or -"
++      end
++
++      LESSONS_DIR.mkpath
++      path = LESSONS_DIR.join("#{slug}.yml")
++      File.write(path, dump_yaml(lesson))
++      path
++    end
++
++    def self.dump_yaml(lesson)
++      # Keep output stable and human-readable.
++      ordered = {
++        "schema_version" => (lesson["schema_version"] || 1),
++        "title" => lesson["title"].to_s,
++        "slug" => lesson["slug"].to_s,
++      }
++      if lesson["summary"].present?
++        ordered["summary"] = lesson["summary"].to_s
++      end
++      ordered["blocks"] = Array(lesson["blocks"]).map(&:dup)
++
++      yaml = YAML.dump(ordered)
++      # Psych sometimes emits "---\n"; keep it.
++      yaml
++    end
++  end
++end
+diff --git a/app/views/textbook/index.html.erb b/app/views/textbook/index.html.erb
+index 0a930e7..80e6eb2 100644
+--- a/app/views/textbook/index.html.erb
++++ b/app/views/textbook/index.html.erb
+@@ -1,25 +1,29 @@
+-<div class="textbook-page">
+-  <h1 class="textbook-title">Textbook</h1>
+-  <p class="textbook-lede">
+-    Interactive lessons built directly into the corpus viewer.
+-  </p>
+-
+-  <div class="textbook-lesson-list">
+-    <% @lessons.each do |lesson| %>
+-      <div class="textbook-lesson-card">
+-        <h2 class="textbook-lesson-card-title">
+-          <%= link_to lesson.fetch("title", lesson.fetch("slug")), textbook_lesson_path(lesson.fetch("slug")) %>
+-        </h2>
+-        <% if lesson["description"].present? %>
+-          <p class="textbook-lesson-card-desc"><%= lesson["description"] %></p>
+-        <% end %>
+-
+-        <div class="textbook-lesson-card-meta">
+-          <% if lesson["level"].present? %>
+-            <span>Level: <%= lesson["level"] %></span>
+-          <% end %>
+-        </div>
+-      </div>
+-    <% end %>
+-  </div>
+-</div>
++<div class="textbook-page">
++  <h1 class="textbook-title">Textbook</h1>
++  <p class="textbook-lede">
++    Interactive lessons built directly into the corpus viewer.
++  </p>
++
++  <p>
++    <%= link_to "Author lessons", textbook_editor_path, class: "tb-btn tb-btn-secondary" %>
++  </p>
++
++  <div class="textbook-lesson-list">
++    <% @lessons.each do |lesson| %>
++      <div class="textbook-lesson-card">
++        <h2 class="textbook-lesson-card-title">
++          <%= link_to lesson.fetch("title", lesson.fetch("slug")), textbook_lesson_path(lesson.fetch("slug")) %>
++        </h2>
++        <% if lesson["description"].present? %>
++          <p class="textbook-lesson-card-desc"><%= lesson["description"] %></p>
++        <% end %>
++
++        <div class="textbook-lesson-card-meta">
++          <% if lesson["level"].present? %>
++            <span>Level: <%= lesson["level"] %></span>
++          <% end %>
++        </div>
++      </div>
++    <% end %>
++  </div>
++</div>
+diff --git a/app/views/textbook_editor/_block_fields.html.erb b/app/views/textbook_editor/_block_fields.html.erb
+new file mode 100644
+index 0000000..c391a27
+--- /dev/null
++++ b/app/views/textbook_editor/_block_fields.html.erb
+@@ -0,0 +1,151 @@
++<% type = (block["type"] || block[:type]).to_s %>
++
++<div class="tb-editor-block" data-block-type="<%= type %>">
++  <div class="tb-editor-block-head">
++    <div class="tb-editor-block-title">
++      <strong><%= type.presence || "(choose type)" %></strong>
++      <span class="tb-muted">Block <%= index %></span>
++    </div>
++    <button type="button" class="tb-btn tb-btn-secondary" data-action="textbook-editor#removeBlock">Remove</button>
++  </div>
++
++  <div class="tb-form">
++    <div class="tb-form-row">
++      <label class="tb-label">Type</label>
++      <select class="tb-select" name="lesson[blocks][<%= index %>][type]" data-action="textbook-editor#changeType">
++        <option value="context" <%= "selected" if type == "context" %>>context</option>
++        <option value="text" <%= "selected" if type == "text" %>>text</option>
++        <option value="diagram" <%= "selected" if type == "diagram" %>>diagram</option>
++        <option value="noticing" <%= "selected" if type == "noticing" %>>noticing</option>
++        <option value="reveal" <%= "selected" if type == "reveal" %>>reveal</option>
++        <option value="convert" <%= "selected" if type == "convert" %>>convert</option>
++        <option value="sandbox" <%= "selected" if type == "sandbox" %>>sandbox</option>
++      </select>
++    </div>
++
++    <div class="tb-form-row">
++      <label class="tb-label">Title (optional)</label>
++      <input class="tb-input" type="text" name="lesson[blocks][<%= index %>][title]" value="<%= block["title"].to_s %>" />
++    </div>
++
++    <% if type == "context" %>
++      <div class="tb-form-row">
++        <label class="tb-label">Body</label>
++        <textarea class="tb-textarea" rows="6" name="lesson[blocks][<%= index %>][body]"><%= block["body"].to_s %></textarea>
++        <div class="tb-muted">World-building first. No target-language required here.</div>
++      </div>
++    <% elsif type == "text" %>
++      <div class="tb-form-row">
++        <label class="tb-label">Text</label>
++        <textarea class="tb-textarea" rows="6" name="lesson[blocks][<%= index %>][text]"><%= block["text"].to_s %></textarea>
++      </div>
++    <% elsif type == "diagram" %>
++      <div class="tb-form-row">
++        <label class="tb-label">Grid (paste from Google Sheets)</label>
++        <textarea class="tb-textarea" rows="6" name="lesson[blocks][<%= index %>][grid_tsv]"><%= block["grid_tsv"].to_s %></textarea>
++        <div class="tb-muted">Paste a rectangular selection. Tabs separate columns; newlines separate rows.</div>
++      </div>
++    <% elsif type == "noticing" %>
++      <div class="tb-form-row">
++        <label class="tb-label">Text ref</label>
++        <input class="tb-input" type="text" name="lesson[blocks][<%= index %>][text_ref]" value="<%= block["text_ref"].to_s %>" placeholder="e.g., main_text" />
++        <div class="tb-muted">If you have multiple Text blocks, give them refs and target one here.</div>
++      </div>
++      <div class="tb-form-row">
++        <label class="tb-label">Target characters</label>
++        <input class="tb-input" type="text" name="lesson[blocks][<%= index %>][target_chars]" value="<%= block["target_chars"].to_s %>" placeholder="一二三四五" />
++        <div class="tb-muted">Learner clicks matching characters in the text.</div>
++      </div>
++    <% elsif type == "reveal" %>
++      <div class="tb-form-row">
++        <label class="tb-label">Cards</label>
++        <div class="tb-muted">Each card is a step in guided discovery.</div>
++      </div>
++      <div class="tb-cards" data-textbook-editor-target="cardList">
++        <% (Array(block["cards"]) || []).each_with_index do |c, ci| %>
++          <div class="tb-card">
++            <input class="tb-input" type="text" name="lesson[blocks][<%= index %>][cards][<%= ci %>][title]" value="<%= c["title"].to_s %>" placeholder="Card title" />
++            <textarea class="tb-textarea" rows="4" name="lesson[blocks][<%= index %>][cards][<%= ci %>][body]" placeholder="Card body"><%= c["body"].to_s %></textarea>
++            <button type="button" class="tb-btn tb-btn-secondary" data-action="textbook-editor#removeCard">Remove card</button>
++          </div>
++        <% end %>
++      </div>
++      <button type="button" class="tb-btn tb-btn-secondary" data-action="textbook-editor#addCard" data-block-index="<%= index %>">Add card</button>
++    <% elsif type == "convert" %>
++      <div class="tb-form-row">
++        <label class="tb-label">Prompt (optional)</label>
++        <input class="tb-input" type="text" name="lesson[blocks][<%= index %>][prompt]" value="<%= block["prompt"].to_s %>" placeholder="Convert between Arabic and 正書." />
++      </div>
++      <div class="tb-form-row">
++        <label class="tb-label">
++          <input type="checkbox" name="lesson[blocks][<%= index %>][show_profile_picker]" value="1" <%= "checked" if block["show_profile_picker"] %>>
++          Show profile picker to learner (advanced)
++        </label>
++      </div>
++      <div class="tb-form-row">
++        <label class="tb-label">Format profile</label>
++        <select class="tb-select" name="lesson[blocks][<%= index %>][profiles][format]">
++          <% Textbook::ConversionProfiles.list.select { |p| p.type.to_s == "arabic_to_han" }.each do |p| %>
++            <option value="<%= p.key %>" <%= "selected" if p.key.to_s == block.dig("profiles", "format").to_s %>><%= p.label %></option>
++          <% end %>
++        </select>
++      </div>
++      <div class="tb-form-row">
++        <label class="tb-label">Parse profile</label>
++        <select class="tb-select" name="lesson[blocks][<%= index %>][profiles][parse]">
++          <% Textbook::ConversionProfiles.list.select { |p| p.type.to_s == "han_to_arabic" }.each do |p| %>
++            <option value="<%= p.key %>" <%= "selected" if p.key.to_s == block.dig("profiles", "parse").to_s %>><%= p.label %></option>
++          <% end %>
++        </select>
++      </div>
++      <div class="tb-form-row">
++        <label class="tb-label">Pseudo-keyboard characters (optional)</label>
++        <input class="tb-input" type="text" name="lesson[blocks][<%= index %>][pseudo_keyboard]" value="<%= Array(block["pseudo_keyboard"]).join %>" placeholder="一二三四五六七八九十百千有" />
++      </div>
++    <% elsif type == "sandbox" %>
++      <div class="tb-form-row tb-inline">
++        <div>
++          <label class="tb-label">Min</label>
++          <input class="tb-input" type="number" name="lesson[blocks][<%= index %>][min]" value="<%= block["min"].presence || 1 %>" />
++        </div>
++        <div>
++          <label class="tb-label">Max</label>
++          <input class="tb-input" type="number" name="lesson[blocks][<%= index %>][max]" value="<%= block["max"].presence || 99 %>" />
++        </div>
++      </div>
++      <div class="tb-form-row">
++        <label class="tb-label">Format profile</label>
++        <select class="tb-select" name="lesson[blocks][<%= index %>][profile]">
++          <% Textbook::ConversionProfiles.list.select { |p| p.type.to_s == "arabic_to_han" }.each do |p| %>
++            <option value="<%= p.key %>" <%= "selected" if p.key.to_s == block["profile"].to_s %>><%= p.label %></option>
++          <% end %>
++        </select>
++      </div>
++      <div class="tb-form-row">
++        <label class="tb-label">Parse profile</label>
++        <select class="tb-select" name="lesson[blocks][<%= index %>][parse_profile]">
++          <% Textbook::ConversionProfiles.list.select { |p| p.type.to_s == "han_to_arabic" }.each do |p| %>
++            <option value="<%= p.key %>" <%= "selected" if p.key.to_s == block["parse_profile"].to_s %>><%= p.label %></option>
++          <% end %>
++        </select>
++      </div>
++      <div class="tb-form-row">
++        <label class="tb-label">
++          <input type="checkbox" name="lesson[blocks][<%= index %>][variants]" value="1" <%= "checked" if block["variants"] %>>
++          Variants mode
++        </label>
++      </div>
++      <div class="tb-form-row">
++        <label class="tb-label">
++          <input type="checkbox" name="lesson[blocks][<%= index %>][allow_you]" value="1" <%= "checked" if block["allow_you"] %>>
++          Allow 有
++        </label>
++      </div>
++    <% end %>
++
++    <div class="tb-form-row">
++      <label class="tb-label">Notes (optional)</label>
++      <textarea class="tb-textarea" rows="3" name="lesson[blocks][<%= index %>][explain]"><%= block["explain"].to_s %></textarea>
++    </div>
++  </div>
++</div>
+\ No newline at end of file
+diff --git a/app/views/textbook_editor/edit.html.erb b/app/views/textbook_editor/edit.html.erb
+new file mode 100644
+index 0000000..2dd95a1
+--- /dev/null
++++ b/app/views/textbook_editor/edit.html.erb
+@@ -0,0 +1,84 @@
++<div class="tb-editor" data-controller="textbook-editor">
++  <div class="tb-editor-header">
++    <h1>Textbook editor</h1>
++    <div class="tb-editor-actions">
++      <%= link_to "Back to list", textbook_editor_path, class: "tb-btn tb-btn-secondary" %>
++      <% if @lesson["slug"].present? %>
++        <%= link_to "Open lesson", textbook_lesson_path(@lesson["slug"]), class: "tb-btn tb-btn-secondary" %>
++      <% end %>
++    </div>
++  </div>
++
++  <% if flash[:alert].present? %>
++    <div class="tb-alert"><%= flash[:alert] %></div>
++  <% end %>
++  <% if flash[:notice].present? %>
++    <div class="tb-notice"><%= flash[:notice] %></div>
++  <% end %>
++
++  <div class="tb-editor-grid">
++    <div class="tb-editor-pane">
++      <%= form_with url: (@lesson["slug"].present? ? update_textbook_lesson_path(@lesson["slug"]) : create_textbook_lesson_path), method: (@lesson["slug"].present? ? :patch : :post), local: true do |f| %>
++        <div class="tb-form">
++          <div class="tb-form-row">
++            <%= f.label :title, "Title", class: "tb-label" %>
++            <%= f.text_field :title, name: "lesson[title]", value: @lesson["title"], class: "tb-input" %>
++          </div>
++
++          <div class="tb-form-row">
++            <%= f.label :slug, "Slug (file name)", class: "tb-label" %>
++            <%= f.text_field :slug, name: "lesson[slug]", value: @lesson["slug"], class: "tb-input", placeholder: "zhouli_numbers" %>
++            <div class="tb-muted">Lowercase letters, numbers, _ and - only.</div>
++          </div>
++
++          <div class="tb-form-row">
++            <%= f.label :summary, "Summary", class: "tb-label" %>
++            <%= f.text_area :summary, name: "lesson[summary]", value: @lesson["summary"], class: "tb-textarea", rows: 3 %>
++          </div>
++        </div>
++
++        <h2 class="tb-h2">Blocks</h2>
++        <div class="tb-muted">A lesson is a sequence of reusable blocks. Build it like a worksheet.</div>
++
++        <div class="tb-block-list" data-textbook-editor-target="blockList">
++          <% Array(@lesson["blocks"]).each_with_index do |block, i| %>
++            <%= render partial: "block_fields", locals: { block: block, index: i } %>
++          <% end %>
++        </div>
++
++        <div class="tb-add-block">
++          <label class="tb-label">Add block</label>
++          <select class="tb-select" data-textbook-editor-target="newBlockType">
++            <option value="context">Context</option>
++            <option value="text">Text</option>
++            <option value="diagram">Diagram (Sheets paste)</option>
++            <option value="noticing">Noticing (click-to-mark)</option>
++            <option value="reveal">Reveal (guided discovery)</option>
++            <option value="convert">Convert (profiles)</option>
++            <option value="sandbox">Sandbox (infinite practice)</option>
++          </select>
++          <button type="button" class="tb-btn tb-btn-secondary" data-action="textbook-editor#addBlock">Add</button>
++        </div>
++
++        <div class="tb-editor-submit">
++          <%= f.submit "Save lesson", class: "tb-btn" %>
++          <%= button_tag "Preview (no save)", type: "submit", class: "tb-btn tb-btn-secondary",
++                formaction: preview_textbook_lesson_path, formmethod: "post" %>
++        </div>
++      <% end %>
++    </div>
++
++    <div class="tb-editor-pane tb-editor-preview">
++      <h2 class="tb-h2">Preview</h2>
++      <div class="tb-muted">This is rendered using the same block renderer as the real textbook page.</div>
++      <div class="tb-preview-surface">
++        <% @blocks = Array(@lesson["blocks"]) %>
++        <%= render template: "textbook/show", locals: { }, layout: false %>
++      </div>
++    </div>
++  </div>
++
++  <template data-textbook-editor-target="blockTemplate">
++    <%= render partial: "block_fields", locals: { block: {"type" => "__TYPE__"}, index: "__INDEX__" } %>
++  </template>
++</div>
+\ No newline at end of file
+diff --git a/app/views/textbook_editor/index.html.erb b/app/views/textbook_editor/index.html.erb
+new file mode 100644
+index 0000000..36970cc
+--- /dev/null
++++ b/app/views/textbook_editor/index.html.erb
+@@ -0,0 +1,34 @@
++<div class="tb-editor">
++  <h1>Textbook editor</h1>
++
++  <p class="tb-muted">
++    This is an authoring interface for building interactive lessons from reusable blocks.
++    It writes YAML into <code>config/textbook/lessons/</code>.
++  </p>
++
++  <p>
++    <%= link_to "New lesson", new_textbook_lesson_path, class: "tb-btn" %>
++  </p>
++
++  <table class="tb-table">
++    <thead>
++      <tr>
++        <th>Slug</th>
++        <th>Title</th>
++        <th></th>
++      </tr>
++    </thead>
++    <tbody>
++      <% @lessons.each do |l| %>
++        <tr>
++          <td><code><%= l["slug"] %></code></td>
++          <td><%= l["title"] %></td>
++          <td>
++            <%= link_to "Edit", edit_textbook_lesson_path(l["slug"]), class: "tb-btn tb-btn-secondary" %>
++            <%= link_to "Open", textbook_lesson_path(l["slug"]), class: "tb-btn tb-btn-secondary" %>
++          </td>
++        </tr>
++      <% end %>
++    </tbody>
++  </table>
++</div>
+diff --git a/config/routes.rb b/config/routes.rb
+index 2c0a394..c6b61f9 100644
+--- a/config/routes.rb
++++ b/config/routes.rb
+@@ -1,53 +1,61 @@
+-Rails.application.routes.draw do
+-	root "home#index"
+-
+-	resources :characters, only: [:index, :show] do
+-	  get :preview, on: :member
+-	end
+-
+-	get  "/tools",          to: "tools#index",       as: :tools
+-	post "/tools/numerals", to: "tools#numerals",    as: :tools_numerals
+-	post "/tools/cangjie",  to: "tools#cangjie",     as: :tools_cangjie
+-	post "/tools/lunar", to: "tools#lunar", as: :tools_lunar
+-	post "/tools/phonetic/mandarin", to: "tools#phonetic_mandarin", as: :tools_phonetic_mandarin
+-	post "/tools/phonetic/cantonese", to: "tools#phonetic_cantonese", as: :tools_phonetic_cantonese
+-
+-	# Kangxi radicals browser
+-	get "/dictionary/radicals", to: "kangxi_radicals#index", as: :dictionary_radicals
+-	get "/dictionary/radicals/:number", to: "kangxi_radicals#show", as: :dictionary_radical
+-	get "/dictionary/radicals/:number/chars", to: "kangxi_radicals#chars", as: :dictionary_radical_chars
+-	
+-	# Shuowen category browser
+-	get "/dictionary/shuowen", to: "shuowen_components#index", as: :dictionary_components
+-	get "/dictionary/shuowen/:number", to: "shuowen_components#show", as: :dictionary_component
+-	get "/dictionary/shuowen/:number/chars", to: "shuowen_components#chars", as: :dictionary_component_chars
+-	
+-	get "/corpus_viewer(/*path)", to: "corpus_viewer#show", as: :corpus_viewer, format: false # stop a silly attempt to output a txt file
+-	
+-	# config/routes.rb
+-	get  "/corpus_annotations", to: "corpus_annotations#show"
+-	post "/corpus_annotations", to: "corpus_annotations#update"
+-	
+-	get "/fun", to: "fun#index", as: :fun # Minigame section
+-
+-	# Textbook (interactive lessons)
+-	get  "/textbook", to: "textbook#index", as: :textbook
+-	get  "/textbook/:slug", to: "textbook#show", as: :textbook_lesson
+-	post "/textbook/api/format_numeral", to: "textbook_api#format_numeral"
+-	post "/textbook/api/parse_numeral",  to: "textbook_api#parse_numeral"
+-
+-	get "/fun/xuanji", to: "xuanji#show", as: :xuanji
+-	post "/fun/xuanji/sync_colors", to: "xuanji#sync_colors", as: :xuanji_sync_colors
+-	post "/fun/xuanji/phoneticize", to: "xuanji#phoneticize", as: :xuanji_phoneticize
+-	
+-	get "/xiangqi", to: "xiangqi#show"
+-	post "/xiangqi/theme", to: "xiangqi#theme"
+-	get "/xiangqi/legal_moves", to: "xiangqi#legal_moves"
+-	post "/xiangqi/move", to: "xiangqi#move"
+-	post "/xiangqi/view", to: "xiangqi#view_mode"
+-	post "/xiangqi/undo", to: "xiangqi#undo"
+-	post "/xiangqi/reset", to: "xiangqi#reset"
+-
+-	post "/preferences", to: "preferences#update", as: :preferences
+-
+-end
++Rails.application.routes.draw do
++	root "home#index"
++
++	resources :characters, only: [:index, :show] do
++	  get :preview, on: :member
++	end
++
++	get  "/tools",          to: "tools#index",       as: :tools
++	post "/tools/numerals", to: "tools#numerals",    as: :tools_numerals
++	post "/tools/cangjie",  to: "tools#cangjie",     as: :tools_cangjie
++	post "/tools/lunar", to: "tools#lunar", as: :tools_lunar
++	post "/tools/phonetic/mandarin", to: "tools#phonetic_mandarin", as: :tools_phonetic_mandarin
++	post "/tools/phonetic/cantonese", to: "tools#phonetic_cantonese", as: :tools_phonetic_cantonese
++
++	# Kangxi radicals browser
++	get "/dictionary/radicals", to: "kangxi_radicals#index", as: :dictionary_radicals
++	get "/dictionary/radicals/:number", to: "kangxi_radicals#show", as: :dictionary_radical
++	get "/dictionary/radicals/:number/chars", to: "kangxi_radicals#chars", as: :dictionary_radical_chars
++	
++	# Shuowen category browser
++	get "/dictionary/shuowen", to: "shuowen_components#index", as: :dictionary_components
++	get "/dictionary/shuowen/:number", to: "shuowen_components#show", as: :dictionary_component
++	get "/dictionary/shuowen/:number/chars", to: "shuowen_components#chars", as: :dictionary_component_chars
++	
++	get "/corpus_viewer(/*path)", to: "corpus_viewer#show", as: :corpus_viewer, format: false # stop a silly attempt to output a txt file
++	
++	# config/routes.rb
++	get  "/corpus_annotations", to: "corpus_annotations#show"
++	post "/corpus_annotations", to: "corpus_annotations#update"
++	
++	get "/fun", to: "fun#index", as: :fun # Minigame section
++
++	# Textbook (interactive lessons)
++	get  "/textbook", to: "textbook#index", as: :textbook
++	get  "/textbook/:slug", to: "textbook#show", as: :textbook_lesson
++	post "/textbook/api/format_numeral", to: "textbook_api#format_numeral"
++	post "/textbook/api/parse_numeral",  to: "textbook_api#parse_numeral"
++
++	# Textbook editor (authoring UI)
++	get  "/textbook/editor", to: "textbook_editor#index", as: :textbook_editor
++	get  "/textbook/editor/new", to: "textbook_editor#new", as: :new_textbook_lesson
++	get  "/textbook/editor/:slug/edit", to: "textbook_editor#edit", as: :edit_textbook_lesson
++	post "/textbook/editor", to: "textbook_editor#create", as: :create_textbook_lesson
++	patch "/textbook/editor/:slug", to: "textbook_editor#update", as: :update_textbook_lesson
++	post "/textbook/editor/preview", to: "textbook_editor#preview", as: :preview_textbook_lesson
++
++	get "/fun/xuanji", to: "xuanji#show", as: :xuanji
++	post "/fun/xuanji/sync_colors", to: "xuanji#sync_colors", as: :xuanji_sync_colors
++	post "/fun/xuanji/phoneticize", to: "xuanji#phoneticize", as: :xuanji_phoneticize
++	
++	get "/xiangqi", to: "xiangqi#show"
++	post "/xiangqi/theme", to: "xiangqi#theme"
++	get "/xiangqi/legal_moves", to: "xiangqi#legal_moves"
++	post "/xiangqi/move", to: "xiangqi#move"
++	post "/xiangqi/view", to: "xiangqi#view_mode"
++	post "/xiangqi/undo", to: "xiangqi#undo"
++	post "/xiangqi/reset", to: "xiangqi#reset"
++
++	post "/preferences", to: "preferences#update", as: :preferences
++
++end

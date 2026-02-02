@@ -1,0 +1,25 @@
+<% content_for :head do %>
+  <%= stylesheet_link_tag "textbook", "data-turbo-track": "reload" %>
+<% end %>
+
+<div class="tb-page">
+  <div class="tb-header">
+    <h1>Textbook editor</h1>
+    <div class="tb-actions">
+      <%= link_to "New lesson", new_textbook_lesson_path, class: "tb-btn" %>
+      <%= link_to "Back", textbook_path, class: "tb-btn" %>
+    </div>
+  </div>
+
+  <div class="tb-lesson-list">
+    <% @lessons.each do |l| %>
+      <div class="tb-lesson-card">
+        <h2><%= l["title"].presence || l["slug"] %></h2>
+        <div class="tb-actions">
+          <%= link_to "Edit", edit_textbook_lesson_path(slug: l["slug"]), class: "tb-btn" %>
+          <%= link_to "View", textbook_lesson_path(slug: l["slug"]), class: "tb-btn" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

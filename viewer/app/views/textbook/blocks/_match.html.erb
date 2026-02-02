@@ -1,0 +1,181 @@
+<%# MatchBlock: select (dropdown) and drag/tap modes, with optional layouts. %>
+<%
+  options = block["options"].is_a?(Hash) ? block["options"] : {}
+  mode = options["mode"].to_s
+  mode = "select" if mode.blank?
+
+  layout = options["layout"].to_s
+  layout = "rows" if layout.blank?
+
+  tile_scale = options["tile_scale"].to_s
+  tile_scale = "md" if tile_scale.blank?
+
+  items_left  = Array(block["left"])
+  items_right = Array(block["right"])
+  answer_map  = block["answer"].is_a?(Hash) ? block["answer"] : {}
+  shuffle     = options["shuffle"] != false
+  show_check  = options["show_check"] != false
+
+  # Normalize item shapes.
+  norm_item = lambda do |it|
+    if it.is_a?(Hash)
+      it
+    else
+      { "id" => it.to_s, "text" => it.to_s }
+    end
+  end
+
+  items_left  = items_left.map(&norm_item)
+  items_right = items_right.map(&norm_item)
+
+  # Deterministic shuffle seed per lesson for stable UX.
+  rng = Random.new(lesson["slug"].to_s.hash ^ items_right.length)
+
+  right_for_render =
+    if shuffle
+      items_right.shuffle(random: rng)
+    else
+      items_right
+    end
+
+  root_classes = [
+    "tb-block",
+    "tb-match",
+    "tb-match-mode-#{mode}",
+    "tb-match-layout-#{layout}",
+    "tb-tile-scale-#{tile_scale}"
+  ].join(" ")
+
+  # Helper: render a draggable tile (text and/or image) with optional font class.
+  render_tile = lambda do |item, extra_classes|
+    klass = ["tb-match-tile", extra_classes, item["class"]].compact.join(" ")
+    inner = +""
+    if item["img"].present?
+      inner << %(<img class="tb-match-tile-img" src="#{ERB::Util.html_escape(item["img"])}" alt="" loading="lazy" />)
+    end
+    if item["text"].present?
+      inner << %(<span class="tb-match-tile-text">#{ERB::Util.html_escape(item["text"])}</span>)
+    end
+    %(<div class="#{klass}" data-tile-id="#{ERB::Util.html_escape(item["id"])}" draggable="true">#{inner}</div>).html_safe
+  end
+%>
+
+<% if mode == "drag" %>
+  <section class="<%= root_classes %>"
+           data-controller="textbook-match-drag"
+           data-textbook-match-drag-answer-value="<%= answer_map.to_json %>">
+    <% if block["title"].present? %>
+      <h2 class="tb-block-title"><%= block["title"] %></h2>
+    <% end %>
+
+    <% if block["prompt"].present? %>
+      <p class="tb-instruction"><%= block["prompt"] %></p>
+    <% end %>
+
+    <% if layout == "cards" %>
+      <div class="tb-match-cards">
+        <% items_left.each do |left| %>
+          <div class="tb-match-card">
+            <div class="tb-match-card-front <%= left["class"].to_s %>">
+              <% if left["img"].present? %>
+                <img class="tb-match-card-img" src="<%= left["img"] %>" alt="" loading="lazy" />
+              <% end %>
+              <% if left["text"].present? %>
+                <div class="tb-match-card-text"><%= left["text"] %></div>
+              <% end %>
+            </div>
+
+            <div class="tb-match-drop tb-match-card-drop"
+                 data-textbook-match-drag-target="drop"
+                 data-left-id="<%= left["id"] %>">
+              <span class="tb-match-drop-placeholder">Drop here (or tap a tile, then tap here)</span>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="tb-match-grid">
+        <% items_left.each_with_index do |left, idx| %>
+          <div class="tb-match-row">
+            <div class="tb-match-left">
+              <% if left["img"].present? %>
+                <img class="tb-match-img" src="<%= left["img"] %>" alt="" loading="lazy" />
+              <% end %>
+              <div class="tb-match-text <%= left["class"].to_s %>"><%= left["text"] %></div>
+            </div>
+
+            <div class="tb-match-right">
+              <div class="tb-match-drop"
+                   data-textbook-match-drag-target="drop"
+                   data-left-id="<%= left["id"] %>">
+                <span class="tb-match-drop-placeholder">Drop here (or tap a tile, then tap here)</span>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <div class="tb-match-bank" data-textbook-match-drag-target="bank">
+      <% right_for_render.each do |right| %>
+        <%= render_tile.call(right, "") %>
+      <% end %>
+    </div>
+
+    <div class="tb-match-actions">
+      <% if show_check %>
+        <button type="button" class="tb-btn" data-action="textbook-match-drag#check">Check</button>
+      <% end %>
+      <button type="button" class="tb-btn tb-btn-secondary" data-action="textbook-match-drag#reset">Reset</button>
+    </div>
+
+    <div class="tb-feedback" data-textbook-match-drag-target="feedback"></div>
+  </section>
+<% else %>
+  <section class="<%= root_classes %>"
+           data-controller="textbook-match"
+           data-textbook-match-answer-value="<%= answer_map.to_json %>">
+    <% if block["title"].present? %>
+      <h2 class="tb-block-title"><%= block["title"] %></h2>
+    <% end %>
+
+    <% if block["prompt"].present? %>
+      <p class="tb-instruction"><%= block["prompt"] %></p>
+    <% end %>
+
+    <div class="tb-match-grid">
+      <% items_left.each_with_index do |left, idx| %>
+        <div class="tb-match-row">
+          <div class="tb-match-left">
+            <% if left["img"].present? %>
+              <img class="tb-match-img" src="<%= left["img"] %>" alt="" loading="lazy" />
+            <% end %>
+            <div class="tb-match-text <%= left["class"].to_s %>"><%= left["text"] %></div>
+          </div>
+
+          <div class="tb-match-right">
+            <label class="tb-label" for="<%= "#{lesson["slug"]}-#{block.object_id}-sel-#{idx}" %>">Match</label>
+            <select id="<%= "#{lesson["slug"]}-#{block.object_id}-sel-#{idx}" %>"
+                    class="tb-select"
+                    data-textbook-match-target="select"
+                    data-left-id="<%= left["id"] %>">
+              <option value="">— choose —</option>
+              <% right_for_render.each do |right| %>
+                <option value="<%= right["id"] %>"><%= right["text"] %></option>
+              <% end %>
+            </select>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="tb-match-actions">
+      <% if show_check %>
+        <button type="button" class="tb-btn" data-action="textbook-match#check">Check</button>
+      <% end %>
+      <button type="button" class="tb-btn tb-btn-secondary" data-action="textbook-match#reset">Reset</button>
+    </div>
+
+    <div class="tb-feedback" data-textbook-match-target="feedback"></div>
+  </section>
+<% end %>

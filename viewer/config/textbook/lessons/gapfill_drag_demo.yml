@@ -1,0 +1,31 @@
+schema_version: 1
+title: GapFillBlock demo (drag)
+slug: gapfill_drag_demo
+summary: Drag/tap tiles into blanks.
+blocks:
+  - type: context
+    title: What this is for
+    body: "This is the 'click and drag cloze' variant. It turns cloze into a manipulatives game."
+  - type: gapfill
+    title: Drag cloze (toy)
+    prompt: "Drag the correct tiles into the blanks."
+    segments:
+      - "有"
+      - { id: a, answers: ["er"], width: 4 }
+      - "人，"
+      - { id: b, answers: ["yu"], width: 4 }
+      - "此。"
+    bank:
+      - id: er
+        text: 二
+      - id: san
+        text: 三
+      - id: yu
+        text: 於
+      - id: yi
+        text: 以
+    options:
+      mode: drag
+      shuffle: true
+      tile_scale: lg
+      show_check: true

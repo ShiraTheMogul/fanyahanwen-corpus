@@ -1,0 +1,26 @@
+schema_version: 1
+title: ArrangeBlock demo
+slug: arrange_demo
+summary: Drag/tap tiles into the correct order.
+blocks:
+  - type: context
+    title: What this is for
+    body: "Use this for number composition, slip ordering, word order drills, and any time you want learners to *build* an answer."
+  - type: arrange
+    title: Place value (toy)
+    prompt: "Arrange the tiles to make 16 (一十六)."
+    bank:
+      - id: yi
+        text: 一
+      - id: shi
+        text: 十
+      - id: liu
+        text: 六
+    answer:
+      - yi
+      - shi
+      - liu
+    options:
+      shuffle: true
+      tile_scale: lg
+      show_check: true

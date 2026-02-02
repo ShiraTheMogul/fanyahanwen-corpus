@@ -1,0 +1,34 @@
+schema_version: 1
+title: MatchBlock demo (cards + scale)
+slug: match_demo_cards
+summary: Cards layout with bigger tiles for script practice.
+blocks:
+  - type: context
+    title: What to try
+    body: "This uses cards layout and a larger tile scale. Replace the class names with your own font classes (e.g., Chongxi Seal)."
+  - type: match
+    title: Script practice
+    prompt: "Drag tiles onto the matching cards. On mobile: tap a tile, then tap a drop area."
+    left:
+      - id: a
+        text: 日
+        class: "font-chongxi-seal"
+      - id: b
+        text: 月
+        class: "font-chongxi-seal"
+    right:
+      - id: ri
+        text: 日
+        class: "font-kaiti"
+      - id: yue
+        text: 月
+        class: "font-kaiti"
+    answer:
+      a: ri
+      b: yue
+    options:
+      mode: drag
+      layout: cards
+      tile_scale: xl
+      shuffle: true
+      show_check: true

@@ -1,0 +1,17 @@
+<% content_for :head do %>
+  <%= stylesheet_link_tag "textbook", "data-turbo-track": "reload" %>
+<% end %>
+
+<% lesson = local_assigns[:lesson] || @lesson %>
+<div class="tb-page">
+  <div class="tb-header">
+    <h1><%= lesson["title"] %></h1>
+    <% if lesson["summary"].present? %>
+      <p class="tb-muted"><%= lesson["summary"] %></p>
+    <% end %>
+  </div>
+
+  <% Array(lesson["blocks"]).each do |block| %>
+    <%= render partial: "textbook/blocks/#{block["type"]}", locals: { lesson: lesson, block: block } %>
+  <% end %>
+</div>

@@ -11,6 +11,7 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "rightbar", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "corpusviewer", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "textbook", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "xiangqi", "data-turbo-track": "reload" if controller_name == "xiangqi" %>
 
     <%= render "layouts/dynamic_fonts" %>
@@ -43,6 +44,7 @@
             <%= link_to "Corpus Viewer", corpus_viewer_path, class: "site-nav-link" %>
 			<%= link_to "Dictionary", characters_path, class: "site-nav-link" %>
 			<%= link_to "Tools", tools_path, class: "site-nav-link" %>
+			<%= link_to "Textbook", textbook_path, class: "site-nav-link" %>
 			<%= link_to "Fun", fun_path, class: "site-nav-link" %>
           </nav>
         </div>

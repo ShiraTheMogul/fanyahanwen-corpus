@@ -1,0 +1,24 @@
+---
+schema_version: 1
+title: Numbers and Counting in the Zhou World
+summary: A guided discovery lesson using Zhouli-style numerals.
+blocks:
+- type: context
+  title: Context
+  body: |
+    In Literary Chinese, numbers are recorded with a place value system. 
+    We'll start with the basics and build up.
+    Lesson to be formalised.
+- type: convert
+  title: Conversion practice
+  show_profile_picker: true
+  profiles:
+    format: arabic_to_han_basic
+    parse: han_to_arabic_basic
+- type: sandbox
+  title: Infinite practice toy
+  profile: arabic_to_han_basic
+  parse_profile: han_to_arabic_basic
+  min: 1
+  max: 99
+slug: zhouli_numbers

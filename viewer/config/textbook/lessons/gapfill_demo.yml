@@ -1,0 +1,23 @@
+schema_version: 1
+title: GapFillBlock demo
+slug: gapfill_demo
+summary: Fill in the blanks, then check.
+blocks:
+  - type: context
+    title: What this is for
+    body: "Use this for cloze drills, sentence mining, and controlled production. Keep them short and meaningful."
+  - type: gapfill
+    title: Very small cloze
+    prompt: "Fill the missing particle."
+    segments:
+      - "學而時習之，"
+      - { id: a, answer: "不", width: 3 }
+      - "亦說乎？"
+    note: "This is deliberately tiny. Later you can mix it with Match/Arrange for guided discovery."
+  - type: gapfill
+    title: Multiple choice cloze
+    prompt: "Pick the correct numeral."
+    segments:
+      - "有"
+      - { id: b, choices: ["一","二","三"], answer: "二" }
+      - "人。"

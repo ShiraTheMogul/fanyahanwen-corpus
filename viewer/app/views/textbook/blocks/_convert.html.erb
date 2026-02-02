@@ -1,0 +1,50 @@
+<% profiles = block["profiles"].presence || { "format" => "arabic_to_han_basic", "parse" => "han_to_arabic_basic" } %>
+<% show_picker = block.key?("show_profile_picker") ? !!block["show_profile_picker"] : false %>
+
+<section class="tb-block tb-convert" data-controller="textbook-convert"
+  data-textbook-convert-format-profile-value="<%= profiles["format"] %>"
+  data-textbook-convert-parse-profile-value="<%= profiles["parse"] %>">
+
+  <% if block["title"].present? %><h2 class="tb-block-title"><%= block["title"] %></h2><% end %>
+
+  <% if show_picker %>
+    <% all = Textbook::ConversionProfiles.list %>
+    <% fmt = all.select { |p| p.engine=="numerals" && p.direction=="arabic_to_han" } %>
+    <% prs = all.select { |p| p.engine=="numerals" && p.direction=="han_to_arabic" } %>
+
+    <div class="tb-convert-profiles">
+      <div>
+        <label class="tb-label">Formatting</label>
+        <select class="tb-select" data-textbook-convert-target="formatSelect" data-action="textbook-convert#changeFormatProfile">
+          <% fmt.each do |p| %>
+            <option value="<%= p.key %>" <%= "selected" if p.key==profiles["format"] %>><%= p.label %></option>
+          <% end %>
+        </select>
+      </div>
+      <div>
+        <label class="tb-label">Parsing</label>
+        <select class="tb-select" data-textbook-convert-target="parseSelect" data-action="textbook-convert#changeParseProfile">
+          <% prs.each do |p| %>
+            <option value="<%= p.key %>" <%= "selected" if p.key==profiles["parse"] %>><%= p.label %></option>
+          <% end %>
+        </select>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="tb-convert-grid">
+    <div class="tb-convert-panel">
+      <label class="tb-label">Arabic</label>
+      <input class="tb-input" inputmode="numeric" data-textbook-convert-target="arabic" placeholder="e.g., 16" />
+      <button type="button" class="tb-btn" data-action="textbook-convert#toHan">Convert →</button>
+    </div>
+
+    <div class="tb-convert-panel">
+      <label class="tb-label">正書</label>
+      <input class="tb-input" data-textbook-convert-target="han" placeholder="e.g., 十六 / 十有六" />
+      <button type="button" class="tb-btn" data-action="textbook-convert#toArabic">Convert →</button>
+    </div>
+  </div>
+
+  <div class="tb-feedback" data-textbook-convert-target="feedback"></div>
+</section>

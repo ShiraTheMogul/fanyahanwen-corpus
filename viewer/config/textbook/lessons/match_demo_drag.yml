@@ -1,0 +1,32 @@
+schema_version: 1
+title: MatchBlock demo (drag)
+slug: match_demo_drag
+summary: Drag or tap tiles onto the matching slots.
+blocks:
+  - type: context
+    title: How this works
+    body: "Drag tiles from the bank onto the matching row. On mobile, tap a tile, then tap a slot."
+  - type: match
+    title: Script practice (demo)
+    prompt: "Match the seal-style label to the regular character (demo)."
+    left:
+      - id: seal_sun
+        text: 日
+        class: seal-font
+      - id: seal_moon
+        text: 月
+        class: seal-font
+    right:
+      - id: ri
+        text: 日
+        class: kaiti-font
+      - id: yue
+        text: 月
+        class: kaiti-font
+    answer:
+      seal_sun: ri
+      seal_moon: yue
+    options:
+      mode: drag
+      shuffle: true
+      show_check: true

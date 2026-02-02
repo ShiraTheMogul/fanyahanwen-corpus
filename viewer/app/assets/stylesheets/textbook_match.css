@@ -1,0 +1,95 @@
+
+/* textbook_match.css
+   MatchBlock UI styling (select + drag/tap) without touching core textbook.css.
+*/
+
+.tb-match-grid{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+.tb-match-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+
+/* Left side (prompt) */
+.tb-match-left{display:flex;gap:10px;align-items:center}
+.tb-match-img{width:64px;height:64px;object-fit:contain;border:1px solid rgba(0,0,0,.12);border-radius:12px;background:#fff}
+.tb-match-text{font-size:18px;line-height:1.4}
+
+/* Bank tiles */
+.tb-match-bank{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}
+.tb-match-tile{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding:10px 12px;
+  border:1px solid rgba(0,0,0,.14);
+  border-radius:14px;
+  background:#fff;
+  box-shadow:0 1px 0 rgba(0,0,0,.03);
+  cursor:grab;
+  user-select:none;
+  touch-action:none;
+  min-height:56px;
+}
+.tb-match-tile:active{cursor:grabbing}
+.tb-match-tile.tb-picked{outline:2px solid rgba(0,0,0,.35)}
+.tb-match-tile-img{width:44px;height:44px;object-fit:contain;border-radius:10px}
+.tb-match-tile-text{font-size:20px}
+
+/* Drop zones */
+.tb-match-drop{
+  min-height:56px;
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  gap:10px;
+  padding:10px 12px;
+  border:2px dashed rgba(0,0,0,.20);
+  border-radius:14px;
+  background:rgba(255,255,255,.65);
+}
+.tb-match-drop.tb-drop-over{background:rgba(0,0,0,.04)}
+.tb-match-drop.tb-match-ok{border-style:solid;border-color:rgba(0,120,0,.45)}
+.tb-match-drop.tb-match-bad{border-style:solid;border-color:rgba(180,0,0,.45)}
+.tb-match-drop-placeholder{opacity:.65}
+
+/* Actions */
+.tb-match-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+
+/* Tile scale (for script drills) */
+.tb-tile-scale-sm .tb-match-tile-text{font-size:16px}
+.tb-tile-scale-md .tb-match-tile-text{font-size:20px}
+.tb-tile-scale-lg .tb-match-tile-text{font-size:26px}
+.tb-tile-scale-xl .tb-match-tile-text{font-size:32px}
+
+.tb-tile-scale-lg .tb-match-text{font-size:22px}
+.tb-tile-scale-xl .tb-match-text{font-size:26px}
+
+/* Cards layout (equal-ish cards + obvious drop boxes) */
+.tb-match-layout-cards .tb-match-cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:14px;
+  margin-top:10px;
+}
+.tb-match-layout-cards .tb-match-card{
+  display:grid;
+  grid-template-rows:auto auto;
+  gap:12px;
+}
+.tb-match-layout-cards .tb-match-card-front{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  min-height:140px;
+  padding:16px;
+  border:1px solid rgba(0,0,0,.12);
+  border-radius:16px;
+  background:#fff;
+}
+.tb-match-layout-cards .tb-match-card-img{width:92px;height:92px;object-fit:contain;border-radius:14px}
+.tb-match-layout-cards .tb-match-card-text{font-size:30px;line-height:1.1}
+.tb-match-layout-cards .tb-match-card-drop{
+  justify-content:center;
+  min-height:84px;
+  border:2px dashed rgba(0,0,0,.25);
+  background:rgba(255,255,255,.85);
+}

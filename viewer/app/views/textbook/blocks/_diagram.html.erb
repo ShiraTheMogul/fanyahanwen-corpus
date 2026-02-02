@@ -1,0 +1,15 @@
+<section class="tb-block tb-diagram">
+  <% if block["title"].present? %>
+    <h2 class="tb-block-title"><%= block["title"] %></h2>
+  <% end %>
+
+  <% if block["body"].present? %>
+    <div class="tb-diagram-body"><%= simple_format(block["body"].to_s) %></div>
+  <% end %>
+
+  <% if block["grid_html"].present? %>
+    <div class="tb-diagram-grid"><%= block["grid_html"].html_safe %></div>
+  <% elsif block["grid_tsv"].present? %>
+    <div class="tb-diagram-grid"><%= grid_from_tsv(block["grid_tsv"]) %></div>
+  <% end %>
+</section>

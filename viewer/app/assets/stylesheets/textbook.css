@@ -1,0 +1,248 @@
+.tb-page{max-width:860px;margin:0 auto;padding:16px;}
+.tb-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
+.tb-actions{display:flex;gap:8px;flex-wrap:wrap;}
+.tb-btn{background:#222;color:#fff;border:0;padding:8px 12px;border-radius:10px;cursor:pointer;text-decoration:none;display:inline-block;}
+.tb-muted{opacity:.75}
+.tb-lesson-list{display:flex;flex-direction:column;gap:12px;margin-top:12px;}
+.tb-lesson-card{border:1px solid rgba(0,0,0,.12);border-radius:14px;padding:12px;}
+.tb-block{border:1px solid rgba(0,0,0,.08);border-radius:14px;padding:12px;margin:12px 0;}
+.tb-block-title{margin:0 0 8px 0;font-size:18px;}
+.tb-label{display:block;font-size:13px;opacity:.8;margin-bottom:4px;}
+.tb-input{width:100%;padding:8px 10px;border-radius:10px;border:1px solid rgba(0,0,0,.25);}
+.tb-text-pre{white-space:pre-wrap;line-height:1.8}
+.tb-convert-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tb-convert-profiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.tb-select{width:100%;padding:8px 10px;border-radius:10px;border:1px solid rgba(0,0,0,.25);background:#fff}
+.tb-feedback{margin-top:10px;min-height:18px;}
+.tb-sandbox-row{display:flex;gap:8px;align-items:center;margin-top:8px}
+.tb-sandbox-row .tb-input{flex:1}
+.tb-editor-textarea{width:100%;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; padding:10px;border-radius:12px;border:1px solid rgba(0,0,0,.25)}
+.tb-alert{background:#fff5cc;border:1px solid rgba(0,0,0,.15);padding:8px 10px;border-radius:12px;margin:10px 0}
+@media (max-width:720px){.tb-convert-grid{grid-template-columns:1fr}.tb-convert-profiles{grid-template-columns:1fr}.tb-header{flex-direction:column}}
+
+/* === MATCHBLOCK UI STYLES === */
+/* This section is appended to keep MatchBlock self-contained without changing page templates. */
+
+/* MatchBlock base */
+.tb-match-grid{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+.tb-match-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+.tb-match-left{display:flex;gap:10px;align-items:center}
+.tb-match-img{width:64px;height:64px;object-fit:contain;border:1px solid rgba(0,0,0,.12);border-radius:12px;background:#fff}
+.tb-match-text{font-size:18px;line-height:1.4}
+
+.tb-match-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+
+/* Bank tiles (drag/tap) */
+.tb-match-bank{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}
+.tb-match-tile{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding:10px 12px;
+  border:1px solid rgba(0,0,0,.14);
+  border-radius:14px;
+  background:#fff;
+  box-shadow:0 1px 0 rgba(0,0,0,.03);
+  cursor:grab;
+  user-select:none;
+  touch-action:none;
+  min-height:56px;
+}
+.tb-match-tile:active{cursor:grabbing}
+.tb-match-tile.tb-picked{outline:2px solid rgba(0,0,0,.35)}
+.tb-match-tile-img{width:44px;height:44px;object-fit:contain;border-radius:10px}
+.tb-match-tile-text{font-size:20px}
+
+/* Drop zones */
+.tb-match-drop{
+  min-height:56px;
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  gap:10px;
+  padding:10px 12px;
+  border:2px dashed rgba(0,0,0,.20);
+  border-radius:14px;
+  background:rgba(255,255,255,.65);
+}
+.tb-match-drop.tb-drop-over{background:rgba(0,0,0,.04)}
+.tb-match-drop.tb-match-ok{border-style:solid;border-color:rgba(0,120,0,.45)}
+.tb-match-drop.tb-match-bad{border-style:solid;border-color:rgba(180,0,0,.45)}
+.tb-match-drop-placeholder{opacity:.65}
+
+/* Tile scale (script drills) */
+.tb-tile-scale-sm .tb-match-tile-text{font-size:16px}
+.tb-tile-scale-md .tb-match-tile-text{font-size:20px}
+.tb-tile-scale-lg .tb-match-tile-text{font-size:26px}
+.tb-tile-scale-xl .tb-match-tile-text{font-size:32px}
+.tb-tile-scale-lg .tb-match-text{font-size:22px}
+.tb-tile-scale-xl .tb-match-text{font-size:26px}
+
+/* Cards layout */
+.tb-match-layout-cards .tb-match-cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:14px;
+  margin-top:10px;
+}
+.tb-match-layout-cards .tb-match-card{display:grid;grid-template-rows:auto auto;gap:12px}
+.tb-match-layout-cards .tb-match-card-front{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  min-height:140px;
+  padding:16px;
+  border:1px solid rgba(0,0,0,.12);
+  border-radius:16px;
+  background:#fff;
+}
+.tb-match-layout-cards .tb-match-card-img{width:92px;height:92px;object-fit:contain;border-radius:14px}
+.tb-match-layout-cards .tb-match-card-text{font-size:30px;line-height:1.1}
+.tb-match-layout-cards .tb-match-card-drop{
+  justify-content:center;
+  min-height:84px;
+  border:2px dashed rgba(0,0,0,.25);
+  background:rgba(255,255,255,.85);
+}
+/* === END MATCHBLOCK UI STYLES === */
+
+
+/* === ARRANGEBLOCK UI STYLES === */
+/* ArrangeBlock: drag/tap tiles into ordered slots (rail). */
+.tb-arrange-rail{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+.tb-arrange-slot{
+  min-width:120px;
+  min-height:62px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding:10px 12px;
+  border:2px dashed rgba(0,0,0,.20);
+  border-radius:14px;
+  background:rgba(255,255,255,.65);
+}
+.tb-arrange-slot.tb-drop-over{background:rgba(0,0,0,.04)}
+.tb-arrange-slot.tb-match-ok{border-style:solid;border-color:rgba(0,120,0,.45)}
+.tb-arrange-slot.tb-match-bad{border-style:solid;border-color:rgba(180,0,0,.45)}
+.tb-arrange-placeholder{opacity:.65}
+
+.tb-arrange-bank{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}
+.tb-arrange-tile{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding:10px 12px;
+  border:1px solid rgba(0,0,0,.14);
+  border-radius:14px;
+  background:#fff;
+  box-shadow:0 1px 0 rgba(0,0,0,.03);
+  cursor:grab;
+  user-select:none;
+  touch-action:none;
+  min-height:56px;
+}
+.tb-arrange-tile:active{cursor:grabbing}
+.tb-arrange-tile.tb-picked{outline:2px solid rgba(0,0,0,.35)}
+.tb-arrange-tile-img{width:44px;height:44px;object-fit:contain;border-radius:10px}
+.tb-arrange-tile-text{font-size:20px}
+
+.tb-tile-scale-sm .tb-arrange-tile-text{font-size:16px}
+.tb-tile-scale-md .tb-arrange-tile-text{font-size:20px}
+.tb-tile-scale-lg .tb-arrange-tile-text{font-size:26px}
+.tb-tile-scale-xl .tb-arrange-tile-text{font-size:32px}
+
+.tb-arrange-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+/* === END ARRANGEBLOCK UI STYLES === */
+
+/* === GAPFILLBLOCK UI STYLES === */
+/* GapFillBlock: inline blanks with check/reset. */
+.tb-gapfill-line{font-size:18px;line-height:1.9}
+.tb-gapfill-blank{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin:0 4px;
+}
+.tb-gapfill-input{
+  width:8ch;
+  min-width:6ch;
+  padding:6px 8px;
+  border:1px solid rgba(0,0,0,.18);
+  border-radius:10px;
+  background:#fff;
+  font-size:18px;
+}
+.tb-gapfill-input.tb-gap-ok{border-color:rgba(0,120,0,.45);outline:2px solid rgba(0,120,0,.18)}
+.tb-gapfill-input.tb-gap-bad{border-color:rgba(180,0,0,.45);outline:2px solid rgba(180,0,0,.14)}
+
+.tb-gapfill-select{
+  padding:6px 8px;
+  border:1px solid rgba(0,0,0,.18);
+  border-radius:10px;
+  background:#fff;
+  font-size:18px;
+}
+.tb-gapfill-select.tb-gap-ok{border-color:rgba(0,120,0,.45);outline:2px solid rgba(0,120,0,.18)}
+.tb-gapfill-select.tb-gap-bad{border-color:rgba(180,0,0,.45);outline:2px solid rgba(180,0,0,.14)}
+
+.tb-gapfill-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.tb-gapfill-help{margin-top:8px;opacity:.7}
+/* === END GAPFILLBLOCK UI STYLES === */
+
+
+/* === GAPFILL DRAG UI STYLES === */
+/* Drag Cloze (GapFillBlock mode: drag). */
+.tb-gapdrag-line{font-size:18px;line-height:1.9}
+.tb-gapdrag-drop{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  min-width:6ch;
+  min-height:44px;
+  padding:6px 10px;
+  margin:0 4px;
+  border:2px dashed rgba(0,0,0,.20);
+  border-radius:12px;
+  background:rgba(255,255,255,.65);
+  vertical-align:middle;
+}
+.tb-gapdrag-drop.tb-drop-over{background:rgba(0,0,0,.04)}
+.tb-gapdrag-drop.tb-match-ok{border-style:solid;border-color:rgba(0,120,0,.45)}
+.tb-gapdrag-drop.tb-match-bad{border-style:solid;border-color:rgba(180,0,0,.45)}
+.tb-gapdrag-placeholder{opacity:.65}
+
+.tb-gapdrag-bank{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}
+.tb-gapdrag-tile{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding:10px 12px;
+  border:1px solid rgba(0,0,0,.14);
+  border-radius:14px;
+  background:#fff;
+  box-shadow:0 1px 0 rgba(0,0,0,.03);
+  cursor:grab;
+  user-select:none;
+  touch-action:none;
+  min-height:50px;
+}
+.tb-gapdrag-tile:active{cursor:grabbing}
+.tb-gapdrag-tile.tb-picked{outline:2px solid rgba(0,0,0,.35)}
+.tb-gapdrag-tile-img{width:44px;height:44px;object-fit:contain;border-radius:10px}
+.tb-gapdrag-tile-text{font-size:20px}
+
+.tb-gapdrag-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+
+/* Scale hook (reuse tb-tile-scale-*) */
+.tb-tile-scale-sm .tb-gapdrag-tile-text{font-size:16px}
+.tb-tile-scale-md .tb-gapdrag-tile-text{font-size:20px}
+.tb-tile-scale-lg .tb-gapdrag-tile-text{font-size:26px}
+.tb-tile-scale-xl .tb-gapdrag-tile-text{font-size:32px}
+
+/* === END GAPFILL DRAG UI STYLES === */

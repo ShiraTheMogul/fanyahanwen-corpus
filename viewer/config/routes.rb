@@ -29,6 +29,26 @@ Rails.application.routes.draw do
 	post "/corpus_annotations", to: "corpus_annotations#update"
 	
 	get "/fun", to: "fun#index", as: :fun # Minigame section
+
+	# Textbook (interactive lessons)
+	get  "/textbook", to: "textbook#index", as: :textbook
+
+	# Textbook editor (authoring UI)
+	get  "/textbook/editor", to: "textbook_editor#index", as: :textbook_editor
+	get  "/textbook/editor/new", to: "textbook_editor#new", as: :new_textbook_lesson
+	get  "/textbook/editor/:slug/edit", to: "textbook_editor#edit", as: :edit_textbook_lesson
+	post "/textbook/editor", to: "textbook_editor#create", as: :create_textbook_lesson
+	patch "/textbook/editor/:slug", to: "textbook_editor#update", as: :update_textbook_lesson
+	post "/textbook/editor/preview", to: "textbook_editor#preview", as: :preview_textbook_lesson
+
+	# Lesson pages (this must come after the editor routes)
+	get  "/textbook/:slug", to: "textbook#show", as: :textbook_lesson
+
+	# Deterministic exercise APIs
+	post "/textbook/api/format_numeral", to: "textbook_api#format_numeral"
+	post "/textbook/api/parse_numeral",  to: "textbook_api#parse_numeral"
+
+
 	get "/fun/xuanji", to: "xuanji#show", as: :xuanji
 	post "/fun/xuanji/sync_colors", to: "xuanji#sync_colors", as: :xuanji_sync_colors
 	post "/fun/xuanji/phoneticize", to: "xuanji#phoneticize", as: :xuanji_phoneticize

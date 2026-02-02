@@ -1,0 +1,32 @@
+schema_version: 1
+title: MatchBlock demo
+slug: match_demo
+summary: A quick demo of the matching activity.
+blocks:
+  - type: context
+    title: How this works
+    body: "Match the left items to the right items, then press Check."
+  - type: match
+    title: Pictographs (demo)
+    prompt: "Pick the correct English meaning for each character."
+    left:
+      - id: ri
+        text: 日
+      - id: yue
+        text: 月
+      - id: shan
+        text: 山
+    right:
+      - id: sun
+        text: sun
+      - id: moon
+        text: moon
+      - id: mountain
+        text: mountain
+    answer:
+      ri: sun
+      yue: moon
+      shan: mountain
+    options:
+      shuffle: true
+      show_check: true

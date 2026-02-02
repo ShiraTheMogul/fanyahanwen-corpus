@@ -1,0 +1,9 @@
+<section class="tb-block tb-reveal" data-controller="textbook-reveal">
+  <% if block["title"].present? %><h2 class="tb-block-title"><%= block["title"] %></h2><% end %>
+  <% Array(block["cards"]).each_with_index do |c, idx| %>
+    <details class="tb-card">
+      <summary><%= (c["title"].presence || "Step #{idx+1}") %></summary>
+      <div class="tb-body"><%= simple_format(c["body"].to_s) %></div>
+    </details>
+  <% end %>
+</section>

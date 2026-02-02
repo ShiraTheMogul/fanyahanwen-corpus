@@ -1,0 +1,148 @@
+<%# GapFillBlock: fill in blanks inline. Supports mode: input/select/drag. %>
+<%
+  options = block["options"].is_a?(Hash) ? block["options"] : {}
+  mode = options["mode"].to_s
+  mode = "input" if mode.blank?
+  show_check = options["show_check"] != false
+  tile_scale = options["tile_scale"].to_s
+  tile_scale = "md" if tile_scale.blank?
+
+  segments = Array(block["segments"])
+
+  # For drag mode we also expect a bank of tiles.
+  bank = Array(block["bank"]).map do |it|
+    it.is_a?(Hash) ? it : { "id" => it.to_s, "text" => it.to_s }
+  end
+
+  shuffle = options["shuffle"] != false
+  rng = Random.new(lesson["slug"].to_s.hash ^ bank.length)
+  bank_for_render = shuffle ? bank.shuffle(random: rng) : bank
+
+  root_classes = ["tb-block","tb-gapfill","tb-tile-scale-#{tile_scale}"].join(" ")
+%>
+
+<% if mode == "drag" %>
+  <section class="<%= root_classes %>"
+           data-controller="textbook-gapfill-drag"
+           data-textbook-gapfill-drag-options-value="<%= options.to_json %>">
+    <% if block["title"].present? %>
+      <h2 class="tb-block-title"><%= block["title"] %></h2>
+    <% end %>
+
+    <% if block["prompt"].present? %>
+      <p class="tb-instruction"><%= block["prompt"] %></p>
+    <% end %>
+
+    <div class="tb-gapdrag-line">
+      <% segments.each_with_index do |seg, idx| %>
+        <% if seg.is_a?(Hash) %>
+          <% id = seg["id"].to_s.presence || "blank_#{idx}" %>
+          <% answers = seg["answers"].presence || seg["answer"] %>
+          <% answers = [answers].flatten.compact.map(&:to_s) %>
+          <% width = seg["width"].to_i %>
+          <% width = 6 if width <= 0 %>
+          <span class="tb-gapdrag-drop"
+                data-textbook-gapfill-drag-target="drop"
+                data-gap-id="<%= id %>"
+                data-answers="<%= answers.to_json %>"
+                style="min-width:<%= width %>ch">
+            <span class="tb-gapdrag-placeholder">Drop</span>
+          </span>
+        <% else %>
+          <%= seg.to_s %>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="tb-gapdrag-bank" data-textbook-gapfill-drag-target="bank">
+      <% bank_for_render.each do |item| %>
+        <div class="tb-gapdrag-tile <%= item["class"].to_s %>"
+             data-tile-id="<%= item["id"] %>"
+             draggable="true">
+          <% if item["img"].present? %>
+            <img class="tb-gapdrag-tile-img" src="<%= item["img"] %>" alt="" loading="lazy" />
+          <% end %>
+          <% if item["text"].present? %>
+            <span class="tb-gapdrag-tile-text"><%= item["text"] %></span>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="tb-gapdrag-actions">
+      <% if show_check %>
+        <button type="button" class="tb-btn" data-action="textbook-gapfill-drag#check">Check</button>
+      <% end %>
+      <button type="button" class="tb-btn tb-btn-secondary" data-action="textbook-gapfill-drag#reset">Reset</button>
+    </div>
+
+    <div class="tb-feedback" data-textbook-gapfill-drag-target="feedback"></div>
+
+    <% if block["note"].present? %>
+      <div class="tb-gapfill-help"><%= block["note"] %></div>
+    <% end %>
+  </section>
+<% else %>
+  <section class="<%= root_classes %>"
+           data-controller="textbook-gapfill"
+           data-textbook-gapfill-options-value="<%= options.to_json %>">
+    <% if block["title"].present? %>
+      <h2 class="tb-block-title"><%= block["title"] %></h2>
+    <% end %>
+
+    <% if block["prompt"].present? %>
+      <p class="tb-instruction"><%= block["prompt"] %></p>
+    <% end %>
+
+    <div class="tb-gapfill-line">
+      <% segments.each_with_index do |seg, idx| %>
+        <% if seg.is_a?(Hash) %>
+          <% id = seg["id"].to_s.presence || "blank_#{idx}" %>
+          <% answers = seg["answers"].presence || seg["answer"] %>
+          <% answers = [answers].flatten.compact.map(&:to_s) %>
+          <% width = seg["width"].to_i %>
+          <% width = 6 if width <= 0 %>
+
+          <span class="tb-gapfill-blank">
+            <% if seg["choices"].is_a?(Array) && seg["choices"].any? %>
+              <select class="tb-gapfill-select"
+                      data-textbook-gapfill-target="field"
+                      data-gap-id="<%= id %>"
+                      data-answers="<%= answers.to_json %>">
+                <option value="">—</option>
+                <% seg["choices"].each do |choice| %>
+                  <option value="<%= choice %>"><%= choice %></option>
+                <% end %>
+              </select>
+            <% else %>
+              <input class="tb-gapfill-input"
+                     data-textbook-gapfill-target="field"
+                     data-gap-id="<%= id %>"
+                     data-answers="<%= answers.to_json %>"
+                     style="width:<%= width %>ch"
+                     autocomplete="off"
+                     autocapitalize="off"
+                     spellcheck="false"
+                     inputmode="text" />
+            <% end %>
+          </span>
+        <% else %>
+          <%= seg.to_s %>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="tb-gapfill-actions">
+      <% if show_check %>
+        <button type="button" class="tb-btn" data-action="textbook-gapfill#check">Check</button>
+      <% end %>
+      <button type="button" class="tb-btn tb-btn-secondary" data-action="textbook-gapfill#reset">Reset</button>
+    </div>
+
+    <div class="tb-feedback" data-textbook-gapfill-target="feedback"></div>
+
+    <% if block["note"].present? %>
+      <div class="tb-gapfill-help"><%= block["note"] %></div>
+    <% end %>
+  </section>
+<% end %>
