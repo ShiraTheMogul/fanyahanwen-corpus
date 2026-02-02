@@ -16,8 +16,8 @@
       <div class="tb-lesson-card">
         <h2><%= l["title"].presence || l["slug"] %></h2>
         <div class="tb-actions">
-          <%= link_to "Edit", edit_textbook_lesson_path(slug: l["slug"]), class: "tb-btn" %>
-          <%= link_to "View", textbook_lesson_path(slug: l["slug"]), class: "tb-btn" %>
+          <%= link_to "Edit", edit_textbook_lesson_path(l["slug"]), class: "tb-btn" %>
+          <%= link_to "View", textbook_lesson_path(l["slug"]), class: "tb-btn" %>
         </div>
       </div>
     <% end %>

@@ -1,55 +1,13 @@
-<% content_for :title, "New lesson" %>
+<% content_for :head do %>
+  <%= stylesheet_link_tag "textbook" %>
+  <%= stylesheet_link_tag "textbook_author" %>
+<% end %>
 
-<div class="tb-editor" data-controller="textbook-editor">
-  <h1 class="tb-editor-title">New lesson</h1>
+<h1 class="tb-editor-title">New lesson</h1>
 
-  <div class="tb-editor-grid">
-    <div class="tb-editor-pane">
-      <%= form_with url: create_textbook_lesson_path, method: :post, data: { turbo: false } do %>
-        <div class="tb-field">
-          <label class="tb-label" for="tb_lesson_title">Title</label>
-          <input id="tb_lesson_title" name="lesson[title]" type="text" class="tb-input" value="<%= @lesson.is_a?(Hash) ? @lesson["title"] : "" %>" />
-        </div>
-
-        <div class="tb-field">
-          <label class="tb-label" for="tb_lesson_slug">Slug</label>
-          <input id="tb_lesson_slug" name="lesson[slug]" type="text" class="tb-input" value="<%= @lesson.is_a?(Hash) ? @lesson["slug"] : "" %>" />
-        </div>
-
-        <div class="tb-field">
-          <label class="tb-label" for="tb_lesson_summary">Summary</label>
-          <textarea id="tb_lesson_summary" name="lesson[summary]" class="tb-textarea" rows="3"><%= @lesson.is_a?(Hash) ? (@lesson["summary"] || "") : "" %></textarea>
-        </div>
-
-        <div class="tb-field">
-          <label class="tb-label" for="tb_lesson_yaml">Lesson YAML</label>
-          <textarea id="tb_lesson_yaml" name="lesson[yaml]" class="tb-textarea" rows="22" data-textbook-editor-target="yaml"><%= @raw_yaml %></textarea>
-        </div>
-
-        <div class="tb-actions">
-          <button type="submit" class="tb-btn">Save</button>
-          <a href="<%= textbook_editor_path %>" class="tb-btn tb-btn-secondary">Cancel</a>
-        </div>
-      <% end %>
-
-      <%= form_with url: preview_textbook_lesson_path, method: :post,
-            html: { target: "_blank", rel: "noopener" },
-            data: { turbo: false, action: "submit->textbook-editor#syncPreview" } do %>
-        <input type="hidden" name="lesson[yaml]" value="" data-textbook-editor-target="previewYaml" />
-        <div class="tb-actions">
-          <button type="submit" class="tb-btn tb-btn-secondary">Preview in new tab</button>
-        </div>
-      <% end %>
-
-      <p class="tb-muted">Tip: Preview uses the YAML in the big box above. Saving writes to config/textbook/lessons/&lt;slug&gt;.yml.</p>
-    </div>
-
-    <div class="tb-editor-pane">
-      <div class="tb-editor-preview">
-        <h2 class="tb-editor-preview-title">Preview</h2>
-        <iframe class="tb-editor-iframe" src="about:blank" title="Preview"></iframe>
-        <p class="tb-muted">Preview opens in a new tab. The iframe is a placeholder for a later inline preview.</p>
-      </div>
-    </div>
-  </div>
-</div>
+<%= render partial: "form",
+           locals: {
+             form_action: create_textbook_lesson_path,
+             form_method: :post,
+             submit_label: "Create"
+           } %>

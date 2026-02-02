@@ -1,0 +1,20 @@
+
+/* === TEXTBOOK AUTHOR UI === */
+.tb-author-wrap{display:grid;grid-template-columns:320px 1fr;gap:16px;align-items:start}
+.tb-author-sidebar{position:sticky;top:12px}
+.tb-author-card{border:1px solid rgba(0,0,0,.12);border-radius:16px;background:#fff;padding:14px;margin-bottom:12px}
+.tb-author-card h3{margin:0 0 10px 0;font-size:16px}
+.tb-author-muted{opacity:.7;font-size:13px;line-height:1.45}
+.tb-author-row{display:flex;gap:8px;flex-wrap:wrap}
+.tb-author-row .tb-btn{margin:0}
+.tb-author-field{margin:10px 0}
+.tb-author-field label{display:block;font-size:13px;margin-bottom:6px;opacity:.8}
+.tb-author-field input{width:100%;padding:8px 10px;border:1px solid rgba(0,0,0,.18);border-radius:12px}
+.tb-author-main{border:1px solid rgba(0,0,0,.12);border-radius:16px;background:#fff;padding:14px}
+.tb-author-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.tb-author-tabs .tb-btn{margin:0}
+.tb-author-raw{width:100%;min-height:520px;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size:13px;line-height:1.45;padding:12px;border:1px solid rgba(0,0,0,.18);border-radius:14px}
+.tb-author-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.tb-author-previewbox{border:1px solid rgba(0,0,0,.12);border-radius:14px;background:rgba(0,0,0,.02);padding:10px}
+.tb-author-kbd{display:inline-block;padding:1px 6px;border:1px solid rgba(0,0,0,.2);border-radius:8px;background:#fff;font-size:12px}

@@ -1,0 +1,110 @@
+<%# Template-palette authoring UI.
+    Key Rails detail:
+    - per-form CSRF tokens are tied to the form action.
+    - using a single form + a submit button with `formaction=...` causes CSRF failures.
+    Fix:
+    - keep the SAVE form as normal
+    - add a SECOND tiny PREVIEW form (target=_blank) with its own CSRF token
+    - use Stimulus to copy the current textarea YAML into the preview form before submit %>
+
+<%
+  default_raw = <<~YAML
+    schema_version: 1
+    title: #{(@lesson && @lesson["title"]).presence || "New lesson"}
+    slug: #{(@slug).presence || "new_lesson"}
+    summary: ""
+    blocks:
+      - type: context
+        title: Context
+        body: "Write your lead-in here."
+  YAML
+
+  raw_yaml = (@raw_yaml.presence rescue nil)
+  raw_yaml = default_raw if raw_yaml.blank?
+
+  have_preview = respond_to?(:preview_textbook_lesson_path) || respond_to?(:preview_textbook_editor_path)
+  preview_path = respond_to?(:preview_textbook_lesson_path) ? preview_textbook_lesson_path : (respond_to?(:preview_textbook_editor_path) ? preview_textbook_editor_path : nil)
+%>
+
+<div class="tb-author-wrap" data-controller="textbook-author">
+  <aside class="tb-author-sidebar">
+    <div class="tb-author-card">
+      <h3>Lesson metadata</h3>
+
+      <div class="tb-author-field">
+        <label for="tb_title">Title</label>
+        <input id="tb_title" type="text" value="<%= (@lesson && @lesson["title"]).to_s %>" data-textbook-author-target="title" />
+      </div>
+
+      <div class="tb-author-field">
+        <label for="tb_slug">Slug</label>
+        <input id="tb_slug" type="text" value="<%= (@slug).to_s %>" data-textbook-author-target="slug" />
+      </div>
+
+      <div class="tb-author-row">
+        <button type="button" class="tb-btn tb-btn-secondary" data-action="textbook-author#syncHeader">Write header into YAML</button>
+        <button type="button" class="tb-btn tb-btn-secondary" data-action="textbook-author#slugify">Slugify title</button>
+      </div>
+
+      <p class="tb-author-muted" style="margin-top:10px">
+        Tip: the slug becomes the URL: <span class="tb-author-kbd">/textbook/&lt;slug&gt;</span>.
+      </p>
+    </div>
+
+    <div class="tb-author-card">
+      <h3>Insert block template</h3>
+      <div class="tb-author-row">
+        <button type="button" class="tb-btn" data-action="textbook-author#insert" data-template="context">Context</button>
+        <button type="button" class="tb-btn" data-action="textbook-author#insert" data-template="match_select">Match (click)</button>
+        <button type="button" class="tb-btn" data-action="textbook-author#insert" data-template="match_drag_cards">Match (drag cards)</button>
+        <button type="button" class="tb-btn" data-action="textbook-author#insert" data-template="arrange">Arrange (order)</button>
+        <button type="button" class="tb-btn" data-action="textbook-author#insert" data-template="gap_input">GapFill (type)</button>
+        <button type="button" class="tb-btn" data-action="textbook-author#insert" data-template="gap_drag">GapFill (drag)</button>
+        <button type="button" class="tb-btn" data-action="textbook-author#insert" data-template="convert">ConvertBlock</button>
+      </div>
+      <p class="tb-author-muted" style="margin-top:10px">
+        Templates paste into the YAML at your cursor. Later we’ll replace this with a full visual editor.
+      </p>
+    </div>
+  </aside>
+
+  <main class="tb-author-main">
+    <div class="tb-author-tabs">
+      <button type="button" class="tb-btn tb-btn-secondary" data-action="textbook-author#focusRaw">Raw YAML</button>
+      <a class="tb-btn tb-btn-secondary" href="<%= textbook_lesson_path(@slug.presence || 'new_lesson') %>" target="_blank" rel="noopener">Preview saved</a>
+    </div>
+
+    <%# PREVIEW FORM (separate CSRF token tied to preview_path) %>
+    <% if have_preview %>
+      <%= form_with url: preview_path, method: :post, local: true, html: { target: "_blank", id: "tb_preview_form" } do %>
+        <%= hidden_field_tag :slug, (@slug.to_s), id: "tb_preview_slug" %>
+        <%= hidden_field_tag :raw_yaml, "", id: "tb_preview_raw" %>
+      <% end %>
+    <% end %>
+
+    <%# SAVE FORM %>
+    <%= form_with url: form_action, method: form_method, local: true do |f| %>
+      <%= hidden_field_tag :slug, (@slug.to_s) %>
+      <%= text_area_tag "raw_yaml", raw_yaml, class: "tb-author-raw", data: { textbook_author_target: "raw" } %>
+
+      <div class="tb-author-actions">
+        <%= f.submit submit_label, class: "tb-btn" %>
+
+        <% if have_preview %>
+          <button type="button" class="tb-btn tb-btn-secondary" data-action="textbook-author#previewDraft">
+            Preview draft
+          </button>
+        <% end %>
+
+        <%= link_to "Back to Textbook", textbook_path, class: "tb-btn tb-btn-secondary" %>
+      </div>
+
+      <div class="tb-author-previewbox" style="margin-top:12px">
+        <div class="tb-author-muted">
+          Preview draft renders exactly what you have typed right now (no save required).
+          Preview saved reads the on-disk lesson file.
+        </div>
+      </div>
+    <% end %>
+  </main>
+</div>

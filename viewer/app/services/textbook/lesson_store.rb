@@ -1,99 +1,62 @@
+# frozen_string_literal: true
+
 require "yaml"
+require "fileutils"
 
 module Textbook
   class LessonStore
-    BASE_DIR = Rails.root.join("config", "textbook", "lessons")
+    LESSONS_DIR = Rails.root.join("config", "textbook", "lessons")
 
-    class << self
+    # Existing API (kept):
+    # - .all -> array of parsed lesson hashes
+    # - .find!(slug) -> parsed lesson hash
+    #
+    # Editor/API additions (new):
+    # - .list -> array of slugs (strings)
+    # - .load_raw!(slug) -> raw YAML string
+    # - .write_raw!(slug, raw_yaml) -> writes YAML to disk
+    #
+    # These methods are intentionally simple so they stay stable while we build the authoring UI.
 
-      # Parse YAML safely for editor UI (never raises).
-      def safe_parse_yaml(yaml_str)
-        begin
-          parsed = YAML.safe_load(yaml_str.to_s)
-          parsed.is_a?(Hash) ? parsed : {}
-        rescue
-          {}
-        end
+    def self.all
+      Dir.glob(LESSONS_DIR.join("*.yml")).sort.map { |p| load_lesson(p) }
+    end
+
+    # Return slugs (filenames without extension), sorted.
+    # This is used by the editor index and any future "lesson picker".
+    def self.list
+      Dir.glob(LESSONS_DIR.join("*.yml"))
+         .map { |p| File.basename(p, ".yml") }
+         .sort
+    end
+
+    def self.find!(slug)
+      path = LESSONS_DIR.join("#{slug}.yml")
+      raise ActiveRecord::RecordNotFound, "Unknown lesson" unless File.exist?(path)
+      load_lesson(path)
+    end
+
+    def self.load_raw!(slug)
+      path = LESSONS_DIR.join("#{slug}.yml")
+      raise ActiveRecord::RecordNotFound, "Unknown lesson" unless File.exist?(path)
+      File.read(path)
+    end
+
+    def self.write_raw!(slug, raw_yaml)
+      # FileUtils.mkdir_p works on strings/paths; Pathname instances do not have mkdir_p.
+      FileUtils.mkdir_p(LESSONS_DIR.to_s)
+      path = LESSONS_DIR.join("#{slug}.yml")
+      File.write(path, raw_yaml.to_s)
+      true
+    end
+
+    def self.load_lesson(path)
+      raw = YAML.safe_load(File.read(path), permitted_classes: [Date], aliases: true)
+      unless raw.is_a?(Hash)
+        raise "Lesson YAML must be a mapping: #{path}"
       end
-
-      def all
-        Dir.glob(BASE_DIR.join("*.yml")).sort.map do |path|
-          slug = File.basename(path, ".yml")
-          data = load_yaml_file(path)
-          { "slug" => slug, "title" => data["title"].to_s, "summary" => data["summary"].to_s }
-        end
-      end
-
-      def find!(slug)
-        path = BASE_DIR.join("#{slug}.yml")
-        raise ActiveRecord::RecordNotFound, "Unknown lesson" unless File.exist?(path)
-        load_yaml_file(path).merge("slug" => slug)
-      end
-
-      def raw_yaml(slug)
-        path = BASE_DIR.join("#{slug}.yml")
-        raise ActiveRecord::RecordNotFound, "Unknown lesson" unless File.exist?(path)
-        File.read(path, encoding: "utf-8")
-      end
-
-      def write_raw!(slug, yaml_string)
-        slug = slug.to_s.strip
-        raise ArgumentError, "Slug required" if slug.empty?
-        lesson = parse_yaml_string!(yaml_string)
-        # Ensure slug is consistent with filename
-        lesson["slug"] = slug
-        BASE_DIR.mkpath
-        File.write(BASE_DIR.join("#{slug}.yml"), dump_yaml(lesson), encoding: "utf-8")
-      end
-
-      def parse_yaml_string!(yaml_string)
-        data = YAML.safe_load(yaml_string, permitted_classes: [], permitted_symbols: [], aliases: false) || {}
-        deep_indifferent!(data)
-      rescue Psych::SyntaxError => e
-        raise ArgumentError, "YAML error: #{e.message}"
-      end
-
-      def template_yaml
-        <<~YAML
-          schema_version: 1
-          title: New lesson
-          summary: ""
-          blocks:
-            - type: context
-              title: Context
-              body: |
-                Write the world-building here.
-        YAML
-      end
-
-      def dump_yaml(lesson_hash)
-        # Keep output stable and human-editable.
-        YAML.dump(lesson_hash)
-      end
-
-      private
-
-      def load_yaml_file(path)
-        data = YAML.safe_load(File.read(path, encoding: "utf-8"), permitted_classes: [], permitted_symbols: [], aliases: false) || {}
-        deep_indifferent!(data)
-      rescue Psych::SyntaxError => e
-        raise ArgumentError, "YAML error in #{path}: #{e.message}"
-      end
-
-      def deep_indifferent!(obj)
-        case obj
-        when Hash
-          obj.keys.each do |k|
-            v = obj.delete(k)
-            obj[k.to_s] = deep_indifferent!(v)
-          end
-          obj
-        when Array
-          obj.map! { |v| deep_indifferent!(v) }
-        else
-          obj
-        end
-      end
+      raw["slug"] ||= File.basename(path, ".yml")
+      raw
     end
   end
 end
