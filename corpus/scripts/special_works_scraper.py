@@ -512,23 +512,12 @@ def run_special_scrape(base_output: str,
     # You can expand or tweak this list later.
     WORKS = [
         {
-            "name": "東國通鑒",
-            "root_title": "東國通鑒",
+            "name": "晚晴簃詩匯",
+            "root_title": "晚晴簃詩匯",
             "mode": "toc_juan",
-            "work_id": "東國通鑒",
+            "work_id": "晚晴簃詩匯",
         },
-        {
-            "name": "新元史",
-            "root_title": "新元史",
-            "mode": "toc_juan",
-            "work_id": "新元史",
-        },
-        {
-            "name": "清史稿",
-            "root_title": "清史稿",
-            "mode": "toc_juan",
-            "work_id": "清史稿",
-        },
+
         # You can still add 永樂大典 / 古今圖書集成 entries here
         # using modes "yongle_allpages", "gujin_hierarchy" etc.
     ]
