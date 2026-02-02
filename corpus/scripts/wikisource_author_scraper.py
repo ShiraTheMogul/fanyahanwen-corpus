@@ -6,25 +6,30 @@ wikisource_author_scraper.py
 Dependencies:
   pip install requests beautifulsoup4
 
+Examples:
+  # scrape only 梁啟超's 文 section, and split into 清/民國 folders using year>=1912
+  python wikisource_author_scraper.py scrape-author 作者:梁啟超 ../scrape_output --section 文 --era-divider qing_roc
 
-python wikisource_author_scraper.py enrich-categories ./corpus --promote-category-to-nation
+  # normal scrape behavior (categorymembers / whole author page, no era divider)
+  python wikisource_author_scraper.py scrape-author 作者:林紓 ../scrape_output
+
+  # Refresh WS categories in an existing corpus
+  python wikisource_author_scraper.py enrich-categories ./corpus --promote-category-to-nation
 """
 from __future__ import annotations
 
 import argparse
-import csv
-import json
 import os
 import re
 import sys
 import time
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 from urllib.parse import unquote, urlparse
 
 import requests
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Tag
 
 API_ENDPOINT = "https://zh.wikisource.org/w/api.php"
 
@@ -62,6 +67,8 @@ DISALLOWED_NS_PREFIXES = (
     "Special:",
 )
 
+ROC_START_YEAR = 1912
+
 # -----------------------------
 # HTTP / MediaWiki API helpers
 # -----------------------------
@@ -96,7 +103,7 @@ def safe_request(params: Dict[str, Any], *, sleep: float = 0.5, max_retries: int
 def resolve_title(s: str) -> str:
     """
     Accept either:
-      - "Author:嚴復"
+      - "Author:嚴復" / "作者:嚴復"
       - "https://zh.wikisource.org/wiki/Author:%E5%9A%B4%E5%BE%A9"
       - "https://zh.wikisource.org/zh-hant/Author%3A%E5%9A%B4%E5%BE%A9"
     and return a MediaWiki title like "Author:嚴復".
@@ -105,11 +112,6 @@ def resolve_title(s: str) -> str:
     if s.startswith("http://") or s.startswith("https://"):
         u = urlparse(s)
         path = u.path or ""
-        # Typical patterns:
-        #   /wiki/Title
-        #   /zh-hant/Title
-        #   /zh-hans/Title
-        # After that segment, the rest is the title.
         parts = [p for p in path.split("/") if p]
         if not parts:
             return s
@@ -124,13 +126,21 @@ def resolve_title(s: str) -> str:
 def title_is_content_page(title: str) -> bool:
     """Reject obvious non-content namespaces (anything with a disallowed prefix)."""
     t = title.strip()
+
+    # Reject edit-section UI titles (full-width colon is common here)
+    if t.startswith(("编辑章节", "編輯章節", "Edit section")):
+        return False
+
     for pref in DISALLOWED_NS_PREFIXES:
         if t.startswith(pref):
             return False
+
     # Also exclude any other namespaces we didn't list.
     # MediaWiki namespaces have a colon early on; mainspace titles usually don't.
-    if ":" in t and not t.startswith("https://"):
+    # Include full-width colon too.
+    if (":" in t) or ("：" in t):
         return False
+
     return True
 
 
@@ -155,7 +165,6 @@ def fetch_html(title: str, *, sleep: float) -> str:
     )
     parse = data.get("parse") or {}
     html = parse.get("text") or ""
-    # formatversion=2 returns text as a string; older might return dict-like.
     if isinstance(html, dict):
         html = html.get("*", "") or html.get("html", "")
     return html or ""
@@ -211,7 +220,6 @@ def fetch_categories(title: str, *, sleep: float) -> List[str]:
             name = name.split(":", 1)[1]
         if name:
             out.append(name)
-    # Deterministic ordering
     return sorted(set(out))
 
 
@@ -220,16 +228,11 @@ def fetch_categories(title: str, *, sleep: float) -> List[str]:
 # -----------------------------
 
 def extract_visible_text_from_html(html: str) -> str:
-    """
-    Convert MediaWiki HTML to plain text, dropping common nav/table/toc clutter.
-    Pattern: this is the same 'parse->HTML then soup.get_text' approach you already
-    use elsewhere, but kept here as one shared function.
-    """
+    """Convert MediaWiki HTML to plain text, dropping common nav/table/toc clutter."""
     if not html:
         return ""
     soup = BeautifulSoup(html, "html.parser")
 
-    # Drop common non-body blocks
     for selector in [
         ".mw-editsection",
         ".references",
@@ -262,10 +265,10 @@ def cut_public_domain(text: str) -> str:
 
 def clean_text_for_corpus(text: str) -> str:
     """
-    A conservative clean pass (won't destroy modern notes/latin etc).
+    Conservative clean pass:
     - Normalise full-width spaces.
     - Cut public-domain boilerplate.
-    - Fix common vertical bracket artefacts: 〈\nX\n〉 -> 〈X〉 and 《\nX\n》 -> 《X》
+    - Fix bracket artefacts: 〈\nX\n〉 -> 〈X〉 and 《\nX\n》 -> 《X〉
     - Remove short editorial 【...】 (<=10 chars) and inline [1] refs.
     - Collapse excessive blank lines.
     """
@@ -323,14 +326,6 @@ CHINESE_NUMERALS = {
 
 
 def chinese_numeral_to_int(s: str) -> Optional[int]:
-    """
-    Pattern: common volume numerals -> int.
-    For X in Y:
-      - if s is digits: int(s)
-      - if s in {一..十}: mapping
-      - if s matches 十X: 10 + X
-      - if s matches X十Y or X十: X*10 (+Y)
-    """
     s = s.strip()
     if re.fullmatch(r"\d+", s):
         try:
@@ -354,11 +349,6 @@ def chinese_numeral_to_int(s: str) -> Optional[int]:
 
 
 def juan_sort_key(full_title: str) -> Tuple[int, int, str]:
-    """
-    Sort key for things like:
-      .../卷一, .../第001卷, .../卷24
-    Others go later. (Deterministic.)
-    """
     t = full_title.strip()
     last = t.split("/", 1)[-1]
 
@@ -382,15 +372,6 @@ def juan_sort_key(full_title: str) -> Tuple[int, int, str]:
 
 
 def discover_parts_from_toc_html(work_title: str, *, sleep: float) -> List[str]:
-    """
-    Prefer TOC/list discovery using HTML context, so we DON'T accidentally
-    pick up inline prose links (your 辟韓 example).
-    Strategy:
-      - Parse HTML, look for <ol>/<ul> inside the page body.
-      - Collect <a title="..."> within those lists.
-      - Keep only mainspace titles; prefer titles starting with work_title + "/".
-      - If we got >= 2 prefix-matching links, return them in on-page order.
-    """
     html = fetch_html(work_title, sleep=sleep)
     if not html:
         return []
@@ -414,7 +395,6 @@ def discover_parts_from_toc_html(work_title: str, *, sleep: float) -> List[str]:
                     ordered.append(t)
                     seen.add(t)
 
-    # TOC is usually a bunch of subpages; if we got a real list, trust it.
     if len(ordered) >= 2:
         return ordered
 
@@ -422,10 +402,6 @@ def discover_parts_from_toc_html(work_title: str, *, sleep: float) -> List[str]:
 
 
 def discover_parts_via_parse_links(work_title: str, pageid: int, *, sleep: float) -> List[str]:
-    """
-    Fallback: use parse&prop=links (no context), but restrict to subpages
-    under work_title/ to avoid inline prose links.
-    """
     prefix = work_title + "/"
     links = fetch_links(pageid, sleep=sleep)
     parts = [t for t in links if t.startswith(prefix)]
@@ -433,10 +409,6 @@ def discover_parts_via_parse_links(work_title: str, pageid: int, *, sleep: float
 
 
 def discover_parts_via_allpages_prefix(work_title: str, *, sleep: float) -> List[str]:
-    """
-    Last fallback: query allpages with prefix work_title/...
-    Good for cases where TOC links are missing but subpages exist.
-    """
     prefix = work_title + "/"
     parts: List[str] = []
     gapcontinue: Optional[str] = None
@@ -464,13 +436,6 @@ def discover_parts_via_allpages_prefix(work_title: str, *, sleep: float) -> List
 
 
 def discover_work_parts(work_title: str, *, sleep: float) -> List[str]:
-    """
-    Unified part discovery:
-      1) HTML TOC/list scan (ordered).
-      2) parse-links restricted to work_title/...
-      3) allpages prefix discovery
-      4) else: treat as single page [work_title]
-    """
     pid = get_pageid(work_title, sleep=sleep)
     if pid is None:
         return []
@@ -491,26 +456,147 @@ def discover_work_parts(work_title: str, *, sleep: float) -> List[str]:
 
 
 # -----------------------------
-# Dedupe / existing work scan
+# Section-only discovery + era divider support
 # -----------------------------
 
-def collect_existing_work_ids(base_out: str, extra_roots: List[str]) -> set[str]:
-    """
-    Collect folder names that already exist *as a work folder* in any corpus root.
-    Heuristic: any directory containing at least one .txt file is treated as a work dir,
-    and its last path component is added.
-    """
-    existing: set[str] = set()
-    roots = [base_out] + list(extra_roots)
+def _heading_level(tag: Tag) -> Optional[int]:
+    if not isinstance(tag, Tag) or not tag.name:
+        return None
+    m = re.fullmatch(r"h([1-6])", tag.name.lower())
+    if not m:
+        return None
+    return int(m.group(1))
 
-    for root in roots:
-        root_path = Path(root)
-        if not root_path.exists():
+
+def _norm(s: str) -> str:
+    s = (s or "").replace("\xa0", " ")
+    s = re.sub(r"\s+", " ", s)
+    return s.strip()
+
+
+def is_editsection_link(a: Tag) -> bool:
+    if not isinstance(a, Tag):
+        return False
+    if a.find_parent(class_="mw-editsection") is not None:
+        return True
+    href = a.get("href") or ""
+    if "action=edit" in href and "section=" in href:
+        return True
+    title = (a.get("title") or "").strip()
+    if title.startswith(("编辑章节", "編輯章節", "Edit section")):
+        return True
+    return False
+
+
+_YEAR_RE = re.compile(r"(18\d{2}|19\d{2}|20\d{2})")
+
+
+def _extract_year_from_text(s: str) -> Optional[int]:
+    """
+    Pull a 4-digit year from the surrounding list item text, if present.
+    This is how we split 梁啟超 into 清/民國 without touching metadata.
+    """
+    s = s or ""
+    m = _YEAR_RE.search(s)
+    if not m:
+        return None
+    try:
+        return int(m.group(1))
+    except ValueError:
+        return None
+
+
+@dataclass
+class WorkRef:
+    title: str
+    year: Optional[int] = None
+
+
+def discover_works_from_author_section(author_title: str, section_name: str, *, sleep: float) -> List[WorkRef]:
+    """
+    Discover works ONLY from a specific heading section on the Author page.
+    Also tries to capture a year from the list item text for era-divider use.
+
+    IMPORTANT DETAIL:
+    On Wikisource, headings are often wrapped like:
+      <div class="mw-heading"><h2>...</h2><span class="mw-editsection">...</span></div>
+    The section content is a sibling of the *mw-heading div*, not a sibling of the h2.
+    So we anchor on the wrapper div when present.
+    """
+    html = fetch_html(author_title, sleep=sleep)
+    if not html:
+        return []
+
+    soup = BeautifulSoup(html, "html.parser")
+    body = soup.find("div", class_="mw-parser-output") or soup
+
+    wanted = _norm(section_name)
+
+    found_h: Optional[Tag] = None
+    for h in body.find_all(re.compile(r"^h[1-6]$")):
+        if _norm(h.get_text(" ", strip=True)) == wanted:
+            found_h = h
+            break
+
+    if found_h is None:
+        print(f"!! Could not find section heading '{section_name}' on {author_title}", file=sys.stderr)
+        return []
+
+    # Anchor on wrapper div if present (this is the core fix)
+    anchor: Tag = found_h
+    parent = found_h.parent
+    if isinstance(parent, Tag) and parent.name == "div" and "mw-heading" in (parent.get("class") or []):
+        anchor = parent
+
+    start_level = _heading_level(found_h) or 2
+
+    works: List[WorkRef] = []
+    seen: set[str] = set()
+
+    for sib in anchor.next_siblings:
+        if not isinstance(sib, Tag):
             continue
-        for dirpath, dirnames, filenames in os.walk(root_path):
-            if any(fn.lower().endswith(".txt") for fn in filenames):
-                existing.add(Path(dirpath).name)
-    return existing
+
+        # Stop when we hit the next heading of same or higher level
+        # (usually another div.mw-heading that contains an h2/h3...)
+        for h in sib.find_all(re.compile(r"^h[1-6]$"), recursive=True):
+            lvl = _heading_level(h)
+            if lvl is not None and lvl <= start_level:
+                return works
+
+        # We want list items because the year is usually in the li text.
+        for li in sib.select("li"):
+            li_text = li.get_text(" ", strip=True)
+            li_year = _extract_year_from_text(li_text)
+
+            for a in li.select("a[title]"):
+                if is_editsection_link(a):
+                    continue
+                t = (a.get("title") or "").strip()
+                if not t:
+                    continue
+                if not title_is_content_page(t):
+                    continue
+                if t.startswith("Author:") or t.startswith("作者:"):
+                    continue
+                if t not in seen:
+                    works.append(WorkRef(title=t, year=li_year))
+                    seen.add(t)
+
+    return works
+
+
+def era_folder_for_year(year: Optional[int], mode: Optional[str]) -> Optional[str]:
+    """
+    mode == 'qing_roc' -> return 清 / 民國 / 未詳
+    """
+    if mode is None:
+        return None
+    if mode != "qing_roc":
+        return None
+    if year is None:
+        return "未詳"
+    return "民國" if year >= ROC_START_YEAR else "清"
 
 
 # -----------------------------
@@ -525,6 +611,8 @@ class SaveConfig:
     test: bool = False
     max_works: Optional[int] = None
     max_parts_per_work: Optional[int] = None
+    author_section: Optional[str] = None
+    era_divider: Optional[str] = None  # e.g. qing_roc
 
 
 def ensure_dir(p: Path) -> None:
@@ -538,9 +626,8 @@ def write_text(path: Path, content: str) -> None:
 
 def build_header(meta: Dict[str, str]) -> str:
     """
-    Build a metadata header that matches your existing style: '# KEY: value'.
-    For X in Y:
-      - For each key/value in meta: emit '# {key}: {value}'
+    Build a metadata header '# KEY: value' — this is the format you rely on.
+    We keep it exactly.
     """
     lines = []
     for k, v in meta.items():
@@ -561,20 +648,14 @@ def scrape_one_page(
     meta: Dict[str, str],
     sleep: float,
 ) -> Tuple[int, int]:
-    """
-    Fetch -> extract text -> write RAW and CLEAN with identical headers.
-    Returns (len_raw, len_clean).
-    """
+    """Fetch -> extract text -> write RAW and CLEAN with identical headers."""
     html = fetch_html(page_title, sleep=sleep)
     raw_body = extract_visible_text_from_html(html) if html else ""
     clean_body = clean_text_for_corpus(raw_body) if raw_body else ""
 
     header = build_header(meta)
-    raw_content = header + raw_body
-    clean_content = header + clean_body
-
-    write_text(out_raw_path, raw_content)
-    write_text(out_clean_path, clean_content)
+    write_text(out_raw_path, header + raw_body)
+    write_text(out_clean_path, header + clean_body)
 
     return len(raw_body), len(clean_body)
 
@@ -583,14 +664,10 @@ def discover_works_from_author(author_title: str, *, sleep: float) -> List[str]:
     """
     Prefer Category:<name> if it exists (usually the most complete).
     Fallback: parse HTML and collect mainspace links from list items.
-
-    Returns titles (mainspace) for works.
     """
-    # Extract the displayed name after "Author:"
     name = author_title.split(":", 1)[-1].strip()
     cat_title = f"Category:{name}"
 
-    # Try categorymembers
     data = safe_request(
         {
             "action": "query",
@@ -609,14 +686,12 @@ def discover_works_from_author(author_title: str, *, sleep: float) -> List[str]:
             t = m.get("title", "")
             if not t:
                 continue
-            # Skip the Author page itself if it appears
             if t.startswith("Author:") or t.startswith("作者:"):
                 continue
             if title_is_content_page(t):
                 works.append(t)
         return sorted(set(works))
 
-    # Fallback: parse author HTML
     html = fetch_html(author_title, sleep=sleep)
     if not html:
         return []
@@ -628,7 +703,9 @@ def discover_works_from_author(author_title: str, *, sleep: float) -> List[str]:
     seen: set[str] = set()
     for li in body.select("ol li, ul li"):
         for a in li.select("a[title]"):
-            t = a.get("title") or ""
+            if is_editsection_link(a):
+                continue
+            t = (a.get("title") or "").strip()
             if not t:
                 continue
             if not title_is_content_page(t):
@@ -649,34 +726,56 @@ def scrape_author(author_title_or_url: str, cfg: SaveConfig) -> None:
     author_name = author_title.split(":", 1)[-1].strip()
     author_dir = safe_filename(author_name)
 
-    raw_root = cfg.base_out / "raw" / author_dir
-    clean_root = cfg.base_out / "clean" / author_dir
-    ensure_dir(raw_root)
-    ensure_dir(clean_root)
+    # Discover works
+    work_refs: List[WorkRef] = []
+    if cfg.author_section:
+        work_refs = discover_works_from_author_section(author_title, cfg.author_section, sleep=cfg.sleep)
+    else:
+        work_refs = [WorkRef(title=t) for t in discover_works_from_author(author_title, sleep=cfg.sleep)]
 
-    works = discover_works_from_author(author_title, sleep=cfg.sleep)
     if cfg.test and cfg.max_works is not None:
-        works = works[: cfg.max_works]
+        work_refs = work_refs[: cfg.max_works]
 
+    # Print header
     print(f"Author page: {author_title}")
-    print(f"Resolved works: {len(works)}")
-    print(f"Output RAW:   {raw_root}")
-    print(f"Output CLEAN: {clean_root}")
+    if cfg.author_section:
+        print(f"Section:    {cfg.author_section}")
+    if cfg.era_divider == "qing_roc":
+        print(f"Era divider: 清 (<{ROC_START_YEAR}) / 民國 (≥{ROC_START_YEAR}) / 未詳")
+    print(f"Resolved works: {len(work_refs)}")
+
+    # We no longer use the old "existing_ids" heuristic here, because with era
+    # folders it becomes ambiguous. We instead skip based on exact target path existence.
     print()
 
-    existing_ids = collect_existing_work_ids(str(cfg.base_out), cfg.skip_existing_from)
-
-    for wi, work_title in enumerate(works, start=1):
+    for wi, wr in enumerate(work_refs, start=1):
+        work_title = wr.title
         work_id = safe_filename(work_title)
-        print(f"== [{wi}/{len(works)}] Work: {work_title} ==")
 
-        if work_id in existing_ids:
-            print(f"  !! Skipping: work folder '{work_id}' already exists in corpus roots.")
-            continue
+        era_folder = era_folder_for_year(wr.year, cfg.era_divider)
+        raw_root = cfg.base_out / "raw" / author_dir
+        clean_root = cfg.base_out / "clean" / author_dir
+        if era_folder:
+            raw_root = raw_root / era_folder
+            clean_root = clean_root / era_folder
 
-        # Work folder per base title
+        ensure_dir(raw_root)
+        ensure_dir(clean_root)
+
+        print(f"== [{wi}/{len(work_refs)}] Work: {work_title} ==")
+        if era_folder:
+            yr = wr.year if wr.year is not None else "unknown"
+            print(f"  -> era folder: {era_folder} (year={yr})")
+
+        # Work folder per base title (this is what your annotation pipeline needs)
         work_raw_dir = raw_root / work_id
         work_clean_dir = clean_root / work_id
+
+        # Skip if already scraped (either side exists)
+        if work_raw_dir.exists() or work_clean_dir.exists():
+            print("  !! Skipping: work folder already exists")
+            continue
+
         ensure_dir(work_raw_dir)
         ensure_dir(work_clean_dir)
 
@@ -689,10 +788,10 @@ def scrape_author(author_title_or_url: str, cfg: SaveConfig) -> None:
         for pi, page_title in enumerate(parts, start=1):
             print(f"    [{pi}/{len(parts)}] {page_title}")
 
-            # Fetch WS categories for the specific page (useful later for genre analysis)
             cats = fetch_categories(page_title, sleep=cfg.sleep)
             cat_str = ";".join(cats)
 
+            # IMPORTANT: metadata preserved in your exact old format
             meta = {
                 "AUTHOR": author_name,
                 "AUTHOR_PAGE": author_title,
@@ -726,10 +825,7 @@ HEADER_LINE_RE = re.compile(r"^#\s*([A-Z0-9_]+)\s*:\s*(.*)\s*$")
 
 
 def parse_header(text: str) -> Tuple[Dict[str, str], str]:
-    """
-    Split into (header_dict, body_text).
-    Header is consecutive '# KEY: value' lines from start, until first blank line.
-    """
+    """Split into (header_dict, body_text)."""
     lines = text.splitlines()
     meta: Dict[str, str] = {}
     body_start = 0
@@ -760,9 +856,7 @@ def enrich_categories(corpus_root: str, *, sleep: float, promote_category_to_nat
       - read # PAGE_TITLE
       - query WS categories
       - write/replace # WS_CATEGORIES
-      - optionally, if promote_category_to_nation:
-            set # NATION to the first directory under (raw|clean) (path heuristic),
-            but only if that equals existing # CATEGORY (keeps CATEGORY intact)
+      - optionally promote CATEGORY->NATION by path heuristic
     """
     root = Path(corpus_root).expanduser().resolve()
     if not root.exists():
@@ -790,9 +884,7 @@ def enrich_categories(corpus_root: str, *, sleep: float, promote_category_to_nat
         meta["WS_CATEGORIES"] = ";".join(cats)
 
         if promote_category_to_nation:
-            # Heuristic: .../(raw|clean)/<X>/... and if meta["CATEGORY"] == X, set NATION = X.
             rel_parts = p.relative_to(root).parts
-            # Find the first occurrence of 'raw' or 'clean'
             try:
                 idx = rel_parts.index("raw")
             except ValueError:
@@ -823,10 +915,13 @@ def main() -> None:
     sub = ap.add_subparsers(dest="cmd", required=True)
 
     ap_a = sub.add_parser("scrape-author", help="Scrape an Author: page into per-work folders.")
-    ap_a.add_argument("author", help="Author: title or URL (e.g. Author:嚴復)")
+    ap_a.add_argument("author", help="Author: title or URL (e.g. 作者:梁啟超)")
     ap_a.add_argument("out", help="Output folder (will create raw/ and clean/ under it)")
     ap_a.add_argument("--sleep", type=float, default=0.5, help="Seconds between requests")
-    ap_a.add_argument("--skip-existing-from", action="append", default=[], help="Extra corpus roots to dedupe against")
+    ap_a.add_argument("--skip-existing-from", action="append", default=[], help="(kept for compatibility; unused in era mode)")
+    ap_a.add_argument("--section", type=str, default=None, help="Only scrape works listed under a specific heading (e.g. 文).")
+    ap_a.add_argument("--era-divider", type=str, default=None, choices=["qing_roc"],
+                      help="Split output into era folders based on year in the author list (qing_roc uses 1912).")
     ap_a.add_argument("--test", action="store_true", help="Test mode (limit works/parts)")
     ap_a.add_argument("--max-works", type=int, default=5, help="Test mode: max works")
     ap_a.add_argument("--max-parts", type=int, default=10, help="Test mode: max parts per work")
@@ -847,6 +942,8 @@ def main() -> None:
             test=bool(args.test),
             max_works=int(args.max_works) if args.test else None,
             max_parts_per_work=int(args.max_parts) if args.test else None,
+            author_section=(args.section.strip() if args.section else None),
+            era_divider=args.era_divider,
         )
         ensure_dir(cfg.base_out)
         scrape_author(args.author, cfg)

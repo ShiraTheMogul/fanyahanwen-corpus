@@ -218,7 +218,7 @@ PRONUNCIATION_SECTIONS = [
   { key: "yue", label: "Yue Chinese", fields: %w[kCantonese], default_open: true },
   { key: "middle_chinese", label: "Middle Chinese", fields: %w[kTang bs2014_mc bs2006_mc], default_open: false },
   { key: "old_chinese", label: "Old Chinese", fields: %w[bs2014_oc], default_open: false },
-  { key: "japonic", label: "Japonic", fields: %w[kJapanese kJapaneseOn kJapaneseKun], default_open: true },
+  { key: "japonic", label: "Japonic", fields: %w[kJapanese kJapaneseOn kJapaneseKun jp_manyogana_hiragana_etym jp_manyogana_katakana_etym jp_manyogana_mora_table jp_shakuon_kana jp_shakkun_kana], default_open: true },
   { key: "koreanic", label: "Koreanic", fields: %w[kHangul kKorean], default_open: true },
   { key: "austroasiatic", label: "Austroasiatic", fields: %w[kVietnamese], default_open: true },
   { key: "kra_dai", label: "Kra–Dai", fields: %w[kZhuang], default_open: true },
@@ -470,11 +470,12 @@ end
 	def self.group_for(field)
 		return "Strokes & radicals" if field.start_with?("kRS") || field == "kTotalStrokes" || field == "shuowen_category"
 		return "Education notes" if field.match?("kGradeLevel") || field.match?("kKoreanEducationHanja") || field == "cjk_808_common"
+		return "Education notes" if field == "context" 
 		return "Pronunciation" if 
 			field.start_with?("kFanqie") || field.start_with?("kMandarin") || field.start_with?("kHanyuPinyin") ||
 			field.start_with?("kHanyuPinlu") || field.start_with?("kTGHZ2013") || field.start_with?("kXHC1983") ||
 			field.start_with?("kCantonese") || field.start_with?("kJapanese") || field.start_with?("kKorean") ||
-			field.start_with?("kHangul") || field.start_with?("kVietnamese") || field.start_with?("kZhuang") || field == "laoguoyin" || field == "general_chinese" || field == "kTang" || field.start_with?("bs2014_") || field == "bs2006_mc"
+			field.start_with?("kHangul") || field.start_with?("kVietnamese") || field.start_with?("kZhuang") || field == "laoguoyin" || field == "general_chinese" || field == "kTang" || field.start_with?("bs2014_") || field == "bs2006_mc" || field.start_with?("jp_manyogana_") || field.start_with?("jp_shakuon_") || field.start_with?("jp_shakkun_")
 		return "Input" if %w[kCangjie kFourCornerCode kMainlandTelegraph kTaiwanTelegraph].include?(field)
 		return "Encodings & mappings" if field.include?("Variant") || field.start_with?("kSemantic") || field.start_with?("kSimplified") || field.start_with?("cedict_simp") || field.start_with?("kTraditional")
 		return "Dictionary indices" if field.include?("kPhonetic") || field.match?(/hanyu/i) || field.start_with?("kMorohashi") || field.include?("kCihai") || field.start_with?("kFenn") || field.match?("kCowles") || field.include?("DaeJaweon") || field.start_with?("kFennIndex") || field.start_with?("kGSR") || field.include?("KangXi") || field.match?("kLau") || field.match?("kMatthews") || field.match?("kMeyerWempe") || field.match?("kNelson") || field.start_with?("kSBGY") || field.match?("kSMSZD2003Index") || field.start_with?("kSMSZD2003Index") || field.start_with?("kHKGlyph") || field.match?("kKarlgren")
@@ -559,6 +560,12 @@ end
 	  pinyin_chunks: [2, 2]
 	},
 	"cjk_808_common" => "808 Commonly Used CJK Characters",
+	"context" => "Context",
+	"jp_manyogana_hiragana_etym" => "Man’yōgana (hiragana etymology)",
+	"jp_manyogana_katakana_etym" => "Man’yōgana (katakana etymology)",
+	"jp_manyogana_mora_table" => "Man’yōgana mora table",
+	"jp_shakuon_kana" => "Shakuon Kana 借音仮名",
+	"jp_shakkun_kana" => "Shakkun Kana 借訓仮名",
 }.freeze
 	
 	# and some automatic stuff in case
