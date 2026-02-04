@@ -38,20 +38,18 @@ RULES = [
          "Exposed NP + 則 + predicate."),
 
     Rule("lc.sfp.classical", "particles_sentence_type", "lc.sfp_classical",
-         re.compile(r"(也|矣|焉|乎|哉|耶|耳)(?=[\u4e00-\u9fff]*[。！？；\s]|$)"), 1.1,
+         re.compile(r"(也|矣|焉|乎|哉|耶|耳)(?=[\u4e00-\u9fff]*[。！？；\s]|$)"),
+         1.1, "Classical sentence-type particles (density signal)."),
 
     # Interrogative 乎 (treat as classical question particle, not oracle-specific)
     Rule("lc.q.hu_interrogative", "particles_sentence_type", "lc.q_hu",
          re.compile(r"(何|奚|安|曷|焉|豈|岂|孰|誰|谁)[\u4e00-\u9fff]{0,20}乎(?=[\u4e00-\u9fff]*[。！？；\s]|$)"),
+         3.0, "Question word + ... + 乎 (classical interrogative framing)."),
 
     # Interrogative ending 不 / 無 (yes-no / alternative question marker in classical registers)
     Rule("lc.q.end_bu_wu", "particles_sentence_type", "lc.q_end_bu_wu",
          re.compile(r"(不|無)\s*(?=[\u4e00-\u9fff]*[。！？；\s]|$)"),
          1.8, "Clause-final 不/無 as an interrogative/alternative marker (classical registers)."),
-
-         3.0, "Question word + ... + 乎 (classical interrogative framing)."),
-
-         "Classical sentence-type particles (density signal)."),
 
     # Coverb frames
     Rule("lc.coverb.source_chain", "coverbs", "lc.coverb_source",

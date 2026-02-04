@@ -20,6 +20,8 @@ Examples:
 from __future__ import annotations
 
 import argparse
+import csv
+import json
 import os
 import re
 import sys
@@ -28,6 +30,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 from urllib.parse import unquote, urlparse
+from urllib.parse import quote
 
 import requests
 from bs4 import BeautifulSoup, Tag
@@ -800,6 +803,15 @@ class SaveConfig:
     test: bool = False
     max_works: Optional[int] = None
     max_parts_per_work: Optional[int] = None
+    # Wenyan scoring + routing (non-invasive: output goes to CSV + folder routing)
+    wenyan: bool = False
+    wenyan_segment: str = "paragraph"  # paragraph | window
+    wenyan_window_size_han: int = 320
+    wenyan_window_stride_han: int = 200
+    wenyan_index_csv: str = "wenyan_index.csv"
+    wenyan_fail_prop_modern: float = 0.50
+    wenyan_fail_median: float = -2.0
+    wenyan_write_json: bool = False
 
 
 def ensure_dir(p: Path) -> None:
@@ -809,6 +821,89 @@ def ensure_dir(p: Path) -> None:
 def write_text(path: Path, content: str) -> None:
     ensure_dir(path.parent)
     path.write_text(content, encoding="utf-8")
+
+
+def wiki_page_url(title: str) -> str:
+    """Build a stable zh.wikisource.org/wiki/... URL for logging/indexing."""
+    return "https://zh.wikisource.org/wiki/" + quote(title, safe="")
+
+
+def _reroot_to_suspected(path: Path, base_out: Path) -> Path:
+    """Move a path under base_out/... into base_out/suspected_baihua/... preserving the relative path."""
+    rel = path.relative_to(base_out)
+    return base_out / "suspected_baihua" / rel
+
+
+def _append_wenyan_index_row(index_csv: Path, row: Dict[str, object]) -> None:
+    """Append one row to the Wenyan index CSV, creating it with header if missing."""
+    ensure_dir(index_csv.parent)
+    fieldnames = [
+        "source_url",
+        "author_page",
+        "work_title",
+        "section",
+        "page_title",
+        "output_clean_path",
+        "output_raw_path",
+        "segment_mode",
+        "median_default_score",
+        "prop_literary",
+        "prop_modern",
+        "prop_uncertain",
+        "suspected_baihua",
+        "score_error",
+    ]
+    write_header = (not index_csv.exists()) or (index_csv.stat().st_size == 0)
+    with index_csv.open("a", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=fieldnames)
+        if write_header:
+            w.writeheader()
+        w.writerow({k: row.get(k, "") for k in fieldnames})
+
+
+def _ensure_wenyan_import_path() -> None:
+    """Ensure a local bundled wenyan_syntax package can be imported.
+
+    This project often carries the scorer under scripts/wenyan_scorer/wenyan_syntax/.
+    We add scripts/wenyan_scorer to sys.path so `import wenyan_syntax` works.
+    """
+    scripts_dir = Path(__file__).resolve().parent
+    cand = scripts_dir / "wenyan_scorer"
+    if cand.is_dir():
+        p = str(cand)
+        if p not in sys.path:
+            sys.path.insert(0, p)
+
+
+def wenyan_summary(
+    text: str,
+    *,
+    segment: str,
+    window_size_han: int,
+    window_stride_han: int,
+) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
+    """Run wenyan_syntax scoring on text and return a lightweight summary.
+
+    Returns:
+      (summary_dict, None) on success
+      (None, error_string) on failure
+    """
+    try:
+        _ensure_wenyan_import_path()
+        from wenyan_syntax.score import score_text  # type: ignore
+
+        res = score_text(
+            text,
+            segment=segment,
+            window_size_han=window_size_han,
+            window_stride_han=window_stride_han,
+            keep_evidence=False,
+        )
+        # Keep only the stable summary keys for indexing
+        summ = res.get("summary") or {}
+        return summ, None
+    except Exception as e:
+        return None, str(e)
 
 
 def build_header(meta: Dict[str, str]) -> str:
@@ -850,6 +945,10 @@ def scrape_one_page(
     out_clean_path: Path,
     meta: Dict[str, str],
     sleep: float,
+    cfg: SaveConfig,
+    author_page: str,
+    work_title: str,
+    section: str,
 ) -> Tuple[int, int]:
     """
     Fetch -> extract text -> write RAW and CLEAN with identical headers.
@@ -894,6 +993,78 @@ def scrape_one_page(
     meta["PAGE_TITLE"] = resolved
 
     clean_body = clean_text_for_corpus(raw_body)
+
+    # Wenyan scoring (non-invasive): write results to CSV and route baihua/suspected pages.
+    suspected_baihua = False
+    score_error = ""
+    median = ""
+    prop_lit = ""
+    prop_mod = ""
+    prop_unc = ""
+
+    if cfg.wenyan:
+        summ, err = wenyan_summary(
+            clean_body,
+            segment=cfg.wenyan_segment,
+            window_size_han=cfg.wenyan_window_size_han,
+            window_stride_han=cfg.wenyan_window_stride_han,
+        )
+        if summ is None:
+            score_error = err or "unknown"
+            suspected_baihua = True
+            print(f"      !! Wenyan scorer unavailable/failed: {score_error}", file=sys.stderr)
+        else:
+            props = (summ.get("proportions") or {})
+            try:
+                median_f = float(summ.get("median_default_score", 0.0) or 0.0)
+                median = f"{median_f:.6f}"
+            except Exception:
+                median_f = 0.0
+                median = str(summ.get("median_default_score", ""))
+
+            prop_lit_f = float(props.get("literary_syntax", 0.0) or 0.0)
+            prop_mod_f = float(props.get("modern_syntax", 0.0) or 0.0)
+            prop_unc_f = float(props.get("uncertain", 0.0) or 0.0)
+            prop_lit = f"{prop_lit_f:.6f}"
+            prop_mod = f"{prop_mod_f:.6f}"
+            prop_unc = f"{prop_unc_f:.6f}"
+
+            suspected_baihua = (prop_mod_f >= cfg.wenyan_fail_prop_modern) or (median_f <= cfg.wenyan_fail_median)
+
+            # Optional sidecar next to CLEAN output
+            if cfg.wenyan_write_json:
+                try:
+                    sidecar = out_clean_path.with_suffix(out_clean_path.suffix + ".wenyan.json")
+                    write_text(sidecar, json.dumps(summ, ensure_ascii=False, indent=2))
+                except Exception as e:
+                    print(f"      !! Failed to write wenyan sidecar JSON: {e}", file=sys.stderr)
+
+        # If suspected, route output paths under suspected_baihua/
+        if suspected_baihua:
+            out_raw_path = _reroot_to_suspected(out_raw_path, cfg.base_out)
+            out_clean_path = _reroot_to_suspected(out_clean_path, cfg.base_out)
+
+        # Append to index CSV
+        try:
+            index_csv = cfg.base_out / cfg.wenyan_index_csv
+            _append_wenyan_index_row(index_csv, {
+                "source_url": wiki_page_url(resolved),
+                "author_page": author_page,
+                "work_title": work_title,
+                "section": section,
+                "page_title": resolved,
+                "output_clean_path": str(out_clean_path),
+                "output_raw_path": str(out_raw_path),
+                "segment_mode": cfg.wenyan_segment,
+                "median_default_score": median,
+                "prop_literary": prop_lit,
+                "prop_modern": prop_mod,
+                "prop_uncertain": prop_unc,
+                "suspected_baihua": suspected_baihua,
+                "score_error": score_error,
+            })
+        except Exception as e:
+            print(f"      !! Failed to append wenyan CSV row: {e}", file=sys.stderr)
 
     header = build_header(meta)
     write_text(out_raw_path, header + raw_body)
@@ -1005,13 +1176,48 @@ def scrape_author(author_title_or_url: str, cfg: SaveConfig) -> None:
                     out_clean_path=out_clean,
                     meta=meta,
                     sleep=cfg.sleep,
+                    cfg=cfg,
+                    author_page=author_title,
+                    work_title=work_title,
+                    section=(cfg.section or ""),
                 )
                 if cr == 0 and cc == 0:
                     # skipped
                     continue
                 print(f"      -> wrote {fname} (raw {cr} chars, clean {cc} chars)")
             except Exception as e:
+                # Any scrape failure goes into suspected_baihua/ for triage.
                 print(f"      !! Error scraping {page_title}: {e}", file=sys.stderr)
+                try:
+                    raw_mark = _reroot_to_suspected(out_raw, cfg.base_out)
+                    clean_mark = _reroot_to_suspected(out_clean, cfg.base_out)
+                    marker_header = build_header(meta)
+                    write_text(raw_mark, marker_header + f"# SCRAPE_ERROR: {e}\n")
+                    write_text(clean_mark, marker_header + f"# SCRAPE_ERROR: {e}\n")
+                except Exception as e2:
+                    print(f"      !! Failed to write suspected_baihua markers: {e2}", file=sys.stderr)
+
+                if cfg.wenyan:
+                    try:
+                        index_csv = cfg.base_out / cfg.wenyan_index_csv
+                        _append_wenyan_index_row(index_csv, {
+                            "source_url": wiki_page_url(resolve_redirect_title(page_title, sleep=cfg.sleep) or page_title),
+                            "author_page": author_title,
+                            "work_title": work_title,
+                            "section": (cfg.section or ""),
+                            "page_title": page_title,
+                            "output_clean_path": str(_reroot_to_suspected(out_clean, cfg.base_out)),
+                            "output_raw_path": str(_reroot_to_suspected(out_raw, cfg.base_out)),
+                            "segment_mode": cfg.wenyan_segment,
+                            "median_default_score": "",
+                            "prop_literary": "",
+                            "prop_modern": "",
+                            "prop_uncertain": "",
+                            "suspected_baihua": True,
+                            "score_error": f"scrape_error: {e}",
+                        })
+                    except Exception as e3:
+                        print(f"      !! Failed to append scrape failure to CSV: {e3}", file=sys.stderr)
 
 
 # -----------------------------
@@ -1133,6 +1339,16 @@ def main() -> None:
     ap_a.add_argument("--max-works", type=int, default=5, help="Test mode: max works")
     ap_a.add_argument("--max-parts", type=int, default=10, help="Test mode: max parts per work")
 
+    # Wenyan scoring (non-invasive): write scores to an index CSV and route suspected baihua
+    ap_a.add_argument("--wenyan", action="store_true", help="Run Wenyan-vs-Mandarin scorer on CLEAN text and write to index CSV")
+    ap_a.add_argument("--wenyan-segment", default="paragraph", choices=["paragraph", "window"], help="Scoring segmentation mode")
+    ap_a.add_argument("--wenyan-window-size-han", type=int, default=320, help="Window size (Han chars) when --wenyan-segment=window")
+    ap_a.add_argument("--wenyan-window-stride-han", type=int, default=200, help="Window stride (Han chars) when --wenyan-segment=window")
+    ap_a.add_argument("--wenyan-index-csv", default="wenyan_index.csv", help="CSV filename under output root for Wenyan index")
+    ap_a.add_argument("--wenyan-fail-prop-modern", type=float, default=0.50, help="Route to suspected_baihua if modern proportion >= this")
+    ap_a.add_argument("--wenyan-fail-median", type=float, default=-2.0, help="Route to suspected_baihua if median score <= this")
+    ap_a.add_argument("--wenyan-json", action="store_true", help="Optional: write a .wenyan.json summary sidecar next to CLEAN outputs")
+
     ap_e = sub.add_parser("enrich-categories", help="Add/refresh # WS_CATEGORIES in an existing corpus.")
     ap_e.add_argument("corpus_root", help="Root folder containing your .txt corpus")
     ap_e.add_argument("--sleep", type=float, default=0.5, help="Seconds between requests")
@@ -1155,6 +1371,14 @@ def main() -> None:
             test=bool(args.test),
             max_works=int(args.max_works) if args.test else None,
             max_parts_per_work=int(args.max_parts) if args.test else None,
+            wenyan=bool(args.wenyan),
+            wenyan_segment=str(args.wenyan_segment),
+            wenyan_window_size_han=int(args.wenyan_window_size_han),
+            wenyan_window_stride_han=int(args.wenyan_window_stride_han),
+            wenyan_index_csv=str(args.wenyan_index_csv),
+            wenyan_fail_prop_modern=float(args.wenyan_fail_prop_modern),
+            wenyan_fail_median=float(args.wenyan_fail_median),
+            wenyan_write_json=bool(args.wenyan_json),
         )
         ensure_dir(cfg.base_out)
         scrape_author(args.author, cfg)
