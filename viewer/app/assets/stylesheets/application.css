@@ -30,6 +30,33 @@
   --han-font-stack: "WenJin Mincho", serif;
 }
 
+/* --- Tools: Cangjie list/table ----------------------------------------- */
+.cj-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.cj-table th,
+.cj-table td {
+  border: 1px solid rgba(0,0,0,0.12);
+  padding: 6px 8px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.cj-table thead th {
+  background: rgba(0,0,0,0.04);
+  position: sticky;
+  top: 0;
+}
+
+.cj-char { font-size: 22px; text-align: center; }
+.cj-cp { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+.cj-code { white-space: normal; }
+.cj-img { text-align: center; }
+
+
 /* --- Han character tooltip (Yomitan-ish) --- */
 .han-tooltip {
   position: fixed;

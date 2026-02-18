@@ -32,7 +32,10 @@
 <p>This fetches Cangjie 3 input data from the Unihan database, then maps it to Han characters and grabs <%= link_to "HKCards", "https://www.hkcards.com" %>'s decomposition images to aid understanding.</p>
 
 <%= form_with url: tools_cangjie_path, method: :post, data: { turbo_frame: "cangjie_out" } do %>
-  <input name="input" style="width: 100%;" placeholder="Character (e.g. 說) or U+8BF4 or Cangjie letters (e.g. ABC)">
+  <textarea name="input" rows="3" style="width: 100%;" placeholder="Character (e.g. 說) or U+8BF4 or Cangjie letters (e.g. ABC)\nOr paste a sentence to get every unique character."></textarea>
+  <p>
+    <label><input type="checkbox" name="hkcards" value="1"> show HKCards table</label>
+  </p>
   <p><button type="submit">Lookup</button></p>
 <% end %>
 

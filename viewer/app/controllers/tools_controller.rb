@@ -86,32 +86,103 @@ end
                     }
     end
 
-    cp = parse_codepoint(raw)
-    return render partial: "tools/cangjie_output",
-                  locals: { char: nil, codepoint: nil, lines: [], message: "Could not parse a character/codepoint." },
-                  status: :bad_request if cp.nil?
+    # Codepoint literal mode: "U+8BF4" or "8BF4" should behave like a single-character lookup.
+    if raw.match?(/\AU\+[0-9A-Fa-f]+\z/) || raw.match?(/\A[0-9A-Fa-f]+\z/)
+      cp = parse_codepoint(raw)
+      return render partial: "tools/cangjie_output",
+                    locals: { char: nil, codepoint: nil, lines: [], message: "Could not parse a character/codepoint." },
+                    status: :bad_request if cp.nil?
+      cps_in_text = [cp]
+    else
+      cps_in_text = []
+      raw.each_codepoint do |cp|
+        # Skip whitespace, but keep punctuation.
+        next if [9, 10, 13, 32].include?(cp)
+        cps_in_text << cp
+      end
+    end
 
-    cc = CharacterCodepoint.find_by(codepoint: cp)
-    return render partial: "tools/cangjie_output",
-                  locals: { char: [cp].pack("U"), codepoint: cp, lines: [], message: "Not found in DB." },
-                  status: :not_found if cc.nil?
+    # Single-character mode (keep the existing, nicer card output).
+    if cps_in_text.length == 1
+      cp = cps_in_text.first
+      cc = CharacterCodepoint.find_by(codepoint: cp)
+      return render partial: "tools/cangjie_output",
+                    locals: { char: [cp].pack("U"), codepoint: cp, lines: [], message: "Not found in DB." },
+                    status: :not_found if cc.nil?
 
-    props = CharacterProperty.where(character_codepoint_id: cc.id, field: "kCangjie")
+      props = CharacterProperty.where(character_codepoint_id: cc.id, field: "kCangjie")
+                               .order(:source, :value)
+
+      lines =
+        if props.empty?
+          ["No kCangjie property found for this character."]
+        else
+          props.map do |p|
+            latin = CangjieKeymap.normalise_cangjie(p.value.to_s)
+            han   = CangjieKeymap.latin_to_han(latin)
+            "#{latin} (#{han}) — #{p.source}"
+          end
+        end
+
+      return render partial: "tools/cangjie_output",
+                    locals: { char: cc.chr, codepoint: cc.codepoint, lines: lines, message: nil }
+    end
+
+    unique_cps = []
+    seen = {}
+    cps_in_text.each do |cp|
+      next if seen[cp]
+      seen[cp] = true
+      unique_cps << cp
+    end
+
+    ccs = CharacterCodepoint.where(codepoint: unique_cps).to_a
+    cc_by_cp = ccs.index_by(&:codepoint)
+
+    props = CharacterProperty.where(character_codepoint_id: ccs.map(&:id), field: "kCangjie")
                              .order(:source, :value)
+                             .to_a
+    props_by_ccid = props.group_by(&:character_codepoint_id)
 
-    lines =
-      if props.empty?
-        ["No kCangjie property found for this character."]
-      else
-        props.map do |p|
-          latin = CangjieKeymap.normalise_cangjie(p.value.to_s)
-          han   = CangjieKeymap.latin_to_han(latin)
-          "#{latin} (#{han}) — #{p.source}"
+    rows = unique_cps.map do |cp|
+      cc = cc_by_cp[cp]
+      pps = cc ? (props_by_ccid[cc.id] || []) : []
+
+      codes = pps.map do |p|
+        latin = CangjieKeymap.normalise_cangjie(p.value.to_s)
+        han   = CangjieKeymap.latin_to_han(latin)
+        { latin: latin, han: han, source: p.source.to_s }
+      end
+
+      # De-dup within a character (sometimes sources repeat the same code).
+      codes = codes.uniq { |c| c[:latin] }
+
+      {
+        char: [cp].pack("U"),
+        codepoint: cp,
+        found_in_db: cc.present?,
+        codes: codes
+      }
+    end
+
+    show_hkcards = params[:hkcards].to_s == "1"
+
+    if show_hkcards
+      render partial: "tools/cangjie_table_output",
+             locals: { rows: rows, message: nil }
+    else
+      lines = rows.map do |r|
+        if r[:codes].empty?
+          "* #{r[:char]}: (no Cangjie code)"
+        else
+          combos = r[:codes].map { |c| "#{c[:han]} (#{c[:latin]})" }.join(" / ")
+          "* #{r[:char]}: #{combos}"
         end
       end
 
-    render partial: "tools/cangjie_output",
-           locals: { char: cc.chr, codepoint: cc.codepoint, lines: lines, message: nil }
+      render partial: "tools/cangjie_list_output",
+             locals: { lines: lines, message: nil }
+    end
   end
 
   private

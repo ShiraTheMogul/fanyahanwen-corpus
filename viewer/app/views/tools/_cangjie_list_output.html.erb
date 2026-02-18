@@ -1,0 +1,7 @@
+<%= turbo_frame_tag "cangjie_out" do %>
+  <% if message.present? %>
+    <p><em><%= h(message) %></em></p>
+  <% end %>
+
+  <pre class="tool-output"><%= h(lines.join("\n")) %></pre>
+<% end %>
