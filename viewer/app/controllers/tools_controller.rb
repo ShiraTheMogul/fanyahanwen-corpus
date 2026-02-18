@@ -96,8 +96,13 @@ end
     else
       cps_in_text = []
       raw.each_codepoint do |cp|
-        # Skip whitespace, but keep punctuation.
+        # Skip whitespace.
         next if [9, 10, 13, 32].include?(cp)
+
+        # Keep only Han characters (your standard Unicode discriminator).
+        # This avoids punctuation, Latin, kana, etc. in lesson-facing lists.
+        next unless UnicodeRanges.han?(cp)
+
         cps_in_text << cp
       end
     end
