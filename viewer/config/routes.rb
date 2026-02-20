@@ -22,6 +22,9 @@ Rails.application.routes.draw do
 	get "/dictionary/shuowen/:number", to: "shuowen_components#show", as: :dictionary_component
 	get "/dictionary/shuowen/:number/chars", to: "shuowen_components#chars", as: :dictionary_component_chars
 	
+	# Guangyun sanity-check browser
+	get "/dictionary/guangyun", to: "guangyun#index", as: :dictionary_guangyun
+	
 	get "/corpus_viewer(/*path)", to: "corpus_viewer#show", as: :corpus_viewer, format: false # stop a silly attempt to output a txt file
 	
 	# config/routes.rb
