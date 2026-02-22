@@ -1,0 +1,88 @@
+<% content_for :title, "Guangyun categories" %>
+
+<% content_for :rightbar do %>
+  <h3>View options</h3>
+  <%= render "shared/view_options_rightbar" %>
+<% end %>
+
+<h1>Guangyun 廣韻</h1>
+
+<p>
+  Browse Guangyun entries by <strong>tone</strong> (聲) and <strong>rime</strong> (韻).
+</p>
+
+<% has_any = @tone_groups.values.any? { |v| v.any? } %>
+<% unless has_any %>
+  <div style="padding:10px 12px; border:1px solid rgba(0,0,0,0.18); border-radius:10px; background: rgba(255,240,200,0.35); margin: 10px 0 14px 0;">
+    <strong>No Guangyun categories were found.</strong>
+    You currently have Guangyun payload rows, but not the tone/rime mapping rows.
+    Run the juan importer task to add them.
+  </div>
+<% end %>
+
+<% @tone_groups.each do |tone, rimes| %>
+  <h2 style="margin-top: 18px;"><%= tone %> (<%= rimes.length %>)</h2>
+  <% if rimes.empty? %>
+    <div style="opacity:0.6;">(none)</div>
+  <% else %>
+    <ul style="columns: 4; column-gap: 16px; list-style: none; padding-left: 0;">
+      <% rimes.each do |r| %>
+        <li style="break-inside: avoid; margin: 2px 0;">
+          <%= link_to (r[:number] ? "#{r[:number]}. #{r[:rhyme]}" : r[:rhyme]),
+            dictionary_guangyun_category_path(category: r[:route_key]),
+            data: { turbo: false } %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+<% end %>
+
+<hr style="margin: 22px 0;" />
+
+<h2>Manual lookup</h2>
+
+<p style="opacity:0.85;">
+  Enter a single character (e.g. 王) or a codepoint (e.g. U+738B) to inspect its Guangyun payload.
+</p>
+
+<%= form_with url: dictionary_guangyun_path, method: :get, local: true do %>
+  <label>Character / Codepoint
+    <%= text_field_tag :q, params[:q].to_s, style: "width: 240px;" %>
+  </label>
+  <%= submit_tag "Lookup" %>
+<% end %>
+
+<% if @lookup.present? %>
+  <% if @lookup[:missing] %>
+    <p style="margin-top: 10px; opacity:0.8;">No CharacterCodepoint row found for <strong><%= @lookup[:chr] %></strong>.</p>
+  <% else %>
+    <div style="margin-top: 10px; padding: 10px 12px; border: 1px solid rgba(0,0,0,0.18); border-radius: 10px;">
+      <div style="font-size: 1.8rem; line-height: 1.1;">
+        <% cp = "U+#{@lookup[:codepoint].to_s(16).upcase.rjust(4, "0")}" %>
+        <%= link_to @lookup[:chr], character_path(cp), data: { turbo: false } %>
+        <span style="opacity:0.7; font-size: 1rem; margin-left: 10px;"><%= cp %></span>
+      </div>
+
+      <% if @lookup[:category].present? %>
+        <div style="margin-top: 6px; opacity:0.8;">
+          Category: <strong><%= @lookup[:category] %></strong>
+        </div>
+      <% end %>
+
+      <% if @lookup[:pairs].blank? %>
+        <div style="margin-top: 8px; opacity:0.75;">No Guangyun payload rows found for this character.</div>
+      <% else %>
+        <ol style="margin-top: 10px;">
+          <% @lookup[:pairs].each do |pair| %>
+            <li style="margin-bottom: 6px;">
+              <% if pair[:fanqie].present? %>
+                <span style="white-space: nowrap;"><strong><%= pair[:fanqie] %></strong></span>
+              <% end %>
+              <span><%= pair[:definition].presence || "—" %></span>
+            </li>
+          <% end %>
+        </ol>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

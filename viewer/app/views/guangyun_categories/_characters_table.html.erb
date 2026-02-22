@@ -1,0 +1,80 @@
+<% category_param = local_assigns[:category].presence || @route_key %>
+
+<% if @total.to_i == 0 %>
+  <div style="padding:10px 12px; border:1px solid rgba(0,0,0,0.18); border-radius:10px; background: rgba(255,240,200,0.35); margin: 10px 0 14px 0;">
+    No entries were found for this Guangyun category.
+  </div>
+<% end %>
+
+<p>
+  Total characters: <%= @total %>. Page <%= @page %>. Per page: <%= @per %>.
+</p>
+
+<p>
+  Jump:
+  <% [50, 100, 200].each do |n| %>
+    <%= link_to n,
+      dictionary_guangyun_category_chars_path(category: category_param, page: 1, per: n),
+      data: { turbo_frame: "guangyun_chars" } %>
+  <% end %>
+  (<%= @total %> total)
+</p>
+
+<table class="dictionary-table">
+  <thead>
+    <tr>
+      <th>Char</th>
+      <th>Fanqie</th>
+      <th>Definition</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @characters.each do |cc| %>
+      <% cp = "U+#{cc.codepoint.to_s(16).upcase.rjust(4, "0")}" %>
+      <% pairs = (@guangyun[cc.id] && @guangyun[cc.id][:pairs]) ? @guangyun[cc.id][:pairs] : [] %>
+      <tr>
+        <td style="white-space: nowrap;">
+          <%= link_to cc.chr, character_path(cp), data: { turbo: false } %>
+          <span style="opacity:0.6; font-size: 0.9em; margin-left: 8px;"><%= cp %></span>
+        </td>
+        <td>
+          <% if pairs.blank? %>
+            <span style="opacity:0.6;">—</span>
+          <% else %>
+            <%= pairs.first[:fanqie].presence || "—" %>
+          <% end %>
+        </td>
+        <td>
+          <% if pairs.blank? %>
+            <span style="opacity:0.6;">—</span>
+          <% else %>
+            <%= pairs.first[:definition].presence || "—" %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div style="margin-top: 10px;">
+  <% prev_page = @page - 1 %>
+  <% next_page = @page + 1 %>
+
+  <% if prev_page >= 1 %>
+    <%= link_to "Prev",
+      dictionary_guangyun_category_chars_path(category: category_param, page: prev_page, per: @per),
+      data: { turbo_frame: "guangyun_chars" } %>
+  <% else %>
+    <span style="opacity:0.5;">Prev</span>
+  <% end %>
+
+  <span style="margin: 0 10px; opacity:0.7;">Page <%= @page %></span>
+
+  <% if (@page * @per) < @total %>
+    <%= link_to "Next",
+      dictionary_guangyun_category_chars_path(category: category_param, page: next_page, per: @per),
+      data: { turbo_frame: "guangyun_chars" } %>
+  <% else %>
+    <span style="opacity:0.5;">Next</span>
+  <% end %>
+</div>
