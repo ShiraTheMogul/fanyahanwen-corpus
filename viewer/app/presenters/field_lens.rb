@@ -216,7 +216,7 @@ PRONUNCIATION_SECTIONS = [
   { key: "translingual", label: "Translingual", fields: %w[kFanqie general_chinese], default_open: true },
   { key: "mandarin", label: "Mandarin Chinese", fields: %w[kMandarin kHanyuPinyin kHanyuPinlu kTGHZ2013 kXHC1983 laoguoyin], default_open: true },
   { key: "yue", label: "Yue Chinese", fields: %w[kCantonese], default_open: true },
-  { key: "middle_chinese", label: "Middle Chinese", fields: %w[kTang bs2014_mc bs2006_mc], default_open: false },
+  { key: "middle_chinese", label: "Middle Chinese", fields: %w[kTang bs2014_mc bs2006_mc guangyun_fanqie guangyun_rhyme], default_open: false },
   { key: "old_chinese", label: "Old Chinese", fields: %w[bs2014_oc], default_open: false },
   { key: "japonic", label: "Japonic", fields: %w[kJapanese kJapaneseOn kJapaneseKun jp_mora_romaji jp_manyogana_mora_table jp_manyogana_hiragana_etym jp_manyogana_katakana_etym jp_shakuon_kana jp_shakkun_kana jp_manyogana_reading], default_open: true },
   { key: "koreanic", label: "Koreanic", fields: %w[kHangul kKorean], default_open: true },
@@ -270,6 +270,8 @@ end
 		shuowen_entry
 		kRSAdobe_Japan1_6 # duplicate of kRSUnicode, only it is contributed by Adobe. This isn't very useful.
 		jp_manyogana_for
+		guangyun_rhyme_number
+		guangyun_category
 	].freeze
 	
 	# Pinyin helpers. 

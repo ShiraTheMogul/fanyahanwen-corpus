@@ -466,6 +466,32 @@ class CharactersController < ApplicationController
 		end
 		@kangxi_text_from = @cp_by_id[@kangxi_text_from_id]
 		@kangxi_text_inherited = @kangxi_text_from_id.present? && @kangxi_text_from_id != @character.id
+		# --- Guangyun (Siku) ---
+		# Guangyun payloads can have multiple rows per character. We show them verbatim
+		# in the character page's "廣韻" section, and also show the mapped rime category
+		# when present (from the juan/categories importer).
+		begin
+			gy_payload_rows = @properties.select { |p| p.field == "guangyun_payload_raw" && p.value.to_s.strip.present? }
+			# Prefer the source used by the payload rows; fall back to the common default.
+			gy_source = gy_payload_rows.map { |p| p.source.to_s }.reject(&:blank?).first
+			gy_source = "Guangyun (Siku)" if gy_source.blank?
+			payloads = gy_payload_rows
+				.select { |p| p.source.to_s == gy_source }
+				.map { |p| p.value.to_s.strip }
+				.reject(&:blank?)
+				.uniq
+			@guangyun_payload_raw = payloads.any? ? payloads.join("\n\n") : nil
+			cats = @properties
+				.select { |p| p.field == "guangyun_category" && p.value.to_s.strip.present? && (p.source.to_s == gy_source || p.source.to_s.blank?) }
+				.map { |p| p.value.to_s.strip }
+				.reject(&:blank?)
+				.uniq
+			@guangyun_category = cats.any? ? cats.join(" / ") : nil
+		rescue StandardError
+			@guangyun_payload_raw = nil
+			@guangyun_category = nil
+		end
+
 
 		# --- 6a) Kangxi radical-stroke info (do NOT inherit across variants) ---
 		# These fields are identifiers/index data for collation and glyph lookup,

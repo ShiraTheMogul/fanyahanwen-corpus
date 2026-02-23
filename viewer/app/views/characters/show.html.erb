@@ -251,6 +251,16 @@
     </div>
   <% end %>
 
+    <% if @guangyun_payload_raw.present? %>
+    <h3>廣韻 Guangyun</h3>
+
+    <p><strong>部:</strong> <%= view_text(@guangyun_category) %></p>
+
+    <div class="guangyun">
+      <%= simple_format(h(view_text(@guangyun_payload_raw))) %>
+    </div>
+  <% end %>
+
   <% if @variant_definition_blocks.present? %>
     <details class="variant-defs">
       <summary>

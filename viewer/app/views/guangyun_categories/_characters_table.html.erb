@@ -1,80 +1,146 @@
 <% category_param = local_assigns[:category].presence || @route_key %>
+<% def_param = (@def_source.presence || params[:def].presence || "guangyun").to_s %>
 
-<% if @total.to_i == 0 %>
-  <div style="padding:10px 12px; border:1px solid rgba(0,0,0,0.18); border-radius:10px; background: rgba(255,240,200,0.35); margin: 10px 0 14px 0;">
-    No entries were found for this Guangyun category.
-  </div>
-<% end %>
-
-<p>
+<p style="margin: 0 0 6px 0;">
   Total characters: <%= @total %>. Page <%= @page %>. Per page: <%= @per %>.
 </p>
 
-<p>
-  Jump:
-  <% [50, 100, 200].each do |n| %>
-    <%= link_to n,
-      dictionary_guangyun_category_chars_path(category: category_param, page: 1, per: n),
+<div style="display:flex; gap: 12px; align-items:center; flex-wrap:wrap; margin: 6px 0 12px 0;">
+  <% if @page > 1 %>
+    <%= link_to "← Prev",
+      dictionary_guangyun_category_chars_path(category: category_param, page: @page - 1, per: @per, def: def_param),
       data: { turbo_frame: "guangyun_chars" } %>
   <% end %>
-  (<%= @total %> total)
-</p>
 
-<table class="dictionary-table">
+  <% if (@page * @per) < @total %>
+    <%= link_to "Next →",
+      dictionary_guangyun_category_chars_path(category: category_param, page: @page + 1, per: @per, def: def_param),
+      data: { turbo_frame: "guangyun_chars" } %>
+  <% end %>
+
+  <span style="opacity:0.75;">
+    Jump:
+    <%= link_to "50",  dictionary_guangyun_category_chars_path(category: category_param, page: @page, per: 50,  def: def_param), data: { turbo_frame: "guangyun_chars" } %> |
+    <%= link_to "100", dictionary_guangyun_category_chars_path(category: category_param, page: @page, per: 100, def: def_param), data: { turbo_frame: "guangyun_chars" } %> |
+    <%= link_to "200", dictionary_guangyun_category_chars_path(category: category_param, page: @page, per: 200, def: def_param), data: { turbo_frame: "guangyun_chars" } %>
+  </span>
+
+  <span style="opacity:0.7;">(<%= @total %> total)</span>
+</div>
+
+<table style="width:100%; border-collapse: collapse;">
   <thead>
     <tr>
-      <th>Char</th>
-      <th>Fanqie</th>
-      <th>Definition</th>
+      <th style="text-align:left; padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.15);">Char</th>
+      <th style="text-align:left; padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.15);">Fanqie</th>
+      <th style="text-align:left; padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.15);">BS2014 (MC)</th>
+      <th style="text-align:left; padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.15);">Stimson 1976 (kTang)</th>
+      <th style="text-align:left; padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.15);">Mandarin</th>
+      <th style="text-align:left; padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.15);">Japanese</th>
+      <th style="text-align:left; padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.15);">Korean</th>
+      <th style="text-align:left; padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.15);">Vietnamese</th>
+      <th style="text-align:left; padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.15);">
+        <%= def_param == "unihan" ? "Unihan definition" : "Guangyun definition" %>
+      </th>
     </tr>
   </thead>
   <tbody>
     <% @characters.each do |cc| %>
-      <% cp = "U+#{cc.codepoint.to_s(16).upcase.rjust(4, "0")}" %>
-      <% pairs = (@guangyun[cc.id] && @guangyun[cc.id][:pairs]) ? @guangyun[cc.id][:pairs] : [] %>
+      <% pairs = (@pairs_by_id && @pairs_by_id[cc.id]) ? @pairs_by_id[cc.id] : [] %>
+
+      <% fanqies = pairs.map { |p| p[:fanqie].to_s.strip }.reject(&:blank?) %>
+      <% guang_defs = pairs.map { |p| p[:definition].to_s.strip }.reject(&:blank?) %>
+
+      <% bs = (@bs2014_mc[cc.id] || []).map(&:strip).reject(&:blank?) %>
+      <% kt = (@k_tang[cc.id] || []).map(&:strip).reject(&:blank?) %>
+
+      <% man = (@k_mandarin[cc.id] || []).map(&:strip).reject(&:blank?) %>
+      <% jpn = (@k_japanese[cc.id] || []).map(&:strip).reject(&:blank?) %>
+      <% kor = (@k_korean[cc.id] || []).map(&:strip).reject(&:blank?) %>
+      <% vie = (@k_vietnamese[cc.id] || []).map(&:strip).reject(&:blank?) %>
+
+      <% uni_defs = (@unihan_defs[cc.id] || []).map(&:strip).reject(&:blank?) %>
+
       <tr>
-        <td style="white-space: nowrap;">
-          <%= link_to cc.chr, character_path(cp), data: { turbo: false } %>
-          <span style="opacity:0.6; font-size: 0.9em; margin-left: 8px;"><%= cp %></span>
+        <td style="padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.07); font-size: 1.4rem; vertical-align: top;">
+          <%= link_to cc.chr,
+            character_path("U+#{cc.codepoint.to_s(16).upcase.rjust(4, "0")}"),
+            data: { turbo: false } %>
+          <div style="opacity:0.55; font-size: 0.9rem;"><%= "U+%04X" % cc.codepoint %></div>
         </td>
-        <td>
-          <% if pairs.blank? %>
-            <span style="opacity:0.6;">—</span>
+
+        <td style="padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.07); vertical-align: top; white-space: nowrap;">
+          <% if fanqies.any? %>
+            <%= safe_join(fanqies.uniq.map { |v| h(v) }, tag.br) %>
           <% else %>
-            <%= pairs.first[:fanqie].presence || "—" %>
+            —
           <% end %>
         </td>
-        <td>
-          <% if pairs.blank? %>
-            <span style="opacity:0.6;">—</span>
+
+        <td style="padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.07); vertical-align: top;">
+          <% if bs.any? %>
+            <%= safe_join(bs.uniq.map { |v| h(v) }, tag.br) %>
           <% else %>
-            <%= pairs.first[:definition].presence || "—" %>
+            —
+          <% end %>
+        </td>
+
+        <td style="padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.07); vertical-align: top;">
+          <% if kt.any? %>
+            <%= safe_join(kt.uniq.map { |v| h(v) }, tag.br) %>
+          <% else %>
+            —
+          <% end %>
+        </td>
+
+        <td style="padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.07); vertical-align: top;">
+          <% if man.any? %>
+            <%= safe_join(man.uniq.map { |v| h(v) }, tag.br) %>
+          <% else %>
+            —
+          <% end %>
+        </td>
+
+        <td style="padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.07); vertical-align: top;">
+          <% if jpn.any? %>
+            <%= safe_join(jpn.uniq.map { |v| h(v) }, tag.br) %>
+          <% else %>
+            —
+          <% end %>
+        </td>
+
+        <td style="padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.07); vertical-align: top;">
+          <% if kor.any? %>
+            <%= safe_join(kor.uniq.map { |v| h(v) }, tag.br) %>
+          <% else %>
+            —
+          <% end %>
+        </td>
+
+        <td style="padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.07); vertical-align: top;">
+          <% if vie.any? %>
+            <%= safe_join(vie.uniq.map { |v| h(v) }, tag.br) %>
+          <% else %>
+            —
+          <% end %>
+        </td>
+
+        <td style="padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.07); vertical-align: top;">
+          <% if def_param == "unihan" %>
+            <% if uni_defs.any? %>
+              <%= safe_join(uni_defs.uniq.map { |v| h(v) }, tag.br) %>
+            <% else %>
+              —
+            <% end %>
+          <% else %>
+            <% if guang_defs.any? %>
+              <%= safe_join(guang_defs.uniq.map { |v| h(v) }, tag.br) %>
+            <% else %>
+              —
+            <% end %>
           <% end %>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
-
-<div style="margin-top: 10px;">
-  <% prev_page = @page - 1 %>
-  <% next_page = @page + 1 %>
-
-  <% if prev_page >= 1 %>
-    <%= link_to "Prev",
-      dictionary_guangyun_category_chars_path(category: category_param, page: prev_page, per: @per),
-      data: { turbo_frame: "guangyun_chars" } %>
-  <% else %>
-    <span style="opacity:0.5;">Prev</span>
-  <% end %>
-
-  <span style="margin: 0 10px; opacity:0.7;">Page <%= @page %></span>
-
-  <% if (@page * @per) < @total %>
-    <%= link_to "Next",
-      dictionary_guangyun_category_chars_path(category: category_param, page: next_page, per: @per),
-      data: { turbo_frame: "guangyun_chars" } %>
-  <% else %>
-    <span style="opacity:0.5;">Next</span>
-  <% end %>
-</div>
