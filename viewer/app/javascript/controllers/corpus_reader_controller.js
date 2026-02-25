@@ -9,7 +9,7 @@ import { Controller } from "@hotwired/stimulus"
 //
 // State is stored in localStorage so it persists across page loads.
 export default class extends Controller {
-    static targets = ["viewbox", "content", "verticalBtn", "themeBtn", "punctBtn", "punctColorBtn", "judouBtn", "judouMenuBtn", "punctPresetBtn", "punctMenuBtn", "judouMenu", "punctOverlay", "punctPanel", "punctOkBtn", "punctCloseBtn", "verticalQuoteFormsChk"]
+    static targets = ["viewbox", "content", "verticalBtn", "themeBtn", "punctBtn", "punctColorBtn", "judouBtn", "judouMenuBtn", "punctPresetBtn", "punctMenuBtn", "judouMenu", "punctOverlay", "punctPanel", "punctOkBtn", "punctCloseBtn", "verticalQuoteFormsChk", "jpRepeatBtn"]
 
 
   connect() {
@@ -532,6 +532,7 @@ export default class extends Controller {
       vflow: getStr("corpus.verticalFlow", "rl"),
       theme: getStr("corpus.theme", "bamboo"),
       strip: getBool("corpus.stripPunct", false),
+      jpRepeatParticle: getBool("corpus.jpRepeatParticle", false),
       fontSizePx: getInt("corpus.fontSizePx", 20),
       rubyOnDemand: getBool("corpus.rubyOnDemand", false),
       judouOn: getBool("corpus.judouOn", true),
@@ -546,6 +547,7 @@ export default class extends Controller {
     window.localStorage.setItem("corpus.verticalFlow", (this._state.vflow || "rl").toString())
     window.localStorage.setItem("corpus.theme", (this._state.theme || "bamboo").toString())
     window.localStorage.setItem("corpus.stripPunct", this._state.strip ? "1" : "0")
+    window.localStorage.setItem("corpus.jpRepeatParticle", this._state.jpRepeatParticle ? "1" : "0")
     window.localStorage.setItem("corpus.fontSizePx", (this._state.fontSizePx || 20).toString())
     window.localStorage.setItem("corpus.rubyOnDemand", this._state.rubyOnDemand ? "1" : "0")
 
@@ -560,6 +562,7 @@ export default class extends Controller {
     if (typeof next.vflow !== "undefined") this._state.vflow = (next.vflow || "rl").toString()
     if (typeof next.theme !== "undefined") this._state.theme = (next.theme || "bamboo").toString()
     if (typeof next.strip !== "undefined") this._state.strip = !!next.strip
+    if (typeof next.jpRepeatParticle !== "undefined") this._state.jpRepeatParticle = !!next.jpRepeatParticle
     if (typeof next.fontSizePx !== "undefined") {
       const n = parseInt(next.fontSizePx, 10)
       if (Number.isFinite(n)) this._state.fontSizePx = n
@@ -649,6 +652,11 @@ export default class extends Controller {
       this.judouBtnTarget.textContent = this._state.judouOn ? "Judou: On" : "Judou: Off"
     }
 
+    if (this.hasJpRepeatBtnTarget) {
+      this.jpRepeatBtnTarget.setAttribute("aria-pressed", this._state.jpRepeatParticle ? "true" : "false")
+      this.jpRepeatBtnTarget.textContent = this._state.jpRepeatParticle ? "々: On" : "々: Off"
+    }
+
     // Sync Judou submenu checkboxes (punctuation vs underlining)
     if (this.hasJudouMenuTarget) {
       const punctChk = this.judouMenuTarget.querySelector('input[data-judou-opt="punct"]')
@@ -674,6 +682,8 @@ export default class extends Controller {
     } else {
       this.contentTarget.innerHTML = this._convertPunctuationHTML(this._originalHTML, preset)
     }
+
+    this._applyJpRepeatParticle()
     this._applyJudouColor()
     this._applyJudouWrappers()
 
@@ -692,6 +702,73 @@ export default class extends Controller {
       this._justToggledOrientation = false
     })
 
+  }
+
+  toggleJpRepeatParticle() {
+    this._state.jpRepeatParticle = !this._state.jpRepeatParticle
+    this._saveState()
+    this._apply()
+    this._broadcast()
+  }
+
+    _applyJpRepeatParticle() {
+    // Display-only: replace consecutive identical Han characters with the Japanese iteration mark 々.
+    // Works even when the renderer splits characters across nodes (e.g., ruby markup per-character).
+    if (!this._state.jpRepeatParticle) return
+
+    const root = this.contentTarget
+    if (!root) return
+
+    // 1) Within a single text node: 人人 -> 人々
+    const re = /(\p{Script=Han})\1/gu
+
+    // 2) Across node boundaries: track the last seen Han character across adjacent text nodes.
+    // We only consider nodes outside ruby <rt>/<rp>.
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode: (n) => {
+        const p = n.parentElement
+        if (!p) return NodeFilter.FILTER_REJECT
+        if (p.closest("rt, rp")) return NodeFilter.FILTER_REJECT
+        return NodeFilter.FILTER_ACCEPT
+      }
+    })
+
+    const nodes = []
+    while (walker.nextNode()) nodes.push(walker.currentNode)
+
+    let prevHan = null
+
+    for (const node of nodes) {
+      const txt = node.nodeValue || ""
+      if (txt.length === 0) continue
+
+      // First handle repeats inside this node.
+      let out = txt
+      if (re.test(out)) {
+        re.lastIndex = 0
+        while (re.test(out)) {
+          re.lastIndex = 0
+          out = out.replace(re, "$1々")
+        }
+      }
+      node.nodeValue = out
+
+      // Then handle the boundary case.
+      // We only do this when the node (after in-node replacements) is exactly ONE Han char.
+      // This matches the common "one character per node" output shape.
+      if (out.length === 1 && out.match(/^\p{Script=Han}$/u)) {
+        if (prevHan && out === prevHan) {
+          node.nodeValue = "々"
+          // Keep prevHan as-is so runs like AAAA become A々々々 (predictable).
+        } else {
+          prevHan = out
+        }
+      } else {
+        // Reset when we hit multi-char nodes or non-Han content.
+        // This avoids weird cross-paragraph replacements.
+        prevHan = null
+      }
+    }
   }
 
   
