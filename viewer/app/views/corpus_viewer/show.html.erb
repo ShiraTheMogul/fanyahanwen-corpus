@@ -28,34 +28,32 @@
 <% elsif @kind == :file %>
   <%= render "rightbar" %>
 
-<%# Metadata currently lives in the text file itself as leading lines that begin with "#".
-    We parse those lines here purely for display and for a couple of small conveniences
-    (AUTHOR label, Wikisource link). We do NOT change the main text rendering. %>
 <%
-  raw_text = @text.to_s
-  meta_raw_lines = raw_text.lines.take_while { |ln| ln.lstrip.start_with?("#") }
-  meta_lines = meta_raw_lines.map { |ln| ln.sub(/\A\s*#\s?/, "").rstrip }
-
   meta_hash = (defined?(@meta) && @meta.respond_to?(:to_h)) ? @meta.to_h : {}
 
-  meta_author = nil
-  meta_page_title = nil
+  meta_work       = meta_hash["Work"].to_s.strip
+  meta_author     = meta_hash["Author"].to_s.strip
+  meta_ws_cats    = meta_hash["Ws Categories"].to_s.strip
+  meta_page_title = meta_hash["Page title"].to_s.strip # to derive wikisource links
 
-  meta_lines.each do |ln|
-    if ln =~ /\AAUTHOR\s*:\s*(.*)\z/i
-      meta_author = $1.to_s.split("|", 2).first.to_s.strip
-    elsif ln =~ /\APAGE_TITLE\s*:\s*(.*)\z/i
-      meta_page_title = $1.to_s.split("|", 2).first.to_s.strip
-    end
+  derived_work = begin
+    File.basename(File.dirname(@rel_path.to_s))
+  rescue
+    ""
   end
-
-  if meta_author.blank? && meta_hash["AUTHOR"].present?
-    meta_author = meta_hash["AUTHOR"].to_s.split("|", 2).first.to_s.strip
-  end
-  if meta_page_title.blank? && meta_hash["PAGE_TITLE"].present?
-    meta_page_title = meta_hash["PAGE_TITLE"].to_s.split("|", 2).first.to_s.strip
-  end
+  meta_work = derived_work if meta_work.blank? && derived_work.present?
 %>
+
+  <div class="corpus-filebar">
+    <div class="corpus-headmeta">
+	  <% if meta_work.present? %>
+        <span class="corpus-headmeta-item"><strong>Work:</strong> <%= meta_work %></span>
+      <% end %>
+      <% if meta_author.present? %>
+        <span class="corpus-headmeta-item"><strong>Author:</strong> <%= meta_author %></span>
+      <% end %>
+    </div>
+  </div>
 
 
   <div class="corpus-reader" data-controller="corpus-reader corpus-annotations"
@@ -133,22 +131,16 @@
               hidden>
         Save
       </button>
-<% if meta_author.present? %>
-  <span aria-hidden="true" style="flex: 1 1 auto;"></span>
-  <span class="corpus-author-label" style="padding: 0 6px; opacity: 0.85; white-space: nowrap;">
-    作者：<%= meta_author %>
-  </span>
-<% end %>
 
     </div>
 
     <%# Metadata is parsed from leading "#" lines in the corpus file and is display-only. %>
-    <% if meta_lines.any? || (defined?(@meta) && @meta.present?) %>
+    <% if (defined?(@meta) && @meta.present?) %>
       <details class="corpus-metabox"
                style="margin: 0 0 10px; border: 1px solid rgba(0,0,0,0.10); border-radius: 12px; padding: 10px; background: #fff;">
         <summary class="corpus-metabox-summary">
   <strong>Metadata</strong>
-  <% if meta_page_title.present? %>
+  <% if meta_page_title.present? && meta_ws_cats.present? %>
     <span style="margin-left: 10px;">
       <%= link_to "维基文库", "https://zh.wikisource.org/wiki/#{ERB::Util.url_encode(meta_page_title)}",
                   target: "_blank", rel: "noopener",
@@ -159,9 +151,6 @@
 </summary>
         <div class="corpus-metabox-scroll" role="region" aria-label="Text metadata"
              style="max-height: 160px; overflow: auto; padding-top: 8px;">
-          <% if meta_lines.any? %>
-            <pre style="margin: 0; white-space: pre-wrap;"><%= h(meta_lines.join("\n")) %></pre>
-          <% else %>
           <dl class="corpus-metabox-dl" style="margin: 0;">
             <% @meta.each do |(k, v)| %>
               <div class="corpus-metabox-row" style="display: grid; grid-template-columns: 180px 1fr; gap: 10px; padding: 4px 0;">
@@ -174,7 +163,6 @@
               </div>
             <% end %>
           </dl>
-          <% end %>
         </div>
       </details>
     <% end %>

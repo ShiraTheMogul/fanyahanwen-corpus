@@ -21,6 +21,27 @@
   margin-bottom: 10px;
 }
 
+/* File path + headline metadata (Work / Title / Author) */
+.corpus-filebar {
+  margin: 8px 0 10px;
+}
+
+.corpus-filepath {
+  opacity: 0.85;
+  margin-bottom: 4px;
+}
+
+.corpus-headmeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.corpus-headmeta-item {
+  opacity: 0.95;
+  white-space: nowrap;
+}
+
 .corpus-btn {
   padding: 6px 10px;
   border: 1px solid #bbb;
