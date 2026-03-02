@@ -102,19 +102,6 @@
         Judou: On
       </button>
 
-      <button type="button"
-              class="corpus-btn"
-              title="Japanese iteration mark (々)"
-              aria-label="Japanese iteration mark (々)"
-              data-action="corpus-reader#toggleJpRepeatParticle"
-              data-corpus-reader-target="jpRepeatBtn"
-              aria-pressed="false">
-        々: Off
-      </button>
-
-
-
-
       
       <button type="button"
               class="corpus-btn"
@@ -258,6 +245,15 @@
             <label><input type="radio" name="cv_comma" value="keep" data-action="change->corpus-reader#setPunctOptionRadio"> Use ，</label>
             <label><input type="radio" name="cv_comma" value="dunhao" data-action="change->corpus-reader#setPunctOptionRadio"> Use 、</label>
           </fieldset>
+
+          <fieldset class="corpus-fieldset">
+            <legend>Repetition mark</legend>
+            <label><input type="radio" name="cv_repeat_mark" value="none" data-action="change->corpus-reader#setRepeatMarkRadio"> No repetition mark (default)</label>
+            <label><input type="radio" name="cv_repeat_mark" value="kanji" data-action="change->corpus-reader#setRepeatMarkRadio"> 々 (Horizontal)</label>
+            <label><input type="radio" name="cv_repeat_mark" value="vertical" data-action="change->corpus-reader#setRepeatMarkRadio"> 〻 (Vertical)</label>
+            <label><input type="radio" name="cv_repeat_mark" value="zhou" data-action="change->corpus-reader#setRepeatMarkRadio"> 二 (Western Zhou-style)</label>
+          </fieldset>
+
         </div>
       </div>
     </div>

@@ -675,3 +675,15 @@ html.dark-mode .cv-annotate-note {
 /* Reduce trailing-space blowout */
 .corpus-textflow { white-space: pre-line; }
 .corpus-note-block { white-space: normal; }
+
+/* === Repetition marks (々 / 〻 / 二) === */
+.jp-repeat-mark {
+  display: inline-block;
+  line-height: 1;
+}
+
+/* In horizontal flow, show the mark as a subscript (typographic convention). */
+.jp-repeat-sub {
+  vertical-align: sub;
+  font-size: 0.75em;
+}

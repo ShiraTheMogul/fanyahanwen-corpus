@@ -9,7 +9,7 @@ import { Controller } from "@hotwired/stimulus"
 //
 // State is stored in localStorage so it persists across page loads.
 export default class extends Controller {
-    static targets = ["viewbox", "content", "verticalBtn", "themeBtn", "punctBtn", "punctColorBtn", "judouBtn", "judouMenuBtn", "punctPresetBtn", "punctMenuBtn", "judouMenu", "punctOverlay", "punctPanel", "punctOkBtn", "punctCloseBtn", "verticalQuoteFormsChk", "jpRepeatBtn"]
+    static targets = ["viewbox", "content", "verticalBtn", "themeBtn", "punctBtn", "punctColorBtn", "judouBtn", "judouMenuBtn", "punctPresetBtn", "punctMenuBtn", "judouMenu", "punctOverlay", "punctPanel", "punctOkBtn", "punctCloseBtn", "verticalQuoteFormsChk"]
 
 
   connect() {
@@ -198,6 +198,8 @@ export default class extends Controller {
     setRadio("cv_q", o.question)
     setRadio("cv_ex", o.exclamation)
     setRadio("cv_comma", o.comma)
+
+    setRadio("cv_repeat_mark", (this._state?.jpRepeatMark || "none").toString())
 
     if (this.hasVerticalQuoteFormsChkTarget) {
       this.verticalQuoteFormsChkTarget.checked = !!o.verticalQuoteForms
@@ -505,64 +507,74 @@ export default class extends Controller {
     this._strippedHTML = null
     this._apply()
   }
-
   // ---- internals ----
 
   _loadState() {
-    const getBool = (k, fallback) => {
-      const v = window.localStorage.getItem(k)
-      if (v === null || v === undefined || v === "") return fallback
-      return v === "1"
-    }
-
-    const getStr = (k, fallback) => {
-      const v = window.localStorage.getItem(k)
-      if (v === null || v === undefined || v === "") return fallback
-      return v.toString()
-    }
-
-    const getInt = (k, fallback) => {
-      const v = window.localStorage.getItem(k)
-      const n = parseInt(v || "", 10)
-      return Number.isFinite(n) ? n : fallback
-    }
-
-    return {
-      vertical: getBool("corpus.vertical", true),
-      vflow: getStr("corpus.verticalFlow", "rl"),
-      theme: getStr("corpus.theme", "bamboo"),
-      strip: getBool("corpus.stripPunct", false),
-      jpRepeatParticle: getBool("corpus.jpRepeatParticle", false),
-      fontSizePx: getInt("corpus.fontSizePx", 20),
-      rubyOnDemand: getBool("corpus.rubyOnDemand", false),
-      judouOn: getBool("corpus.judouOn", true),
-      judouPunctOn: getBool("corpus.judouPunctOn", true),
-      judouUnderlineOn: getBool("corpus.judouUnderlineOn", true),
-      punctColor: getStr("corpus.punctColor", "red"),
-    }
+  const getBool = (k, fallback) => {
+    const v = window.localStorage.getItem(k)
+    if (v === null || v === undefined || v === "") return fallback
+    return v === "1"
   }
+
+  const getStr = (k, fallback) => {
+    const v = window.localStorage.getItem(k)
+    if (v === null || v === undefined || v === "") return fallback
+    return v.toString()
+  }
+
+  const getInt = (k, fallback) => {
+    const v = window.localStorage.getItem(k)
+    const n = parseInt(v || "", 10)
+    return Number.isFinite(n) ? n : fallback
+  }
+
+  // Repetition mark (display-only).
+  // Back-compat: if the old boolean toggle exists, treat it as the Japanese iteration mark.
+  const rawMark = getStr("corpus.jpRepeatMark", "")
+  const allowed = new Set(["none", "kanji", "vertical", "zhou"])
+  let jpRepeatMark = allowed.has(rawMark) ? rawMark : "none"
+  if (jpRepeatMark === "none" && getBool("corpus.jpRepeatParticle", false)) jpRepeatMark = "kanji"
+
+  return {
+    vertical: getBool("corpus.vertical", true),
+    vflow: getStr("corpus.verticalFlow", "rl"),
+    theme: getStr("corpus.theme", "bamboo"),
+    strip: getBool("corpus.stripPunct", false),
+    jpRepeatMark,
+    fontSizePx: getInt("corpus.fontSizePx", 20),
+    rubyOnDemand: getBool("corpus.rubyOnDemand", false),
+    judouOn: getBool("corpus.judouOn", true),
+    judouPunctOn: getBool("corpus.judouPunctOn", true),
+    judouUnderlineOn: getBool("corpus.judouUnderlineOn", true),
+    punctColor: getStr("corpus.punctColor", "red"),
+  }
+}
 
   _saveState() {
-    window.localStorage.setItem("corpus.vertical", this._state.vertical ? "1" : "0")
-    window.localStorage.setItem("corpus.verticalFlow", (this._state.vflow || "rl").toString())
-    window.localStorage.setItem("corpus.theme", (this._state.theme || "bamboo").toString())
-    window.localStorage.setItem("corpus.stripPunct", this._state.strip ? "1" : "0")
-    window.localStorage.setItem("corpus.jpRepeatParticle", this._state.jpRepeatParticle ? "1" : "0")
-    window.localStorage.setItem("corpus.fontSizePx", (this._state.fontSizePx || 20).toString())
-    window.localStorage.setItem("corpus.rubyOnDemand", this._state.rubyOnDemand ? "1" : "0")
+  window.localStorage.setItem("corpus.vertical", this._state.vertical ? "1" : "0")
+  window.localStorage.setItem("corpus.verticalFlow", (this._state.vflow || "rl").toString())
+  window.localStorage.setItem("corpus.theme", (this._state.theme || "bamboo").toString())
+  window.localStorage.setItem("corpus.stripPunct", this._state.strip ? "1" : "0")
+  window.localStorage.setItem("corpus.jpRepeatMark", (this._state.jpRepeatMark || "none").toString())
+  window.localStorage.setItem("corpus.fontSizePx", (this._state.fontSizePx || 20).toString())
+  window.localStorage.setItem("corpus.rubyOnDemand", this._state.rubyOnDemand ? "1" : "0")
 
-    window.localStorage.setItem("corpus.judouOn", this._state.judouOn ? "1" : "0")
-    window.localStorage.setItem("corpus.judouPunctOn", this._state.judouPunctOn ? "1" : "0")
-    window.localStorage.setItem("corpus.judouUnderlineOn", this._state.judouUnderlineOn ? "1" : "0")
-    window.localStorage.setItem("corpus.punctColor", (this._state.punctColor || "red").toString())
-  }
+  window.localStorage.setItem("corpus.judouOn", this._state.judouOn ? "1" : "0")
+  window.localStorage.setItem("corpus.judouPunctOn", this._state.judouPunctOn ? "1" : "0")
+  window.localStorage.setItem("corpus.judouUnderlineOn", this._state.judouUnderlineOn ? "1" : "0")
+  window.localStorage.setItem("corpus.punctColor", (this._state.punctColor || "red").toString())
+}
 
   _setState(next) {
     if (typeof next.vertical !== "undefined") this._state.vertical = !!next.vertical
     if (typeof next.vflow !== "undefined") this._state.vflow = (next.vflow || "rl").toString()
     if (typeof next.theme !== "undefined") this._state.theme = (next.theme || "bamboo").toString()
     if (typeof next.strip !== "undefined") this._state.strip = !!next.strip
-    if (typeof next.jpRepeatParticle !== "undefined") this._state.jpRepeatParticle = !!next.jpRepeatParticle
+    if (typeof next.jpRepeatMark !== "undefined") {
+      const v = (next.jpRepeatMark || "none").toString()
+      const allowed = new Set(["none", "kanji", "vertical", "zhou"])
+      this._state.jpRepeatMark = allowed.has(v) ? v : "none"
+    }
     if (typeof next.fontSizePx !== "undefined") {
       const n = parseInt(next.fontSizePx, 10)
       if (Number.isFinite(n)) this._state.fontSizePx = n
@@ -652,11 +664,6 @@ export default class extends Controller {
       this.judouBtnTarget.textContent = this._state.judouOn ? "Judou: On" : "Judou: Off"
     }
 
-    if (this.hasJpRepeatBtnTarget) {
-      this.jpRepeatBtnTarget.setAttribute("aria-pressed", this._state.jpRepeatParticle ? "true" : "false")
-      this.jpRepeatBtnTarget.textContent = this._state.jpRepeatParticle ? "々: On" : "々: Off"
-    }
-
     // Sync Judou submenu checkboxes (punctuation vs underlining)
     if (this.hasJudouMenuTarget) {
       const punctChk = this.judouMenuTarget.querySelector('input[data-judou-opt="punct"]')
@@ -683,7 +690,7 @@ export default class extends Controller {
       this.contentTarget.innerHTML = this._convertPunctuationHTML(this._originalHTML, preset)
     }
 
-    this._applyJpRepeatParticle()
+    this._applyRepeatMark()
     this._applyJudouColor()
     this._applyJudouWrappers()
 
@@ -704,72 +711,123 @@ export default class extends Controller {
 
   }
 
-  toggleJpRepeatParticle() {
-    this._state.jpRepeatParticle = !this._state.jpRepeatParticle
-    this._saveState()
-    this._apply()
-    this._broadcast()
+
+setRepeatMarkRadio(e) {
+  const v = (e?.target?.value || "none").toString()
+  const allowed = new Set(["none", "kanji", "vertical", "zhou"])
+  this._state.jpRepeatMark = allowed.has(v) ? v : "none"
+  this._saveState()
+  this._apply()
+  this._broadcast()
+}
+
+_repeatMarkChar() {
+  const v = (this._state?.jpRepeatMark || "none").toString()
+  if (v === "kanji") return "々"
+  if (v === "vertical") return "〻"
+  if (v === "zhou") return "㆓" // this is technically the kanbun character, but it actually ends up looking good and working well compared to the standard 二, so I like it.
+  return null
+}
+
+_applyRepeatMark() {
+  // Display-only: replace consecutive identical Han characters with an iteration mark.
+  // - none: do nothing
+  // - kanji: 々
+  // - vertical: 〻
+  // - zhou: ㆓
+  // In horizontal mode (non-vertical), the mark is rendered as a subscript via CSS.
+
+  const markChar = this._repeatMarkChar()
+  if (!markChar) return
+
+  const root = this.contentTarget
+  if (!root) return
+
+  const isVertical = !!this._state?.vertical
+
+  const makeMarkEl = () => {
+    const s = document.createElement("span")
+    s.className = isVertical ? "jp-repeat-mark" : "jp-repeat-mark jp-repeat-sub"
+    s.textContent = markChar
+    return s
   }
 
-    _applyJpRepeatParticle() {
-    // Display-only: replace consecutive identical Han characters with the Japanese iteration mark 々.
-    // Works even when the renderer splits characters across nodes (e.g., ruby markup per-character).
-    if (!this._state.jpRepeatParticle) return
-
-    const root = this.contentTarget
-    if (!root) return
-
-    // 1) Within a single text node: 人人 -> 人々
-    const re = /(\p{Script=Han})\1/gu
-
-    // 2) Across node boundaries: track the last seen Han character across adjacent text nodes.
-    // We only consider nodes outside ruby <rt>/<rp>.
-    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
-      acceptNode: (n) => {
-        const p = n.parentElement
-        if (!p) return NodeFilter.FILTER_REJECT
-        if (p.closest("rt, rp")) return NodeFilter.FILTER_REJECT
-        return NodeFilter.FILTER_ACCEPT
-      }
-    })
-
-    const nodes = []
-    while (walker.nextNode()) nodes.push(walker.currentNode)
-
-    let prevHan = null
-
-    for (const node of nodes) {
-      const txt = node.nodeValue || ""
-      if (txt.length === 0) continue
-
-      // First handle repeats inside this node.
-      let out = txt
-      if (re.test(out)) {
-        re.lastIndex = 0
-        while (re.test(out)) {
-          re.lastIndex = 0
-          out = out.replace(re, "$1々")
-        }
-      }
-      node.nodeValue = out
-
-      // Then handle the boundary case.
-      // We only do this when the node (after in-node replacements) is exactly ONE Han char.
-      // This matches the common "one character per node" output shape.
-      if (out.length === 1 && out.match(/^\p{Script=Han}$/u)) {
-        if (prevHan && out === prevHan) {
-          node.nodeValue = "々"
-          // Keep prevHan as-is so runs like AAAA become A々々々 (predictable).
-        } else {
-          prevHan = out
-        }
-      } else {
-        // Reset when we hit multi-char nodes or non-Han content.
-        // This avoids weird cross-paragraph replacements.
-        prevHan = null
-      }
+  const isHan = (ch) => {
+    try {
+      return /^\p{Script=Han}$/u.test(ch)
+    } catch (_e) {
+      // Very old browsers: fall back to a conservative CJK range.
+      return /^[\u3400-\u9FFF]$/.test(ch)
     }
   }
+
+  // Walk all text nodes outside ruby <rt>/<rp>.
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode: (n) => {
+      const p = n.parentElement
+      if (!p) return NodeFilter.FILTER_REJECT
+      if (p.closest("rt, rp")) return NodeFilter.FILTER_REJECT
+      return NodeFilter.FILTER_ACCEPT
+    }
+  })
+
+  const nodes = []
+  while (walker.nextNode()) nodes.push(walker.currentNode)
+
+  let prevHan = null
+
+  for (const node of nodes) {
+    const txt = node.nodeValue || ""
+    if (txt.length === 0) continue
+
+    // If the node is exactly one Han character, we can do the cross-node boundary logic.
+    if (txt.length === 1 && isHan(txt)) {
+      if (prevHan && txt === prevHan) {
+        node.parentNode.replaceChild(makeMarkEl(), node)
+        // Keep prevHan unchanged: AAAA => A + mark + mark + mark (predictable).
+      } else {
+        prevHan = txt
+      }
+      continue
+    }
+
+    // Multi-character node: do in-node run replacement.
+    // Example: 人人人 => 人 + mark + mark
+    const frag = document.createDocumentFragment()
+    let i = 0
+    let sawAny = false
+
+    while (i < txt.length) {
+      const ch = txt[i]
+      if (isHan(ch)) {
+        // Count run length of identical Han characters.
+        let j = i + 1
+        while (j < txt.length && txt[j] === ch) j++
+        const runLen = j - i
+
+        frag.appendChild(document.createTextNode(ch))
+        for (let k = 1; k < runLen; k++) frag.appendChild(makeMarkEl())
+
+        sawAny = sawAny || (runLen > 1)
+        prevHan = ch
+        i = j
+        continue
+      }
+
+      // Non-Han: copy as-is and reset boundary tracking.
+      frag.appendChild(document.createTextNode(ch))
+      prevHan = null
+      i++
+    }
+
+    if (sawAny) {
+      node.parentNode.replaceChild(frag, node)
+    } else {
+      // Still reset boundary when a node isn't a single Han character.
+      prevHan = null
+    }
+  }
+}
 
   
 
