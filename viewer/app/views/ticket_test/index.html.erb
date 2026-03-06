@@ -1,0 +1,137 @@
+<div class="cv-panel" data-controller="ticket-test">
+  <h2>Ticket Submission Test Page</h2>
+
+  <p class="cv-muted">
+    This page is for testing the Ticket ID + Key pipeline without an account system.
+    It never renders user content as HTML; responses are shown as plain text.
+  </p>
+
+  <div class="cv-grid-2">
+    <section class="cv-card">
+      <h3>Create a new ticket</h3>
+
+      <form data-ticket-test-target="createForm">
+        <div class="cv-field">
+          <label>Title</label>
+          <input name="title" type="text" required maxlength="200" />
+        </div>
+
+        <div class="cv-field">
+          <label>Summary</label>
+          <textarea name="summary" rows="3" maxlength="2000"></textarea>
+        </div>
+
+        <div class="cv-field">
+          <label>Reasoning</label>
+          <textarea name="reasoning" rows="5" maxlength="8000"></textarea>
+        </div>
+
+        <div class="cv-field">
+          <label>Source (e.g., corpus_viewer, dictionary)</label>
+          <input name="source" type="text" required maxlength="50" value="corpus_viewer" />
+        </div>
+
+        <div class="cv-field">
+          <label>Target ref (path / identifier)</label>
+          <input name="target_ref" type="text" required maxlength="500" placeholder="corpus/.../file.txt#L12" />
+        </div>
+
+        <div class="cv-field">
+          <label>Evidence links (one per line)</label>
+          <textarea name="evidence_links_text" rows="3" placeholder="https://example.com/source.pdf"></textarea>
+        </div>
+
+        <div class="cv-field">
+          <label>Evidence files (pdf/txt/png/jpg, max 20MB each)</label>
+          <input name="evidence_files" type="file" multiple />
+        </div>
+
+        <div class="cv-field">
+          <label>Unified diff (optional: .diff/.patch/.txt)</label>
+          <input name="diff_file" type="file" />
+        </div>
+
+        <hr />
+
+        <h4>Optional contact info (encrypted, auto-deleted)</h4>
+
+        <div class="cv-field">
+          <label>Name</label>
+          <input name="contact_name" type="text" maxlength="200" />
+        </div>
+
+        <div class="cv-field">
+          <label>Email</label>
+          <input name="contact_email" type="email" maxlength="254" />
+        </div>
+
+        <div class="cv-field">
+          <label>Notes</label>
+          <textarea name="contact_notes" rows="3" maxlength="2000"></textarea>
+        </div>
+
+        <div class="cv-field">
+          <label class="cv-checkbox">
+            <input type="checkbox" name="store_on_device" />
+            Store ticket key + contact on this device (localStorage)
+          </label>
+          <p class="cv-muted">
+            If unchecked, the key is shown once and you must save it yourself.
+          </p>
+        </div>
+
+        <div class="cv-actions">
+          <button type="submit" data-action="ticket-test#submitCreate">Create ticket</button>
+        </div>
+      </form>
+
+      <div class="cv-output">
+        <h4>One-time result</h4>
+        <pre data-ticket-test-target="createResult" class="cv-pre"></pre>
+        <div class="cv-actions">
+          <button type="button" data-action="ticket-test#downloadTicketTxt">Download .txt</button>
+          <button type="button" data-action="ticket-test#copyTicket">Copy to clipboard</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="cv-card">
+      <h3>Load / monitor an existing ticket</h3>
+
+      <form data-ticket-test-target="loadForm">
+        <div class="cv-field">
+          <label>Ticket ID (public_id)</label>
+          <input name="public_id" type="text" required />
+        </div>
+
+        <div class="cv-field">
+          <label>Ticket Key</label>
+          <input name="ticket_key" type="text" required />
+        </div>
+
+        <div class="cv-actions">
+          <button type="submit" data-action="ticket-test#loadTicket">Load ticket</button>
+        </div>
+      </form>
+
+      <div class="cv-output">
+        <h4>Ticket JSON (plain text)</h4>
+        <pre data-ticket-test-target="ticketJson" class="cv-pre"></pre>
+      </div>
+
+      <hr />
+
+      <h3>Tickets on this device (localStorage, opt-in)</h3>
+      <p class="cv-muted">
+        This list is rendered client-side only. Ticket keys never leave your browser unless you paste them.
+      </p>
+
+      <div class="cv-actions">
+        <button type="button" data-action="ticket-test#refreshLocalTickets">Refresh list</button>
+        <button type="button" data-action="ticket-test#clearLocalTickets">Clear local list</button>
+      </div>
+
+      <div data-ticket-test-target="localTickets" class="cv-local-tickets"></div>
+    </section>
+  </div>
+</div>

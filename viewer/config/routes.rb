@@ -52,8 +52,24 @@ Rails.application.routes.draw do
 	# Deterministic exercise APIs
 	post "/textbook/api/format_numeral", to: "textbook_api#format_numeral"
 	post "/textbook/api/parse_numeral",  to: "textbook_api#parse_numeral"
+	
+	# Edit submissions and tickets
+	namespace :api do
+	  post "/tickets", to: "edit_tickets#create"
+	  get  "/tickets/:public_id", to: "edit_tickets#show"
 
+	  post "/tickets/:public_id/messages", to: "edit_tickets#create_message"
 
+	  get  "/tickets/:public_id/evidence/:attachment_id", to: "edit_tickets#download_evidence"
+
+	  post "/tickets/:public_id/approve", to: "edit_tickets#approve"
+	  post "/tickets/:public_id/reject",  to: "edit_tickets#reject"
+	  post "/tickets/:public_id/close",   to: "edit_tickets#close"
+	end
+	
+	get "/ticket_test", to: "ticket_test#index"
+	
+	# fun
 	get "/fun/xuanji", to: "xuanji#show", as: :xuanji
 	post "/fun/xuanji/sync_colors", to: "xuanji#sync_colors", as: :xuanji_sync_colors
 	post "/fun/xuanji/phoneticize", to: "xuanji#phoneticize", as: :xuanji_phoneticize

@@ -10,7 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_28_150445) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_05_085000) do
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.integer "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.integer "record_id", null: false
+    t.string "record_type", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.bigint "byte_size", null: false
+    t.string "checksum"
+    t.string "content_type"
+    t.datetime "created_at", null: false
+    t.string "filename", null: false
+    t.string "key", null: false
+    t.text "metadata"
+    t.string "service_name", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
   create_table "character_codepoints", force: :cascade do |t|
     t.string "chr", null: false
     t.integer "codepoint", null: false
@@ -70,6 +92,30 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_28_150445) do
     t.index ["series_key", "order_index"], name: "index_daily_readings_on_series_key_and_order_index", unique: true
   end
 
+  create_table "edit_tickets", force: :cascade do |t|
+    t.datetime "closed_at"
+    t.datetime "created_at", null: false
+    t.json "diff_metadata", default: {}, null: false
+    t.json "evidence_links", default: [], null: false
+    t.string "key_digest", null: false
+    t.datetime "key_generated_at", null: false
+    t.string "key_salt", null: false
+    t.string "public_id", null: false
+    t.text "reasoning"
+    t.string "source", null: false
+    t.string "status", default: "open", null: false
+    t.text "summary"
+    t.json "tags", default: [], null: false
+    t.string "target_ref", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.index ["key_digest"], name: "index_edit_tickets_on_key_digest"
+    t.index ["public_id"], name: "index_edit_tickets_on_public_id", unique: true
+    t.index ["source"], name: "index_edit_tickets_on_source"
+    t.index ["status"], name: "index_edit_tickets_on_status"
+    t.index ["target_ref"], name: "index_edit_tickets_on_target_ref"
+  end
+
   create_table "kangxi_radicals", force: :cascade do |t|
     t.string "colloquial_names"
     t.datetime "created_at", null: false
@@ -111,6 +157,55 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_28_150445) do
     t.index ["number"], name: "index_shuowen_components_on_number", unique: true
   end
 
+  create_table "ticket_audit_events", force: :cascade do |t|
+    t.string "action", null: false
+    t.bigint "actor_id"
+    t.string "actor_label"
+    t.string "actor_type", null: false
+    t.datetime "created_at", null: false
+    t.integer "edit_ticket_id", null: false
+    t.json "metadata", default: {}, null: false
+    t.index ["action"], name: "index_ticket_audit_events_on_action"
+    t.index ["created_at"], name: "index_ticket_audit_events_on_created_at"
+    t.index ["edit_ticket_id"], name: "index_ticket_audit_events_on_edit_ticket_id"
+  end
+
+  create_table "ticket_contacts", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "edit_ticket_id", null: false
+    t.text "email"
+    t.datetime "expires_at", null: false
+    t.text "name"
+    t.text "notes"
+    t.datetime "updated_at", null: false
+    t.index ["edit_ticket_id"], name: "index_ticket_contacts_on_edit_ticket_id", unique: true
+    t.index ["expires_at"], name: "index_ticket_contacts_on_expires_at"
+  end
+
+  create_table "ticket_messages", force: :cascade do |t|
+    t.bigint "actor_id"
+    t.string "actor_label"
+    t.string "actor_type", null: false
+    t.text "body", null: false
+    t.datetime "created_at", null: false
+    t.integer "edit_ticket_id", null: false
+    t.index ["created_at"], name: "index_ticket_messages_on_created_at"
+    t.index ["edit_ticket_id"], name: "index_ticket_messages_on_edit_ticket_id"
+  end
+
+  create_table "ticket_moderator_tokens", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "last_used_at"
+    t.string "name", null: false
+    t.datetime "revoked_at"
+    t.string "scope", default: "review_only", null: false
+    t.string "token_digest", null: false
+    t.datetime "updated_at", null: false
+    t.index ["revoked_at"], name: "index_ticket_moderator_tokens_on_revoked_at"
+    t.index ["scope"], name: "index_ticket_moderator_tokens_on_scope"
+    t.index ["token_digest"], name: "index_ticket_moderator_tokens_on_token_digest", unique: true
+  end
+
   create_table "variant_mappings", force: :cascade do |t|
     t.integer "base_codepoint"
     t.datetime "created_at", null: false
@@ -146,9 +241,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_28_150445) do
     t.index ["name", "variant"], name: "index_xuanji_grids_on_name_and_variant", unique: true
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "character_component_memberships", "character_codepoints"
   add_foreign_key "character_properties", "character_codepoints"
   add_foreign_key "character_radical_memberships", "character_codepoints"
   add_foreign_key "laoguoyin_readings", "character_codepoints"
+  add_foreign_key "ticket_audit_events", "edit_tickets"
+  add_foreign_key "ticket_contacts", "edit_tickets"
+  add_foreign_key "ticket_messages", "edit_tickets"
   add_foreign_key "xuanji_cells", "xuanji_grids"
 end

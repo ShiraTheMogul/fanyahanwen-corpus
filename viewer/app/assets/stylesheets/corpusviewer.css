@@ -42,6 +42,106 @@
   white-space: nowrap;
 }
 
+/* --- Ticket test page (infrastructure testing UI) --- */
+
+.cv-panel {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 14px;
+  background: #fff;
+}
+
+.cv-muted {
+  opacity: 0.75;
+}
+
+.cv-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+@media (min-width: 980px) {
+  .cv-grid-2 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.cv-card {
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 12px;
+  background: #fafafa;
+}
+
+.cv-field {
+  margin: 10px 0;
+}
+
+.cv-field label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.cv-field input[type="text"],
+.cv-field input[type="email"],
+.cv-field textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 8px;
+  background: #fff;
+}
+
+.cv-checkbox {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-weight: 600;
+}
+
+.cv-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.cv-actions button {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 8px 10px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.cv-output {
+  margin-top: 12px;
+}
+
+.cv-pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 10px;
+  background: #fff;
+  max-height: 360px;
+  overflow: auto;
+}
+
+.cv-ticket-list {
+  margin: 10px 0 0;
+  padding-left: 18px;
+}
+
+.cv-ticket-list li {
+  margin: 6px 0;
+}
+
+
 .corpus-btn {
   padding: 6px 10px;
   border: 1px solid #bbb;
