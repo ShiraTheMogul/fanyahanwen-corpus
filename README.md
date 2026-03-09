@@ -197,6 +197,7 @@ The following texts were used or otherwise had an influence in the making of the
 - Lichtman, K., & VanPatten, B. (2021). Was Krashen right? Forty years later. Foreign Language Annals, 54(2), 283–305. https://doi.org/10.1111/flan.12552
 - Matsumoto J. (2025). 日本漢文の世界 [Nihon kanbun no sekai]. Kambun.jp. https://kambun.jp/
 - Meng, K. (2016). 孟子 [The Works of Mencius] (J. Legge & Y. Shi., Trans.; 1st ed.). 中州古籍出版社 [Zhongzhou Ancient Books Publishing House].
+- qwert-ly. (2026). Qwert-ly/xtext: Basic nlp(?) of classical Chinese (Version 1.0) [Python, VBA]. https://github.com/Qwert-ly/xtext
 - Shi, K. (Ed.). (2024). 日本汉诗选 [Anthology of Japanese Sinitic Poetry] (1st ed, Vols 1–2). 江西教育出版社 [Jiangxi Education Press].
 - Sturgeon, D. (2020). Digitizing Premodern Text with the Chinese Text Project. Journal of Chinese History, 4(2), 486–498. https://doi.org/10.1017/jch.2020.19
 - Sturgeon, D. (2021). Chinese Text Project: A dynamic digital library of premodern Chinese. Digital Scholarship in the Humanities, 36(Supplement_1), i101–i112. https://doi.org/10.1093/llc/fqz046
