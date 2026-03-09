@@ -1,5 +1,5 @@
 class TicketModeratorToken < ApplicationRecord
-  SCOPES = %w[review_only apply_patch].freeze
+  SCOPES = %w[review_only apply_patch admin].freeze
 
   validates :name, presence: true
   validates :scope, inclusion: { in: SCOPES }

@@ -55,6 +55,7 @@ Rails.application.routes.draw do
 	
 	# Edit submissions and tickets
 	namespace :api do
+	  get  "/tickets", to: "edit_tickets#index"
 	  post "/tickets", to: "edit_tickets#create"
 	  get  "/tickets/:public_id", to: "edit_tickets#show"
 

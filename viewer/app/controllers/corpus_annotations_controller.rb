@@ -19,6 +19,8 @@
 class CorpusAnnotationsController < ApplicationController
   protect_from_forgery with: :exception
 
+  before_action :require_ticket!, only: [:update]
+
   def show
     store = store_for_request
     data = store.read
@@ -48,7 +50,15 @@ class CorpusAnnotationsController < ApplicationController
 
     store.write({ "version" => (version <= 0 ? 1 : version), "items" => items })
 
-    render json: { ok: true }
+    # Record an audit entry on the ticket so moderation can see what happened.
+    @ticket.ticket_audit_events.create!(
+      action: "annotations_updated",
+      actor_type: (@moderator_token.present? ? "moderator" : "submitter"),
+      actor_label: (@moderator_token&.label),
+      metadata: { path: params[:path].to_s, item_count: items.length },
+    )
+
+    render json: { ok: true, ticket_id: @ticket.public_id }
   rescue ActionController::ParameterMissing
     render json: { error: "Missing annotations payload" }, status: :unprocessable_entity
   rescue SecurityError
@@ -56,6 +66,36 @@ class CorpusAnnotationsController < ApplicationController
   end
 
   private
+
+  def require_ticket!
+    ticket_id = params[:ticket_id].to_s.presence || request.get_header("HTTP_X_TICKET_ID").to_s.presence
+    if ticket_id.blank?
+      render json: { ok: false, error: "ticket_id is required" }, status: :unprocessable_entity
+      return
+    end
+
+    @ticket = EditTicket.find_by(public_id: ticket_id)
+    if @ticket.nil?
+      render json: { ok: false, error: "ticket not found" }, status: :not_found
+      return
+    end
+
+    # Allow maintainers to authenticate with a moderator token.
+    @moderator_token = EditTickets::ModeratorAuth.verify(request, scopes: %w[admin apply_patch review_only])
+
+    unless @moderator_token.present?
+      ticket_key = params[:ticket_key].to_s.presence || request.get_header("HTTP_X_TICKET_KEY").to_s.presence
+      unless EditTickets::KeyManager.new(@ticket).verify_submitter_key(ticket_key)
+        render json: { ok: false, error: "invalid ticket_key" }, status: :unauthorized
+        return
+      end
+    end
+
+    if @ticket.status.to_s != "open"
+      render json: { ok: false, error: "ticket is not open" }, status: :conflict
+      return
+    end
+  end
 
   def store_for_request
     root = Rails.configuration.x.corpus_root

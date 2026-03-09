@@ -3,8 +3,9 @@ module Api
     protect_from_forgery with: :null_session
 
     before_action :load_ticket, only: %i[show create_message approve reject close download_evidence]
+    before_action :load_moderator_token_if_present, only: %i[show index create_message download_evidence]
     before_action :require_submitter_key!, only: %i[show create_message download_evidence]
-    before_action :require_moderator!, only: %i[approve reject close]
+    before_action :require_moderator!, only: %i[index approve reject close]
 
     # POST /api/tickets
     # Creates a ticket and returns the key ONCE.
@@ -109,6 +110,36 @@ module Api
     end
 
     # GET /api/tickets/:public_id
+    def index
+      # Moderator-only listing endpoint.
+      # Optional filters: status, tag
+      status = params[:status].presence
+      tag = params[:tag].presence
+
+      scope = EditTicket.all.order(created_at: :desc)
+      scope = scope.where(status: status) if status
+      tickets = scope.limit(200).select(:public_id, :status, :tags, :title, :summary, :source, :target_ref, :created_at, :updated_at)
+      if tag
+        tickets = tickets.select { |t| Array(t.tags).map(&:to_s).include?(tag) }
+      end
+      tickets = tickets.first(100)
+
+      render json: {
+        ok: true,
+        tickets: tickets.map { |t| {
+          id: t.public_id,
+          status: t.status,
+          title: t.title,
+          summary: t.summary,
+          source: t.source,
+          target_ref: t.target_ref,
+          tags: t.tags,
+          created_at: t.created_at,
+          updated_at: t.updated_at,
+        } },
+      }
+    end
+
     def show
       render json: {
         ok: true,
@@ -206,12 +237,21 @@ module Api
     end
 
     private
+    def load_moderator_token_if_present
+      # If a moderator token header is present and valid, store it.
+      # This allows moderators to view tickets without needing the submitter key.
+      scopes = %w[review_only apply_patch admin]
+      @token_auth = EditTickets::ModeratorAuth.verify(request, scopes: scopes)
+    end
+
 
     def load_ticket
       @ticket = EditTicket.find_by!(public_id: params[:public_id])
     end
 
     def require_submitter_key!
+      return if @token_auth.present?
+
       key = request.get_header("HTTP_X_TICKET_KEY").to_s
       key = params[:ticket_key].to_s if key.blank?
 
@@ -226,8 +266,19 @@ module Api
     end
 
     def require_moderator!
-      @moderator = EditTickets::ModeratorAuth.authenticate!(request)
-      return if @moderator.present?
+      needed_scopes = case action_name
+      when "index"
+        %w[review_only apply_patch admin]
+      when "approve", "reject", "close"
+        %w[apply_patch admin]
+      else
+        %w[review_only apply_patch admin]
+      end
+
+      auth = EditTickets::ModeratorAuth.verify(request, scopes: needed_scopes)
+      @moderator = auth
+      @token_auth ||= auth
+      return if auth.present?
 
       render json: { ok: false, error: "moderator token required" }, status: 401
     end
