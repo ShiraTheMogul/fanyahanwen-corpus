@@ -3,7 +3,7 @@ module Api
     protect_from_forgery with: :null_session
 
     before_action :load_ticket, only: %i[show create_message approve reject close download_evidence]
-    before_action :load_moderator_token_if_present, only: %i[show index create_message download_evidence]
+    before_action :load_moderator_token_if_present, only: %i[show index create_message download_evidence resolve_key]
     before_action :require_submitter_key!, only: %i[show create_message download_evidence]
     before_action :require_moderator!, only: %i[index approve reject close]
 
@@ -218,6 +218,48 @@ module Api
       Rails.logger.error("[create_text_edit] #{e.class}: #{e.message}")
       Rails.logger.error(e.backtrace.join("\n"))
       render json: { ok: false, error: "internal error" }, status: 500
+    end
+
+    # POST /api/tickets/resolve_key
+    #
+    # Resolve a submitter key to its ticket so the public access UI can work
+    # with the key alone. This scans tickets server-side and returns the first
+    # matching ticket. That is acceptable here because ticket keys are high-entropy
+    # random secrets and the system is expected to have a manageable ticket count.
+    def resolve_key
+      return if performed?
+
+      key = request.get_header("HTTP_X_TICKET_KEY").to_s
+      key = params[:ticket_key].to_s if key.blank?
+      key = params.dig(:ticket, :ticket_key).to_s if key.blank?
+
+      if key.blank?
+        render json: { ok: false, error: "ticket key required" }, status: 422
+        return
+      end
+
+      ticket = nil
+      EditTicket.order(created_at: :desc).find_each(batch_size: 200) do |candidate|
+        if EditTickets::KeyManager.valid?(candidate.key_digest, key, candidate.key_salt)
+          ticket = candidate
+          break
+        end
+      end
+
+      unless ticket
+        render json: {
+          ok: false,
+          error: "invalid ticket key",
+          hint: "If your submission is blocked by security limits, you can always open a GitHub Issue instead."
+        }, status: 401
+        return
+      end
+
+      render json: {
+        ok: true,
+        ticket_id: ticket.public_id,
+        ticket: ticket_json(ticket)
+      }
     end
 
     # GET /api/tickets/:public_id

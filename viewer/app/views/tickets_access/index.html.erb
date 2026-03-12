@@ -1,0 +1,72 @@
+<div class="cv-panel" data-controller="ticket-access">
+  <h2>Ticket access</h2>
+
+  <p class="cv-muted">
+    Enter your Ticket Key to open and monitor your ticket without an account.
+    The optional saved-ticket list below is stored in this browser only.
+  </p>
+
+  <div class="cv-grid-2">
+    <section class="cv-card">
+      <h3>Open a ticket</h3>
+
+      <form data-action="submit->ticket-access#loadFromForm">
+        <div class="cv-field">
+          <label>Ticket Key</label>
+          <input type="text" autocomplete="off" spellcheck="false" data-ticket-access-target="ticketKeyInput" />
+        </div>
+
+        <div class="cv-actions">
+          <button type="submit">Open ticket</button>
+        </div>
+      </form>
+
+      <div class="cv-output">
+        <div data-ticket-access-target="status" class="cv-ticket-status"></div>
+      </div>
+
+      <div data-ticket-access-target="ticketPanel" hidden>
+        <h3>Ticket details</h3>
+        <pre class="cv-pre cv-pre-wrap" data-ticket-access-target="ticketSummary"></pre>
+
+        <div class="cv-actions">
+          <a href="#" data-ticket-access-target="rawJsonLink" hidden>Open raw JSON</a>
+        </div>
+
+        <div class="cv-output">
+          <h4>Messages</h4>
+          <div data-ticket-access-target="messages"></div>
+        </div>
+
+        <form data-action="submit->ticket-access#postMessage">
+          <div class="cv-field">
+            <label>Message to maintainers</label>
+            <textarea rows="4" maxlength="8000" data-ticket-access-target="messageBody"></textarea>
+          </div>
+          <div class="cv-actions">
+            <button type="submit">Send message</button>
+          </div>
+        </form>
+
+        <div class="cv-output">
+          <h4>Evidence files</h4>
+          <div data-ticket-access-target="evidence"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cv-card">
+      <h3>Tickets on this device</h3>
+      <p class="cv-muted">
+        This is opt-in and browser-only. Ticket keys stay here unless you choose to forget them.
+      </p>
+
+      <div class="cv-actions">
+        <button type="button" data-action="ticket-access#refreshSavedTickets">Refresh list</button>
+        <button type="button" data-action="ticket-access#clearSavedTickets">Clear local list</button>
+      </div>
+
+      <div data-ticket-access-target="savedTickets"></div>
+    </section>
+  </div>
+</div>

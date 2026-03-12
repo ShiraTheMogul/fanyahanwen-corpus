@@ -22,6 +22,8 @@ export default class extends Controller {
     "copyKeyBtn",
     "downloadKeyBtn",
     "openJsonLink",
+    "openTicketLink",
+    "storeOnDevice",
   ];
 
   static values = {
@@ -80,11 +82,12 @@ export default class extends Controller {
       this._setStatus("Ticket created ✅ (save the key below)");
       this._setTicket(data.ticket_id || (data.ticket && data.ticket.id) || "", data.ticket_key || "");
 
-      // Keep a local copy so you can refresh without losing the key.
-      // (Still: user should store it externally.)
       if (data.ticket_id && data.ticket_key) {
         try {
           window.localStorage.setItem(`ticket_key:${data.ticket_id}`, data.ticket_key);
+          if (this.hasStoreOnDeviceTarget && this.storeOnDeviceTarget.checked) {
+            this._storeTicketOnDevice(data.ticket_id, data.ticket_key);
+          }
         } catch (_e) {}
       }
     } catch (e) {
@@ -125,6 +128,26 @@ export default class extends Controller {
     URL.revokeObjectURL(url);
   }
 
+  _storeTicketOnDevice(ticketId, ticketKey) {
+    const key = "cv_ticket_keys_v1";
+    let list = [];
+    try {
+      list = JSON.parse(window.localStorage.getItem(key) || "[]");
+      if (!Array.isArray(list)) list = [];
+    } catch (_e) {
+      list = [];
+    }
+
+    list = list.filter((t) => t.ticket_id !== ticketId);
+    list.unshift({
+      ticket_id: ticketId,
+      ticket_key: ticketKey,
+      saved_at: new Date().toISOString(),
+    });
+
+    window.localStorage.setItem(key, JSON.stringify(list.slice(0, 25)));
+  }
+
   _csrfToken() {
     const el = document.querySelector('meta[name="csrf-token"]');
     return el ? el.content : "";
@@ -150,6 +173,16 @@ export default class extends Controller {
       } else {
         this.openJsonLinkTarget.hidden = true;
         this.openJsonLinkTarget.removeAttribute("href");
+      }
+    }
+
+    if (this.hasOpenTicketLinkTarget) {
+      if (id && key) {
+        this.openTicketLinkTarget.hidden = false;
+        this.openTicketLinkTarget.href = `/ticket_access?key=${encodeURIComponent(key)}`;
+      } else {
+        this.openTicketLinkTarget.hidden = true;
+        this.openTicketLinkTarget.removeAttribute("href");
       }
     }
   }

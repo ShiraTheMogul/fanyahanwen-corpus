@@ -857,3 +857,24 @@ html.dark-mode .cv-annotate-note {
 .cv-ticket-result { margin-top: 12px; }
 .cv-ticket-status { margin-bottom: 6px; font-weight: 600; }
 .cv-ticket-kv code { padding: 2px 6px; border-radius: 6px; background: rgba(0,0,0,0.08); }
+
+
+.cv-pre-wrap {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.cv-message-card {
+  border: 1px solid rgba(0,0,0,0.12);
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin-bottom: 8px;
+}
+
+.cv-ticket-list {
+  padding-left: 20px;
+}
+
+.cv-ticket-list li {
+  margin-bottom: 8px;
+}

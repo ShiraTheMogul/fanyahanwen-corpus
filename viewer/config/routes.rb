@@ -59,7 +59,9 @@ Rails.application.routes.draw do
 	get    "/tickets/login",  to: "tickets_sessions#new",     as: :tickets_login
 	post   "/tickets/login",  to: "tickets_sessions#create"
 	delete "/tickets/logout", to: "tickets_sessions#destroy", as: :tickets_logout
-
+	
+	get "/ticket_access", to: "tickets_access#index", as: :ticket_access
+	
 	resources :tickets, param: :public_id, only: %i[index show] do
 		member do
 			post :approve
@@ -77,14 +79,12 @@ Rails.application.routes.draw do
 	  post "/tickets", to: "edit_tickets#create"
 	  post "/tickets/text_edit", to: "edit_tickets#create_text_edit"
 	  get  "/tickets/:public_id", to: "edit_tickets#show"
-
 	  post "/tickets/:public_id/messages", to: "edit_tickets#create_message"
-
 	  get  "/tickets/:public_id/evidence/:attachment_id", to: "edit_tickets#download_evidence"
-
 	  post "/tickets/:public_id/approve", to: "edit_tickets#approve"
 	  post "/tickets/:public_id/reject",  to: "edit_tickets#reject"
 	  post "/tickets/:public_id/close",   to: "edit_tickets#close"
+	  post "/tickets/resolve_key", to: "edit_tickets#resolve_key"
 	end
 	
 	get "/ticket_test", to: "ticket_test#index"
