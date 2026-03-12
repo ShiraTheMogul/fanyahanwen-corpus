@@ -1,12 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
 
-// corpus-annotations: user-contributed named-entity annotations for corpus viewer.
-//
-// IMPORTANT COMPATIBILITY NOTES
-// - Avoid optional chaining (?.), nullish coalescing (??), and class field syntax,
-//   because some asset pipelines/minifiers choke on them.
-// - Keep Stimulus action method names stable: toggleView, toggleNotes, openColorSettings, etc.
-
 export default class extends Controller {
   static shouldLoad() { return true }
 
@@ -25,41 +18,33 @@ export default class extends Controller {
     this._contentEl = this.element.querySelector(".corpus-textflow")
     if (!this._contentEl) return
 
-    // state
     this._items = []
     this._dirty = false
     this._judouOn = true
     this._judouUnderlineOn = true
 
-    // view toggles
     this._viewEnabled = this._loadBool("corpus.annot.view.v1", true)
     this._notesEnabled = this._loadBool("corpus.annot.notes.v1", false)
     this._annotateEnabled = this._loadBool("corpus.annot.edit.v1", false)
 
-    // palette
     this._palette = this._loadPalette()
 
-    // hook buttons (label reflects state)
     this._syncButtons()
-
     this._syncAnnotateModeClass()
     this._bindAnnotateSelection()
 
-    // listen for reader option changes (judou on/off)
     this._onReaderOptionsBound = (ev) => this._onReaderOptions(ev)
     window.addEventListener("corpus-reader-options", this._onReaderOptionsBound)
     window.addEventListener("corpus-view-options", this._onReaderOptionsBound)
 
-    // re-apply after reader re-renders text DOM
     this._onReaderAppliedBound = () => this._applyAll()
     window.addEventListener("corpus-reader-applied", this._onReaderAppliedBound)
 
-    // load saved annotations
     this._loadFromServer()
       .then(() => this._applyAll())
       .catch((e) => console.warn("[corpus-annotations] load failed", e))
 
-    // apply palette to root
+    this._isTicketPreviewComposing = false
     this._applyPaletteToRoot()
   }
 
@@ -71,14 +56,13 @@ export default class extends Controller {
     if (this._onReaderAppliedBound) {
       window.removeEventListener("corpus-reader-applied", this._onReaderAppliedBound)
     }
-  
+
     this._hideAnnotatePopup()
     this._unbindAnnotateSelection()
-    // ensure class removed
+    this._hideTicketPanel()
+    this._clearSelectionPreview()
     document.documentElement.classList.remove("cv-annotate-mode")
   }
-
-  // ---------------- Stimulus action entrypoints ----------------
 
   toggleView() {
     this._viewEnabled = !this._viewEnabled
@@ -109,204 +93,301 @@ export default class extends Controller {
     if (this._colorsDlg && this._colorsDlg.open) this._colorsDlg.close()
   }
 
-  
-// ---------------- Annotate mode (interactive selection) ----------------
-
-_syncAnnotateModeClass() {
-  // Annotate mode disables dictionary tooltip interactions via han_tooltip_controller.
-  const root = document.documentElement
-  if (!root) return
-  if (this._annotateEnabled) {
-    root.classList.add("cv-annotate-mode")
-  } else {
-    root.classList.remove("cv-annotate-mode")
+  saveDraft() {
+    if (!this._dirty && (!this._items || this._items.length === 0)) return
+    this._ensureTicketPanel()
+    this._renderTicketPreview()
+    this._ticketPanel.hidden = false
   }
-}
 
-_bindAnnotateSelection() {
-  if (this._onMouseUpBound) return
-  this._onMouseUpBound = (ev) => this._onMouseUp(ev)
-  document.addEventListener("mouseup", this._onMouseUpBound)
-  document.addEventListener("keydown", (ev) => {
-    if (!this._annotateEnabled) return
-    if (ev.key === "Escape") this._hideAnnotatePopup()
-  })
-}
+  async submitTicket(event) {
+    event.preventDefault()
+    if (!this._items || this._items.length === 0) {
+      this._setTicketStatus("Add at least one annotation before creating a ticket.")
+      return
+    }
 
-_unbindAnnotateSelection() {
-  if (!this._onMouseUpBound) return
-  document.removeEventListener("mouseup", this._onMouseUpBound)
-  this._onMouseUpBound = null
-}
+    const title = this._ticketTitleInput ? this._ticketTitleInput.value.trim() : "Annotation edit"
+    const summary = this._ticketSummaryInput ? this._ticketSummaryInput.value.trim() : ""
+    const reasoning = this._ticketReasoningInput ? this._ticketReasoningInput.value.trim() : ""
+    const previewItems = this._buildPreviewItems()
 
-_onMouseUp(ev) {
-  if (!this._annotateEnabled) return
-  if (!this._contentEl) return
+    this._setTicketStatus("Creating ticket…")
+    this._setTicketResult("", "")
 
-  // Only act if selection touches the corpus textflow.
-  const sel = window.getSelection ? window.getSelection() : null
-  if (!sel || sel.rangeCount === 0) return
-  const range = sel.getRangeAt(0)
-  if (!range) return
-
-  // Ignore empty selection.
-  const text = (sel.toString ? sel.toString() : "").trim()
-  if (!text) return
-
-  // Ensure selection is inside corpus textflow.
-  const container = range.commonAncestorContainer
-  const node = (container && container.nodeType === 1) ? container : (container ? container.parentElement : null)
-  if (!node) return
-  if (!this._contentEl.contains(node)) return
-
-  const r = this._selectionToIdxRange(range)
-  if (!r) return
-
-  this._showAnnotatePopup(r, range)
-}
-
-_selectionToIdxRange(range) {
-  // Convert DOM Range -> corpus idx span bounds.
-  const spans = this._spans()
-  if (!spans.length) return null
-
-  let minIdx = null
-  let maxIdx = null
-
-  for (let i = 0; i < spans.length; i++) {
-    const el = spans[i]
     try {
-      // intersectsNode exists on Range in all modern browsers.
-      if (!range.intersectsNode(el)) continue
-    } catch (_) {
-      continue
-    }
-    const idx = Number(el.getAttribute("data-corpus-idx"))
-    if (Number.isNaN(idx)) continue
-    if (minIdx === null || idx < minIdx) minIdx = idx
-    if (maxIdx === null || idx > maxIdx) maxIdx = idx
-  }
+      const res = await fetch(this._endpoint(), {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          "X-CSRF-Token": this._csrfToken()
+        },
+        body: JSON.stringify({
+          path: this.pathValue,
+          source: "corpus_viewer",
+          title: title || "Annotation edit",
+          summary,
+          reasoning,
+          annotations: { version: 1, items: this._items },
+          preview_items: previewItems
+        })
+      })
 
-  if (minIdx === null || maxIdx === null) return null
-  return { start: minIdx, end: maxIdx }
-}
+      const data = await res.json().catch(() => null)
+      if (!res.ok || !data || data.ok !== true) {
+        const msg = (data && (data.error || data.detail)) ? (data.error || data.detail) : `HTTP ${res.status}`
+        this._setTicketStatus(`Error: ${msg}`)
+        return
+      }
 
-_showAnnotatePopup(bounds, range) {
-  this._hideAnnotatePopup()
+      this._setTicketStatus("Ticket created. Save the key below.")
+      this._setTicketResult(data.ticket_id || (data.ticket && data.ticket.id) || "", data.ticket_key || "")
 
-  const rect = range.getBoundingClientRect ? range.getBoundingClientRect() : null
-  const x = rect ? (rect.left + window.scrollX) : 20
-  const y = rect ? (rect.bottom + window.scrollY + 6) : 20
+      if (data.ticket_id && data.ticket_key) {
+        try {
+          window.localStorage.setItem(`ticket_key:${data.ticket_id}`, data.ticket_key)
+          if (this._storeOnDeviceCheckbox && this._storeOnDeviceCheckbox.checked) {
+            this._storeTicketOnDevice(data.ticket_id, data.ticket_key, title || "Annotation edit")
+          }
+        } catch (_) {}
+      }
 
-  const pop = document.createElement("div")
-  pop.className = "cv-annotate-popover"
-  pop.style.position = "absolute"
-  pop.style.left = Math.max(8, x) + "px"
-  pop.style.top = Math.max(8, y) + "px"
-  pop.style.zIndex = "9999"
-
-  pop.innerHTML = `
-    <div class="cv-annotate-row">
-      <button type="button" data-kind="title"  class="cv-annotate-kind">〖Title〗</button>
-      <button type="button" data-kind="person" class="cv-annotate-kind">丨Person</button>
-      <button type="button" data-kind="place"  class="cv-annotate-kind">‖Place</button>
-      <button type="button" data-kind="office" class="cv-annotate-kind">﹏Office</button>
-    </div>
-    <div class="cv-annotate-row">
-      <textarea class="cv-annotate-note" rows="2" placeholder="Note (optional)"></textarea>
-    </div>
-    <div class="cv-annotate-row cv-annotate-actions">
-      <button type="button" class="cv-annotate-cancel">Cancel</button>
-      <button type="button" class="cv-annotate-apply primary">Apply</button>
-    </div>
-  `
-
-  const onClick = (ev) => {
-    const t = ev.target
-    if (!t) return
-
-    if (t.classList.contains("cv-annotate-cancel")) {
-      this._hideAnnotatePopup()
-      return
-    }
-
-    if (t.classList.contains("cv-annotate-kind")) {
-      // highlight selected kind button
-      const btns = pop.querySelectorAll(".cv-annotate-kind")
-      btns.forEach((b) => b.classList.remove("active"))
-      t.classList.add("active")
-      return
-    }
-
-    if (t.classList.contains("cv-annotate-apply")) {
-      const active = pop.querySelector(".cv-annotate-kind.active")
-      const kind = active ? active.getAttribute("data-kind") : null
-      if (!kind) return
-
-      const noteEl = pop.querySelector(".cv-annotate-note")
-      const note = noteEl ? String(noteEl.value || "").trim() : ""
-
-      this._items.push({ start: bounds.start, end: bounds.end, kind: kind, note: note })
-      this._dirty = true
+      this._dirty = false
       this._syncButtons()
-      this._applyAll()
-      this._hideAnnotatePopup()
-
-      // clear selection
-      const sel = window.getSelection ? window.getSelection() : null
-      if (sel && sel.removeAllRanges) sel.removeAllRanges()
+    } catch (e) {
+      this._setTicketStatus(`Error: ${e.message || e}`)
     }
   }
 
-  pop.addEventListener("click", onClick)
+  copyTicketKey(event) {
+    event.preventDefault()
+    if (!this._ticketKeyValue) return
+    navigator.clipboard.writeText(this._ticketKeyValue.textContent || "")
+  }
 
-  // Click outside closes.
-  this._onDocClickClose = (ev) => {
-    if (!pop.isConnected) return
-    if (pop.contains(ev.target)) return
+  downloadTicketKey(event) {
+    event.preventDefault()
+    const id = this._ticketIdValue ? this._ticketIdValue.textContent : ""
+    const key = this._ticketKeyValue ? this._ticketKeyValue.textContent : ""
+    if (!id || !key) return
+
+    const content = `TICKET ID: ${id}\nTICKET KEY: ${key}\n`
+    const blob = new Blob([content], { type: "text/plain;charset=utf-8" })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement("a")
+    a.href = url
+    a.download = `ticket_${id}_key.txt`
+    document.body.appendChild(a)
+    a.click()
+    a.remove()
+    URL.revokeObjectURL(url)
+  }
+
+  closeTicketPanel(event) {
+    if (event) event.preventDefault()
+    this._hideTicketPanel()
+  }
+
+  _syncAnnotateModeClass() {
+    const root = document.documentElement
+    if (!root) return
+    if (this._annotateEnabled) root.classList.add("cv-annotate-mode")
+    else root.classList.remove("cv-annotate-mode")
+  }
+
+  _bindAnnotateSelection() {
+    if (this._onMouseUpBound) return
+    this._onMouseUpBound = (ev) => this._onMouseUp(ev)
+    document.addEventListener("mouseup", this._onMouseUpBound)
+    this._onEscBound = (ev) => {
+      if (!this._annotateEnabled) return
+      if (ev.key === "Escape") { this._hideAnnotatePopup(); this._clearSelectionPreview() }
+    }
+    document.addEventListener("keydown", this._onEscBound)
+  }
+
+  _unbindAnnotateSelection() {
+    if (this._onMouseUpBound) {
+      document.removeEventListener("mouseup", this._onMouseUpBound)
+      this._onMouseUpBound = null
+    }
+    if (this._onEscBound) {
+      document.removeEventListener("keydown", this._onEscBound)
+      this._onEscBound = null
+    }
+  }
+
+  _onMouseUp() {
+    if (!this._annotateEnabled || !this._contentEl) return
+    if (this._isInteractiveField(document.activeElement)) return
+
+    const sel = window.getSelection ? window.getSelection() : null
+    if (!sel || sel.rangeCount === 0) return
+    const range = sel.getRangeAt(0)
+    if (!range) return
+
+    const text = (sel.toString ? sel.toString() : "").trim()
+    if (!text) return
+
+    const container = range.commonAncestorContainer
+    const node = (container && container.nodeType === 1) ? container : (container ? container.parentElement : null)
+    if (!node || !this._contentEl.contains(node)) return
+
+    const r = this._selectionToIdxRange(range)
+    if (!r) return
+
+    this._showAnnotatePopup(r, range)
+  }
+
+  _selectionToIdxRange(range) {
+    const spans = this._spans()
+    if (!spans.length) return null
+
+    let minIdx = null
+    let maxIdx = null
+
+    for (let i = 0; i < spans.length; i++) {
+      const el = spans[i]
+      try {
+        if (!range.intersectsNode(el)) continue
+      } catch (_) {
+        continue
+      }
+      const idx = Number(el.getAttribute("data-corpus-idx"))
+      if (Number.isNaN(idx)) continue
+      if (minIdx === null || idx < minIdx) minIdx = idx
+      if (maxIdx === null || idx > maxIdx) maxIdx = idx
+    }
+
+    if (minIdx === null || maxIdx === null) return null
+    return { start: minIdx, end: maxIdx + 1 }
+  }
+
+  _showAnnotatePopup(bounds, range) {
     this._hideAnnotatePopup()
-  }
-  setTimeout(() => document.addEventListener("mousedown", this._onDocClickClose), 0)
 
-  document.body.appendChild(pop)
-  this._popupEl = pop
-}
+    const rect = range.getBoundingClientRect ? range.getBoundingClientRect() : null
+    const x = rect ? (rect.left + window.scrollX) : 20
+    const y = rect ? (rect.bottom + window.scrollY + 6) : 20
 
-_hideAnnotatePopup() {
-  if (this._onDocClickClose) {
-    document.removeEventListener("mousedown", this._onDocClickClose)
-    this._onDocClickClose = null
-  }
-  if (this._popupEl && this._popupEl.isConnected) {
-    this._popupEl.remove()
-  }
-  this._popupEl = null
-}
+    const pop = document.createElement("div")
+    pop.className = "cv-annotate-popover"
+    pop.style.position = "absolute"
+    pop.style.left = Math.max(8, x) + "px"
+    pop.style.top = Math.max(8, y) + "px"
+    pop.style.zIndex = "9999"
 
-// ---------------- Reader option integration ----------------
+    pop.innerHTML = `
+      <div class="cv-annotate-row cv-annotate-selection-preview-row">
+        <div class="cv-annotate-selection-preview">${this._escapeHtml(this._textForRange(bounds.start, bounds.end) || "(no text selected)")}</div>
+      </div>
+      <div class="cv-annotate-row">
+        <button type="button" data-kind="title" class="cv-annotate-kind">〖Title〗</button>
+        <button type="button" data-kind="person" class="cv-annotate-kind">丨Person</button>
+        <button type="button" data-kind="place" class="cv-annotate-kind">‖Place</button>
+        <button type="button" data-kind="office" class="cv-annotate-kind">﹏Office</button>
+      </div>
+      <div class="cv-annotate-row">
+        <textarea class="cv-annotate-note" rows="3" placeholder="Note (optional)" aria-label="Annotation note"></textarea>
+      </div>
+      <div class="cv-annotate-row cv-annotate-actions">
+        <button type="button" class="cv-annotate-cancel">Cancel</button>
+        <button type="button" class="cv-annotate-apply primary">Apply</button>
+      </div>
+    `
+
+    const onClick = (ev) => {
+      const t = ev.target
+      if (!t) return
+
+      if (t.classList.contains("cv-annotate-cancel")) {
+        this._hideAnnotatePopup()
+        this._clearSelectionPreview()
+        return
+      }
+
+      if (t.classList.contains("cv-annotate-kind")) {
+        const btns = pop.querySelectorAll(".cv-annotate-kind")
+        btns.forEach((b) => b.classList.remove("active"))
+        t.classList.add("active")
+        return
+      }
+
+      if (t.classList.contains("cv-annotate-apply")) {
+        const active = pop.querySelector(".cv-annotate-kind.active")
+        const kind = active ? active.getAttribute("data-kind") : null
+        if (!kind) return
+
+        const noteEl = pop.querySelector(".cv-annotate-note")
+        const note = noteEl ? String(noteEl.value || "").trim() : ""
+
+        this._items.push({ start: bounds.start, end: bounds.end, kind: kind, note: note })
+        this._dirty = true
+        this._syncButtons()
+        this._applyAll()
+        this._hideAnnotatePopup()
+        this._clearSelectionPreview()
+
+        const sel = window.getSelection ? window.getSelection() : null
+        if (sel && sel.removeAllRanges) sel.removeAllRanges()
+      }
+    }
+
+    const noteBox = pop.querySelector(".cv-annotate-note")
+    if (noteBox) {
+      noteBox.setAttribute("lang", "zh")
+      noteBox.setAttribute("autocapitalize", "off")
+      noteBox.setAttribute("autocomplete", "off")
+      noteBox.setAttribute("autocorrect", "off")
+      noteBox.setAttribute("spellcheck", "false")
+      noteBox.addEventListener("compositionstart", () => { this._isPopupComposing = true })
+      noteBox.addEventListener("compositionend", () => { this._isPopupComposing = false })
+    }
+
+    pop.addEventListener("click", onClick)
+
+    this._onDocClickClose = (ev) => {
+      if (this._isPopupComposing) return
+      if (!pop.isConnected) return
+      if (pop.contains(ev.target)) return
+      this._hideAnnotatePopup()
+      this._clearSelectionPreview()
+    }
+    setTimeout(() => document.addEventListener("mousedown", this._onDocClickClose), 0)
+
+    document.body.appendChild(pop)
+    this._popupEl = pop
+    this._previewSelection(bounds.start, bounds.end)
+  }
+
+  _hideAnnotatePopup() {
+    if (this._onDocClickClose) {
+      document.removeEventListener("mousedown", this._onDocClickClose)
+      this._onDocClickClose = null
+    }
+    if (this._popupEl && this._popupEl.isConnected) this._popupEl.remove()
+    this._popupEl = null
+  }
 
   _onReaderOptions(ev) {
     const detail = (ev && ev.detail) ? ev.detail : {}
 
     const judou = (typeof detail.judouOn === "boolean") ? detail.judouOn
-                : (typeof detail.judou === "boolean") ? detail.judou
-                : null
+      : (typeof detail.judou === "boolean") ? detail.judou
+      : null
     if (judou !== null) this._judouOn = judou
 
     const ul = (typeof detail.judouUnderlineOn === "boolean") ? detail.judouUnderlineOn
-             : (typeof detail.judouUnderline === "boolean") ? detail.judouUnderline
-             : null
+      : (typeof detail.judouUnderline === "boolean") ? detail.judouUnderline
+      : null
     if (ul !== null) this._judouUnderlineOn = ul
 
-    // Re-apply layers after option change.
     this._applyAll()
     this._syncButtons()
   }
 
-  // ---------------- Persistence ----------------
-
   _endpoint() {
-    // Prefer explicit urlValue; fallback to /corpus_annotations
     const url = (this.hasUrlValue && this.urlValue) ? this.urlValue : "/corpus_annotations"
     const path = (this.hasPathValue && this.pathValue) ? this.pathValue : null
     if (!path) return null
@@ -321,43 +402,21 @@ _hideAnnotatePopup() {
     const res = await fetch(ep, { headers: { "Accept": "application/json" } })
     if (!res.ok) return
     const data = await res.json()
-    const items = (data && data.items && Array.isArray(data.items)) ? data.items : []
-    this._items = items
+    this._items = (data && data.items && Array.isArray(data.items)) ? data.items : []
     this._dirty = false
     this._syncButtons()
   }
-
-  async save() {
-    const ep = this._endpoint()
-    if (!ep) return
-    const payload = { version: 1, items: this._items }
-    const res = await fetch(ep, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Accept": "application/json" },
-      body: JSON.stringify(payload)
-    })
-    if (!res.ok) {
-      console.warn("[corpus-annotations] save failed", res.status)
-      return
-    }
-    this._dirty = false
-    this._syncButtons()
-  }
-
-  // ---------------- Rendering ----------------
 
   _applyAll() {
     if (!this._contentEl) return
 
-    // Underlines are judou-derived: they follow Judou master switch and the Judou-underlining option.
     this._clearAllHighlights()
-    if (this._judouOn && this._judouUnderlineOn) {
-      this._applyHighlights()
-    }
+    if (this._judouOn && this._judouUnderlineOn) this._applyHighlights()
 
-    // Out-of-text notes are independent of Judou.
     if (this._notesEnabled) this._renderNotesPanel()
     else this._removeNotesPanel()
+
+    if (this._ticketPanel && !this._ticketPanel.hidden) this._renderTicketPreview()
   }
 
   _spans() {
@@ -374,8 +433,6 @@ _hideAnnotatePopup() {
   }
 
   _applyHighlights() {
-    // Apply underline classes for saved items.
-    // Expected item shape: { start, end, kind, note? }
     const spans = this._spans()
     if (!spans.length) return
 
@@ -394,7 +451,6 @@ _hideAnnotatePopup() {
         if (idx >= start && idx < end) spans[i].classList.add(cls)
       }
 
-      // If it has a user note, mark the first char with an anchor marker.
       if (it.note && typeof it.note === "string" && it.note.trim() !== "") {
         const anchor = this._findSpanByIdx(start)
         if (anchor) {
@@ -422,14 +478,10 @@ _hideAnnotatePopup() {
     return null
   }
 
-  // ---------------- Notes panel (user-added annotation notes) ----------------
-
   _renderNotesPanel() {
-    // Collect anchors (spans with data-ne-note)
     const anchors = Array.from(this._contentEl.querySelectorAll("span.cch[data-ne-note]"))
     if (!anchors.length) { this._removeNotesPanel(); return }
 
-    // Ensure panel exists
     let panel = this.element.querySelector(".cv-user-notes")
     if (!panel) {
       panel = document.createElement("div")
@@ -445,7 +497,6 @@ _hideAnnotatePopup() {
     for (let i = 0; i < anchors.length; i++) {
       const note = anchors[i].getAttribute("data-ne-note") || ""
       const marker = this._chineseNumeral(i + 1)
-      // mark anchor with marker
       anchors[i].setAttribute("data-note-marker", marker)
 
       const li = document.createElement("li")
@@ -455,18 +506,16 @@ _hideAnnotatePopup() {
   }
 
   _removeNotesPanel() {
-  const panel = this.element.querySelector(".cv-user-notes")
-  if (panel) panel.remove()
+    const panel = this.element.querySelector(".cv-user-notes")
+    if (panel) panel.remove()
 
-  // Remove numeric markers from anchored characters.
-  if (!this._contentEl) return
-  const anchors = Array.from(this._contentEl.querySelectorAll('span.cch[data-note-marker]'))
-  anchors.forEach((el) => el.removeAttribute("data-note-marker"))
-}
+    if (!this._contentEl) return
+    const anchors = Array.from(this._contentEl.querySelectorAll('span.cch[data-note-marker]'))
+    anchors.forEach((el) => el.removeAttribute("data-note-marker"))
+  }
 
-_chineseNumeral(n) {
-    // 1-99 is enough for now.
-    const digits = ["零","一","二","三","四","五","六","七","八","九"]
+  _chineseNumeral(n) {
+    const digits = ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九"]
     if (n < 10) return digits[n]
     if (n === 10) return "十"
     if (n < 20) return "十" + digits[n % 10]
@@ -484,31 +533,28 @@ _chineseNumeral(n) {
       .replace(/'/g, "&#039;")
   }
 
-  // ---------------- Colour settings ----------------
-
   _openColors() {
     this._ensureColorsDialog()
     if (!this._colorsDlg) return
 
     const presetSel = this._colorsDlg.querySelector("#cv_color_preset")
-    const inTitle  = this._colorsDlg.querySelector("#cv_color_title")
+    const inTitle = this._colorsDlg.querySelector("#cv_color_title")
     const inPerson = this._colorsDlg.querySelector("#cv_color_person")
-    const inPlace  = this._colorsDlg.querySelector("#cv_color_place")
+    const inPlace = this._colorsDlg.querySelector("#cv_color_place")
     const inOffice = this._colorsDlg.querySelector("#cv_color_office")
-    const inNote   = this._colorsDlg.querySelector("#cv_color_note")
+    const inNote = this._colorsDlg.querySelector("#cv_color_note")
 
     if (!presetSel || !inTitle || !inPerson || !inPlace || !inOffice || !inNote) return
 
-    inTitle.value  = this._palette.title
+    inTitle.value = this._palette.title
     inPerson.value = this._palette.person
-    inPlace.value  = this._palette.place
+    inPlace.value = this._palette.place
     inOffice.value = this._palette.office
-    inNote.value   = this._palette.note
+    inNote.value = this._palette.note
     presetSel.value = "default"
 
     const form = this._colorsDlg.querySelector("form")
     if (form) {
-      // Replace the form node to drop old listeners (simple + robust).
       const clone = form.cloneNode(true)
       form.parentNode.replaceChild(clone, form)
 
@@ -575,7 +621,6 @@ _chineseNumeral(n) {
   }
 
   _applyPaletteToRoot() {
-    // Use CSS variables on the reader root element.
     const root = this._contentEl
     if (!root) return
     root.style.setProperty("--ne-title", this._palette.title)
@@ -610,22 +655,13 @@ _chineseNumeral(n) {
   }
 
   _presetPalette(name) {
-    if (name === "deuteranopia") {
-      return { title:"#3b82f6", person:"#f59e0b", place:"#10b981", office:"#ef4444", note:"#3b82f6" }
-    }
-    if (name === "protanopia") {
-      return { title:"#2563eb", person:"#f97316", place:"#14b8a6", office:"#a855f7", note:"#2563eb" }
-    }
-    if (name === "tritanopia") {
-      return { title:"#1d4ed8", person:"#eab308", place:"#22c55e", office:"#f43f5e", note:"#1d4ed8" }
-    }
-    return { title:"#2b6cb0", person:"#d69e2e", place:"#2f855a", office:"#c53030", note:"#2b6cb0" }
+    if (name === "deuteranopia") return { title: "#3b82f6", person: "#f59e0b", place: "#10b981", office: "#ef4444", note: "#3b82f6" }
+    if (name === "protanopia") return { title: "#2563eb", person: "#f97316", place: "#14b8a6", office: "#a855f7", note: "#2563eb" }
+    if (name === "tritanopia") return { title: "#1d4ed8", person: "#eab308", place: "#22c55e", office: "#f43f5e", note: "#1d4ed8" }
+    return { title: "#2b6cb0", person: "#d69e2e", place: "#2f855a", office: "#c53030", note: "#2b6cb0" }
   }
 
-  // ---------------- UI helpers ----------------
-
   _syncButtons() {
-    // Reflect state in any toolbar buttons that exist.
     const setLabel = (selector, onText, offText, isOn) => {
       const btn = this.element.querySelector(selector)
       if (!btn) return
@@ -633,14 +669,15 @@ _chineseNumeral(n) {
       btn.setAttribute("aria-pressed", isOn ? "true" : "false")
     }
 
-    // These selectors are robust: match data-action strings used in your ERB.
     setLabel('[data-action*="corpus-annotations#toggleView"]', "Annotations: On", "Annotations: Off", (this._judouOn && this._viewEnabled))
     setLabel('[data-action*="corpus-annotations#toggleNotes"]', "Notes: On", "Notes: Off", (this._judouOn && this._notesEnabled))
     setLabel('[data-action*="corpus-annotations#toggleAnnotate"]', "Annotate: On", "Annotate: Off", this._annotateEnabled)
 
-    // Save button only if dirty
     const saveBtn = this.element.querySelector('[data-action*="corpus-annotations#save"]')
-    if (saveBtn) saveBtn.style.display = this._dirty ? "" : "none"
+    if (saveBtn) {
+      saveBtn.hidden = !this._dirty
+      saveBtn.textContent = this._dirty ? "Review & submit" : "Review & submit"
+    }
   }
 
   _loadBool(key, fallback) {
@@ -653,5 +690,355 @@ _chineseNumeral(n) {
 
   _storeBool(key, v) {
     try { localStorage.setItem(key, v ? "1" : "0") } catch (_) {}
+  }
+
+  _ensureTicketPanel() {
+    if (this._ticketPanel && this._ticketPanel.isConnected) return
+
+    const panel = document.createElement("div")
+    panel.className = "cv-annotation-ticket-panel"
+    panel.hidden = true
+    panel.innerHTML = `
+      <div class="cv-annotation-ticket-card">
+        <div class="cv-annotation-ticket-head">
+          <h3 style="margin:0;">Review annotation ticket</h3>
+          <button type="button" class="corpus-btn" data-role="close-ticket-panel">Close</button>
+        </div>
+        <p class="cv-hint">This preview shows the annotation ranges that will be submitted. Creating the ticket does not change the corpus directly.</p>
+        <form data-role="annotation-ticket-form">
+          <div class="cv-form-row">
+            <label>Title</label>
+            <input type="text" class="cv-input" value="Annotation edit" data-role="ticket-title" />
+          </div>
+          <div class="cv-form-row">
+            <label>Summary</label>
+            <input type="text" class="cv-input" placeholder="What did you annotate?" data-role="ticket-summary" />
+          </div>
+          <div class="cv-form-row">
+            <label>Reasoning</label>
+            <textarea class="cv-textarea" rows="3" placeholder="Why should this annotation be kept?" data-role="ticket-reasoning"></textarea>
+          </div>
+          <div class="cv-form-row">
+            <div class="cv-annotation-preview-headline">
+              <label>Preview</label>
+              <div class="cv-form-actions">
+                <button type="button" class="corpus-btn" data-role="add-annotation-item">Add row</button>
+              </div>
+            </div>
+            <div class="cv-annotation-preview-list" data-role="ticket-preview-list"></div>
+          </div>
+          <div class="cv-form-row">
+            <label class="cv-inline-check"><input type="checkbox" data-role="store-on-device" checked /> Store this ticket on this device</label>
+          </div>
+          <div class="cv-form-actions">
+            <button type="submit" class="corpus-btn corpus-btn-primary">Create ticket</button>
+            <button type="button" class="corpus-btn" data-role="close-ticket-panel">Close</button>
+          </div>
+        </form>
+        <div class="cv-ticket-result">
+          <div class="cv-ticket-status" data-role="ticket-status"></div>
+          <div class="cv-ticket-kv">
+            <div><strong>Ticket ID:</strong> <span data-role="ticket-id"></span></div>
+            <div><strong>Ticket Key:</strong> <code data-role="ticket-key"></code></div>
+          </div>
+          <div class="cv-form-actions">
+            <button type="button" class="corpus-btn" data-role="copy-ticket-key" hidden>Copy key</button>
+            <button type="button" class="corpus-btn" data-role="download-ticket-key" hidden>Download txt</button>
+            <a class="corpus-btn" data-role="open-ticket-link" hidden>Open ticket</a>
+          </div>
+        </div>
+      </div>
+    `
+
+    panel.querySelector('[data-role="annotation-ticket-form"]').addEventListener("submit", (event) => this.submitTicket(event))
+    panel.querySelectorAll('[data-role="close-ticket-panel"]').forEach((btn) => {
+      btn.addEventListener("click", (event) => this.closeTicketPanel(event))
+    })
+    panel.querySelector('[data-role="copy-ticket-key"]').addEventListener("click", (event) => this.copyTicketKey(event))
+    panel.querySelector('[data-role="download-ticket-key"]').addEventListener("click", (event) => this.downloadTicketKey(event))
+    panel.querySelector('[data-role="add-annotation-item"]').addEventListener("click", () => this._addEmptyPreviewItem())
+    panel.addEventListener("compositionstart", (event) => this._onCompositionStart(event))
+    panel.addEventListener("compositionend", (event) => this._onCompositionEnd(event))
+    panel.addEventListener("input", (event) => this._onTicketPreviewEdit(event))
+    panel.addEventListener("change", (event) => this._onTicketPreviewEdit(event))
+    panel.addEventListener("click", (event) => this._onTicketPreviewClick(event))
+
+    this.element.appendChild(panel)
+
+    this._ticketPanel = panel
+    this._ticketTitleInput = panel.querySelector('[data-role="ticket-title"]')
+    this._ticketSummaryInput = panel.querySelector('[data-role="ticket-summary"]')
+    this._ticketReasoningInput = panel.querySelector('[data-role="ticket-reasoning"]')
+    this._ticketPreviewList = panel.querySelector('[data-role="ticket-preview-list"]')
+    this._ticketStatusEl = panel.querySelector('[data-role="ticket-status"]')
+    this._ticketIdValue = panel.querySelector('[data-role="ticket-id"]')
+    this._ticketKeyValue = panel.querySelector('[data-role="ticket-key"]')
+    this._copyTicketKeyBtn = panel.querySelector('[data-role="copy-ticket-key"]')
+    this._downloadTicketKeyBtn = panel.querySelector('[data-role="download-ticket-key"]')
+    this._openTicketLink = panel.querySelector('[data-role="open-ticket-link"]')
+    this._storeOnDeviceCheckbox = panel.querySelector('[data-role="store-on-device"]')
+
+    const textInputs = panel.querySelectorAll("textarea, input[type=\"text\"]")
+    textInputs.forEach((el) => {
+      el.setAttribute("autocapitalize", "off")
+      el.setAttribute("autocomplete", "off")
+      el.setAttribute("autocorrect", "off")
+      el.setAttribute("spellcheck", "false")
+    })
+  }
+
+  _renderTicketPreview() {
+    if (!this._ticketPreviewList) return
+    this._ticketPreviewList.textContent = ""
+
+    const items = this._buildPreviewItems()
+    if (items.length === 0) {
+      const p = document.createElement("p")
+      p.className = "cv-muted"
+      p.textContent = "No annotations queued yet."
+      this._ticketPreviewList.appendChild(p)
+      return
+    }
+
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i]
+      const card = document.createElement("div")
+      card.className = "cv-annotation-preview-card"
+
+      const row = document.createElement("div")
+      row.className = "cv-annotation-preview-row"
+      row.dataset.index = String(i)
+
+      const controls = document.createElement("div")
+      controls.className = "cv-annotation-preview-controls"
+      controls.innerHTML = `
+        <label>Kind
+          <select data-field="kind">
+            ${this._kindOptionsHtml(item.kind)}
+          </select>
+        </label>
+        <label>Start
+          <input type="number" min="0" step="1" data-field="start" value="${Number(item.start)}" />
+        </label>
+        <label>End
+          <input type="number" min="1" step="1" data-field="end" value="${Number(item.end)}" />
+        </label>
+        <button type="button" class="corpus-btn" data-action="delete-item">Delete</button>
+      `
+      card.appendChild(controls)
+
+      const head = document.createElement("div")
+      head.className = "cv-annotation-preview-head"
+      head.textContent = `${this._humanKind(item.kind)} · ${item.start}–${Math.max(Number(item.start), Number(item.end) - 1)}`
+      card.appendChild(head)
+
+      const text = document.createElement("div")
+      text.className = "cv-annotation-preview-text"
+      text.textContent = item.text || "(no text preview)"
+      card.appendChild(text)
+
+      const noteWrap = document.createElement("label")
+      noteWrap.className = "cv-annotation-preview-note-editor"
+      noteWrap.innerHTML = `Note <textarea rows="2" data-field="note">${this._escapeHtml(item.note || "")}</textarea>`
+      card.appendChild(noteWrap)
+
+      row.appendChild(card)
+      this._ticketPreviewList.appendChild(row)
+    }
+  }
+
+
+  _kindOptionsHtml(selectedKind) {
+    const kinds = ["title", "person", "place", "office"]
+    return kinds.map((kind) => `<option value="${kind}"${kind === selectedKind ? " selected" : ""}>${this._humanKind(kind)}</option>`).join("")
+  }
+
+  _onCompositionStart(event) {
+    if (!this._isInteractiveField(event.target)) return
+    this._isTicketPreviewComposing = true
+  }
+
+  _onCompositionEnd(event) {
+    if (!this._isInteractiveField(event.target)) return
+    this._isTicketPreviewComposing = false
+    this._onTicketPreviewEdit(event)
+  }
+
+  _isInteractiveField(el) {
+    if (!el || !el.closest) return false
+    return !!el.closest("input, textarea, select, [contenteditable=\"true\"]")
+  }
+
+  _onTicketPreviewClick(event) {
+    const btn = event.target.closest('[data-action="delete-item"]')
+    if (!btn) return
+    const row = btn.closest('.cv-annotation-preview-row')
+    if (!row) return
+    const index = Number(row.dataset.index)
+    if (!Number.isFinite(index)) return
+    this._items.splice(index, 1)
+    this._dirty = true
+    this._syncButtons()
+    this._applyAll()
+  }
+
+  _onTicketPreviewEdit(event) {
+    const field = event.target.getAttribute('data-field')
+    if (!field) return
+    if (event.type === "input" && this._isTicketPreviewComposing) return
+
+    const row = event.target.closest('.cv-annotation-preview-row')
+    if (!row) return
+    const index = Number(row.dataset.index)
+    const item = this._items[index]
+    if (!item) return
+
+    if (field === 'kind') item.kind = event.target.value
+    if (field === 'note') item.note = String(event.target.value || '')
+    if (field === 'start') item.start = this._normalizeIdx(event.target.value, 0)
+    if (field === 'end') item.end = this._normalizeIdx(event.target.value, item.start + 1)
+
+    this._normalizeItem(item)
+    this._dirty = true
+    this._syncButtons()
+
+    if (field === 'note' && event.type === "input") {
+      return
+    }
+
+    this._applyAll()
+  }
+
+  _addEmptyPreviewItem() {
+    const start = 0
+    const end = 1
+    this._items.push({ start: start, end: end, kind: 'person', note: '' })
+    this._dirty = true
+    this._syncButtons()
+    this._applyAll()
+    if (this._ticketPanel) this._ticketPanel.hidden = false
+  }
+
+  _normalizeIdx(value, fallback) {
+    const n = Number(value)
+    if (!Number.isFinite(n)) return fallback
+    return Math.max(0, Math.floor(n))
+  }
+
+  _normalizeItem(item) {
+    const max = this._maxCorpusIdxExclusive()
+    item.start = this._normalizeIdx(item.start, 0)
+    item.end = this._normalizeIdx(item.end, item.start + 1)
+    if (item.end <= item.start) item.end = item.start + 1
+    if (max > 0) {
+      item.start = Math.min(item.start, max - 1)
+      item.end = Math.min(Math.max(item.end, item.start + 1), max)
+    }
+    item.kind = ["title", "person", "place", "office"].includes(item.kind) ? item.kind : "person"
+    item.note = String(item.note || '')
+  }
+
+  _maxCorpusIdxExclusive() {
+    const spans = this._spans()
+    let max = 0
+    for (let i = 0; i < spans.length; i++) {
+      const idx = Number(spans[i].getAttribute('data-corpus-idx'))
+      if (Number.isFinite(idx)) max = Math.max(max, idx + 1)
+    }
+    return max
+  }
+
+  _previewSelection(start, end) {
+    this._clearSelectionPreview()
+    const spans = this._spans()
+    for (let i = 0; i < spans.length; i++) {
+      const idx = Number(spans[i].getAttribute('data-corpus-idx'))
+      if (idx >= Number(start) && idx < Number(end)) spans[i].classList.add('cv-annotate-selection-preview')
+    }
+  }
+
+  _clearSelectionPreview() {
+    const spans = this._spans()
+    spans.forEach((el) => el.classList.remove('cv-annotate-selection-preview'))
+  }
+
+  _buildPreviewItems() {
+    return this._items.map((item) => ({
+      start: Number(item.start),
+      end: Number(item.end),
+      kind: item.kind,
+      note: item.note || "",
+      text: this._textForRange(item.start, item.end)
+    }))
+  }
+
+  _textForRange(start, end) {
+    const spans = this._spans()
+    const chars = []
+    for (let i = 0; i < spans.length; i++) {
+      const idx = Number(spans[i].getAttribute("data-corpus-idx"))
+      if (idx >= Number(start) && idx < Number(end)) chars.push(spans[i].textContent || "")
+    }
+    return chars.join("")
+  }
+
+  _humanKind(kind) {
+    if (kind === "title") return "Title"
+    if (kind === "person") return "Person"
+    if (kind === "place") return "Place"
+    if (kind === "office") return "Office"
+    return kind || "Annotation"
+  }
+
+  _hideTicketPanel() {
+    if (this._ticketPanel) this._ticketPanel.hidden = true
+  }
+
+  _setTicketStatus(text) {
+    if (this._ticketStatusEl) this._ticketStatusEl.textContent = text || ""
+  }
+
+  _setTicketResult(id, key) {
+    if (this._ticketIdValue) this._ticketIdValue.textContent = id || ""
+    if (this._ticketKeyValue) this._ticketKeyValue.textContent = key || ""
+    if (this._copyTicketKeyBtn) this._copyTicketKeyBtn.hidden = !(id && key)
+    if (this._downloadTicketKeyBtn) this._downloadTicketKeyBtn.hidden = !(id && key)
+    if (this._openTicketLink) {
+      if (id && key) {
+        this._openTicketLink.hidden = false
+        this._openTicketLink.href = `/ticket_access?key=${encodeURIComponent(key)}`
+        this._openTicketLink.textContent = "Open ticket"
+      } else {
+        this._openTicketLink.hidden = true
+        this._openTicketLink.removeAttribute("href")
+      }
+    }
+  }
+
+  _storeTicketOnDevice(ticketId, ticketKey, title) {
+    const key = "cv_ticket_keys_v1"
+    let list = []
+    try {
+      list = JSON.parse(window.localStorage.getItem(key) || "[]")
+      if (!Array.isArray(list)) list = []
+    } catch (_) {
+      list = []
+    }
+
+    list = list.filter((t) => t.ticket_id !== ticketId)
+    list.unshift({
+      ticket_id: ticketId,
+      ticket_key: ticketKey,
+      title: title || "",
+      source: "annotation",
+      saved_at: new Date().toISOString(),
+    })
+
+    window.localStorage.setItem(key, JSON.stringify(list.slice(0, 25)))
+  }
+
+  _csrfToken() {
+    const el = document.querySelector('meta[name="csrf-token"]')
+    return el ? el.content : ""
   }
 }

@@ -1,25 +1,7 @@
 # frozen_string_literal: true
 
-# Stores and serves user-contributed corpus annotations (names, placenames, titles, etc.)
-#
-# Storage model:
-# - For a corpus text file "path/to/foo.txt"
-# - The annotation file lives next to it as "path/to/foo.txt.annotations.json"
-#
-# JSON shape (versioned):
-# {
-#   "version": 1,
-#   "items": [
-#     {"start": 10, "end": 14, "kind": "person", "note": "optional"}
-#   ],
-#   "updated_at": "2026-01-31T00:00:00Z"
-# }
-#
-# IMPORTANT: This controller assumes the server process has write access to the corpus root.
 class CorpusAnnotationsController < ApplicationController
   protect_from_forgery with: :exception
-
-  before_action :require_ticket!, only: [:update]
 
   def show
     store = store_for_request
@@ -28,73 +10,178 @@ class CorpusAnnotationsController < ApplicationController
   rescue SecurityError
     render json: { error: "Bad path" }, status: :bad_request
   rescue Errno::ENOENT
-    # No annotations yet is not an error.
     render json: { version: 1, items: [], updated_at: nil }
   end
 
+  # POST /corpus_annotations
+  #
+  # Public path: create a ticket for an annotation edit.
+  # This does not write the annotation file directly.
   def update
-    store = store_for_request
-
-    payload = params.require(:annotations).permit(:version, items: [:start, :end, :kind, :note]).to_h
-
-    # Basic validation / normalization
-    version = payload["version"].to_i
-    items = Array(payload["items"]).map do |it|
-      {
-        "start" => it["start"].to_i,
-        "end"   => it["end"].to_i,
-        "kind"  => it["kind"].to_s,
-        "note"  => it["note"].to_s.presence
-      }.compact
+    target_path = params[:path].to_s
+    if target_path.blank?
+      render json: { ok: false, error: "path is required" }, status: :unprocessable_entity
+      return
     end
 
-    store.write({ "version" => (version <= 0 ? 1 : version), "items" => items })
+    payload = annotation_payload_from_params
+    store = store_for_request
+    existing = read_existing_annotations(store)
+    proposed = { "version" => 1, "items" => payload["items"] }
 
-    # Record an audit entry on the ticket so moderation can see what happened.
-    @ticket.ticket_audit_events.create!(
-      action: "annotations_updated",
-      actor_type: (@moderator_token.present? ? "moderator" : "submitter"),
-      actor_label: (@moderator_token&.label),
-      metadata: { path: params[:path].to_s, item_count: items.length },
+    diff_text = unified_diff_for_annotations(existing, proposed, target_path)
+    if diff_text.blank?
+      render json: { ok: false, error: "No annotation changes detected" }, status: :unprocessable_entity
+      return
+    end
+
+    metadata = EditTickets::UnifiedDiffValidator.validate!(
+      diff_text,
+      allowed_roots: ["corpus/"]
+    ).merge(
+      "kind" => "annotations_edit",
+      "target_path" => target_path,
+      "annotation_path" => "#{target_path}.annotations.json",
+      "preview_items" => preview_items_from_params,
+      "proposed_annotations" => proposed
     )
 
-    render json: { ok: true, ticket_id: @ticket.public_id }
+    ticket_key = EditTickets::KeyManager.generate_plaintext
+    salt = EditTickets::KeyManager.generate_salt
+    digest = EditTickets::KeyManager.digest(ticket_key, salt)
+
+    source = params[:source].to_s.presence || "corpus_viewer"
+    ticket = EditTicket.new(
+      public_id: SecureRandom.hex(12),
+      title: params[:title].to_s.presence || "Annotation edit",
+      summary: params[:summary].to_s,
+      reasoning: params[:reasoning].to_s,
+      source: source,
+      target_ref: "#{source}/#{target_path}#annotations",
+      status: "open",
+      evidence_links: [],
+      key_salt: salt,
+      key_digest: digest,
+      key_generated_at: Time.current,
+      diff_metadata: metadata
+    )
+
+    ticket.tags = EditTickets::Tagger.tags_for(
+      source: ticket.source,
+      target_ref: ticket.target_ref,
+      has_diff: true,
+      has_uploads: true,
+      link_count: 0
+    )
+
+    ticket.transaction do
+      ticket.save!
+      proposed_json = JSON.pretty_generate(proposed) + "\n"
+      ticket.evidence_files.attach([
+        {
+          io: StringIO.new(diff_text),
+          filename: "annotations_#{File.basename(target_path)}.diff",
+          content_type: "text/plain"
+        },
+        {
+          io: StringIO.new(proposed_json),
+          filename: "annotations_#{File.basename(target_path)}.proposed.txt",
+          content_type: "text/plain"
+        }
+      ])
+
+      EditTickets::AuditLogger.log!(
+        ticket: ticket,
+        action: "ticket_created",
+        actor_type: "submitter",
+        metadata: {
+          source: ticket.source,
+          target_ref: ticket.target_ref,
+          tags: ticket.tags,
+          kind: "annotations_edit"
+        }
+      )
+    end
+
+    render json: {
+      ok: true,
+      ticket_id: ticket.public_id,
+      ticket: {
+        id: ticket.public_id,
+        status: ticket.status,
+        tags: ticket.tags
+      },
+      ticket_key: ticket_key,
+      warning: "This key is shown once. Save it now (copy it, download a txt, or store it on this device in the UI)."
+    }, status: :created
   rescue ActionController::ParameterMissing
-    render json: { error: "Missing annotations payload" }, status: :unprocessable_entity
+    render json: { ok: false, error: "Missing annotations payload" }, status: :unprocessable_entity
+  rescue EditTickets::UnifiedDiffValidator::ValidationError => e
+    render json: { ok: false, error: e.message }, status: :unprocessable_entity
+  rescue ActiveRecord::RecordInvalid => e
+    render json: { ok: false, error: e.record.errors.full_messages.join(", ") }, status: :unprocessable_entity
   rescue SecurityError
-    render json: { error: "Bad path" }, status: :bad_request
+    render json: { ok: false, error: "Bad path" }, status: :bad_request
   end
 
   private
 
-  def require_ticket!
-    ticket_id = params[:ticket_id].to_s.presence || request.get_header("HTTP_X_TICKET_ID").to_s.presence
-    if ticket_id.blank?
-      render json: { ok: false, error: "ticket_id is required" }, status: :unprocessable_entity
-      return
-    end
+  def annotation_payload_from_params
+    payload = params.require(:annotations).permit(:version, items: [:start, :end, :kind, :note]).to_h
 
-    @ticket = EditTicket.find_by(public_id: ticket_id)
-    if @ticket.nil?
-      render json: { ok: false, error: "ticket not found" }, status: :not_found
-      return
-    end
+    items = Array(payload["items"]).map do |item|
+      start_idx = item["start"].to_i
+      end_idx = item["end"].to_i
+      next if end_idx <= start_idx
 
-    # Allow maintainers to authenticate with a moderator token.
-    @moderator_token = EditTickets::ModeratorAuth.verify(request, scopes: %w[admin apply_patch review_only])
+      normalized = {
+        "start" => start_idx,
+        "end" => end_idx,
+        "kind" => item["kind"].to_s,
+        "note" => item["note"].to_s.presence
+      }.compact
+      next if normalized["kind"].blank?
 
-    unless @moderator_token.present?
-      ticket_key = params[:ticket_key].to_s.presence || request.get_header("HTTP_X_TICKET_KEY").to_s.presence
-      unless EditTickets::KeyManager.new(@ticket).verify_submitter_key(ticket_key)
-        render json: { ok: false, error: "invalid ticket_key" }, status: :unauthorized
-        return
-      end
-    end
+      normalized
+    end.compact
 
-    if @ticket.status.to_s != "open"
-      render json: { ok: false, error: "ticket is not open" }, status: :conflict
-      return
+    { "version" => 1, "items" => items }
+  end
+
+  def preview_items_from_params
+    raw = params[:preview_items]
+    return [] if raw.blank?
+
+    raw = JSON.parse(raw) if raw.is_a?(String)
+    Array(raw).map do |item|
+      {
+        "start" => item["start"].to_i,
+        "end" => item["end"].to_i,
+        "kind" => item["kind"].to_s,
+        "note" => item["note"].to_s.presence,
+        "text" => item["text"].to_s
+      }.compact
     end
+  rescue JSON::ParserError
+    []
+  end
+
+  def read_existing_annotations(store)
+    data = store.read
+    {
+      "version" => data["version"].to_i.positive? ? data["version"].to_i : 1,
+      "items" => Array(data["items"])
+    }
+  rescue Errno::ENOENT
+    { "version" => 1, "items" => [] }
+  end
+
+  def unified_diff_for_annotations(existing, proposed, target_path)
+    current_json = JSON.pretty_generate(existing) + "\n"
+    proposed_json = JSON.pretty_generate(proposed) + "\n"
+    patch_path = "corpus/#{target_path}.annotations.json"
+
+    unified_diff_via_git(current_json, proposed_json, patch_path)
   end
 
   def store_for_request
@@ -103,5 +190,45 @@ class CorpusAnnotationsController < ApplicationController
 
     rel_path = params[:path].to_s
     CorpusAnnotationsStore.new(root: root, rel_text_path: rel_path)
+  end
+
+  def unified_diff_via_git(old_text, new_text, patch_path)
+    require "open3"
+    require "tempfile"
+
+    Tempfile.create(["old_annotations", ".json"]) do |a|
+      Tempfile.create(["new_annotations", ".json"]) do |b|
+        a.binmode
+        b.binmode
+        a.write(old_text.to_s)
+        b.write(new_text.to_s)
+        a.flush
+        b.flush
+
+        out, status = Open3.capture2e(
+          "git", "diff", "--no-index", "--unified=3", "--", a.path, b.path
+        )
+        return "" if status.exitstatus == 0
+
+        if status.exitstatus == 1
+          a_label = "a/#{patch_path}"
+          b_label = "b/#{patch_path}"
+
+          return out.lines.map { |line|
+            if line.start_with?("diff --git ")
+              "diff --git #{a_label} #{b_label}\n"
+            elsif line.start_with?("--- ")
+              "--- #{a_label}\n"
+            elsif line.start_with?("+++ ")
+              "+++ #{b_label}\n"
+            else
+              line
+            end
+          }.join
+        end
+
+        raise "git diff failed (#{status.exitstatus}): #{out}"
+      end
+    end
   end
 end

@@ -27,19 +27,116 @@
 
 <hr>
 
+<% annotation_meta = @ticket.diff_metadata.is_a?(Hash) ? @ticket.diff_metadata : {} %>
+<% annotation_preview_items = Array(annotation_meta["preview_items"]) %>
+<% annotation_items = Array(annotation_meta.dig("proposed_annotations", "items")) %>
+<% annotation_ticket = annotation_meta["kind"] == "annotations_edit" %>
+
 <h2>Actions</h2>
 
-<div style="display:flex; gap: 0.75rem; flex-wrap: wrap;">
-  <%= button_to "Approve and apply", approve_ticket_path(@ticket.public_id), method: :post, form: { data: { turbo: false } } %>
-  <%= button_to "Reject", reject_ticket_path(@ticket.public_id), method: :post, params: { reason: "" }, form: { data: { turbo: false } } %>
-  <%= button_to "Close", close_ticket_path(@ticket.public_id), method: :post, form: { data: { turbo: false } } %>
-  <%= button_to "Apply now", apply_patch_ticket_path(@ticket.public_id), method: :post, form: { data: { turbo: false } } %>
-</div>
+<% if annotation_ticket %>
+  <form action="<%= approve_ticket_path(@ticket.public_id) %>" method="post" class="cv-annotation-ticket-editor" id="annotation-ticket-editor-form">
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+
+    <div class="cv-annotation-ticket-editor-card">
+      <p style="margin-top:0; opacity:0.85;">
+        You can adjust or delete annotation rows before approving or applying. This changes what gets written locally when the ticket is applied; it does not change the original ticket attachments.
+      </p>
+
+      <div id="annotation-ticket-editor-list">
+        <% if annotation_items.empty? %>
+          <p>(No annotation rows were attached to this ticket.)</p>
+        <% else %>
+          <% annotation_items.each_with_index do |item, idx| %>
+            <div class="cv-annotation-preview-card cv-ticket-annotation-row" data-index="<%= idx %>">
+              <div class="cv-annotation-preview-controls">
+                <label>
+                  Kind
+                  <select name="annotation_items[][kind]">
+                    <% [["title", "Title"], ["person", "Person"], ["place", "Place"], ["office", "Office"]].each do |kind_value, label| %>
+                      <option value="<%= kind_value %>" <%= "selected" if item["kind"].to_s == kind_value %>><%= label %></option>
+                    <% end %>
+                  </select>
+                </label>
+                <label>
+                  Start
+                  <input type="number" min="0" step="1" name="annotation_items[][start]" value="<%= item["start"].to_i %>" />
+                </label>
+                <label>
+                  End
+                  <input type="number" min="1" step="1" name="annotation_items[][end]" value="<%= item["end"].to_i %>" />
+                </label>
+                <button type="button" class="corpus-btn" data-role="delete-ticket-annotation-row">Delete</button>
+              </div>
+
+              <% preview = annotation_preview_items[idx] || {} %>
+              <div class="cv-annotation-preview-head"><%= item["kind"].to_s.humanize %> · <%= item["start"].to_i %>–<%= [item["start"].to_i, item["end"].to_i - 1].max %></div>
+              <div class="cv-annotation-preview-text"><%= preview["text"].presence || "(text preview unavailable in stored ticket)" %></div>
+              <label class="cv-annotation-preview-note-editor">
+                Note
+                <textarea rows="2" name="annotation_items[][note]"><%= item["note"].to_s %></textarea>
+              </label>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+
+      <div class="cv-annotation-ticket-editor-actions">
+        <button type="button" class="corpus-btn" id="add-ticket-annotation-row">Add row</button>
+      </div>
+    </div>
+
+    <div style="display:flex; gap: 0.75rem; flex-wrap: wrap;">
+      <button type="submit">Approve and apply</button>
+      <button type="submit" formaction="<%= apply_patch_ticket_path(@ticket.public_id) %>">Apply now</button>
+    </div>
+  </form>
+
+  <div style="display:flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.75rem;">
+    <%= button_to "Reject", reject_ticket_path(@ticket.public_id), method: :post, params: { reason: "" }, form: { data: { turbo: false } } %>
+    <%= button_to "Close", close_ticket_path(@ticket.public_id), method: :post, form: { data: { turbo: false } } %>
+  </div>
+<% else %>
+  <div style="display:flex; gap: 0.75rem; flex-wrap: wrap;">
+    <%= button_to "Approve and apply", approve_ticket_path(@ticket.public_id), method: :post, form: { data: { turbo: false } } %>
+    <%= button_to "Reject", reject_ticket_path(@ticket.public_id), method: :post, params: { reason: "" }, form: { data: { turbo: false } } %>
+    <%= button_to "Close", close_ticket_path(@ticket.public_id), method: :post, form: { data: { turbo: false } } %>
+    <%= button_to "Apply now", apply_patch_ticket_path(@ticket.public_id), method: :post, form: { data: { turbo: false } } %>
+  </div>
+<% end %>
 
 <p style="opacity: 0.8;">
   Approve now applies the ticket to the local corpus file as part of approval.
   Apply now is still available as a separate manual button.
 </p>
+
+<% if annotation_ticket %>
+  <hr>
+
+  <h2>Annotation preview</h2>
+  <p>
+    <strong>Target file:</strong>
+    <span style="font-family: monospace;"><%= annotation_meta["target_path"] %></span><br>
+    <strong>Items:</strong> <%= annotation_items.size %>
+  </p>
+
+  <% if annotation_preview_items.empty? %>
+    <p>(No preview rows were attached to this ticket.)</p>
+  <% else %>
+    <div style="display:grid; gap:0.75rem;">
+      <% annotation_preview_items.each do |item| %>
+        <div style="border:1px solid #ddd; padding:0.75rem; border-radius:0.5rem;">
+          <div><strong><%= item["kind"].to_s.humanize %></strong></div>
+          <div style="font-family: monospace; margin:0.35rem 0;"><%= item["text"].presence || "(no text preview)" %></div>
+          <div style="opacity:0.8;">Range: <%= item["start"] %>–<%= [item["start"].to_i, item["end"].to_i - 1].max %></div>
+          <% if item["note"].present? %>
+            <div><strong>Note:</strong> <%= item["note"] %></div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
 
 <hr>
 
@@ -100,3 +197,63 @@
     </li>
   <% end %>
 </ul>
+
+<% if annotation_ticket %>
+  <script>
+    (function() {
+      const list = document.getElementById("annotation-ticket-editor-list")
+      const addBtn = document.getElementById("add-ticket-annotation-row")
+      if (!list || !addBtn) return
+
+      function rowHtml() {
+        return `
+          <div class="cv-annotation-preview-card cv-ticket-annotation-row">
+            <div class="cv-annotation-preview-controls">
+              <label>Kind
+                <select name="annotation_items[][kind]">
+                  <option value="title">Title</option>
+                  <option value="person" selected>Person</option>
+                  <option value="place">Place</option>
+                  <option value="office">Office</option>
+                </select>
+              </label>
+              <label>Start
+                <input type="number" min="0" step="1" name="annotation_items[][start]" value="0" />
+              </label>
+              <label>End
+                <input type="number" min="1" step="1" name="annotation_items[][end]" value="1" />
+              </label>
+              <button type="button" class="corpus-btn" data-role="delete-ticket-annotation-row">Delete</button>
+            </div>
+            <div class="cv-annotation-preview-head">Person · 0–0</div>
+            <div class="cv-annotation-preview-text">(text preview unavailable in stored ticket)</div>
+            <label class="cv-annotation-preview-note-editor">Note
+              <textarea rows="2" name="annotation_items[][note]"></textarea>
+            </label>
+          </div>
+        `
+      }
+
+      addBtn.addEventListener("click", function() {
+        list.insertAdjacentHTML("beforeend", rowHtml())
+      })
+
+      list.addEventListener("click", function(event) {
+        const btn = event.target.closest('[data-role="delete-ticket-annotation-row"]')
+        if (!btn) return
+        const row = btn.closest('.cv-ticket-annotation-row')
+        if (row) row.remove()
+      })
+
+      list.addEventListener("input", function(event) {
+        const row = event.target.closest('.cv-ticket-annotation-row')
+        if (!row) return
+        const kind = row.querySelector('select[name="annotation_items[][kind]"]').value
+        const start = Number(row.querySelector('input[name="annotation_items[][start]"]').value || 0)
+        const end = Number(row.querySelector('input[name="annotation_items[][end]"]').value || 0)
+        const head = row.querySelector('.cv-annotation-preview-head')
+        if (head) head.textContent = `${kind.charAt(0).toUpperCase() + kind.slice(1)} · ${start}–${Math.max(start, end - 1)}`
+      })
+    })()
+  </script>
+<% end %>

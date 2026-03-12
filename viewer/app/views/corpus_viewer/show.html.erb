@@ -103,13 +103,6 @@
       
       <button type="button"
               class="corpus-btn"
-              data-action="corpus-annotations#toggleAnnotate"
-              data-corpus-annotations-target="annotateBtn"
-              aria-pressed="false">
-        Annotate: Off
-      </button>
-      <button type="button"
-              class="corpus-btn"
               data-action="corpus-annotations#toggleNotes"
               data-corpus-annotations-target="notesBtn"
               aria-pressed="false">
@@ -124,69 +117,81 @@
         Colour settings
       </button>
 
-      <button type="button"
-              class="corpus-btn corpus-btn-primary"
-              data-action="corpus-annotations#saveDraft"
-              data-corpus-annotations-target="saveBtn"
-              hidden>
-        Save
-      </button>
+      <div class="corpus-toolbar-spacer" aria-hidden="true"></div>
 
-	      <span
-	        data-controller="text-edit-ticket"
-	        data-text-edit-ticket-source-value="corpus_viewer"
-	        data-text-edit-ticket-target-path-value="<%= @rel_path %>">
-	        <button type="button"
-	                class="corpus-btn"
-	                data-action="text-edit-ticket#toggle"
-	                title="Propose a text change (creates a ticket)">
-	          Text edit
-	        </button>
+      <div class="corpus-toolbar-editing">
+        <button type="button"
+                class="corpus-btn corpus-btn-editing"
+                data-action="corpus-annotations#toggleAnnotate"
+                data-corpus-annotations-target="annotateBtn"
+                aria-pressed="false">
+          Annotate: Off
+        </button>
 
-	        <div class="cv-text-edit-panel hidden" data-text-edit-ticket-target="panel">
-	          <h3 style="margin-top: 0;">Propose a text edit (creates a ticket)</h3>
-	          <p class="cv-hint">This does <em>not</em> change the corpus directly. It creates a ticket with a unified diff attached.</p>
+        <button type="button"
+                class="corpus-btn corpus-btn-primary corpus-btn-review-submit"
+                data-action="corpus-annotations#saveDraft"
+                data-corpus-annotations-target="saveBtn"
+                hidden>
+          Review &amp; submit
+        </button>
 
-	          <form data-action="submit->text-edit-ticket#submit">
-	            <div class="cv-form-row">
-	              <label>Title</label>
-	              <input type="text" class="cv-input" value="Text edit" data-text-edit-ticket-target="title" />
-	            </div>
-	            <div class="cv-form-row">
-	              <label>Summary</label>
-	              <input type="text" class="cv-input" placeholder="What changed?" data-text-edit-ticket-target="summary" />
-	            </div>
-	            <div class="cv-form-row">
-	              <label>Reasoning</label>
-	              <textarea class="cv-textarea" rows="3" placeholder="Why should this change be made?" data-text-edit-ticket-target="reasoning"></textarea>
-	            </div>
+        <span
+          data-controller="text-edit-ticket"
+          data-text-edit-ticket-source-value="corpus_viewer"
+          data-text-edit-ticket-target-path-value="<%= @rel_path %>">
+          <button type="button"
+                  class="corpus-btn corpus-btn-editing"
+                  data-action="text-edit-ticket#toggle"
+                  title="Propose a text change (creates a ticket)">
+            Text edit
+          </button>
 
-	            <div class="cv-form-row">
-	              <label>Edited text</label>
-	              <textarea class="cv-textarea cv-mono" rows="18" data-text-edit-ticket-target="edited"></textarea>
-	            </div>
+          <div class="cv-text-edit-panel hidden" data-text-edit-ticket-target="panel">
+            <h3 style="margin-top: 0;">Propose a text edit (creates a ticket)</h3>
+            <p class="cv-hint">This does <em>not</em> change the corpus directly. It creates a ticket with a unified diff attached.</p>
 
-	            <textarea class="hidden" data-text-edit-ticket-target="original"><%= @raw_body %></textarea>
+            <form data-action="submit->text-edit-ticket#submit">
+              <div class="cv-form-row">
+                <label>Title</label>
+                <input type="text" class="cv-input" value="Text edit" data-text-edit-ticket-target="title" />
+              </div>
+              <div class="cv-form-row">
+                <label>Summary</label>
+                <input type="text" class="cv-input" placeholder="What changed?" data-text-edit-ticket-target="summary" />
+              </div>
+              <div class="cv-form-row">
+                <label>Reasoning</label>
+                <textarea class="cv-textarea" rows="3" placeholder="Why should this change be made?" data-text-edit-ticket-target="reasoning"></textarea>
+              </div>
 
-	            <div class="cv-form-actions">
-	              <button type="submit" class="corpus-btn corpus-btn-primary">Submit ticket</button>
-	              <button type="button" class="corpus-btn" data-action="text-edit-ticket#toggle">Close</button>
-	            </div>
-	          </form>
+              <div class="cv-form-row">
+                <label>Edited text</label>
+                <textarea class="cv-textarea cv-mono" rows="18" data-text-edit-ticket-target="edited"></textarea>
+              </div>
 
-	          <div class="cv-ticket-result">
-	            <div class="cv-ticket-status" data-text-edit-ticket-target="status"></div>
-	            <div class="cv-ticket-kv">
-	              <div><strong>Ticket ID:</strong> <span data-text-edit-ticket-target="ticketId"></span></div>
-	              <div>
-	                <strong>Ticket key (save this):</strong>
-	                <code data-text-edit-ticket-target="ticketKey"></code>
-	                <button type="button" class="corpus-btn" data-text-edit-ticket-target="copyKeyBtn" data-action="text-edit-ticket#copyKey">Copy</button>
-	              </div>
-	            </div>
-	          </div>
-	        </div>
-	      </span>
+              <textarea class="hidden" data-text-edit-ticket-target="original"><%= @raw_body %></textarea>
+
+              <div class="cv-form-actions">
+                <button type="submit" class="corpus-btn corpus-btn-primary">Submit ticket</button>
+                <button type="button" class="corpus-btn" data-action="text-edit-ticket#toggle">Close</button>
+              </div>
+            </form>
+
+            <div class="cv-ticket-result">
+              <div class="cv-ticket-status" data-text-edit-ticket-target="status"></div>
+              <div class="cv-ticket-kv">
+                <div><strong>Ticket ID:</strong> <span data-text-edit-ticket-target="ticketId"></span></div>
+                <div>
+                  <strong>Ticket key (save this):</strong>
+                  <code data-text-edit-ticket-target="ticketKey"></code>
+                  <button type="button" class="corpus-btn" data-text-edit-ticket-target="copyKeyBtn" data-action="text-edit-ticket#copyKey">Copy</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </span>
+      </div>
 
     </div>
 

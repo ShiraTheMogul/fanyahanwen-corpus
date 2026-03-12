@@ -261,6 +261,7 @@ export default class extends Controller {
   }
 
   _renderTicket(ticket) {
+    const meta = ticket.diff_metadata || {}
     const summary = {
       id: ticket.id,
       title: ticket.title,
@@ -273,7 +274,18 @@ export default class extends Controller {
       summary: ticket.summary,
       reasoning: ticket.reasoning,
     }
-    this.ticketSummaryTarget.textContent = JSON.stringify(summary, null, 2)
+
+    let summaryText = JSON.stringify(summary, null, 2)
+    if (meta.kind === "annotations_edit") {
+      const rows = Array.isArray(meta.preview_items) ? meta.preview_items : []
+      const preview = rows.map((row) => {
+        const base = `- ${row.kind || "annotation"} ${row.start}–${row.end}: ${row.text || ""}`
+        return row.note ? `${base}\n  note: ${row.note}` : base
+      }).join("\n")
+      summaryText += `\n\nAnnotation preview\nTarget: ${meta.target_path || ""}\nItems: ${((meta.proposed_annotations || {}).items || []).length}\n${preview}`
+    }
+
+    this.ticketSummaryTarget.textContent = summaryText
 
     this.messagesTarget.textContent = ""
     const messages = Array.isArray(ticket.messages) ? ticket.messages : []

@@ -171,12 +171,15 @@ class TicketsController < ApplicationController
   end
 
   def corpus_viewer_target_path
+    metadata = @ticket.diff_metadata.is_a?(Hash) ? @ticket.diff_metadata : {}
+    return metadata["target_path"].presence if metadata["target_path"].present?
+
     ref = @ticket.target_ref.to_s
     prefix = "#{@ticket.source}/"
     return nil unless ref.start_with?(prefix)
 
     path = ref.delete_prefix(prefix)
-    path = path.sub(/#\d+\z/, "")
+    path = path.sub(/#.*\z/, "")
     path.presence
   end
 
@@ -204,6 +207,11 @@ class TicketsController < ApplicationController
   end
 
   def apply_ticket_changes!
+    if annotation_ticket?
+      apply_annotation_ticket!
+      return
+    end
+
     proposed = find_proposed_text_attachment
     if proposed
       write_proposed_text!(proposed.blob.download)
@@ -217,6 +225,53 @@ class TicketsController < ApplicationController
     diff_attachment = find_diff_attachment
     raise "No diff attachment found." if diff_attachment.nil?
     apply_unified_diff!(diff_attachment.blob.download)
+  end
+
+
+  def annotation_ticket?
+    @ticket.diff_metadata.is_a?(Hash) && @ticket.diff_metadata["kind"] == "annotations_edit"
+  end
+
+  def apply_annotation_ticket!
+    target_path = @ticket.diff_metadata["target_path"].to_s
+    raise "Missing target_path for annotation ticket" if target_path.blank?
+
+    parsed = annotation_override_payload
+
+    if parsed.nil?
+      proposed = find_proposed_text_attachment
+      raise "No proposed annotations attachment found." if proposed.nil?
+      parsed = JSON.parse(proposed.blob.download.to_s)
+    end
+
+    store = CorpusAnnotationsStore.new(root: corpus_root, rel_text_path: target_path)
+    store.write(parsed)
+  rescue JSON::ParserError => e
+    raise "Invalid proposed annotations JSON: #{e.message}"
+  end
+
+
+  def annotation_override_payload
+    raw_items = params[:annotation_items]
+    return nil if raw_items.blank?
+
+    items = Array(raw_items).map do |item|
+      start_idx = item[:start].to_i
+      end_idx = item[:end].to_i
+      next if end_idx <= start_idx
+
+      kind = item[:kind].to_s
+      next if kind.blank?
+
+      {
+        "start" => start_idx,
+        "end" => end_idx,
+        "kind" => kind,
+        "note" => item[:note].to_s.presence
+      }.compact
+    end.compact
+
+    { "version" => 1, "items" => items }
   end
 
   def write_proposed_text!(raw_text)

@@ -467,6 +467,8 @@ module Api
         tags: ticket.tags,
         evidence_links: ticket.evidence_links,
         diff_metadata: ticket.diff_metadata,
+        created_at: ticket.created_at,
+        updated_at: ticket.updated_at,
         evidence_files: ticket.evidence_files.attachments.map { |att|
           {
             attachment_id: att.id,
