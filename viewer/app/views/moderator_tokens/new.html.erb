@@ -1,0 +1,23 @@
+<p><%= link_to "← Back", moderator_tokens_path %></p>
+
+<h1>Issue moderator token</h1>
+
+<% if flash[:alert].present? %>
+  <p style="color: #b00020;"><%= flash[:alert] %></p>
+<% end %>
+
+<%= form_with url: moderator_tokens_path, method: :post do %>
+  <div style="max-width: 48rem;">
+    <label><strong>Name</strong> (label shown in audit logs)</label><br>
+    <%= text_field_tag :name, "", style: "width: 100%;" %>
+  </div>
+
+  <div style="margin-top: 1rem;">
+    <label><strong>Scope</strong></label><br>
+    <%= select_tag :scope, options_for_select(["review_only", "apply_patch", "admin"], "apply_patch") %>
+  </div>
+
+  <div style="margin-top: 1rem;">
+    <%= submit_tag "Issue" %>
+  </div>
+<% end %>

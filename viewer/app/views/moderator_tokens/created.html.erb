@@ -1,0 +1,18 @@
+<p><%= link_to "← Back to tokens", moderator_tokens_path %></p>
+
+<h1>Token issued</h1>
+
+<p style="color: #b00020;">
+  This token is shown once. Copy it now.
+</p>
+
+<p>
+  <strong>Name:</strong> <%= @issued_record.name %><br>
+  <strong>Scope:</strong> <%= @issued_record.scope %><br>
+</p>
+
+<pre style="white-space: pre-wrap; border: 1px solid #ddd; padding: 0.75rem; overflow:auto;"><%= h(@issued_plaintext) %></pre>
+
+<p>
+  To use it in the UI: go to <%= link_to "tickets login", tickets_login_path %> and paste it.
+</p>

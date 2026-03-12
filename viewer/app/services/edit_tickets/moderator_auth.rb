@@ -14,6 +14,15 @@ module EditTickets
       token = request.get_header(HEADER_NAME).to_s
       return nil if token.blank?
 
+		verify_plaintext(token, scopes: scopes)
+	end
+
+	# Same as .verify, but takes a plaintext token directly (useful for server-side
+	# HTML UIs that store the token in a session instead of a request header).
+	def self.verify_plaintext(token, scopes: [])
+		token = token.to_s
+		return nil if token.blank?
+
       digest = digest(token)
       record = TicketModeratorToken.find_by(token_digest: digest)
       return nil if record.nil? || record.revoked?
@@ -23,7 +32,7 @@ module EditTickets
 
       # "admin" is a super-scope that covers everything.
       return record if record.scope.to_s == "admin"
-      return record if scopes.include?(record.scope.to_s)
+		return record if scopes.include?(record.scope.to_s)
 
       nil
     end

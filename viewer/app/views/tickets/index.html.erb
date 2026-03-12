@@ -1,0 +1,54 @@
+<h1>Edit tickets</h1>
+
+<p>
+  <%= button_to "Logout", tickets_logout_path, method: :delete, form: { style: "display:inline;" } %>
+  <%= link_to "Issue moderator token", new_moderator_token_path, style: "margin-left: 1rem;" %>
+</p>
+
+<%= form_with url: tickets_path, method: :get, local: true do %>
+  <div style="display:flex; gap: 1rem; flex-wrap: wrap; align-items: end;">
+    <div>
+      <label>Status</label><br>
+      <%= select_tag :status, options_for_select(["", "open", "approved", "rejected", "applied", "closed"], @status.to_s), include_blank: true %>
+    </div>
+    <div>
+      <label>Tag contains</label><br>
+      <%= text_field_tag :tag, @tag.to_s %>
+    </div>
+    <div>
+      <%= submit_tag "Filter" %>
+    </div>
+  </div>
+<% end %>
+
+<hr>
+
+<table style="width: 100%; border-collapse: collapse;">
+  <thead>
+    <tr>
+      <th style="text-align:left; border-bottom: 1px solid #ccc; padding: 0.25rem;">Created</th>
+      <th style="text-align:left; border-bottom: 1px solid #ccc; padding: 0.25rem;">Status</th>
+      <th style="text-align:left; border-bottom: 1px solid #ccc; padding: 0.25rem;">Title</th>
+      <th style="text-align:left; border-bottom: 1px solid #ccc; padding: 0.25rem;">Target</th>
+      <th style="text-align:left; border-bottom: 1px solid #ccc; padding: 0.25rem;">Tags</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @tickets.each do |t| %>
+      <tr>
+        <td style="padding: 0.25rem; border-bottom: 1px solid #eee;"><%= t.created_at %></td>
+        <td style="padding: 0.25rem; border-bottom: 1px solid #eee;"><%= t.status %></td>
+        <td style="padding: 0.25rem; border-bottom: 1px solid #eee;">
+          <%= link_to(t.title.presence || t.public_id, ticket_path(t.public_id)) %>
+          <div style="opacity: 0.8; font-size: 0.9em;"><%= t.summary %></div>
+        </td>
+        <td style="padding: 0.25rem; border-bottom: 1px solid #eee; font-family: monospace; font-size: 0.9em;">
+          <%= t.target_ref %>
+        </td>
+        <td style="padding: 0.25rem; border-bottom: 1px solid #eee;">
+          <%= Array(t.tags).join(", ") %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

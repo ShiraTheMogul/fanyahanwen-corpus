@@ -109,6 +109,100 @@ module Api
       render json: { ok: false, error: "invalid JSON in evidence_links/contact" }, status: 422
     end
 
+    # POST /api/tickets/text_edit
+    #
+    # Create a ticket for a corpus text edit.
+    # The client submits the edited text; the server loads the current file,
+    # generates a unified diff, and stores that diff as an evidence file.
+    def create_text_edit
+      source = params[:source].presence || "corpus_viewer"
+      target_path = params[:target_path].to_s
+      new_text = params[:new_text].to_s
+
+      return render(json: { ok: false, error: "target_path is required" }, status: 422) if target_path.blank?
+      return render(json: { ok: false, error: "new_text is required" }, status: 422) if new_text.blank?
+
+      corpus_root = Rails.configuration.x.corpus_root
+      corpus_root = Rails.root.join("..", "corpus") if corpus_root.to_s.strip.empty?
+
+      fs_path = safe_join_under_root(corpus_root, target_path)
+      return render(json: { ok: false, error: "Not a file" }, status: 422) unless File.file?(fs_path)
+
+      old_text = File.binread(fs_path).force_encoding("UTF-8")
+
+      # IMPORTANT: diffs should be rooted at repo-root paths, so that moderator apply-patch
+      # can run at monorepo root and patch the corpus file under `corpus/`.
+      patch_path = "corpus/#{target_path}"
+
+      diff_text = unified_diff_via_git(old_text, new_text, patch_path)
+      return render(json: { ok: false, error: "No changes detected" }, status: 422) if diff_text.blank?
+
+      metadata = EditTickets::UnifiedDiffValidator.validate!(
+        diff_text,
+        allowed_roots: ["corpus/"]
+      )
+
+      ticket_key = EditTickets::KeyManager.generate_plaintext
+      salt = EditTickets::KeyManager.generate_salt
+      digest = EditTickets::KeyManager.digest(ticket_key, salt)
+
+      ticket = EditTicket.new(
+        public_id: SecureRandom.hex(12),
+        title: params[:title].to_s.presence || "Text edit",
+        summary: params[:summary].to_s,
+        reasoning: params[:reasoning].to_s,
+        source: source,
+        target_ref: "#{source}/#{target_path}#1",
+        status: "open",
+        evidence_links: [],
+        key_salt: salt,
+        key_digest: digest,
+        key_generated_at: Time.current,
+        diff_metadata: metadata
+      )
+
+      ticket.tags = EditTickets::Tagger.tags_for(
+        source: ticket.source,
+        target_ref: ticket.target_ref,
+        has_diff: true,
+        has_uploads: true,
+        link_count: 0
+      )
+
+      ticket.transaction do
+        ticket.save!
+        ticket.evidence_files.attach(
+          io: StringIO.new(diff_text),
+          filename: "text_edit_#{File.basename(target_path)}.diff",
+          content_type: "text/plain"
+        )
+        EditTickets::AuditLogger.log!(
+          ticket: ticket,
+          action: "ticket_created",
+          actor_type: "submitter",
+          metadata: { source: ticket.source, target_ref: ticket.target_ref, tags: ticket.tags, kind: "text_edit" }
+        )
+      end
+
+      render json: {
+        ok: true,
+        ticket_id: ticket.public_id,
+        ticket: ticket_json(ticket),
+        ticket_key: ticket_key,
+        warning: "This key is shown once. Save it now (copy it, download a txt, or store it on this device in the UI)."
+      }, status: 201
+    rescue EditTickets::UnifiedDiffValidator::ValidationError => e
+      render json: { ok: false, error: e.message }, status: 422
+    rescue ActiveRecord::RecordInvalid => e
+      render json: { ok: false, error: e.record.errors.full_messages.join(", ") }, status: 422
+    rescue SecurityError
+      render json: { ok: false, error: "Bad path" }, status: 400
+    rescue => e
+      Rails.logger.error("[create_text_edit] #{e.class}: #{e.message}")
+      Rails.logger.error(e.backtrace.join("\n"))
+      render json: { ok: false, error: "internal error" }, status: 500
+    end
+
     # GET /api/tickets/:public_id
     def index
       # Moderator-only listing endpoint.
@@ -237,13 +331,13 @@ module Api
     end
 
     private
+
     def load_moderator_token_if_present
       # If a moderator token header is present and valid, store it.
       # This allows moderators to view tickets without needing the submitter key.
       scopes = %w[review_only apply_patch admin]
       @token_auth = EditTickets::ModeratorAuth.verify(request, scopes: scopes)
     end
-
 
     def load_ticket
       @ticket = EditTicket.find_by!(public_id: params[:public_id])
@@ -323,6 +417,87 @@ module Api
           }
         }
       }
+    end
+
+    # Prevent path traversal and force the file to live under corpus_root.
+    #
+    # Pattern to reuse elsewhere:
+    #   safe_join_under_root(root_dir, relative_path)
+    # and then check File.file? / File.directory? on the result.
+    def safe_join_under_root(root_dir, relative_path)
+      root = Pathname.new(root_dir).expand_path
+      rel = relative_path.to_s.sub(%r{\A/+}, "")
+      abs = root.join(rel).cleanpath
+
+      # If someone tries "../../etc/passwd", cleanpath will escape root; block it.
+      raise SecurityError, "path escapes root" unless abs.to_s.start_with?(root.to_s + File::SEPARATOR) || abs == root
+
+      abs.to_s
+    end
+
+    # Generate a unified diff using git (no-index) so we don't depend on a Ruby diff gem.
+    #
+    # Pattern to reuse elsewhere:
+    #   stdout, status = Open3.capture2e("git", "diff", "--no-index", "--", a_path, b_path)
+    # and then interpret exit status:
+    #   0 => no diff
+    #   1 => diff exists
+    #   >1 => error
+    def unified_diff_via_git(old_text, new_text, patch_path)
+      require "open3"
+      require "tempfile"
+
+      Tempfile.create(["old", ".txt"]) do |a|
+        Tempfile.create(["new", ".txt"]) do |b|
+          a.binmode
+          b.binmode
+          a.write(old_text.to_s)
+          b.write(new_text.to_s)
+          a.flush
+          b.flush
+
+          # Some Git builds don't support `git diff --label` (the error you'll see is
+          # "unknown option `label'"). We still want stable, corpus-relative names
+          # in the diff header, so we generate a normal no-index diff and then rewrite
+          # the header paths ourselves.
+          args = [
+            "git", "diff",
+            "--no-index",
+            "--unified=3",
+            "--", a.path, b.path
+          ]
+
+          out, status = Open3.capture2e(*args)
+          return "" if status.exitstatus == 0
+
+          if status.exitstatus == 1
+            a_label = "a/#{patch_path}"
+            b_label = "b/#{patch_path}"
+
+            # `git diff --no-index` outputs headers like:
+            #   diff --git a/tmp/... b/tmp/...
+            #   --- a/tmp/...
+            #   +++ b/tmp/...
+            # We replace those with:
+            #   diff --git a/<patch_path> b/<patch_path>
+            #   --- a/<patch_path>
+            #   +++ b/<patch_path>
+            return out.lines.map { |line|
+              if line.start_with?("diff --git ")
+                "diff --git #{a_label} #{b_label}\n"
+              elsif line.start_with?("--- ")
+                "--- #{a_label}\n"
+              elsif line.start_with?("+++ ")
+                "+++ #{b_label}\n"
+              else
+                line
+              end
+            }.join
+          end
+
+          raise "git diff failed (#{status.exitstatus}): #{out}"
+        end
+      end
     end
   end
 end

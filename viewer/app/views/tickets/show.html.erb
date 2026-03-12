@@ -1,0 +1,104 @@
+<p><%= link_to "← Back to tickets", tickets_path %></p>
+
+<% rel_target = @ticket.target_ref.to_s.sub(/\A#{Regexp.escape(@ticket.source.to_s)}\//, "").sub(/#\d+\z/, "") %>
+<% if @ticket.source.to_s == "corpus_viewer" && rel_target.present? %>
+  <p><%= link_to "Open target in corpus viewer", corpus_viewer_path(path: rel_target) %></p>
+<% end %>
+
+<h1><%= @ticket.title.presence || "Ticket" %></h1>
+
+<p>
+  <strong>ID:</strong> <span style="font-family: monospace;"><%= @ticket.public_id %></span><br>
+  <strong>Status:</strong> <%= @ticket.status %><br>
+  <strong>Source:</strong> <%= @ticket.source %><br>
+  <strong>Target:</strong> <span style="font-family: monospace;"><%= @ticket.target_ref %></span><br>
+  <strong>Tags:</strong> <%= Array(@ticket.tags).join(", ") %>
+</p>
+
+<p>
+  <strong>Summary</strong><br>
+  <%= simple_format(@ticket.summary.to_s) %>
+</p>
+
+<p>
+  <strong>Reasoning</strong><br>
+  <%= simple_format(@ticket.reasoning.to_s) %>
+</p>
+
+<hr>
+
+<h2>Actions</h2>
+
+<div style="display:flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1rem;">
+  <%= button_to "Approve", approve_ticket_path(@ticket.public_id), method: :post %>
+  <%= button_to "Reject", reject_ticket_path(@ticket.public_id), method: :post, params: { reason: "" } %>
+  <%= button_to "Close", close_ticket_path(@ticket.public_id), method: :post %>
+  <%= button_to "Apply patch to working tree", apply_patch_ticket_path(@ticket.public_id), method: :post %>
+</div>
+
+<p style="opacity: 0.8;">
+  Approve/Reject/Close/Apply require a moderator token with scope <code>apply_patch</code> or <code>admin</code>.
+  (If you logged in with <code>review_only</code>, these will fail.)
+</p>
+
+<hr>
+
+<h2>Evidence files</h2>
+
+<ul>
+  <% @attachments.each do |att| %>
+    <li>
+      <%= att.blob.filename.to_s %>
+      (<%= att.blob.content_type %>, <%= att.blob.byte_size %> bytes)
+      — <%= link_to "download", rails_blob_path(att, disposition: "attachment") %>
+    </li>
+  <% end %>
+</ul>
+
+<% if @diff_text.present? %>
+  <h2>Diff</h2>
+  <pre style="white-space: pre-wrap; border: 1px solid #ddd; padding: 0.75rem; overflow:auto;"><%= h(@diff_text.to_s.force_encoding("UTF-8").scrub) %></pre>
+<% end %>
+
+<div style="margin-top: 1rem;">
+  <h3>Post moderator message</h3>
+  <%= form_with url: create_message_ticket_path(@ticket.public_id), method: :post, local: true do %>
+    <div>
+      <%= text_area_tag :body, "", rows: 5, style: "width: 100%; max-width: 60rem;" %>
+    </div>
+    <div style="margin-top: 0.5rem;">
+      <%= submit_tag "Post message" %>
+    </div>
+  <% end %>
+</div>
+
+<hr>
+
+<h2>Messages</h2>
+<% if @messages.empty? %>
+  <p>(none)</p>
+<% else %>
+  <ul>
+    <% @messages.each do |m| %>
+      <li>
+        <strong><%= m.created_at %></strong>
+        (<%= m.actor_type %>)
+        <div><%= simple_format(m.body.to_s) %></div>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<hr>
+
+<h2>Audit log</h2>
+<ul>
+  <% @audit.each do |e| %>
+    <li>
+      <strong><%= e.created_at %></strong>
+      — <%= e.action %>
+      (<%= e.actor_type %> <%= e.actor_label %>)
+      <pre style="white-space: pre-wrap; margin: 0.25rem 0;"> <%= h(e.metadata.to_json) %> </pre>
+    </li>
+  <% end %>
+</ul>

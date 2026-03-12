@@ -28,7 +28,8 @@ class CorpusViewerController < ApplicationController
       raw = fs.read_text(@abs_path)
 
       @meta, body = split_corpus_front_matter(raw)  # safe even if no metadata
-      @text = view_text(body)
+	      @raw_body = body
+	      @text = view_text(body)
 
       render :show, formats: [:html]
       return

@@ -1,0 +1,26 @@
+<p><%= link_to "← Back to tickets", tickets_path %></p>
+
+<h1>Moderator tokens</h1>
+
+<p><%= link_to "Issue a new token", new_moderator_token_path %></p>
+
+<table style="width: 100%; border-collapse: collapse;">
+  <thead>
+    <tr>
+      <th style="text-align:left; border-bottom: 1px solid #ccc; padding: 0.25rem;">Created</th>
+      <th style="text-align:left; border-bottom: 1px solid #ccc; padding: 0.25rem;">Name</th>
+      <th style="text-align:left; border-bottom: 1px solid #ccc; padding: 0.25rem;">Scope</th>
+      <th style="text-align:left; border-bottom: 1px solid #ccc; padding: 0.25rem;">Revoked</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @tokens.each do |t| %>
+      <tr>
+        <td style="padding: 0.25rem; border-bottom: 1px solid #eee;"><%= t.created_at %></td>
+        <td style="padding: 0.25rem; border-bottom: 1px solid #eee;"><%= t.name %></td>
+        <td style="padding: 0.25rem; border-bottom: 1px solid #eee;"><%= t.scope %></td>
+        <td style="padding: 0.25rem; border-bottom: 1px solid #eee;"><%= t.revoked? ? "yes" : "no" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

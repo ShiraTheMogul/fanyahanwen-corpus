@@ -54,9 +54,28 @@ Rails.application.routes.draw do
 	post "/textbook/api/parse_numeral",  to: "textbook_api#parse_numeral"
 	
 	# Edit submissions and tickets
+	#
+	# Moderator UI (HTML) for reviewing and applying edit tickets.
+	get    "/tickets/login",  to: "tickets_sessions#new",     as: :tickets_login
+	post   "/tickets/login",  to: "tickets_sessions#create"
+	delete "/tickets/logout", to: "tickets_sessions#destroy", as: :tickets_logout
+
+	resources :tickets, param: :public_id, only: %i[index show] do
+		member do
+			post :approve
+			post :reject
+			post :close
+			post :apply_patch
+			post :create_message, path: "messages"
+		end
+	end
+
+	resources :moderator_tokens, only: %i[index new create]
+
 	namespace :api do
 	  get  "/tickets", to: "edit_tickets#index"
 	  post "/tickets", to: "edit_tickets#create"
+	  post "/tickets/text_edit", to: "edit_tickets#create_text_edit"
 	  get  "/tickets/:public_id", to: "edit_tickets#show"
 
 	  post "/tickets/:public_id/messages", to: "edit_tickets#create_message"

@@ -1,0 +1,20 @@
+<h1>Moderator login</h1>
+
+<p>
+  Paste a moderator token to access the ticket review UI.
+  (This stores the token in your browser session only.)
+</p>
+
+<% if flash[:alert].present? %>
+  <p style="color: #b00020;"><%= flash[:alert] %></p>
+<% end %>
+
+<%= form_with url: tickets_login_path, method: :post do |f| %>
+  <div style="max-width: 48rem;">
+    <label for="token"><strong>Moderator token</strong></label><br>
+    <%= text_field_tag :token, "", autocomplete: "off", style: "width: 100%;" %>
+  </div>
+  <div style="margin-top: 1rem;">
+    <%= submit_tag "Login" %>
+  </div>
+<% end %>

@@ -6,12 +6,12 @@ namespace :edit_tickets do
   end
 
   desc "Create a moderator token (shows plaintext once)"
-  task :issue_moderator_token, %i[name scope] => :environment do |_, args|
-    name = args[:name].to_s
+  task :issue_moderator_token, %i[scope name] => :environment do |_, args|
     scope = args[:scope].to_s
+    name = args[:name].to_s
 
-    if name.blank?
-      abort "Usage: rake edit_tickets:issue_moderator_token['Name','review_only']"
+    if scope.blank? || name.blank?
+      abort "Usage: rake edit_tickets:issue_moderator_token['admin','Llinos (maintainer)']"
     end
 
     unless TicketModeratorToken::SCOPES.include?(scope)

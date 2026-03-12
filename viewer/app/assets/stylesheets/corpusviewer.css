@@ -808,3 +808,52 @@ html.dark-mode .cv-annotate-note {
   vertical-align: sub;
   font-size: 0.75em;
 }
+
+/* --- Ticket-based text edit panel --- */
+
+.hidden { display: none !important; }
+
+.cv-text-edit-panel {
+  position: fixed;
+  top: 8vh;
+  left: 8vw;
+  width: 84vw;
+  max-height: 84vh;
+  overflow: auto;
+  background: var(--cv-panel-bg, #fff);
+  color: inherit;
+  border: 1px solid rgba(0,0,0,0.18);
+  border-radius: 8px;
+  padding: 14px 16px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.22);
+  z-index: 9999;
+}
+
+.cv-text-edit-panel h3 { margin: 0 0 8px 0; }
+
+.cv-hint {
+  margin: 0 0 12px 0;
+  opacity: 0.85;
+}
+
+.cv-form-row { margin-bottom: 10px; }
+.cv-form-row label { display: block; font-weight: 600; margin-bottom: 4px; }
+
+.cv-input,
+.cv-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 10px;
+  border: 1px solid rgba(0,0,0,0.22);
+  border-radius: 6px;
+  background: inherit;
+  color: inherit;
+}
+
+.cv-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+
+.cv-form-actions { display: flex; gap: 8px; margin-top: 10px; }
+
+.cv-ticket-result { margin-top: 12px; }
+.cv-ticket-status { margin-bottom: 6px; font-weight: 600; }
+.cv-ticket-kv code { padding: 2px 6px; border-radius: 6px; background: rgba(0,0,0,0.08); }
