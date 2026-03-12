@@ -97,7 +97,7 @@ export default class extends Controller {
     if (!this._dirty && (!this._items || this._items.length === 0)) return
     this._ensureTicketPanel()
     this._renderTicketPreview()
-    this._ticketPanel.hidden = false
+    this._showTicketPanel()
   }
 
   async submitTicket(event) {
@@ -201,8 +201,15 @@ export default class extends Controller {
     this._onMouseUpBound = (ev) => this._onMouseUp(ev)
     document.addEventListener("mouseup", this._onMouseUpBound)
     this._onEscBound = (ev) => {
+      if (ev.key !== "Escape") return
+      if (this._ticketPanel && !this._ticketPanel.classList.contains("hidden")) {
+        ev.preventDefault()
+        this._hideTicketPanel()
+        return
+      }
       if (!this._annotateEnabled) return
-      if (ev.key === "Escape") { this._hideAnnotatePopup(); this._clearSelectionPreview() }
+      this._hideAnnotatePopup()
+      this._clearSelectionPreview()
     }
     document.addEventListener("keydown", this._onEscBound)
   }
@@ -218,9 +225,14 @@ export default class extends Controller {
     }
   }
 
-  _onMouseUp() {
+  _onMouseUp(event) {
     if (!this._annotateEnabled || !this._contentEl) return
     if (this._isInteractiveField(document.activeElement)) return
+
+    const target = event && event.target ? event.target : null
+    if (target && target.closest) {
+      if (target.closest(".cv-annotate-popover") || target.closest(".cv-annotation-ticket-panel") || target.closest(".cv-text-edit-panel")) return
+    }
 
     const sel = window.getSelection ? window.getSelection() : null
     if (!sel || sel.rangeCount === 0) return
@@ -274,11 +286,12 @@ export default class extends Controller {
     const pop = document.createElement("div")
     pop.className = "cv-annotate-popover"
     pop.style.position = "absolute"
-    pop.style.left = Math.max(8, x) + "px"
-    pop.style.top = Math.max(8, y) + "px"
     pop.style.zIndex = "9999"
 
     pop.innerHTML = `
+      <div class="cv-annotate-head cv-annotate-drag-handle">
+        <strong>Annotate selection</strong>
+      </div>
       <div class="cv-annotate-row cv-annotate-selection-preview-row">
         <div class="cv-annotate-selection-preview">${this._escapeHtml(this._textForRange(bounds.start, bounds.end) || "(no text selected)")}</div>
       </div>
@@ -345,6 +358,7 @@ export default class extends Controller {
       noteBox.addEventListener("compositionend", () => { this._isPopupComposing = false })
     }
 
+    pop.addEventListener("mousedown", (ev) => ev.stopPropagation())
     pop.addEventListener("click", onClick)
 
     this._onDocClickClose = (ev) => {
@@ -357,8 +371,169 @@ export default class extends Controller {
     setTimeout(() => document.addEventListener("mousedown", this._onDocClickClose), 0)
 
     document.body.appendChild(pop)
+    this._positionPopover(pop, x, y)
+    this._positionFloatingElement(pop, x, y, this._floatingStorageKey("annotate-popup"), { preferAbove: true })
+    this._enableFloatingDrag(pop, ".cv-annotate-drag-handle", this._floatingStorageKey("annotate-popup"))
     this._popupEl = pop
     this._previewSelection(bounds.start, bounds.end)
+  }
+
+
+  _positionPopover(pop, desiredLeft, desiredTop) {
+    if (!pop) return
+
+    const pad = 8
+    pop.style.left = pad + "px"
+    pop.style.top = pad + "px"
+
+    const rect = pop.getBoundingClientRect()
+    const minLeft = window.scrollX + pad
+    const maxLeft = window.scrollX + window.innerWidth - rect.width - pad
+    const minTop = window.scrollY + pad
+    const maxTop = window.scrollY + window.innerHeight - rect.height - pad
+
+    let left = Number(desiredLeft || minLeft)
+    let top = Number(desiredTop || minTop)
+
+    if (top > maxTop) {
+      top = rect.height && desiredTop ? Math.max(minTop, desiredTop - rect.height - 18) : maxTop
+    }
+
+    if (maxLeft >= minLeft) {
+      left = Math.min(Math.max(minLeft, left), maxLeft)
+    } else {
+      left = minLeft
+    }
+
+    if (maxTop >= minTop) {
+      top = Math.min(Math.max(minTop, top), maxTop)
+    } else {
+      top = minTop
+    }
+
+    pop.style.left = left + "px"
+    pop.style.top = top + "px"
+  }
+
+  _floatingStorageKey(name) {
+    return `corpus.floating.${name}.v1`
+  }
+
+  _positionFloatingElement(el, preferredLeft, preferredTop, storageKey, options = {}) {
+    if (!el) return
+    const saved = this._loadFloatingPosition(storageKey)
+    if (saved) {
+      el.style.left = `${saved.left}px`
+      el.style.top = `${saved.top}px`
+      this._clampFloatingElement(el)
+      return
+    }
+
+    el.style.left = "8px"
+    el.style.top = "8px"
+    const rect = el.getBoundingClientRect()
+    let left = Number(preferredLeft || 8)
+    let top = Number(preferredTop || 8)
+    const pad = 8
+    if (options.preferAbove && top + rect.height > window.innerHeight - pad) {
+      top = Math.max(pad, top - rect.height - 18)
+    }
+    left = Math.min(Math.max(pad, left), Math.max(pad, window.innerWidth - rect.width - pad))
+    top = Math.min(Math.max(pad, top), Math.max(pad, window.innerHeight - rect.height - pad))
+    el.style.left = `${left}px`
+    el.style.top = `${top}px`
+  }
+
+  _clampFloatingElement(el) {
+    if (!el) return
+    const pad = 8
+    const rect = el.getBoundingClientRect()
+    let left = parseFloat(el.style.left || "0")
+    let top = parseFloat(el.style.top || "0")
+    if (!Number.isFinite(left)) left = pad
+    if (!Number.isFinite(top)) top = pad
+    left = Math.min(Math.max(pad, left), Math.max(pad, window.innerWidth - rect.width - pad))
+    top = Math.min(Math.max(pad, top), Math.max(pad, window.innerHeight - rect.height - pad))
+    el.style.left = `${left}px`
+    el.style.top = `${top}px`
+  }
+
+  _loadFloatingPosition(storageKey) {
+    try {
+      const raw = window.localStorage.getItem(storageKey)
+      if (!raw) return null
+      const obj = JSON.parse(raw)
+      const left = Number(obj && obj.left)
+      const top = Number(obj && obj.top)
+      if (!Number.isFinite(left) || !Number.isFinite(top)) return null
+      return { left, top }
+    } catch (_) {
+      return null
+    }
+  }
+
+  _saveFloatingPosition(storageKey, el) {
+    if (!storageKey || !el) return
+    try {
+      window.localStorage.setItem(storageKey, JSON.stringify({
+        left: parseFloat(el.style.left || "0") || 0,
+        top: parseFloat(el.style.top || "0") || 0
+      }))
+    } catch (_) {}
+  }
+
+  _enableFloatingDrag(el, handleSelector, storageKey) {
+    const handle = el ? el.querySelector(handleSelector) : null
+    if (!handle || handle.dataset.dragBound === "1") return
+    handle.dataset.dragBound = "1"
+
+    let dragging = false
+    let offsetX = 0
+    let offsetY = 0
+
+    const onMove = (event) => {
+      if (!dragging) return
+      el.style.left = `${event.clientX - offsetX}px`
+      el.style.top = `${event.clientY - offsetY}px`
+      this._clampFloatingElement(el)
+    }
+
+    const onUp = () => {
+      if (!dragging) return
+      dragging = false
+      document.removeEventListener("mousemove", onMove)
+      document.removeEventListener("mouseup", onUp)
+      this._saveFloatingPosition(storageKey, el)
+    }
+
+    handle.addEventListener("mousedown", (event) => {
+      if (event.button !== 0) return
+      if (event.target && event.target.closest && event.target.closest("button, a, input, textarea, select")) return
+      const rect = el.getBoundingClientRect()
+      dragging = true
+      offsetX = event.clientX - rect.left
+      offsetY = event.clientY - rect.top
+      event.preventDefault()
+      document.addEventListener("mousemove", onMove)
+      document.addEventListener("mouseup", onUp)
+    })
+  }
+
+  _suspendUiForTicketPanel() {
+    this._hideAnnotatePopup()
+    this._clearSelectionPreview()
+    const notesPanel = this.element.querySelector(".cv-user-notes")
+    if (notesPanel && notesPanel.style.display !== "none") {
+      this._hiddenNotesPanel = notesPanel
+      notesPanel.style.display = "none"
+    }
+  }
+
+  _restoreUiAfterTicketPanel() {
+    if (this._hiddenNotesPanel && this._hiddenNotesPanel.isConnected) {
+      this._hiddenNotesPanel.style.display = ""
+    }
+    this._hiddenNotesPanel = null
   }
 
   _hideAnnotatePopup() {
@@ -696,7 +871,7 @@ export default class extends Controller {
     if (this._ticketPanel && this._ticketPanel.isConnected) return
 
     const panel = document.createElement("div")
-    panel.className = "cv-annotation-ticket-panel"
+    panel.className = "cv-text-edit-panel cv-annotation-ticket-panel hidden"
     panel.hidden = true
     panel.innerHTML = `
       <div class="cv-annotation-ticket-card">
@@ -785,6 +960,7 @@ export default class extends Controller {
       el.setAttribute("autocorrect", "off")
       el.setAttribute("spellcheck", "false")
     })
+
   }
 
   _renderTicketPreview() {
@@ -916,7 +1092,7 @@ export default class extends Controller {
     this._dirty = true
     this._syncButtons()
     this._applyAll()
-    if (this._ticketPanel) this._ticketPanel.hidden = false
+    if (this._ticketPanel) this._showTicketPanel()
   }
 
   _normalizeIdx(value, fallback) {
@@ -990,8 +1166,19 @@ export default class extends Controller {
     return kind || "Annotation"
   }
 
+  _showTicketPanel() {
+    if (!this._ticketPanel) return
+    this._suspendUiForTicketPanel()
+    this._ticketPanel.hidden = false
+    this._ticketPanel.classList.remove("hidden")
+    this._positionFloatingElement(this._ticketPanel, window.innerWidth * 0.08, window.innerHeight * 0.06, this._floatingStorageKey("annotation-ticket-panel"), { preferAbove: false })
+  }
+
   _hideTicketPanel() {
-    if (this._ticketPanel) this._ticketPanel.hidden = true
+    if (!this._ticketPanel) return
+    this._ticketPanel.hidden = true
+    this._ticketPanel.classList.add("hidden")
+    this._restoreUiAfterTicketPanel()
   }
 
   _setTicketStatus(text) {

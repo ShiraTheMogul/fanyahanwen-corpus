@@ -74,6 +74,8 @@
 }
 
 .han-tooltip-head {
+  cursor: move;
+  user-select: none;
   display: grid;
   grid-template-columns: 64px 1fr;
   gap: 12px;

@@ -1088,3 +1088,39 @@ html.dark-mode .cv-annotate-note {
     max-width: calc(100vw - 1rem);
   }
 }
+
+/* narrow usability fix */
+.cv-annotate-popover button.cv-annotate-kind,
+.cv-annotate-popover .cv-annotate-apply,
+.cv-annotate-popover .cv-annotate-cancel {
+  touch-action: manipulation;
+}
+
+
+.cv-annotate-head.cv-annotate-drag-handle {
+  cursor: move;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: -2px 0 6px 0;
+  font-weight: 700;
+}
+
+.cv-annotation-ticket-panel {
+  width: min(70rem, 92vw);
+  max-width: 92vw;
+}
+
+.cv-annotation-ticket-panel .cv-annotation-ticket-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.cv-annotation-ticket-panel .cv-annotation-ticket-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}

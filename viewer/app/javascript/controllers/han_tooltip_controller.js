@@ -309,6 +309,84 @@ export default class extends Controller {
     if (pin) pin.classList.toggle("is-active", this._pinned)
   }
 
+  _floatingStorageKey() {
+    return "corpus.floating.han-tooltip.v1"
+  }
+
+  _loadFloatingPosition() {
+    try {
+      const raw = window.localStorage.getItem(this._floatingStorageKey())
+      if (!raw) return null
+      const obj = JSON.parse(raw)
+      if (!obj) return null
+      const left = Number(obj.left)
+      const top = Number(obj.top)
+      if (!Number.isFinite(left) || !Number.isFinite(top)) return null
+      return { left: left, top: top }
+    } catch (_) {
+      return null
+    }
+  }
+
+  _saveFloatingPosition(el) {
+    if (!el) return
+    try {
+      window.localStorage.setItem(this._floatingStorageKey(), JSON.stringify({
+        left: parseFloat(el.style.left || "0") || 0,
+        top: parseFloat(el.style.top || "0") || 0
+      }))
+    } catch (_) {}
+  }
+
+  _clampFloatingElement(el) {
+    if (!el) return
+    const pad = 8
+    const rect = el.getBoundingClientRect()
+    let left = parseFloat(el.style.left || "0")
+    let top = parseFloat(el.style.top || "0")
+    if (!Number.isFinite(left)) left = pad
+    if (!Number.isFinite(top)) top = pad
+    left = Math.min(Math.max(pad, left), Math.max(pad, window.innerWidth - rect.width - pad))
+    top = Math.min(Math.max(pad, top), Math.max(pad, window.innerHeight - rect.height - pad))
+    el.style.left = `${left}px`
+    el.style.top = `${top}px`
+  }
+
+  _enableTooltipDrag(el) {
+    const handle = el ? el.querySelector('.han-tooltip-head') : null
+    if (!handle) return
+    let dragging = false
+    let offsetX = 0
+    let offsetY = 0
+
+    const onMove = (event) => {
+      if (!dragging) return
+      el.style.left = `${event.clientX - offsetX}px`
+      el.style.top = `${event.clientY - offsetY}px`
+      this._clampFloatingElement(el)
+    }
+
+    const onUp = () => {
+      if (!dragging) return
+      dragging = false
+      document.removeEventListener('mousemove', onMove)
+      document.removeEventListener('mouseup', onUp)
+      this._saveFloatingPosition(el)
+    }
+
+    handle.addEventListener('mousedown', (event) => {
+      if (event.button !== 0) return
+      if (event.target && event.target.closest && event.target.closest('button, a, input, textarea, select')) return
+      const rect = el.getBoundingClientRect()
+      dragging = true
+      offsetX = event.clientX - rect.left
+      offsetY = event.clientY - rect.top
+      event.preventDefault()
+      document.addEventListener('mousemove', onMove)
+      document.addEventListener('mouseup', onUp)
+    })
+  }
+
   _render(data, ch, x, y) {
     this.hide()
     this._pinned = false
@@ -352,10 +430,19 @@ export default class extends Controller {
 
     this._maybeWarnMissingGlyph(ch, el)
 
-    // position near cursor and clamp
+    this._enableTooltipDrag(el)
+
+    const saved = this._loadFloatingPosition()
+    if (saved) {
+      el.style.left = `${saved.left}px`
+      el.style.top = `${saved.top}px`
+      this._clampFloatingElement(el)
+      return
+    }
+
     const pad = 12
-    el.style.left = "0px"
-    el.style.top = "0px"
+    el.style.left = "8px"
+    el.style.top = "8px"
     const r = el.getBoundingClientRect()
     let left = x + pad
     let top = y + pad
