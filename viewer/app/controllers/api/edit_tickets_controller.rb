@@ -128,13 +128,16 @@ module Api
       fs_path = safe_join_under_root(corpus_root, target_path)
       return render(json: { ok: false, error: "Not a file" }, status: 422) unless File.file?(fs_path)
 
-      old_text = File.binread(fs_path).force_encoding("UTF-8")
+      old_text = File.binread(fs_path).force_encoding("UTF-8").scrub
+      _front_matter, old_body = split_corpus_front_matter(old_text)
+      normalized_new_text = normalize_ticket_text(new_text)
+      normalized_old_body = normalize_ticket_text(old_body)
 
-      # IMPORTANT: diffs should be rooted at repo-root paths, so that moderator apply-patch
-      # can run at monorepo root and patch the corpus file under `corpus/`.
+      # IMPORTANT: corpus-viewer text edits only edit the body, not the leading metadata block.
+      # We therefore diff body-to-body for display/review, and preserve the existing metadata when applying.
       patch_path = "corpus/#{target_path}"
 
-      diff_text = unified_diff_via_git(old_text, new_text, patch_path)
+      diff_text = unified_diff_via_git(normalized_old_body, normalized_new_text, patch_path)
       return render(json: { ok: false, error: "No changes detected" }, status: 422) if diff_text.blank?
 
       metadata = EditTickets::UnifiedDiffValidator.validate!(
@@ -158,7 +161,11 @@ module Api
         key_salt: salt,
         key_digest: digest,
         key_generated_at: Time.current,
-        diff_metadata: metadata
+        diff_metadata: metadata.merge(
+          "edit_mode" => "body_only",
+          "target_path" => target_path,
+          "preserve_front_matter" => true
+        )
       )
 
       ticket.tags = EditTickets::Tagger.tags_for(
@@ -171,11 +178,21 @@ module Api
 
       ticket.transaction do
         ticket.save!
-        ticket.evidence_files.attach(
-          io: StringIO.new(diff_text),
-          filename: "text_edit_#{File.basename(target_path)}.diff",
-          content_type: "text/plain"
-        )
+        # Attach both files in one call. Repeated has_many_attached#attach calls here
+        # have proven unreliable in this flow, and we must keep the proposed body text
+        # so moderator application can preserve existing file metadata/front matter.
+        ticket.evidence_files.attach([
+          {
+            io: StringIO.new(diff_text),
+            filename: "text_edit_#{File.basename(target_path)}.diff",
+            content_type: "text/x-diff"
+          },
+          {
+            io: StringIO.new(normalized_new_text),
+            filename: "text_edit_#{File.basename(target_path)}.proposed.txt",
+            content_type: "text/plain"
+          }
+        ])
         EditTickets::AuditLogger.log!(
           ticket: ticket,
           action: "ticket_created",
@@ -331,6 +348,25 @@ module Api
     end
 
     private
+
+
+    def split_corpus_front_matter(raw)
+      lines = raw.to_s.lines
+      meta = []
+      i = 0
+
+      while i < lines.length && lines[i].start_with?("#")
+        meta << lines[i]
+        i += 1
+      end
+
+      [meta.join, lines[i..].join]
+    end
+
+    def normalize_ticket_text(text)
+      value = text.to_s.dup.force_encoding("UTF-8").scrub
+      value.end_with?("\n") ? value : (value + "\n")
+    end
 
     def load_moderator_token_if_present
       # If a moderator token header is present and valid, store it.

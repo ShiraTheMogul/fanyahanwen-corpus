@@ -66,7 +66,7 @@ Rails.application.routes.draw do
 			post :reject
 			post :close
 			post :apply_patch
-			post :create_message, path: "messages"
+			post :create_message
 		end
 	end
 

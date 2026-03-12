@@ -5,7 +5,7 @@ class EditTicket < ApplicationRecord
   has_many :ticket_audit_events, dependent: :destroy
   has_many :ticket_messages, dependent: :destroy
 
-  STATUSES = %w[open approved rejected closed].freeze
+  STATUSES = %w[open approved applied rejected closed].freeze
 
   validates :public_id, presence: true, uniqueness: true
   validates :title, presence: true

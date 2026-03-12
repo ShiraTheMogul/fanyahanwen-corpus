@@ -1,11 +1,11 @@
 <p><%= link_to "← Back to tickets", tickets_path %></p>
 
+<h1><%= @ticket.title.presence || "Ticket" %></h1>
+
 <% rel_target = @ticket.target_ref.to_s.sub(/\A#{Regexp.escape(@ticket.source.to_s)}\//, "").sub(/#\d+\z/, "") %>
 <% if @ticket.source.to_s == "corpus_viewer" && rel_target.present? %>
   <p><%= link_to "Open target in corpus viewer", corpus_viewer_path(path: rel_target) %></p>
 <% end %>
-
-<h1><%= @ticket.title.presence || "Ticket" %></h1>
 
 <p>
   <strong>ID:</strong> <span style="font-family: monospace;"><%= @ticket.public_id %></span><br>
@@ -29,16 +29,16 @@
 
 <h2>Actions</h2>
 
-<div style="display:flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1rem;">
-  <%= button_to "Approve", approve_ticket_path(@ticket.public_id), method: :post %>
-  <%= button_to "Reject", reject_ticket_path(@ticket.public_id), method: :post, params: { reason: "" } %>
-  <%= button_to "Close", close_ticket_path(@ticket.public_id), method: :post %>
-  <%= button_to "Apply patch to working tree", apply_patch_ticket_path(@ticket.public_id), method: :post %>
+<div style="display:flex; gap: 0.75rem; flex-wrap: wrap;">
+  <%= button_to "Approve and apply", approve_ticket_path(@ticket.public_id), method: :post, form: { data: { turbo: false } } %>
+  <%= button_to "Reject", reject_ticket_path(@ticket.public_id), method: :post, params: { reason: "" }, form: { data: { turbo: false } } %>
+  <%= button_to "Close", close_ticket_path(@ticket.public_id), method: :post, form: { data: { turbo: false } } %>
+  <%= button_to "Apply now", apply_patch_ticket_path(@ticket.public_id), method: :post, form: { data: { turbo: false } } %>
 </div>
 
 <p style="opacity: 0.8;">
-  Approve/Reject/Close/Apply require a moderator token with scope <code>apply_patch</code> or <code>admin</code>.
-  (If you logged in with <code>review_only</code>, these will fail.)
+  Approve now applies the ticket to the local corpus file as part of approval.
+  Apply now is still available as a separate manual button.
 </p>
 
 <hr>
@@ -60,21 +60,19 @@
   <pre style="white-space: pre-wrap; border: 1px solid #ddd; padding: 0.75rem; overflow:auto;"><%= h(@diff_text.to_s.force_encoding("UTF-8").scrub) %></pre>
 <% end %>
 
-<div style="margin-top: 1rem;">
-  <h3>Post moderator message</h3>
-  <%= form_with url: create_message_ticket_path(@ticket.public_id), method: :post, local: true do %>
-    <div>
-      <%= text_area_tag :body, "", rows: 5, style: "width: 100%; max-width: 60rem;" %>
-    </div>
-    <div style="margin-top: 0.5rem;">
-      <%= submit_tag "Post message" %>
-    </div>
-  <% end %>
-</div>
-
 <hr>
 
 <h2>Messages</h2>
+
+<%= form_with url: create_message_ticket_path(@ticket.public_id), method: :post, local: true, data: { turbo: false } do %>
+  <p>
+    <textarea name="body" rows="5" style="width: 100%; max-width: 50rem;" placeholder="Write a moderator message here"></textarea>
+  </p>
+  <p>
+    <button type="submit">Post message</button>
+  </p>
+<% end %>
+
 <% if @messages.empty? %>
   <p>(none)</p>
 <% else %>
@@ -82,7 +80,7 @@
     <% @messages.each do |m| %>
       <li>
         <strong><%= m.created_at %></strong>
-        (<%= m.actor_type %>)
+        (<%= m.actor_type %><% if m.actor_label.present? %> — <%= m.actor_label %><% end %>)
         <div><%= simple_format(m.body.to_s) %></div>
       </li>
     <% end %>
@@ -98,7 +96,7 @@
       <strong><%= e.created_at %></strong>
       — <%= e.action %>
       (<%= e.actor_type %> <%= e.actor_label %>)
-      <pre style="white-space: pre-wrap; margin: 0.25rem 0;"> <%= h(e.metadata.to_json) %> </pre>
+      <pre style="white-space: pre-wrap; margin: 0.25rem 0;"><%= h(e.metadata.to_json) %></pre>
     </li>
   <% end %>
 </ul>
