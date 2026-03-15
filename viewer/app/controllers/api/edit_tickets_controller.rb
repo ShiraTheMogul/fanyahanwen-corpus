@@ -11,6 +11,7 @@ module Api
     # Creates a ticket and returns the key ONCE.
     def create
       return create_corpus_submission if params[:kind].to_s == "corpus_submission"
+      return create_derived_tradition_submission if params[:kind].to_s == "derived_tradition_submission"
 
       ticket_key = EditTickets::KeyManager.generate_plaintext
       salt = EditTickets::KeyManager.generate_salt
@@ -422,6 +423,7 @@ module Api
       author = params[:author].to_s.strip
       source_citation = params[:source_citation].to_s.strip
       url = params[:url].to_s.strip
+      text_type = permitted_text_type(params[:text_type]) || "source"
       context_details = params[:context_details].to_s
       title = params[:title].to_s.presence || "Corpus text submission"
       summary = params[:summary].to_s
@@ -444,7 +446,10 @@ module Api
 
         pages.each_with_index do |page, idx|
           seq = idx + 1
-          file_rel = [target_dir_rel, format("%s__juan_%04d.txt", work_folder, seq)].join("/")
+          file_parts = [target_dir_rel]
+          file_parts << text_type unless text_type == "source"
+          file_parts << format("%s__juan_%04d.txt", work_folder, seq)
+          file_rel = file_parts.join("/")
           file_abs = safe_join_under_root(corpus_root, file_rel)
           return render(json: { ok: false, error: "A file already exists at #{file_rel}" }, status: 422) if File.exist?(file_abs)
 
@@ -470,7 +475,10 @@ module Api
         body = params[:body].to_s
         return render(json: { ok: false, error: "body is required" }, status: 422) if body.strip.blank?
 
-        file_rel = [target_dir_rel, file_name].join("/")
+        file_parts = [target_dir_rel]
+        file_parts << text_type unless text_type == "source"
+        file_parts << file_name
+        file_rel = file_parts.join("/")
         file_abs = safe_join_under_root(corpus_root, file_rel)
         return render(json: { ok: false, error: "A file already exists at #{file_rel}" }, status: 422) if File.exist?(file_abs)
 
@@ -489,8 +497,7 @@ module Api
         preview_rows << { "path" => file_rel, "page_title" => page_title, "chars" => body.length }
       end
 
-      diff_text = ticket_files.map { |row| unified_diff_via_git("", row[:text], row[:path]) }.reject(&:blank?).join("
-")
+      diff_text = ticket_files.map { |row| unified_diff_via_git("", row[:text], row[:path]) }.reject(&:blank?).join("\n")
       return render(json: { ok: false, error: "No changes detected" }, status: 422) if diff_text.blank?
 
       metadata = EditTickets::UnifiedDiffValidator.validate!(
@@ -520,6 +527,7 @@ module Api
           "work_folder" => work_folder,
           "page_mode" => page_mode,
           "page_count" => ticket_files.length,
+          "text_type" => text_type,
           "preview_files" => preview_rows,
           "metadata_preview" => {
             "nation" => nation,
@@ -554,12 +562,11 @@ module Api
         "AUTHOR: #{author}",
         "SOURCE: #{source_citation}",
         "URL: #{url}",
+        "TEXT TYPE: #{text_type}",
         "",
         "Files:",
         *preview_rows.map { |row| "- #{row['path']}#{row['page_title'].present? ? " (#{row['page_title']})" : ""}" }
-      ].join("
-") + "
-"
+      ].join("\n") + "\n"
 
       ticket.transaction do
         ticket.save!
@@ -602,6 +609,114 @@ module Api
       render json: { ok: false, error: "Bad path" }, status: 400
     rescue => e
       Rails.logger.error("[create_corpus_submission] #{e.class}: #{e.message}")
+      Rails.logger.error(e.backtrace.join("\n"))
+      render json: { ok: false, error: "internal error" }, status: 500
+    end
+
+    def create_derived_tradition_submission
+      source = params[:source].presence || "corpus_viewer"
+      base_path = params[:base_path].to_s.strip.sub(%r{\A/+}, "")
+      tradition = permitted_text_type(params[:tradition])
+      body_text = params[:body_text].to_s
+      generation_mode = params[:generation_mode].to_s.presence || "manual"
+
+      return render(json: { ok: false, error: "base_path is required" }, status: 422) if base_path.blank?
+      return render(json: { ok: false, error: "tradition must be kanbun, hanmun, or hanvan" }, status: 422) unless tradition.present? && tradition != "source"
+      return render(json: { ok: false, error: "body_text is required" }, status: 422) if body_text.strip.blank?
+      return render(json: { ok: false, error: "Choose a source page, not an existing tradition file" }, status: 422) if tradition_segment_in_path?(base_path)
+
+      corpus_root = Rails.configuration.x.corpus_root
+      corpus_root = Rails.root.join("..", "corpus") if corpus_root.to_s.strip.empty?
+
+      base_abs = safe_join_under_root(corpus_root, base_path)
+      return render(json: { ok: false, error: "Source page not found" }, status: 422) unless File.file?(base_abs)
+
+      target_rel = derived_target_rel_path(base_path, tradition)
+      target_abs = safe_join_under_root(corpus_root, target_rel)
+
+      old_text = File.file?(target_abs) ? File.binread(target_abs).force_encoding("UTF-8").scrub : ""
+      old_text = normalize_ticket_text(split_corpus_front_matter(old_text).last)
+      new_text = normalize_ticket_text(body_text)
+
+      diff_text = unified_diff_via_git(old_text, new_text, "corpus/#{target_rel}")
+      return render(json: { ok: false, error: "No changes detected" }, status: 422) if diff_text.blank?
+
+      metadata = EditTickets::UnifiedDiffValidator.validate!(
+        diff_text,
+        allowed_roots: ["corpus/"]
+      )
+
+      ticket_key = EditTickets::KeyManager.generate_plaintext
+      salt = EditTickets::KeyManager.generate_salt
+      digest = EditTickets::KeyManager.digest(ticket_key, salt)
+
+      ticket = EditTicket.new(
+        public_id: SecureRandom.hex(12),
+        title: params[:title].to_s.presence || "Create 漢文: #{tradition.titleize}",
+        summary: params[:summary].to_s,
+        reasoning: params[:reasoning].to_s,
+        source: source,
+        target_ref: "#{source}/#{target_rel}",
+        status: "open",
+        evidence_links: [],
+        key_salt: salt,
+        key_digest: digest,
+        key_generated_at: Time.current,
+        diff_metadata: metadata.merge(
+          "kind" => "derived_tradition_submission",
+          "target_path" => target_rel,
+          "source_path" => base_path,
+          "tradition" => tradition,
+          "preserve_front_matter" => false,
+          "generation_mode" => generation_mode
+        )
+      )
+
+      ticket.tags = EditTickets::Tagger.tags_for(
+        source: ticket.source,
+        target_ref: ticket.target_ref,
+        has_diff: true,
+        has_uploads: true,
+        link_count: 0
+      )
+
+      ticket.transaction do
+        ticket.save!
+        ticket.evidence_files.attach([
+          {
+            io: StringIO.new(diff_text),
+            filename: "#{tradition}_#{File.basename(base_path)}.diff",
+            content_type: "text/x-diff"
+          },
+          {
+            io: StringIO.new(new_text),
+            filename: "#{tradition}_#{File.basename(base_path, ".txt")}.proposed.txt",
+            content_type: "text/plain"
+          }
+        ])
+        EditTickets::AuditLogger.log!(
+          ticket: ticket,
+          action: "ticket_created",
+          actor_type: "submitter",
+          metadata: { source: ticket.source, target_ref: ticket.target_ref, tags: ticket.tags, kind: "derived_tradition_submission", tradition: tradition, generation_mode: generation_mode }
+        )
+      end
+
+      render json: {
+        ok: true,
+        ticket_id: ticket.public_id,
+        ticket: ticket_json(ticket),
+        ticket_key: ticket_key,
+        warning: "This key is shown once. Save it now (copy it, download a txt, or store it on this device in the UI)."
+      }, status: 201
+    rescue EditTickets::UnifiedDiffValidator::ValidationError => e
+      render json: { ok: false, error: e.message }, status: 422
+    rescue ActiveRecord::RecordInvalid => e
+      render json: { ok: false, error: e.record.errors.full_messages.join(", ") }, status: 422
+    rescue SecurityError
+      render json: { ok: false, error: "Bad path" }, status: 400
+    rescue => e
+      Rails.logger.error("[create_derived_tradition_submission] #{e.class}: #{e.message}")
       Rails.logger.error(e.backtrace.join("\n"))
       render json: { ok: false, error: "internal error" }, status: 500
     end
@@ -655,6 +770,22 @@ module Api
       return nil if cleaned.blank?
       cleaned += ".txt" unless cleaned.downcase.end_with?(".txt")
       cleaned
+    end
+
+    def permitted_text_type(value)
+      allowed = %w[source kanbun hanmun hanvan]
+      candidate = value.to_s.strip.downcase
+      allowed.include?(candidate) ? candidate : nil
+    end
+
+    def tradition_segment_in_path?(relative_path)
+      relative_path.to_s.split("/").any? { |segment| %w[kanbun hanmun hanvan].include?(segment) }
+    end
+
+    def derived_target_rel_path(base_path, tradition)
+      dir = File.dirname(base_path.to_s)
+      base = File.basename(base_path.to_s)
+      [dir, tradition, base].reject(&:blank?).join("/")
     end
 
     def load_moderator_token_if_present

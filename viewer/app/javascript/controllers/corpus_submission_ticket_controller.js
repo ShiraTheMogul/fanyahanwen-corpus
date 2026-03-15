@@ -3,7 +3,7 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = [
     "panel", "status", "ticketId", "ticketKey", "copyKeyBtn", "storeOnDevice",
-    "parentPath", "workFolder", "title", "summary", "nation", "workTitle", "author",
+    "parentPath", "workFolder", "title", "summary", "nation", "workTitle", "author", "textType",
     "sourceCitation", "url", "contextDetails", "pageMode", "singleFields", "multiFields",
     "fileName", "pageTitle", "body", "uploads", "pagesList"
   ]
@@ -83,6 +83,7 @@ export default class extends Controller {
     form.append("nation", this.hasNationTarget ? this.nationTarget.value : "")
     form.append("work_title", this.hasWorkTitleTarget ? this.workTitleTarget.value : "")
     form.append("author", this.hasAuthorTarget ? this.authorTarget.value : "")
+    form.append("text_type", this.hasTextTypeTarget ? this.textTypeTarget.value : "source")
     form.append("source_citation", this.hasSourceCitationTarget ? this.sourceCitationTarget.value : "")
     form.append("url", this.hasUrlTarget ? this.urlTarget.value : "")
     form.append("context_details", this.hasContextDetailsTarget ? this.contextDetailsTarget.value : "")

@@ -1129,3 +1129,80 @@ html.dark-mode .cv-annotate-note {
 .cv-submission-panel { max-width: 920px; }
 .cv-submission-page-card { border: 1px solid rgba(0,0,0,0.12); border-radius: 10px; padding: 12px; margin: 10px 0; background: rgba(255,255,255,0.9); }
 .cv-submission-panel code { padding: 2px 6px; border-radius: 6px; background: rgba(0,0,0,0.08); }
+
+.corpus-tradition-strip {
+  margin: 0 0 12px;
+}
+
+.corpus-segmented-control {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  border: 1px solid rgba(0,0,0,0.14);
+  border-radius: 12px;
+  overflow: hidden;
+  width: fit-content;
+  max-width: 100%;
+  background: rgba(255,255,255,0.92);
+}
+
+.corpus-segmented-control__btn {
+  border-radius: 0;
+  border: 0;
+  border-right: 1px solid rgba(0,0,0,0.12);
+  text-decoration: none;
+}
+
+.corpus-segmented-control__btn:last-child {
+  border-right: 0;
+}
+
+.corpus-segmented-control__btn.is-active {
+  background: rgba(0,0,0,0.12);
+  font-weight: 700;
+}
+
+.corpus-segmented-control__btn.is-disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.cv-kanbun-panel {
+  max-width: 1120px;
+}
+
+.cv-kanbun-side-by-side {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px;
+}
+
+.cv-kanbun-pane {
+  min-width: 0;
+}
+
+.cv-kanbun-keyboard {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.cv-kanbun-key {
+  min-height: 2.7rem;
+  font-size: 1.15rem;
+}
+
+.cch.kanbun-annotation-mark {
+  color: #b00020;
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .cv-kanbun-side-by-side {
+    grid-template-columns: 1fr;
+  }
+
+  .cv-kanbun-keyboard {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

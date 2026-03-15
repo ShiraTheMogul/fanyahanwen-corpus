@@ -228,10 +228,11 @@ def corpus_text_without_ruby_indexed(text)
       note_stack << opener
       buf.safe_concat(%(<span class="corpus-note-block corpus-note-#{opener}" data-note-kind="#{opener}">).html_safe)
     end
+    classes = ["cch"]
+    classes << "note-bracket" if opener || closer
+    classes << "kanbun-annotation-mark" if kanbun_annotation_mark?(ch)
 
-    bracket_class = (opener || closer) ? " note-bracket" : ""
-
-    buf.safe_concat(%(<span class="cch#{bracket_class}" data-corpus-idx="#{idx}">).html_safe)
+    buf.safe_concat(%(<span class="#{classes.join(" ")}" data-corpus-idx="#{idx}">).html_safe)
     buf << ERB::Util.html_escape(ch)
     buf.safe_concat("</span>".html_safe)
 
@@ -265,21 +266,22 @@ def corpus_text_with_ruby_indexed(text)
       note_stack << opener
       buf.safe_concat(%(<span class="corpus-note-block corpus-note-#{opener}" data-note-kind="#{opener}">).html_safe)
     end
-
-    bracket_class = (opener || closer) ? " note-bracket" : ""
+    classes = ["cch"]
+    classes << "note-bracket" if opener || closer
+    classes << "kanbun-annotation-mark" if kanbun_annotation_mark?(ch)
 
     reading = readings[ch]
     if reading.present?
       buf.safe_concat(%(<ruby class="#{ruby_class}">).html_safe)
 
-      buf.safe_concat(%(<span class="cch#{bracket_class}" data-corpus-idx="#{idx}">).html_safe)
+      buf.safe_concat(%(<span class="#{classes.join(" ")}" data-corpus-idx="#{idx}">).html_safe)
       buf << ERB::Util.html_escape(ch)
       buf.safe_concat("</span>".html_safe)
       buf.safe_concat("<rt>".html_safe)
       buf << ERB::Util.html_escape(reading)
       buf.safe_concat("</rt></ruby>".html_safe)
     else
-      buf.safe_concat(%(<span class="cch#{bracket_class}" data-corpus-idx="#{idx}">).html_safe)
+      buf.safe_concat(%(<span class="#{classes.join(" ")}" data-corpus-idx="#{idx}">).html_safe)
       buf << ERB::Util.html_escape(ch)
       buf.safe_concat("</span>".html_safe)
     end
@@ -293,6 +295,14 @@ def corpus_text_with_ruby_indexed(text)
   end
 
   buf
+end
+
+
+def kanbun_annotation_mark?(ch)
+  codepoint = ch.to_s.ord
+  codepoint >= 0x3190 && codepoint <= 0x319F
+rescue StandardError
+  false
 end
 
 NOTE_OPENERS = {

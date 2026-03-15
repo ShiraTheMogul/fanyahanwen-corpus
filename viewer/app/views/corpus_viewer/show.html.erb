@@ -50,6 +50,15 @@
             <label>Short summary</label>
             <input type="text" class="cv-input" placeholder="What is being submitted?" data-corpus-submission-ticket-target="summary" />
           </div>
+          <div class="cv-form-row">
+            <label>Text type</label>
+            <select class="cv-input" data-corpus-submission-ticket-target="textType">
+              <option value="source">Source text</option>
+              <option value="kanbun">Kanbun</option>
+              <option value="hanmun">Hanmun</option>
+              <option value="hanvan">Hanvan</option>
+            </select>
+          </div>
 
           <div class="cv-form-row">
             <label>NATION</label>
@@ -160,11 +169,18 @@
   meta_page_title = meta_hash["Page title"].to_s.strip # to derive wikisource links
 
   derived_work = begin
-    File.basename(File.dirname(@rel_path.to_s))
+    File.basename(File.dirname(@source_rel_path.to_s))
   rescue
     ""
   end
   meta_work = derived_work if meta_work.blank? && derived_work.present?
+
+  tradition_labels = {
+    "kanbun" => "Kanbun",
+    "hanmun" => "Hanmun",
+    "hanvan" => "Hanvan"
+  }
+  active_view_label = @display_tradition.present? ? tradition_labels[@display_tradition] : "Source"
 %>
 
   <div class="corpus-filebar">
@@ -175,11 +191,13 @@
       <% if meta_author.present? %>
         <span class="corpus-headmeta-item"><strong>Author:</strong> <%= meta_author %></span>
       <% end %>
+      <span class="corpus-headmeta-item"><strong>Viewing:</strong> <%= active_view_label %></span>
     </div>
   </div>
 
+
   <div class="corpus-reader" data-controller="corpus-reader corpus-annotations"
-       data-corpus-annotations-path-value="<%= @rel_path %>"
+       data-corpus-annotations-path-value="<%= @active_text_target_path %>"
        data-corpus-annotations-url-value="/corpus_annotations">
     <div class="corpus-toolbar" role="toolbar" aria-label="Corpus viewer tools">
       <button type="button"
@@ -240,6 +258,99 @@
 
       <div class="corpus-toolbar-spacer" aria-hidden="true"></div>
 
+        <% if @kanbun_editor_enabled %>
+          <span class="corpus-toolbar-traditions"
+                data-controller="kanbun-ticket"
+                data-kanbun-ticket-source-value="corpus_viewer"
+                data-kanbun-ticket-target-path-value="<%= @source_rel_path %>">
+            <span class="corpus-segmented-control corpus-segmented-control--compact" role="group" aria-label="Create or view 漢文 traditions">
+              <button type="button" class="corpus-btn corpus-segmented-control__btn corpus-btn-editing" data-action="kanbun-ticket#toggle">Create 漢文</button>
+
+              <%= link_to "View Kanbun", corpus_viewer_path(@source_rel_path.split("/"), format: nil, tradition: "kanbun"), class: "corpus-btn corpus-segmented-control__btn #{@display_tradition == 'kanbun' ? 'is-active' : ''} #{@available_traditions['kanbun'].present? ? '' : 'is-disabled'}", aria: { disabled: @available_traditions['kanbun'].present? ? 'false' : 'true' }, tabindex: @available_traditions['kanbun'].present? ? nil : -1 %>
+
+              <%= link_to "View Hanmun", corpus_viewer_path(@source_rel_path.split("/"), format: nil, tradition: "hanmun"), class: "corpus-btn corpus-segmented-control__btn #{@display_tradition == 'hanmun' ? 'is-active' : ''} #{@available_traditions['hanmun'].present? ? '' : 'is-disabled'}", aria: { disabled: @available_traditions['hanmun'].present? ? 'false' : 'true' }, tabindex: @available_traditions['hanmun'].present? ? nil : -1 %>
+
+              <%= link_to "View Hanvan", corpus_viewer_path(@source_rel_path.split("/"), format: nil, tradition: "hanvan"), class: "corpus-btn corpus-segmented-control__btn #{@display_tradition == 'hanvan' ? 'is-active' : ''} #{@available_traditions['hanvan'].present? ? '' : 'is-disabled'}", aria: { disabled: @available_traditions['hanvan'].present? ? 'false' : 'true' }, tabindex: @available_traditions['hanvan'].present? ? nil : -1 %>
+            </span>
+
+            <div class="cv-text-edit-panel cv-kanbun-panel hidden" data-kanbun-ticket-target="panel">
+              <h3 style="margin-top: 0;">Create 漢文 (creates a ticket)</h3>
+              <p class="cv-hint">Manual annotation is the default. Approved files are written as sibling pages under <code>kanbun/</code>, <code>hanmun/</code>, or <code>hanvan/</code> with the same filename as this source page.</p>
+
+              <form data-action="submit->kanbun-ticket#submit">
+                <div class="cv-form-row">
+                  <label>Tradition</label>
+                  <select class="cv-input" data-kanbun-ticket-target="tradition" data-action="change->kanbun-ticket#traditionChanged">
+                    <option value="kanbun">Japanese Kanbun</option>
+                    <option value="hanmun">Korean Hanmun</option>
+                    <option value="hanvan">Vietnamese Hanvan</option>
+                  </select>
+                </div>
+
+                <div class="cv-form-row">
+                  <label>Summary</label>
+                  <input type="text" class="cv-input" placeholder="What was added or corrected?" data-kanbun-ticket-target="summary" />
+                </div>
+
+                <div class="cv-form-row">
+                  <label>Reasoning</label>
+                  <textarea class="cv-textarea" rows="3" placeholder="Explain any editorial choices a reviewer should know." data-kanbun-ticket-target="reasoning"></textarea>
+                </div>
+
+                <div class="cv-form-row">
+                  <label>Digital keyboard</label>
+                  <div class="cv-kanbun-keyboard">
+                    <% ["㆐", "㆑", "㆒", "㆓", "㆔", "㆕", "㆖", "㆗", "㆘", "㆙", "㆚", "㆛", "㆜", "㆝", "㆞", "㆟"].each do |symbol| %>
+                      <button type="button" class="corpus-btn cv-kanbun-key" data-symbol="<%= symbol %>" data-action="kanbun-ticket#insertSymbol"><%= symbol %></button>
+                    <% end %>
+                  </div>
+                </div>
+
+                <p class="cv-hint" data-kanbun-ticket-target="aiNotice" hidden>Kanbun-LM is not shown here because automatic generation is Japanese-only. This patch keeps the manual path as the default workflow.</p>
+
+                <div class="cv-kanbun-side-by-side">
+                  <div class="cv-kanbun-pane">
+                    <label>Source page</label>
+                    <textarea class="cv-textarea cv-mono" rows="24" readonly><%= @source_body %></textarea>
+                  </div>
+                  <div class="cv-kanbun-pane">
+                    <label>Derived text</label>
+                    <textarea class="cv-textarea cv-mono" rows="24" data-kanbun-ticket-target="derived"><%= @source_body %></textarea>
+                  </div>
+                </div>
+
+                <textarea class="hidden" data-kanbun-ticket-target="sourceSeed"><%= @source_body %></textarea>
+                <textarea class="hidden" data-kanbun-ticket-target="kanbunSeed"><%= @derived_bodies['kanbun'].to_s %></textarea>
+                <textarea class="hidden" data-kanbun-ticket-target="hanmunSeed"><%= @derived_bodies['hanmun'].to_s %></textarea>
+                <textarea class="hidden" data-kanbun-ticket-target="hanvanSeed"><%= @derived_bodies['hanvan'].to_s %></textarea>
+
+                <div class="cv-form-row">
+                  <label><input type="checkbox" checked data-kanbun-ticket-target="storeOnDevice" /> Save ticket key on this device</label>
+                </div>
+
+                <div class="cv-form-actions">
+                  <button type="submit" class="corpus-btn corpus-btn-primary">Submit ticket</button>
+                  <button type="button" class="corpus-btn" data-action="kanbun-ticket#toggle">Close</button>
+                </div>
+              </form>
+
+              <div class="cv-ticket-result">
+                <div class="cv-ticket-status" data-kanbun-ticket-target="status"></div>
+                <div class="cv-ticket-kv">
+                  <div><strong>Ticket ID:</strong> <span data-kanbun-ticket-target="ticketId"></span></div>
+                  <div>
+                    <strong>Ticket key (save this):</strong>
+                    <code data-kanbun-ticket-target="ticketKey"></code>
+                    <button type="button" class="corpus-btn" data-kanbun-ticket-target="copyKeyBtn" data-action="kanbun-ticket#copyKey">Copy</button>
+                    <button type="button" class="corpus-btn" data-kanbun-ticket-target="downloadKeyBtn" data-action="kanbun-ticket#downloadKey" hidden>Download .txt</button>
+                    <a href="#" class="corpus-btn" data-kanbun-ticket-target="openTicketLink" hidden>Open ticket</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </span>
+        <% end %>
+
       <div class="corpus-toolbar-editing">
         <button type="button"
                 class="corpus-btn corpus-btn-editing"
@@ -260,7 +371,7 @@
         <span
           data-controller="text-edit-ticket"
           data-text-edit-ticket-source-value="corpus_viewer"
-          data-text-edit-ticket-target-path-value="<%= @rel_path %>">
+          data-text-edit-ticket-target-path-value="<%= @active_text_target_path %>">
           <button type="button"
                   class="corpus-btn corpus-btn-editing"
                   data-action="text-edit-ticket#toggle"
