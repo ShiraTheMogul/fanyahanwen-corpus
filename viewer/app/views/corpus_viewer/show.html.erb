@@ -16,6 +16,129 @@
 <% if @kind == :dir %>
   <p><strong><%= @rel_path.present? ? @rel_path : "Root" %></strong></p>
 
+  <% if @rel_path.to_s.split("/").include?("clean") %>
+    <div class="corpus-dir-actions"
+         data-controller="corpus-submission-ticket"
+         data-corpus-submission-ticket-source-value="corpus_viewer"
+         data-corpus-submission-ticket-parent-path-value="<%= @rel_path %>"
+         data-corpus-submission-ticket-lock-parent-path-value="true">
+      <button type="button"
+              class="corpus-btn corpus-btn-editing"
+              data-action="corpus-submission-ticket#toggle"
+              title="Propose a new text for this folder">
+        Submit text here
+      </button>
+
+      <div class="cv-text-edit-panel cv-submission-panel hidden" data-corpus-submission-ticket-target="panel">
+        <h3 style="margin-top: 0;">Submit a new text (creates a ticket)</h3>
+        <p class="cv-hint">This does <em>not</em> write into the corpus directly. It creates a review ticket with a diff for one new work folder and one or more new files inside it.</p>
+
+        <form data-action="submit->corpus-submission-ticket#submit">
+          <div class="cv-form-row">
+            <label>Parent clean directory</label>
+            <input type="text" class="cv-input cv-mono" data-corpus-submission-ticket-target="parentPath" />
+          </div>
+          <div class="cv-form-row">
+            <label>Work folder</label>
+            <input type="text" class="cv-input" placeholder="e.g. 皇黎一統志 or 在海牙府" data-corpus-submission-ticket-target="workFolder" />
+          </div>
+          <div class="cv-form-row">
+            <label>Ticket title</label>
+            <input type="text" class="cv-input" value="Corpus text submission" data-corpus-submission-ticket-target="title" />
+          </div>
+          <div class="cv-form-row">
+            <label>Short summary</label>
+            <input type="text" class="cv-input" placeholder="What is being submitted?" data-corpus-submission-ticket-target="summary" />
+          </div>
+
+          <div class="cv-form-row">
+            <label>NATION</label>
+            <input type="text" class="cv-input" data-corpus-submission-ticket-target="nation" />
+          </div>
+          <div class="cv-form-row">
+            <label>WORK_TITLE</label>
+            <input type="text" class="cv-input" data-corpus-submission-ticket-target="workTitle" />
+          </div>
+          <div class="cv-form-row">
+            <label>AUTHOR</label>
+            <input type="text" class="cv-input" data-corpus-submission-ticket-target="author" />
+          </div>
+          <div class="cv-form-row">
+            <label>SOURCE</label>
+            <input type="text" class="cv-input" placeholder="Write a reference here (ideally APA 7th)" data-corpus-submission-ticket-target="sourceCitation" />
+          </div>
+          <div class="cv-form-row">
+            <label>URL</label>
+            <input type="url" class="cv-input" placeholder="https://..." data-corpus-submission-ticket-target="url" />
+          </div>
+          <div class="cv-form-row">
+            <label>Context and rights</label>
+            <textarea class="cv-textarea" rows="4" placeholder="Explain where this text is from, whether it is public domain, what licence applies, and any context a reviewer should know." data-corpus-submission-ticket-target="contextDetails"></textarea>
+          </div>
+          <div class="cv-form-row">
+            <label>Reference files</label>
+            <input type="file" class="cv-input" multiple data-corpus-submission-ticket-target="uploads" />
+            <div class="cv-hint">Optional: scans, PDFs, screenshots, reference notes, and similar evidence.</div>
+          </div>
+          <div class="cv-form-row">
+            <label>Page setup</label>
+            <select class="cv-input" data-corpus-submission-ticket-target="pageMode" data-action="change->corpus-submission-ticket#togglePageMode">
+              <option value="single">Single text file</option>
+              <option value="multi">Multiple page files</option>
+            </select>
+          </div>
+
+          <div data-corpus-submission-ticket-target="singleFields">
+            <div class="cv-form-row">
+              <label>File name</label>
+              <input type="text" class="cv-input" placeholder="Defaults to work_folder.txt" data-corpus-submission-ticket-target="fileName" />
+            </div>
+            <div class="cv-form-row">
+              <label>PAGE_TITLE</label>
+              <input type="text" class="cv-input" data-corpus-submission-ticket-target="pageTitle" />
+            </div>
+            <div class="cv-form-row">
+              <label>Text body</label>
+              <textarea class="cv-textarea cv-mono" rows="16" data-corpus-submission-ticket-target="body"></textarea>
+            </div>
+          </div>
+
+          <div data-corpus-submission-ticket-target="multiFields" hidden>
+            <div class="cv-form-row">
+              <label>Pages</label>
+              <div data-corpus-submission-ticket-target="pagesList"></div>
+            </div>
+            <div class="cv-form-actions">
+              <button type="button" class="corpus-btn" data-action="corpus-submission-ticket#addPage">Add page</button>
+            </div>
+            <p class="cv-hint">Multiple pages create numbered files like <code>work_folder__juan_0001.txt</code> inside the work folder.</p>
+          </div>
+
+          <div class="cv-form-row">
+            <label><input type="checkbox" checked data-corpus-submission-ticket-target="storeOnDevice" /> Save ticket key on this device</label>
+          </div>
+
+          <div class="cv-form-actions">
+            <button type="submit" class="corpus-btn corpus-btn-primary">Submit ticket</button>
+            <button type="button" class="corpus-btn" data-action="corpus-submission-ticket#toggle">Close</button>
+          </div>
+        </form>
+
+        <div class="cv-ticket-result">
+          <div class="cv-ticket-status" data-corpus-submission-ticket-target="status"></div>
+          <div class="cv-ticket-kv">
+            <div><strong>Ticket ID:</strong> <span data-corpus-submission-ticket-target="ticketId"></span></div>
+            <div>
+              <strong>Ticket key (save this):</strong>
+              <code data-corpus-submission-ticket-target="ticketKey"></code>
+              <button type="button" class="corpus-btn" data-corpus-submission-ticket-target="copyKeyBtn" data-action="corpus-submission-ticket#copyKey">Copy</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
   <ul class="corpus-list">
     <% @children.each do |name| %>
       <% child_rel = @rel_path.present? ? "#{@rel_path}/#{name}" : name %>
@@ -46,7 +169,7 @@
 
   <div class="corpus-filebar">
     <div class="corpus-headmeta">
-	  <% if meta_work.present? %>
+      <% if meta_work.present? %>
         <span class="corpus-headmeta-item"><strong>Work:</strong> <%= meta_work %></span>
       <% end %>
       <% if meta_author.present? %>
@@ -54,7 +177,6 @@
       <% end %>
     </div>
   </div>
-
 
   <div class="corpus-reader" data-controller="corpus-reader corpus-annotations"
        data-corpus-annotations-path-value="<%= @rel_path %>"
@@ -100,7 +222,6 @@
         Judou: On
       </button>
 
-      
       <button type="button"
               class="corpus-btn"
               data-action="corpus-annotations#toggleNotes"
@@ -192,7 +313,6 @@
           </div>
         </span>
       </div>
-
     </div>
 
     <%# Metadata is parsed from leading "#" lines in the corpus file and is display-only. %>
@@ -200,16 +320,16 @@
       <details class="corpus-metabox"
                style="margin: 0 0 10px; border: 1px solid rgba(0,0,0,0.10); border-radius: 12px; padding: 10px; background: #fff;">
         <summary class="corpus-metabox-summary">
-  <strong>Metadata</strong>
-  <% if meta_page_title.present? && meta_ws_cats.present? %>
-    <span style="margin-left: 10px;">
-      <%= link_to "维基文库", "https://zh.wikisource.org/wiki/#{ERB::Util.url_encode(meta_page_title)}",
-                  target: "_blank", rel: "noopener",
-                  class: "corpus-btn corpus-btn-ghost",
-                  style: "text-decoration: none;" %>
-    </span>
-  <% end %>
-</summary>
+          <strong>Metadata</strong>
+          <% if meta_page_title.present? && meta_ws_cats.present? %>
+            <span style="margin-left: 10px;">
+              <%= link_to "维基文库", "https://zh.wikisource.org/wiki/#{ERB::Util.url_encode(meta_page_title)}",
+                          target: "_blank", rel: "noopener",
+                          class: "corpus-btn corpus-btn-ghost",
+                          style: "text-decoration: none;" %>
+            </span>
+          <% end %>
+        </summary>
         <div class="corpus-metabox-scroll" role="region" aria-label="Text metadata"
              style="max-height: 160px; overflow: auto; padding-top: 8px;">
           <dl class="corpus-metabox-dl" style="margin: 0;">
@@ -228,7 +348,6 @@
       </details>
     <% end %>
 
-    
     <div class="corpus-punct-overlay"
          data-corpus-reader-target="punctOverlay"
          data-action="click->corpus-reader#onPunctOverlayClick"
@@ -302,12 +421,11 @@
             <label><input type="radio" name="cv_repeat_mark" value="vertical" data-action="change->corpus-reader#setRepeatMarkRadio"> 〻 (Vertical)</label>
             <label><input type="radio" name="cv_repeat_mark" value="zhou" data-action="change->corpus-reader#setRepeatMarkRadio"> 二 (Western Zhou-style)</label>
           </fieldset>
-
         </div>
       </div>
     </div>
 
-<div class="corpus-viewbox" data-corpus-reader-target="viewbox">
+    <div class="corpus-viewbox" data-corpus-reader-target="viewbox">
       <div class="corpus-textflow"
            data-corpus-reader-target="content"
            data-action="contextmenu->corpus-reader#onContextMenu">

@@ -1124,3 +1124,8 @@ html.dark-mode .cv-annotate-note {
   justify-content: space-between;
   gap: 1rem;
 }
+
+
+.cv-submission-panel { max-width: 920px; }
+.cv-submission-page-card { border: 1px solid rgba(0,0,0,0.12); border-radius: 10px; padding: 12px; margin: 10px 0; background: rgba(255,255,255,0.9); }
+.cv-submission-panel code { padding: 2px 6px; border-radius: 6px; background: rgba(0,0,0,0.08); }

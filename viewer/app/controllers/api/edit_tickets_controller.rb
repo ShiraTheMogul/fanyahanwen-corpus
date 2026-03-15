@@ -10,6 +10,8 @@ module Api
     # POST /api/tickets
     # Creates a ticket and returns the key ONCE.
     def create
+      return create_corpus_submission if params[:kind].to_s == "corpus_submission"
+
       ticket_key = EditTickets::KeyManager.generate_plaintext
       salt = EditTickets::KeyManager.generate_salt
       digest = EditTickets::KeyManager.digest(ticket_key, salt)
@@ -392,6 +394,218 @@ module Api
     private
 
 
+    def create_corpus_submission
+      source = params[:source].presence || "corpus_submission"
+      parent_path = params[:parent_path].to_s.strip.sub(%r{\A/+}, "").sub(%r{/+\z}, "")
+      work_folder = params[:work_folder].to_s.strip
+      file_name = params[:file_name].to_s.strip
+      page_mode = params[:page_mode].to_s == "multi" ? "multi" : "single"
+
+      return render(json: { ok: false, error: "parent_path is required" }, status: 422) if parent_path.blank?
+      return render(json: { ok: false, error: "work_folder is required" }, status: 422) if work_folder.blank?
+
+      corpus_root = Rails.configuration.x.corpus_root
+      corpus_root = Rails.root.join("..", "corpus") if corpus_root.to_s.strip.empty?
+
+      parent_abs = safe_join_under_root(corpus_root, parent_path)
+      return render(json: { ok: false, error: "Parent directory not found" }, status: 422) unless File.directory?(parent_abs)
+      return render(json: { ok: false, error: "Submissions must go inside a clean directory" }, status: 422) unless clean_submission_directory?(parent_path)
+
+      work_folder = sanitize_submission_segment(work_folder)
+      return render(json: { ok: false, error: "work_folder contains forbidden path characters" }, status: 422) if work_folder.blank?
+
+      target_dir_rel = [parent_path, work_folder].reject(&:blank?).join("/")
+      target_dir_abs = safe_join_under_root(corpus_root, target_dir_rel)
+
+      nation = params[:nation].to_s.strip
+      work_title = params[:work_title].to_s.strip
+      author = params[:author].to_s.strip
+      source_citation = params[:source_citation].to_s.strip
+      url = params[:url].to_s.strip
+      context_details = params[:context_details].to_s
+      title = params[:title].to_s.presence || "Corpus text submission"
+      summary = params[:summary].to_s
+
+      ticket_files = []
+      preview_rows = []
+
+      if page_mode == "multi"
+        raw_pages = params[:pages]
+        raw_pages = JSON.parse(raw_pages) if raw_pages.is_a?(String)
+        pages = Array(raw_pages).map.with_index do |page, idx|
+          item = page.respond_to?(:to_h) ? page.to_h : {}
+          {
+            "label" => item["label"].to_s.strip,
+            "body" => item["body"].to_s
+          }
+        end.select { |row| row["body"].to_s.strip.present? }
+
+        return render(json: { ok: false, error: "Add at least one page with text" }, status: 422) if pages.empty?
+
+        pages.each_with_index do |page, idx|
+          seq = idx + 1
+          file_rel = [target_dir_rel, format("%s__juan_%04d.txt", work_folder, seq)].join("/")
+          file_abs = safe_join_under_root(corpus_root, file_rel)
+          return render(json: { ok: false, error: "A file already exists at #{file_rel}" }, status: 422) if File.exist?(file_abs)
+
+          label = page["label"].presence || format("卷%03d", seq)
+          page_title = work_title.present? ? "#{work_title}/#{label}" : label
+          final_text = build_submission_text(
+            nation: nation,
+            work_title: work_title,
+            author: author,
+            page_title: page_title,
+            source_citation: source_citation,
+            url: url,
+            body: page["body"]
+          )
+
+          ticket_files << { path: "corpus/#{file_rel}", text: final_text }
+          preview_rows << { "path" => file_rel, "page_title" => page_title, "chars" => page["body"].to_s.length }
+        end
+      else
+        file_name = sanitize_submission_filename(file_name.presence || "#{work_folder}.txt")
+        return render(json: { ok: false, error: "file_name is invalid" }, status: 422) if file_name.blank?
+
+        body = params[:body].to_s
+        return render(json: { ok: false, error: "body is required" }, status: 422) if body.strip.blank?
+
+        file_rel = [target_dir_rel, file_name].join("/")
+        file_abs = safe_join_under_root(corpus_root, file_rel)
+        return render(json: { ok: false, error: "A file already exists at #{file_rel}" }, status: 422) if File.exist?(file_abs)
+
+        page_title = params[:page_title].to_s.strip
+        final_text = build_submission_text(
+          nation: nation,
+          work_title: work_title,
+          author: author,
+          page_title: page_title,
+          source_citation: source_citation,
+          url: url,
+          body: body
+        )
+
+        ticket_files << { path: "corpus/#{file_rel}", text: final_text }
+        preview_rows << { "path" => file_rel, "page_title" => page_title, "chars" => body.length }
+      end
+
+      diff_text = ticket_files.map { |row| unified_diff_via_git("", row[:text], row[:path]) }.reject(&:blank?).join("
+")
+      return render(json: { ok: false, error: "No changes detected" }, status: 422) if diff_text.blank?
+
+      metadata = EditTickets::UnifiedDiffValidator.validate!(
+        diff_text,
+        allowed_roots: ["corpus/"]
+      )
+
+      ticket_key = EditTickets::KeyManager.generate_plaintext
+      salt = EditTickets::KeyManager.generate_salt
+      digest = EditTickets::KeyManager.digest(ticket_key, salt)
+
+      ticket = EditTicket.new(
+        public_id: SecureRandom.hex(12),
+        title: title,
+        summary: summary,
+        reasoning: context_details,
+        source: source,
+        target_ref: "#{source}/#{target_dir_rel}",
+        status: "open",
+        evidence_links: [],
+        key_salt: salt,
+        key_digest: digest,
+        key_generated_at: Time.current,
+        diff_metadata: metadata.merge(
+          "kind" => "corpus_submission",
+          "target_directory" => target_dir_rel,
+          "work_folder" => work_folder,
+          "page_mode" => page_mode,
+          "page_count" => ticket_files.length,
+          "preview_files" => preview_rows,
+          "metadata_preview" => {
+            "nation" => nation,
+            "work_title" => work_title,
+            "author" => author,
+            "source" => source_citation,
+            "url" => url
+          }
+        )
+      )
+
+      uploads = Array(params[:evidence_files])
+
+      ticket.tags = EditTickets::Tagger.tags_for(
+        source: ticket.source,
+        target_ref: ticket.target_ref,
+        has_diff: true,
+        has_uploads: true,
+        link_count: 0
+      )
+
+      manifest_lines = [
+        "Corpus submission ticket",
+        "Target directory: #{target_dir_rel}",
+        "Work folder: #{work_folder}",
+        "Page mode: #{page_mode}",
+        "Page count: #{ticket_files.length}",
+        "",
+        "Metadata preview:",
+        "NATION: #{nation}",
+        "WORK_TITLE: #{work_title}",
+        "AUTHOR: #{author}",
+        "SOURCE: #{source_citation}",
+        "URL: #{url}",
+        "",
+        "Files:",
+        *preview_rows.map { |row| "- #{row['path']}#{row['page_title'].present? ? " (#{row['page_title']})" : ""}" }
+      ].join("
+") + "
+"
+
+      ticket.transaction do
+        ticket.save!
+        ticket.evidence_files.attach({
+          io: StringIO.new(diff_text),
+          filename: "corpus_submission_#{work_folder}.diff",
+          content_type: "text/x-diff"
+        })
+        ticket.evidence_files.attach({
+          io: StringIO.new(manifest_lines),
+          filename: "corpus_submission_#{work_folder}.manifest.txt",
+          content_type: "text/plain"
+        })
+        uploads.each do |uploaded|
+          EditTickets::EvidenceValidator.validate!(uploaded)
+          ticket.evidence_files.attach(uploaded)
+        end
+        EditTickets::AuditLogger.log!(
+          ticket: ticket,
+          action: "ticket_created",
+          actor_type: "submitter",
+          metadata: { source: ticket.source, target_ref: ticket.target_ref, tags: ticket.tags, kind: "corpus_submission" }
+        )
+      end
+
+      render json: {
+        ok: true,
+        ticket_id: ticket.public_id,
+        ticket: ticket_json(ticket),
+        ticket_key: ticket_key,
+        warning: "This key is shown once. Save it now (copy it, download a txt, or store it on this device in the UI)."
+      }, status: 201
+    rescue EditTickets::UnifiedDiffValidator::ValidationError, EditTickets::EvidenceValidator::ValidationError => e
+      render json: { ok: false, error: e.message }, status: 422
+    rescue ActiveRecord::RecordInvalid => e
+      render json: { ok: false, error: e.record.errors.full_messages.join(", ") }, status: 422
+    rescue JSON::ParserError
+      render json: { ok: false, error: "invalid JSON in pages" }, status: 422
+    rescue SecurityError
+      render json: { ok: false, error: "Bad path" }, status: 400
+    rescue => e
+      Rails.logger.error("[create_corpus_submission] #{e.class}: #{e.message}")
+      Rails.logger.error(e.backtrace.join("\n"))
+      render json: { ok: false, error: "internal error" }, status: 500
+    end
+
     def split_corpus_front_matter(raw)
       lines = raw.to_s.lines
       meta = []
@@ -408,6 +622,39 @@ module Api
     def normalize_ticket_text(text)
       value = text.to_s.dup.force_encoding("UTF-8").scrub
       value.end_with?("\n") ? value : (value + "\n")
+    end
+
+    def build_submission_text(nation:, work_title:, author:, page_title:, source_citation:, url:, body:)
+      lines = []
+      lines << "# NATION: #{nation}" if nation.present?
+      lines << "# WORK_TITLE: #{work_title}" if work_title.present?
+      lines << "# AUTHOR: #{author}" if author.present?
+      lines << "# PAGE_TITLE: #{page_title}" if page_title.present?
+      lines << "# SOURCE: #{source_citation}" if source_citation.present?
+      lines << "# URL: #{url}" if url.present?
+
+      metadata = lines.join("\n")
+      text = normalize_ticket_text(body)
+      return text if metadata.blank?
+
+      metadata + "\n\n" + text.sub(/\A\n+/, "")
+    end
+
+    def clean_submission_directory?(relative_path)
+      parts = relative_path.to_s.split("/").reject(&:blank?)
+      parts.include?("clean")
+    end
+
+    def sanitize_submission_segment(value)
+      cleaned = value.to_s.strip.delete("\/").sub(/\A\.+/, "").sub(/\.+\z/, "")
+      cleaned.presence
+    end
+
+    def sanitize_submission_filename(value)
+      cleaned = sanitize_submission_segment(value)
+      return nil if cleaned.blank?
+      cleaned += ".txt" unless cleaned.downcase.end_with?(".txt")
+      cleaned
     end
 
     def load_moderator_token_if_present

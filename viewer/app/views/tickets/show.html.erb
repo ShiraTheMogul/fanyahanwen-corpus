@@ -31,6 +31,7 @@
 <% annotation_preview_items = Array(annotation_meta["preview_items"]) %>
 <% annotation_items = Array(annotation_meta.dig("proposed_annotations", "items")) %>
 <% annotation_ticket = annotation_meta["kind"] == "annotations_edit" %>
+<% corpus_submission_ticket = annotation_meta["kind"] == "corpus_submission" %>
 
 <h2>Actions</h2>
 
@@ -135,6 +136,40 @@
         </div>
       <% end %>
     </div>
+  <% end %>
+<% end %>
+
+<% if corpus_submission_ticket %>
+  <hr>
+
+  <h2>Corpus submission preview</h2>
+  <p>
+    <strong>Target directory:</strong>
+    <span style="font-family: monospace;"><%= annotation_meta["target_directory"] %></span><br>
+    <strong>Work folder:</strong> <%= annotation_meta["work_folder"] %><br>
+    <strong>Page setup:</strong> <%= annotation_meta["page_mode"] %><br>
+    <strong>Files:</strong> <%= annotation_meta["page_count"] %>
+  </p>
+
+  <% meta_preview = annotation_meta["metadata_preview"].is_a?(Hash) ? annotation_meta["metadata_preview"] : {} %>
+  <% if meta_preview.present? %>
+    <p>
+      <strong>Metadata preview</strong><br>
+      NATION: <%= meta_preview["nation"].presence || "" %><br>
+      WORK_TITLE: <%= meta_preview["work_title"].presence || "" %><br>
+      AUTHOR: <%= meta_preview["author"].presence || "" %><br>
+      SOURCE: <%= meta_preview["source"].presence || "" %><br>
+      URL: <%= meta_preview["url"].presence || "" %>
+    </p>
+  <% end %>
+
+  <% preview_files = Array(annotation_meta["preview_files"]) %>
+  <% if preview_files.present? %>
+    <ul>
+      <% preview_files.each do |row| %>
+        <li><code><%= row["path"] %></code><% if row["page_title"].present? %> — <%= row["page_title"] %><% end %></li>
+      <% end %>
+    </ul>
   <% end %>
 <% end %>
 

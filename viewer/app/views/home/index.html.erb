@@ -42,6 +42,113 @@
 	Current dictionary definitions come from CC-CEDICT, Unihan, and Kangxi Dictionary. Kangxi Dictionary is regex'd to have linebreaks according to specific wording patterns in hopes of making it more readable, and so far it seems to have been successful. There are hopes to grab Shuowen Jiezi once a proper Oracle Bone Script font has been procured, as well as other historical dictionaries, periodic Wiktionary grabs, and other Public Domain sources, among others. These will also be used to annotate citations in these dictionaries. 
 </p>
 
+
+<h2>Text Submission</h2>
+<div data-controller="corpus-submission-ticket"
+     data-corpus-submission-ticket-source-value="homepage"
+     data-corpus-submission-ticket-parent-path-value=""
+     data-corpus-submission-ticket-lock-parent-path-value="false">
+  <p>Want to add a new text to the corpus? This creates a review ticket rather than writing straight into the corpus.</p>
+  <p><button type="button" class="corpus-btn corpus-btn-primary" data-action="corpus-submission-ticket#toggle">Submit a text</button></p>
+
+  <div class="cv-text-edit-panel cv-submission-panel hidden" data-corpus-submission-ticket-target="panel">
+    <h3 style="margin-top: 0;">Submit a new text (creates a ticket)</h3>
+    <p class="cv-hint">Use a parent path like <code>越南漢文/clean</code> or <code>越南漢文/clean/皇黎一統志</code>. The new text will still be placed inside a fresh work folder.</p>
+
+    <form data-action="submit->corpus-submission-ticket#submit">
+      <div class="cv-form-row">
+        <label>Parent clean directory</label>
+        <input type="text" class="cv-input cv-mono" placeholder="e.g. 越南漢文/clean" data-corpus-submission-ticket-target="parentPath" />
+      </div>
+      <div class="cv-form-row">
+        <label>Work folder</label>
+        <input type="text" class="cv-input" data-corpus-submission-ticket-target="workFolder" />
+      </div>
+      <div class="cv-form-row">
+        <label>Ticket title</label>
+        <input type="text" class="cv-input" value="Corpus text submission" data-corpus-submission-ticket-target="title" />
+      </div>
+      <div class="cv-form-row">
+        <label>Short summary</label>
+        <input type="text" class="cv-input" data-corpus-submission-ticket-target="summary" />
+      </div>
+      <div class="cv-form-row">
+        <label>NATION</label>
+        <input type="text" class="cv-input" data-corpus-submission-ticket-target="nation" />
+      </div>
+      <div class="cv-form-row">
+        <label>WORK_TITLE</label>
+        <input type="text" class="cv-input" data-corpus-submission-ticket-target="workTitle" />
+      </div>
+      <div class="cv-form-row">
+        <label>AUTHOR</label>
+        <input type="text" class="cv-input" data-corpus-submission-ticket-target="author" />
+      </div>
+      <div class="cv-form-row">
+        <label>SOURCE</label>
+        <input type="text" class="cv-input" placeholder="Write a reference here (ideally APA 7th)" data-corpus-submission-ticket-target="sourceCitation" />
+      </div>
+      <div class="cv-form-row">
+        <label>URL</label>
+        <input type="url" class="cv-input" placeholder="https://..." data-corpus-submission-ticket-target="url" />
+      </div>
+      <div class="cv-form-row">
+        <label>Context and rights</label>
+        <textarea class="cv-textarea" rows="4" placeholder="Explain where this text is from, whether it is public domain, what licence applies, and any context a reviewer should know." data-corpus-submission-ticket-target="contextDetails"></textarea>
+      </div>
+      <div class="cv-form-row">
+        <label>Reference files</label>
+        <input type="file" class="cv-input" multiple data-corpus-submission-ticket-target="uploads" />
+      </div>
+      <div class="cv-form-row">
+        <label>Page setup</label>
+        <select class="cv-input" data-corpus-submission-ticket-target="pageMode" data-action="change->corpus-submission-ticket#togglePageMode">
+          <option value="single">Single text file</option>
+          <option value="multi">Multiple page files</option>
+        </select>
+      </div>
+      <div data-corpus-submission-ticket-target="singleFields">
+        <div class="cv-form-row">
+          <label>File name</label>
+          <input type="text" class="cv-input" placeholder="Defaults to work_folder.txt" data-corpus-submission-ticket-target="fileName" />
+        </div>
+        <div class="cv-form-row">
+          <label>PAGE_TITLE</label>
+          <input type="text" class="cv-input" data-corpus-submission-ticket-target="pageTitle" />
+        </div>
+        <div class="cv-form-row">
+          <label>Text body</label>
+          <textarea class="cv-textarea cv-mono" rows="16" data-corpus-submission-ticket-target="body"></textarea>
+        </div>
+      </div>
+      <div data-corpus-submission-ticket-target="multiFields" hidden>
+        <div class="cv-form-row">
+          <label>Pages</label>
+          <div data-corpus-submission-ticket-target="pagesList"></div>
+        </div>
+        <div class="cv-form-actions">
+          <button type="button" class="corpus-btn" data-action="corpus-submission-ticket#addPage">Add page</button>
+        </div>
+      </div>
+      <div class="cv-form-row">
+        <label><input type="checkbox" checked data-corpus-submission-ticket-target="storeOnDevice" /> Save ticket key on this device</label>
+      </div>
+      <div class="cv-form-actions">
+        <button type="submit" class="corpus-btn corpus-btn-primary">Submit ticket</button>
+        <button type="button" class="corpus-btn" data-action="corpus-submission-ticket#toggle">Close</button>
+      </div>
+    </form>
+
+    <div class="cv-ticket-result">
+      <div class="cv-ticket-status" data-corpus-submission-ticket-target="status"></div>
+      <div class="cv-ticket-kv">
+        <div><strong>Ticket ID:</strong> <span data-corpus-submission-ticket-target="ticketId"></span></div>
+        <div><strong>Ticket key (save this):</strong> <code data-corpus-submission-ticket-target="ticketKey"></code> <button type="button" class="corpus-btn" data-corpus-submission-ticket-target="copyKeyBtn" data-action="corpus-submission-ticket#copyKey">Copy</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <h2>來想 Future Plans</h2>
 <p>
 	There are hopes to enable editing of this corpus to the public through an in-browser Pull Request system, which will be launched as the site backend improves. This will include edits to texts (correcting OCR/scribal errors, punctuation, etc), adding blurbs/synopses/summaries, and metadata details (authorship, time period, nation, etc). 

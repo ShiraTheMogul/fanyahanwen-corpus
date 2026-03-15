@@ -1,5 +1,18 @@
 <h1>Corpus Viewer</h1>
 
+<% if @kind == :dir && @rel_path.to_s.split("/").include?("clean") %>
+  <span
+    data-controller="corpus-submission-ticket"
+    data-corpus-submission-ticket-source-value="corpus_viewer"
+    data-corpus-submission-ticket-parent-path-value="<%= @rel_path %>"
+    data-corpus-submission-ticket-lock-parent-path-value="true">
+    <button type="button"
+            class="corpus-btn corpus-btn-editing"
+            data-action="corpus-submission-ticket#toggle"
+            title="Propose a new text for this folder">
+      Submit text here
+    </button>
+
 <p>
   Comment to be written.
 </p>
