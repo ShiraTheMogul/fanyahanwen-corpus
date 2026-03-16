@@ -214,7 +214,7 @@ module FieldLens
 # Any pronunciation fields not claimed by a section will be shown under "Other".
 PRONUNCIATION_SECTIONS = [
   { key: "translingual", label: "Translingual", fields: %w[kFanqie general_chinese], default_open: true },
-  { key: "mandarin", label: "Mandarin Chinese", fields: %w[kMandarin kHanyuPinyin kHanyuPinlu kTGHZ2013 kXHC1983 laoguoyin], default_open: true },
+  { key: "mandarin", label: "Mandarin Chinese", fields: %w[kMandarin kHanyuPinyin kHanyuPinlu kTGHZ2013 kXHC1983 laoguoyin manju_hergen_manchu manju_hergen_latin manju_hergen_ipa], default_open: true },
   { key: "yue", label: "Yue Chinese", fields: %w[kCantonese], default_open: true },
   { key: "middle_chinese", label: "Middle Chinese", fields: %w[kTang bs2014_mc bs2006_mc guangyun_fanqie guangyun_rhyme], default_open: false },
   { key: "old_chinese", label: "Old Chinese", fields: %w[bs2014_oc], default_open: false },
@@ -272,6 +272,11 @@ end
 		jp_manyogana_for
 		guangyun_rhyme_number
 		guangyun_category
+		manju_hergen_source_chunk
+		manju_hergen_page_number
+		manju_hergen_occurrence_count
+		manju_hergen_initial
+		manju_hergen_final
 	].freeze
 	
 	# Pinyin helpers. 
@@ -475,7 +480,7 @@ end
 		return "Education notes" if field.match?("kGradeLevel") || field.match?("kKoreanEducationHanja") || field == "cjk_808_common"
 		return "Education notes" if field == "context" 
 		return "Pronunciation" if 
-			field.start_with?("kFanqie") || field.start_with?("kMandarin") || field.start_with?("kHanyuPinyin") ||
+			field.start_with?("kFanqie") || field.start_with?("kMandarin") || field.start_with?("kHanyuPinyin") || field.start_with?("manju_hergen") ||
 			field.start_with?("kHanyuPinlu") || field.start_with?("kTGHZ2013") || field.start_with?("kXHC1983") ||
 			field.start_with?("kCantonese") || field.start_with?("kJapanese") || field.start_with?("kKorean") ||
 			field.start_with?("kHangul") || field.start_with?("kVietnamese") || field.start_with?("kZhuang") || field == "laoguoyin" || field == "general_chinese" || field == "kTang" || field.start_with?("bs2014_") || field == "bs2006_mc" || field.start_with?("jp_manyogana_") || field.start_with?("jp_shakuon_") || field.start_with?("jp_shakkun_") || field == "jp_mora_romaji" || field == "jp_manyogana_reading"
@@ -571,6 +576,9 @@ end
 	"jp_shakkun_kana" => "Shakkun Kana 借訓仮名",
 	"jp_mora_romaji" => "Mora (romaji)",
 	"jp_manyogana_reading" => "Man’yōgana reading (mora)",
+	"manju_hergen_latin" => "1763 Manchu transcription (Latin script)",
+	"manju_hergen_manchu" => "1763 Manchu transcription (Manchu script)",
+	"manju_hergen_ipa" =>  "1763 Manchu transcription (IPA)",
 }.freeze
 	
 	# and some automatic stuff in case
