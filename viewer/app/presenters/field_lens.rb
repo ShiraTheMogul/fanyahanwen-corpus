@@ -214,9 +214,9 @@ module FieldLens
 # Any pronunciation fields not claimed by a section will be shown under "Other".
 PRONUNCIATION_SECTIONS = [
   { key: "translingual", label: "Translingual", fields: %w[kFanqie general_chinese], default_open: true },
-  { key: "mandarin", label: "Mandarin Chinese", fields: %w[kMandarin kHanyuPinyin kHanyuPinlu kTGHZ2013 kXHC1983 laoguoyin manju_hergen_manchu manju_hergen_latin manju_hergen_ipa], default_open: true },
+  { key: "mandarin", label: "Mandarin Chinese", fields: %w[kMandarin kHanyuPinyin kHanyuPinlu kTGHZ2013 kXHC1983 laoguoyin manju_hergen_manchu manju_hergen_latin manju_hergen_ipa menggu_ziyun_phags_pa menggu_ziyun_transcription menggu_ziyun_tone], default_open: true },
   { key: "yue", label: "Yue Chinese", fields: %w[kCantonese], default_open: true },
-  { key: "middle_chinese", label: "Middle Chinese", fields: %w[kTang bs2014_mc bs2006_mc guangyun_fanqie guangyun_rhyme], default_open: false },
+  { key: "middle_chinese", label: "Middle Chinese", fields: %w[kTang bs2014_mc bs2006_mc guangyun_fanqie guangyun_rhyme guangyun_fanqie guangyun_rhyme guangyun_tone menggu_ziyun_qieyun_position], default_open: false },
   { key: "old_chinese", label: "Old Chinese", fields: %w[bs2014_oc], default_open: false },
   { key: "japonic", label: "Japonic", fields: %w[kJapanese kJapaneseOn kJapaneseKun jp_mora_romaji jp_manyogana_mora_table jp_manyogana_hiragana_etym jp_manyogana_katakana_etym jp_shakuon_kana jp_shakkun_kana jp_manyogana_reading], default_open: true },
   { key: "koreanic", label: "Koreanic", fields: %w[kHangul kKorean], default_open: true },
@@ -270,13 +270,17 @@ end
 		shuowen_entry
 		kRSAdobe_Japan1_6 # duplicate of kRSUnicode, only it is contributed by Adobe. This isn't very useful.
 		jp_manyogana_for
-		guangyun_rhyme_number
-		guangyun_category
+		menggu_ziyun_needs_adjustment
+		menggu_ziyun_gloss
+		menggu_ziyun_reconstruction
 		manju_hergen_source_chunk
-		manju_hergen_page_number
-		manju_hergen_occurrence_count
-		manju_hergen_initial
+		guangyun_definition
+		guangyun_payload_raw
 		manju_hergen_final
+		manju_hergen_initial
+		manju_hergen_occurrence_count
+		manju_hergen_page_number
+		manju_hergen_source_chunk
 	].freeze
 	
 	# Pinyin helpers. 
@@ -480,13 +484,13 @@ end
 		return "Education notes" if field.match?("kGradeLevel") || field.match?("kKoreanEducationHanja") || field == "cjk_808_common"
 		return "Education notes" if field == "context" 
 		return "Pronunciation" if 
-			field.start_with?("kFanqie") || field.start_with?("kMandarin") || field.start_with?("kHanyuPinyin") || field.start_with?("manju_hergen") ||
+			field.start_with?("kFanqie") || field.start_with?("kMandarin") || field.start_with?("kHanyuPinyin") ||
 			field.start_with?("kHanyuPinlu") || field.start_with?("kTGHZ2013") || field.start_with?("kXHC1983") ||
 			field.start_with?("kCantonese") || field.start_with?("kJapanese") || field.start_with?("kKorean") ||
-			field.start_with?("kHangul") || field.start_with?("kVietnamese") || field.start_with?("kZhuang") || field == "laoguoyin" || field == "general_chinese" || field == "kTang" || field.start_with?("bs2014_") || field == "bs2006_mc" || field.start_with?("jp_manyogana_") || field.start_with?("jp_shakuon_") || field.start_with?("jp_shakkun_") || field == "jp_mora_romaji" || field == "jp_manyogana_reading"
+			field.start_with?("kHangul") || field.start_with?("kVietnamese") || field.start_with?("kZhuang") || field == "laoguoyin" || field == "general_chinese" || field == "kTang" || field.start_with?("bs2014_") || field == "bs2006_mc" || field.start_with?("jp_manyogana_") || field.start_with?("jp_shakuon_") || field.start_with?("jp_shakkun_") || field == "jp_mora_romaji" || field == "jp_manyogana_reading" || field == "manju_hergen_manchu" || field == "manju_hergen_latin" || field == "manju_hergen_ipa" || field == "manju_hergen_ipa" || field == "guangyun_fanqie" || field == "guangyun_rhyme" || field == "guangyun_tone" || field == "menggu_ziyun_phags_pa" || field == "menggu_ziyun_transcription" || field == "menggu_ziyun_tone" || field == "menggu_ziyun_qieyun_position"
 		return "Input" if %w[kCangjie kFourCornerCode kMainlandTelegraph kTaiwanTelegraph].include?(field)
 		return "Encodings & mappings" if field.include?("Variant") || field.start_with?("kSemantic") || field.start_with?("kSimplified") || field.start_with?("cedict_simp") || field.start_with?("kTraditional")
-		return "Dictionary indices" if field.include?("kPhonetic") || field.match?(/hanyu/i) || field.start_with?("kMorohashi") || field.include?("kCihai") || field.start_with?("kFenn") || field.match?("kCowles") || field.include?("DaeJaweon") || field.start_with?("kFennIndex") || field.start_with?("kGSR") || field.include?("KangXi") || field.match?("kLau") || field.match?("kMatthews") || field.match?("kMeyerWempe") || field.match?("kNelson") || field.start_with?("kSBGY") || field.match?("kSMSZD2003Index") || field.start_with?("kSMSZD2003Index") || field.start_with?("kHKGlyph") || field.match?("kKarlgren")
+		return "Dictionary indices" if field.include?("kPhonetic") || field.match?(/hanyu/i) || field.start_with?("kMorohashi") || field.include?("kCihai") || field.start_with?("kFenn") || field.match?("kCowles") || field.include?("DaeJaweon") || field.start_with?("kFennIndex") || field.start_with?("kGSR") || field.include?("KangXi") || field.match?("kLau") || field.match?("kMatthews") || field.match?("kMeyerWempe") || field.match?("kNelson") || field.start_with?("kSBGY") || field.match?("kSMSZD2003Index") || field.start_with?("kSMSZD2003Index") || field.start_with?("kHKGlyph") || field.match?("kKarlgren") || field.match?("guangyun_rhyme_number") || field.match?("guangyun_category") || field.match?("menggu_ziyun_category") || field.match?("menggu_ziyun_xiaoyun_key") || field.match?("menggu_ziyun_xiaoyun_number") || field == "menggu_ziyun_rhyme"
 		return "Ideographic Research Group (IRG) sources" if field.start_with?("kIRG_") || field == "kIICore"
 		return "Encodings & mappings" if field.match?(/\A(kBigFive|kUnihanCore2020|kJis|kCCCII|kEACC|kTGH|kJoyoKanji|kMojiJoho|kXerox)\b/) || field.start_with?("kRSUnicode") || field.start_with?("kCNS") || field.start_with?("kGB") || field.start_with?(/kjis/i)
 		
@@ -576,9 +580,26 @@ end
 	"jp_shakkun_kana" => "Shakkun Kana 借訓仮名",
 	"jp_mora_romaji" => "Mora (romaji)",
 	"jp_manyogana_reading" => "Man’yōgana reading (mora)",
+	"menggu_ziyun_phags_pa" => "Menggu Ziyun 蒙古字韻 (Phags-pa script)",
+	"menggu_ziyun_reconstruction" => "Menggu Ziyun 蒙古字韻 (IPA Reconstruction)",
+	"menggu_ziyun_transcription" => "Menggu Ziyun 蒙古字韻 (IPA)",
+	"menggu_ziyun_qieyun_position" => "Qieyun-system phonological position",
+	"menggu_ziyun_tone" => "Menggu Ziyun 蒙古字韻 tone",
+	"menggu_ziyun_tone" => "Menggu Ziyun 蒙古字韻 tone",
+	"menggu_ziyun_rhyme" => "Menggu Ziyun 蒙古字韻 rhyme group",
+	"menggu_ziyun_gloss" => "Menggu Ziyun 蒙古字韻 gloss",
+	"menggu_ziyun_variant" => "Menggu Ziyun 蒙古字韻 variant form",
+	"menggu_ziyun_notes" => "Menggu Ziyun 蒙古字韻 notes",
+	"menggu_ziyun_needs_adjustment" => "Menggu Ziyun flagged adjustment",
+	"menggu_ziyun_xiaoyun_number" => "Menggu Ziyun xiaoyun number",
+	"menggu_ziyun_xiaoyun_key" => "Menggu Ziyun xiaoyun key",
+	"menggu_ziyun_category" => "Menggu Ziyun category",
+	"manju_hergen_ipa" => "1763 Manchu transcription (IPA)",
 	"manju_hergen_latin" => "1763 Manchu transcription (Latin script)",
 	"manju_hergen_manchu" => "1763 Manchu transcription (Manchu script)",
-	"manju_hergen_ipa" =>  "1763 Manchu transcription (IPA)",
+	"guangyun_fanqie" => "Guangyun Fanqie 廣韻反切",
+	"guangyun_rhyme" => "Guangyun Rime 廣韻音韻",
+	"guangyun_tone" => "Guangyun Tone 廣韻聲調",
 }.freeze
 	
 	# and some automatic stuff in case
