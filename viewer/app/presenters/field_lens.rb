@@ -214,7 +214,7 @@ module FieldLens
 # Any pronunciation fields not claimed by a section will be shown under "Other".
 PRONUNCIATION_SECTIONS = [
   { key: "translingual", label: "Translingual", fields: %w[kFanqie general_chinese], default_open: true },
-  { key: "mandarin", label: "Mandarin Chinese", fields: %w[kMandarin kHanyuPinyin kHanyuPinlu kTGHZ2013 kXHC1983 laoguoyin manju_hergen_manchu manju_hergen_latin manju_hergen_ipa menggu_ziyun_phags_pa menggu_ziyun_transcription menggu_ziyun_tone], default_open: true },
+  { key: "mandarin", label: "Mandarin Chinese", fields: %w[kMandarin kHanyuPinyin kHanyuPinlu kTGHZ2013 kXHC1983 laoguoyin manju_hergen_manchu manju_hergen_latin manju_hergen_ipa menggu_ziyun_phags_pa menggu_ziyun_transcription menggu_ziyun_tone zhongyuan_yinyun_yang_naisi zhongyuan_yinyun_ning_jifu zhongyuan_yinyun_xue_fengsheng zhongyuan_yinyun_unt_phonemic zhongyuan_yinyun_unt zhongyuan_yinyun_tone], default_open: true },
   { key: "yue", label: "Yue Chinese", fields: %w[kCantonese], default_open: true },
   { key: "middle_chinese", label: "Middle Chinese", fields: %w[kTang bs2014_mc bs2006_mc guangyun_fanqie guangyun_rhyme guangyun_fanqie guangyun_rhyme guangyun_tone menggu_ziyun_qieyun_position], default_open: false },
   { key: "old_chinese", label: "Old Chinese", fields: %w[bs2014_oc], default_open: false },
@@ -250,7 +250,7 @@ def self.pronunciation_sections(props)
 
   out
 end
-	# These fields go unused; either because they're superseded by better data or because they're handled by something else. 
+	# These fields go unused; either because they're either superseded by better data or handled by something else. 
 	HIDDEN_FIELDS = %w[
 		bs2014_mc_detail
 		kDefinition
@@ -274,6 +274,8 @@ end
 		menggu_ziyun_gloss
 		menggu_ziyun_reconstruction
 		manju_hergen_source_chunk
+		zhongyuan_yinyun_gloss
+		zhongyuan_yinyun_notes
 		guangyun_definition
 		guangyun_payload_raw
 		manju_hergen_final
@@ -281,6 +283,7 @@ end
 		manju_hergen_occurrence_count
 		manju_hergen_page_number
 		manju_hergen_source_chunk
+		zhongyuan_yinyun_unt_phonemic
 	].freeze
 	
 	# Pinyin helpers. 
@@ -487,10 +490,10 @@ end
 			field.start_with?("kFanqie") || field.start_with?("kMandarin") || field.start_with?("kHanyuPinyin") ||
 			field.start_with?("kHanyuPinlu") || field.start_with?("kTGHZ2013") || field.start_with?("kXHC1983") ||
 			field.start_with?("kCantonese") || field.start_with?("kJapanese") || field.start_with?("kKorean") ||
-			field.start_with?("kHangul") || field.start_with?("kVietnamese") || field.start_with?("kZhuang") || field == "laoguoyin" || field == "general_chinese" || field == "kTang" || field.start_with?("bs2014_") || field == "bs2006_mc" || field.start_with?("jp_manyogana_") || field.start_with?("jp_shakuon_") || field.start_with?("jp_shakkun_") || field == "jp_mora_romaji" || field == "jp_manyogana_reading" || field == "manju_hergen_manchu" || field == "manju_hergen_latin" || field == "manju_hergen_ipa" || field == "manju_hergen_ipa" || field == "guangyun_fanqie" || field == "guangyun_rhyme" || field == "guangyun_tone" || field == "menggu_ziyun_phags_pa" || field == "menggu_ziyun_transcription" || field == "menggu_ziyun_tone" || field == "menggu_ziyun_qieyun_position"
+			field.start_with?("kHangul") || field.start_with?("kVietnamese") || field.start_with?("kZhuang") || field == "laoguoyin" || field == "general_chinese" || field == "kTang" || field.start_with?("bs2014_") || field == "bs2006_mc" || field.start_with?("jp_manyogana_") || field.start_with?("jp_shakuon_") || field.start_with?("jp_shakkun_") || field == "jp_mora_romaji" || field == "jp_manyogana_reading" || field == "manju_hergen_manchu" || field == "manju_hergen_latin" || field == "manju_hergen_ipa" || field == "manju_hergen_ipa" || field == "guangyun_fanqie" || field == "guangyun_rhyme" || field == "guangyun_tone" || field == "menggu_ziyun_phags_pa" || field == "menggu_ziyun_transcription" || field == "menggu_ziyun_tone" || field == "menggu_ziyun_qieyun_position" || field == "zhongyuan_yinyun_yang_naisi" || field == "zhongyuan_yinyun_ning_jifu" || field == "zhongyuan_yinyun_xue_fengsheng" || field == "zhongyuan_yinyun_unt_phonemic" || field == "zhongyuan_yinyun_unt" || field == "zhongyuan_yinyun_tone"
 		return "Input" if %w[kCangjie kFourCornerCode kMainlandTelegraph kTaiwanTelegraph].include?(field)
 		return "Encodings & mappings" if field.include?("Variant") || field.start_with?("kSemantic") || field.start_with?("kSimplified") || field.start_with?("cedict_simp") || field.start_with?("kTraditional")
-		return "Dictionary indices" if field.include?("kPhonetic") || field.match?(/hanyu/i) || field.start_with?("kMorohashi") || field.include?("kCihai") || field.start_with?("kFenn") || field.match?("kCowles") || field.include?("DaeJaweon") || field.start_with?("kFennIndex") || field.start_with?("kGSR") || field.include?("KangXi") || field.match?("kLau") || field.match?("kMatthews") || field.match?("kMeyerWempe") || field.match?("kNelson") || field.start_with?("kSBGY") || field.match?("kSMSZD2003Index") || field.start_with?("kSMSZD2003Index") || field.start_with?("kHKGlyph") || field.match?("kKarlgren") || field.match?("guangyun_rhyme_number") || field.match?("guangyun_category") || field.match?("menggu_ziyun_category") || field.match?("menggu_ziyun_xiaoyun_key") || field.match?("menggu_ziyun_xiaoyun_number") || field == "menggu_ziyun_rhyme"
+		return "Dictionary indices" if field.include?("kPhonetic") || field.match?(/hanyu/i) || field.start_with?("kMorohashi") || field.include?("kCihai") || field.start_with?("kFenn") || field.match?("kCowles") || field.include?("DaeJaweon") || field.start_with?("kFennIndex") || field.start_with?("kGSR") || field.include?("KangXi") || field.match?("kLau") || field.match?("kMatthews") || field.match?("kMeyerWempe") || field.match?("kNelson") || field.start_with?("kSBGY") || field.match?("kSMSZD2003Index") || field.start_with?("kSMSZD2003Index") || field.start_with?("kHKGlyph") || field.match?("kKarlgren") || field.match?("guangyun_rhyme_number") || field.match?("guangyun_category") || field.match?("menggu_ziyun_category") || field.match?("menggu_ziyun_xiaoyun_key") || field.match?("menggu_ziyun_xiaoyun_number") || field == "menggu_ziyun_rhyme" || field == "zhongyuan_yinyun_initial" || field == "zhongyuan_yinyun_final" || field == "zhongyuan_yinyun_xiaoyun" || field == "zhongyuan_yinyun_category" || field == "zhongyuan_yinyun_xiaoyun_key"
 		return "Ideographic Research Group (IRG) sources" if field.start_with?("kIRG_") || field == "kIICore"
 		return "Encodings & mappings" if field.match?(/\A(kBigFive|kUnihanCore2020|kJis|kCCCII|kEACC|kTGH|kJoyoKanji|kMojiJoho|kXerox)\b/) || field.start_with?("kRSUnicode") || field.start_with?("kCNS") || field.start_with?("kGB") || field.start_with?(/kjis/i)
 		
@@ -594,6 +597,19 @@ end
 	"menggu_ziyun_xiaoyun_number" => "Menggu Ziyun xiaoyun number",
 	"menggu_ziyun_xiaoyun_key" => "Menggu Ziyun xiaoyun key",
 	"menggu_ziyun_category" => "Menggu Ziyun category",
+	"zhongyuan_yinyun_xiaoyun" => "Zhongyuan Yinyun 中原音韻 xiaoyun",
+	"zhongyuan_yinyun_initial" => "Zhongyuan Yinyun 中原音韻 initial",
+	"zhongyuan_yinyun_final" => "Zhongyuan Yinyun 中原音韻 final",
+	"zhongyuan_yinyun_tone" => "Zhongyuan Yinyun 中原音韻 tone",
+	"zhongyuan_yinyun_yang_naisi" => "Zhongyuan Yinyun 中原音韻 (楊耐思)",
+	"zhongyuan_yinyun_ning_jifu" => "Zhongyuan Yinyun 中原音韻 (寧繼福)",
+	"zhongyuan_yinyun_xue_fengsheng" => "Zhongyuan Yinyun 中原音韻 (薛鳳生)",
+	"zhongyuan_yinyun_unt_phonemic" => "Zhongyuan Yinyun 中原音韻 (untunt)",
+	"zhongyuan_yinyun_unt" => "Zhongyuan Yinyun 中原音韻 (unt)",
+	"zhongyuan_yinyun_gloss" => "Zhongyuan Yinyun 中原音韻 gloss",
+	"zhongyuan_yinyun_notes" => "Zhongyuan Yinyun 中原音韻 notes",
+	"zhongyuan_yinyun_category" => "Zhongyuan Yinyun category",
+	"zhongyuan_yinyun_xiaoyun_key" => "Zhongyuan Yinyun xiaoyun key",
 	"manju_hergen_ipa" => "1763 Manchu transcription (IPA)",
 	"manju_hergen_latin" => "1763 Manchu transcription (Latin script)",
 	"manju_hergen_manchu" => "1763 Manchu transcription (Manchu script)",

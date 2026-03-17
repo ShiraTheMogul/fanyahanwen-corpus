@@ -203,6 +203,8 @@ The following texts were used or otherwise had an influence in the making of the
 - Sturgeon, D. (2021). Chinese Text Project: A dynamic digital library of premodern Chinese. Digital Scholarship in the Humanities, 36(Supplement_1), i101–i112. https://doi.org/10.1093/llc/fqz046
 - Takekoshi 竹越, Takeshi. 孝(2011). 『兼滿漢語滿洲套話清文啓蒙』満洲文字注音一覧表. KOTONOHA, (101).
 - Trilateral Cooperation Secretariat. (2015). 中日韩共同常用八百八汉字表 [Booklet of the 808 Commonly Used Chinese Characters in China, Japan and the ROK]. Trilateral Cooperation Secretariat.
+- untunt. (2025). Nk2028/zhongyuan-data [Python]. nk2028. https://github.com/nk2028/zhongyuan-data (Original work published 2023)
+- untunt. (2025). Nk2028/menggu-ziyun-data [Python]. nk2028. https://github.com/nk2028/menggu-ziyun-data (Original work published 2025)
 - Wang D., Liu C., Liu L., Liu J., Hu H., Shen S., & Li B. (2022). SikuBERT与SikuRoBERTa:面向数字人文的《四库全书》预训练模型构建及应用研究 [Construction and Application of Pre-trained Models of Siku Quanshu in Orientation to Digital Humanities]. 图书馆论坛 [Literary Tribune], 42(6), 14. https://doi.org/10.3969/j.issn.1002-1167.2022.06.005
 - Wang, D., Liu, C., & Zhu, Z. (2021). SikuBERT (Version 2.0) [Computer software]. Nanjing Agricultural University. https://huggingface.co/SIKU-BERT/sikubert, https://github.com/hsc748NLP/SikuBERT-for-digital-humanities-and-classical-Chinese-information-processing, https://gitee.com/onesleepyjoker/SikuBERT-for-digital-humanities-and-classical-Chinese-information-processing
 - Wu, L. 吴留营 (2022). 琉球汉诗选 [Anthology of Ryukyu Sinitic Poetry] (1st ed). 江西教育出版社 [Jiangxi Education Press].
