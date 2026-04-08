@@ -27,16 +27,30 @@
 <% end %>
 <%= turbo_frame_tag "cantonese_out" do %><pre class="tool-output"></pre><% end %>
 
-<h2>Cangjie input lookup</h2>
+<h2>Character data extractor</h2>
 
-<p>This fetches Cangjie 3 input data from the Unihan database, then maps it to Han characters and grabs <%= link_to "HKCards", "https://www.hkcards.com" %>'s decomposition images to aid understanding.</p>
+<p>This keeps the old Cangjie lookup behaviour, but also lets you pull other stored character data in bulk. Paste one character, a codepoint like U+8BF4, or a whole sentence to extract one row per unique Han character.</p>
+
+<p>You can use this for flashcard enrichment: definitions, Kangxi entries, and readings can be previewed in-page or downloaded as CSV.</p>
 
 <%= form_with url: tools_cangjie_path, method: :post, data: { turbo_frame: "cangjie_out" } do %>
-  <textarea name="input" rows="3" style="width: 100%;" placeholder="Character (e.g. 說) or U+8BF4 or Cangjie letters (e.g. ABC)\nOr paste a sentence to get every unique character."></textarea>
   <p>
-    <label><input type="checkbox" name="hkcards" value="1"> show HKCards table</label>
+    <label>Extract:
+      <%= select_tag :extract, options_for_select(extractor_options, "cangjie") %>
+    </label>
   </p>
-  <p><button type="submit">Lookup</button></p>
+
+  <textarea name="input" rows="3" style="width: 100%;" placeholder="Character (e.g. 說) or U+8BF4 or Cangjie letters (e.g. ABC)
+Or paste a sentence to get every unique character."></textarea>
+
+  <p>
+    <label><input type="checkbox" name="hkcards" value="1"> show HKCards table for Cangjie</label>
+  </p>
+
+  <p>
+    <button type="submit">Extract</button>
+    <button type="submit" name="download" value="csv" formtarget="_top" data-turbo="false">Download CSV</button>
+  </p>
 <% end %>
 
 <%= turbo_frame_tag "cangjie_out" do %>
@@ -45,7 +59,7 @@
 
 <h2>Lunar calendar date converter</h2>
 
-<p>The Chinese lunar calendar uses the GanZhi system for formatting dates. This uses <%= link_to "a gem by elct9620", "https://github.com/elct9620/lunar_calendar" %> to easily convert between the Gregorian and Chinese dating systems. 
+<p>The Chinese lunar calendar uses the GanZhi system for formatting dates. This uses <%= link_to "a gem by elct9620", "https://github.com/elct9620/lunar_calendar" %> to easily convert between the Gregorian and Chinese dating systems. </p>
 
 <%= form_with url: tools_lunar_path, method: :post, data: { turbo_frame: "lunar_out" } do %>
   <p>

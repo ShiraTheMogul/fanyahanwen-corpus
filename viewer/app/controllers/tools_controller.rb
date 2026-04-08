@@ -1,6 +1,20 @@
 # frozen_string_literal: true
 
+require "csv"
+
 class ToolsController < ApplicationController
+  EXTRACTOR_OPTIONS = [
+    ["Cangjie input", "cangjie"],
+    ["Unicode definition (Unihan)", "unicode_definition"],
+    ["Kangxi dictionary entry", "kangxi_entry"],
+    ["Mandarin reading", "mandarin"],
+    ["Cantonese reading", "cantonese"],
+    ["Japanese on reading", "japanese_on"],
+    ["Korean reading", "korean"],
+    ["Vietnamese reading", "vietnamese"],
+    ["Common readings (Mandarin, Cantonese, Japanese on, Korean, Vietnamese)", "common_readings"]
+  ].freeze
+
   def index; end
 
   # --- Lunar calendar converter ------------------------------------------
@@ -67,15 +81,18 @@ def phonetic_cantonese
   render partial: "tools/tool_output", locals: { frame_id: "cantonese_out", output: output }
 end
 
-  # --- Cangjie lookup (HKCards + latin + Han shapes) ----------------------
+  # --- Character property extractor --------------------------------------
   def cangjie
     raw = params[:input].to_s.strip
     return render partial: "tools/cangjie_output",
                   locals: { char: nil, codepoint: nil, lines: [], message: "No input." },
                   status: :bad_request if raw.empty?
 
+    extractor_key = params[:extract].presence || "cangjie"
+    config = extractor_config_for(extractor_key)
+
     # If user pastes Cangjie letters, just show the mapping (no HKCards image).
-    if raw.match?(/\A[A-Za-z]+\z/)
+    if extractor_key == "cangjie" && raw.match?(/\A[A-Za-z]+\z/)
       latin = CangjieKeymap.normalise_cangjie(raw)
       han   = CangjieKeymap.latin_to_han(latin)
       return render partial: "tools/cangjie_output",
@@ -86,51 +103,11 @@ end
                     }
     end
 
-    # Codepoint literal mode: "U+8BF4" or "8BF4" should behave like a single-character lookup.
-    if raw.match?(/\AU\+[0-9A-Fa-f]+\z/) || raw.match?(/\A[0-9A-Fa-f]+\z/)
-      cp = parse_codepoint(raw)
-      return render partial: "tools/cangjie_output",
-                    locals: { char: nil, codepoint: nil, lines: [], message: "Could not parse a character/codepoint." },
-                    status: :bad_request if cp.nil?
-      cps_in_text = [cp]
-    else
-      cps_in_text = []
-      raw.each_codepoint do |cp|
-        # Skip whitespace.
-        next if [9, 10, 13, 32].include?(cp)
-
-        # Keep only Han characters (your standard Unicode discriminator).
-        # This avoids punctuation, Latin, kana, etc. in lesson-facing lists.
-        next unless UnicodeRanges.han?(cp)
-
-        cps_in_text << cp
-      end
-    end
-
-    # Single-character mode (keep the existing, nicer card output).
-    if cps_in_text.length == 1
-      cp = cps_in_text.first
-      cc = CharacterCodepoint.find_by(codepoint: cp)
-      return render partial: "tools/cangjie_output",
-                    locals: { char: [cp].pack("U"), codepoint: cp, lines: [], message: "Not found in DB." },
-                    status: :not_found if cc.nil?
-
-      props = CharacterProperty.where(character_codepoint_id: cc.id, field: "kCangjie")
-                               .order(:source, :value)
-
-      lines =
-        if props.empty?
-          ["No kCangjie property found for this character."]
-        else
-          props.map do |p|
-            latin = CangjieKeymap.normalise_cangjie(p.value.to_s)
-            han   = CangjieKeymap.latin_to_han(latin)
-            "#{latin} (#{han}) — #{p.source}"
-          end
-        end
-
-      return render partial: "tools/cangjie_output",
-                    locals: { char: cc.chr, codepoint: cc.codepoint, lines: lines, message: nil }
+    cps_in_text = extract_han_codepoints(raw)
+    if cps_in_text.empty?
+      return render partial: "tools/tool_output",
+                    locals: { frame_id: "cangjie_out", output: "No Han characters found in the input." },
+                    status: :bad_request
     end
 
     unique_cps = []
@@ -144,50 +121,78 @@ end
     ccs = CharacterCodepoint.where(codepoint: unique_cps).to_a
     cc_by_cp = ccs.index_by(&:codepoint)
 
-    props = CharacterProperty.where(character_codepoint_id: ccs.map(&:id), field: "kCangjie")
-                             .order(:source, :value)
+    props = CharacterProperty.where(character_codepoint_id: ccs.map(&:id), field: config[:fields])
+                             .order(:field, :source, :value)
                              .to_a
     props_by_ccid = props.group_by(&:character_codepoint_id)
 
     rows = unique_cps.map do |cp|
       cc = cc_by_cp[cp]
-      pps = cc ? (props_by_ccid[cc.id] || []) : []
+      grouped = Hash.new { |h, k| h[k] = [] }
 
-      codes = pps.map do |p|
-        latin = CangjieKeymap.normalise_cangjie(p.value.to_s)
-        han   = CangjieKeymap.latin_to_han(latin)
-        { latin: latin, han: han, source: p.source.to_s }
+      if cc
+        (props_by_ccid[cc.id] || []).each do |prop|
+          grouped[prop.field] << normalize_property_entry(prop)
+        end
+        grouped.each_value do |entries|
+          entries.uniq! { |entry| [entry[:value], entry[:source]] }
+        end
       end
-
-      # De-dup within a character (sometimes sources repeat the same code).
-      codes = codes.uniq { |c| c[:latin] }
 
       {
         char: [cp].pack("U"),
         codepoint: cp,
         found_in_db: cc.present?,
-        codes: codes
+        values_by_field: grouped
       }
+    end
+
+    if params[:download].to_s == "csv"
+      csv = build_property_csv(rows: rows, config: config)
+      filename = "character_extract_#{extractor_key}_#{Time.current.strftime('%Y%m%d_%H%M%S')}.csv"
+      return send_data csv, filename: filename, type: "text/csv; charset=utf-8", disposition: "attachment"
     end
 
     show_hkcards = params[:hkcards].to_s == "1"
 
-    if show_hkcards
-      render partial: "tools/cangjie_table_output",
-             locals: { rows: rows, message: nil }
-    else
-      lines = rows.map do |r|
-        if r[:codes].empty?
-          "* #{r[:char]}: (no Cangjie code)"
-        else
-          combos = r[:codes].map { |c| "#{c[:han]} (#{c[:latin]})" }.join(" / ")
-          "* #{r[:char]}: #{combos}"
+    if extractor_key == "cangjie" && rows.length == 1
+      row = rows.first
+      lines = row[:values_by_field]["kCangjie"].presence&.map do |entry|
+        "#{entry[:value]} — #{entry[:source]}"
+      end || ["No kCangjie property found for this character."]
+
+      return render partial: "tools/cangjie_output",
+                    locals: { char: row[:char], codepoint: row[:codepoint], lines: lines, message: nil }
+    end
+
+    if extractor_key == "cangjie" && show_hkcards
+      hk_rows = rows.map do |row|
+        entries = row[:values_by_field]["kCangjie"] || []
+        codes = entries.map do |entry|
+          { latin: entry[:latin], han: entry[:han], source: entry[:source].to_s }
         end
+
+        row.merge(codes: codes)
       end
 
-      render partial: "tools/cangjie_list_output",
-             locals: { lines: lines, message: nil }
+      return render partial: "tools/cangjie_table_output",
+                    locals: { rows: hk_rows, message: nil }
     end
+
+    field_columns = config[:fields].map do |field|
+      {
+        field: field,
+        label: pretty_field_label(field)
+      }
+    end
+
+    render partial: "tools/property_extract_output",
+           locals: {
+             extractor_label: config[:label],
+             rows: rows,
+             field_columns: field_columns,
+             message: nil
+           }
   end
 
   private
@@ -218,6 +223,137 @@ end
     when "mandarin" then "pinyin_diacritics"
     when "cantonese" then "jyutping"
     else "original"
+    end
+  end
+
+  def extractor_options
+    EXTRACTOR_OPTIONS
+  end
+  helper_method :extractor_options
+
+  def extractor_config_for(key)
+    configs = {
+      "cangjie" => {
+        key: "cangjie",
+        label: "Cangjie input",
+        fields: ["kCangjie"]
+      },
+      "unicode_definition" => {
+        key: "unicode_definition",
+        label: "Unicode definition (Unihan)",
+        fields: ["kDefinition"]
+      },
+      "kangxi_entry" => {
+        key: "kangxi_entry",
+        label: "Kangxi dictionary entry",
+        fields: ["kangxi_gloss"]
+      },
+      "mandarin" => {
+        key: "mandarin",
+        label: "Mandarin reading",
+        fields: ["kMandarin"]
+      },
+      "cantonese" => {
+        key: "cantonese",
+        label: "Cantonese reading",
+        fields: ["kCantonese"]
+      },
+      "japanese_on" => {
+        key: "japanese_on",
+        label: "Japanese on reading",
+        fields: ["kJapaneseOn"]
+      },
+      "korean" => {
+        key: "korean",
+        label: "Korean reading",
+        fields: ["kKorean"]
+      },
+      "vietnamese" => {
+        key: "vietnamese",
+        label: "Vietnamese reading",
+        fields: ["kVietnamese"]
+      },
+      "common_readings" => {
+        key: "common_readings",
+        label: "Common readings",
+        fields: %w[kMandarin kCantonese kJapaneseOn kKorean kVietnamese]
+      }
+    }
+
+    configs[key] || configs["cangjie"]
+  end
+
+  def extract_han_codepoints(raw)
+    if raw.match?(/\AU\+[0-9A-Fa-f]+\z/) || raw.match?(/\A[0-9A-Fa-f]+\z/)
+      cp = parse_codepoint(raw)
+      return cp.nil? ? [] : [cp]
+    end
+
+    raw.each_codepoint.each_with_object([]) do |cp, acc|
+      next if [9, 10, 13, 32].include?(cp)
+      next unless UnicodeRanges.han?(cp)
+
+      acc << cp
+    end
+  end
+
+  def normalize_property_entry(prop)
+    value = prop.value.to_s.strip
+
+    if prop.field == "kCangjie"
+      latin = CangjieKeymap.normalise_cangjie(value)
+      han = CangjieKeymap.latin_to_han(latin)
+      {
+        value: "#{han} (#{latin})",
+        source: prop.source.to_s,
+        latin: latin,
+        han: han
+      }
+    else
+      {
+        value: value,
+        source: prop.source.to_s
+      }
+    end
+  end
+
+  def pretty_field_label(field)
+    labels = {
+      "kCangjie" => "Cangjie",
+      "kDefinition" => "Unicode definition",
+      "kangxi_gloss" => "Kangxi entry",
+      "kMandarin" => "Mandarin",
+      "kCantonese" => "Cantonese",
+      "kJapaneseOn" => "Japanese on",
+      "kKorean" => "Korean",
+      "kVietnamese" => "Vietnamese"
+    }
+
+    labels[field] || field
+  end
+
+  def build_property_csv(rows:, config:)
+    CSV.generate do |csv|
+      headers = ["Character", "Codepoint"]
+
+      config[:fields].each do |field|
+        headers << pretty_field_label(field)
+        headers << "#{pretty_field_label(field)} sources"
+      end
+
+      csv << headers
+
+      rows.each do |row|
+        line = [row[:char], "U+#{row[:codepoint].to_i.to_s(16).upcase}"]
+
+        config[:fields].each do |field|
+          entries = row[:values_by_field][field] || []
+          line << entries.map { |entry| entry[:value] }.join(" | ")
+          line << entries.map { |entry| entry[:source] }.reject(&:blank?).uniq.join(" | ")
+        end
+
+        csv << line
+      end
     end
   end
 

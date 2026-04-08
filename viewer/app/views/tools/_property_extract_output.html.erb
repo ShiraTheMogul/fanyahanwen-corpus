@@ -1,0 +1,46 @@
+<%= turbo_frame_tag "cangjie_out" do %>
+  <% if message.present? %>
+    <p><em><%= h(message) %></em></p>
+  <% end %>
+
+  <p><strong><%= h(extractor_label) %></strong></p>
+
+  <div style="overflow:auto; max-width: 100%;">
+    <table class="cj-table">
+      <thead>
+        <tr>
+          <th>Char</th>
+          <th>Codepoint</th>
+          <% field_columns.each do |column| %>
+            <th><%= h(column[:label]) %></th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <% rows.each do |row| %>
+          <tr>
+            <td class="cj-char"><%= h(row[:char]) %></td>
+            <td class="cj-cp">U+<%= row[:codepoint].to_i.to_s(16).upcase %></td>
+            <% field_columns.each do |column| %>
+              <% entries = row[:values_by_field][column[:field]] || [] %>
+              <td class="cj-code">
+                <% if entries.empty? %>
+                  <em>—</em>
+                <% else %>
+                  <% values = entries.map { |entry| entry[:value] }.reject(&:blank?) %>
+                  <% sources = entries.map { |entry| entry[:source] }.reject(&:blank?).uniq %>
+                  <%= h(values.join(" / ")) %>
+                  <% if sources.any? %>
+                    <div style="margin-top: 0.25em; font-size: 0.9em; opacity: 0.8;">
+                      <%= h(sources.join(" / ")) %>
+                    </div>
+                  <% end %>
+                <% end %>
+              </td>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>
