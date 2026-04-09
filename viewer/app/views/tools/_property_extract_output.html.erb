@@ -27,7 +27,7 @@
                 <% if entries.empty? %>
                   <em>—</em>
                 <% else %>
-                  <% values = entries.map { |entry| entry[:value] }.reject(&:blank?) %>
+                  <% values = entries.map { |entry| entry[:value] }.reject(&:blank?).uniq %>
                   <% sources = entries.map { |entry| entry[:source] }.reject(&:blank?).uniq %>
                   <%= h(values.join(" / ")) %>
                   <% if sources.any? %>

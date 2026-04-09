@@ -6,6 +6,8 @@
 
 <% mandarin_opts = ([:original] + Phoneticization::Converters::MANDARIN_SCHEMES.keys).map { |k| [k.to_s.tr("_"," "), k] } %>
 <% cantonese_opts = ([:original] + Phoneticization::Converters::CANTONESE_SCHEMES.keys).map { |k| [k.to_s.tr("_"," "), k] } %>
+<% extractor_options = @extractor_options || ToolsController::EXTRACTOR_OPTIONS %>
+<% enrichable_field_options = @enrichable_field_options || ToolsController::ENRICHABLE_FIELD_OPTIONS %>
 
 <h2>Mandarin phoneticisation</h2>
 <p>Mandarin has among the most amount of phoneticisations, which can be a bit overwhelming for some. This uses dohliam's <%= link_to "pinyin-rb", "https://github.com/dohliam/pinyin-rb" %> to display 13 of them.</p>
@@ -31,7 +33,7 @@
 
 <p>This keeps the old Cangjie lookup behaviour, but also lets you pull other stored character data in bulk. Paste one character, a codepoint like U+8BF4, or a whole sentence to extract one row per unique Han character.</p>
 
-<p>You can use this for flashcard enrichment: definitions, Kangxi entries, and readings can be previewed in-page or downloaded as CSV.</p>
+<p>You can use this for flashcard enrichment: definitions, dictionary entries, and readings can be previewed in-page or downloaded as CSV.</p>
 
 <%= form_with url: tools_cangjie_path, method: :post, data: { turbo_frame: "cangjie_out" } do %>
   <p>
@@ -54,6 +56,187 @@ Or paste a sentence to get every unique character."></textarea>
 <% end %>
 
 <%= turbo_frame_tag "cangjie_out" do %>
+  <pre class="tool-output"></pre>
+<% end %>
+
+<h2>Anki deck enricher</h2>
+
+<p>
+  Paste a tab-separated Anki export here and enrich one field based on the characters found in another.
+  This is useful when you want each note to carry Kangxi, Shuowen, Guangyun, or reading data as HTML for later AI prompting or flashcard study.
+</p>
+
+<%= form_with url: tools_cangjie_path, method: :post, data: { turbo_frame: "anki_enrich_out" }, html: { data: { anki_enrich_form: true } } do %>
+  <%= hidden_field_tag :mode, "anki_enrich" %>
+
+  <p>
+    <label>Field to read characters from:
+      <%= number_field_tag :source_field, 4, min: 1, step: 1, data: { anki_source_field: true } %>
+    </label>
+
+    <label style="margin-left: 1em;">Field to write enrichment into:
+      <%= number_field_tag :target_field, 10, min: 1, step: 1, data: { anki_target_field: true } %>
+    </label>
+  </p>
+
+  <p>
+    <label><input type="radio" name="append_mode" value="append" checked> append to existing target field</label>
+    <label style="margin-left: 1em;"><input type="radio" name="append_mode" value="replace"> replace target field entirely</label>
+  </p>
+
+  <p>
+    <label>Preview rows:
+      <%= select_tag :preview_limit, options_for_select([[5,5],[10,10],[25,25],[50,50],[100,100]], 10) %>
+    </label>
+    <label style="margin-left: 1em;">Start preview at row:
+      <%= number_field_tag :preview_start, 1, min: 1, step: 1 %>
+    </label>
+    <label style="margin-left: 1em;">Preview mode:
+      <%= select_tag :preview_mode, options_for_select([["changed rows only", "changed_only"],["full rows", "full_rows"]], "changed_only") %>
+    </label>
+  </p>
+
+  <p><strong>Data to append</strong></p>
+  <div>
+    <% enrichable_field_options.each do |field, label_text| %>
+      <label style="display: inline-block; min-width: 15em; margin-right: 1em; margin-bottom: 0.35em;">
+        <input type="checkbox" name="enrich_fields[]" value="<%= field %>" <%= "checked" if field == "kangxi_gloss" %>>
+        <%= label_text %>
+      </label>
+    <% end %>
+  </div>
+
+  <p>
+    <textarea name="input" rows="12" style="width: 100%;" placeholder="#separator:tab
+#html:true
+#guid column:1
+... paste Anki TXT export here ..." data-anki-input="true"></textarea>
+  </p>
+
+  <div data-anki-live-summary style="margin-bottom: 0.75em;"></div>
+  <div data-anki-first-row-preview style="margin-bottom: 0.75em;"></div>
+
+  <p><button type="submit">Enrich deck</button></p>
+<% end %>
+
+<script>
+(function() {
+  function escapeHtml(str) {
+    return String(str || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  function truncateText(str, max) {
+    str = String(str || "");
+    return str.length > max ? str.slice(0, max - 1) + "…" : str;
+  }
+
+  function analyseAnkiText(raw) {
+    var text = String(raw || "").replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+    var lines = text.split("\n");
+    var noteRows = [];
+    var maxFields = 0;
+    var metadataMax = 0;
+    var metaRegex = /^#(?:guid|notetype|deck|tags)\s+column:(\d+)/i;
+
+    lines.forEach(function(line) {
+      if (!line) { return; }
+      if (line.charAt(0) === '#') {
+        var match = line.match(metaRegex);
+        if (match) { metadataMax = Math.max(metadataMax, parseInt(match[1], 10) || 0); }
+        return;
+      }
+      var cols = line.split("	");
+      noteRows.push(cols);
+      maxFields = Math.max(maxFields, cols.length);
+    });
+
+    maxFields = Math.max(maxFields, metadataMax);
+    var firstRow = noteRows.length > 0 ? noteRows[0].slice() : null;
+    if (firstRow && firstRow.length < maxFields) {
+      while (firstRow.length < maxFields) { firstRow.push(""); }
+    }
+
+    return {
+      noteCount: noteRows.length,
+      maxFields: maxFields,
+      metadataMax: metadataMax,
+      firstRow: firstRow
+    };
+  }
+
+  function bindAnkiForm() {
+    var form = document.querySelector('[data-anki_enrich_form], [data-anki-enrich-form]');
+    if (!form) { return; }
+    var input = form.querySelector('[data-anki-input]');
+    var sourceField = form.querySelector('[data-anki-source-field]');
+    var targetField = form.querySelector('[data-anki-target-field]');
+    var summaryBox = form.querySelector('[data-anki-live-summary]');
+    var previewBox = form.querySelector('[data-anki-first-row-preview]');
+    if (!input || !sourceField || !targetField || !summaryBox || !previewBox) { return; }
+
+    function render() {
+      var info = analyseAnkiText(input.value);
+      var maxFields = info.maxFields || 1;
+      sourceField.max = maxFields;
+      targetField.max = maxFields;
+
+      if (parseInt(sourceField.value || '0', 10) > maxFields) { sourceField.value = maxFields; }
+      if (parseInt(targetField.value || '0', 10) > maxFields) { targetField.value = maxFields; }
+
+      summaryBox.innerHTML = '<p><strong>Detected fields:</strong> ' + maxFields +
+        ' · <strong>Highest metadata field:</strong> ' + (info.metadataMax || 0) +
+        ' · <strong>Note rows:</strong> ' + (info.noteCount || 0) + '</p>' +
+        '<p style="margin-top:0.35em;"><em>The maximum field number is set from the TSV itself and from metadata markers like #tags column:N, so blank trailing tags are still accounted for.</em></p>';
+
+      if (!info.firstRow) {
+        previewBox.innerHTML = '<p><em>Paste Anki TXT to preview the first note row here.</em></p>';
+        return;
+      }
+
+      var srcIndex = Math.max((parseInt(sourceField.value || '1', 10) || 1) - 1, 0);
+      var tgtIndex = Math.max((parseInt(targetField.value || '1', 10) || 1) - 1, 0);
+      var fields = info.firstRow;
+      var rowsHtml = '';
+      for (var i = 0; i < fields.length; i++) {
+        var style = '';
+        if (i === srcIndex) { style += 'background:#f8f8f8;'; }
+        if (i === tgtIndex) { style += (style ? ' ' : '') + 'background:#eef7ee;'; }
+        rowsHtml += '<tr>' +
+          '<td style="border-bottom:1px solid #eee; padding:0.35em; width:5em;">' + (i + 1) + '</td>' +
+          '<td style="border-bottom:1px solid #eee; padding:0.35em; ' + style + ' white-space:pre-wrap; overflow-wrap:anywhere; word-break:break-word;">' +
+          escapeHtml(truncateText(fields[i], 200) || '—') + '</td>' +
+          '</tr>';
+      }
+
+      previewBox.innerHTML = '<p><strong>Automatic first-row preview</strong></p>' +
+        '<p><em>This shows where your chosen source and target fields point before you run enrichment.</em></p>' +
+        '<div style="overflow-x:auto;">' +
+        '<table style="width:100%; border-collapse:collapse; table-layout:fixed;">' +
+        '<thead><tr><th style="text-align:left; border-bottom:1px solid #ccc; padding:0.35em; width:5em;">Field</th><th style="text-align:left; border-bottom:1px solid #ccc; padding:0.35em;">First row value</th></tr></thead>' +
+        '<tbody>' + rowsHtml + '</tbody></table></div>';
+    }
+
+    input.addEventListener('input', render);
+    sourceField.addEventListener('input', render);
+    targetField.addEventListener('input', render);
+    render();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bindAnkiForm);
+  } else {
+    bindAnkiForm();
+  }
+  document.addEventListener('turbo:load', bindAnkiForm);
+})();
+</script>
+
+<%= turbo_frame_tag "anki_enrich_out" do %>
   <pre class="tool-output"></pre>
 <% end %>
 
