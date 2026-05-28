@@ -1,0 +1,1 @@
+This is a group of files that collected information on Japanese Hans for the use of making a new folder system. I had to do some research to finish the overall output, but this seems to be a rather complete product now. Consider it released under GNU for improvements.
