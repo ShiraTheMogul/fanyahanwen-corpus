@@ -1,0 +1,179 @@
+# Japan staging report
+
+Files scanned: 765
+Work units scanned: 205
+
+## Work destinations
+- 未分類/無年代: 117 works
+- 大日本帝国/朝鮮: 65 works
+- 日本/平安時代/未分類: 6 works
+- 日本/明治時代/未分類: 5 works
+- 未分類/境界年需核: 4 works
+- 日本/奈良時代/未分類: 2 works
+- 倭/飛鳥時代/未分類: 2 works
+- 日本/昭和時代/未分類: 1 works
+- 日本/大正時代/未分類: 1 works
+- 大日本帝国/台灣: 1 works
+- 日本/江戸時代/未分類: 1 works
+
+## File destinations
+- 大日本帝国/朝鮮: 602 files
+- 未分類/無年代: 124 files
+- 未分類/境界年需核: 20 files
+- 日本/平安時代/未分類: 6 files
+- 日本/明治時代/未分類: 5 files
+- 日本/奈良時代/未分類: 2 files
+- 倭/飛鳥時代/未分類: 2 files
+- 日本/昭和時代/未分類: 1 files
+- 日本/大正時代/未分類: 1 files
+- 大日本帝国/台灣: 1 files
+- 日本/江戸時代/未分類: 1 files
+
+## Periodised but region/domain unresolved
+- 向德宏駁日本《說略》: 日本/明治時代; year 1879; files 1
+- 唐大和上東征傳: 日本/奈良時代; year 779; files 1
+- 日本漢詩/不出門 (菅原道眞): 日本/平安時代; year 901; files 1
+- 日本漢詩/九月十日: 日本/平安時代; year 901; files 1
+- 日本漢詩/凱旋: 日本/明治時代; year 1905; files 1
+- 日本漢詩/十有三春秋: 日本/江戸時代; year 1793; files 1
+- 日本漢詩/博士難: 日本/平安時代; year 882; files 1
+- 日本漢詩/於寶宅宴新羅客: 日本/奈良時代; year 719; files 1
+- 日本漢詩/春苑言宴: 倭/飛鳥時代; year ; files 1
+- 日本漢詩/月夜見梅花: 日本/平安時代; year 855; files 1
+- 日本漢詩/爾靈山: 日本/明治時代; year 1904; files 1
+- 日本漢詩/狩猟: 倭/飛鳥時代; year ; files 1
+- 日本漢詩/秋思 (菅原道眞): 日本/平安時代; year 900; files 1
+- 日本漢詩/肥馬大刀之七絕: 日本/明治時代; year 1894; files 1
+- 日本漢詩/謫居春雪: 日本/平安時代; year 903; files 1
+- 日本漢詩/金州城外作: 日本/明治時代; year 1904; files 1
+- 日本訪書志補: 日本/昭和時代; year 1930; files 1
+- 致日本首相大隈重信勸助中國革命函: 日本/大正時代; year 1914; files 1
+
+## Not periodised / sent to root 未分類
+- 三弌𥛠誥: 未分類/境界年需核; years 1912; reason bare year is a period boundary; month/day needed for confident placement; files 1
+- 乳雀: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 二女斃狼: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 五妃廟文/五妃廟右橫樑: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 五妃廟文/五妃廟橫樑: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 五妃廟文/弔五妃墓: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 人力車: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 健歩: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 又 (秋夜): 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 向德宏初次稟稿: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 太田南畝: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 孤雲集: 未分類/境界年需核; years 1926; reason bare year is a period boundary; month/day needed for confident placement; files 3
+- 學橋大鄉君墓碣銘: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 富士艦迴航: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 岩倉公所藏正宗鍛刀記: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 岩倉村瘞髪碑: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 幼穉園記: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 弗蘭克林: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 心理新説序: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 懶窩集: 未分類/境界年需核; years 1912; reason bare year is a period boundary; month/day needed for confident placement; files 10
+- 採蕈記: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 放言集序: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 文明東漸史外篇序: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本乞師記: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本刀歌: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本國考略: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本書紀: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/九月十五夜: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/便面半月照梅花: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/便面有雁: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/便面水仙梅花: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/便面蘆間有漁: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/便面蘆間白鷺: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/偶作 (武田信玄): 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/傷野大夫: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/古寺看花: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/夏日閑居，詠庭前三物: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/字訓詩 (清原真友): 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/字訓詩 (源順): 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/寄濃州僧: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/富士山: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/寓怀（石川丈山）: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/山家秋歌八首: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/後夜聞佛法僧鳥: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/惜落花: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/慰小男女: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/憶龜山二首: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/新正口號: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/新緑: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/旅館聴鵑: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/春山如笑: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/時和年豐詩: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/海南行: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/無尾牛歌: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/無題 (阿倍仲麻呂): 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/病中聞羽林藤將軍戲題夜行舍人鳥養，有三之絕句。兼見藤播州、橘員外、源進士等奉和之古調一感一歎，繼以狂歌: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/癸巳歲晚書懷: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/登西山: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/秋夜感懷敬獻左親衛藤員外將軍: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/繡袈裟衣緣: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/薔薇: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/見二毛: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/觀射寄左親衛將軍: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/詠女郎花: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/詠富嶽: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/貧女吟: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/迴文詩 (橘在列): 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/遠久良養生方: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/遺偈: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/避地日本感賦: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/銜命還國作: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/閏月花: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/題不識庵擊機山圖: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/高鳳刺貴賤之同交歌: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 日本漢詩/鳥語花中管絃: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 晩覺齋先生文集: 未分類/境界年需核; years 1926; reason bare year is a period boundary; month/day needed for confident placement; files 6
+- 晴吟雨哦集序: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 曝書記: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 書（堀織部正）: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 曹操嘈操: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 杜鵑: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 林子平傳: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 楠左衛門尉髻塚碑: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 次韻杏坪先生: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 次韻松隱翁: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 法隆寺金堂釋迦三尊像光背銘: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 游箕面山遂入京記: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 濱松城墟記: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 熊説: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 牛盜人: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 王代記: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 秋夜偶成: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 稲荷山古墳出土鉄剣: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 策鳌雜摭: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 8
+- 筠州洞山悟本禪師語錄: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 紀宕陰・息軒二先生事: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 紀特模斯的涅士事: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 網鯛: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 繫思談序: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 義人吳鳳: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 蕉翁逸事: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 觀墨水走舸記: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 觀曳布瀑遊摩耶山記: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 角觝者陣幕傳: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 記翁媼事: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 贈正四位佐久閒象山先生碑: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 赤埴重賢: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 送森林太遊學伯林序: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 進學喩: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 遊墨水記: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 遊濱名湖記: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 遊鳴門記: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 鍛工助弘傳: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 長谷川君父子瘞髪碑: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 閣龍傳: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 陶工巴律西: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 難經古義: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 養老公園碑: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 高山彥九郎傳: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 高山彦九郎傳: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+- 高松栗林公園碑記: 未分類/無年代; years ; reason no usable WS_CATEGORIES year, DATE year, or exact TIMES period; files 1
+
+## Warnings / ambiguity
+- 三弌𥛠誥: 未分類/境界年需核; bare year is a period boundary; month/day needed for confident placement; boundary year: 1912
+- 孤雲集: 未分類/境界年需核; bare year is a period boundary; month/day needed for confident placement; boundary year: 1926
+- 懶窩集: 未分類/境界年需核; bare year is a period boundary; month/day needed for confident placement; boundary year: 1912
+- 晩覺齋先生文集: 未分類/境界年需核; bare year is a period boundary; month/day needed for confident placement; boundary year: 1926
