@@ -27,6 +27,12 @@ Rails.application.routes.draw do
 	get "/dictionary/guangyun/:category", to: "guangyun_categories#show", as: :dictionary_guangyun_category
 	get "/dictionary/guangyun/:category/chars", to: "guangyun_categories#chars", as: :dictionary_guangyun_category_chars
 	
+	# search system 
+	  get  "/corpus/search", to: "corpus_search#index", as: :corpus_search
+	  post "/corpus/search/prepare", to: "corpus_search#prepare", as: :prepare_corpus_search
+	  get  "/corpus/search/prepared/:id", to: "corpus_search#prepared", as: :prepared_corpus_search
+	  get  "/corpus/search/prepared/:id/download", to: "corpus_search#download", as: :download_prepared_corpus_search
+	
 	get "/corpus_viewer(/*path)", to: "corpus_viewer#show", as: :corpus_viewer, format: false # stop a silly attempt to output a txt file
 	
 	# config/routes.rb

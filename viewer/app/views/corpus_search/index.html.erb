@@ -1,0 +1,171 @@
+<h1>Corpus Search</h1>
+
+<p class="corpus-search-note">
+  File-native search over the canonical corpus files. Exact and proximity searches are supported first;
+  public regex is deliberately avoided.
+</p>
+
+<%= form_with url: "/corpus/search", method: :get, local: true, class: "corpus-search-form" do %>
+  <div class="corpus-search-grid">
+    <label>
+      Mode
+      <%= select_tag :mode,
+        options_for_select([["Exact", "exact"], ["Proximity", "proximity"]], @query&.mode || "exact"),
+        class: "corpus-search-input" %>
+    </label>
+
+    <label>
+      Term A
+      <%= text_field_tag :term_a, @query&.term_a, class: "corpus-search-input", maxlength: 80, placeholder: "舜" %>
+    </label>
+
+    <label>
+      Term B
+      <%= text_field_tag :term_b, @query&.term_b, class: "corpus-search-input", maxlength: 80, placeholder: "孝" %>
+    </label>
+
+    <label>
+      Distance
+      <%= number_field_tag :distance, @query&.distance || 200, min: 1, max: 5000, class: "corpus-search-input" %>
+    </label>
+
+    <label>
+      Order
+      <%= select_tag :order,
+        options_for_select([["Either order", "either"], ["A before B", "a_before_b"], ["B before A", "b_before_a"]], @query&.order || "either"),
+        class: "corpus-search-input" %>
+    </label>
+
+    <label>
+      Context characters
+      <%= number_field_tag :context, @query&.context || 20, min: 0, max: 200, class: "corpus-search-input" %>
+    </label>
+
+    <label>
+      Results per page
+      <%= number_field_tag :per_page, @query&.per_page || 20, min: 1, max: 50, class: "corpus-search-input" %>
+    </label>
+  </div>
+
+  <details class="corpus-search-filters">
+    <summary>Metadata filters</summary>
+    <div class="corpus-search-grid">
+      <label>
+        Nation
+        <%= text_field_tag :nation, @query&.filters&.dig("nation"), class: "corpus-search-input", placeholder: "日本 / 越南 / 中國..." %>
+      </label>
+
+      <label>
+        Period
+        <%= text_field_tag :period, @query&.filters&.dig("period"), class: "corpus-search-input", placeholder: "江戶時代 / 大越..." %>
+      </label>
+
+      <label>
+        Region
+        <%= text_field_tag :region, @query&.filters&.dig("region"), class: "corpus-search-input" %>
+      </label>
+
+      <label>
+        Author
+        <%= text_field_tag :author, @query&.filters&.dig("author"), class: "corpus-search-input" %>
+      </label>
+
+      <label>
+        Year from
+        <%= number_field_tag :year_start, @query&.filters&.dig("year_start"), class: "corpus-search-input" %>
+      </label>
+
+      <label>
+        Year to
+        <%= number_field_tag :year_end, @query&.filters&.dig("year_end"), class: "corpus-search-input" %>
+      </label>
+    </div>
+  </details>
+
+  <div class="corpus-search-actions">
+    <%= submit_tag "Search", class: "corpus-search-button" %>
+  </div>
+<% end %>
+
+<% if @search_error.present? %>
+  <p class="corpus-search-error"><%= @search_error %></p>
+<% end %>
+
+<% if @searched && @query.errors.any? %>
+  <div class="corpus-search-error">
+    <% @query.errors.each do |error| %>
+      <p><%= error %></p>
+    <% end %>
+  </div>
+<% end %>
+
+<% if @result_page %>
+  <section class="corpus-search-summary">
+    <p>
+      Showing <strong><%= @result_page.hits.length %></strong> result(s) on this page.
+      Cached/checked candidate files: <strong><%= @result_page.candidate_files %></strong>.
+      Files newly scanned for this request: <strong><%= @result_page.scanned_files %></strong>.
+    </p>
+
+    <% if @result_page.truncated %>
+      <p>
+        This interactive search stopped at <%= CorpusSearchController::INTERACTIVE_LIMIT %> hits.
+        Prepare a background export for the complete result set.
+      </p>
+    <% elsif @result_page.complete %>
+      <p>Complete interactive result count: <strong><%= @result_page.total %></strong>.</p>
+    <% end %>
+
+    <% if @query.valid? %>
+      <%= form_with url: "/corpus/search/prepare", method: :post, local: true do %>
+        <% @query.to_h.each do |key, value| %>
+          <% if key == "filters" %>
+            <% value.each do |filter_key, filter_value| %>
+              <%= hidden_field_tag filter_key, filter_value %>
+            <% end %>
+          <% else %>
+            <%= hidden_field_tag key, value %>
+          <% end %>
+        <% end %>
+        <%= submit_tag "Prepare full ZIP export in background", class: "corpus-search-button corpus-search-button-secondary" %>
+      <% end %>
+    <% end %>
+  </section>
+
+  <% if @result_page.hits.any? %>
+    <ol class="corpus-search-results" start="<%= ((@result_page.page - 1) * @result_page.per_page) + 1 %>">
+      <% @result_page.hits.each do |hit| %>
+        <li class="corpus-search-result">
+          <h2><%= hit["title"].presence || File.basename(hit["path"].to_s, ".txt") %></h2>
+          <p class="corpus-search-meta">
+            <% [hit["author"], hit["date_text"], hit["nation"], hit["period"], hit["region"]].reject(&:blank?).each do |item| %>
+              <span><%= item %></span>
+            <% end %>
+          </p>
+
+          <p class="corpus-search-snippet">
+            <span class="corpus-search-context"><%= hit["left_context"] %></span><mark><%= hit["matched_text"] %></mark><span class="corpus-search-context"><%= hit["right_context"] %></span>
+          </p>
+
+          <p class="corpus-search-path">
+            <%= link_to "Open source text", corpus_viewer_path(hit["path"].to_s.split("/"), format: nil) %>
+            <span>offset <%= hit["start_offset"] %>–<%= hit["end_offset"] %></span>
+          </p>
+        </li>
+      <% end %>
+    </ol>
+
+    <nav class="corpus-search-pagination" aria-label="Search result pages">
+      <% base_params = request.query_parameters.except("page") %>
+      <% if @result_page.previous_page %>
+        <%= link_to "Previous", "/corpus/search?#{base_params.merge(page: @result_page.previous_page).to_query}" %>
+      <% end %>
+      <span>Page <%= @result_page.page %> of <%= @result_page.total_pages %></span>
+      <% if @result_page.next_page %>
+        <%= link_to "Next", "/corpus/search?#{base_params.merge(page: @result_page.next_page).to_query}" %>
+      <% end %>
+    </nav>
+  <% elsif @searched && @query.valid? %>
+    <p>No results found.</p>
+  <% end %>
+<% end %>
