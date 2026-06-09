@@ -1,0 +1,677 @@
+# WORK_TITLE: 礦藝大典
+# PAGE_TITLE: 爪哇版二五週四二甲
+# URL: https://lzh.minecraft.wiki/%E7%88%AA%E5%93%87%E7%89%88%E4%BA%8C%E4%BA%94%E9%80%B1%E5%9B%9B%E4%BA%8C%E7%94%B2
+# WIKI_CATEGORIES: 分類:廣佈於乙巳年之快照，分類:待譯之篇，分類:爪哇版一點二一點一一快照，分類:爪哇版之版
+# DATE: 2026-05-08T15:55:43Z
+# SCRAPED_AT: 2026-06-08T18:23:24+00:00
+# AUTHOR: 礦藝大典之用戶
+# CATEGORIES: 游戲，維基
+# LICENSE: CC-BY-NC-SA-3.0 https://creativecommons.org/licenses/by-nc-sa/3.0/
+# RIGHTS_NOTE: Non-commercial reuse only; ShareAlike applies to adaptations. Images and game assets excluded unless separately licensed.
+
+是篇之譯未成。
+
+儻協而譯之，善也。顧宜親力親爲，器械與機巧僞智者不足取也。
+
+二五週四二甲（25w42a）者，爪哇版一點二一點一一之次快照也，廣佈於乙巳年八月廿三日，增設處地之性，並補疏漏焉。
+
+新者
+
+生靈
+
+鸚鵡螺
+
+增新聲，曰entity.nautilus.riding。
+
+伺服端治契
+
+可驗於網。
+啟榫關則傳符於Sec-WebSocket-Protocol之端。
+譬如：-{}-Sec-WebSocket-Protocol: minecraft-v1, <符>
+
+法此則須驗於Origin之端，措諸management-server-allowed-origins。其本惟虛，榫則固屏。
+
+處地之性
+
+依靠数据驱动来控制各种视觉和游戏玩法的系统。
+
+每个环境属性控制特定的视觉效果或游戏玩法。
+
+此系统相当实验性，未来可能会随时改动。
+
+环境属性源目前有两个：维度和生態域。
+游戏实际使用的环境属性是每个环境属性源的组合。
+
+例如，主世界维度提供sky_color = #00ff00（绿色），平原生態域提供sky_color = #ff0000（红色），则玩家在平原时天空颜色为红色，在其他主世界生態域时为绿色。
+
+环境属性源提供环境属性时，它们可以：
+覆盖旧值。
+
+通过修饰符修改旧值。
+
+綴
+当环境属性源不覆盖旧值时，将应用修饰符。
+
+例如，主世界维度提供water_fog_radius = 96.0，平原生態域使用0.85的乘法修饰修改water_fog_radius，则玩家在平原时water_fog_radius将解析为81.6，而在其他主世界生態域时将解析为96.0。
+
+間
+修饰符描述了后应用的环境属性如何修改先应用的环境属性，而插值描述了不同环境属性源之间的组合。游戏会在应用新修饰符时应用插值。
+
+只有某些环境属性支持插值，这允许在两个值之间过渡，例如在生態域之间移动时。
+
+生態域：
+例如：平原提供sky_color = #ff0000（红色），沙漠提供sky_color = #ffff00（黄色），而sky_color支持根据位置平滑过渡，因此当玩家从平原移动到沙漠时，天空颜色将逐渐从红色变为黄色。而一些属性，例如water_evaporates，只支持离散值，不能设置插值，仅取于玩家所处之生態域。
+
+生態域过渡取决于摄像机8格半径内的生態域，占据该区域更多的生態域会对最终插值产生更大的影响。
+
+映
+维度类型和生態域支持新字段，以定义环境属性。
+
+此映射允许采用环境属性ID - 值的格式，例如：
+"attributes": {
+"minecraft:visual/fog_color": "#ffaa00",
+"minecraft:gameplay/water_evaporates": true}
+
+游戏会自动默认这种修饰符是覆盖修饰符。
+
+如果采用对象格式，则支持不同的修饰符：
+modifier：可选的修饰符ID，取决于属性类型。默认为override。
+
+argument：修饰符参数，取决于所选修饰符。
+
+例如，下列格式将会使用值为0.85的乘法修饰符操作water_fog_radius：
+"attributes": {
+"minecraft:visual/water_fog_radius": {
+"modifier": "multiply",
+"argument": 0.85}}
+
+常见数据类型
+RGB颜色，格式允许：
+一个RGB颜色字符串，格式为#rrggbb。
+
+三个浮点数组成的数组，取值0至1之间，格式为[r, g ,b]。
+
+RGB整数。
+
+ARGB颜色，格式允许：
+一个ARGB颜色字符串，格式为#aarrggbb。
+
+四个浮点数组成的数组，取值0至1之间，格式为[a, r, g ,b]。
+
+ARGB整数。
+
+粒子。示例：
+{
+"type": "minecraft:block_crumble",
+"block_state": {
+"Name": "minecraft:dirt"}}
+
+凡綴
+每个环境属性都有一个特定的值类型，它描述了如何定义值，以及可应用哪些修饰符及是否可插值。有些属性功能专用，有些则在不同属性中重用。
+
+布尔修饰符
+参数格式：布尔值
+
+可用修饰符：
+override
+
+and
+
+nand
+
+or
+
+nor
+
+xor
+
+xnor
+
+浮点修饰符
+参数格式：浮点数
+
+可用修饰符：
+override
+
+add
+
+subtract
+
+multiply
+
+minimum
+
+maximum
+
+颜色修饰符
+参数格式：RGB颜色，不包括alpha_blend
+
+可用修饰符：
+override
+
+add - 按组件的加法混合
+
+subtract - 按组件的减法混合
+
+alpha_blend - 在图像编辑软件中可能出现的alpha混合。
+参数格式：ARGB颜色。
+
+alpha为1时，表现为不混合的覆盖。
+
+新性
+minecraft:visual/fog_color：雾的颜色，仅在摄像机没有浸入某些物质时有效。注意：雾的颜色也会受到一天中的时间、天气和药水效果影响。
+值类型：RGB颜色。
+
+默认值：#000000。
+
+修饰符：颜色修饰符。
+
+可插值：是。
+
+在摄像机的位置解析。
+
+替代了生物群系属性effects.fog_color。
+
+minecraft:visual/extra_fog：是否使用浓雾，例如下界的雾，仅在摄像机没有浸入某些物质时有效。
+值类型：布尔值。
+
+默认值：false。
+
+修饰符：布尔修饰符。
+
+可插值：否。
+
+在摄像机的位置解析。
+
+minecraft:visual/water_fog_color：水下迷雾的颜色。注意：雾的颜色也会受到一天中的时间、天气和药水效果影响。
+值类型：RGB颜色。
+
+默认值：#050533。
+
+修饰符：颜色修饰符。
+
+可插值：是。
+
+在摄像机的位置解析。
+
+替代了生物群系属性effects.water_fog_color。
+
+minecraft:visual/water_fog_radius：水下迷雾的最大距离，以方块为单位。注意：最终值会随着玩家在水下的时间更改。
+值类型：非负浮点数。
+
+默认值：96.0。
+
+修饰符：浮点修饰符。
+
+可插值：是。
+
+在摄像机的位置解析。
+
+替代了生物群系标签#has_closer_water_fog。
+
+minecraft:visual/sky_color：天空颜色，仅在主世界可见。注意：最终值会受到一天中的时间和天气影响。
+值类型：RGB颜色。
+
+默认值：#000000。
+
+修饰符：颜色修饰符。
+
+可插值：是。
+
+在摄像机的位置解析。
+
+替代了生物群系属性effects.sky_color。
+
+minecraft:visual/cloud_opacity：云层不透明度，设置为0时将完全禁用云，且快乐恶魂不再在云层高度恢复生命。
+值类型：浮点数，0至1之间。
+
+默认值：0.0。
+
+修饰符：浮点修饰符。
+
+可插值：是。
+
+在摄像机的位置或在快乐恶魂恢复生命的位置渲染。
+
+minecraft:visual/cloud_height：云层高度。
+值类型：浮点数。
+
+默认值：192.33。
+
+修饰符：浮点修饰符。
+
+可插值：是。
+
+在摄像机的位置或在快乐恶魂恢复生命的位置渲染。
+
+替代了维度类型属性cloud_height。
+
+minecraft:visual/default_dripstone_particle：滴水石锥在上方没有液体时滴落的粒子。
+值类型：粒子。
+
+默认值：{type："minecraft：dripping_dripstone_water"}。
+
+修饰符：override。
+
+可插值：否。
+
+在滴水石锥的位置解析。
+
+替代了维度类型属性ultrawarm。
+
+minecraft:visual/ambient_particles：在摄像机周围生成的随机粒子。
+值类型：一个对象的列表。此对象的格式为：
+particle：粒子。
+
+probability：粒子生成的概率。
+
+默认值：[]。
+
+修饰符：override。
+
+可插值：否。
+
+在摄像机的位置解析。
+
+替代了生物群系属性effects.particle。
+
+minecraft:audio/background_music：控制背景音乐的播放方式和背景音乐。
+值类型：一个对象，包含3个可选的名称-对象映射。
+可用名称如下：
+default：默认音乐，格式如下：
+music：要播放的声音事件。
+
+min_delay：两次播放音乐之间的最小间隔。
+
+max_delay：两次播放音乐之间的最大间隔。
+
+replace_current_music：是否立刻替换当前播放的音乐。
+
+如果未定义，则不会播放音乐。
+
+underwater：如果存在且玩家在水下，则覆盖默认音乐。格式与default相同。
+
+creative：如果存在且玩家处于创造模式，则覆盖默认音乐。格式与default相同。
+
+默认值：{}。
+
+修饰符：override。
+
+可插值：否。
+
+在摄像机的位置解析。
+
+替代了生物群系属性effects.music。
+
+minecraft:audio/music_volume：背景音乐的音量，任何音乐的音量都将逐渐到达此值。
+值类型：浮点数，0至1之间。
+
+默认值：1.0，
+
+修饰符：浮点修饰符。
+
+可插值：否。
+
+在摄像机的位置解析。
+
+替代了生物群系属性effects.music_volume。
+
+minecraft:audio/ambient_sounds：控制摄像机周围的环境音乐。
+值类型：一个对象，包含3个名称 - 对象映射。
+loop：可选的声音事件，要循环播放的声音。
+
+mood：根据周围的黑暗随机播放声音。
+sound：要播放的声音事件。
+
+tick_delay：氛围音效的间隔，假设光照等级为0。
+
+block_search_extent：采样光照的半径。
+
+offset：应用于播放声音的距离偏移。
+
+additions：一个列表，表示附加音效。列表内的每个对象的格式如下：
+sound：要播放的声音事件。
+
+tick_chance：播放声音的概率，取值为0至1。
+
+默认值：{}。
+
+修饰符：override。
+
+可插值：否。
+
+在摄像机的位置解析。
+
+替代了生物群系属性effects.ambient_sound、effects.mood_sound和effects.additions_sound。
+
+minecraft:gameplay/can_start_raid：如果为false，则带有不祥之兆的玩家无法触发袭击。
+值类型：布尔值。
+
+默认值：true。
+
+修饰符：布尔修饰符。
+
+可插值：否。
+
+在袭击将要开始的位置解析。
+
+替代了维度类型属性has_raids。
+
+minecraft:gameplay/water_evaporates：如果为true，则水桶不能放置水，融化的冰不能放置水，湿海绵在放置时变干，滴水石锥不会将泥巴转化。
+值类型：布尔值。
+
+默认值：false。
+
+修饰符：布尔修饰符。
+
+可插值：否。
+
+在对应的位置解析。
+
+替代了维度类型属性ultrawarm。
+
+minecraft:gameplay/bed_rule：控制床是否能用来睡觉，以及床是否能用来设置出生点。
+值类型：一个对象。
+can_sleep：取值见下。
+always：床总是可以睡觉，假定床没有被阻挡且附近没有怪物。
+
+when_dark：床只在全局天空光照小于4时才可以睡觉。
+
+never：床永远不可以睡觉。
+
+can_set_spawn：取值及意义与can_sleep相似。
+
+explodes：床是否会爆炸，默认为false。
+
+error_message：文本组件，显示玩家无法睡眠或设置重生点的消息。
+
+默认值：{type: "can_sleep_when_dark", error_message: {translate: "block.minecraft.bed.no_sleep"}}。
+
+修饰符：override。
+
+可插值：否。
+
+在床头位置解析。
+
+替代了维度类型属性bed_works。
+
+minecraft:gameplay/respawn_anchor_works：控制是否能使用重生锚，如果不能使用则会爆炸。
+值类型：布尔值。
+
+默认值：false。
+
+修饰符：布尔修饰符。
+
+可插值：否。
+
+在重生锚的位置解析。
+
+替代了维度类型属性respawn_anchor_works。
+
+minecraft:gameplay/nether_portal_spawns_piglin：控制下界传送门方块是否可生成屍化豕靈。
+值类型：布尔值。
+
+默认值：false。
+
+修饰符：布尔修饰符。
+
+可插值：否。
+
+在下界传送门方块的位置解析。
+
+替代了维度类型属性natural。
+
+minecraft:gameplay/fast_lava：控制熔岩是否流动得更快、更远，对实体具有更大的推动力。
+值类型：布尔值。
+
+默认值：false。
+
+修饰符：布尔修饰符。
+
+可插值：否。
+
+在整个维度内进行解析，单个生物群系位置无效。
+
+替代了维度类型属性ultrawarm。
+
+minecraft:gameplay/increased_fire_burnout：控制火是否燃烧得更快。
+值类型：布尔值。
+
+默认值：false。
+
+修饰符：布尔修饰符。
+
+可插值：否。
+
+在火的位置解析。
+
+替代了生物群系标签#increased_fire_burnout。
+
+minecraft:gameplay/piglins_zombify：控制猪灵和疣猪兽是否屍化。
+值类型：布尔值。
+
+默认值：true。
+
+修饰符：布尔修饰符。
+
+可插值：否。
+
+在对应实体的位置解析。
+
+替代了维度类型属性piglin_safe。
+
+minecraft:gameplay/snow_golem_melts：控制雪傀儡是否受伤。
+值类型：布尔值。
+
+默认值：false。
+
+修饰符：布尔修饰符。
+
+可插值：否。
+
+在雪傀儡的位置解析。
+
+替代了生態域标签#snow_golem_melts。
+
+改
+
+生靈
+
+屍馬
+
+今未御者，得繫於韁。
+
+不復弭於和世。
+
+骷髏馬
+
+黜嚮版之所更。
+
+（屍化）鸚鵡螺
+
+今得馭諸旱地。
+
+戲事
+
+淬靈
+
+揕、繕二靈，不復相斥。
+
+進程
+
+「[[進程#advancements-anchor-nether.distract_piglin|文種（參“2”）謬！]]」之功，今擲金鸚鵡螺甲亦成。
+
+霧
+
+今水霧渾和於南北天色。
+
+令之範式
+
+/stopwatch
+
+易<id>之數，今序/stopwatch create foo:bar，不序/stopwatch foo:bar create。
+
+今query之支，受scale之數。
+所出乘此爲率。
+
+譬如stopwatch query foo:bar 20，則持秒而綱刻。
+
+餘者
+
+令之所擬，名宇咸及，非獨minecraft而已。
+
+常
+
+錄囊
+
+晉錄囊於90.0。
+
+資囊
+
+晉錄囊於70.1。
+
+维度类型
+
+加入了attributes字段，以指定环境属性。
+
+下列字段的作用已移动到环境属性：
+ultrawarm -> minecraft:gameplay/water_evaporates、minecraft:gameplay/fast_lava、visual/default_dripstone_particle
+
+bed_works -> minecraft:gameplay/bed_rule
+
+respawn_anchor_works -> minecraft:gameplay/respawn_anchor_works
+
+cloud_height -> minecraft:visual/cloud_height
+
+piglin_safe -> minecraft:gameplay/piglins_zombify
+
+has_raids -> minecraft:gameplay/can_start_raid
+
+natural（未移除） -> minecraft:gameplay/nether_portal_spawns_piglin
+
+生物群系定义格式
+
+加入了attributes字段，以指定环境属性。
+
+注意：一些环境属性必须依靠维度解析，不能在生物群系中指定。
+
+effects中下列字段的作用已移动到环境属性：
+fog_color -> minecraft:visual/fog_color
+
+water_fog_color -> minecraft:visual/water_fog_color
+
+sky_color -> minecraft:visual/sky_color
+
+particle -> minecraft:visual/ambient_particles
+
+ambient_sound、mood_sound、additions_sound -> minecraft:audio/ambient_sounds
+
+music -> minecraft:audio/background_music
+
+music_volume -> minecraft:audio/music_volume
+
+錄件
+
+kinetic_weapon：
+加入了新字段：contact_cooldown_ticks，表示击中后的冷却时间，在能够再次击中实体之前无法与实体互动，默认为10。
+
+籤
+
+除生態域之籤如左：
+#snow_golem_melts，代以gameplay/snow_golem_melts。
+
+#increased_fire_burnout，代以gameplay/increased_fire_burnout。
+
+#plays_underwater_music ，代以audio/background_music之only_underwater。
+
+#has_closer_water_fog，代以visual/water_fog_radius。
+
+增金鸚鵡螺甲於#piglin_loved之籤。
+
+補
+
+修疏漏三十七
+
+先之謬
+
+MC-263562 — 領域備幕，或無以譯。
+
+一點二一點六之疏漏
+
+MC-298405 — 对话框中输入控件label中的文本组件不支持hover_event。
+
+一點二一點八之疏漏
+
+MC-299876 — 对话框中布尔值的标签呈现的白色与正常白色略有不同。
+
+一點二一點九之疏漏
+
+MC-301271 — 对象文本组件在某些地方不会渲染，除非同一行上有文本字形。
+
+MC-301518 — 鼠标悬停在复选框上时，鼠标光标不会变成手形。
+
+MC-301520 — 鼠标悬停在难度锁定按钮上时，鼠标光标不会变成手形。
+
+MC-301557 — 铜箱子和大型铜箱子上的螺栓的阴影方向不一致。
+
+MC-301879 — 与其他氧化变种相比，大型锈蚀和涂蜡的锈蚀铜箱子底部纹理看起来不正确。
+
+MC-302071 — 铜箱子和大型铜箱子的侧面纹理不一致。
+
+MC-302246 — 受组件树影响，Sprite对象组件不会在服务器列表渲染。
+
+MC-302409 — 击中涂蜡的避雷针的闪电不会减轻附近未涂蜡铜块的氧化程度。
+
+先槧之謬
+
+MC-302656 — 骷髅马会在阳光下燃烧。
+
+MC-302657 — subtitles.entity.nautilus.eat字符串将“Nautilus”误拼写为“Nauilus”。
+
+MC-302664 — 猪灵不会被金鹦鹉螺铠吸引。
+
+MC-302672 — 加载玩家带有状态效果的世界时出现“无效的玩家数据”错误。
+
+MC-302680 — 僵尸马和僵尸鹦鹉螺无法在和平难度下生成。
+
+MC-302683 — 权限级别为0的命令会弹出“确认执行命令”对话框。
+
+MC-302729 — 高炉无法烧炼鹦鹉螺铠。
+
+MC-302732 — 使用副手的矛进行Charge攻击会应用主手所持物品的魔咒效果。
+
+MC-302743 — 重复使用矛时每10刻进行一次Charge攻击。
+
+MC-302767 — 在旁观模式下手持矛进行戳刺攻击会播放戳刺的音效。
+
+MC-302783 — 幼年鹦鹉螺食用#minecraft:nautilus_taming_item而非#minecraft:nautilus_food。
+
+MC-302802 — 原地不动时，使用矛进行Charge攻击会破坏物品展示框。
+
+MC-302813 — 僵尸猪灵在愤怒时不再冲刺或发出愤怒的声音。
+
+MC-302816 — 将NBT转换为SNBT时，程序完成后会等待1分钟。
+
+MC-302817 — 带有火焰附加的矛即使攻击被格挡也能点燃目标。
+
+MC-302818 — 僵尸骑手偶尔会手持铁矛以外的东西。
+
+MC-302827 — 矛的戳刺攻击可以穿墙。
+
+MC-302834 — 狼愤怒时眼睛不会变红。
+
+MC-302838 — 同时使用带有耐久和高等级突进的矛会严重降低TPS。
+
+MC-302842 — 鹦鹉螺和僵尸鹦鹉螺永远不会消失。
+
+MC-302920 — “记分板玩家显示”设置有时会在世界加载时重置。
+
+MC-302924 — 玩家不再能被邀请加入Realm。
+
+MC-302984 — 用副手持矛攻击一个实体时，矛的攻击伤害会附加到该次攻击中。
+
+MC-302988 — 蜜蜂不再对生物敌对。
+
+MC-303083 — 在资源/数据包选择屏幕中搜索无法正确滚动到结果。
+
+MC-303089 — 3级管理员无法使用客户端管理员功能。

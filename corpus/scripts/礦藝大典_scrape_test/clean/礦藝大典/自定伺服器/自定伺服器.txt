@@ -1,0 +1,266 @@
+# WORK_TITLE: 礦藝大典
+# PAGE_TITLE: 自定伺服器
+# URL: https://lzh.minecraft.wiki/%E8%87%AA%E5%AE%9A%E4%BC%BA%E6%9C%8D%E5%99%A8
+# WIKI_CATEGORIES: 分類:待倂
+# DATE: 2025-11-22T14:38:56Z
+# SCRAPED_AT: 2026-06-08T20:27:48+00:00
+# AUTHOR: 礦藝大典之用戶
+# CATEGORIES: 游戲，維基
+# LICENSE: CC-BY-NC-SA-3.0 https://creativecommons.org/licenses/by-nc-sa/3.0/
+# RIGHTS_NOTE: Non-commercial reuse only; ShareAlike applies to adaptations. Images and game assets excluded unless separately licensed.
+
+是篇薦倂至教章/立伺服器。 議
+
+緣：内容重复度过高
+共識未成，按兵不動。
+
+是章將援手相授，助君設爪哇伺服器。教章用元，發魔贊社而可白取也，適多術基（如視窗、大食、胡麻及伯克利）。
+
+若需另教，閲文末抑或教章。若需另訊，宜閱伺服器。
+
+須知：
+
+設服耗時而需才，若不善術網，宜另尋教章。
+
+礦藝伺服器無高限能，兩核籌芯可設下服。求優者，當尋籌芯之新構與高頻，而非多核。
+
+若欲久設上服，則需上品可拓籌芯（如英特爾至强W系列或AMD綫程撕裂者與霄龍等），其芯求穩而次頻，籌芯應頻過三吉赫茲，擇量過三十六京字節且適勘修謬誤之籌錄。
+
+若君電腦優越，可設服并戲也。
+
+于游服者，宜入諸綫路之網（如以太網），而非空傳網路。
+
+僅欲衆戲者，而非設服者，可尋伺服器于此。
+
+闢區網之生界于戲，需穿透也，若可連接空傳網絡，則可共網同戲而無需穿透，穿透非安也。
+
+欲設云服者，宜閱伺服器托管于礦藝論壇。如是，多需月費，減維護之憂而常開，戲者時刻可入。
+
+注： 另有特製伺服器術體，多用於上服而無魔贊社之援。
+
+警告
+
+慎哉
+
+若不明所做，則易受擊害。故宜慎行。
+
+君當知是行之害，方可設伺服器。嚴循是章，脚踏實地，方無舛誤。以是典人皆可撰，環境有異，誤不可測也。
+
+爲保無舛，應知有五：
+
+命令行之用與修儅
+
+基本網路專名（IP、DHCP、埠等）
+
+術基之型
+
+網路環境
+
+交機之型（若有交機）
+
+爪哇
+
+爪哇者，固型術紀之言也，可編術執于爪哇行機（JVM），適多術基。爲之編碼，悉器可執。詳訊
+
+是節解爪哇之惑，亦導抉擇。
+
+開源拓具與甲骨拓具之異
+
+開源拓具（OpenJDK）相似于甲骨拓具（OracleJDK），前者乃後者開源參考實現也。除包法、許可書與皮毛之別，餘者無異。
+
+慎哉，若用以商業和生產，如設礦藝伺服器，無關盈利否，甲骨拓具OTN（甲骨技術網路）既構版需繳費訂閲方用。甲骨文供其開源拓具既構版，然未包之易。
+
+爪哇行境與爪哇拓具之異
+
+爪哇行境指“爪哇執行環境”。爪哇拓具指“爪哇開發套件”。爪哇行境用以執行，爪哇拓具用以開發。爪哇拓具含行境，行境含行機。故有拓具，即有行境。原礦藝無需拓具，而某拓件需之。
+
+無頭爪哇
+
+無頭爪哇者，爪哇之縮也。去其圖形之交援。適伺服器及無形之況。
+
+行法
+
+欲啓礦藝伺服器需：裝爪哇，運啓伺服器，許用戶協議（EULA），復啓之。裝爪哇而啓命令行，後事一致也。
+
+驗其合乎需求（籌芯，籌錄與術隅儲量）。
+
+裝爪哇。裝法因術基而異，參閲下文。
+
+于此頁取伺服器元。
+
+創新目錄以置伺服器元，將存該服之生界諸儅焉。
+
+啓命令行或終端。
+
+驗爪哇可用否，鍵入java -version即可。
+
+鍵入cd，切至元目錄。
+
+鍵入java -jar minecraft_server.jar --nogui，初啓伺服器（代“minecraft_server.jar”以元名）。
+
+許用戶協議（EULA），初啓將生eula.txt，開以撰器，既閲而解，改eula=false为eula=true則許而遵之。若非，服之不啓也。
+
+既上行，方可鍵入java -jar minecraft_server.jar以啓伺服器，將彈窗示訊，附--nogui項而靜。君亦可附下文之項。
+
+如是便成一服。至於伺服器置設詳訊，宜閱伺服器置設。至於安編啓術，宜閲編啓服術。
+
+爪哇附項
+
+命令行中爪哇之項，宜附于-jar前。
+
+欲設伺服器，籌錄乃重中之重。其可供之量，附-Xmx項可定。常用-Xmx2G，即上限兩吉。
+-Xms可定伺服器初行之錄量，欲久設之，是量多少無大礙。常用-Xms512M，即上限五百一十二兆。
+
+或爪哇行境可用堆量軟限（soft max heap size，-XX:SoftMaxHeapSize=1G），始試于之，後又可越。伺服器之多行者，是效倍也。
+
+若伺服器之Solaris術基與爪哇爲六十四位，則附項-d64。
+
+礦藝附項
+
+伺服器元之項，附于-jar minecraft_server.jar之後。附--help則列凡項，如下。
+
+--bonusChest
+初辟鴻蒙，生獎箱乎。
+
+--demo
+行以試法（示戲者以“試”窗。試畢，物弗用）。
+
+--eraseCache
+除光快取等。優化如獨戲。
+
+--forceUpgrade
+強升凡區塊至是版（獨戲亦可）。
+
+--help
+示是文。
+
+--initSettings
+唯生server.properties和eula.txt。
+
+--nogui
+棄圖形之交援。
+
+仍可用cmd、終端。
+
+nogui同上，以此適舊，宜用--nogui，合他項之範也。
+
+--port <整数>
+定監聽埠號，忽server.properties之值（預設負一）。
+
+--safeMode
+唯原版錄囊可載。
+
+--serverId <字串>
+定伺服器ID。
+
+--singleplayer <字串>
+啓伺服器于離綫（<字串>應有值，而其效未明，蓋魔贊社内用之）。
+
+--universe <字串>
+定記“world”之資料夾（預設.，即斯夾）。
+
+--world <字串>
+定記level.dat之資料夾名。
+
+舊項
+
+舊者可用。
+
+-o true
+在綫戲者方能入（至若新版，則置server.properties中"online-mode"以"true"）。
+
+命令範式
+
+啓伺服器，以“cold”爲定記世之資料夾名，監聽埠號一三三七，籌錄上限爲一吉：java -Xmx1G -jar minecraft_server.jar --port 1337 --nogui --world cold。
+
+視窗教引
+
+裝爪哇
+
+欲啓伺服器，需裝爪哇行境。用新以保無虞，查新可循下計之一：
+
+尋爪哇于視窗控制面板，擊“立即升級”。
+
+擊此可查于瀏覽器。而弗能行于Google Chrome和Firefox。
+
+啓終端，鍵入java -version。較于爪哇網頁以查新。
+
+苟爪哇未裝或過舊，可下傳開源爪哇拓具或甲骨拓具OTN。
+
+伺服器初設
+
+閱行法。
+
+編啓服術
+
+視窗之脚本，批處理者也。于伺服器元并建檔，名start.bat，鍵入：
+
+@ECHO OFF
+java -Xms1024M -Xmx2048M -jar minecraft_server.jar --nogui
+pause
+
+雙擊以啓，若見“Class_Not_Found”、“ServerGuiConcole”之舛，則忽之。後出“Server Thread/INFO”，方啓之成。
+
+其pause命令保伺服器終而終端留，以查嚮訊。
+
+伺服器置設
+
+修儅server.properties（閲server.properties#server.properties）。
+
+欲任管理員（op），于終端鍵入/op <戲者>。將記UUID于儅ops.json，是以戲者更名而猶權。
+
+如用準簿，于終端鍵入/whitelist add <戲者>，以記于儅whitelist.json。
+
+入伺服器
+
+欲設服并戲，IP爲“localhost”抑或“127.0.0.1”。
+
+于區網，戲者可以内網IP入，弗需埠轉（端口轉發）。
+
+于因特網，非區網也。則需埠轉，入以公網IP。
+
+爪哇益效附項
+
+附項以益效，定值以自適，可得籌錄籌芯之佳。
+
+爪哇八及舊
+
+java -server -XX:-UseVMInterruptibleIO -XX:NewRatio=3 -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSIncrementalPacing -XX:ParallelGCThreads=4 -XX:+AggressiveOpts -XX:+UseFastAccessorMethods -XX:+UseBiasedLocking -XX:+CMSParallelRemarkEnabled -XX:MaxGCPauseMillis=50 -XX:+UseAdaptiveGCBoundary -XX:-UseGCOverheadLimit -XX:SurvivorRatio=8 -XX:TargetSurvivorRatio=90 -XX:MaxTenuringThreshold=15 -XX:+DisableExplicitGC -Xnoclassgc -oss4M -ss4M -XX:CMSInitiatingOccupancyFraction=60 -XX:SoftRefLRUPolicyMSPerMB=2048 -Xms(自定) -Xmx(自定) -jar <伺服器元> nogui
+
+爪哇九及新
+
+自一點一七，爪哇八不用，新者：
+
+java -jar -Xms(自定) -Xmx(自定) -server -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=32M <伺服器元> nogui
+
+援引
+
+視窗
+How to make a Minecraft Server in under 10 Minutes! (Port Forward Guide Too!)
+
+How to Make a Minecraft Server in 2020 (1.15.2) | 5:43 Pt. 2 - Easy: Port Forward | 3:11
+
+How to create a Minecraft Server in 2020 tutorial
+
+大食
+How to SET UP MINECRAFT SERVER on Mac OS
+
+Port Forward (easy method)
+
+Alternative video tutorial on setting up a Minecraft server with Mac
+
+胡麻
+Linux tutorial for more advanced users
+
+How to Install Minecraft Server on CentOS
+
+How to make a Minecraft Server on Ubuntu for beginners
+
+他山
+How to Set Up Port Forwarding
+
+How to Port Forward any Minecraft Server (1.6.2)
+
+Alternative port forwarding tutorial for Windows (with pictures)
+
+Course: How to Make a Server

@@ -1,0 +1,2641 @@
+# WORK_TITLE: 礦藝大典
+# PAGE_TITLE: 爪哇版一點二一點一一/開發版
+# URL: https://lzh.minecraft.wiki/%E7%88%AA%E5%93%87%E7%89%88%E4%B8%80%E9%BB%9E%E4%BA%8C%E4%B8%80%E9%BB%9E%E4%B8%80%E4%B8%80/%E9%96%8B%E7%99%BC%E7%89%88
+# WIKI_CATEGORIES: 分類:俗名，分類:方作版之列
+# DATE: 2025-12-17T10:14:50Z
+# SCRAPED_AT: 2026-06-08T18:06:37+00:00
+# AUTHOR: 礦藝大典之用戶
+# CATEGORIES: 游戲，維基
+# LICENSE: CC-BY-NC-SA-3.0 https://creativecommons.org/licenses/by-nc-sa/3.0/
+# RIGHTS_NOTE: Non-commercial reuse only; ShareAlike applies to adaptations. Images and game assets excluded unless separately licensed.
+
+是篇所列，爪哇版一點二一點一一/開發版之方作版也。
+
+二五週四一甲
+
+二五週四一甲（25w41a）者，爪哇版一點二一點一一之首快照也，廣布於乙巳年八月十八日。
+此版增鸚鵡螺、屍化鸚鵡螺、Nautilus Armor、Spear與其專淬靈也，允殭屍馬自生，補疏漏。
+
+新者
+
+物品
+
+鸚鵡螺甲
+
+可裝於鸚鵡螺、屍化鸚鵡螺之身
+
+具銅、金、鐵、金剛石、玄鈺之質也。
+
+槊
+
+新武器也，擁木、石、銅、鐵、金、金剛石、玄鈺之質。
+
+質異，則蓄力時與攻速皆不同。
+
+具最微攻擊域，過近則無用。
+
+攻擊距較其餘工具、武器甚遠。
+
+具二攻擊法：Jab、Charge。
+Jab攻擊 :
+按擊鍵發動。
+
+傷低而具擊退。
+
+每擊皆冷卻，木矛最速也，玄鈺反之。
+
+可傷多敵。
+
+毋破塊方。
+
+Charge攻擊：
+長按用鍵以蓄力。
+
+傷依矛材、玩家視角與速度定之。
+
+蓄力以三階分：Engaged、Tired、Disengaged。
+Engaged：如速度過閾，則可行傷而退之，且令騎乘之生物硬脫離騎乘。
+
+Tired：由矛旋至垂直位且晃始，如速度過閾，則可行傷而退之，然不可令騎乘之生物硬脫離騎乘。
+
+Disengaged：由矛放於下，指向下始。如速度過閾，則可行傷而退之，然不可行退與令騎乘之生物硬脫離騎乘。
+
+其餘生物，用矛之距為玩家之半也，然其可以低速行傷、硬拖離騎乘、退之。
+
+殭屍、枯屍、屍化豕靈與豕靈可用Charge擊也。
+
+孳衍卵
+
+加孳鸚鵡螺之卵與孳屍化鸚鵡螺刷怪蛋。
+
+生靈
+
+鸚鵡螺
+
+條件敵對之水生物也，可生於諸海域。
+
+怒期則以衝刺擊也，偶傷河豚。
+
+位陸則窒息，玩家騎之則賜續呼吸之效。
+
+可以河豚或河豚桶馴、繁殖與療癒。
+
+可裝鞍及鸚鵡螺甲於其上，帶鞍者活動域略小也。
+
+免疫毒
+
+由玩家或其狼戮之則略掉鸚鵡螺殼。
+
+屍化鸚鵡螺
+
+新水生，僅與持三叉戟之沉屍共現。
+
+敵意僅於為敵所騎時生。
+
+可馴服，裝鞍及Nautilus Armor，行為類鸚鵡螺，然不可繁殖。
+
+可免於陽光焚也（若裝Nautilus Armor），免疫毒，卒則落胔零至三。
+
+屍馬
+
+原野及莽原自生，常為持鐵矛之殭屍騎乘。
+
+陽光焚燒可由馬鎧免疫之，和時不生。
+
+可吸引持紅蘑菇之玩家，卒則落胔零至三。
+
+溺屍
+
+若以足以下眾條件之成年溺屍具二分之一之機率騎於屍化鸚鵡螺之上，生成騎士。
+自生或構生。
+
+常用之手持三叉戟。
+
+不於川或凍川生態域生成。
+
+已足屍化鸚鵡螺之生成條件。
+
+令式
+
+/stopwatch
+
+託管、追stopwatch之新令也。
+
+stopwatch獨立於遊戲刻。
+
+僅行於伺服器、世界行之時，世界暫停亦焉。
+
+意於代現之世界邊界計時之功。
+
+法如下:
+stopwatch <id> create - 創立所定賦域ID之Stopwatch。
+
+stopwatch <id> query - 於談話欄中現所定之Stopwatch的經時，以秒為度。
+
+stopwatch <id> restart - 重新启动指定的Stopwatch。
+
+stopwatch <id> remove -重啟所定之Stopwatch。
+
+/execute
+
+新條件子命令也：execute if|unless stopwatch <id> <range>
+
+較stopwatch經時與所給範圍。
+
+以秒為度，精至毫秒。
+
+例：/execute if stopwatch foo:bar ..10 run say Stopwatch foo:bar has not reached 10 seconds yet
+
+參數型
+
+item_predicate：
+謂語部之法已拓，得以查組件之存在。
+
+既有之法不變。
+
+即舊法*[instrument]與新法*[instrument~{}]完全等同。
+
+戲事
+
+淬靈
+
+加入揕靈。
+
+共三等。
+
+唯適於Jab矛之攻擊。
+
+將玩家視野推至平向。
+
+視角須調平而無暇，方可達最大突進距。
+
+耗矛耐久甚巨，甲等損八點，乙等損三十二點，丙等損一百二十八點。
+
+與經驗修補靈相抵。
+
+態效
+
+加入鸚鵡螺之息。
+
+影響騎於上之玩家。
+
+可暫玩家氣之耗也，然不增焉。
+
+二五週四三甲
+
+二五週四三甲（25w43a）者，爪哇版一點二一點一一[坊間之名]之丙快照也，廣佈於乙巳年九月初七日，補疏漏焉。
+
+新者
+
+生靈
+
+鸚鵡螺與屍化鸚鵡螺
+
+增水中著鞍之聲，曰item.underwater_saddle.equip。
+
+常
+
+物綴
+
+增discard之物綴。
+虛疊而無他矣。
+
+靈義範式
+
+增靈效，曰apply_exhaustion，益損者也。其範曰：
+amount：所依階術，惟作於戲者。
+
+改
+
+物
+
+槊
+
+益其衝傷。
+
+稍弘其型。
+
+今衝有所見。
+
+增傷之綴，限於利手。
+
+生靈
+
+鸚鵡螺與屍化鸚鵡螺
+
+今不復得乘舟。
+
+戲事
+
+靈
+
+今揕靈不復大損，乃飢人如疾走。
+一階則耗以三（），二階則四（），三階則五（）。
+
+今不及六（）者無以揕。
+
+世疆
+
+今其攝直也，以刻不以漏。是故止無張斂，/tick亦有與焉。
+
+令之範式
+
+/worldborder
+
+time之數，今以刻不以秒。
+
+常
+
+錄囊
+
+晉錄囊於91.0。
+
+資囊
+
+晉資囊於71.0。
+
+物綴
+
+filtered：
+代modifier以左：
+on_pass：item_filter之成測也，或貨術或列。
+
+on_fail：item_filter之敗績也，或貨術或列。
+
+紋貌
+
+黜紋貌之元性darked_cutout_mipmap，以mipmap_strategy代之。蓋列直也，其臚如左：
+mean：均微圖之色也，合四元爲一。固形半透之塊，大凡如此。
+
+dark_cutout：有類mean者，然cutout之元以黯。栲根如此，蓋緇芯也。
+
+cutout：新道也，溯考其本，不依嚮色。cutout之塊，大凡如此。
+
+strict_cutout：cutout之易者也，其限益峻，圖昂則弭。花艸如此，以辟虛翳。
+
+auto：本直也，咸混諸色，餘者cutout之。
+
+今動貌復洽微圖諸等。
+
+烽火臺、赤石末二塊，今得剔透於圖中。
+
+補
+
+修疏漏二十八
+
+先之謬
+
+MC-53491 — 戲雖暫止，疆猶收張。
+
+一點二一點一〇之疏漏
+
+MC-302695 — 戲之暫止，更道得施，戲以復焉。
+
+MC-302854 — 遠眺則琉璃稍濁。
+
+MC-303381 — 試序生處而其角逾矩，則戲崩焉。
+
+MC-303382 — 生處之逾旋者，未得序之。
+
+槧之謬
+
+MC-302669 — 瞻旗或有敗貌者。
+
+MC-302675 — 生界既昇，匡或謬繪所函。
+
+MC-302691 — 生界有旗，則執擲或失紋。
+
+MC-302719 — 鍵縛之誡，其體不正。
+
+MC-302724 — debug.entry.overlay之句，其體不正。
+
+MC-302737 — 既更道，非再撳F3不見勘誤幕。
+
+MC-302769 — 塊方或有邇不可見者。
+
+MC-302790 — minecraft:apply_impulse之效，不得施於minecraft:location_changed。
+
+MC-302849 — 執槊者其傷稍遜。
+
+MC-302872 — 微圖異階，熔石殊色。
+
+MC-302887 — 我觀則左右之槊，其衝不一。
+
+MC-302912 — 屍化鸚鵡螺去水則窒，以此異於諸亡。
+
+MC-302915 — cutout之於微圖也，大於常貌。
+
+MC-302963 — 殛鸚鵡螺則御人稍顛。
+
+MC-302984 — 槊搠於左，其傷如右。
+
+MC-303032 — 幼野之螺，猶得馭之。
+
+先槧之謬
+
+MC-303138 — 豕靈、獷豕，化於焱界。
+
+MC-303150 — can_sleep之always也，playerSleepPercentage之逾百也，晝不得寢。
+
+MC-303157 — remove_binomial之效，其直或逾矩。
+
+MC-303166 — /stopwatch create之言，同乎故漏。
+
+MC-303181 — 槊在左右，皆有attack_damage之綴，故衝未以耳。
+
+MC-303201 — 屍化豕靈試伐創者。
+
+MC-303266 — 二螺得乘舟。
+
+二五週四二甲
+
+二五週四二甲（25w42a）者，爪哇版一點二一點一一之次快照也，廣佈於乙巳年八月廿三日，增設處地之性，並補疏漏焉。
+
+新者
+
+生靈
+
+鸚鵡螺
+
+增新聲，曰entity.nautilus.riding。
+
+伺服端治契
+
+可驗於網。
+啟榫關則傳符於Sec-WebSocket-Protocol之端。
+譬如：-{}-Sec-WebSocket-Protocol: minecraft-v1, <符>
+
+法此則須驗於Origin之端，措諸management-server-allowed-origins。其本惟虛，榫則固屏。
+
+處地之性
+
+依靠数据驱动来控制各种视觉和游戏玩法的系统。
+
+每个环境属性控制特定的视觉效果或游戏玩法。
+
+此系统相当实验性，未来可能会随时改动。
+
+环境属性源目前有两个：维度和生態域。
+游戏实际使用的环境属性是每个环境属性源的组合。
+
+例如，主世界维度提供sky_color = #00ff00（绿色），平原生態域提供sky_color = #ff0000（红色），则玩家在平原时天空颜色为红色，在其他主世界生態域时为绿色。
+
+环境属性源提供环境属性时，它们可以：
+覆盖旧值。
+
+通过修饰符修改旧值。
+
+綴
+当环境属性源不覆盖旧值时，将应用修饰符。
+
+例如，主世界维度提供water_fog_radius = 96.0，平原生態域使用0.85的乘法修饰修改water_fog_radius，则玩家在平原时water_fog_radius将解析为81.6，而在其他主世界生態域时将解析为96.0。
+
+間
+修饰符描述了后应用的环境属性如何修改先应用的环境属性，而插值描述了不同环境属性源之间的组合。游戏会在应用新修饰符时应用插值。
+
+只有某些环境属性支持插值，这允许在两个值之间过渡，例如在生態域之间移动时。
+
+生態域：
+例如：平原提供sky_color = #ff0000（红色），沙漠提供sky_color = #ffff00（黄色），而sky_color支持根据位置平滑过渡，因此当玩家从平原移动到沙漠时，天空颜色将逐渐从红色变为黄色。而一些属性，例如water_evaporates，只支持离散值，不能设置插值，仅取于玩家所处之生態域。
+
+生態域过渡取决于摄像机8格半径内的生態域，占据该区域更多的生態域会对最终插值产生更大的影响。
+
+映
+维度类型和生態域支持新字段，以定义环境属性。
+
+此映射允许采用环境属性ID - 值的格式，例如：
+"attributes": {
+"minecraft:visual/fog_color": "#ffaa00",
+"minecraft:gameplay/water_evaporates": true
+}
+
+游戏会自动默认这种修饰符是覆盖修饰符。
+
+如果采用对象格式，则支持不同的修饰符：
+modifier：可选的修饰符ID，取决于属性类型。默认为override。
+
+argument：修饰符参数，取决于所选修饰符。
+
+例如，下列格式将会使用值为0.85的乘法修饰符操作water_fog_radius：
+"attributes": {
+"minecraft:visual/water_fog_radius": {
+"modifier": "multiply",
+"argument": 0.85
+}
+}
+
+常见数据类型
+RGB颜色，格式允许：
+一个RGB颜色字符串，格式为#rrggbb。
+
+三个浮点数组成的数组，取值0至1之间，格式为[r, g ,b]。
+
+RGB整数。
+
+ARGB颜色，格式允许：
+一个ARGB颜色字符串，格式为#aarrggbb。
+
+四个浮点数组成的数组，取值0至1之间，格式为[a, r, g ,b]。
+
+ARGB整数。
+
+粒子。示例：
+{
+"type": "minecraft:block_crumble",
+"block_state": {
+"Name": "minecraft:dirt"
+}
+}
+
+凡綴
+每个环境属性都有一个特定的值类型，它描述了如何定义值，以及可应用哪些修饰符及是否可插值。有些属性功能专用，有些则在不同属性中重用。
+
+布尔修饰符
+参数格式：布尔值
+
+可用修饰符：
+override
+
+and
+
+nand
+
+or
+
+nor
+
+xor
+
+xnor
+
+浮点修饰符
+参数格式：浮点数
+
+可用修饰符：
+override
+
+add
+
+subtract
+
+multiply
+
+minimum
+
+maximum
+
+颜色修饰符
+参数格式：RGB颜色，不包括alpha_blend
+
+可用修饰符：
+override
+
+add - 按组件的加法混合
+
+subtract - 按组件的减法混合
+
+alpha_blend - 在图像编辑软件中可能出现的alpha混合。
+参数格式：ARGB颜色。
+
+alpha为1时，表现为不混合的覆盖。
+
+新性
+minecraft:visual/fog_color：雾的颜色，仅在摄像机没有浸入某些物质时有效。注意：雾的颜色也会受到一天中的时间、天气和药水效果影响。
+值类型：RGB颜色。
+
+默认值：#000000。
+
+修饰符：颜色修饰符。
+
+可插值：是。
+
+在摄像机的位置解析。
+
+替代了生物群系属性effects.fog_color。
+
+minecraft:visual/extra_fog：是否使用浓雾，例如下界的雾，仅在摄像机没有浸入某些物质时有效。
+值类型：布尔值。
+
+默认值：false。
+
+修饰符：布尔修饰符。
+
+可插值：否。
+
+在摄像机的位置解析。
+
+minecraft:visual/water_fog_color：水下迷雾的颜色。注意：雾的颜色也会受到一天中的时间、天气和药水效果影响。
+值类型：RGB颜色。
+
+默认值：#050533。
+
+修饰符：颜色修饰符。
+
+可插值：是。
+
+在摄像机的位置解析。
+
+替代了生物群系属性effects.water_fog_color。
+
+minecraft:visual/water_fog_radius：水下迷雾的最大距离，以方块为单位。注意：最终值会随着玩家在水下的时间更改。
+值类型：非负浮点数。
+
+默认值：96.0。
+
+修饰符：浮点修饰符。
+
+可插值：是。
+
+在摄像机的位置解析。
+
+替代了生物群系标签#has_closer_water_fog。
+
+minecraft:visual/sky_color：天空颜色，仅在主世界可见。注意：最终值会受到一天中的时间和天气影响。
+值类型：RGB颜色。
+
+默认值：#000000。
+
+修饰符：颜色修饰符。
+
+可插值：是。
+
+在摄像机的位置解析。
+
+替代了生物群系属性effects.sky_color。
+
+minecraft:visual/cloud_opacity：云层不透明度，设置为0时将完全禁用云，且快乐恶魂不再在云层高度恢复生命。
+值类型：浮点数，0至1之间。
+
+默认值：0.0。
+
+修饰符：浮点修饰符。
+
+可插值：是。
+
+在摄像机的位置或在快乐恶魂恢复生命的位置渲染。
+
+minecraft:visual/cloud_height：云层高度。
+值类型：浮点数。
+
+默认值：192.33。
+
+修饰符：浮点修饰符。
+
+可插值：是。
+
+在摄像机的位置或在快乐恶魂恢复生命的位置渲染。
+
+替代了维度类型属性cloud_height。
+
+minecraft:visual/default_dripstone_particle：滴水石锥在上方没有液体时滴落的粒子。
+值类型：粒子。
+
+默认值：{type："minecraft：dripping_dripstone_water"}。
+
+修饰符：override。
+
+可插值：否。
+
+在滴水石锥的位置解析。
+
+替代了维度类型属性ultrawarm。
+
+minecraft:visual/ambient_particles：在摄像机周围生成的随机粒子。
+值类型：一个对象的列表。此对象的格式为：
+particle：粒子。
+
+probability：粒子生成的概率。
+
+默认值：[]。
+
+修饰符：override。
+
+可插值：否。
+
+在摄像机的位置解析。
+
+替代了生物群系属性effects.particle。
+
+minecraft:audio/background_music：控制背景音乐的播放方式和背景音乐。
+值类型：一个对象，包含3个可选的名称-对象映射。
+可用名称如下：
+default：默认音乐，格式如下：
+music：要播放的声音事件。
+
+min_delay：两次播放音乐之间的最小间隔。
+
+max_delay：两次播放音乐之间的最大间隔。
+
+replace_current_music：是否立刻替换当前播放的音乐。
+
+如果未定义，则不会播放音乐。
+
+underwater：如果存在且玩家在水下，则覆盖默认音乐。格式与default相同。
+
+creative：如果存在且玩家处于创造模式，则覆盖默认音乐。格式与default相同。
+
+默认值：{}。
+
+修饰符：override。
+
+可插值：否。
+
+在摄像机的位置解析。
+
+替代了生物群系属性effects.music。
+
+minecraft:audio/music_volume：背景音乐的音量，任何音乐的音量都将逐渐到达此值。
+值类型：浮点数，0至1之间。
+
+默认值：1.0，
+
+修饰符：浮点修饰符。
+
+可插值：否。
+
+在摄像机的位置解析。
+
+替代了生物群系属性effects.music_volume。
+
+minecraft:audio/ambient_sounds：控制摄像机周围的环境音乐。
+值类型：一个对象，包含3个名称 - 对象映射。
+loop：可选的声音事件，要循环播放的声音。
+
+mood：根据周围的黑暗随机播放声音。
+sound：要播放的声音事件。
+
+tick_delay：氛围音效的间隔，假设光照等级为0。
+
+block_search_extent：采样光照的半径。
+
+offset：应用于播放声音的距离偏移。
+
+additions：一个列表，表示附加音效。列表内的每个对象的格式如下：
+sound：要播放的声音事件。
+
+tick_chance：播放声音的概率，取值为0至1。
+
+默认值：{}。
+
+修饰符：override。
+
+可插值：否。
+
+在摄像机的位置解析。
+
+替代了生物群系属性effects.ambient_sound、effects.mood_sound和effects.additions_sound。
+
+minecraft:gameplay/can_start_raid：如果为false，则带有不祥之兆的玩家无法触发袭击。
+值类型：布尔值。
+
+默认值：true。
+
+修饰符：布尔修饰符。
+
+可插值：否。
+
+在袭击将要开始的位置解析。
+
+替代了维度类型属性has_raids。
+
+minecraft:gameplay/water_evaporates：如果为true，则水桶不能放置水，融化的冰不能放置水，湿海绵在放置时变干，滴水石锥不会将泥巴转化。
+值类型：布尔值。
+
+默认值：false。
+
+修饰符：布尔修饰符。
+
+可插值：否。
+
+在对应的位置解析。
+
+替代了维度类型属性ultrawarm。
+
+minecraft:gameplay/bed_rule：控制床是否能用来睡觉，以及床是否能用来设置出生点。
+值类型：一个对象。
+can_sleep：取值见下。
+always：床总是可以睡觉，假定床没有被阻挡且附近没有怪物。
+
+when_dark：床只在全局天空光照小于4时才可以睡觉。
+
+never：床永远不可以睡觉。
+
+can_set_spawn：取值及意义与can_sleep相似。
+
+explodes：床是否会爆炸，默认为false。
+
+error_message：文本组件，显示玩家无法睡眠或设置重生点的消息。
+
+默认值：{type: "can_sleep_when_dark", error_message: {translate: "block.minecraft.bed.no_sleep"}}。
+
+修饰符：override。
+
+可插值：否。
+
+在床头位置解析。
+
+替代了维度类型属性bed_works。
+
+minecraft:gameplay/respawn_anchor_works：控制是否能使用重生锚，如果不能使用则会爆炸。
+值类型：布尔值。
+
+默认值：false。
+
+修饰符：布尔修饰符。
+
+可插值：否。
+
+在重生锚的位置解析。
+
+替代了维度类型属性respawn_anchor_works。
+
+minecraft:gameplay/nether_portal_spawns_piglin：控制下界传送门方块是否可生成屍化豕靈。
+值类型：布尔值。
+
+默认值：false。
+
+修饰符：布尔修饰符。
+
+可插值：否。
+
+在下界传送门方块的位置解析。
+
+替代了维度类型属性natural。
+
+minecraft:gameplay/fast_lava：控制熔岩是否流动得更快、更远，对实体具有更大的推动力。
+值类型：布尔值。
+
+默认值：false。
+
+修饰符：布尔修饰符。
+
+可插值：否。
+
+在整个维度内进行解析，单个生物群系位置无效。
+
+替代了维度类型属性ultrawarm。
+
+minecraft:gameplay/increased_fire_burnout：控制火是否燃烧得更快。
+值类型：布尔值。
+
+默认值：false。
+
+修饰符：布尔修饰符。
+
+可插值：否。
+
+在火的位置解析。
+
+替代了生物群系标签#increased_fire_burnout。
+
+minecraft:gameplay/piglins_zombify：控制猪灵和疣猪兽是否屍化。
+值类型：布尔值。
+
+默认值：true。
+
+修饰符：布尔修饰符。
+
+可插值：否。
+
+在对应实体的位置解析。
+
+替代了维度类型属性piglin_safe。
+
+minecraft:gameplay/snow_golem_melts：控制雪傀儡是否受伤。
+值类型：布尔值。
+
+默认值：false。
+
+修饰符：布尔修饰符。
+
+可插值：否。
+
+在雪傀儡的位置解析。
+
+替代了生態域标签#snow_golem_melts。
+
+改
+
+生靈
+
+屍馬
+
+今未御者，得繫於韁。
+
+不復弭於和世。
+
+骷髏馬
+
+黜嚮版之所更。
+
+（屍化）鸚鵡螺
+
+今得馭諸旱地。
+
+戲事
+
+淬靈
+
+揕、繕二靈，不復相斥。
+
+進程
+
+「[[進程#advancements-anchor-nether.distract_piglin|文種（參“2”）謬！]]」之功，今擲金鸚鵡螺甲亦成。
+
+霧
+
+今水霧渾和於南北天色。
+
+令之範式
+
+/stopwatch
+
+易<id>之數，今序/stopwatch create foo:bar，不序/stopwatch foo:bar create。
+
+今query之支，受scale之數。
+所出乘此爲率。
+
+譬如stopwatch query foo:bar 20，則持秒而綱刻。
+
+餘者
+
+令之所擬，名宇咸及，非獨minecraft而已。
+
+常
+
+錄囊
+
+晉錄囊於90.0。
+
+資囊
+
+晉錄囊於70.1。
+
+维度类型
+
+加入了attributes字段，以指定环境属性。
+
+下列字段的作用已移动到环境属性：
+ultrawarm -> minecraft:gameplay/water_evaporates、minecraft:gameplay/fast_lava、visual/default_dripstone_particle
+
+bed_works -> minecraft:gameplay/bed_rule
+
+respawn_anchor_works -> minecraft:gameplay/respawn_anchor_works
+
+cloud_height -> minecraft:visual/cloud_height
+
+piglin_safe -> minecraft:gameplay/piglins_zombify
+
+has_raids -> minecraft:gameplay/can_start_raid
+
+natural（未移除） -> minecraft:gameplay/nether_portal_spawns_piglin
+
+生物群系定义格式
+
+加入了attributes字段，以指定环境属性。
+
+注意：一些环境属性必须依靠维度解析，不能在生物群系中指定。
+
+effects中下列字段的作用已移动到环境属性：
+fog_color -> minecraft:visual/fog_color
+
+water_fog_color -> minecraft:visual/water_fog_color
+
+sky_color -> minecraft:visual/sky_color
+
+particle -> minecraft:visual/ambient_particles
+
+ambient_sound、mood_sound、additions_sound -> minecraft:audio/ambient_sounds
+
+music -> minecraft:audio/background_music
+
+music_volume -> minecraft:audio/music_volume
+
+錄件
+
+kinetic_weapon：
+加入了新字段：contact_cooldown_ticks，表示击中后的冷却时间，在能够再次击中实体之前无法与实体互动，默认为10。
+
+籤
+
+除生態域之籤如左：
+#snow_golem_melts，代以gameplay/snow_golem_melts。
+
+#increased_fire_burnout，代以gameplay/increased_fire_burnout。
+
+#plays_underwater_music ，代以audio/background_music之only_underwater。
+
+#has_closer_water_fog，代以visual/water_fog_radius。
+
+增金鸚鵡螺甲於#piglin_loved之籤。
+
+補
+
+修疏漏三十七
+
+先之謬
+
+MC-263562 — 領域備幕，或無以譯。
+
+一點二一點六之疏漏
+
+MC-298405 — 对话框中输入控件label中的文本组件不支持hover_event。
+
+一點二一點八之疏漏
+
+MC-299876 — 对话框中布尔值的标签呈现的白色与正常白色略有不同。
+
+一點二一點九之疏漏
+
+MC-301271 — 对象文本组件在某些地方不会渲染，除非同一行上有文本字形。
+
+MC-301518 — 鼠标悬停在复选框上时，鼠标光标不会变成手形。
+
+MC-301520 — 鼠标悬停在难度锁定按钮上时，鼠标光标不会变成手形。
+
+MC-301557 — 铜箱子和大型铜箱子上的螺栓的阴影方向不一致。
+
+MC-301879 — 与其他氧化变种相比，大型锈蚀和涂蜡的锈蚀铜箱子底部纹理看起来不正确。
+
+MC-302071 — 铜箱子和大型铜箱子的侧面纹理不一致。
+
+MC-302246 — 受组件树影响，Sprite对象组件不会在服务器列表渲染。
+
+MC-302409 — 击中涂蜡的避雷针的闪电不会减轻附近未涂蜡铜块的氧化程度。
+
+先槧之謬
+
+MC-302656 — 骷髅马会在阳光下燃烧。
+
+MC-302657 — subtitles.entity.nautilus.eat字符串将“Nautilus”误拼写为“Nauilus”。
+
+MC-302664 — 猪灵不会被金鹦鹉螺铠吸引。
+
+MC-302672 — 加载玩家带有状态效果的世界时出现“无效的玩家数据”错误。
+
+MC-302680 — 僵尸马和僵尸鹦鹉螺无法在和平难度下生成。
+
+MC-302683 — 权限级别为0的命令会弹出“确认执行命令”对话框。
+
+MC-302729 — 高炉无法烧炼鹦鹉螺铠。
+
+MC-302732 — 使用副手的矛进行Charge攻击会应用主手所持物品的魔咒效果。
+
+MC-302743 — 重复使用矛时每10刻进行一次Charge攻击。
+
+MC-302767 — 在旁观模式下手持矛进行戳刺攻击会播放戳刺的音效。
+
+MC-302783 — 幼年鹦鹉螺食用#minecraft:nautilus_taming_item而非#minecraft:nautilus_food。
+
+MC-302802 — 原地不动时，使用矛进行Charge攻击会破坏物品展示框。
+
+MC-302813 — 僵尸猪灵在愤怒时不再冲刺或发出愤怒的声音。
+
+MC-302816 — 将NBT转换为SNBT时，程序完成后会等待1分钟。
+
+MC-302817 — 带有火焰附加的矛即使攻击被格挡也能点燃目标。
+
+MC-302818 — 僵尸骑手偶尔会手持铁矛以外的东西。
+
+MC-302827 — 矛的戳刺攻击可以穿墙。
+
+MC-302834 — 狼愤怒时眼睛不会变红。
+
+MC-302838 — 同时使用带有耐久和高等级突进的矛会严重降低TPS。
+
+MC-302842 — 鹦鹉螺和僵尸鹦鹉螺永远不会消失。
+
+MC-302920 — “记分板玩家显示”设置有时会在世界加载时重置。
+
+MC-302924 — 玩家不再能被邀请加入Realm。
+
+MC-302984 — 用副手持矛攻击一个实体时，矛的攻击伤害会附加到该次攻击中。
+
+MC-302988 — 蜜蜂不再对生物敌对。
+
+MC-303083 — 在资源/数据包选择屏幕中搜索无法正确滚动到结果。
+
+MC-303089 — 3级管理员无法使用客户端管理员功能。
+
+二五週四五甲
+
+二五週四五甲（25w45a）者，爪哇版一點二一點一一之戊快照也，廣佈於乙巳年九月十五日，增馬甲之玄鈺者、屍化鸚鵡螺之㬉者，並補疏漏焉。
+
+亦有涇渭之版，自謂25w45a Unobfuscated（啟者謂之25w45a_unobfuscated），以期來版辟交映之淆。
+
+新者
+
+物
+
+马铠
+
+加入了下界合金马铠，可在锻造台中通过升级钻石马铠获得。
+提供19（ × 9.5）盔甲和3盔甲強度。
+
+生靈
+
+僵尸鹦鹉螺
+
+加入了新变种珊瑚僵尸鹦鹉螺，会在暖水海洋中代替普通变种生成。
+
+戲事
+
+进度
+
+加入了1个新进度。
+[[进度#advancements-anchor-adventure.spear_many_mobs|文種（參“2”）謬！]]
+使用矛的冲锋攻击连续击中5个生物达成。
+
+常
+
+纹理图集
+
+拆分了blocks，新增物品纹理图集items，此纹理图集不会受到MipMap影响。
+物品模型的纹理必须来自同一个纹理图集。（blocks或items）
+
+方块模型的纹理必须来自blocks纹理图集。
+
+进度定义格式
+
+加入了spear_mobs触发器。
+当玩家使用任意物品进行Charge攻击时触发。
+
+条件如下：
+count：单次攻击的最少受击生物数量。
+
+player：进行攻击的玩家。
+
+标签
+
+加入了生物群系标签：
+#spawns_coral_variant_zombie_nautilus：珊瑚僵尸鹦鹉螺可以生成的生物群系。
+
+加入了时间线标签：
+#universal：在所有原版维度活动的时间线。
+
+#in_overworld：在主世界活动的时间线。
+
+#in_nether：在下界活动的时间线。
+
+#in_end：在末地活动的时间线。
+
+数据组件
+
+加入了zombie_nautilus/variant组件。
+
+僵尸鹦鹉螺变种定义格式
+
+现在僵尸鹦鹉螺变种是数据驱动的，由文件data/<namespace>/zombie_nautilus_variant/<id>.json控制。
+
+此功能是实验性的。
+
+格式：
+model：normal或warm。
+
+asset_id：变种的纹理命名空间ID，将解析为assets/<namespace>/textures/<path>.png。
+
+spawn_conditions：通用变种选择器。
+
+时间线定义格式
+
+时间线是新的实验性功能，定义在注册表timeline下。
+
+时间线根据绝对游戏日时间（/time set）来影响游戏行为，且可以指定其周期运行的时间段。
+
+首先，时间线可以作为环境属性源或套用修饰符以修改游戏玩法或视觉效果。
+period_ticks：可选的整数，定义时间线循环的周期，单位为刻。
+如果不存在，此时间线不可循环。
+
+tracks：环境属性ID与环境属性轨迹的映射，可选。
+
+时间线默认没有任何效果，除非在维度类型中定义。
+
+维度存在时间线时，环境属性源的优先级从低到高依次为：
+维度
+
+生物群系
+
+时间线
+
+天气（非数据驱动）
+
+插值
+时间线可以定义属性轨迹，通过定义关键帧来指定特定环境属性的修饰符如何随时间变化。环境属性若可插值，则可以随属性在每个关键帧中插值，但如果不能插值，则始终为上一个关键帧的值。
+
+例如，周期为24000刻的时间线若按如下方式设置：
+时间为0时，sky_color为#FF0000（红色）。
+
+时间为1000时，sky_color为#FF0000（红色）。
+
+时间为6000时，sky_color为#FF00FF（品红色）。
+
+在时间为0至1000时，天空始终为红色。在1000至6000时，天空将从红色变为品红色。然后从6000一直到下一个0时，颜色将慢慢变为红色。
+
+与生物群系不同，如果时间线使用修饰符而不是覆盖，则插值将套用于修饰符参数，而不是将要修改的输入值。
+
+属性轨迹
+时间线中的属性轨迹采用以下对象格式：
+ease：缓动类型，用于平滑处理关键帧之间的插值。
+默认为linear。
+
+如果环境属性不可插值，此字段无效。
+
+keyframes：一个关键帧的，必须按顺序指定。
+ticks：一个0至period_ticks（若有）的整数，关键帧的活动时间。
+
+value：修饰符要用于计算的值。
+如果没有指定修饰符或修饰符为override，则格式与环境属性相同，否则取决于修饰符。
+
+同一刻内最多可接受两个关键帧，效果为立刻变换。
+
+modifier：修饰符，默认为override。
+
+例如，以下时间线周期为24000刻，属性轨迹仅修改了 minecraft:gameplay/cat_waking_up_gift_chance。因为缓动类型为常量，因此362至23667刻时修饰符参数取值为0.0，23667至362刻时为0.7：
+{
+"period_ticks": 24000,
+"tracks": {
+"minecraft:gameplay/cat_waking_up_gift_chance": {
+"ease": "constant",
+"modifier": "maximum",
+"keyframes": [
+{ "ticks": 362, "value": 0.0 },
+{ "ticks": 23667, "value": 0.7 }
+]
+}
+}
+}
+
+与其他环境属性源一样，指定的值将用作修饰符的参数，然后按顺序依次套用。在此例子中，修饰符为maximun，因此此时间线只会将属性轨迹gameplay/cat_waking_up_gift_chance增加到指定的值。
+
+缓动类型
+缓动类型通过曲线来控制关键帧之间的插值，内置的缓动类型如下：
+constant：始终选择上一帧的值。
+
+linear
+
+in_back
+
+in_bounce
+
+in_circ
+
+in_cubic
+
+in_elastic
+
+in_expo
+
+in_quad
+
+in_quart
+
+in_quint
+
+in_sine
+
+in_out_back
+
+in_out_bounce
+
+in_out_circ
+
+in_out_cubic
+
+in_out_elastic
+
+in_out_expo
+
+in_out_quad
+
+in_out_quart
+
+in_out_quint
+
+in_out_sine
+
+out_back
+
+out_bounce
+
+out_circ
+
+out_cubic
+
+out_elastic
+
+out_expo
+
+out_quad
+
+out_quart
+
+out_quint
+
+out_sine
+
+缓动类型也可以指定一个[[wzh:贝塞尔曲线|三次]]：{"cubic_bezier": [x1, y1, x2, y2]}。
+x1：0至1的浮点数，第一控制点的X坐标。
+
+y1：0至1的浮点数，第一控制点的Y坐标。
+
+x2：浮点数，第二控制点的X坐标。
+
+y2：浮点数，第二控制点的Y坐标。
+
+详情可参见easing.net和cubic-bezier.com
+
+环境属性
+
+通用数据类型
+生物活动，来自minecraft:activity固有注册表的字符串，包括：
+minecraft:core
+
+minecraft:idle
+
+minecraft:work
+
+minecraft:play
+
+minecraft:rest
+
+minecraft:meet
+
+minecraft:panic
+
+minecraft:raid
+
+minecraft:pre_raid
+
+minecraft:hide
+
+minecraft:fight
+
+minecraft:celebrate
+
+minecraft:admire_item
+
+minecraft:avoid
+
+minecraft:ride
+
+minecraft:play_dead
+
+minecraft:long_jump
+
+minecraft:ram
+
+minecraft:tongue
+
+minecraft:swim
+
+minecraft:lay_spawn
+
+minecraft:sniff
+
+minecraft:investigate
+
+minecraft:roar
+
+minecraft:emerge
+
+minecraft:dig
+
+新修饰符
+blend_to_gray：RGB/ARGB修饰符，通过采用灰度形式、套用亮度修改器并使用某些因子与其混合。
+
+其中，gray = brightness * (0.3 * red + 0.59 * green + 0.11 * blue)，而result = lerp(factor, subject, [gray, gray, gray])。
+
+参数：
+brightness：0至1的浮点数，套用到灰度值的倍率。
+
+factor：0至1的浮点数，计算使用的因子。
+
+新环境属性
+minecraft:visual/sunrise_sunset_color：控制日出和日落时的颜色和强度。如果完全透明，则不会渲染，仅在overworld天空盒下有作用。
+值类型：ARGB颜色
+
+默认值：#000000
+
+修饰符：ARGB修饰符
+
+可插值：是
+
+在摄像机的位置解析
+
+minecraft:visual/sun_angle：太阳的角度，从东到西顺时针，为0时太阳在正上方，仅在overworld天空盒下有作用。
+值类型：浮点数，单位为角度。
+
+默认值：0
+
+修饰符：浮点修饰符
+
+可插值：是
+
+在摄像机的位置解析
+
+minecraft:visual/moon_angle：月亮的角度，从东到西顺时针，为0时月亮在正上方，仅在overworld天空盒下有作用。
+值类型：浮点数，单位为角度。
+
+默认值：0
+
+修饰符：浮点修饰符
+
+可插值：是
+
+在摄像机的位置解析
+
+minecraft:visual/star_angle：星星的角度，从东到西顺时针，为0时星星在正上方，仅在overworld天空盒下有作用。
+值类型：浮点数，单位为角度。
+
+默认值：0
+
+修饰符：浮点修饰符
+
+可插值：是
+
+在摄像机的位置解析
+
+minecraft:visual/moon_phase：月相，仅在overworld天空盒下有作用。
+值类型：字符串枚举。
+full_moon
+
+waning_gibbous
+
+third_quarter
+
+waning_crescent
+
+new_moon
+
+waxing_crescent
+
+first_quarter
+
+waxing_gibbous
+
+默认值：full_moon
+
+修饰符：override
+
+可插值：否
+
+在摄像机的位置解析
+
+minecraft:visual/star_brightness：星星的亮度，0.5为常规夜晚，0为完全隐藏，仅在overworld天空盒下有作用。
+值类型：浮点数，取值为0至1
+
+默认值：0.0
+
+修饰符：浮点修饰符
+
+可插值：是
+
+在摄像机的位置解析
+
+minecraft:visual/sky_light_color：天空光照的视觉颜色，若方块天空光为0或minecraft:visual/sky_light_factor为0时则没有任何效果，这也是着色器lightmap.fsh的参数SkyLightColor。
+值类型：RGB颜色
+
+默认值：#FFFFFF
+
+修饰符：RGB修饰符
+
+可插值：是
+
+在摄像机的位置解析
+
+minecraft:visual/sky_light_factor：天空光照的视觉亮度，minecraft:visual/sky_light_color将乘上此值，这也是着色器lightmap.fsh的参数SkyFactor。而相应的游戏效果由minecraft：gameplay/sky_light_level控制。
+值类型：浮点数
+
+默认值：1.0
+
+修饰符：浮点修饰符
+
+可插值：是
+
+在摄像机的位置解析
+
+minecraft:audio/firefly_bush_sounds：如果为true且萤火虫灌木丛位于除树叶以外的露天位置下，则萤火虫灌木丛会发出环境音效。
+值类型：布尔值
+
+默认值：false
+
+修饰符：布尔修饰符
+
+可插值：否
+
+在萤火虫灌木丛的位置解析
+
+minecraft:gameplay/sky_light_level： 生物生成和阳光探测器等使用的天空光照强度。即完全露天的方块的天空光照将恰好为此值，而洞穴深处的方块不受影响。天空光照的视觉效果现在由minecraft:visual/sky_light_factor控制。
+值类型：浮点数
+
+默认值：15.0
+
+修饰符：浮点修饰符
+
+可插值：是
+
+在整个维度解析
+
+minecraft:gameplay/eyeblossom_open：眼眸花的行为。
+值类型：字符串枚举。
+open：闭合的眼眸花会转化为张开的眼眸花。
+
+close：张开的眼眸花会转化为闭合的眼眸花。
+
+default：眼眸花的状态不会改变
+
+默认值：default
+
+修饰符：override
+
+可插值：否
+
+在眼眸花的位置解析
+
+minecraft:gameplay/turtle_egg_hatch_chance：海龟蛋接收随机刻时进入下一个孵化阶段的概率
+值类型：浮点数，取值为0至1
+
+默认值：0.0
+
+修饰符：浮点修饰符
+
+可插值：是
+
+在海龟蛋的位置解析
+
+minecraft:gameplay/creaking_active：为true时，嘎枝之心进入激活状态并生成嘎枝；为false时，嘎枝之心进入休眠状态。
+值类型：布尔值
+
+默认值：false
+
+修饰符：布尔修饰符
+
+可插值：否
+
+在嘎枝之心的位置解析
+
+minecraft:gameplay/surface_slime_spawn_chance：当属于#allows_surface_slime_spawns标签的生物群系尝试生成史莱姆时，地表区域生成史莱姆的概率。
+值类型：浮点数，取值为0至1
+
+默认值：0.0
+
+修饰符：浮点修饰符
+
+可插值：是
+
+在尝试生成史莱姆的位置解析
+
+minecraft:gameplay/cat_waking_up_gift_chance：当玩家醒来时，驯服的猫给玩家礼物的概率，礼物从gameplay/cat_morning_gift中抽取。
+值类型：浮点数，取值为0至1
+
+默认值：0.0
+
+修饰符：浮点修饰符
+
+可插值：是
+
+在猫的位置解析
+
+minecraft:gameplay/bees_stay_in_hive：为true时，蜜蜂会主动归巢且不会离巢，除非蜂巢被破坏或者着火。
+值类型：布尔值
+
+默认值：false
+
+修饰符：布尔修饰符
+
+可插值：否
+
+在蜜蜂和蜂巢的位置解析
+
+minecraft:gameplay/monsters_burn：为true时，怪物可以燃烧。
+值类型：布尔值
+
+默认值：false
+
+修饰符：布尔修饰符
+
+可插值：否
+
+在怪物的位置解析
+
+minecraft:gameplay/can_pillager_patrol_spawn：为true时，可以生成灾厄巡逻队。注意：全局天空光照必须大于11。
+值类型：布尔值
+
+默认值：false
+
+修饰符：布尔修饰符
+
+可插值：否
+
+在灾厄巡逻队尝试生成的位置解析
+
+替代了生物群系标签#without_patrol_spawns
+
+minecraft:gameplay/villager_activity：成年村民的默认AI活动。如果指定的活动不受村民支持，则村民不会活动。
+值类型：生物活动，且只有下列活动有实际意义：
+core
+
+hide
+
+idle
+
+meet
+
+panic
+
+pre_raid
+
+raid
+
+rest
+
+work
+
+默认值：minecraft:idle
+
+修饰符：override
+
+可插值：否
+
+在村民的位置解析
+
+minecraft:gameplay/baby_villager_activity：幼年村民的默认AI活动。如果指定的活动不受幼年村民支持，则幼年村民不会活动。
+值类型：生物活动，且只有下列活动有实际意义：
+core
+
+hide
+
+idle
+
+meet
+
+panic
+
+play
+
+pre_raid
+
+raid
+
+rest
+
+默认值：minecraft:idle
+
+修饰符：override
+
+可插值：否
+
+在村民的位置解析
+
+改
+
+物
+
+矛
+
+调整了第一人称视角下，玩家左手持矛进行冲锋攻击时矛的位置，以与右手保持对称。
+
+现在矛进行Charge攻击时更不容易命中实体。
+将矛Charge攻击时使用的攻击判定箱更改为实体碰撞箱再拓展0.125格，此前为0.25格。
+
+生靈
+
+骆驼尸壳
+
+现在在掉落2至3个腐肉的基础上，抢夺魔咒每增加1级，掉落数量上限增加1。
+
+现在在与玩家有任何交互之后都不再消失，而不仅仅是在被玩家骑乘后。
+
+僵尸马和鹦鹉螺
+
+现在在与玩家有任何交互之后都不再消失，而不仅仅是在被玩家骑乘后。
+
+戲事
+
+太阳
+
+现在日出和日落时的天空颜色会受到天气影响。
+
+常
+
+数据包
+
+将数据包版本号更改为93.0。
+
+资源包
+
+将资源包版本号更改为73.0。
+
+全景图
+
+更新了主菜单全景图以匹配群骑纷争。
+
+游戏规则
+
+将max_entity_cramming的下限由1改为0。
+
+数据组件
+
+minecraft:piercing_weapon和minecraft:kinetic_weapon组件的部分参数现在拥有值域限制：
+min_reach：0.0至128.0
+
+max_reach：0.0至128.0
+
+hitbox_margin：0.0至1.0
+
+维度类型
+
+加入了timelines字段以指定本维度活动的时间线。
+格式：时间线ID、时间线ID的数组或时间线标签。
+
+移除了natural，其剩余功能被minecraft:gameplay/eyeblossom_open和minecraft:gameplay/creaking_active取代。
+
+移除了effects，其功能由下列字段代替：
+skybox：渲染天空的天空盒。取值可以为：
+none（曾为minecraft:nether）
+
+overworld（曾为minecraft:overworld）
+下列环境属性仅在此天空盒下有实际作用：
+minecraft:visual/sky_color
+
+minecraft:visual/sun_angle
+
+minecraft:visual/sunrise_sunset_color
+
+minecraft:visual/moon_phase
+
+minecraft:visual/moon_angle
+
+minecraft:visual/star_angle
+
+minecraft:visual/star_brightnes
+
+end（曾为minecraft:end）
+
+默认为overworld。
+
+cardinal_light：方块光照类型，取值可以为：
+default（曾为minecraft:overworld和minecraft:end）
+
+nether（曾为minecraft:nether）
+
+默认为default。
+
+fixed_time被重置为has_fixed_time，新字段为布尔值，默认为false。
+原来的基于时间的效果现在由环境属性指定。
+
+原来的不由时间控制的效果现在由has_fixed_time决定。
+
+标签
+
+移除了生物群系标签#without_patrol_spawns，其功能被环境属性gameplay/can_pillager_patrol_spawn取代。
+
+性能
+
+减小了各向异性过滤选项对显存的影响，但需要的显存仍然较大。
+
+補
+
+修疏漏四十五
+
+先之謬
+
+MC-199467 — 某些实体的动画在世界中存在太长时间后停止。
+
+MC-245895 — 使用鞘翅长时间滑翔后，停止工作。
+
+MC-269295 — 跳跃蓄力栏渲染了动态纹理图集中未使用的像素。
+
+MC-271729 — mob_drops游戏规则不影响犰狳鳞甲的掉落。
+
+MC-271938 — 重锤的下落攻击可以推动飞行的创造模式玩家。
+
+MC-301424 — 资源包中的entity_data组件检测损坏。
+
+MC-302184 — 铜傀儡在洞穴空气和虚空空气中不会转为铜傀儡像。
+
+MC-302469 — 爆炸半径为0的苦力怕在玩家所在位置爆炸会将玩家的速度设置为NaN。
+
+MC-302477 — 战利品表不再支持SNBT作为实体数据。
+
+槧之謬
+
+MC-302659 — mipmap等级启用时，草方块和仙人掌等方块在物品栏中的纹理不正确。
+
+MC-302663 — 攻击非玩家实体总是播放“轻击”音效而不是合适的音效。
+
+MC-302703 — 矛可以使任何载具上的不能受到伤害的实体或非生物实体停止骑乘。
+
+MC-302887 — 在第一人称视角下，矛在主手和副手的冲锋动画没有完美对称。
+
+MC-302911 — 如果无法加载太阳的纹理，会以月亮的纹理替代。
+
+MC-303067 — 玩家死亡时仍然能用矛冲锋并造成伤害。
+
+MC-303108 — 现在物品栏中的物品会被mipmap，使得它们看起来非常模糊。
+
+MC-303109 — piercing_weapon组件的攻击距离过长会导致刻停止执行和内存显著增加。
+
+MC-303226 — 离开苍白之园后，音乐不会重新开始播放。
+
+MC-303292 — 世界的游戏时间值较大时，云的移动存在抖动。
+
+MC-303402 — 在聊天中发送的文本中的悬停事件即使在GUI中也会生效。
+
+MC-303405 — 可以用矛从对角线方向穿过固体方块之间的夹角攻击实体。
+
+MC-303413 — 滚动的文本在UI元素中不会被正确遮挡。
+
+MC-303427 — 如果饥饿值小于等于6，突进魔咒无法在创造模式中使用。
+
+MC-303510 — 使用矛进行冲锋攻击时丢掉矛会减慢玩家速度。
+
+MC-303554 — piercing_weapon组件会导致攻击冷却被忽略。
+
+先槧之謬
+
+MC-303654 — 焦骸的字幕显示为流浪者的。
+
+MC-303656 — 在已加载区块中的空的子区块中放置方块会出现区块淡入效果。
+
+MC-303658 — 在某些系统上，方块纹理会变模糊，取决于mipmap和各向异性过滤设置。
+
+MC-303659 — 使用Tab ↹键不能按顺序选中语言菜单中的元素。
+
+MC-303671 — 装备鞍的骆驼尸壳会消失。
+
+MC-303674 — 手持拴绳右键被骑乘的骆驼尸壳或僵尸马会播放动画。
+
+MC-303677 — 被拴绳拴住的骆驼尸壳会消失。
+
+MC-303680 — 被拴绳拴住的未驯服的僵尸马会消失。
+
+MC-303681 — 被拴绳拴住的未驯服的僵尸鹦鹉螺会消失。
+
+MC-303703 — 实体和方块实体不受区块淡入效果影响。
+
+MC-303704 — 如果将要保存的文件夹不存在，则不再会保存统计信息。
+
+MC-303705 — 实体挤压不再能被禁用。
+
+MC-303714 — 跳跃蓄力栏进度的精灵图没有正确缩放。
+
+MC-303727 — 较短的效果名称会导致效果持续时间显示在效果框外面。
+
+MC-303734 — deprecated.json将翻译键重命名为了不存在的键。
+
+MC-303744 — 末影珍珠可以把玩家朝着它们被投掷的方向发射出去。
+
+MC-303746 — 矛的攻击可以穿过门伤害实体。
+
+MC-303799 — 选择世界菜单的搜索框中没有“”文本。
+
+MC-303802 — 通过连续按下右键和⇧ Shift键来上船会增加移动速度。
+
+MC-303891 — 未驯服的僵尸马和骷髅马无法使用/item在它们的鞍槽中装备鞍。
+
+二五週四六甲
+
+二五週四六甲（25w46a）者，爪哇版一點二一點一一之己末快照也，廣佈於乙巳年九月廿二日，補疏漏焉。
+
+亦有涇渭之版，自謂25w46a Unobfuscated（啟者謂之25w46a_unobfuscated），以期來版辟涇渭之淆。
+
+新者
+
+生靈
+
+鹦鹉螺和僵尸鹦鹉螺
+
+加入了冲撞攻击的音效。
+
+戲事
+
+物品栏
+
+为鹦鹉螺和僵尸鹦鹉螺加入了物品栏界面。
+
+常
+
+闪烁标语
+
+加入了以下闪烁标语：
+One does not simply walk to the Far Lands
+
+战利品表
+
+重新加入了战利品抽取项dynamic的接受值contents，以部分回退25w44a的更改。
+
+选项
+
+给“”加入了新选项，可以只在暂停菜单显示音乐弹窗。
+
+声音事件
+
+加入了entity.zombie_horse.eat。
+
+改
+
+物
+
+矛
+
+现在不再会产生“物品互动结束”类型的振动。
+
+马铠
+
+更改了下界合金马铠的實體纹理，以同步基石版。
+
+现在物品實體形式的下界合金马铠不再能被火或熔岩烧毁。
+
+生靈
+
+焦骸
+
+现在免疫虚弱效果。
+
+更改了腿部模型UV映射。
+
+马、驴、骡、骆驼、僵尸马和骆驼尸壳
+
+被生物控制时不再能进入惊慌状态。
+
+戲事
+
+创造模式物品栏
+
+现在创造模式物品栏中的刷怪蛋根据下面的分类顺序进行排列：
+主世界
+农场动物
+
+坐骑
+
+宠物
+
+野生动物
+
+水生生物
+
+杂项
+
+傀儡
+
+村民
+
+亡灵生物
+
+蜘蛛
+
+怪物
+
+灾厄村民
+
+下界
+
+末地
+
+常
+
+数据包
+
+将数据包版本号更改为93.1。
+
+资源包
+
+将资源包版本号更改为74.0。
+
+数据组件
+
+为以下物品添加了食物属性：
+minecraft:cod_bucket
+
+minecraft:salmon_bucket
+
+minecraft:pufferfish_bucket
+
+minecraft:tropical_fish_bucket
+
+minecraft:use_effects
+加入了新字段interact_vibrations：使用该物品时是否触发minecraft:item_interact_start和minecraft:item_interact_finish游戏事件。默认为true。
+
+战利品表
+
+minecraft:dynamic：回退25w44a的更改以重新加入了动态抽取项来源contents。
+
+纹理
+
+静止的水和熔岩的纹理现在硬编码为minecraft:block/water_still和minecraft:block/lava_still。
+
+信标不再支持半透明的纹理。
+
+现在多个纹理图集引用同一张精灵图时，游戏将输出警告信息。
+
+添加了container/slot/nautilus_armor_inventory。
+用于鹦鹉螺铠槽位的精灵图。
+
+添加了gui/container/nautilus。
+用于鹦鹉螺和僵尸鹦鹉螺的物品栏界面。
+
+模型
+
+方块模型和物品模型的元素现在可以绕多个坐标轴旋转。
+旋转按xyz的顺序进行。
+
+添加了新字段x、y和z：绕相应坐标轴旋转的角度，默认为0。
+
+旧字段axis和angle仍然有效。
+旧字段和新字段共存时，以旧字段为准。
+
+移除了要求角度值在区间[-45,45]内的限制。
+
+剔除面的方向不受模型旋转影响。
+
+方块模型映射的直接指定方块状态模式现在支持绕着z轴的旋转，在x轴和y轴的旋转之后生效。
+添加了新字段z：绕z轴的旋转角度。默认为0，取值只能为0、90、180或270。
+
+选项
+
+将“”重命名为“”。
+
+補
+
+修疏漏四十
+
+先之謬
+
+MC-266425 — 新的涂蜡铜质方块的配方没有放在一起。
+
+1.21.10的漏洞
+
+MC-303395 — 不能在Realms区域选择菜单通过双击服务器区域来选择它们。
+
+MC-303396 — 通过键盘导航打开资源包或数据包菜单时不会自动选中搜索框。
+
+MC-303755 — 鼠标光标放在村民和流浪商人的交易界面的滚动条上面时不会变为垂直调整大小的形状。
+
+MC-303757 — 鼠标光标放在附魔台界面的魔咒选项上面时不会变为合适的形状。
+
+MC-303758 — 鼠标光标放在配方书中的多种元素上面时不会变为手形。
+
+MC-303761 — 鼠标光标放在切石机界面的输出按钮或滚动条上面时不会变为合适的形状。
+
+MC-303762 — 鼠标光标放在织布机界面的输出按钮或滚动条上面时不会变为合适的形状。
+
+MC-303763 — 鼠标光标放在工作台界面的合成方格上面时不会变为手形。
+
+MC-303764 — 鼠标光标放在创造模式物品栏的选项卡或滚动条上面时不会变为合适的形状。
+
+MC-303765 — 鼠标光标放在进度菜单的选项卡上面时不会变为手形。
+
+槧之謬
+
+MC-302815 — 闪电击中猪生成的僵尸猪灵不会持有金矛。
+
+MC-302825 — 一些物品的蓄力动画不正确。
+
+MC-302851 — 和鱼物品相比，鱼桶给鹦鹉螺恢复的生命值更少。
+
+MC-302892 — 玩家坐在船上拿着矛时，手臂和头部与身体相交。
+
+MC-302893 — 从水面上看时，水中的实体的判定箱不会显示。
+
+MC-302935 — 骷髅射箭前，手臂的位置不正确。
+
+MC-302958 — 鹦鹉螺的嘴部纹理未对齐。
+
+MC-302998 — 手持矛的生物旋转时，手臂可能会和头部与身体相交。
+
+MC-303149 — 带有特定参数的命令可能会因为深层函数递归使游戏崩溃。
+
+MC-303331 — 用红蘑菇喂食僵尸马没有音效。
+
+MC-303404 — 旁观模式下可以通过矛的冲锋攻击对实体造成伤害。
+
+MC-303431 — 将调试修饰键设置为鼠标按键后，无法在游戏模式切换器中切换到选择的游戏模式。
+
+MC-303443 — 透明和半透明的方块会在钓鱼竿的线前面渲染。
+
+MC-303625 — 启用“”时，实体、粒子、云、水、半透明方块和具有特殊渲染方式的方块会在方块的轮廓箱前面渲染。
+
+MC-303653 — 喂食骆驼尸壳时会出现繁殖时的爱心。
+
+MC-303695 — 游戏时重新加载纹理会导致动态纹理渲染不正确。
+
+MC-303751 — 焦骸的模型有UV问题。
+
+MC-303790 — 方块破坏粒子和轮廓箱会在玻璃或信标的后面渲染。
+
+MC-303882 — 副手持上膛的弩时使用矛冲锋在第三人称下看起来不正确。
+
+先槧之謬
+
+MC-303940 — 下界合金马铠会在熔岩或火中烧毁。
+
+MC-303943 — 溺尸不再会因水减速。
+
+MC-303944 — 玩家处于错误疾跑状态时，击退攻击会播放两次音效。
+
+MC-303945 — 鹦鹉模仿焦骸的字幕和焦骸本身的字幕不匹配。
+
+MC-303947 — 点击带有unbreakable、glider與​intangible_projectile数据组件的物品会导致游戏崩溃。
+
+MC-303948 — 下界合金马铠的纹理和基岩版的不同。
+
+MC-303956 — 进行戳刺攻击之后，冲锋攻击的伤害减少。
+
+MC-303961 — 疾跑时暴击会播放击退攻击音效和暴击音效，虽然只进行了暴击。
+
+MC-303974 — 调试中的游戏日计数器不再显示。
+
+MC-304061 — 新创建的世界中的世界边界警告时间比预期的少。
+
+二五週四四甲
+
+二五週四四甲（25w44a）者，爪哇版一點二一點一一[坊間之名]之丁快照也，廣佈於乙巳年九月初八日，增枯髑、枯橐駝，補疏漏焉。
+
+新者
+
+物
+
+孳卵
+增枯髑、枯橐駝二卵。
+
+生靈
+
+枯髑
+
+新骷髏也。
+
+或代骷髏於大漠之至晦處。
+
+不焚於曦光。
+
+其矢惟虛。
+
+其射益疏，稍類濘髑。
+
+不生窟中，稍類枯屍。
+
+枯橐駝
+
+新亡者也。
+
+生於大漠之至晦處。
+
+不焚於曦光。
+
+其御者枯屍枯髑聯袂，其屍執槊。
+
+不生窟中，稍類枯屍。
+
+惟怨御者之所怨。
+
+無御者則自弭。
+
+趨飼於兔足。
+
+不得孳媾。
+
+長者著鞍，爰得御之，悉同生駝。
+
+常
+
+选選項
+
+在视频设置中加入了Anisotropic Filtering选项。
+提升了从远处或从特定角度观察方块时的视觉效果。
+
+默认值取决于设备配置，如果硬件不支持则不会显示这个选项。
+
+可以为“关”“2x”“4x”或“8x”。
+
+会显著影响使用的显卡内存，特别是使用高Mipmap级别时。
+
+幕
+
+向创建新的世界的“自定义单一生物群系”界面和语言选择界面添加了搜索框。
+
+环境属性
+
+新增ARGB颜色修饰符：
+override
+参数类型：ARGB颜色。
+
+add：按通道的加法混合。
+参数类型：RGB颜色。
+
+subtract：按通道的减法混合。
+参数类型：RGB颜色。
+
+multiply：按通道的乘法混合。
+参数类型：RGB颜色或ARGB颜色。
+
+若指定，则A通道像其他颜色通道一样独立相乘。
+
+alpha_blend：在图像编辑软件中可能出现的传统alpha混合。
+参数类型：ARGB颜色。
+
+A通道为1时，表现为不混合的覆盖。
+
+加入了下列环境属性：
+minecraft:visual/water_fog_start_distance：水下迷雾开始产生影响的距离，以方块为单位。如果为负数，雾将以拥有密度开始，就像它从摄像机后面开始产生影响一样。
+值类型：浮点数
+
+默认值：-8.0
+
+修饰符：浮点修饰符
+
+可插值：是
+
+在摄像机的位置解析
+
+minecraft:visual/fog_start_distance：摄像机未在某些物质中时，迷雾开始产生影响的距离，以方块为单位。如果为负数，雾将以拥有密度开始，就像它从摄像机后面开始产生影响一样。注意：最终值会因为天气改变。
+值类型：浮点数
+
+默认值：0.0
+
+修饰符：浮点修饰符
+
+可插值：是
+
+在摄像机的位置解析
+
+minecraft:visual/fog_end_distance：摄像机未在某些物质中时，雾达到最大密度时与相机的距离，以方块为单位。
+值类型：非负浮点数
+
+默认值：1024.0
+
+修饰符：浮点修饰符
+
+可插值：是
+
+在摄像机的位置解析
+
+minecraft:visual/sky_fog_end_distance：摄像机未在某些物质中时，影响天空的雾达到最大密度时与相机的距离，以方块为单位。
+值类型：非负浮点数
+
+默认值：512.0
+
+修饰符：浮点修饰符
+
+可插值：是
+
+在摄像机的位置解析
+
+minecraft:visual/cloud_fog_end_distance：摄像机未在某些物质中时，影响云的雾达到最大密度时与相机的距离，以方块为单位。
+值类型：非负浮点数
+
+默认值：2048.0
+
+修饰符：浮点修饰符
+
+可插值：是
+
+在摄像机的位置解析
+
+minecraft:visual/cloud_color：云的颜色。如果完全透明，云将完全禁用，且快乐恶魂在云层高度时也不会恢复生命。
+值类型：ARGB颜色
+
+默认值：#00000000
+
+修饰符：ARGB颜色修饰符
+
+可插值：是
+
+在摄像机的位置或快乐恶魂的位置解析
+
+槽源
+
+加入了槽位源，允许数据包指定任何槽位位置。
+格式如下：
+type：槽位源类型
+
+剩余字段与槽位源相关。
+
+minecraft:empty
+不选择任何槽位。
+
+minecraft:group
+将多个槽位源合并到一个，生成的可选择结果包含所有提供的槽位源。
+如果槽位源的槽位重复，则重复此槽位。
+
+例如：[a, b] + [c, a] -> [a, b, c, a]
+
+格式：
+terms：槽位源的。
+
+可以作为槽位源的内联格式。
+
+minecraft:slot_range
+从实体或方块实体的槽位范围里选择槽位。
+
+镜像/item参数from的行为。
+
+格式：
+source：作为来源的实体或方块实体，从战利品上下文获取。
+取值可以为block_entity、this、attacking_entity、last_damage_player、direct_attacker、target_entity或interacting_entity。
+
+slots：槽位范围，格式为-{}-<槽位类型>或-{}-<槽位类型>.<槽位编号>，例如armor.chest和container.*。
+
+minecraft:contents
+从一个或多个物品栏组件中选择所有非空槽位。
+如果这些组件没有任何物品，则可选择结果为空。
+
+物品栏组件的物品位置来源于另一个槽位源。
+如果物品来源于多个组件，则可选择结果将合并，类似于minecraft:group。
+
+例如：Bundle [a, b] + Shulker Box [c, d] -> [a, b, c, d]
+
+格式：
+component：物品栏组件。
+取值可以为minecraft:bundle_contents、minecraft:charged_projectiles或minecraft:container。
+
+slot_source：槽位源，包含目标物品的槽位。
+
+minecraft:filtered
+对目标槽位进行过滤，排除所有测试失败的槽位。
+
+格式：
+item_filter：测试每个槽位的物品谓词。
+
+slot_source：要进行过滤的槽位源。
+
+minecraft:limit_slots
+限制槽位的数量，生成的可选择结果最多包含这些数量个槽位。
+任何在限制数量之外的槽位都将被排除，按提供顺序排列。
+
+例如：[a, b, c, d] -> [a, b, c]，如果限制数量为3。
+
+对目标槽位进行过滤，排除所有测试失败的槽位。
+
+格式：
+limit：可选择结果的最大槽位数量。
+
+slot_source：要进行过滤的槽位源。
+
+以下为示例槽位源，从实体的快捷栏和盔甲栏选择每个包含超过16个物品堆叠的槽位：
+{
+"type": "minecraft:filtered",
+"item_filter": {
+"count": {
+"min": 16
+}
+},
+"slot_source": [
+{
+"type": "minecraft:slot_range",
+"source": "this",
+"slots": "hotbar.*"
+},
+{
+"type": "minecraft:slot_range",
+"source": "this",
+"slots": "armor.*"
+}
+]
+}
+
+战利品表
+
+加入了战利品抽取项minecraft:slots。
+将从所选槽位中的物品提供给战利品表。
+
+格式：
+slot_source：描述物品所在位置的槽位源。
+
+所有单一抽取项字段。
+
+移除了战利品抽取项dynamic的接受值contents。
+它提供潜影盒内容物的行为由于slots抽取项的加入而变得多余，现在可以使用槽位源slot_range进行复制。
+
+籤
+
+加入了物品标签#camel_husk_food，控制Camel Husk可以食用的物品。
+
+加入了实体类型标签#can_float_while_ridden，控制生物被骑乘时是否可在水上漂浮游泳而非下沉。
+
+性
+
+在OSX上增加了对KQueue的支持，以提高网络连接性能。
+
+改
+
+物
+
+孳卵
+
+更改了僵尸马刷怪蛋的纹理，以匹配僵尸马的新纹理。
+
+生靈
+
+鸚鵡
+
+现在可以模仿僵尸鹦鹉螺、僵尸马、Parched和Camel Husk的声音。
+
+（屍化）鸚鵡螺
+
+现在会在被任何生物激怒时攻击该生物，而不仅仅是玩家。
+
+馬、驢、騾、駝
+
+现在被玩家在水里骑乘时不再会下沉。
+
+蟙䘃
+
+现在在每年的10月20日至11月3日期间，不再会更频繁地生成，也不再会在亮度等级大于3、小于等于6的地方生成。
+
+枯屍
+
+今御枯橐駝而見殛，則遺兔足焉。
+
+實體
+
+箭类弹射物
+
+回退了25w41a的更改。
+
+令之範式
+
+/worldborder
+
+设置距离的参数time现在也可以设置为秒或游戏日，只需要添加s或d后缀。
+
+设置警告时间的参数time现在单位默认为游戏刻，但也可以设置为秒或游戏日，只需要添加s或d后缀。
+
+戲事
+
+淬靈
+
+现在突进总是额外消耗1点耐久度。
+
+减少了突进消耗的饥饿值和饱和度。
+现在I级消耗一（），II级消耗二（），III级消耗三（）。
+
+進程
+
+“小試牛刀”“千金一擲”“審顧挽弦”和“[[進程#advancements-anchor-adventure.kill_mob_near_sculk_catalyst|同文鍵（參“1”）之所指，尋而弗得！]]”现在也可以通过击杀Parched或Camel Husk来获取。
+
+“天下無敵手”现在还需要击杀Parched和Camel Husk。
+
+霧
+
+下界迷雾不再随渲染距离变化，现在始终在10至96格方块之间渲染。
+
+餘者
+
+区块的渲染现在可以有淡入效果，而不是突然出现。淡入时间可以通过视频设置调整。
+
+常
+
+錄囊
+
+将数据包版本号更改为92.0。
+
+資囊
+
+将资源包版本号更改为72.0。
+
+伺服端治契
+
+将服务端管理协议版本号更改为2.0.0。
+
+在typed_game_rule和untyped_game_rule模式中，value字段现在接收字符串而不是整型或布尔值。
+同样，它现在使用资源路径作为键名。
+
+章則
+
+遷章則於簿冊，法舳艫不法橐駝。
+
+更名如左：
+announceAdvancements -> minecraft:show_advancement_messages
+
+commandBlocksEnabled -> minecraft:command_blocks_work
+
+command_modification_block_limit -> minecraft:max_block_modifications
+
+disableElytraMovementCheck -> minecraft:elytra_movement_check
+在使用资源路径时此游戏规则的值的意义与之前相反。
+
+disablePlayerMovementCheck -> minecraft:player_movement_check
+在使用资源路径时此游戏规则的值的意义与之前相反。
+
+disableRaids -> minecraft:raids
+在使用资源路径时此游戏规则的值的意义与之前相反。
+
+doDaylightCycle -> minecraft:advance_time
+
+doEntityDrops -> minecraft:entity_drops
+
+doImmediateRespawn -> minecraft:immediate_respawn
+
+doInsomnia -> minecraft:spawn_phantoms
+
+doLimitedCrafting -> minecraft:limited_crafting
+
+doMobLoot -> minecraft:mob_drops
+
+doMobSpawning -> minecraft:spawn_mobs
+
+doPatrolSpawning -> minecraft:spawn_patrols
+
+doTileDrops -> minecraft:block_drops
+
+doTraderSpawning -> minecraft:spawn_wandering_traders
+
+doVinesSpread -> minecraft:spread_vines
+
+doWardenSpawning -> minecraft:spawn_wardens
+
+doWeatherCycle -> minecraft:advance_weather
+
+maxCommandChainLength -> minecraft:max_command_sequence_length
+
+maxCommandForkCount -> minecraft:max_command_forks
+
+naturalRegeneration -> minecraft:natural_health_regeneration
+
+snowAccumulationHeight -> minecraft:max_snow_accumulation_height
+
+spawnRadius -> minecraft:respawn_radius
+
+spawnerBlocksEnabled -> minecraft:spawner_blocks_work
+
+部分游戏规则之前没有值域限制，现在它们的值域如下：
+minecraft:max_block_modifications：最小值：1
+
+minecraft:max_command_forks：最小值：1
+
+minecraft:max_command_sequence_length：最小值：0
+
+minecraft:max_entity_cramming：最小值：1
+
+minecraft:max_snow_accumulation_height：最小值：0；最大值：8
+
+minecraft:players_nether_portal_creative_delay：最小值：0
+
+minecraft:players_nether_portal_default_delay：最小值：0
+
+minecraft:players_sleeping_percentage：最小值：0
+
+minecraft:random_tick_speed：最小值：0
+
+minecraft:respawn_radius：最小值：0
+
+加入了游戏规则fire_spread_radius_around_player。
+控制玩家周围可以传播火的方块的最大距离。
+
+替代了游戏规则doFireTick和allowFireTicksAwayFromPlayer，且它们已经被移除。
+
+设置为0时将禁用火的传播。
+
+设置为-1时火的传播无视周围是否有玩家。
+
+值域：最小值：-1。
+
+测试环境定义格式
+
+测试环境定义game_rules的bool_rule和int_rule字段已被rules取代。
+新字段是一个<游戏规则资源路径> - <游戏规则值>的映射，值是布尔值还是整型取决于游戏规则值类型。
+
+环境属性
+
+重命名minecraft:visual/water_fog_radius为minecraft:visual/water_fog_end_distance。
+
+移除了minecraft:visual/extra_fog。
+
+重命名minecraft:visual/cloud_opacity为minecraft:visual/cloud_color。
+
+生物群系定义格式
+
+生物群系环境效果的下列字段现在接受字符串#RRGGBB和浮点数数组[red, green, blue]格式的颜色：
+water_color
+
+foliage_color
+
+dry_foliage_color
+
+grass_color
+
+籤
+
+实体类型标签：
+向#skeletons中加入了Parched。
+
+向#zombies中加入了僵尸鹦鹉螺、僵尸马和Camel Husk。
+
+向#can_equip_saddle中加入了鹦鹉螺、僵尸鹦鹉螺、僵尸马和Camel Husk。
+
+聲事
+
+移除了item.underwater_saddle.equip。
+
+染系
+
+block.vsh/fsh鈔terrain.vsh/fsh以暫繪塊。
+
+增ChunkSection之統，驅於terrain.vah，以代DynamicTransforms。
+
+Globals之統，今得其留影之所在。
+
+增設所以染繪樞細圖者。
+增animate_sprite*之要器，其統曰SpriteAnimationInfo。
+
+細圖之動靜
+細圖之縝者，今由繪樞，不由算樞。
+
+其逐幀者依animate_sprite.vsh、animate_sprite_blit.fsh，間直者依animate_sprite.vsh、animate_sprite_interpolate.fsh以染。
+
+SpriteAnimationInfo之繫，今弘其按圖所指。
+
+選項
+
+改「幕」欄爲「好」。
+
+LWJGL
+
+黜嚮版之所更。
+
+補
+
+修疏漏三十三
+
+先之謬
+
+MC-2791 — 物品栏中的玩家的模型不是直立时，其渲染方向错误。
+
+MC-73186 — 物品模型和复杂的方块模型上面存在缝隙。
+
+MC-149630 — 一些粒子的周围会有很细的竖直线条出现并消失。
+
+MC-237158 — 岩浆块可以在含水层下方洞穴的天花板上生成。
+
+一點二一點六之疏漏
+
+MC-298942 — 骑在快乐恶魂上面时，物品栏中玩家的模型的身体会移动，而非头部会移动。
+
+一點二一點八之疏漏
+
+MC-300642 — 纹理图集较大时，低分辨率的方块之间会渲染出缝隙。
+
+MC-301988 — 在某些语言中，遥测数据屏幕中的按钮未正确对齐。
+
+一點二一點九之疏漏
+
+MC-301311 — 选中Java Realms信息框时，“立即转移”按钮不再高亮。
+
+MC-301517 — 鼠标光标放在单人游戏、多人游戏、资源包或数据包菜单的箭头上时不会变为手形。
+
+MC-301527 — 用鼠标滚动进度菜单时，鼠标光标不会变为垂直调整大小的形状。
+
+MC-302111 — 使用Tab ↹键不能按顺序选中资源包或数据包菜单中的元素。
+
+MC-302325 — 在调试选项屏幕中使用调试组合键切换调试渲染器时，对应的选项没有更新。
+
+MC-302338 — 在菜单中按Ctrl + B时，“”按钮不会更新。
+
+MC-302362 — 在主菜单中点击“单人游戏”或“多人游戏”后立即点击一个世界或服务器，会在没有点击游玩按钮的情况下进入此世界或服务器。
+
+MC-302482 — 存在滚动条时，资源包和数据包的名称会溢出选择框。
+
+槧之謬
+
+MC-302678 — 箭和三叉戟在玩家和生物上会卡住。
+
+MC-303072 — 带有值大于等于1的PierceLevel标签的三叉戟击中生物或玩家时，游戏崩溃。
+
+MC-303168 — 给鹦鹉螺装备鞍会使用subtitles.entity.horse.saddle字幕。
+
+MC-303255 — mobGriefing设为false时，鹦鹉螺不能造成伤害。
+
+先槧之謬
+
+MC-303429 — 猪灵和疣猪兽在下界颤抖。
+
+MC-303432 — 无法识别中文输入。
+
+MC-303434 — 无法识别日文输入。
+
+MC-303439 — 在第三人称视角下，从特定角度观察手持物品会出现奇怪的错误。
+
+MC-303455 — 在Wayland上打开GUI或菜单时，光标不再居中。
+
+MC-303460 — 在Wayland上，光标不会显示成系统设置的那样。
+
+MC-303461 — 在Wayland上，游戏显示Wayland应用的默认图标而不是Minecraft的图标。
+
+MC-303478 — 无法在使用了Nvidia显卡的Linux系统上启动25w43a。
+
+MC-303485 — 游戏不再能保存自定义维度的区块。
+
+MC-303504 — 以锐角角度观察时，下界苗的纹理仍会变大。
+
+MC-303506 — 在Wayland上，Ctrl组合键还会额外输入普通字母。
+
+MC-303520 — 以锐角角度观察时，甜浆果丛的纹理仍会变大。
+
+MC-303541 — 在Wayland上，游戏无法启动。
+
+MC-303651 — 旋转的物品实体有时会产生视觉错误。
+
+註按
+
+津渡

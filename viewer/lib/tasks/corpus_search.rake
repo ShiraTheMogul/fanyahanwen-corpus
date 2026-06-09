@@ -17,7 +17,9 @@ namespace :corpus_search do
     # Default to a starter cache. Set LIMIT=0 only when you really want every
     # single-character term from the CSV.
     limit = Integer(ENV.fetch("LIMIT", "200"))
-    progress_every = Integer(ENV.fetch("CORPUS_SEARCH_WARM_PROGRESS_EVERY", "100"))
+    progress_every = Integer(ENV.fetch("CORPUS_SEARCH_WARM_PROGRESS_EVERY", "1_000"))
+    batch_size = Integer(ENV.fetch("CORPUS_SEARCH_TERM_BATCH_SIZE", CorpusSearch::TermIndex::DEFAULT_BATCH_SIZE.to_s))
+    force = ENV["FORCE"].to_s == "1"
 
     terms = []
     CSV.foreach(csv_path, headers: true) do |row|
@@ -31,17 +33,20 @@ namespace :corpus_search do
     end
 
     puts "Preparing to warm #{terms.length} single-character term indexes."
+    puts "Batch size: #{batch_size}. Override with CORPUS_SEARCH_TERM_BATCH_SIZE=4 etc."
     puts "Use LIMIT=0 rails corpus_search:warm_frequency_terms for the full CSV later."
 
     manifest = CorpusSearch::Manifest.load
     warmed = CorpusSearch::TermIndex.refresh_single_character_terms!(
       terms: terms,
       manifest: manifest,
+      batch_size: batch_size,
+      force: force,
       progress: lambda do |position, total, files_read, files_skipped, error = nil|
         if error
-          puts "[corpus_search] warm skipped file at #{position}/#{total}: #{error.class}: #{error.message}"
+          puts "[corpus_search] warm skipped file-pass at #{position}/#{total}: #{error.class}: #{error.message}"
         elsif progress_every.positive? && (position % progress_every).zero?
-          puts "[corpus_search] warm progress: #{position}/#{total} files checked; #{files_read} read; #{files_skipped} skipped"
+          puts "[corpus_search] warm progress: #{position}/#{total} file-passes checked; #{files_read} read; #{files_skipped} skipped"
         end
       end
     )

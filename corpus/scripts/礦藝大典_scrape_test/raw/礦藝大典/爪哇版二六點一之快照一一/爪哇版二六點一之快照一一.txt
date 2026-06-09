@@ -1,0 +1,300 @@
+# WORK_TITLE: 礦藝大典
+# PAGE_TITLE: 爪哇版二六點一之快照一一
+# URL: https://lzh.minecraft.wiki/%E7%88%AA%E5%93%87%E7%89%88%E4%BA%8C%E5%85%AD%E9%BB%9E%E4%B8%80%E4%B9%8B%E5%BF%AB%E7%85%A7%E4%B8%80%E4%B8%80
+# WIKI_CATEGORIES: 分類:協議之版弗明，分類:廣佈於丙午年之快照，分類:待譯之篇，分類:待遷，分類:數錄之版弗明，分類:爪哇版之版，分類:爪哇版二六點一快照，分類:資囊之版弗明，分類:錄囊之版弗明
+# DATE: 2026-05-23T16:04:57Z
+# SCRAPED_AT: 2026-06-08T18:26:02+00:00
+# AUTHOR: 礦藝大典之用戶
+# CATEGORIES: 游戲，維基
+# LICENSE: CC-BY-NC-SA-3.0 https://creativecommons.org/licenses/by-nc-sa/3.0/
+# RIGHTS_NOTE: Non-commercial reuse only; ShareAlike applies to adaptations. Images and game assets excluded unless separately licensed.
+
+是篇或當遷於爪哇版二六點一之快照十一。遷 議 取佐
+
+按：文言大典，一行一動，皆倚公論，遷之巨者，僕行之也。
+目標之葉，非存且具，勿鈔模之，以保史贊。
+
+是篇之譯未成。
+
+儻協而譯之，善也。顧宜親力親爲，器械與機巧僞智者不足取也。
+
+二六點一之快照一一（26.1-snapshot-11）者，爪哇版二六點一之甲戌快照也，廣佈於丙午年正月十五日，更名刺之或取之式，並補疏漏焉。
+
+新物
+
+常
+
+籤
+
+增塊籤#prevents_nearby_leaf_decay，蓋諸木也。
+橫豎而連於是塊，六方之內，木葉不脫。
+
+改
+
+塊方
+
+絲竹匣
+
+改小號之聲。
+
+物
+
+環鎖胄
+
+類人之生靈，幼者佩之，其頂改紋，鏤也。
+
+生靈
+
+豕
+
+食聲今有諸品。
+
+兔
+
+改褐、黃、褐白者之紋，以適他者。
+
+或改長者（黑、白、斑、Toast、刺客）頜之紋。
+
+山羊
+
+幼者撞而頷首，有類長者。
+
+豐幼者之內紋。
+
+嗅獸
+
+豐幼者之內紋。
+
+獷豕
+
+改幼者之紋。
+今其背鬢於雙側，非先之單側。
+
+反其左耳之紋。
+
+貓熊與海豚
+
+改幼者顱之后紋。
+
+狼
+
+改幼林狼之右后股之后紋。
+
+戲事
+
+商賈
+
+學士之巨擘今弗售名刺。
+
+學士之巨擘今售赤黃之燭以祖母綠三。
+
+行商今售名刺以祖母綠一。
+
+太古之邑與林地府邸
+
+去名刺於箱貨。
+
+常
+
+錄囊
+
+晉錄囊於100.0。
+
+資囊
+
+晉資囊於83.0。
+
+测试环境定义格式
+
+加入了测试环境定义类型timeline_attributes来设置任意数量的时间线。
+格式：timelines：要设置的时间线的。
+
+猪音效变种定义格式
+
+猪进食的音效现在可以通过新字段eat_sound定义。
+
+方块状态
+
+告示牌和旗帜的rotation方块属性的默认值从0改为8。
+
+自定义世界生成
+
+加入了新的方块状态提供器rule_based_state_provider。
+它曾经是一种独立解析的类型，但现在是一种方块状态提供器。
+
+它现在可以用在其他所有使用方块状态提供器的地物配置上，而不再只是disk地物类型上。
+
+格式：
+fallback：可选，方块状态提供器。
+
+rules：一个规则的。
+if_true：方块谓词，检查要放置方块前的位置。
+
+then：方块状态提供器。
+
+物品模型映射
+
+物品模型类型minecraft:model、minecraft:special、minecraft:range_dispatch、minecraft:composite、minecraft:select與​minecraft:condition现在拥有了transformation字段。
+这些字段的格式和展示实体的transformation格式相同，例如，可以是16个数字组成的来代表矩阵，或是分解为具有平移、旋转和缩放信息的结构。
+
+对于具有子节点的类型（minecraft:range_dispatch、minecraft:composite、minecraft:select與​minecraft:condition），除了minecraft:bundle/selected_item，变换将由子节点的变换组成。
+
+物品模型的变换将在物品渲染变换（烘焙模型display字段）之后进行。
+
+一些特殊的物品模型（即由minecraft:special引用的类型）的变换已经提取到物品模型自身。（而不是硬编码）
+受影响的特殊模型：
+minecraft:bed
+
+minecraft:banner
+
+minecraft:conduit
+
+minecraft:copper_colem_statue
+
+minecraft:head
+
+minecraft:player_head
+
+minecraft:shulker_box
+
+minecraft:shield
+
+minecraft:trident
+
+minecraft:standing_sign
+
+minecraft:hanging_sign
+
+minecraft:bell特殊模型类型
+新的特殊模型类型，渲染钟方块的动画部分。
+
+无额外字段。
+
+minecraft:book特殊模型类型
+新的特殊模型类型，渲染附魔台和讲台的书。
+
+格式：
+open_angle：角度制角度，书的封面和书中轴线的角度。（0表示合上，90表示摊平）
+
+page1、page2：书中两书页的位置。
+0.0表示在最左侧，1.0表示在最右侧。
+
+minecraft:bed特殊模型类型
+此模型现在只渲染一半床。
+
+为了渲染整张床，现在需要使用minecraft:composite模型。
+
+新字段：
+part：可以为head和foot之一。
+
+minecraft:banner特殊模型类型
+新字段：
+attachment：要使用的模型，可以为wall和ground之一。默认为ground。
+
+minecraft:chest特殊模型类型
+新字段：
+chest_type：要使用的模型，可以为single、left和right之一。默认为single。
+
+minecraft:hanging_sign特殊模型类型
+新字段：
+attachment：要使用的模型，可以为wall、ceiling和ceiling_middle之一。默认为ceiling_middle。
+
+minecraft:standing_sign特殊模型类型
+新字段：
+attachment：要使用的模型，可以为wall和ground之一。默认为ground。
+
+minecraft:shulker_box特殊模型类型
+移除了orientation字段。
+
+方块状态渲染
+
+对部分场景的方块状态渲染进行了一些更改，例如末影人手持的方块、方块展示实体方块，但不包括下落的方块和移动的活塞。
+附魔台现在会在方块顶部展示一本书。
+
+使用特殊渲染的方块（例如箱子、旗帜和生物头颅）现在尊重方块属性：
+渲染现在尊重方块属性rotation和facing。（若适用）
+
+床现在只渲染一半，取决于方块属性part。
+
+铜傀儡像现在尊重方块属性copper_golem_pose。
+
+墙上和站立的告示牌、悬挂式告示牌、旗帜、生物头颅现在有了独立的模型。
+
+箱子现在尊重方块属性part。（若适用）
+
+注意：一般来说，所有方块状态在方块展示实体中和被放置在世界中的效果应该相同，除了：
+流体
+
+末地折跃门
+
+末地传送门
+
+已知问题
+
+现在在全屏模式下最小化游戏后，游戏无法最大化显示。
+
+補
+
+修疏漏二十五
+
+先二六點一之快照一一之謬
+
+MC-199975 — 末影人手持的钟和钟方块展示实体只会渲染钟架。
+
+MC-231663 — 龙蛋传送时不检查目的地下方是否有方块。
+
+MC-275014 — 启用时，点亮的和氧化的铜灯周围有阴影。
+
+MC-301003 — 铜傀儡鞍槽位里的钟的钟部分不可见。
+
+MC-303344 — 即使光标没有悬停在物品上，对话框的选择物品的提示框仍会显示。
+
+MC-304796 — 光标悬停在禁用的滑块上时显示手形光标而不是禁止光标。
+
+MC-305857 — 游戏时，实体判定箱会抖动。
+
+槧二六點一之快照一一之謬
+
+MC-305797 — 幼年热带猪的纹理有未使用的像素。
+
+MC-306082 — 幼年森林狼的一条腿的后部纹理与其他三条腿的不一致。
+
+MC-306110 — 黑色兔子、黑白斑点兔子、杀手兔和Toast兔头部的侧面纹理延伸到了底部。
+
+MC-306180 — 攻击蜷缩的幼年犰狳会导致它的腿突出来并与壳深度冲突。
+
+MC-306190 — 世界升级失败时游戏关闭。
+
+MC-306303 — 平原僵尸村民使用幼年变种的纹理。
+
+MC-306309 — 一些新的动物音效变种缺失。
+
+MC-306312 — 一些26.1 Snapshot 7加入的字符串有语法错误。
+
+MC-306466 — 幼年熊猫头部的后部纹理的一条边上有黑色条纹。
+
+MC-306472 — 幼年人形生物上的锁链头盔纹理顶部没有透明像素，和成年生物上的不一致。
+
+MC-306483 — 金蒲公英不会阻止幼年行商羊驼消失。
+
+MC-306520 — 幼年驴和幼年骡的判定箱和尾巴存在偏移。
+
+先槧之謬
+
+MC-306607 — 末影人即使空手也会保持搬起方块的动作。
+
+MC-306608 — 荧光物品展示框现在看起来像物品展示框。
+
+MC-306625 — “Programmer Art”和“高对比度”资源包被列为不兼容。
+
+MC-306639 — 忧郁的幼年熊猫在雷暴期间掩面颤抖时模型损坏。
+
+MC-306676 — 幼年嗅探兽的底部纹理由纯色组成。
+
+私擧之謬
+
+MC-304683 — 流浪商人不在雪原的单一生物群系世界中生成。
+
+參典
+
+津渡

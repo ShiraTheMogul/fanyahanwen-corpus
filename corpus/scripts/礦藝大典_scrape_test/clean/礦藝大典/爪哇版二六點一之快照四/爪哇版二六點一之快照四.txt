@@ -1,0 +1,192 @@
+# WORK_TITLE: 礦藝大典
+# PAGE_TITLE: 爪哇版二六點一之快照四
+# URL: https://lzh.minecraft.wiki/%E7%88%AA%E5%93%87%E7%89%88%E4%BA%8C%E5%85%AD%E9%BB%9E%E4%B8%80%E4%B9%8B%E5%BF%AB%E7%85%A7%E5%9B%9B
+# WIKI_CATEGORIES: 分類:廣佈於乙巳年之快照，分類:待譯之篇，分類:方修之事，分類:爪哇版之版，分類:爪哇版二六點一快照
+# DATE: 2026-03-31T11:36:37Z
+# SCRAPED_AT: 2026-06-08T18:28:04+00:00
+# AUTHOR: 礦藝大典之用戶
+# CATEGORIES: 游戲，維基
+# LICENSE: CC-BY-NC-SA-3.0 https://creativecommons.org/licenses/by-nc-sa/3.0/
+# RIGHTS_NOTE: Non-commercial reuse only; ShareAlike applies to adaptations. Images and game assets excluded unless separately licensed.
+
+是篇方修也。 議
+
+可補正於此。
+
+是篇之譯未成。
+
+儻協而譯之，善也。顧宜親力親爲，器械與機巧僞智者不足取也。
+
+二六點一之快照四者，乃爪哇版二六點一之丁快照，廣佈於乙巳年臘月初二日，更迭馬、驢、騾之幼靈自型，並复漏洞些许也。
+
+新物
+
+常
+
+声音事件
+
+加入了幼年马的音效：
+entity.baby_horse.ambient
+
+entity.baby_horse.hurt
+
+entity.baby_horse.death
+
+entity.baby_horse.angry
+
+entity.baby_horse.eat
+
+entity.baby_horse.fall
+
+entity.baby_horse.land
+
+entity.baby_horse.step
+
+entity.baby_horse.breathe
+
+实体纹理
+
+新增了下列纹理：
+entity/horse/donkey_baby.png
+
+entity/horse/horse_black_baby.png
+
+entity/horse/horse_brown_baby.png
+
+entity/horse/horse_chestnut_baby.png
+
+entity/horse/horse_creamy_baby.png
+
+entity/horse/horse_darkbrown_baby.png
+
+entity/horse/horse_gray_baby.png
+
+entity/horse/horse_blackdots_baby.png
+
+entity/horse/horse_markings_white_baby.png
+
+entity/horse/horse_markings_whitedots_baby.png
+
+entity/horse/horse_markings_whitefield_baby.png
+
+entity/horse/horse_skeleton_baby.png
+
+entity/horse/horse_white_baby.png
+
+entity/horse/horse_zombie_baby.png
+
+entity/horse/mule_baby.png
+
+标签
+
+加入了方块标签：
+#supports_stem_fruit：#supports_vegetation
+
+#supports_pumpkin_stem_fruit：#supports_stem_fruit
+南瓜莖能在这些方块上方生成南瓜。
+
+#supports_melon_stem_fruit：#supports_stem_fruit
+寒瓜莖能在这些方块上方生成西瓜。
+
+World Clock
+
+加入了World Clockthe_end。
+被用于終界维度，用来计算終界光的出现时间。
+
+更
+
+塊方
+
+既扡樅樁
+
+更改了顶面纹理以匹配基石版。
+
+生靈
+
+馬、驢、騾、骷髏馬
+
+更改了幼年个体的纹理和模型。
+调整了幼年马和幼年骷髅马的边界箱以匹配其新模型。
+
+屍馬
+
+更改了幼年个体的纹理和模型。
+
+调整了幼年个体的边界箱以匹配其新模型。
+
+现在幼年僵尸马可以通过刷怪蛋或命令生成。
+
+雞
+
+现在幼年鸡的翅膀使用双层纹理。
+
+常
+
+数据包
+
+将数据包版本号更改为97.1。
+
+猪灵和村民的物品栏可以使用mob.inventory.*访问。
+因此，移除了piglin.*和villager.*。
+
+资源包
+
+将资源包版本号更改为78.1。
+
+修复
+
+修疏漏二十二
+
+先二六點一之快照四之謬
+
+MC-131745 — 沉船有时会在区块边界两侧生成不同的木板变种。
+
+MC-298136 — 信标外层光柱现在总是在方块实体后面渲染。
+
+MC-302635 — 通过被活塞推动的半透明方块观察时，半透明方块在固体方块前面渲染。
+
+MC-305699 — 成群的猪灵不会尝试捕猎疣猪兽。
+
+槧二六點一之快照四之謬
+
+MC-305134 — villager.*和piglin.*都能对村民和猪灵的物品栏进行测试。
+
+MC-305510 — 去皮云杉原木的顶部纹理现在和基岩版不一致。
+
+MC-305632 — 图书管理员交易的附魔书最低价格与既定的价格计算公式不符。
+
+MC-305674 — 最多可以向流浪商人出售12次水瓶而不是2次。
+
+MC-305675 — 即使启用了“均輸平準”，大师级盔甲匠也不会在出售钻石盔甲时收购钻石。
+
+MC-305676 — “均輸平準”启用时，沙漠生物群系的大师级盔甲匠出售钻石护腿时收购4个钻石而不是3个。
+
+MC-305677 — “均輸平準”启用时，热带草原生物群系的大师级盔甲匠出售钻石胸甲时收购6个绿宝石和2个钻石而不是8个绿宝石和3个钻石。
+
+先槧之謬
+
+MC-305691 — 村民无法入睡。
+
+MC-305695 — 刷怪蛋生成的猪灵现在会立即开始捕猎疣猪兽。
+
+MC-305700 — 疣猪兽和僵尸疣猪兽不再能进行攻击。
+
+MC-305708 — 甘蔗不再能放在红沙上。
+
+MC-305711 — 刷怪蛋生成的监守者现在会立即钻地。
+
+MC-305719 — 铁傀儡现在会大量生成。
+
+MC-305743 — “均輸平準”启用时，新手级盔甲匠以5个铁锭的价格出售铁靴子。
+
+MC-305744 — “均輸平準”启用时，学徒级盔甲匠出售铁头盔而不是铁护腿或铁胸甲。
+
+MC-305747 — “均輸平準”启用时，老手级盔甲匠出售锁链胸甲而不是钟。
+
+MC-305767 — 西瓜和南瓜现在只能在耕地上生长出来。
+
+MC-305796 — 物品实体拾取动画位置显示错误。
+
+映畫
+
+由slicedlime制作的视频：

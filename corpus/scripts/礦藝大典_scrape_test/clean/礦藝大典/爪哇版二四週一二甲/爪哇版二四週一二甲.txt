@@ -1,0 +1,399 @@
+# WORK_TITLE: 礦藝大典
+# PAGE_TITLE: 爪哇版二四週一二甲
+# URL: https://lzh.minecraft.wiki/%E7%88%AA%E5%93%87%E7%89%88%E4%BA%8C%E5%9B%9B%E9%80%B1%E4%B8%80%E4%BA%8C%E7%94%B2
+# WIKI_CATEGORIES: 分類:廣佈於甲辰年之快照，分類:待譯之篇，分類:方修之事，分類:爪哇版一點二〇點五快照，分類:爪哇版之版
+# DATE: 2026-05-08T15:56:26Z
+# SCRAPED_AT: 2026-06-08T18:31:54+00:00
+# AUTHOR: 礦藝大典之用戶
+# CATEGORIES: 游戲，維基
+# LICENSE: CC-BY-NC-SA-3.0 https://creativecommons.org/licenses/by-nc-sa/3.0/
+# RIGHTS_NOTE: Non-commercial reuse only; ShareAlike applies to adaptations. Images and game assets excluded unless separately licensed.
+
+是篇方修也。 議
+
+可補正於此。
+
+是篇之譯未成。
+
+儻協而譯之，善也。顧宜親力親爲，器物者不足取也。
+
+是篇涉未定之譯名也。
+
+其名未定者，已特標之。審考未決，勿擅易之。
+
+24w12a是Java版1.20.5的第13个快照，发布于2024年3月20日，在内置实验性数据包中加入了试炼密室地图和7个新进度，并修复了一些漏洞。
+
+新内容
+
+常规
+
+标签
+
+加入了以下方块标签：
+#incorrect_for_wooden_tool、#incorrect_for_gold_tool、#incorrect_for_stone_tool、#incorrect_for_iron_tool、#incorrect_for_diamond_tool與​#incorrect_for_netherite_tool
+合适挖掘工具不是对应品质工具的方块，结合了现有的#needs_diamond_tool、#needs_iron_tool與​#needs_stone_tool标签。
+
+加入了以下物品标签：
+#meat：beef、chicken、cooked_beef、cooked_chicken、cooked_mutton、cooked_porkchop、cooked_rabbit、mutton、porkchop、rabbit與​rotten_flesh
+肉类物品。未被游戏直接使用，但可能包含于其他标签中。
+
+#piglin_food、#fox_food、#cow_food、#goat_food、#sheep_food、#wolf_food、#cat_food、#horse_food、#horse_tempt_items、#camel_food、#armadillo_food、#bee_food、#chicken_food、#frog_food、#hoglin_food、#llama_food、#llama_tempt_items、#ocelot_food、#panda_food、#pig_food、#rabbit_food、#strider_food、#strider_tempt_items、#turtle_food、#parrot_food與​#parrot_poisonous_food
+可以用于喂食或引诱对应生物的物品。
+
+加入了以下实体类型标签：
+#sensitive_to_smite：#undead
+亡灵杀手魔咒会对其产生额外伤害的实体。
+
+进度触发器
+
+加入了进度触发器crafter_recipe_crafted，当合成器将物品喷出时触发。
+<player>，实体谓词，用于匹配附近玩家。
+
+<recipe_id>，配方ID，用于匹配一个合成配方。
+
+<ingredients>，匹配合成所用的配方成分列表，子项均为物品谓词。
+
+加入了进度触发器fall_after_explosion，在玩家被爆炸击飞后摔落时触发。
+<player>，匹配正在摔落的玩家的实体谓词。
+
+<start_position>，匹配玩家受到爆炸坐标的位置谓词。
+
+<distance>，匹配玩家从start_position起摔落高度的距离谓词。
+
+<cause>，匹配造成爆炸的实体谓词。
+
+战利品表
+
+加入了storage数值提供器。此提供器能获取命令存储中数据标签所提供的数值。
+如果选择的存储不存在、路径选择的标签不为数字或标签不存在，则返回0。
+
+格式：
+storage：命令存储的命名空间ID。
+
+path：NBT路径。
+
+战利品表函数
+
+toggle_tooltips：修改物品组件提示框的可见性的新函数，可设置show_in_tooltip等字段而不更改其他值。
+
+toggles：支持的物品组件类型与布尔值的键值对。
+<一个物品组件ID>：控制此组件是否在提示框中可见。受支持的组件包含：trim、dyed_color、enchantments、stored_enchantments、unbreakable、can_break、can_place_on與​attribute_modifiers。
+
+示例：{function:"toggle_tooltips","toggles":{"enchantments":false}}将会隐藏魔咒提示框。
+
+物品堆叠组件
+
+food：（食物隐含与其类型对应的默认值）控制物品是否可以作为食物吃掉。
+
+nutrition：（不小于0）食用该物品后增加的饥饿值。
+
+saturation_modifier：食用物品后增加的饱和度的修饰符（即营养价值）。如果此值为s，nutrition为n，则食用物品后增加2sn饱和度。
+
+can_always_eat：（可选，默认为false）此物品能否无视当前饥饿值而食用。
+
+eat_seconds：（可选，默认为1.6）食用该物品消耗的秒数。
+
+effects：（可选，默认为[]）该物品被食用后施加的状态效果列表。
+effect：一项状态效果，与minecraft:potion_contents组件中的custom_effects中的复合标签格式相同。
+
+probability：（可选，不大于1且不小于0，默认为1）施加此状态效果的概率。
+
+示例：food={nutrition:4,saturation_modifier:0.1}。
+
+max_stack_size：（大于0且小于100；各物品所隐含的默认值通常为64）控制物品的最大堆叠数。
+
+示例：max_stack_size=4。
+
+max_damage：（大于0，可损伤物品隐含对应默认值）控制物品可受的最大损伤值。
+
+示例：max_damage=123。
+
+如果此组件不存在，则物品不能被损伤。
+
+fire_resistant：（空对象，下界合金等抗火物品隐含默认值）控制物品是否不会在火焰中燃烧。
+
+示例：fire_resistant={}。
+
+rarity：（大多数物品默认为common，金苹果等特殊物品隐含对应的默认值）稀有度，控制物品名称的颜色。
+
+枚举值可以为：
+common（常见）：白色，附魔后为青色。
+
+uncommon（少见）：黄色，附魔后为青色。
+
+rare（稀有）：青色，附魔后为亮紫色。
+
+epic（史诗）：亮紫色。
+
+示例：rarity=rare。
+
+tool：（原版工具隐含与其品质和类型对应的默认值）控制物品的工具性。
+
+rules：规则列表。
+：一项规则。
+blocks：可交互的单一方块、带哈希前缀（#）的方块标签或方块列表。
+
+speed：（可选）覆盖对可交互方块的挖掘速度。
+
+correct_for_drops：（可选）覆盖此物品是否为破坏此类方块的合适工具。如果为true此工具将最效率地破坏对应方块且允许它（们）掉落。
+
+default_mining_speed：（默认为1.0）如果没有规则匹配时用以覆盖的挖掘速度。
+
+damage_per_block：（可选，大于等于0）此工具每破坏一个此类方块所消耗的耐久度。
+
+示例：tool={rules:[{blocks:"#mineable/pickaxe",speed:4.0,correct_for_drops:true}]}
+
+hide_tooltip：（空对象）控制是否隐藏物品包括物品名称在内的整个提示框。
+
+在创造模式中仍然可见且可被搜索。
+
+更改
+
+命令格式
+
+/particle
+
+使用命令生成entity_effect粒子时需要使用颜色参数。
+
+格式：particle entity_effect <r> <g> <b> <a>
+接受4个从0.0到1.0的浮点数，代表RGBA值。
+
+/loot和/item
+
+现在也接受内联战利品定义。
+
+/execute
+
+现在也接受内联战利品定义。
+
+/execute if predicate的SNBT值现在具有与匹配的JSON文件相同的结构，但它仍是硬编码的。
+示例：execute if predicate {condition:weather_check, raining:true}。
+
+物品谓词参数
+
+扩展了用于/execute if|unless items和/clear的物品谓词语法。
+现在的语法为：<type> [comma-separated list of <test>]。
+<type>可以为物品ID、带有#前缀的物品标签或*以表示任意物品。
+
+<test>现在有以下3种形式：
+<component_id>=<value>：匹配组件的精确值（与先前的格式相同）。<value>表示SNBT格式的组件值，与/item give的参数相同。
+
+<component_id>：检测组件是否存在。
+
+<predicate_id>~<value>：检测物品子谓词。
+<value>表示SNBT格式的物品子谓词，除此以外与用于进度和战利品表的JSON文件格式相同。
+
+示例：*[damage~{durability:{min:3}}]用于匹配剩余至少可用3次的任意堆叠。
+
+minecraft:count可用于匹配堆叠数量。
+count=<positive int>仅当堆叠数等于赋予值时满足。
+
+count~<int range>仅当堆叠数在指定范围间时满足。
+例如*[count~{max:2}]将会匹配堆叠数<=2的任意堆叠。
+
+仅为count时总是满足。
+
+所有<test>项都可通过!前缀来反选。
+例如*[!count=1]将会匹配数量非1的任意堆叠。
+
+<test>项还可通过|检测多个替代选项。
+例如*[!damage|damage=0]将会寻找没有damage组件或此组件值为0的物品。
+
+移除了{}语法，它们已被custom_data谓词代替。
+因此stick{a:2}现在变成了stick[custom_data~{a:2}]。
+
+谓词
+
+物品子谓词：
+minecraft:custom_data现在既接受写做字符串的现有SNBT数据，也接受不扁平的标签。
+因此*[custom_data~{a:1}]等价于*[custom_data~"{a:1}"]。
+
+实体子谓词：
+加入了实体子谓词wolf以匹配狼的变种字段。
+variant：狼的变种，可以是单一项目、项目列表或标签。
+
+cat、frog與​painting
+variant字段现在接受单一项目、项目列表或标签。
+
+常规
+
+数据包
+
+将数据包版本号更改为36。
+
+从物品数据中删除了冗余的自定义数据部分（{…}），因为它已被[custom_data={…}]完全取代。
+
+更改了wolf_variant的格式。
+将字段texture重命名为wild_texture。
+
+wild_texture、tame_texture與​angry_texture不再需要textures/前缀和.png后缀。
+
+资源包
+
+将资源包版本号更改为30。
+
+将地图装饰图标从以前的map_icons.png中分离为从textures/map/decorations/目录中加载的图集。
+
+加入了trial_chambers地图装饰图标。
+
+可以使用Slicer自动工具来升级资源包。
+
+标签
+
+将物品标签axolotl_tempt_items重命名为axolotl_food。
+
+函数
+
+函数列表中不再支持嵌套列表。
+
+战利品表函数
+
+set_lore函数：
+移除了replace字段。
+
+加入了mode，与set_fireworks與​set_written_book_pages中的同名字段格式相同。
+
+set_written_book_pages函数：
+pages现在是一个JSON对象而不再是一个JSON文本。
+
+新内容（实验性）
+
+物品
+
+探险家地图
+
+加入了试炼密室地图。
+可与老手级制图师村民交易获得。
+
+用于指向最近的试炼密室。
+
+游戏内容
+
+进度
+
+加入了7个新进度。
+礦藝：煉武版
+
+金繩玉鎖
+
+逆風而舉
+
+扶搖直上
+
+還製其身
+
+銅光煥發
+
+痛貫天靈
+
+更改（实验性）
+
+方块
+
+Heavy Core
+
+现在可以含水。
+
+现在不会被水流和熔岩流破坏，但仍会被熔岩源破坏。
+
+现在可被活塞推拉。
+
+地图颜色由黑色更改为银色（METAL）。
+
+硬度由30降低到10，爆炸抗性由30提高到1200。
+
+物品
+
+Mace
+
+加入了摔落距离超过5格时的新攻击音效。
+
+现在不再是蜘蛛网的合适挖掘工具，也不再能加速挖掘方块。
+
+现在其合成配方是有序的。
+
+世界生成
+
+试炼密室
+
+降低了生成次数。
+
+将两个试炼密室之间的最小距离由8区块更改为12区块，平均距离由32区块更改为34区块。
+
+修复
+
+修疏漏三十三
+
+先之謬
+
+MC-200947 — map_icons.png纹理文件中有大量未使用的空白。
+
+MC-200987 — Boss栏的标题会破坏HUD的不透明度。
+
+MC-251303 — 屏幕中的Boss栏多于1个时，它们的透明度失效了。
+
+1.20.4的漏洞
+
+MC-267747 — 启用F1时，在聊天框的单击或悬停事件不生效。
+
+MC-269083 — 物品栏中的状态效果背景纹理将半透明像素渲染为不透明像素。
+
+MC-269085 — 经验条和蓄力条将半透明像素渲染为不透明像素。
+
+槧二四週一二甲之謬
+
+MC-267933 — 创造模式物品栏中找不到精准采集和时运附魔书。
+
+MC-267943 — 专属于铁砧的魔咒可从附魔台获取。
+
+MC-268068 — 在某些分辨率下，Realm“重置世界”菜单中的部分文本可能相交。
+
+MC-268171 — 在Minecraft中，某些GUI纹理不再透明。
+
+MC-268311 — 节肢杀手魔咒使用的是#arthropods标签而不是#sensitive_to_bane_of_arthropods。
+
+MC-268312 — 穿刺魔咒使用的是#aquatic标签而不是#sensitive_to_impaling。
+
+MC-268343 — 风弹被击飞后，飞行路线不自然地卡顿。
+
+MC-268510 — 具有Unbreakable:1b标签的物品不再能附上耐久魔咒。
+
+MC-268556 — 风弹穿过碰撞箱不完整的方块而非发生碰撞。
+
+MC-269169 — 狼的变种不在进度准则中。
+
+MC-269268 — 组件对锻造台配方不生效。
+
+MC-269280 — 滚动条存在时，不兼容的资源包或数据包的右侧无法正确渲染。
+
+MC-269299 — “实验性内容”菜单中的红色文本不可被叙述，也不能被选中。
+
+MC-269336 — set_enchantments物品修饰器倍率大于255时崩溃。
+
+先槧之謬
+
+MC-269337 — /datapack disable不工作。
+
+MC-269354 — minecraft:item.mace.smash_air声音事件的字幕显示为原始翻译字符串。
+
+MC-269356 — 即使Heavy Core的方块状态表示其有方向，但它的方向不能被改变。
+
+MC-269361 — 风弹反弹的行为很奇怪。
+
+MC-269393 — 风弹击中实体时游戏崩溃。
+
+MC-269401 — minecraft:set_written_book_pages物品修饰器与minecraft:set_name與​minecraft:set_lore不一致。
+
+MC-269403 — 重锤挖掘任意方块的速度比徒手快。
+
+MC-269409 — /particle entity_effect不可执行。
+
+MC-269419 — Heavy Core不含水。
+
+MC-269422 — 细雪上的地毯不再抵消摔落伤害。
+
+MC-269452 — 使用mode为replace_section且带有非常大的size值的物品修饰器时崩溃。
+
+MC-269457 — set_lore物品修饰器超过256个项时崩溃。
+
+MC-269513 — Mace能破坏蜘蛛网。

@@ -1,0 +1,240 @@
+# WORK_TITLE: 礦藝大典
+# PAGE_TITLE: 爪哇版簽
+# URL: https://lzh.minecraft.wiki/%E7%88%AA%E5%93%87%E7%89%88%E7%B0%BD
+# WIKI_CATEGORIES: 分類:爪哇版，分類:爪哇版獨有篇，分類:錄囊
+# DATE: 2026-05-19T23:52:15Z
+# SCRAPED_AT: 2026-06-08T19:15:06+00:00
+# AUTHOR: 礦藝大典之用戶
+# CATEGORIES: 游戲，維基
+# LICENSE: CC-BY-NC-SA-3.0 https://creativecommons.org/licenses/by-nc-sa/3.0/
+# RIGHTS_NOTE: Non-commercial reuse only; ShareAlike applies to adaptations. Images and game assets excluded unless separately licensed.
+
+此篇乃爪哇版獨有也。
+
+簽（Tag）者，乃許戲者以JSON檔歸戲資於若干類別者也。
+
+定
+
+錄構
+
+簽定檔之徑關乎其所定之簽型。
+
+簽歸於錄囊之data/<名域>/tags/<錄囊徑>錄下。除卻進程與方，諸名簿內文皆可定相應之簽（無論戲供調各名簿簽與否）。如塊簽之檔徑為data/<名域>/tags/block。
+
+術不為名簿內文，惟其錄於同級。
+
+/ <錄囊名>
+pack.mcmeta
+
+data
+<名域>
+tags
+<某名簿錄囊徑>
+<名簿簽名>.json
+
+function
+<術簽名>.json
+
+餘錄...
+
+名域棨信
+
+簽之棨信亦循名域棨信之格。戲中擷簽時，常於其棨信前綴以“#”，以辨於非簽元。如之於塊方名簿之元，minecraft:air表一塊方，而#minecraft:air則表一塊簽。
+
+檔格
+
+簽之定檔以JSON格行之，循下文所述構之：
+
+根簽。
+replace：（預置為false）此簽完覆次級錄囊同名域下之同名簽與否。若為false則補述之。
+
+*values：一戲中之資表，表此簽之內文。
+：一戲資，其格應為-{}-<名域>:<徑>。
+
+：一戲資之簽，其格應為-{}-#<名域>:<徑>。環引之將致簽載無成。
+
+：帶可擇之格。
+*id：一戲資之棨信抑其簽棨信，其格同上。
+
+required：（預置為true）*id所定之戲資要與否。若為false，縱*id所述內文無有，戲乃靜略之，而不使之載無成。
+
+載
+
+相異之錄囊或將覆定一簽。戲將依序載簽：
+
+若此簽之某要元無有，抑此簽環引，則其載無成。
+
+若此簽之某非要元（required為false）無有，則戲靜略之，反之常增於簽表。
+
+若上級錄囊定簽之replace為true，則捨下級錄囊之數。縱下級錄囊所定之簽無效，戲亦常載上級錄囊之簽。
+
+若上級錄囊定簽之replace為false，則兼上下之數。而若下級錄囊所定之簽無效，則其載無成。
+
+用
+
+異所所調之簽其果亦異。其於測定某資歸於某簽與否廣為所用，是資合於簽內所定之任一資，測即成。
+
+各原版之簽皆或可於戲源碼中作以行與調之限件，故簽乃逕制其所含者之行。如原版塊簽可控及判各塊之行（諸如是塊可攀與否），原版物簽可控及判物之行（諸如是物可否用染），原版實體類之簽可控及判生靈之行（諸如歸一生靈於蟲與否，繼而制剋蟲之靈）。原版之進程及方等文檔亦可以簽現許件之斷。
+
+原版之戲無術，亦預置無術簽，然錄囊所定之術檔可為戲常錄。
+
+原版之簽
+
+關乎原版之簽之表及詳述，敬請擊下錄標側之鏈，移形相應之詳葉。
+
+data
+minecraft
+tags
+banner_pattern：旗楷之簽。
+
+block：塊方之簽。
+
+damage_type：傷類之簽。
+
+dialog：札之簽。
+
+enchantment：靈之簽。
+
+entity_type：實體類之簽。
+
+fluid：流體之簽。
+
+function：術之簽。留意：戲未於client.jar等文檔預置術簽。
+
+game_event：戲事之簽。
+
+instrument：山羊角管之簽。
+
+item：物之簽。
+
+painting_variant：畫品之簽。
+
+point_of_interest_type：好類之簽。
+
+potion：劑效之簽。
+
+timeline：時序之簽。
+
+villager_trade：鄉民賈之簽。
+
+worldgen
+biome：生態域之簽。
+
+configured_feature：既置地物之簽。
+
+flat_level_generator_preset：平川預置之簽。
+
+structure：構之簽。
+
+world_preset：生界預置之簽。
+
+cat_variant：貓品之簽。（此簽不復用於戲）
+
+示例
+
+定新簽
+模板:File display
+
+於令以#example:my_logs用之。如以令/fill ~-5 ~-5 ~-5 ~5 ~5 ~5 air replace #example:my_logs更戲者方圓五方之塊為氣。
+
+於簽中引他簽
+模板:File display
+
+此簽檔具含模板:TagLink塊簽及tnt塊方。
+
+簽中可選者
+模板:File display
+
+此致若example:custom_item無存（諸如於相異之既改情景），不示載誤。
+
+展原版之簽
+模板:File display
+
+基於模板:TagLink之上增以#minecraft:wool塊簽之全文，令劍得削羊毛如泥。
+
+更原版之簽
+模板:File display
+
+此將完覆次級錄囊下之同名文檔模板:TagLink，令烽火臺基座僅可以礠石構。
+
+史
+
+爪哇版
+一點一三
+一七週四九甲
+增塊簽及物簽。
+一七週四九乙
+增術簽。
+一七週五〇甲
+今可含他簽，如#foo:bar。
+今可以"replace": true更簽而非增之。
+一八週一九甲
+加入了流体标签。
+一點一四
+一八週四三甲
+增實體類之簽。
+一點一六點二
+二〇週三〇甲
+可以required屬性使簽中任一元為可選。
+一點一七
+二〇週四九甲
+增戲事之簽。
+一點一八點二
+二二週〇六甲
+今可定簽予名簿中諸類，而不似早先惟塊、物、流體、實體類、戲事及術可定之。
+二二週〇七甲
+增生態域之簽。
+預一
+增既置之構及地物之簽。
+一點一九
+二二週一一甲
+增生界預置之簽及平川預置之簽。
+更“既置之構及地物”之簽為“構”簽。
+二二週一四甲
+增貓品之簽。
+二二週一六甲
+增畫品之簽。
+二二週一七甲
+增旗楷之簽及山羊角管之簽。
+二二週一九甲
+增好類之簽。
+一點一九點四
+二三週〇六甲
+增傷類之簽。
+一點二〇點五
+預一
+增靈簽。
+一點二一
+二四週一九甲
+更下錄之名：
+items → item
+
+blocks → block
+
+entity_types → entity_type
+
+fluids → fluid
+
+game_events → game_event
+
+二四週二一甲
+更functions錄名為function。
+一點二一點五
+二五週〇四甲
+去貓品之簽。
+一點二一點六
+二五週二〇甲
+增札簽。
+二六點一
+快照一
+增鄉民賈之簽及劑效之簽。
+預一
+增既置地物之簽。
+
+軼事
+
+若一液兼附water與lava簽將現異效，如熔石逕成黑曜石如熔岩抑單水䃮。
+
+參
+
+基石版簽

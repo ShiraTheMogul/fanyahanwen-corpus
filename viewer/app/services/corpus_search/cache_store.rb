@@ -30,7 +30,7 @@ module CorpusSearch
       end
 
       JSON.parse(payload)
-    rescue JSON::ParserError, Zlib::GzipFile::Error
+    rescue JSON::ParserError, Zlib::GzipFile::Error, Errno::ENOENT
       nil
     end
 
@@ -38,14 +38,21 @@ module CorpusSearch
       path = absolute(relative_path)
       FileUtils.mkdir_p(path.dirname)
 
-      json = JSON.pretty_generate(object)
+      # Compact JSON matters for term indexes. Pretty JSON is pleasant to read,
+      # but it creates much larger strings for hundreds of thousands of entries.
+      json = JSON.generate(object)
+      tmp_path = path.dirname.join(".#{path.basename}.#{$$}.tmp")
+
       if gzip || path.extname == ".gz"
-        Zlib::GzipWriter.open(path.to_s) { |gz| gz.write(json) }
+        Zlib::GzipWriter.open(tmp_path.to_s) { |gz| gz.write(json) }
       else
-        path.write(json)
+        tmp_path.write(json)
       end
 
+      FileUtils.mv(tmp_path, path)
       path
+    ensure
+      FileUtils.rm_f(tmp_path) if defined?(tmp_path) && tmp_path
     end
 
     def delete(relative_path)

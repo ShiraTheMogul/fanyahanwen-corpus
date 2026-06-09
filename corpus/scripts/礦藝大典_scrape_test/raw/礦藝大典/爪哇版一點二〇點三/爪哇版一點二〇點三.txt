@@ -1,0 +1,123 @@
+# WORK_TITLE: 礦藝大典
+# PAGE_TITLE: 爪哇版一點二〇點三
+# URL: https://lzh.minecraft.wiki/%E7%88%AA%E5%93%87%E7%89%88%E4%B8%80%E9%BB%9E%E4%BA%8C%E3%80%87%E9%BB%9E%E4%B8%89
+# WIKI_CATEGORIES: 分類:爪哇版之版
+# DATE: 2026-01-30T16:35:54Z
+# SCRAPED_AT: 2026-06-08T18:01:52+00:00
+# AUTHOR: 礦藝大典之用戶
+# CATEGORIES: 游戲，維基
+# LICENSE: CC-BY-NC-SA-3.0 https://creativecommons.org/licenses/by-nc-sa/3.0/
+# RIGHTS_NOTE: Non-commercial reuse only; ShareAlike applies to adaptations. Images and game assets excluded unless separately licensed.
+
+一點二〇點三（1.20.3）者，爪哇版之小版也，廣佈於癸卯年十月廿三日。精盾干，位侃談，補疏漏。
+
+新者
+
+常
+
+籤
+
+增傷籤，曰：
+#can_break_armor_stand：player_attack與​player_explosion。
+有之者，壞甲桁於一擊。
+
+增實體籤，曰：
+#can_breathe_under_water：#undead、axolotl、frog、guardian、elder_guardian、turtle、glow_squid、cod、pufferfish、salmon、squid、tropical_fish、tadpole與​armor_stand。
+有之者不溺。
+
+#undead：#skeletons、#zombies、wither與​phantom.
+
+#zombies：zombie_horse、zombie、zombie_villager、zombified_piglin、zoglin、drowned與​husk。
+
+改
+
+物
+
+盾
+
+今之舉盾，臂也左右遂目。
+
+錄囊
+
+進諸19。
+
+JSON原文範式
+
+侃談惟言，則序以爲文，非{"text': "blah"}然。
+
+件傳於網，先行序之。
+
+件之type值，許有可選者（如text、translatable、score、nbt與​keybind等），以備考訂。
+
+id句從show_entity hoverEvent之範式，則容四元之列。
+
+translate之件，不復文數。
+
+null、[]二式，不復容之。
+
+格中有舛，不復忍之：
+color
+
+clickEvent
+
+hoverEvent
+
+hoverEvent[action=show_entity].contents.name
+
+hoverEvent[action=show_item].contents.tag
+
+籤
+
+增髑馬於#skeletons。
+
+補
+
+修疏漏十八
+
+嚮各完版之疏漏
+
+MC-47607 — 粒之極小，障形不見。
+
+MC-50647 — 雖有孳衍籠，其所不正，不生黏膠魔。
+
+MC-78314 — 甲桁呼翕水中。
+
+MC-109101 — 戲者仰首，盾無以禦。
+
+MC-114761 — 藥雲施於亡者。
+
+MC-172398 — 火收囊中，繪依所嚮。
+
+MC-221558 — 粒之極小，光盞不見。
+
+MC-227255 — 蜂箱蜂巢，構而不正。
+
+MC-236946 — 盾之禦也，合矢失正。
+
+MC-253819 — 鐘之出構，所嚮未正。
+
+MC-254850 — 吏逐私網之主。
+
+MC-255173 — 焱門僻遠，其所失正。
+
+MC-263123 — 修繕既成，羨餘不處。
+
+一點二〇之疏漏
+
+MC-261303 — 飾甕有態cracked未以。
+
+一點二〇點一之疏漏
+
+MC-264748 — GLX._initGlfw以索爲文。
+
+MC-265353 — 物展針儀，不正方時。
+
+一點二〇點二之疏漏
+
+MC-265462 — 戲之方啟，傳以資囊，則長闢世。
+
+MC-265519 — 林檎而全幕，繫之以靡。
+
+參典
+
+津渡

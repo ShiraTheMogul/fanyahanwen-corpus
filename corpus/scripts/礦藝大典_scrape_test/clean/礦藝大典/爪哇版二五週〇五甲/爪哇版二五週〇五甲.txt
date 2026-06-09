@@ -1,0 +1,246 @@
+# WORK_TITLE: 礦藝大典
+# PAGE_TITLE: 爪哇版二五週〇五甲
+# URL: https://lzh.minecraft.wiki/%E7%88%AA%E5%93%87%E7%89%88%E4%BA%8C%E4%BA%94%E9%80%B1%E3%80%87%E4%BA%94%E7%94%B2
+# WIKI_CATEGORIES: 分類:廣佈於甲辰年之快照，分類:爪哇版一點二一點五快照，分類:爪哇版之版
+# DATE: 2026-05-08T15:54:54Z
+# SCRAPED_AT: 2026-06-08T18:19:42+00:00
+# AUTHOR: 礦藝大典之用戶
+# CATEGORIES: 游戲，維基
+# LICENSE: CC-BY-NC-SA-3.0 https://creativecommons.org/licenses/by-nc-sa/3.0/
+# RIGHTS_NOTE: Non-commercial reuse only; ShareAlike applies to adaptations. Images and game assets excluded unless separately licensed.
+
+二五週〇五甲者，爪哇版一點二一點五之丁快照也，廣布於甲辰年臘月廿九日，豐牛之品、大漠、塬之聲，增叢與螢叢，更烽火臺之繪距，並補疏漏焉。
+
+新者
+
+塊方
+
+螢叢
+
+生乎澤，亦傍水而成。
+
+既夜，螢將現乎是。
+
+施骨塵則滋焉。
+
+微光生焉。
+
+叢
+
+生乎野、川、丘與樺林，聚以簇也。
+
+施骨塵則滋焉。
+
+生靈
+
+牛
+
+豐牛之色，因於所在。
+媾生者嗣其怙恃。
+
+牛之故形，隨之更也。
+
+牛色
+
+Cold Cow
+
+Warm Cow
+
+Temperate Cow
+
+生態域
+
+古松棘林
+古樅棘林
+棘林
+雪棘林
+當風丘
+當風礫丘
+當風林
+
+莽原
+莽塬
+當風莽原
+叢莽
+疏叢莽
+竹林
+風蝕墝埆
+疏林墝埆
+墝埆
+
+餘者
+
+戲事
+
+粒
+
+增粒，曰firefly。
+
+常
+
+錄囊
+
+牛之諸品，錄諸錄囊也。
+
+疊物之件
+
+增cow/variant件，以錄牛之品也。
+
+增文於blocks_attacks件如左：
+增文bypassed_by，錄傷之莫禦者。
+
+於damage_reductions諸文，增文horizontal_blocking_angle（數大於0，以90爲本），錄禦傷之限角。
+
+籤
+
+增籤#plays_ambient_desert_block_sounds：#terracotta、sand與​red_sand。
+塊之奏漠之聲者。
+
+改
+
+塊方
+
+烽火臺
+
+烽火臺與其光，外乎十六區塊，今猶繪也，但限以客段之繪距也。
+是光也，遠則益厚，戲者是以睹烽火於遠也。
+
+於縱，繪乎二〇四八格，非嚮之一〇二四格。
+
+沙、紅沙及諸陶
+
+誠遙周以是塊，則或奏聲焉。
+是聲也，沙聲恒可奏；於大漠及諸塬，亦可奏風聲也。
+
+枯木
+
+下以雙沙、紅沙，抑諸陶，則或奏聲焉。
+
+齏雪
+
+實體之著革鞾、墜逾二格有半而落乎齏雪者，將穿而莫能止於是也。
+
+令範
+
+語件
+
+語件之於/bossbar、/scoreboard和/team者，將取@s以令者而解。
+
+闢世
+
+蔗叢
+
+弗生於黯淵、鐘乳石穴、雪林與雪阪。
+
+常
+
+錄囊
+
+晉錄囊於65。
+
+襲之範式
+
+更文如左：
+Raids→raids
+
+Tick→tick
+
+NextAvailableID→next_id
+
+Id→id
+
+Started→started
+
+Active→active
+
+TicksActive→ticks_active
+
+BadOmenLevel→raid_omen_level
+
+GroupsSpawned→groups_spawned
+
+PreRaidTicks→cooldown_ticks
+
+PostRaidTicks→post_raid_ticks
+
+HeroesOfTheVillage→heroes_of_the_village
+
+TotalHealth→total_health
+
+NumGroups→group_count
+
+Status→status
+
+集CX、CY、CZ諸center。
+
+資囊
+
+晉資囊於50。
+
+更牛、豕諸紋之位。
+
+方
+
+取物誠同類於成物，嬗方今可行也。
+
+籤
+
+復#bypasses_blocking以#bypasses_shield。
+
+補
+
+修疏漏二十二
+
+先之謬
+
+MC-108495 — 實體之非生靈者，可同伍，而莫現以team=也。
+
+MC-165711 — 終眇眼之方寸匡常滯乎其形。
+
+一點二一點二之謬
+
+MC-279390 — 幼豕靈之胄貫其身。
+
+一點二一點四之謬
+
+MC-279857 — 豕靈之生以/summon者莫拾金也。
+
+槧二五週〇五甲之謬
+
+MC-279257 — 嬗方之取物，誠同類於成物，則弗行也。
+
+MC-279280 — windswept_hills並列寒、溫生態域之籤。
+
+MC-279315 — 溫豕莫生於當風莽原。
+
+MC-279353 — minecraft:fall_damage_multiplier属性不在骑乘某些可骑乘生物时生效。
+
+MC-279497 — 大小达到最大整型长度的结构预览轮廓损坏。
+
+MC-279531 — 戲測之未可成構，弗報也。
+
+MC-279534 — 諸示既移形，其時謬也。
+
+MC-279543 — 生靈之見攻而怒者，或弗怒而攻也。
+
+MC-279556 — 實體之見選於/data令者，或弗見選於/execute on attacker令。
+
+MC-279577 — 塊測之構但容單測塊。
+
+先槧之謬
+
+MC-279684 — 方禦傷以盾，未見盾之作也。
+
+MC-279685 — 既禦傷以盾，盾弗損也。
+
+MC-279688 — 既翔以鞘翼，則將止奔也。
+
+MC-279692 — 奏器之件將崩戲。
+
+MC-279693 — 滯劑繪如噴劑。
+
+MC-279697 — 美洲駝具鞍之槽而莫可入焉。
+
+MC-279698 — provides_banner_pattern件未可右以#。
+
+MC-279760 — provides_trim_material件之附文者將崩。

@@ -1,0 +1,160 @@
+# WORK_TITLE: 礦藝大典
+# PAGE_TITLE: 爪哇版一點二一之預二
+# URL: https://lzh.minecraft.wiki/%E7%88%AA%E5%93%87%E7%89%88%E4%B8%80%E9%BB%9E%E4%BA%8C%E4%B8%80%E4%B9%8B%E9%A0%90%E4%BA%8C
+# WIKI_CATEGORIES: 分類:廣佈於甲辰年之預版，分類:爪哇版一點二一預版，分類:爪哇版之版
+# DATE: 2025-11-21T15:22:50Z
+# SCRAPED_AT: 2026-06-08T18:05:33+00:00
+# AUTHOR: 礦藝大典之用戶
+# CATEGORIES: 游戲，維基
+# LICENSE: CC-BY-NC-SA-3.0 https://creativecommons.org/licenses/by-nc-sa/3.0/
+# RIGHTS_NOTE: Non-commercial reuse only; ShareAlike applies to adaptations. Images and game assets excluded unless separately licensed.
+
+一點二一之預二（1.21-pre2）者，爪哇版一點二一之次預版也，廣佈於甲辰年四月廿四日，補疏漏焉。
+
+新者
+
+常
+
+自定地物
+
+增厝綴，曰fixed_placement，以定厝者也。
+
+增設黑曜臺爲地物，曰end_platform。
+
+群說之戶
+
+增檢舉之句匡。
+
+籤
+
+增塊籤如左：
+#mob_interactable_doors：#wooden_doors、copper_door、exposed_copper_door、weathered_copper_door、oxidized_copper_door、waxed_copper_door、waxed_exposed_copper_door、waxed_weathered_copper_door與​waxed_oxidized_copper_door。
+門之活樞者也。
+
+改
+
+塊方
+
+銅門
+
+諸銅門今當以石鎬以上掘之。斧不復速，爐不復薪。
+
+煉孳衍籠
+
+改其底貌以應基石版。
+
+物
+
+重芯、戟、椎
+
+今其罕也珍。
+
+旗楷
+
+今豕鼻之紋，其罕也鮮。
+
+今氣洄、飆二紋，其罕也稀。
+
+實體
+
+終界水玉
+
+今無焚戕。
+
+闢世
+
+終界臺
+
+今爲既措地物，恒居緯百縱四十九處。
+
+戲事
+
+靈
+
+风迸之靈，不作以彈。
+
+常
+
+錄囊
+
+晉錄囊於47。
+
+籤
+
+銅門除於#wooden_doors，是以絶於#mineable/axe。
+
+補
+
+修疏漏三十一
+
+先一點二一之預二之謬
+
+MC-223165 — 猪鼻旗帜图案在游戏中被视为常见战利品。
+
+MC-252691 — 首次创建表面为非完整方块的超平坦世界时，玩家在基岩层上生成。
+
+MC-266113 — 铜门及其变种在#minecraft:wooden_doors标签内。
+
+MC-266118 — 铜门及其变种在#minecraft:mineable/axe标签内。
+
+MC-269359 — “砖纹”、“头颅盾徽”、“涡流”和“旋风”旗帜图案的背面没有镜像。
+
+MC-269389 — 涡流旗帜图案被视为常见战利品。
+
+MC-269390 — 旋风旗帜图案被视为常见战利品。
+
+MC-270033 — 蠹虫或史莱姆进入寄生或渗浆效果云内时，区域效果云收缩。
+
+MC-271199 — 进度“靈丹妙藥”不能通过⇧ Shift+单击达成。
+
+MC-272241 — 从世界边界外穿越下界传送门时报错。
+
+槧一點二一之預二之謬
+
+MC-271754 — 铜门能作为熔炉燃料使用。
+
+MC-271887 — 穿着灵魂疾行靴子跳下灵魂沙/灵魂土后，视场角不会变回正常。
+
+MC-271892 — 带着缓降效果并穿着灵魂疾行靴子跳上灵魂沙/灵魂土时，视场角不会立刻改变。
+
+MC-272224 — “in_bounding_box”垂直位置的“spawn_particles”效果被异常锚定。
+
+MC-272333 — 游戏规则spawnRadius不再在重生时生效（总是重生在相同的位置）。
+
+先槧之謬
+
+MC-272547 — block.portal.travel音效不再在进入末地传送门时播放。
+
+MC-272550 — 现在末地水晶会受到火焰伤害以致其瞬间爆炸。
+
+MC-272553 — 黑曜石平台生成在岛里时，自然生成的末地石就会掉落。
+
+MC-272556 — 骑乘实体时，末影珍珠没有正常生效并导致玩家被瞬间传送。
+
+MC-272559 — 玩家在骑乘实体时向传送门投掷末影珍珠不能跨越维度。
+
+MC-272563 — 使用“极佳！”画质设置时，末影龙死亡动画渲染于方块后。
+
+MC-272571 — 从24w21b升级到1.21 Pre-release 1后服务器崩溃。
+
+MC-272583 — 每当用末影珍珠从主岛穿过末地折跃门，就会创造一个新传送门。
+
+MC-272585 — 附有多重射击的弓或弩耗尽耐久度时崩溃。
+
+MC-272588 — 风弹能触发风爆。
+
+MC-272595 — 用坏胡萝卜/诡异菌钓竿不再给予钓鱼竿。
+
+MC-272596 — 将末影珍珠投入末地喷泉会跳过鸣谢名单。
+
+MC-272625 — 将被拴住的实体传送至另一维度后，游戏在保存时崩溃。
+
+MC-272638 — 破坏掉船时，连接到船上的拴绳被删除。
+
+MC-272639 — trial_spawner_bottom纹理与基岩版不同。
+
+MC-272650 — 可以在默认出生点的半空中重生。
+
+參典
+
+津渡

@@ -1,0 +1,425 @@
+# WORK_TITLE: 礦藝大典
+# PAGE_TITLE: 爪哇版二六點一
+# URL: https://lzh.minecraft.wiki/%E7%88%AA%E5%93%87%E7%89%88%E4%BA%8C%E5%85%AD%E9%BB%9E%E4%B8%80
+# WIKI_CATEGORIES: 分類:待譯之篇，分類:方修之事，分類:爪哇版之版
+# DATE: 2026-05-24T02:19:40Z
+# SCRAPED_AT: 2026-06-08T18:24:45+00:00
+# AUTHOR: 礦藝大典之用戶
+# CATEGORIES: 游戲，維基
+# LICENSE: CC-BY-NC-SA-3.0 https://creativecommons.org/licenses/by-nc-sa/3.0/
+# RIGHTS_NOTE: Non-commercial reuse only; ShareAlike applies to adaptations. Images and game assets excluded unless separately licensed.
+
+是篇方修也。 議
+
+可補正於此。
+
+是篇之譯未成。
+
+儻協而譯之，善也。顧宜親力親爲，器械與機巧僞智者不足取也。
+
+二六點一 （26.1） 者，爪哇版之次版也，廣布於丙午年二月初六日。
+
+此次爪哇版更新将首次采用新版本格式，该格式宣布于乙巳年十月十三日。
+
+新者
+
+令式
+
+/swing
+
+新命令，许臂摆。
+
+并非所有实体皆支持摆动，命令可能会返回成功，但客户端仅于许可情况下显示动画。
+
+如，其可令玩家模型摆臂。
+
+返回实体之数量。
+
+格式：
+/swing <entity selector> <mainhand|offhand>
+
+常规
+
+lightmap算法
+
+重写了算法。
+
+新算法预计与之前相同，但：
+它更简单、更直接，修复了之前的许多问题，详见下方修复部分。
+
+凋零战斗的黑暗效果和世界变暗效果现在在所有维度中都以相同的方式工作。
+
+夜视效果现在只会影响环境光照，而不是对颜色值进行缩放。
+这意味着完全黑暗的区域不再比有方块光照或天空光照照亮的地方更明亮。
+
+算法的其他方面，如方块漫反射颜色、环境光照颜色和夜视效果颜色，现在由环境属性控制，
+
+调试屏幕
+
+新增下列选项：
+looking_at_block_tags
+
+looking_at_fluid_tags
+
+looking_at_entity_tags
+
+新增了一个调试渲染Lightmap Texture，可以通过F3 + 4启用。
+和FPS图表以及网络图表互斥。
+
+右下角实时显示光照纹理。
+
+纹理的纵轴代表天空光照强度，从下到上0至15。
+
+纹理的横轴代表方块光照强度，从左到右0至15。
+
+每个像素的颜色代表将对应方块光照和天空光照下要应用到方块和实体的颜色。
+
+村民交易
+
+现在村民和流浪商人的交易选项由数据包控制。
+villager_trade文件夹下的每个文件都代表一个交易蓝图，村民和流浪商人使用它来生成实际交易。
+
+格式：
+wants：代表交易收购的物品类型和物品数量。
+id：物品ID。
+
+count：可选，物品的数量，默认为1。
+
+components：可选，物品的组件检查，默认为空。
+
+additional_wants：可选，村民收购的第二个物品，格式同上。
+
+gives：村民交易的物品，与现有的物品格式相同。
+
+given_item_modifiers：可选，对于出售物品的修饰，例如对魔咒或药水的修订，而不是硬编码它们。
+使用现有的物品修饰器格式。
+
+如果最终物品堆叠为空，则此交易选项将被废弃。
+
+不支持引用物品修饰器。
+
+如果物品的stored_enchantments组件包含属于#double_trade_price标签的魔咒，则价格翻倍。
+
+max_uses：一个数值提供器，交易的最大交易次数，默认为4，如果数值过低则视为1。
+
+reputation_discount：一个数值提供器，交易的价格乘数，默认为0，如果数值过低则视为0。
+
+xp：一个数值提供器，交易完成后的经验值，默认为1，如果数值过低则视为0。
+
+merchant_predicate：村民需要满足的条件，满足条件才可以出现这项交易。
+与现有的战利品表谓词格式一致，不支持引用。
+
+double_trade_price_enchantments：一个魔咒ID、魔咒标签ID或魔咒ID列表，表示会使minecraft:enchant_randomly和minecraft:enchant_with_levels的消耗翻倍的魔咒，前提是include_additional_cost_component为true且物品的stored_enchantments组件包含此魔咒。
+
+这是一个示例，使用绿宝石交换一本附魔书，仅限沙漠村民：
+{
+"additional_wants": {
+"id": "minecraft:book"
+},
+"double_trade_price_enchantments": "#minecraft:double_trade_price",
+"given_item_modifiers": [
+{
+"function": "minecraft:enchant_randomly",
+"include_additional_cost_component": true,
+"only_compatible": false,
+"options": "#minecraft:trades/desert_common"
+},
+{
+"function": "minecraft:filtered",
+"item_filter": {
+"items": "minecraft:enchanted_book",
+"predicates": {
+"minecraft:stored_enchantments": [
+{}
+]
+}
+},
+"on_fail": {
+"function": "minecraft:discard"
+}
+}
+],
+"gives": {
+"count": 1,
+"id": "minecraft:enchanted_book"
+},
+"max_uses": 12.0,
+"merchant_predicate": {
+"condition": "minecraft:entity_properties",
+"entity": "this",
+"predicate": {
+"predicates": {
+"minecraft:villager/variant": "minecraft:desert"
+}
+}
+},
+"reputation_discount": 0.2,
+"wants": {
+"id": "minecraft:emerald"
+}
+}
+
+交易集合
+
+trade_set文件夹下的文件是村民提供的交易组合。
+目前交易集合的调用是硬编码的：<profession>/level_<level>用于村民，wandering_trader/buying、wandering_trader/special和wandering_trader/common用于流浪商人。
+
+格式：
+trades：交易ID、交易ID的列表或交易标签，表示要抽取的交易。
+
+amount：一个数值提供器，此交易提供提供的交易选项数量。如果最终大于总的交易数量，则所有交易都只会出现一次，除非allow_duplicates为true。
+
+allow_duplicates：可选，是否允许出现相同的交易，默认为false。
+
+random_sequence：一个随机序列，决定抽取哪些交易。
+
+这是一个示例，提供#minecraft:armorer/level_1中的两笔交易，允许重复：
+{
+"amount": 2.0,
+"trades": "#minecraft:armorer/level_1",
+"random_sequence": "minecraft:trade_set/armorer/level_1",
+"allow_duplicates": true
+}
+
+环境属性
+
+minecraft:visual/block_light_tint
+方块光照的色调，方块光照颜色在低光照下为灰色，中等光照时会被此属性染色，高光时为白色。默认情况下，它呈现出火把的黄色调。明亮的颜色最适合这个属性，此时至少有一个通道是完全明亮的。该色调适用于屏幕上所有可见的光源，独立的光源无法有不同的色调。
+值类型：RGB颜色
+
+默认值：#FFD88C
+
+修饰符：RGB颜色修饰符
+
+可插值：是
+
+解析位置：摄像机位置
+
+minecraft:visual/ambient_light_color
+环境光照的颜色和亮度，这种光照以0级别的光照等级应用到世界，在方块光照和天空光照之上。
+值类型：RGB颜色
+
+默认值：#0A0A0A代表主世界，#302821代表下界，#3f473f代表末地
+
+修饰符：RGB颜色修饰符
+
+可插值：是
+
+解析位置：摄像机位置
+
+minecraft:visual/night_vision_color
+类似于环境光照颜色，当夜视效果激活时，R、G、B每个通道的使用minecraft:visual/night_vision_color和minecraft:visual/ambient_light_color的最大值作为最终颜色。夜视系统默认没有色调。
+值类型：RGB颜色
+
+默认值：#999999
+
+修饰符：RGB颜色修饰符
+
+可插值：是
+
+解析位置：摄像机位置
+
+数据组件
+
+加入了additional_trade_cost组件。
+用于修改村民出售物品gives的数量的临时组件，交易生成后会立刻被移除。
+
+格式：整型。
+
+战利品上下文
+
+加入了villager_trade。
+this_entity：生成交易的实体。
+
+origin：此实体脚部的位置。
+
+物品修饰器
+
+加入了minecraft:set_random_dyes。
+如果物品在#dyeable标签中，则设置物品的minecraft:dyed_color数据组件。
+conditions：应用修饰器的条件。
+
+number_of_dyes：一个数值提供器，应用于该物品的染料数量。
+共16种染料，可能会被重复染色。
+
+加入了minecraft:set_random_potion。
+设置物品的minecraft:potion_contents数据组件。
+conditions：应用修饰器的条件。
+
+options：可选的药水，可以是药水效果ID、药水效果标签或药水效果标签。默认来自potions注册表。
+
+向minecraft:enchant_with_levels新增下列字段：
+include_additional_cost_component：可选布尔值，表示是否根据魔咒的花费为物品增加minecraft:additional_trade_cost组件。
+默认为false
+
+组件的值由levels数值提供器确定，并在数值上与确定附魔所用的等级相同。
+
+向minecraft:enchant_randomly新增下列字段：
+include_additional_cost_component：可选布尔值，表示是否根据魔咒的花费为物品增加minecraft:additional_trade_cost组件。
+默认为false
+
+组件的值由魔咒的等级level确定，计算公式为2 + random(0, 5 + level * 10) + 3 * level。
+
+实体谓词
+
+向玩家子谓词增加下列字段：
+food：食物谓词。
+level：整数或整数范围，检查饥饿度等级。
+
+saturation：浮点数或浮点数范围，检查饱和度等级。
+
+数值提供器
+
+加入了minecraft:sum。
+返回多个数值提供器的和。
+
+格式：summands，一个数值提供器的列表。
+
+标签
+
+加入了控制村民交易集合的标签。
+村民根据职业和等级由#<profession>/level_<level>控制，最高5级。
+铁匠由#common_smith/level_<level>控制，代表盔甲匠、武器匠和工具匠的通用交易，最高5级，
+
+流浪商人由#wandering_trader/buying、#wandering_trader/special和#wandering_trader/common控制。
+
+加入了药水效果标签：
+#tradeable：可以被制箭师村民售卖的药箭。
+
+改
+
+生物
+
+海豚
+
+今会跟随骑乘鹦鹉螺的戲者，以匹配基石版。
+
+常规
+
+调试屏幕
+
+looking_at_block和looking_at_fluid不再显示标签，标签显示转移到其他调试选项中。
+
+重命名以下调试选项：
+looking_at_block -> looking_at_block_state
+
+looking_at_fluid -> looking_at_fluid_state
+
+闪烁标语
+
+将“Java 16 + 1 + 4 = 21!”更改为“Java 16 + 1 + 4 * 2 = 25!”。
+
+数据包
+
+将数据包版本号更改为95.0。
+
+猪灵的物品栏可以使用piglin.*访问，类似于村民的villager.*。
+
+资源包
+
+将资源包版本号更改为76.0。
+
+魔咒定义格式
+
+post_piercing_attack组件默认不再检查玩家的饥饿度等级。
+
+着色器与后处理管线
+
+lightmap.fsh被大幅修改。
+UniformLightmapInfo现在拥有两个新字段：
+BlockLightTint
+
+NightVisionColor
+
+移除了AmbientLightFactor，其值现在会预先乘进AmbientColor。
+
+将DarkenWorldFactor重命名为BossOverlayWorldDarkeningFactor。
+
+UI中的物品和文字渲染现在使用独立的1x1白色lightmap纹理，因此lightmap着色器不再需要保持15，15的纯白色。
+
+其他更改
+
+现在启动游戏要求的最低Java版本为25。
+
+现在使用的Java发行版为Microsoft构建的OpenJDK 25。
+
+如果服务器磁盘不足，服务器管理员会看到弹窗。
+
+村民交易的刷新现在依赖于随机序列。
+
+改（試行之事）
+
+以下内容仅在创建世界时启用“”内置数据包后才会出现。
+
+常规
+
+标签
+
+移除了下列标签：
+trades/desert_special
+
+trades/jungle_special
+
+trades/plains_special
+
+trades/savanna_special
+
+trades/snow_special
+
+trades/swamp_special
+
+trades/taiga_special
+
+魔咒提供器
+
+移除了所有实验性的魔咒提供器。
+
+補
+
+修疏漏二十
+
+先二六點一之謬
+
+MC-64087 — 带有敌意的僵尸和增援僵尸会试图攻击创造模式下的玩家。
+
+MC-179949 — 无法通过/item replace来修改猪灵的物品栏。
+
+MC-197497 — 平滑光照从等级1过渡到0时并不平滑。
+
+MC-199589 — 在创造模式攻击会反击的生物后切换至生存模式，会导致该生物试图攻击创造模式下的玩家。
+
+MC-219981 — 僵尸首领类生物生成时生命值仍为20，尽管其生命值上限更高。
+
+MC-300465 — 带有最大数量标记的地图无法放入物品展示框中。
+
+MC-302186 — 下界环境光照颜色与旧版本相比出现异常。
+
+MC-302408 — 潮涌能量和夜视效果会导致水下光照渲染异常。
+
+MC-302528 — 天空光照与方块光照在同一区域叠加时会导致渲染异常。
+
+MC-303119 — 在生存模式下当物品栏槽位中仅剩一个食物时，喂食猫或狼时恢复的生命值低于正常值。
+
+MC-303125 — 当玩家在附近有处于爆炸计时中的苦力怕时死亡，苦力怕仍会爆炸。
+
+MC-303389 — 末影龙的速度会受到击退效果的影响。
+
+MC-303692 — 当关闭视频设置中的“改进透明显示”选项时，调试屏幕叠加层文本会缩进。
+
+MC-304023 — 多余的世界数据修复文件被保存在存档的data文件夹中。
+
+MC-304217 — 突进魔咒的额外饥饿度要求会被作用于包含post_piercing_attack组件的自定义魔咒。
+
+MC-304599 — 海豚不会像在基岩版中那样在玩家骑乘鹦鹉螺时跟随玩家。
+
+MC-304631 — 当“各向异性过滤”选项被设置为8x时，使用奇数尺寸的透明与半透明纹理的方块会在远距离变得透明。
+
+MC-304725 — 使用默认的僵尸村民刷怪蛋生成的僵尸村民总是平原变种。
+
+MC-304991 — 在旁观模式下，尝试打开尚未生成战利品的容器时会播放block.chest.locked音效。
+
+MC-305012 — 游戏规则/universal_anger的描述中仍然使用游戏规则/forgive_dead_players的旧ID。
+
+參典
+
+津渡

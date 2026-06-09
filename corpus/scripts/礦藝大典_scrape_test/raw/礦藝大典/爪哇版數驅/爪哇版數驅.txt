@@ -1,0 +1,118 @@
+# WORK_TITLE: 礦藝大典
+# PAGE_TITLE: 爪哇版數驅
+# URL: https://lzh.minecraft.wiki/%E7%88%AA%E5%93%87%E7%89%88%E6%95%B8%E9%A9%85
+# WIKI_CATEGORIES: 分類:方修之事，分類:爪哇版獨有篇
+# DATE: 2025-08-31T03:28:43Z
+# SCRAPED_AT: 2026-06-08T19:01:39+00:00
+# AUTHOR: 礦藝大典之用戶
+# CATEGORIES: 游戲，維基
+# LICENSE: CC-BY-NC-SA-3.0 https://creativecommons.org/licenses/by-nc-sa/3.0/
+# RIGHTS_NOTE: Non-commercial reuse only; ShareAlike applies to adaptations. Images and game assets excluded unless separately licensed.
+
+是篇方修也。 議
+
+可補正於此。
+
+此篇乃爪哇版獨有也。
+
+行數驅（Data Driven）者，以令動，用文格而改天地，善形圖以美萬物。
+
+資名
+
+數驅用文，定以資名（Resource Location），前綴冠别（Namespace），後隨資徑（Path）。範以_、a-z符，否他用。
+
+<冠别>:<資徑>
+
+包
+
+數據包（Data Pack），函集令，載文格。眾戲用之，酒壺之位，置一而主，發控其客。
+
+資源包（Resource Pack），表萬象，更視之。眾戲用之，酒杯之位，眾客提攜，美境殊異。
+
+文構
+
+.minecraft
+resourcepacks
+<資源包>
+pack.mcmeta
+
+assets
+<資冠別>
+<資源包目>
+...
+
+...
+
+...
+
+.minecraft
+saves
+<世名>
+datapacks
+<數據包>
+pack.mcmeta
+
+data
+<資冠別>
+<數據包目>
+...
+
+...
+
+resources.zip
+...
+
+註：resources.zip為壓縮資源包。入世而包載。
+
+pack.mcmeta
+
+包元之文，可示著信、版號。
+
+{
+"pack": {
+"description": "包描述",
+"pack_format": 71
+}
+}
+
+新版者（≥1.21.6），執/version而得版號。
+
+或以蔽蓋包文，以配多版（namespace、path皆值正則式；directory後文徑始與包根）：
+
+{
+"pack": {
+"description": "包描述",
+"pack_format": 71
+},
+"filter": {
+"block": [
+{
+"namespace": "*", "path": "*"
+}
+]
+},
+"overlays": {
+"entries": [
+{
+"formats": 72,
+"directory": "test"
+}
+]
+}
+}
+
+編碼
+
+編碼/Entity
+
+編碼/Item
+
+編碼/DataComponent
+
+教章
+
+Tutorial:爪哇版數驅/光箭
+
+Tutorial:爪哇版數驅/雲艇
+
+Tutorial:爪哇版數驅/煙骸

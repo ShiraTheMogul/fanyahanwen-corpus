@@ -1,0 +1,206 @@
+# WORK_TITLE: 礦藝大典
+# PAGE_TITLE: 爪哇版二〇週一四甲
+# URL: https://lzh.minecraft.wiki/%E7%88%AA%E5%93%87%E7%89%88%E4%BA%8C%E3%80%87%E9%80%B1%E4%B8%80%E5%9B%9B%E7%94%B2
+# WIKI_CATEGORIES: 分類:廣佈於庚子年之快照，分類:爪哇版一點一六快照，分類:爪哇版之版
+# DATE: 2026-05-08T15:53:31Z
+# SCRAPED_AT: 2026-06-08T18:14:02+00:00
+# AUTHOR: 礦藝大典之用戶
+# CATEGORIES: 游戲，維基
+# LICENSE: CC-BY-NC-SA-3.0 https://creativecommons.org/licenses/by-nc-sa/3.0/
+# RIGHTS_NOTE: Non-commercial reuse only; ShareAlike applies to adaptations. Images and game assets excluded unless separately licensed.
+
+二〇週一四甲（20w14a）者，爪哇版一點一六之癸快照也，廣佈於庚子年三月初十日，增屍化獷豕並其孳卵、改熾足獸之所爲，又補疏漏焉。
+
+新者
+
+物
+
+孳卵
+
+增屍化獷豕之孳卵。
+
+生靈
+
+屍化獷豕
+
+獷豕入主界所成。
+
+其膚腐如屍化豕靈。
+
+其不食殖，不避菌，此與獷豕異。
+
+咸攻其所見，惟伏臨及同屬者得免焉。
+
+改
+
+物
+
+司南
+
+其今有字段曰LodestonePos、曰LodestoneDimension、曰LodestoneTracked云。LodestoneTracked之陰也，戲弗察磁石焉。
+
+司南今可淬靈以滅咒。
+
+譎蕈釣竿
+
+今其當損百而非復廿五。
+
+施惟損一焉。
+
+生靈
+
+獷豕
+
+今於主世化而爲屍化獷豕。
+
+今避焱界門及復生錨。
+
+豕靈
+
+今避屍化獷豕如避屍化豕靈。
+
+熾足獸
+
+今疾如行舟。
+
+常
+
+進程
+
+今當殛古海衛、終界龍、終眇螨、惱鬼、凋靈、屍化獷豕，然後方成「小試牛刀」以及「天下無敵手」。
+
+品
+
+物不復存未明之品焉。
+
+更名若干，以合於名宇編碼。
+改generic.maxHealth爲generic.max_health。
+
+改zombie.spawnReinforcements爲zombie.spawn_reinforcements。
+
+改horse.jumpStrength爲horse.jump_strength。
+
+改generic.followRange爲generic.follow_range。
+
+改generic.knockbackResistance爲generic.knockback_resistance。
+
+改generic.movementSpeed爲generic.movement_speed。
+
+改generic.flyingSpeed爲generic.flying_speed。
+
+改generic.attackDamage爲generic.attack_damage。
+
+改generic.attackKnockback爲generic.attack_knockback。
+
+改generic.attackSpeed爲generic.attack_speed。
+
+改generic.armorToughness爲generic.armor_toughness。
+
+卷首
+
+更其景爲焱界。
+
+生界錄檔
+
+地方之檔今同步而啟之，以免見損於崩。
+服务器可以通过更改server.properties内的sync-chunk-writes来禁用它。
+
+計
+
+通用统计信息在统计信息菜单中现在会按字母顺序排序。
+
+籤
+
+在hoglin_repellents方块标签中加入了下界传送门和重生锚。
+
+補
+
+修疏漏三十九
+
+先之謬
+
+MC-83039 — 末地城箱子被破坏，物品散落一地。
+
+MC-91893 — 各种音效缺失字幕。
+
+MC-109248 — 当使用/setblock放置一个不同的活塞基部时，伸出的活塞头无法移除。
+
+MC-115750 — 杀死特定敌对生物时无法达成进度“怪物猎人”（kill_a_mob）。
+
+MC-116756 — 铁活板门字幕相互颠倒且不一致。
+
+MC-124428 — 如果颜色值被替换为整型数组，烟火之星会导致游戏崩溃。
+
+MC-125055 — 雪屋的酿造台和花盆内容物掉落（并放置）。
+
+MC-127316 — 通用统计信息混乱。
+
+MC-133049 — 方块底部或顶部的物品展示框中，指南针没有指向正确的位置。
+
+MC-135501 — 另一个标签内的无效标签无提示地无法重新加载数据包。
+
+MC-150405 — 客户端处理未知实体属性时存在漏洞。
+
+MC-150455 — 在碰撞箱高度不足的熔岩旁行走（如在灵魂沙上），仍可能会导致实体燃烧。
+
+MC-154427 — 村民最多只能捡起4组物品。
+
+MC-161128 — 活塞基部被快速破坏并替换后，活塞头不会消失。
+
+MC-164129 — 末影龙内部碰撞箱渲染偏移约200个方块。
+
+MC-164446 — 如果标签值有一个无效，则不会加载标签，从而导致卸载所有数据包。
+
+MC-167608 — 在重生后破坏物品展示框时出现异常。
+
+MC-169975 — 突出显示玩家（旁观者）键不影响除自身以外的任何玩家。
+
+MC-175201 — savanna_small_house_1、savanna_small_house_2、savanna_small_house_3與​savanna_small_house_7的地板旋转错误。
+
+MC-176644 — 当栅栏连接到新长的树上时，侦测器不会被触发。
+
+槧二〇週一四甲之謬
+
+MC-172069 — 当用另一个活塞替换来回伸缩的活塞基部时，不会删除活塞臂。
+
+MC-173158 — 僵尸猪灵的外层纹理未渲染。
+
+MC-173192 — 流体碰撞箱过高。
+
+MC-173684 — 穿过下界传送门时出现在传送门下方。
+
+MC-173774 — 潜影弹表现的不像弹射物。
+
+MC-173875 — 卸载和重载区块后无法与物品展示框互动。
+
+MC-174231 — 豹猫不再生成。
+
+MC-174838 — 标靶无法可靠地检测烟花。
+
+MC-175434 — 向上发射的烟花在发射器内部爆炸。
+
+MC-175985 — 磁石指针没有动画。
+
+MC-175990 — 当磁石被破坏或不在同一维度时，磁石指针会高速旋转。
+
+MC-176052 — 对磁石使用指南针时没有手部动画。
+
+MC-176059 — 对磁石使用指南针后，记分板不给“指南针使用”这一项增加分数。
+
+MC-176195 — 许多可骑乘的生物和载具仍然会被骑乘者的箭射中。
+
+MC-176231 — 带有自定义附魔的指南针不会显示附魔闪烁。
+
+MC-176269 — 对磁石使用指南针也会同时使用副手物品。
+
+前行版之疏漏
+
+MC-176387 — 钓鱼竿可以拽动有玩家骑乘的船。
+
+MC-176391 — 玄武岩可以在下界的巨型菌上生成。
+
+MC-176420 — 磁石指针的声音出现在友好生物选项中。
+
+參典
+
+津渡

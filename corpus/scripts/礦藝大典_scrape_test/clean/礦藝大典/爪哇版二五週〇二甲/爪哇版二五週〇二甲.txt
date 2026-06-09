@@ -1,0 +1,629 @@
+# WORK_TITLE: 礦藝大典
+# PAGE_TITLE: 爪哇版二五週〇二甲
+# URL: https://lzh.minecraft.wiki/%E7%88%AA%E5%93%87%E7%89%88%E4%BA%8C%E4%BA%94%E9%80%B1%E3%80%87%E4%BA%8C%E7%94%B2
+# WIKI_CATEGORIES: 分類:廣佈於甲辰年之快照，分類:方修之事，分類:无默认键位，分類:爪哇版一點二一點五快照，分類:爪哇版之版
+# DATE: 2026-05-08T15:54:51Z
+# SCRAPED_AT: 2026-06-08T18:19:34+00:00
+# AUTHOR: 礦藝大典之用戶
+# CATEGORIES: 游戲，維基
+# LICENSE: CC-BY-NC-SA-3.0 https://creativecommons.org/licenses/by-nc-sa/3.0/
+# RIGHTS_NOTE: Non-commercial reuse only; ShareAlike applies to adaptations. Images and game assets excluded unless separately licensed.
+
+是篇方修也。 議
+
+可補正於此。
+
+二五週〇二甲（25w02a）者，爪哇版一點二一點五之元快照也，廣佈於甲辰年臘月初九日，補疏漏焉。
+
+新者
+
+塊方
+
+Wildflowers
+
+樺林、草甸之花也。
+
+稍類落英，四華成簇。
+
+施骨塵則滋焉。
+
+縱橫四嚮。
+
+可以爲黃染、引飼蜂。
+
+Leaf Litter
+
+飾塊也，生烏塬林中。
+
+稍類落英，四華成簇。
+
+縱橫四嚮，其聲穎異。
+
+燔葉成之，亦堪爲薪，煉物有半。
+
+結構塊
+
+load之道者得Strict Placement之目。
+陰則措無觸動焉。
+
+生靈
+
+豕
+
+豐豕之色，因於所在，此與狼儔。
+媾生者嗣其怙恃。
+
+豕色
+
+生態域
+
+Cold Pig
+
+古松棘林
+
+古樅棘林
+
+棘林
+
+雪棘林
+
+當風丘
+
+當風礫丘
+
+當風林
+
+Warm Pig
+
+莽原
+
+莽塬
+
+當風莽原
+
+叢莽
+
+疏叢莽
+
+竹林
+
+風蝕墝埆
+
+疏林墝埆
+
+墝埆
+
+Temperate Pig
+
+餘者
+
+闢世
+
+地物
+
+增birch_bees_0002_leaf_litter、birch_leaf_litter、dark_oak_leaf_litter、fancy_oak_bees_0002_leaf_litter、fancy_oak_leaf_litter、oak_bees_0002_leaf_litter、oak_leaf_litter、trees_birch_and_oak_leaf_litter、wildflowers_birch_forest與​wildflowers_meadow之地物。
+
+随机斑块
+
+增patch_grass_meadow與​patch_leaf_litter之斑。
+
+地物錄範
+
+增place_on_ground之栞，其數曰：
+
+tries：（以百有廿八爲本，數大於0）試生幾回也。
+
+radius：（以二爲本，數大於等於0）樹廣之至也。
+
+height：（以一爲本，數大於等於0）樹高之至也。
+
+block_state_provider：附麗者也。闕如可代，藤接艸土，則得生焉。
+
+戲事
+
+粒
+
+增tinted_leaves之粒。
+
+常
+
+錄囊
+
+增pig_variant之支。
+
+豕色定範
+
+豕色倚於data/<名宇>/pig_variant/<id>.json。
+
+其式曰：
+
+本籤
+*texture：豕色之紋也，解曰assets/<名宇>/textures/<徑>.png。
+
+model：（以normal爲本）當爲normal與​cold之一也。
+
+biomes：所由生也，或隻或列，或以其籤。無則以爲餘色。
+
+尚試技耳。
+
+實體支辝
+
+增pig之支辝，以校豕色。
+
+疊物之件
+
+增weapon之件。
+有則計其攻伐。
+
+附文曰：
+
+weapon 疊物之件
+damage_per_attack：（以一爲本，數大於等於0）一攻之損也。
+
+can_disable_blocking：（以陰爲本）破盾與否也。
+
+譬：weapon={damage_per_attack:2}
+
+增potion_duration_scale之件，數大於等於0。
+有則持potion_effects者因之以增損其久暫焉。
+
+無則以一爲本。
+
+譬：potion_duration_scale=0.25
+
+增can_destroy_blocks_in_creative之文於tool之件，言創者之持破與否也，以陽爲本。
+
+名簿
+
+增恆簿，曰ticket_type。
+
+增流簿，曰pig_variant。
+
+籤
+
+增塊籤如左：
+#replaceable_by_mushrooms：#leaves、#small_flowers、pale_moss_carpet、short_grass、fern、dead_bush、vine、glow_lichen、sunflower、lilac、rose_bush、peony、tall_grass、large_fern、hanging_roots、pitcher_plant、water、seagrass、tall_seagrass、brown_mushroom、red_mushroom、brown_mushroom_block、red_mushroom_block、warped_roots、nether_sprouts與​crimson_roots。
+蕈之所代也。
+
+#sword_instantly_mines：bamboo與​bamboo_sapling。
+劍之所斬也。
+
+增物籤如左：
+#book_cloning_target：writable_book。
+書之所鈔也。
+
+增生態域籤如左：
+#spawns_cold_variant_farm_animals：snowy_taiga、taiga、old_growth_pine_taiga、old_growth_spruce_taiga、windswept_hills、windswept_gravelly_hills與​windswept_forest。
+寒畜之所由生也。
+
+#spawns_warm_variant_farm_animals：savanna、savanna_plateau、windswept_hills、jungle、sparse_jungle、bamboo_jungle、eroded_badlands、wooded_badlands與​badlands。
+㬉畜之所由生也。
+
+改
+
+塊方
+
+碩垂滴葉
+
+不復得居縞蘚塊上。
+
+氣柱
+
+毋論居晏，粒聲抑焉。
+
+䦪心
+
+晝歇者得其殊貌焉。
+歇者不生䦪鬼，不泌樹香。
+
+今之啟歇，惟以晝夜爲晷，無顧陰晴刻漏矣。
+
+active之塊態，今以state代之。
+其直曰uprooted、曰dormant、曰awake。
+
+瞳榮
+
+今之盱瞑，惟以晝夜爲晷，無顧陰晴刻漏矣。
+
+諸鐵
+
+新其破、置、履、落、擊諸聲。
+
+諸葉
+
+今或朽粒其色。
+
+縞柞秧
+
+輿圖之色，自
+#FFFCF5而
+#A7A7A7。
+
+礠石
+
+更其製方，今以雕巖磚圜鐵錠乃成。
+得鐵礠則啟旃。
+
+今廢焱門貨箱，或藏一二焉。
+
+樹香磚版
+
+type之double者，今得再遺如常。
+
+生靈
+
+䦪鬼
+
+今雖縛心者，亦得名之，然則平明不弭焉。
+
+屍化豕靈
+
+今惟殛於人手者，遺其殊産焉。
+
+馴獸
+
+Owner之文，不必戲者。
+
+實體數錄
+
+ArmorDropChances、HandDropChances與​body_armor_drop_chance之文，今竝於drop_chances矣。
+以戎槽照於機也，其槽曰head、chest、legs、feet、mainhand、offhand與​body。
+
+無則遺機以0.085f爲本。
+
+本數不復貯焉，咸闕則徑削耳。
+
+譬：drop_chances:{chest:0.1,feet:1.0}
+
+實體
+
+劑雲
+
+增potion_duration_scale之文於劑雲之錄，以一爲本也。
+言其久暫之增損也，滯者再半之。
+。
+
+闢世
+
+塬
+
+今四畜生焉。
+
+歸結界門
+
+本位之無塊者，今揚之三尺。
+
+巨蕈
+
+蕈塊今惟#replaceable_by_mushrooms之塊是替。
+
+草甸
+
+低艸益疏。
+
+縞苑
+
+浸滲烏林益甚。
+
+林宅
+
+今得起於縞苑也。
+
+戲事
+
+靈
+
+今荊棘之戕也，奏player_hurt之聲事如常。
+
+令範
+
+/place template
+
+今容strict之目，以不觸擾。
+新則曰：place template <template> [<pos> [<rotation> [<mirror> [<integrity> [<seed> [strict]?]?]?]?]?]?
+
+/clone
+
+今容strict之目，以不觸擾。
+新則曰：clone [from <sourceDimension>]? <begin> <end> [to <targetDimension>]? <destination> [strict]? [[replace|masked|filtered <filter>] [force|move|normal]?]?
+
+/fill
+
+更其所理如左：
+無錄則保，有錄則覆。
+欲清其錄，當曰{}然。
+
+態錄一更，以爲成焉。
+
+今容strict之目，以不觸擾。
+
+其replace之目，得有所附麗焉。
+
+新則曰：fill <from> <to> <block> [replace <filter>]? [strict|destroy|hollow|outline]?
+
+/setblock
+
+更其所理如左：
+無錄則保，有錄則覆。
+欲清其錄，當曰{}然。
+
+態錄一更，以爲成焉。
+
+今容strict之目，以不觸擾。
+
+其replace之目，得有所附麗焉。
+
+新則曰：setblock <pos> <block> [destroy|keep|replace|strict]?
+
+/scoreboard
+
+文之格styled者，今以SNBT，非復JSON也。
+
+常
+
+錄囊
+
+晉錄囊於62。
+
+文件
+
+今不復以JSON章句貯之。
+今其錄範，得通達於外。
+譬：minecraft:custom_name="{"text":"Renamed item"}"則爲minecraft:custom_name={text:'Renamed item'}。
+
+令如/tellraw、/title者，數隨遷焉，譬如/tellraw @s ""text":"Hello world""者則爲/tellraw @s {text:'Hello world'}。
+
+按：文件之注也，爻以爲數焉，欲繹則當文之。
+
+nbt之格，陽interpret之文件，徑以爻籤解之，不復先文之也。
+
+更懸事之範如左：
+hoverEvent今曰hover_event。
+
+嚮解渲文之件，有value殘焉，今則無以矣。
+
+action之show_text也：
+contents今曰text。
+譬：{action:'show_text',contents:'Hello world'}則爲{action:'show_text',text:'Hello world'}。
+
+action之show_item也：
+除contents之文，今則內通矣。
+譬：{action:'show_item',contents:{id:'minecraft:stick',count:2}}則爲{action:'show_item',id:'minecraft:stick',count:2}。
+
+contents惟有物之啟信，則內通以齊之。
+譬：{action:'show_item',contents:'minecraft:stick'}則爲{action:'show_item',id:'minecraft:stick'}。
+
+action之show_entity也：
+除contents之文，今則內通矣。
+
+id今曰uuid。
+
+type今曰id。
+譬：{action:'show_entity',contents:{id:[I;0,0,0,0],type:'minecraft:pig'}}則爲{action:'show_entity',uuid:[I;0,0,0,0],id:'minecraft:pig'}。
+
+更擊事之範如左：
+clickEvent今曰click_event。
+
+action之open_url也：
+value今曰url。
+直之無契，則不解其事，不啻失用而已矣。
+
+譬：{action:'open_url',value:'https://minecraft.net'}則爲{action:'open_url',url:'https://minecraft.net'}。
+
+action之run_command也：
+value今曰command。
+令有諱字，則不解其事，不啻失用而已矣。
+
+不必冠以/也。
+
+譬：{action:'run_command',value:'/say Hi'}則爲{action:'run_command',command:'/say Hi'}。
+
+action之suggest_command也：
+value今曰command。
+令有諱字，則不解其事，不啻失用而已矣。
+
+不必冠以/也。
+
+譬：{action:'suggest_command',value:'/help'}則爲{action:'suggest_command',command:'/help'}。
+
+action之change_page也：
+value今曰page。
+page之文，今求數而非文。
+
+譬：{action:'change_page',value:'1'}則爲{action:'change_page',page:1}。
+
+方
+
+更crafting_transmute之格如左：
+result今得欽數麗件以訂，其新範曰：
+
+*result：名宇抑物列也。
+*id：物之名宇也。
+
+count：（以一爲本，數大於0）物之多寡也。
+
+components：（以闕爲本）件之所麗也。
+
+譬："result": {"id": "minecraft:stick", "count": 3, "components": {"!minecraft:damage": {}, "minecraft:enchantment_glint_override": {}}}
+
+復辭
+
+其嚮喑今因於「聲樂置設」之「聲語」一目。
+
+資囊
+
+晉資囊於47。
+
+更pig之制。
+
+領域
+
+生界傳於領域者，今自許命令塊焉。
+
+今獨戲之極者，亦得傳焉。
+
+載罫
+
+界門之所載，復返則覆旃。
+
+常
+
+嚮啟未成，則覆其渾幕。
+
+補
+
+修疏漏七十二
+
+先之謬
+
+MC-7697 — 戟矢貫熔石者，或不焚焉。
+
+MC-55800 — /fill air destory雖成，自以爲謬焉。
+
+MC-56653 — 屍化豕靈既恚，雖非人力所殛，亦遺經驗珍貨焉。
+
+MC-90212 — 翼翔則不得攀援。
+
+MC-93185 — 泉關結於本位之巓，或以殘闕。
+
+MC-97244 — minecraft:enchant.thorns.hit之聲事，匪人而受棘則不奏焉。
+
+MC-113878 — 護胸之槽，性文難解，蓋曰「Whenonbody」而非「Whenonchest」故也。
+
+MC-118053 — Owner匪人，則狼生躆。
+
+MC-118092 — 啻明一方，其誡猶曰「NewRecipesUnlocked!」。
+
+MC-118470 — 復辭雖噤猶言。
+
+MC-128079 — 用鉸之計，或略其掘。
+
+MC-135192 — 綫橫水上，舟觸則覆。
+
+MC-141297 — 雖/setblock之令、勘誤之棍、BlockStateTag之籤，赭炬不爲明滅焉。
+
+MC-165421 — 戟暨風彈入氣柱者，一反其升降。
+
+MC-167125 — 墜伤謬平。
+
+MC-183329 — 氣則則不見焱門絳霧。
+
+MC-183623 — 極生界之誡，朱麗以讀。
+
+MC-184681 — 二〇週二一甲以來，通語猶謂自定生界曰「自選」云。
+
+MC-202226 — /recipe [give|take]雖啻一方，猶曰「recipes」。
+
+MC-220672 — 自定生界豫設之名，文法有舛。
+
+MC-222876 — 「Buffetworldcustomization」之字制失當。
+
+MC-226772 — 贆櫝啟閉，旁註曰「Shulker」。
+
+MC-241951 — 戲者縱橫微動，不以衝焉。
+
+MC-248099 — 生靈墮水中，則不知所往。
+
+MC-253721 — 行/op @a之令，見報謬於誌。
+
+MC-260440 — 翼翔者不得浮泳水中。
+
+MC-261385 — 氣柱所冠，有與其異同焉。
+
+MC-262928 — 洋衛棘戕戲者，不復以奏minecraft:entity.player.hurt之聲。
+
+MC-262939 — 氣逆而往來復生，則目絳翳焉。
+
+MC-265514 — 一點二〇點一者，周迴聲訊雖閉，遷首之術猶啟也。
+
+MC-267221 — change_page擊事Json之value求文而非數。
+
+MC-267323 — 嚮時JSON之文爻，覆世則削。
+
+MC-270220 — 咸錫功名，其聲錯雑。
+
+MC-271065 — 伏持斜行，其步有舛。
+
+MC-272790 — 泉關雖覆，贆櫝不遺。
+
+一點二一之疏漏
+
+MC-273338 — 綫與升柱，有傷飛舟。
+
+MC-274187 — 雖禁相毆，附焰橫斬猶焚傷焉。
+
+MC-278249 — 徑驗珠舛攲，然後猝正。
+
+一點二一點一之疏漏
+
+MC-275994 — 炊圖而去幕，則濫報於誌。
+
+MC-277403 — 矢戟既焚，覆水不熄。
+
+MC-277537 — 縞地蘚或出離其壤。
+
+MC-277780 — 雖有以補之，猶咸覆輿圖也。
+
+一點二一點三之疏漏
+
+MC-277807 — 傳者夸其騎。
+
+MC-277865 — level.dat之Time逾矩，則氣柱之舟壞其動靜。
+
+MC-277922 — 舟搖曳於三尺之柱。
+
+MC-278096 — 畫質華美而流雲禁遏，則粒咸刻佁。
+
+MC-278375 — 塡飼駝以麥芻，則計疊失正。
+
+MC-278376 — 矢戟譎於三尺之柱。
+
+MC-278493 — 馴狼之讎䦪鬼，雖隤猶然。
+
+MC-278502 — 焱藤舛絶。
+
+MC-278615 — 雖一擊而斃屍化豕靈，其黨猶與讎焉。
+
+一點二一點四之疏漏
+
+MC-278040 — 䦪鬼沈淪，則浮泳失緒。
+
+MC-278164 — 擊措置之鈕，而鼠將指於韋，則再鳴焉。
+
+MC-278204 — 灹藥礦車中焱靈之火圓則立爆焉。
+
+MC-278422 — 馴狼躆而以/data remove除其Owner之籤，生界既覆，則斯狼坐行。
+
+MC-278552 — 自險而墜，minecraft:entity.player.big_fall不復響焉。
+
+MC-278585 — 戲者落於齏雪之緣則滯阻。
+
+MC-278591 — 擇塊於終眇龍，不以得其孳卵。
+
+MC-278621 — 未落而措齏雪，則二端舛錯。
+
+MC-278627 — 著革靴而落於齏雪之緣，猶墜傷焉。
+
+MC-278634 — 地踏爍菰、樹香、幽匿絡等三塊，令注則謬。
+
+MC-278659 — 䦪鬼方矚而攻之，幽匿探子不察。
+
+MC-278683 — 籠令所孳，不遺所被。
+
+MC-278708 — 御而擲玥，下而不移。
+
+MC-278728 — smithing_transform之方，不能復物件之直。
+
+MC-278733 — 樹香磚版相疊者，破之惟一遺焉。
+
+MC-278734 — 羊之俯仰，其首滯澀。
+
+MC-278755 — 御而移形，則戲柔錮。
+
+MC-278801 — 瞑瞳榮之爲灰染，不與凡花相竝也。
+
+MC-278841 — 齏雪不復衝和墜者。
+
+MC-279145 — 匿贆之彈，氣柱不舉。
+
+MC-279152 — 匿贆之彈，界門不送。

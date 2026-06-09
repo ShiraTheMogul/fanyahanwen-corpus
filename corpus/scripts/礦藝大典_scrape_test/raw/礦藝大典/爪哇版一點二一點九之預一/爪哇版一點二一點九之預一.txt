@@ -1,0 +1,215 @@
+# WORK_TITLE: 礦藝大典
+# PAGE_TITLE: 爪哇版一點二一點九之預一
+# URL: https://lzh.minecraft.wiki/%E7%88%AA%E5%93%87%E7%89%88%E4%B8%80%E9%BB%9E%E4%BA%8C%E4%B8%80%E9%BB%9E%E4%B9%9D%E4%B9%8B%E9%A0%90%E4%B8%80
+# WIKI_CATEGORIES: 分類:廣佈於乙巳年之預版，分類:方修之事，分類:爪哇版一點二一點九預版，分類:爪哇版之版
+# DATE: 2025-11-21T15:24:18Z
+# SCRAPED_AT: 2026-06-08T18:08:38+00:00
+# AUTHOR: 礦藝大典之用戶
+# CATEGORIES: 游戲，維基
+# LICENSE: CC-BY-NC-SA-3.0 https://creativecommons.org/licenses/by-nc-sa/3.0/
+# RIGHTS_NOTE: Non-commercial reuse only; ShareAlike applies to adaptations. Images and game assets excluded unless separately licensed.
+
+是篇方修也。 議
+
+可補正於此。
+
+一點二一點九之預一（1.21.9-pre1）者，爪哇版一點二一點九之元預版也，廣佈於乙巳年七月廿五日，補疏漏焉。
+
+新者
+
+生靈
+
+人偶
+
+增文如左：
+
+本籖
+pose：（以standing爲本）人偶之姿也。可以爲standing、crouching、swimming、fall_flying與​sleeping之一。
+
+immovable：（以false爲本）人偶之可撼與否。
+
+hide_description：（以false爲本）人偶之隱述。
+
+description：（文件，以「傀」爲本，entity.minecraft.mannequin.label是也）所見於below_score之計分板者。
+
+常
+
+戲者數錄範式
+
+增pitch之固文於respawn之件。
+
+錄件
+
+增新文於profile之件：
+
+本籤
+texture：（名宇編碼）膚貌也，解爲textures/<texture>.png。譬如entity/player/wide/steve，則史迪武之粗貌是也。
+
+cape：（名宇編碼）蓑衣之貌也，其解同右。
+
+elytra：（名宇編碼）翼貌也，其解同右。人偶著翼而未覆，則以蓑貌；會cape亦無，則以本貌。
+
+model：或wide，或slim。
+
+调试工具
+
+加入了MC_DEBUG_DEV_COMMANDS，以允许启用之前仅能在IDE环境下执行的/raid、/debugmobspawning、/debugpath、/warden_spawn_tracker、/spawn_armor_trims和/serverpack以及需要在专用服务器上才可启用的/debugconfig命令。
+
+加入了MC_DEBUG_VERBOSE_COMMAND_ERRORS，以记录命令抛出的异常。
+
+改
+
+生靈
+
+銅傀儡
+
+御則惟啟邇箱。
+
+人偶
+
+今受於卵籠之profile件。
+
+今得纂其所敘。
+
+更其數錄範式。
+profile之文範，今同乎profile有延有覆，以{}爲本（即id與​name皆闕者是也）。
+
+令之範式
+
+/setworldspawn
+
+除<angle>之數，以<rotation>代之。
+今得定復生之所嚮。
+
+今得行諸異世。
+
+/spawnpoint
+
+移除了可选参数<angle>，并以可选参数<rotation>代替。
+现在可以在此设置玩家重生时面朝的垂直角度。
+
+/fetchprofile
+
+现在会输出可点击文本，点击之后可以生成带有相应档案的玩家模型。
+
+常
+
+錄囊
+
+晉錄囊於87.1。
+
+伺服端治契
+
+今誡冠以minecraft:notification/，不以notification:。
+
+令
+
+现在服务端命令会在出生点所在的维度执行，而不总是在主世界执行。
+
+錄件
+
+更改了minecraft:profile组件。
+现在可以有额外的字段，可以替换用于渲染的多种值。
+
+戲者數錄範式
+
+更改了respawn：
+angle被重命名为yaw，且现在是必选字段。
+
+dimension现在是必选字段。
+
+貨表之術
+
+minecraft:copy_name的source字段现在接受新的值：
+direct_attacker
+
+target_entity
+
+interacting_entity
+
+minecraft:copy_components的source字段现在接受新的值：
+this
+
+attacker
+
+direct_attacker
+
+attacking_player
+
+target_entity
+
+interacting_entity
+
+tool
+
+補
+
+修疏漏二十九
+
+先之謬
+
+MC-160528 — 末地传送门不减免摔落伤害。
+
+MC-243759 — 与实体眼部距离为0的爆炸不会伤害该实体。
+
+槧一點二一點九之預一之謬
+
+MC-300257 — 闪电不会重置铜傀儡的氧化程度。
+
+MC-300294 — 铜傀儡到箱子的寻路异常。
+
+MC-300687 — 创造模式物品栏中，铜链和铜栏杆未正确排列。
+
+MC-300881 — 皮肤举报屏幕中的皮肤预览不再可交互。
+
+MC-301409 — 火球和风弹的加速能力在其被爆炸改变方向时减半。
+
+MC-301414 — 刮削/为大型箱子除锈不会在未直接受到交互的一半箱子处产生粒子。
+
+MC-301424 — 资源包中的entity_data物品组件检测损坏了。
+
+MC-301541 — 矿车中的铜傀儡不再整理物品。
+
+MC-301569 — 铜箱子与其所有变种的音效过于安静，且质量与之前相比听起来较低。
+
+MC-301573 — 跨维度的相对传送不一致。
+
+MC-301798 — 铜傀儡不会打开上方存在特定透明或不完整方块的箱子。
+
+MC-301814 — CustomNameVisible对Mannequin无效（指名称而非“NPC”注释）。
+
+MC-301815 — 使用刷怪蛋时，Mannequin数据偶尔丢失。
+
+MC-301819 — Mannequin的名称标签在处于队伍中和骑乘时可见。
+
+MC-301862 — 在聊天中点击命令建议时，偶尔只会选中半截新词。
+
+MC-301883 — 穿过传送门的实体会在Motion的单个方向轴速度大于10时重置其Motion标签。
+
+MC-301893 — 铜傀儡在被玩家牵引时变为铜傀儡像后不会掉落拴绳。
+
+MC-301951 — 服务端管理协议文档中，operator_user_permission_level的描述具有误导性。
+
+先槧之謬
+
+MC-301979 — 铜傀儡不再正常检测箱子。
+
+MC-301984 — 将玩家原地传送现在会使其抖动或卡顿。
+
+MC-301991 — deprecated.json有一些重命名的键指向文本值而非新键。
+
+MC-302032 — 除非提供了ID或名称，否则静态游戏档案不再解析纹理数据。
+
+MC-302089 — 在调试模式中、飞行生物开始寻路时，游戏崩溃。
+
+MC-302092 — 将楼梯加入到#bars标签并将铁栏杆放置于楼梯旁时，游戏崩溃。
+
+MC-302094 — 将方块加入#copper_chests并将其放置于真正的铜箱子旁时，游戏崩溃。
+
+MC-302095 — 将方块加入#lightning_rods并在之上生成一道闪电后，游戏崩溃。
+
+MC-302096 — 将方块加入#wooden_shelves，将其放置于木质展示架旁，然后游戏在展示架充能后崩溃。
+
+參典
+
+津渡

@@ -1,0 +1,264 @@
+# WORK_TITLE: 礦藝大典
+# PAGE_TITLE: 爪哇版一點二一點一一之預一
+# URL: https://lzh.minecraft.wiki/%E7%88%AA%E5%93%87%E7%89%88%E4%B8%80%E9%BB%9E%E4%BA%8C%E4%B8%80%E9%BB%9E%E4%B8%80%E4%B8%80%E4%B9%8B%E9%A0%90%E4%B8%80
+# WIKI_CATEGORIES: 分類:危版，分類:廣佈於乙巳年之預版，分類:待譯之篇，分類:爪哇版一點二一點一一預版，分類:爪哇版之版
+# DATE: 2026-05-31T03:31:19Z
+# SCRAPED_AT: 2026-06-08T18:07:08+00:00
+# AUTHOR: 礦藝大典之用戶
+# CATEGORIES: 游戲，維基
+# LICENSE: CC-BY-NC-SA-3.0 https://creativecommons.org/licenses/by-nc-sa/3.0/
+# RIGHTS_NOTE: Non-commercial reuse only; ShareAlike applies to adaptations. Images and game assets excluded unless separately licensed.
+
+是文文辭，有欠雅正。請予斧正，一月爲期，殊深銘感。
+
+This article is not written in Classical Chinese. Speedy deletion will be requested if it still has not been translated to Classical Chinese within a month.
+
+此文章非文言，应在一个月之内翻译为文言，否则将会被删除。
+此模板置於協調世界時丙午年四月十五日寅初三十一分（西曆二〇二六年五月三一日 （日） 〇三時三一分 (UTC)），請更易文辭，以免速刪。
+
+是篇所述之版，凡遇特定之境，則生疴疾。
+
+不存在options.txt文件时，启动游戏会导致游戏崩溃。
+
+一點二一點一一之預一（1.21.11-pre1）者，爪哇版一點二一點一一之元預版也，廣佈於乙巳年九月三十日，補疏漏焉。
+
+亦有涇渭之版，自謂1.21.11 Pre-Release 1 Unobfuscated（啟者謂之1.21.11-pre1_unobfuscated），以期來版辟交映之淆。
+
+新者
+
+常
+
+闪烁标语
+
+加入了以下闪烁标语：
+Music by Hyper Potions!
+
+选项
+
+在视频设置中加入了“Texture Filtering”选项。
+此选项也控制“各向异性过滤”选项是否可用。
+
+控制在从一定角度或远处观察纹理时所采用的采样方法。
+
+可用数值有“None”“RGSS”和“Anisotropic”。
+
+默认设置取决于设备的图形预设和硬件。
+
+RGSS（Rotated Grid Super Sampling）是一种基于着色器的过滤方法，能够牺牲适度性能提升纹理清晰度。
+所有硬件均可使用此设置。
+
+Anisotropic是一种基于硬件的过滤方法，能够提供最佳的纹理清晰度。
+
+数据组件
+
+加入了物品组件attack_range。
+允许物品具有自定义的交互范围。
+
+会覆盖玩家的实体交互距离属性。
+
+生物的普通近战攻击范围是根据目标碰撞箱与攻击者碰撞箱的距离计算的。该组件通过调整攻击判定箱的最小和最大填充来调整距离判定。
+
+使用带有minecraft:kinetic_weapon组件的物品的生物的攻击范围会与玩家相同。
+
+attack_range
+min_range：（數大於等於0.0而小於等於64.0，默认为0.0）攻击者到目标的最小有效距离。以攻击者眼睛位置、沿视角方向到被攻击者攻击判定箱的最小距离计算。
+
+max_range：（數大於等於0.0而小於等於64.0，默认为3.0）攻击者到目标的最大有效距离。以攻击者眼睛位置、沿视角方向到被攻击者攻击判定箱的最小距离计算。
+
+hitbox_margin：（數大於等於0.0而小於等於1.0，默认为0.3）决定攻击判定箱的大小。游戏将实体的碰撞箱向各个方向扩展此距离得到攻击判定箱。
+
+mob_factor：（數大於等於0.0而小於等於2.0，默认为1.0）对于非玩家生物，其使用的最小有效距离和最大有效距离的缩放乘数。
+
+纹理
+
+拆分了马铠纹理，分为底层和着色覆盖层。
+新增了物品纹理item/leather_horse_armor_overlay。
+
+新增了实体纹理entity/equipment/horse_body/leather_overlay.png。
+
+纹理元数据属性新增了alpha_cutoff_bias，用于控制cutout纹理的alpha偏置。
+技术上而言这个值没有值域限制，可以是负数，但设置高于1.0或低于-1.0不适合，因为纹理会变得完全不透明或完全透明。
+
+默认为0.0，对于远距离时过于透明或过于薄弱的纹理可以提高，否则纹理将很“不透明”。
+
+建议精细调整这个值以找到最佳取值，例如0.1用于海带纹理，防止它们在远处时完全透明。
+
+仅用于cutout纹理的较低MipMap级别，不会改变第一MipMap级别的透明通道值，也不影响其他纹理。
+
+声音事件
+
+为鹦鹉螺添加了新的声音事件：
+entity.baby_nautilus.ambient_land
+
+entity.baby_nautilus.death_land
+
+entity.baby_nautilus.hurt_land
+
+entity.nautilus.ambient_land
+
+entity.nautilus.dash_land
+
+entity.nautilus.dash_ready_land
+
+entity.nautilus.death_land
+
+entity.nautilus.hurt_land
+
+为僵尸鹦鹉螺添加了新的声音事件：
+entity.zombie_nautilus.ambient_land
+
+entity.zombie_nautilus.dash_land
+
+entity.zombie_nautilus.dash_ready_land
+
+entity.zombie_nautilus.death_land
+
+entity.zombie_nautilus.hurt_land
+
+改
+
+塊方
+
+树叶
+
+现在“”选项为关时，树叶的透明部分是与树叶相近的颜色而不是黑色。
+
+物品
+
+皮革马铠
+
+更改了纹理以与基石版保持一致。
+
+矛
+
+将矛的物品切换动画的速度倍率由1.9更改为1.95。
+
+生物使用矛进行攻击后若持续冲锋，那么可以继续对目标造成伤害。
+
+生靈
+
+鹦鹉螺和僵尸鹦鹉螺
+
+更改了音效。
+
+其头部现在穿过外壳时在视觉上的遮挡减少。
+
+猪灵
+
+现在会把金矛视为首选武器了。
+
+骷髅及其变种和溺尸
+
+现在无法拾取矛。
+
+僵尸猪灵
+
+现在会用矛进行冲锋。
+
+戲事
+
+进度
+
+进度“橫槊伏屍”由挑战进度改为目标进度。
+
+创造模式物品栏
+
+矛的位置现在在剑之后。
+
+常
+
+数据包
+
+将数据包版本号更改为94.0。
+
+资源包
+
+将资源包版本号更改为75.0。
+
+选项
+
+现在“各向异性过滤”选项由“Texture Filtering”选项控制是否可用。
+
+数据组件
+
+将字段min_reach、max_reach和hitbox_margin从物品组件piercing_weapon和kinetic_weapon移到新组件attack_range中，使得所有近战武器都能使用上述字段。
+
+标签
+
+向物品标签#piglin_preferred_weapons中加入了金矛。
+
+補
+
+修疏漏三十三
+
+先之謬
+
+MC-276382 — 皮革马铠的护腿和帽子部分没有纹理。
+
+MC-299136 — Hyper Potions（Ian Tsuchiura）没有在鸣谢名单和闪烁标语中提及。
+
+MC-302209 — 切换维度时调试渲染器停止工作。
+
+槧一點二一點一一之預一之謬
+
+MC-302677 — 攻击指示器和矛的攻击距离不符。
+
+MC-302836 — 僵尸马头部纹理不对称。
+
+MC-302840 — 装备在僵尸马上的鞍缺失一部分纹理。
+
+MC-302882 — 和基岩版不同，猪灵手持矛时不会冲锋攻击。
+
+MC-302900 — 矛的攻击距离覆盖了玩家的实体交互距离。
+
+MC-303052 — 蜘蛛网和甜浆果丛会阻止玩家使用矛突进。
+
+MC-303174 — 鹦鹉螺掉落鹦鹉螺壳的概率不受抢夺影响。
+
+MC-303467 — 手持金矛生成且能够捡起物品的僵尸猪灵会用任何其他物品替换其手中的矛。
+
+MC-303476 — 鹦鹉螺在陆地上突进时播放水下的音效。
+
+MC-303524 — 手持金矛生成的猪灵会用任何金质物品替换其手中的矛。
+
+MC-303657 — 骆驼尸壳只在被骑乘时会在水中下沉。
+
+MC-303664 — mipmap等级禁用后，使用平面纹理的方块会出现轮廓箱。
+
+MC-303812 — 手持矛生成的僵尸会用任何其他物品替换其手中的矛。
+
+MC-303838 — 存在末影龙迷雾时，雨会在末地渲染。
+
+MC-303846 — /gamerule无法识别游戏规则的完整资源路径。
+
+MC-303919 — 在梯子上使用突进会浪费耐久和饥饿。
+
+MC-303942 — 橫槊伏屍进度不会给予玩家经验值。
+
+MC-303950 — 速度不再能正确增加矛的伤害。
+
+MC-304029 — 降雨天气发生时，亡灵生物不再会于无降水的生物群系中在阳光下燃烧。
+
+MC-304042 — 一次冲锋攻击连续击中一个末影龙五次可以获得橫槊伏屍进度。
+
+MC-304058 — 较低的fog_end_distance环境属性值会使降雨时的迷雾效果急剧增加。
+
+MC-304095 — 手持矛会阻止玩家与交互实体通过攻击交互。
+
+MC-304116 — 区块淡入选项开启时，实体和方块实体不会正确淡入。
+
+MC-304127 — 三次贝塞尔曲线参数的浮动范围不符合更新日志。
+
+先槧之謬
+
+MC-304163 — 启用高级提示框时按住⇧ Shift并左键单击实体的名称不再会在聊天栏插入实体的UUID。
+
+MC-304170 — 关闭音乐时将“Music Toast”选项设置为“Pause Menu and Toast”会显示音乐弹窗。
+
+MC-304190 — 鱼桶现在有一个不合理的consumable数据组件。
+
+MC-304191 — 狐狸可以吃鱼桶，铁桶会直接消失，且狐狸不会被给予状态效果。
+
+MC-304196 — 涂蜡的切制铜台阶合成涂蜡的雕纹铜块的配方会输出2个物品而不是1个。
+
+MC-304212 — 被骑乘的僵尸鹦鹉螺仍然可以被拴住，不像僵尸马和骆驼尸壳。

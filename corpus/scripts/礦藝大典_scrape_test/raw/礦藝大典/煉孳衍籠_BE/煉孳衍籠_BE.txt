@@ -1,0 +1,66 @@
+# WORK_TITLE: 礦藝大典
+# PAGE_TITLE: 煉孳衍籠/BE
+# URL: https://lzh.minecraft.wiki/%E7%85%89%E5%AD%B3%E8%A1%8D%E7%B1%A0/BE
+# WIKI_CATEGORIES: 分類:方块实体页面
+# DATE: 2025-01-26T14:20:23Z
+# SCRAPED_AT: 2026-06-08T17:37:27+00:00
+# AUTHOR: 礦藝大典之用戶
+# CATEGORIES: 游戲，維基
+# LICENSE: CC-BY-NC-SA-3.0 https://creativecommons.org/licenses/by-nc-sa/3.0/
+# RIGHTS_NOTE: Non-commercial reuse only; ShareAlike applies to adaptations. Images and game assets excluded unless separately licensed.
+
+爪哇版：
+
+塊方實體數錄
+方块实体共通标签
+
+cooldown_ends_at：（不必）歇畢之時。
+
+current_mobs：（不必）殘獸幾何。
+：生靈之UUID。
+
+ejecting_loot_table：（不必）出獎貨表之名宇編碼。
+
+loot_tables_to_eject：（不必）殘獸既清，出獎之貨表，因於涉者之多寡。
+：貨表之一目。
+data：貨表之名宇編碼。
+
+weight：（陽）目之輕重。
+
+next_mob_spawns_at：（不必）次獸至早幾時。
+
+registered_players：（不必）涉者之列。
+：戲者之UUID。
+
+required_player_range：（不必，以十四爲本，百二十有八爲極）涉者之遠近。
+
+simultaneous_mobs：（不必，陽而以二爲本）初涉見獸幾何。
+
+simultaneous_mobs_added_per_player：（不必，陽而以一爲本）涉者之新入，居獸之所增。損涉者之數以一，乘以斯，復增以simultaneous_mobs，遂得居獸之多寡。
+
+spawn_data：（不必）次獸之錄。
+custom_spawn_rules: （不必）自立之制，或覆章則。
+block_light_limit：明暗之制。或一數，或邏而括之。
+
+sky_light_limit：天光之制。或一數，或邏而括之。
+
+entity：所生之實體。
+实体共通标签
+
+spawn_potentials：（不必）實體之列。無斯籤而有spawn_data，則成表於次生，惟取乎spawn_data。
+：一次可能的生成。在刷怪笼进行一次尝试生成后，游戏将会随机从中选择一项用于下次生成。
+data：一项生成项，与spawn_data结构相同。
+
+weight：（取值大于0）相对其他生成项的选中此生成项的权重。
+
+spawn_range：（可选，默认为4，取值为1到128的闭区间）生成生物的范围，采用切比雪夫距离，越靠近试炼刷怪笼生成在此位置的概率越大。
+
+target_cooldown_length：（可选，默认为三萬六千刻（三十分））从试炼刷怪笼生成的所有生物被杀死开始，到下一次可以进行试炼的冷却时间。
+
+ticks_between_spawn：（可选，默认为四十刻（二秒），取值不小于0）两次尝试生成生物的最小间隔时间。
+
+total_mobs：（可选，默认为6，取值不小于0）生成生物的最少总数量，即在一个玩家加入试炼时生成的总生物数量。
+
+total_mobs_added_per_player：（可选，默认为2，取值不小于0）每增加一个加入试炼玩家，生成生物总数量的增加值。生成生物总数量为floor(t+p(n-1))，其中t为total_mobs的值，p为此项的值，n为加入试炼的玩家总数量。
+
+total_mobs_spawned：（可能不存在，取值不小于0）从试炼开始到现在生成的总生物数量。

@@ -1,0 +1,72 @@
+# WORK_TITLE: 礦藝大典
+# PAGE_TITLE: 存襲範式
+# URL: https://lzh.minecraft.wiki/%E5%AD%98%E8%A5%B2%E7%AF%84%E5%BC%8F
+# WIKI_CATEGORIES: 分類:开发，分類:爪哇版，分類:爪哇版獨有篇
+# DATE: 2025-12-01T04:57:34Z
+# SCRAPED_AT: 2026-06-08T16:36:34+00:00
+# AUTHOR: 礦藝大典之用戶
+# CATEGORIES: 游戲，維基
+# LICENSE: CC-BY-NC-SA-3.0 https://creativecommons.org/licenses/by-nc-sa/3.0/
+# RIGHTS_NOTE: Non-commercial reuse only; ShareAlike applies to adaptations. Images and game assets excluded unless separately licensed.
+
+此篇乃爪哇版獨有也。
+
+凡礦藝生界，記襲於raids.dat而存於data夾。其以GZip簡之，而依NBT範式儲之。
+
+至於他維，亦有raids_nether.dat，有raids_end.dat，以記侵襲。
+
+目錄範式
+
+NBT範式
+
+：根籤。
+data：所儲之錄。
+NextAvailableID：次襲之番號。
+
+Raids：盡列此世之襲。
+：襲。
+Active：其猖否。
+
+BadOmenLevel：厄兆之階，以定其難易嗣絕。
+
+CX：襲核之緯。
+
+CY：襲核之縱。
+
+CZ：襲核之經。
+
+GroupsSpawned：既往之番數。
+
+HeroesOfTheVillage：嘗殛怪者名錄，得勝則將賞與鄉里英傑也。
+：戲者之UUID。
+
+Id：襲之番號。
+
+NumGroups：襲之番數。
+
+PreRaidTicks：至次番之時。嚮番既除，則爲三百刻。
+
+PostRaidTicks：襲寇盡誅之時。及四十刻，則鄉里英傑施焉。
+
+Started：襲之始否。
+
+Status：襲之態，曰ongoing（方鬪）、曰victory（捷）、曰loss（敗北）、曰stopped（持平）。
+
+TicksActive：襲之時。逾四萬八千刻，則告持平。
+
+TotalHealth：襲寇命數之總極。
+
+Tick：私更漏。
+
+DataVersion：檔版。
+
+史
+
+爪哇版
+一點一四
+一八週四七甲
+今三界之襲，咸存於raids.dat。
+一九週一三甲
+增表HeroesOfTheVillage。
+
+津渡

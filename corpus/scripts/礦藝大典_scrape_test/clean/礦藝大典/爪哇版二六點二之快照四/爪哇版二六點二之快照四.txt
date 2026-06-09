@@ -1,0 +1,146 @@
+# WORK_TITLE: 礦藝大典
+# PAGE_TITLE: 爪哇版二六點二之快照四
+# URL: https://lzh.minecraft.wiki/%E7%88%AA%E5%93%87%E7%89%88%E4%BA%8C%E5%85%AD%E9%BB%9E%E4%BA%8C%E4%B9%8B%E5%BF%AB%E7%85%A7%E5%9B%9B
+# WIKI_CATEGORIES: 分類:廣佈於丙午年之快照，分類:爪哇版之版，分類:爪哇版二六點二快照
+# DATE: 2026-05-28T23:02:42Z
+# SCRAPED_AT: 2026-06-08T18:29:52+00:00
+# AUTHOR: 礦藝大典之用戶
+# CATEGORIES: 游戲，維基
+# LICENSE: CC-BY-NC-SA-3.0 https://creativecommons.org/licenses/by-nc-sa/3.0/
+# RIGHTS_NOTE: Non-commercial reuse only; ShareAlike applies to adaptations. Images and game assets excluded unless separately licensed.
+
+二六點二之快照四（26.2-snapshot-4）者，爪哇版二六點二之丁快照也，廣佈於丙午年三月廿五日，補疏漏焉。
+
+新物
+
+常
+
+属性
+
+增属性minecraft:nameplate_distance。
+決實體之名標見之遠近。
+
+不現者其名標終不得現。
+
+允數乎零整至五百一十二整間。
+
+固六十四整。
+
+增属性minecraft:below_name_distance。
+決below_name積分榜見之遠近。
+
+不現者其名標終不得現。
+
+允數乎零整至五百一十二整間。
+
+固十整。
+
+遙測
+
+新必要事件
+graphics_capabilities
+事件投於方啟，以告魔贊行戲之圖器能。
+
+增属性backend_name
+值Vulkan抑OpenGL，以告魔贊圖之卯口所用。
+
+增属性backend_failure_reason
+值短舛碼如vulkan_device_version_too_low，以助魔贊識祝融之所欲需。
+
+增属性backend_failure_message
+值短晦言如Failed to find the GLFW platform surface extensions，助魔贊縮其範於行祝融之非常。
+
+增属性backend_failure_missing_capabilities
+值祝融之所闕如VULKAN_CORE_1_2, VK_KHR_dynamic_rendering，以助魔贊知祝融之所需。
+
+語言
+
+增楚瓦什語、瑞士法語。
+
+改
+
+生靈
+
+硫方靈
+
+自生之小型者持正修徑。
+
+易外目之紋貌。
+
+得生于和。
+
+豕靈、獷豕與虎貓
+
+得生于和。
+
+物
+
+硫方靈桶
+
+方有音作于硫方靈之覆收。
+
+生界之成
+
+硫黃窟
+
+兹有花崗石與積塊石生乎硫黃朱砂間。
+
+短Sulfur Spike Clusters之均長。
+
+凡
+
+錄囊
+
+易其版碼以一〇三點〇（103.0）。
+
+資囊
+
+易其版碼以八六點一（86.1）。
+
+實體predicate
+
+cube mob子predicate遷minecraft:type_specific/slime至minecraft:type_specific/cube_mob。
+
+紋貌圖集
+
+既除圖集minecraft:beds。
+
+補
+
+修疏漏十四
+
+先二六點一之完版之謬
+
+MC-186131 — 豕靈、獷豕無以自生於和。
+
+MC-296343 — 漁竿既擲也，換之以滑鼠輪，則見未擲之紋貌少頃與第一人稱視角。
+
+二六點一之謬
+
+MC-307002 — 終界水玉者復生終眇龍也，/kill之不復止復生之程。
+
+槧二六點二之快照四之謬
+
+MC-307327 — 或見幀率限之異於全幕與非全幕乎用祝融之林檎。
+
+MC-307378 — 或有光效弗能見乎用祝融之顯卡。
+
+MC-307434 — 硫方靈無以自生於和。
+
+MC-307626 — 資囊錄囊選幕之列或伸至戲窗封外，是背祝融之範。
+
+先槧之謬
+
+MC-307532 — 覆熔石於流水也，不覆於伺服端。
+
+MC-307539 — 或崩於既啟乎林檎。
+
+MC-307545 — “分明”資囊列以不兼容。
+
+MC-307549 — beds.png-atlas猶存。
+
+MC-307587 — 置㵖海綿乎焱界也，槽之不除於伺服端。
+
+MC-307624 — cube mob之實體子predicate名type_specific/slime而非cube_mob。
+
+MC-307647 — 祝融驗證層之啟也，戲崩於方啟——NORMAL頂點属性既用格式之或不持VERTEX_BUFFER_BIT也。

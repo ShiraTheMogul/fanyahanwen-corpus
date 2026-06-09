@@ -1,0 +1,167 @@
+# WORK_TITLE: 礦藝大典
+# PAGE_TITLE: 爪哇版一點二〇點五之預二
+# URL: https://lzh.minecraft.wiki/%E7%88%AA%E5%93%87%E7%89%88%E4%B8%80%E9%BB%9E%E4%BA%8C%E3%80%87%E9%BB%9E%E4%BA%94%E4%B9%8B%E9%A0%90%E4%BA%8C
+# WIKI_CATEGORIES: 分類:廣佈於甲辰年之預版，分類:无默认键位，分類:爪哇版一點二〇點五預版，分類:爪哇版之版
+# DATE: 2025-11-21T15:22:15Z
+# SCRAPED_AT: 2026-06-08T18:04:02+00:00
+# AUTHOR: 礦藝大典之用戶
+# CATEGORIES: 游戲，維基
+# LICENSE: CC-BY-NC-SA-3.0 https://creativecommons.org/licenses/by-nc-sa/3.0/
+# RIGHTS_NOTE: Non-commercial reuse only; ShareAlike applies to adaptations. Images and game assets excluded unless separately licensed.
+
+一點二〇點五之預二（1.20.5-pre2）者，爪哇版一點二〇點五之次預版也，廣佈於甲辰年三月初七日，補疏漏焉。
+
+改
+
+生靈
+
+狼
+
+不再渲染身体槽位中的马铠。
+
+常
+
+进度
+
+将“鉛刀一割”重命名为“錚錚鉸鉸”。
+
+性
+
+generic.scale属性不再影响末影龙的边界箱。
+
+generic.step_height现在会在与生物的高度差≤10的方块中从低到高寻找可容纳生物的空间。
+
+擇塊
+
+现在所选取方块的物品提示框中不再显示(+NBT)。
+
+幕
+
+现在进入世界加载地形时，会显示主菜单全景图。
+
+现在从下界跨越维度或前往下界时，会显示下界传送门纹理动画。
+
+现在从末地跨越维度或前往末地时，会显示末地传送门纹理动画。
+从下界前往末地或从末地前往下界总会显示下界传送门纹理动画。
+
+錄囊
+
+将数据包版本号更改为40。
+
+契
+
+从服务器发送中的无效数据现在将导致游戏客户端断开连接。
+
+貨表之術
+
+set_fireworks中的explosions與​mode现在被组合为一个复合标签。
+示例：{ "explosions": <list>, "mode": <mode>, <mode-dependent fields>}现在变为{"explosions": {"values": <list>, "mode": <mode>, <mode-dependent fields>}}。
+其中，explosions可选，而values必选。
+
+補
+
+修疏漏四十七
+
+先之謬
+
+MC-199973 — 沾水的狼与上个版本相比渲染得更暗了。
+
+MC-259355 — 由于/place有时不检查位置是已加载还是在世界外，游戏崩溃了。
+
+1.20.2的漏洞
+
+MC-265585 — 含水屏障不会漫射天空光照。
+
+MC-265709 — （仅限服务器）GUI中超过第32行的切石机输出终止。
+
+MC-265741 — 含水屏障不在地图上显示。
+
+MC-266997 — 破坏正在播放闭合动画的潜影盒时，天空光照不更新。
+
+1.20.4的漏洞
+
+MC-267352 — level.dat中不存在Player标签时，单人世界不加载player.dat。
+
+MC-269472 — 当table_bonus战利品表条件具有空概率列表时，游戏崩溃。
+
+MC-269755 — 在“檢舉戲者”界面的滚动条将半透明像素渲染得不透明，这与其他滚动条不同。
+
+MC-269763 — 在“礦藝領域”界面的滚动条将半透明像素渲染得不透明，这与其他滚动条不同。
+
+槧一點二〇點五之預二之謬
+
+MC-267381 — generic.step_height属性较高时不能潜行移动。
+
+MC-267414 — 末影龙的scale属性造成严重的TPS损失。
+
+MC-268015 — 潜影贝发射的潜影弹不使用scale属性。
+
+MC-268035 — 更改语言时，True Type字体造成渲染遮盖错误。
+
+MC-268064 — 未蜷缩的犰狳可以在死亡动画中蜷缩。
+
+MC-268257 — 给羊驼装备地毯不播放音效。
+
+MC-268804 — 尽管生命值为满，在狼攻击时为其穿上狼铠会重置喂食计数器。
+
+MC-268810 — 尽管NBT已被组件取代，但使用Ctrl+选取方块键获取的箱子仍叫(+NBT)。
+
+MC-268854 — 物品中缺失Type字段的烟花火箭爆炸未被正常升级。
+
+MC-268858 — 将狼铠放进附魔台时，用于附魔的按钮启用了。
+
+MC-268984 — 运行/give抛出EncoderException。
+
+MC-269123 — 在重新加载更改着色器的资源包前，启用或禁用此资源包不会影响着色器。
+
+MC-269161 — 切石机不支持result物品类型相同的多个配方。
+
+MC-269171 — 当接收包含深度嵌套的NBT数据的system_chat数据包时，客户端断开连接。
+
+MC-269173 — 服务端不能发送包含深度嵌套的NBT数据的system_chat数据包。
+
+MC-269300 — “此乃預設之供君所用者也！”离标题分隔符太近。
+
+MC-269304 — 狼身上的马铠渲染异常。
+
+MC-269415 — set_fireworks中，即使当explosions可选时，mode也是必要的。
+
+MC-269619 — 在“遙測錄⋯”界面的滚动条将半透明像素渲染得不透明，这与其他滚动条不同。
+
+MC-269660 — arguments.item.predicate.unknown的引号不相同。
+
+MC-269802 — 选中一个村民交易项会合并带有不同组件的物品。
+
+MC-269932 — 尝试用最大堆叠数量较低的物品交易时，物品消失了。
+
+MC-270003 — 灾厄旗帜不能被选取方块键选取。
+
+MC-270049 — 附魔台按钮和等级图标将半透明像素渲染得不透明。
+
+MC-270116 — minecraft:generic.fall_damage_multiplier属性对许多具有非标准掉落伤害行为的生物无效。
+
+MC-270117 — 计算马、驴、骡、僵尸马、骷髅马、骆驼、羊驼、行商羊驼和狐狸的摔落伤害时，忽略了minecraft:generic.safe_fall_distance。
+
+MC-270262 — 玩家可以在进入世界时看到加载世界的过程。
+
+MC-270265 — 模糊程度滑动条被设为0%时不显示为“”。
+
+MC-270413 — 一个方块的NBT副本与此方块的原始副本完全相同，此方块的n次复制物品带有一个Items方块数据且会在物品提示框中显示n行(+nbt)。
+
+MC-270559 — FreeType error: Unrecognized error: 0x62 (Loading glyph)。
+
+先槧之謬
+
+MC-270590 — 创造模式物品栏开启时，从其中掉落的物品被删除。
+
+MC-270603 — 升级世界时崩溃：ClassCastException: RegularImmutableList cannot be cast to class com.mojang.datafixers.util.Pair。
+
+MC-270610 — 一些新进度的标题被错误地大小写。
+
+MC-270648 — 带有绑定诅咒魔咒的狼铠不能被创造模式玩家使用剪刀从狼身上取下。
+
+MC-270679 — 点击带有run_command的文本会导致EncoderException并退回多人游戏菜单。
+
+MC-270712 — 如果generic.step_height被设为0，则不能在潜行时移动。
+
+MC-270767 — 皮革马铠不再保护马不受细雪冻伤。

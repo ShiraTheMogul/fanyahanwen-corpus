@@ -1,0 +1,237 @@
+# WORK_TITLE: 礦藝大典
+# PAGE_TITLE: 基石版一點二一點八〇點二五
+# URL: https://lzh.minecraft.wiki/%E5%9F%BA%E7%9F%B3%E7%89%88%E4%B8%80%E9%BB%9E%E4%BA%8C%E4%B8%80%E9%BB%9E%E5%85%AB%E3%80%87%E9%BB%9E%E4%BA%8C%E4%BA%94
+# WIKI_CATEGORIES: 分類:发布于2025年的预览版，分類:基岩版1.21.80预览版，分類:基石版一點二一點八〇測版，分類:基石版之版，分類:廣佈於乙巳年之測版，分類:待正之譯文
+# DATE: 2026-01-10T19:03:43Z
+# SCRAPED_AT: 2026-06-08T16:27:46+00:00
+# AUTHOR: 礦藝大典之用戶
+# CATEGORIES: 游戲，維基
+# LICENSE: CC-BY-NC-SA-3.0 https://creativecommons.org/licenses/by-nc-sa/3.0/
+# RIGHTS_NOTE: Non-commercial reuse only; ShareAlike applies to adaptations. Images and game assets excluded unless separately licensed.
+
+是篇有待矯正也。
+
+其文或譯寫不精，或未合章法。
+
+測版一點二一點八〇點二五（Beta 1.21.80.25）（色本、傀儡）、預覽一點二一點八〇點二五（Preview 1.21.80.25）（凶匣、視窗、林檎）、預覽一點二一點八〇點二六（Preview 1.21.80.26）（戲驛）者，基石版一點二一點八〇之丁測版也，廣佈於乙巳年三月初六日。，增乾魄、悅魄、轡與Vibrant Visuals於或成之事，並補疏漏焉。
+
+新物
+
+常
+
+实验性玩法
+
+新增"掉落物 2 2025"子选项‌。
+此子选项用于启用掉落物 2 2025之新特性。
+
+‌* 新增"絢麗視覺"子选项‌。
+
+此子选项用于启用Vibrant Visuals功能。
+
+‌新增"自訂元件 V2"子选项‌。
+此子选项用于启用V2版本之自定义组件。
+
+令/gamerule
+
+将locatorBar游戏规则纳入。
+以制其定位栏之显隐。默认为「真」‌
+唯启或成之事定位列后始生效。
+
+默认为true。
+
+选项
+
+于PlayStation平台之常设中，增“篩不雅字詞”之选。
+
+更改
+
+技术性
+
+API
+
+将Difficulty枚举自beta版移入1.19.0版。
+
+将getDifficulty(): Difficulty自beta版移入1.19.0版。
+将setDifficulty(difficulty: Difficulty): void自beta版移入1.19.0版。
+
+将若干Player类之法自beta版移入1.19.0版。
+
+将BoundingBox更名为BlockBoundingBox，并自beta版开放至1.19.0版。
+
+将BoundingBoxUtils更名为BlockBoundingBoxUtils。
+
+将dimension.placeFeature与dimension.placeFeatureRule自beta版移入1.19.0版。
+
+生物群系
+
+已移除对未使用之minecraft:consolidated_features與​minecraft:legacy_world_generation_rulesJSON组件之遗留支持‌。
+
+塊方
+
+今新增render_method类型，适用于minecraft。此类型可令方块如竹竿等易消逝之物，在远处呈现不透明之态，与树叶之行为相类‌。
+"render_method": "blend_to_opaque"
+
+"render_method": "alpha_test_to_opaque"
+
+"render_method": "alpha_test_single_sided_to_opaque"
+
+minecraft:map_color组件之tint_method字段中，已无需开启“即将推出之创作者功能”选项。
+
+minecraft:destruction_particles组件之tint_method字段已无需开启“即将推出之创作者功能”选项。
+
+minecraft:material_instances组件之tint_method字段已无需开启“即将推出之创作者功能”选项。
+
+组件
+
+已修正JSON错误大小导致有效物品纹理引用显示异常之漏洞‌。
+
+于minecraft:interact组件中新增drop_item_y_offset参数
+定义物品丢弃时之Y轴偏移量
+
+需指定drop_item_slot参数
+
+当格式版本为1.21.80及以上时，「minecraft:leashable」组件之「on_unleash」触发器将在拴绳行为中断时触发
+旧有行为仍可通过设置「on_unleash_interact_only」为「true」而启用
+
+基石版编辑器
+
+为修剪及移除选区中之空气，新增未绑定之键位设置‌。
+
+修复于维度边界附近或外部手绘选择致选区失效之问题。‌
+
+修复选区体积可转换旧有世界边界或调整其大小之问题。‌
+
+此亦修正配合手绘选区（及魔法选择）于世界边界附近使用大型画笔形状时之异常。‌
+
+修正金字塔画笔形状拉伸轴选项错误之漏洞‌。
+
+修复于结构面板删除结构时误删文件及文件夹之问题‌。
+
+实体过滤器
+
+已增has_equipment_tag实体过滤器，其运作与has_equipment相类，然取用物品标签而非物品名称。
+
+图形
+
+新增多定位器与拴绳配合之功能，以渲染二实体间之多重绳索。
+multi_lead_n
+n之取值范围为{1, 2, 3, 4}，用于定义实体拴于不同实体时之定位器。
+
+唯当其具备对应之multi_lead_hold_n且二实体上数字n相同时方启用。
+
+multi_lead_hold_n
+n之取值范围为{1, 2, 3, 4}，用于定义实体拴住不同实体时之定位器。
+
+将2.0.0-beta版本中之EntityFrictionModifierComponent改为只读。
+
+@mincraft/server-admin
+新增AsyncPlayerJoinBeforeEvent。
+
+新增beforeEvents.asyncPlayerJoin、AsyncPlayerJoinBeforeEvent與​AsyncPlayerJoinBeforeEventSignal，以允创作者延迟玩家入世界。
+
+AsyncPlayerJoinBeforeEventSignal.subscribe异于他事件，因其接受之回调会返回一承诺。承诺解时，玩家入世界；若承诺被拒，则玩家断连接而不入世界。承诺待处时，玩家处加载屏幕。
+
+塊方
+
+启自定义组件V2实验性内容时，minecraft:custom_components组件于1.21.80及后续版本中弃用‌1。
+
+今启V2实验性内容，自定义组件将与其他组件内联扁平化，并兼容1.21.80及以上版本之参数。示例如下：
+
+"components": {
+"example_namespace:example_component": {
+"someParam": 3,
+"anotherParam": "test"
+}
+}
+
+相机视角
+
+启“創作者攝影機之實驗性功能”后，移动目标间缓动之方式已更易。
+
+图形
+
+延遲渲染預覽功能中，雲新增光照模型，然參數暫不可調。
+
+擴展延遲渲染預覽功能之雲渲染範圍。
+
+於延遲渲染預覽功能中新增像素化反射，此效應可使反射與世界紋理之紋素方格對齊。
+於延遲渲染預覽功能中新增像素化陰影。
+此新效應可通過新陰影模式shadows/global.json控制。
+
+此文件可新增控制遊戲陰影樣式之設置。
+可用參數包括可設為soft_shadows或blocky_shadows之shadow_style，以及texel_size。
+
+‌‌**** soft_shadows為默認樣式，而blocky_shadows可生成像素化外觀之陰影。
+
+啟用blocky_shadows後，texel_size將控制像素化效果之尺寸。
+
+‌**** texel_size宜與方塊紋理尺寸相同，以實現紋理像素與blocky_shadows生成像素化效果之一一對應，然非必需。
+
+shadows/global.json之示例如下。
+
+{
+"format_version": "1.21.80",
+"minecraft:shadow_settings": {
+"shadow_style": "blocky_shadows",
+"texel_size": 16
+}
+}
+
+物品
+
+启自定义组件V2实验性内容时，minecraft:custom_components组件于1.21.80及后续版本中弃用‌。
+
+今启V2实验性内容，自定义组件将与其他组件内联扁平化，并兼容1.21.80及以上版本之参数‌。示例如下：
+
+"components": {
+"example_namespace:example_component": {
+"someParam": 3,
+"anotherParam": "test"
+}
+}
+
+修复
+
+角色创建器
+
+已修正使用自定义皮肤时玩家模型显示尺寸异常之弊‌。（MCPE-189739）
+
+塊方
+
+花之随机偏移范围与值，今与Java版同‌。
+
+竹、垂根、红树胎生苗、下界苗，其随机偏移范围与值，亦与Java版同‌1。
+
+珊瑚、珊瑚扇，随机偏移范围与值，今与Java版同‌。
+
+如向日葵等两格高之植物，随机偏移范围与值，今与Java版同‌。
+
+滴水石锥、高草丛、枯草丛，随机偏移范围与值，今与Java版同‌。
+
+编辑器
+
+今于结构面板中编辑字段时，允其编辑之际存之。
+
+游戏内容
+
+已修正玩家于水中疾跑反快于游泳之弊‌。
+
+生靈
+
+农人收稼，不复偶滞。（MCPE-166344）
+
+音乐
+
+已修正游戏暂停时由设置入鸣谢名单而乐不鸣之弊‌。（MCPE-190625）
+
+配方
+
+已修正dolimitedcrafting令启而仍可合未明方之弊‌。（MCPE-186699）
+
+原版趋同
+
+盾牌今遇爆而损其坚‌。（MCPE-121484）
+
+参考
+
+津渡

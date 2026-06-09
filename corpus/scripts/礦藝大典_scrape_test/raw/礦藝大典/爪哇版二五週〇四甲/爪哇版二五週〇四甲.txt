@@ -1,0 +1,287 @@
+# WORK_TITLE: 礦藝大典
+# PAGE_TITLE: 爪哇版二五週〇四甲
+# URL: https://lzh.minecraft.wiki/%E7%88%AA%E5%93%87%E7%89%88%E4%BA%8C%E4%BA%94%E9%80%B1%E3%80%87%E5%9B%9B%E7%94%B2
+# WIKI_CATEGORIES: 分類:廣佈於甲辰年之快照，分類:爪哇版一點二一點五快照，分類:爪哇版之版
+# DATE: 2026-05-08T15:55:03Z
+# SCRAPED_AT: 2026-06-08T18:20:22+00:00
+# AUTHOR: 礦藝大典之用戶
+# CATEGORIES: 游戲，維基
+# LICENSE: CC-BY-NC-SA-3.0 https://creativecommons.org/licenses/by-nc-sa/3.0/
+# RIGHTS_NOTE: Non-commercial reuse only; ShareAlike applies to adaptations. Images and game assets excluded unless separately licensed.
+
+二五週〇四甲者，爪哇版一點二一點五之丙快照也，廣布於甲辰年臘月廿三日，錄貓、鼃諸品於錄囊，補疊件以諸術，並補疏漏焉。
+
+新者
+
+常
+
+文
+
+增鬲昆語也。
+
+錄囊
+
+貓、鼃諸品，現載於錄囊也。
+
+疊物之件
+
+增件blocks_attacks也。
+物之具是件者，戲者可以禦殤如盾也。
+
+增件break_sound也。
+具是件者，將損而奏是音也。闕是件者，將損而無音也。其文如break_sound='item.wolf_armor.break'。
+
+是件蓋諸物之自具者也。
+
+增件provides_banner_patterns，蓋諸旗楷之籤也。
+具是件者，可置乎機杼，以繪紋之載乎籤者。其文如provides_banner_patterns='minecraft:pattern_item/globe'。
+
+增件provides_trim_material，諸甲紋質之籤也。
+具是件者，可鍛甲紋以是質也。其文如provides_trim_material='minecraft:iron'。
+
+誠欲付諸鍛，是物亦當錄諸#trim_material也。
+
+增件tooltip_display，蓋可隱註也。
+嚮之show_in_tooltip、、hide_additional_tooltip與hide_tooltip，是以除也。
+
+是件蓋諸物之自具者也。
+
+物型映射
+
+增限（condition）component，限以物疊之件也。
+
+取品共文
+
+生靈諸品之成，現取以共文也。
+
+共文之形如左：
+
+spawn_conditions：取品共文。
+
+*priority：取是品之次。
+
+*condition：取品之限。
+type：取限之類。誠無，則無限。
+type誠爲biome，則限以生態域。另載如左：
+
+*biomes：生態域。蓋可單、集，抑以籤囊之也。
+type誠爲moon_brightness，則限以月之晦明。另載如左：
+
+*range：單數，抑囊雙數如{"min": 1, "max": 2}也。
+*min：至晦。
+
+*max：至明。
+
+type誠为structure，則限以築。另載如左：
+
+*structures：諸築。蓋可單、集，抑以籤囊之也。
+
+錄是文者，諸品之取，蓋集諸共文，除其限之悖者，尋其次之至，然後取其一也。誠無限之合者，則取其本也。
+
+粒
+
+粒類tinted_leaves現具color也，可以單數抑四數錄之。
+
+紋集
+
+紋集源paletted_permutations現具separator，以示諸紋名、色之間也。
+
+籤
+
+增生靈籤#can_wear_horse_armor：horse。
+生靈之行囊具馬甲之槽者。
+
+改
+
+物
+
+弩
+
+其註蓋將盡錄其填之彈，非嚮之但錄其一也。
+諸物之填乎弩者，其註亦將附焉。
+
+器
+
+諸器之具物者，其註將示其所具物之五，類贆櫝也。
+
+輿圖
+
+輿圖之不具map_id者，未將註曰「未明之圖」也。
+
+蜂巢與蜂箱
+
+其物自具block_state也。
+
+非生靈實體
+
+噴劑與滯劑
+
+是二實體，自potion而分爲splash_potion與​lingering_potion也。
+
+戲事
+
+移
+
+復疏漏MC-271065與MC-152728，以之干速躍、速築與他移甚也。
+
+令範
+
+SNBT
+
+集之錄以SNBT者，諸文之類可異也。
+NBT之文弗更。集之異類者，將錄諸NBT，則其諸元將更以適NBT也。
+其例：['a', {'b':3}]蓋將更以[{'': 'a'},{'b':3}]也。
+
+常
+
+功
+
+background未當右以textures/、左以.png。
+
+錄囊
+
+晉錄囊於64。
+
+疊物之件
+
+更weapon如左：
+廢can_disable_blocking。
+
+增disable_blocking_for_seconds（以0爲本，數大於0）。誠弗爲〇，以是物攻之成者，蓋將遏見殤者之盾以是數也。
+
+諸件之當用乎實體者，蓋將錄諸實體之生以物者。
+
+方
+
+smithing_transform之base，蓋必錄也。
+
+smithing_trim更以左：：
+base、template與​addition，蓋必錄也。
+
+增pattern，以示甲紋之當用者。其文如"pattern": "minecraft:bolt"。
+
+籤
+
+更#bypasses_shield以#bypasses_blocking。
+
+補test_block與​test_instance_block諸#dragon_immune與​#wither_immune塊籤也。
+
+廢貓品之諸籤也。。
+
+資囊
+
+晉資囊於49。
+
+補
+
+修疏漏四十七
+
+先之謬
+
+MC-98271 — 盾禦之音，但聞諸己，弗可聞諸他戲者也。
+
+MC-101556 — 焱界結界門之易界也，其區謬以全塊也。
+
+MC-165421 — 氣柱之於風彈悖也。
+
+MC-165461 — 弩之既填，縱猶用之，其填猝止也。
+
+MC-176233 — 弩之既填，其動猝也。
+
+MC-200311 — 功單之幕景，其紋与型舛也。
+
+MC-255756 — 既損盾，損之者弗可聞之損之音也。
+
+MC-279646 — 全幕以F11，弗將更選單之「全幕」也。
+
+一點二一點一之謬
+
+MC-276061 — 將以无紋之飾甕更他飾甕，弗再載，其紋弗將更也。
+
+一點二一點三之謬
+
+MC-278400 — 矢與三叉戟既中塊之沒乎流熔石者，蓋猶將隨熔石而動也。
+
+一點二一點四之謬
+
+MC-279653 — 既行/setblock令，塊實體將舛也。
+
+槧二五週〇四甲之謬
+
+MC-279217 — 矢與三叉戟既中塊之沒乎流熔石者，蓋將旋而不止也。
+
+MC-279218 — 生靈與戲者既見殺於荊棘，minecraft:enchant.thorns.hit之音弗將奏也。
+
+MC-279225 — 戯者之著革鞾，墜乎齏雪，蓋稍高而將顫也。
+
+MC-279232 — SNBT弗許集之具異類之文者。
+
+MC-279389 — 戲者既受己矢，minecraft:entity.arrow.hit_player將奏。
+
+MC-279454 — hide_additional_tooltip弗可隱成書之著者與版。
+
+先槧之謬
+
+MC-279480 — test_instance_block.reset_success之文，謬言「succeeded」以「succeded」。
+
+MC-279481 — 枯葉弗現於林與塬林。
+
+MC-279482 — 測塊與測例塊選單諸元，弗可選以Tab ↹也。
+
+MC-279483 — 既无入文，「啟」之測塊猶示「訊：」也。
+
+MC-279485 — 測塊與測例塊之選單幕曚。
+
+MC-279486 — 測例塊選單之文，或弗可譯也。
+
+MC-279487 — 測例塊選單之「測例之ID」與「測構之積」遠乎右也。
+
+MC-279488 — 枯葉鮮見於烏林也。
+
+MC-279489 — 將制巨測而謬。
+
+MC-279490 — 將復測之烏有者，弗將示也。
+
+MC-279491 — 行/test run於弗有測，將示commands.test.no_tests而弗譯也。
+
+MC-279492 — 將尋烏有之測而謬。
+
+MC-279493 — 行/test create，弗將示也。
+
+MC-279498 — 測塊與測例塊弗現於#minecraft:dragon_immune與​#minecraft:wither_immune塊籤。
+
+MC-279502 — 將獲螈於桶，其品弗將存也。
+
+MC-279504 — 物型弗識minecraft:enchantments。
+
+MC-279505 — 馬之弗可具馬甲者，猶現馬甲之槽，然不可入之也。
+
+MC-279511 — 戲者誠入測之以minecraft:always_pass者，則將謬也。
+
+MC-279518 — 測境文以minecraft:raining，弗以minecraft:weather。
+
+MC-279519 — 測令之文，或恒以复也。
+
+MC-279522 — 測弗識錄囊之以zip者。
+
+MC-279527 — 測弗識錄囊之測。
+
+MC-279538 — 測例之誌測境者，其名異乎報也。
+
+MC-279539 — 鄉民之將化而爲屍，其品弗存也。
+
+MC-279553 — 戲者誠斜行而用物，其身弗將斜向也。
+
+MC-279570 — 韝韛之移，或弗誌乎他塊。
+
+MC-279573 — test_instance_block.error.no_test之文闕「no」。
+
+MC-279588 — 測例謬文「sky_accesss」。
+
+MC-279599 — /test pos之位舛乎Y、Z以一。
+
+MC-279601 — test.error.expected_entity_at_pos弗有譯也。
+
+參典
+
+津渡

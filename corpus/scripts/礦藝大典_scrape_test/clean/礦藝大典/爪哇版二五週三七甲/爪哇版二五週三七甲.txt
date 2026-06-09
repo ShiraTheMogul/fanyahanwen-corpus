@@ -1,0 +1,237 @@
+# WORK_TITLE: 礦藝大典
+# PAGE_TITLE: 爪哇版二五週三七甲
+# URL: https://lzh.minecraft.wiki/%E7%88%AA%E5%93%87%E7%89%88%E4%BA%8C%E4%BA%94%E9%80%B1%E4%B8%89%E4%B8%83%E7%94%B2
+# WIKI_CATEGORIES: 分類:俗名，分類:廣佈於乙巳年之快照，分類:方修之事，分類:爪哇版一點二一點九快照，分類:爪哇版之版
+# DATE: 2026-05-08T15:55:23Z
+# SCRAPED_AT: 2026-06-08T18:22:02+00:00
+# AUTHOR: 礦藝大典之用戶
+# CATEGORIES: 游戲，維基
+# LICENSE: CC-BY-NC-SA-3.0 https://creativecommons.org/licenses/by-nc-sa/3.0/
+# RIGHTS_NOTE: Non-commercial reuse only; ShareAlike applies to adaptations. Images and game assets excluded unless separately licensed.
+
+是篇方修也。 議
+
+可補正於此。
+
+二五週三七甲（25w37a）者，爪哇版一點二一點九[坊間之名]之壬快照也，廣佈於乙巳年七月十八日，昇OpenGL之所須，並補疏漏焉。
+
+新者
+
+戲事
+
+章則
+
+增spawnerBlocksEnabled之章則，以定孳衍籠之行廢，以陽爲本。
+
+常
+
+勘誤之器
+
+揭勘誤之器，嚮則削黜矣。
+
+其行廢在於爪哇栩生儀之數：
+-DMC_DEBUG_ENABLED、-DMC_DEBUG_ENABLED=true二數則咸佈。
+
+-DMC_DEBUG_BRAIN、-DMC_DEBUG_BRAIN=true二數則特指。
+
+贊-DMC_DEBUG_PRINT_PROPERTIES之數，則其表見焉。
+
+伺服端措置檔範
+
+增management-server-tls-enabled之性，以定契中TLS之行廢，以陽爲本。
+
+增management-server-tls-keystore之性，以定TLS管籥之所在，以闕爲本。
+TLS在而管籥亡，則其服不專。
+
+增management-server-tls-keystore-password=之性，以定TLS管籥之符節，以闕爲本。
+
+改
+
+塊方
+
+測例塊
+
+今生界之覆也，謬紀存焉。
+
+生靈
+
+銅傀儡
+
+略削其形，一尺有奇，以通狹塞。
+
+今得啟門，以應基石版。
+
+戲事
+
+嬉遊之道
+
+今自覽而創也，惟下履實形者斂羽焉。
+
+孳
+
+今披掛之至劣者，皮、銅、金三流，精者稍益常之，然則良甲之多寡復於其本矣。
+
+常
+
+章則
+
+改enableCommandBlocks爲commandBlocksEnabled，以應基石版。
+
+選項
+
+卷首聲樂之選項，有所豫聞焉。
+
+資、錄二囊之欄，始得檢索焉。
+
+礦藝伺服器治契
+
+客端不驗，則卯口不濟。
+客端須持Authorization之符節，樞機之管籥載焉。
+符節不驗，則拒以401 Unauthorized。
+
+管籥措於伺服端措置檔之management-server-secret=。
+爲文四十，字數相雜。
+
+不手書之，則依天命。
+
+TLS今以行爲本。
+可以廢諸措置之檔，曰management-server-tls-enabled=false。
+
+管籥之檔亦定於措置之檔，曰management-server-tls-keystore=path/to/keystore.p12。
+
+必以PKCS12之範。
+
+其符節之所定，悉列如左：
+天地之數：MINECRAFT_MANAGEMENT_TLS_KEYSTORE_PASSWORD
+
+爪哇栩生儀之數：Dmanagement.tls.keystore.password=
+
+伺服端措置之檔：management-server-tls-keystore-password=
+
+伺服端措置檔範
+
+management-server-port之本，自25585而0，每啟輒復給埠。
+
+錄囊
+
+晉錄囊於87.0。
+
+資囊
+
+晉資囊於69.0。
+
+揚gui/container/villager.png之所售以一元。
+
+染繪暨後渠
+
+增PER_FACE_LIGHTING之籤於諸染繪如左：
+core/entity.vsh
+
+core/entity.fsh
+
+本光既定，流照自如。
+
+OpenGL既昇，染繪之版亦自150而330。
+
+常
+
+昇OpenGL之所須，自三點二以至三點三。
+
+善實體之光，以融和於山水。
+背之夷者，今則正照。
+
+平以虛者，如甲胄、翼、膚、馬肋、雞足、鼃蹼、魘翅、龍翼、魚鰭等，咸有與焉。
+
+補
+
+修疏漏四十一
+
+先之謬
+
+MC-220913 — 生界之在去，聲樂之措置，曳桿也不奏其例焉。
+
+MC-254052 — /locate不作於築限之外。
+
+一點二一點八之疏漏
+
+MC-301494 — 沙礫之懸者，不復灑粒焉。
+
+槧二五週三七甲之謬
+
+MC-295841 — 測衝之道敗矣。
+
+MC-300076 — 銅傀儡之搜箱也佁，是以浮而不履，不叩不推。
+
+MC-300077 — 銅傀儡得斜貫及箱。
+
+MC-300299 — 箱雖閡，銅傀儡得啟之。
+
+MC-300723 — 外甲之件，猶未善繪。
+
+MC-301294 — 自二五週三一甲以來，生靈著精甲者愈鮮矣。
+
+MC-301510 — 九宮之分合，其德枉矣。
+
+MC-301531 — 治契之收無效棨信，其報也謬。
+
+MC-301547 — 自覽而創，則斂羽墮地。
+
+MC-301554 — 治契之理，專而不泛。
+
+MC-301558 — 銅傀儡不通狹仄之甬。
+
+MC-301563 — 藥效既黯，則侃談諸幕，其文益暝。
+
+MC-301564 — 棨信之爲文也，治契不受。
+
+MC-301574 — spawnMonsters之章則不作。
+
+MC-301593 — spawnMonsters雖陰，敵獸猶孳於籠中。
+
+MC-301599 — 进入界面时，行动键会卡住，以至于无法退出界面，除非其立刻重开。
+
+MC-301620 — 渲染了两个旗帜时，旗帜动画不相互独立。
+
+MC-301661 — 服务端管理协议在控制台中输出部分错误的格式化消息。
+
+MC-301711 — 游戏规则enableCommandBlocks的名称与基岩版不一致。
+
+MC-301748 — 借助闪电击中具有非默认氧化等级的避雷针会使周围的红石元件保持充能。
+
+MC-301751 — 玩家在Mannequin刷怪笼附近时，客户端崩溃。
+
+MC-301752 — profile.model设为wide的Mannequin渲染为Steve皮肤。
+
+MC-301754 — 空手右键展示架时播放手部动画。
+
+MC-301758 — 盾牌模型穿过了展示架。
+
+MC-301759 — Realms“世界”标签页内的元素未在使用Tab ↹键时被有序选中。
+
+先槧之謬
+
+MC-301766 — 放置于展示架上的生物头颅似乎过高。
+
+MC-301768 — 旁观模式中，结构方块框架不显示。
+
+MC-301785 — 鱿鱼的墨粒子是黄色的。
+
+MC-301811 — 刷扫可疑的沙子时，战利品不会显示。
+
+MC-301833 — text_display实体的文本在see_through属性设为true时更暗。
+
+MC-301869 — 服务端管理方法minecraft:ip_bans回傳ip_ban数组，尽管其规范描述此方式傳玩家数组。
+
+MC-301870 — 未指定原因的/ban和/ban-ip命令成功时，命令反馈不会发送到客户端。
+
+MC-301889 — 记录的回傳型別與服务端管理协议的清空方法不相符。
+
+MC-301891 — 服务端管理方法minecraft:bans/clear会清空允许名单而非封禁名单。
+
+MC-301899 — 交易GUI中的输出槽位未与其他槽位对齐。
+
+MC-301903 — 掉落的箱子（包含变种）不再向上转换。
+
+MC-301935 — 箱子渲染于展示架底部隔板上，尽管其他物品不在此处。
+
+MC-301952 — 激活的潮涌核心在显示时偏斜，且其眼睛不会张开。

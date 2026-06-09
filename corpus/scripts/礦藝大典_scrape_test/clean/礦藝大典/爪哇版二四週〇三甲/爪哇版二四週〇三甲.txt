@@ -1,0 +1,380 @@
+# WORK_TITLE: 礦藝大典
+# PAGE_TITLE: 爪哇版二四週〇三甲
+# URL: https://lzh.minecraft.wiki/%E7%88%AA%E5%93%87%E7%89%88%E4%BA%8C%E5%9B%9B%E9%80%B1%E3%80%87%E4%B8%89%E7%94%B2
+# WIKI_CATEGORIES: 分類:廣佈於癸卯年之快照，分類:爪哇版一點二〇點五快照，分類:爪哇版之版
+# DATE: 2026-05-08T15:56:03Z
+# SCRAPED_AT: 2026-06-08T18:30:33+00:00
+# AUTHOR: 礦藝大典之用戶
+# CATEGORIES: 游戲，維基
+# LICENSE: CC-BY-NC-SA-3.0 https://creativecommons.org/licenses/by-nc-sa/3.0/
+# RIGHTS_NOTE: Non-commercial reuse only; ShareAlike applies to adaptations. Images and game assets excluded unless separately licensed.
+
+二四週〇三甲（24w03a）者，爪哇版一點二〇點五之丙快照也，廣佈於癸卯年臘月初七日，改畿制，補疏漏。
+
+新者
+
+常
+
+章則
+
+增章則，曰spawnChunkRadius，以制畿。
+以二爲本，卅二爲極。
+零則廢畿，十則如昔。
+
+約法
+
+加入了转移数据包。
+自定义服务器现在可以请求客户端使用转移数据包连接到另一个服务器。
+
+客户端转移时，将使用新的转移意图（ID3）连接到目标服务器，且可以使用新标志跳过身份验证。
+
+默认情况下，服务器不会接受转移，并会断开与客户端的连接，但可以通过将配置文件server.properties中的accepts-transfers设置为true来启用此功能。
+
+转移过程中维持资源包。
+
+加入了Cookie数据包。
+Cookie数据包允许自定义服务器在客户端请求和存储数据。在登录、配置和游戏阶段可能请求Cookie，但只有在配置和游戏阶段可以存储数据。
+
+Cookie只会在玩家在线时被服务器持续传输。
+
+每个Cookie大小可达5KiB。
+
+这允许服务器将诸如身份验证或自定义游戏数据之类的信息传递给新服务器。
+
+server.properties
+
+加入了accepts-transfers，默认为false，用于设置服务端是否接受转移数据包作为登录请求。
+
+籤
+
+增塊籤，曰：
+#armadillo_spawnable_on：#animals_spawnable_on、#terracotta、red_sand與​coarse_dirt。
+犰狳得生焉。
+
+增物籤，曰：
+#chest_armor：leather_chestplate、chainmail_chestplate、golden_chestplate、iron_chestplate、diamond_chestplate與​netherite_chestplate。
+属于胸部盔甲（胸甲）的物品。
+
+#foot_armor：leather_boots、chainmail_boots、golden_boots、iron_boots、diamond_boots與​netherite_boots。
+属于脚部盔甲（靴子）的物品。
+
+#head_armor：leather_helmet、chainmail_helmet、golden_helmet、iron_helmet、diamond_helmet、netherite_helmet與​turtle_helmet。
+属于头部盔甲（头盔）的物品。
+
+#leg_armor：leather_leggings、chainmail_leggings、golden_leggings、iron_leggings、diamond_leggings與​netherite_leggings。
+属于腿部盔甲（护腿）的物品。
+
+#skulls：player_head、creeper_head、zombie_head、skeleton_skull、wither_skeleton_skull、dragon_head與​piglin_head。
+属于生物头颅的物品。
+
+#enchantable/armor：#foot_armor、#leg_armor、#chest_armor與​#head_armor。
+可以附上适用于盔甲的魔咒的物品。
+
+#enchantable/bow：bow。
+可以附上适用于弓的魔咒的物品。
+
+#enchantable/chest_armor：#chest_armor。
+可以附上适用于胸甲的魔咒的物品。
+
+#enchantable/crossbow：crossbow。
+可以附上适用于弩的魔咒的物品。
+
+#enchantable/durability：#foot_armor、#leg_armor、#chest_armor、#head_armor、elytra、shield、#swords、#axes、#pickaxes、#shovels、#hoes、bow、crossbow、trident、flint_and_steel、shears、brush、fishing_rod、carrot_on_a_stick與​warped_fungus_on_a_stick。
+可以附上影响耐久度的魔咒的物品。
+
+#enchantable/equippable：#foot_armor、#leg_armor、#chest_armor、#head_armor、elytra、#skulls與​carved_pumpkin。
+可以附上可装备（Equippable）魔咒的物品。
+
+#enchantable/fishing：fishing_rod。
+可以附上适用于钓鱼竿的魔咒的物品。
+
+#enchantable/foot_armor：#foot_armor。
+可以附上适用于靴子的魔咒的物品。
+
+#enchantable/head_armor：#head_armor。
+可以附上适用于头盔的魔咒的物品。
+
+#enchantable/leg_armor：#leg_armor。
+可以附上适用于护腿的魔咒的物品。
+
+#enchantable/mining：#axes、#pickaxes、#shovels、#hoes與​shears。
+可以附上影响挖掘速度的魔咒的物品。
+
+#enchantable/mining_loot：#axes、#pickaxes、#shovels與​#hoes。
+可以附上影响挖掘掉落物的魔咒的物品。
+
+#enchantable/sword：swords。
+可以附上适用于剑的魔咒的物品。
+
+#enchantable/trident：trident。
+可以附上适用于三叉戟的魔咒的物品。
+
+#enchantable/vanishing：#enchantable/durability、compass與​carved_pumpkinskulls。
+可以附上可使物品消失的魔咒的物品。
+
+#enchantable/weapon：#swords與​#axes。
+可以附上适用于武器的魔咒的物品。
+
+加入了以下实体类型标签：
+#aquatic：turtle、axolotl、guardian、elder_guardian、cod、pufferfish、salmon、tropical_fish、dolphin、squid、glow_squid與​tadpole。
+被视为水生生物的实体。
+
+#arthropod：bee、endermite、silverfish、spider與​cave_spider。
+被视为节肢生物的实体。
+
+#ignores_poison_and_regen：#undead。
+免疫中毒和生命恢复效果的实体。
+
+#illager：evoker、illusioner、pillager與​vindicator。
+被视为灾厄村民的实体。
+
+#illager_friends：#illager。
+被灾厄村民视为盟友的实体（不包括在其他队伍中的）。
+
+#inverted_healing_and_harm：#undead。
+瞬间治疗和瞬间伤害会对其产生相反效果的实体。
+
+#not_scary_for_pufferfish：turtle、guardian、elder_guardian、cod、pufferfish、salmon、tropical_fish、dolphin、squid、glow_squid與​tadpole。
+不会使河豚膨胀的实体。
+
+#sensitive_to_bane_of_arthropods：#arthropod。
+节肢杀手魔咒会对其产生额外伤害的实体。
+
+#sensitive_to_impaling：#aquatic。
+穿刺魔咒会对其产生额外伤害的实体。
+
+#wither_friends：#undead。
+不被凋灵视为目标，也不会对凋灵造成伤害的实体。
+
+改
+
+物
+
+犰狳鱗、狼甲
+
+改其紋貌。
+
+生靈
+
+犰狳
+
+改其紋貌。
+
+今得生於諸塬。
+
+（穴）蛛
+
+今畏辟犰狳之舒者。
+
+狼
+
+改頸圈、狼甲之紋貌。
+
+常
+
+進程
+
+加入了触发器default_block_use，当玩家与方块进行默认交互时触发，例如打开一扇门。
+
+加入了触发器any_block_use，当玩家与方块进行任何交互时触发，例如对着方块使用物品或进行默认交互。
+
+錄囊
+
+晉錄囊於28。
+
+實體範式
+
+在村民的交易项NBT标签中加入了ignore_tagsNBT标签。若设置为true，此项交易将不检查物品的NBT标签是否与预期物品的NBT标签一致。
+
+選單
+
+现在使用Tab ↹或方向键导航进入或退出任意菜单时都会设置默认焦点。
+
+資囊
+
+将资源包版本号更改为24。
+
+调整了ttf字体提供器的转换功能，使其具有更合理的默认值。
+shift不再被双重应用，而以直接在游戏UI中显示一些像素替代。
+
+现在字体的字身框与游戏UI的像素大小所匹配，而不再匹配字体的升降部（字面框）之间的距离。
+
+现在字体基线的位置与默认字体一致（低于顶线7像素）。
+
+畿
+
+出生点区块的大小从10（19×19强加载区块）更改为2（3×3强加载区块），以降低内存使用和CPU负荷，减少加载时间。
+
+橫斬之刃
+
+改其ID，自sweeping而sweeping_edge。
+
+籤
+
+将#trimmable_armor物品标签的值替换为#chest_armor、#foot_armor、#head_armor與​#leg_armor。
+
+常
+
+当实体离开或进入末地时，其到达的区域将保持加载状态15秒，以与下界传送门的行为相匹配。
+
+改（試行）
+
+塊方
+
+合成器
+
+改其貌而反其頂。
+
+生靈
+
+風靈
+
+今彈咸彈，或反中發者。
+
+倍其經驗之所遺。
+
+戲事
+
+賈
+
+今棘林甲師不嫌其損。
+
+常
+
+籤
+
+改#deflects_arrows爲#deflects_projectiles。
+
+除#deflects_tridents之格。
+
+補
+
+修疏漏五十八
+
+嚮各完版之疏漏
+
+MC-153160 — 若NBT数据不匹配，村民不会自动填充物品。
+
+MC-155857 — 命令/team不会影响灾厄村民和女巫的AI。
+
+MC-171981 — 燃料燃烧时间映射在每次物品被放入熔炉时都会重新创建，而不会被缓存。
+
+MC-187372 — 调试屏幕中FPS限制与垂直同步或图像品质间没有空格。
+
+MC-260889 — 玩家可以在放置距离外的方块上使用水桶和熔岩桶。
+
+MC-261596 — 工作台的“搜索”键盘快捷键无法使用。
+
+一點二〇點一之疏漏
+
+MC-265273 — 使用Tab ↹键在创建世界屏幕的标签页列表中导航时，未通过突出显示或渲染边界来示明聚焦状态。
+
+一點二〇點二之疏漏
+
+MC-265520 — 切换连接协议有时会产生错误。
+
+MC-265749 — 按钮文本或字段的值改变时，提示框会闪烁。
+
+一點二〇點三之疏漏
+
+MC-266078 — 合成配方与切石配方输出的铜格栅不一致。
+
+MC-267044 — 刻状态字符串中词语用法不一致。
+
+MC-267045 — 部分与刻有关的字符串缺少冠词，表述不清。
+
+MC-267086 — 通过/tick冻结游戏后，指南针无法正确指示出生点位置。
+
+MC-267104 — 旋风人的杆的底面纹理不正确，与相邻颜色不契合。
+
+MC-267149 — 合成器顶面的UV纹理映射是反转的。
+
+MC-267465 — 1.20.3中的上传错误：Cannot invoke "ctt.c()" because "this.b" is null。
+
+槧二四週〇三甲之謬
+
+MC-267366 — 无法对幼年犰狳使用蜘蛛眼来加速成长。
+
+MC-267367 — 狼受到伤害时，狼铠也会闪烁。
+
+MC-267371 — 潜影贝判定箱的缩放比例不受generic.scale属性影响。
+
+MC-267377 — 对红树树叶使用骨粉时不再产生粒子。
+
+MC-267378 — 盔甲架判定点不随generic.scale属性改变。
+
+MC-267379 — 对缠根泥土使用骨粉时不再产生粒子。
+
+MC-267380 — 无法打开超出默认放置距离的容器的物品栏。
+
+前行版之疏漏
+
+MC-267383 — 无法在属性generic.block_interaction_range扩展部分的范围内放置水和熔岩。
+
+MC-267384 — 未使用且重复的狼铠声音事件。
+
+MC-267385 — 属性generic.entity_interaction_range受限于generic.block_interaction_range。
+
+MC-267388 — 扫刷犰狳时的字幕与其他物品使用时的字幕不一致。
+
+MC-267389 — 犰狳在繁殖时，有时不会靠近彼此。
+
+MC-267392 — 玩家即便处于旁观模式，也会惊吓到犰狳。
+
+MC-267395 — 犰狳在受到摔落伤害后会恐慌。
+
+MC-267397 — 受食物吸引的犰狳和幼年犰狳距离玩家过远。
+
+MC-267398 — 犰狳展开时不会播放展开声音。
+
+MC-267402 — 搭乘船的犰狳在船转向时，头部渲染效果异常。
+
+MC-267404 — 受惊的犰狳被推上船后，仍会受乘船玩家惊吓。
+
+MC-267405 — 身上有乘客的犰狳在受惊后可以移动。
+
+MC-267413 — 给犰狳喂食蜘蛛眼时，不会屏蔽玩家的进食操作。
+
+MC-267416 — 史莱姆产生的粒子不受属性generic.scale影响。
+
+MC-267417 — 属性generic.scale小于0.06时，站在非完整固体方块上会显示窒息覆盖图。
+
+MC-267418 — 监守者的音波攻击不受属性generic.scale属性影响。
+
+MC-267420 — 船的放置不受自定义后的属性generic.block_interaction_range影响。
+
+MC-267422 — 属性entity_interaction_range被分类为generic，却不对生物产生影响。
+
+MC-267427 — 实体睡眠时渲染的偏移量不受属性generic.scale影响。
+
+MC-267428 — 幻翼翅膀的粒子不受属性generic.scale影响。
+
+MC-267434 — 属性generic.scale的值较大的倒立生物显示在其碰撞箱上方。
+
+MC-267435 — 幼年犰狳不会一直紧跟其双亲。
+
+MC-267454 — 幼年炽足兽的大小看起来与普通炽足兽相同。
+
+MC-267456 — 对item_used_on_block进度准则的更改破坏了原有功能。
+
+MC-267470 — 从信标获得的生命恢复状态效果不再对玩家生效。
+
+MC-267479 — 物品栏显示尺寸受generic.scale属性影响。
+
+MC-267497 — 幼年犰狳在蜷缩过程中，发出声音的音调没有变高。
+
+MC-267538 — 将可放置方块塞入饰纹陶罐的同时也会放下方块。
+
+MC-267565 — 属性generic.scale的值过低使玩家在水下也能呼吸。
+
+MC-267588 — 将物品放入饰纹陶罐时不再播放手部动画。
+
+MC-267706 — 唤魔者和幻术师生成的粒子不受属性generic.scale影响。
+
+MC-267707 — 凋灵的粒子不受属性generic.scale影响。
+
+MC-267708 — 凋灵头颅弹射物攻击不受属性generic.scale影响。
+
+MC-267725 — 玩家经验等级不再于生命条和饥饿条上层渲染。
+
+MC-267726 — 对水下方块使用骨粉时不再产生粒子。

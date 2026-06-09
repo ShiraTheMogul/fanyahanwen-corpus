@@ -1,0 +1,263 @@
+# WORK_TITLE: 礦藝大典
+# PAGE_TITLE: 爪哇版二四週一九甲
+# URL: https://lzh.minecraft.wiki/%E7%88%AA%E5%93%87%E7%89%88%E4%BA%8C%E5%9B%9B%E9%80%B1%E4%B8%80%E4%B9%9D%E7%94%B2
+# WIKI_CATEGORIES: 分類:廣佈於甲辰年之快照，分類:爪哇版一點二一快照，分類:爪哇版之版
+# DATE: 2026-05-08T15:56:23Z
+# SCRAPED_AT: 2026-06-08T18:31:44+00:00
+# AUTHOR: 礦藝大典之用戶
+# CATEGORIES: 游戲，維基
+# LICENSE: CC-BY-NC-SA-3.0 https://creativecommons.org/licenses/by-nc-sa/3.0/
+# RIGHTS_NOTE: Non-commercial reuse only; ShareAlike applies to adaptations. Images and game assets excluded unless separately licensed.
+
+二四週一九甲（24w19a）者，爪哇版一點二一之次快照也，廣佈於甲辰年四月初三日，補疏漏焉。
+
+新者
+
+戲事
+
+處地之聲
+
+增窟聲有四。
+
+常
+
+靈實體效格
+
+效格replace_block、replace_disc與​set_block_properties得文可奪者，曰trigger_game_event。
+塊之既替，其事如此。
+
+構NBT之籤
+
+dimension_padding：（以零爲本）縱塞其涯，以絶逾矩者也。
+以煉武堂之挾板刺礎，其塞惟十。
+
+疊物之件
+
+food之件，今載新文如左：
+using_converts_to：（不必也）食物之所替，有物有件。
+譬如：food={nutrition:1,saturation:0,using_converts_to:{id:"poisonous_potato",components:{"minecraft:custom_name":'"且何哉？"'}}}
+
+籤
+
+增塊籤如左：
+#fire_aspect_lightable：#candles、#candle_cakes與​#campfires。
+塊之明於附焰者。
+
+傷格之辝
+
+增新目如左：
+is_direct：（不必也）以察傷之徑陽曲陰。
+自戕惟徑。
+
+改
+
+塊方
+
+煉孳衍籠
+
+改其燈、額之貌。
+
+銅燈
+
+改其明滅之聲。
+
+實體
+
+彈
+
+黜power之籤，以acceleration_power代之，蓋控其緩急者也。
+龍焱彈、惡靈火圓、小火圓、風靈之彈、風彈之物、凋靈首因焉。
+
+戲事
+
+振
+
+履霜之所凝，今振以十三，與措塊儔。
+
+靈
+
+履霜不復凝注水者。
+
+穿甲、密質，今相斥焉。
+
+附焰今惟明乾燭、燭之洋糕、篝火之素靈者。
+
+常
+
+錄囊
+
+晉錄囊於43。
+
+疊物之件custom_data、貨表之術set_custom_data、件辝custom_data三者，今可以爲SNBT之文，用貯諸JSON之範。
+
+改decorated_pot_patterns之表爲decorated_pot_pattern。
+
+除籤庫之遺名。
+
+性
+
+generic.burning_time（焚時）、generic.fall_damage_multiplier（墜傷之率）二性，其色一反焉，陽赤而陰靛也。
+
+generic.gravity（墜力）、generic.scale（大小）二性灰質乎詳註。
+
+載地
+
+今之取盤，不顧其周。
+獨戲頗利焉。
+
+新制以慰其勞。
+
+籤
+
+名之有衆者，寡之以合乎表。
+tags/items -> tags/item
+
+tags/blocks -> tags/block
+
+tags/entity_types -> tags/entity_type
+
+tags/fluids -> tags/fluid
+
+tags/game_events -> tags/game_event
+
+補
+
+修疏漏六十五
+
+先之謬
+
+MC-9568 — 有靈臨固而長，或窒或貫。
+
+MC-9644 — falling_block爲流矢者不入結界門。
+
+MC-14923 — 獨戲無欺，濫言見逐。
+
+MC-16345 — /attribute以削命數之極，其實不折。
+
+MC-26304 — 煉藥檯既解，其管覆焉。
+
+MC-96198 — 舟艚入淺水則淹。
+
+MC-175619 — 射械無闕，則遺蜜瓶。
+
+MC-252846 — 有靈既長，貫檻之被氍毹者。
+
+MC-253791 — 鼃長則窒。
+
+MC-267947 — 終眇玥移覽者。
+
+MC-267951 — 昂spawnChunkRadius而闢世，則凝滯迨崩。
+
+MC-267981 — minecraft:block.trial_spawner.ambient之方奏，「煉孳衍籠霍霍」之旁註惟一見焉。
+
+MC-268772 — 墜傷之率，其色迥異。
+
+MC-269318 — 創者置書於案，則弭焉。
+
+MC-269601 — 椎中非人，則不退人焉。
+
+MC-269633 — 盈桶濫疊，則復單極。
+
+MC-269642 — 羹濫疊而餟，則復單極。
+
+MC-269674 — 書筆濫疊，署則喪數。
+
+MC-269685 — 乳濫疊而飲，則桶喪焉。
+
+MC-269686 — 留聲盤濫疊，則機得鈔之。
+
+MC-269708 — 水瓶濫疊而射械射之，則復單極。
+
+MC-269717 — 染贆櫝濫疊，則釜奪之。
+
+MC-269809 — 賞魚桶濫疊而飼諸螈，則復單極。
+
+MC-270296 — 厄源藥矢，不可疊之。
+
+MC-270635 — 煉孳衍籠，其紋不一。
+
+MC-270684 — set_attributes貨表之術不容空表。
+
+MC-270687 — 椎之風迸者，不恆免墜傷。
+
+MC-270779 — 以/data取羡錄之箱，則戲崩焉。
+
+MC-270818 — 生錄報物，其次無定。
+
+MC-270926 — foodSaturationLevel可以爲陰。
+
+MC-270965 — 方果強奪minecraft:custom_data件之錄格。
+
+MC-271001 — 皿物得逾九十九之限，直戾錄巓，世以崩焉。
+
+MC-271005 — 天工開物相疊，則咸用焉。
+
+MC-271026 — 態效之件，或喪其錄。
+
+MC-271094 — 生界昇於一點二〇點五，而EntityTag之棨信略焉。
+
+MC-271159 — 昇於一點二〇點五，旗楷無色者敗焉。
+
+MC-271170 — 命首以廢名，則遘不料。
+
+先槧之謬
+
+MC-271398 — 製物或殘其材，是以鈔之。
+
+MC-271400 — 弩之速彀，不復利焉。
+
+MC-271402 — 利、剋損傷。
+
+MC-271404 — 穿甲、密質不相斥。
+
+MC-271406 — 塊頃破之，則復成也。
+
+MC-271422 — 靈逸而躍必瞬。
+
+MC-271423 — 㵗㶔不激。
+
+MC-271427 — 橫斬發不如故。
+
+MC-271434 — 篝火退人。
+
+MC-271435 — 行而被伐，則不退焉。
+
+MC-271436 — 椎不復能附焰。
+
+MC-271441 — 禦焱雖善，其文赤質。
+
+MC-271442 — 附焰明滅燈爐。
+
+MC-271444 — 附焰明篝燭於水中。
+
+MC-271455 — 主手持附焰，則副手擲戟成焚。
+
+MC-271459 — 履霜壞注水者。
+
+MC-271461 — 既以「權衡鄉民商賈」，賈或崩客端焉。
+
+MC-271477 — 「projectile_spawned」之靈效，恆作於元點。
+
+MC-271484 — 附焰之明燭篝，幽匿探子不察。
+
+MC-271556 — 凋靈髑首，百鮮以一。
+
+MC-271565 — 昇一點九以上囊屍鄉者則崩。
+
+MC-271632 — 剋蟲者緩一階，非四階
+
+MC-271637 — 靈實體效格「run_command」恆作於茲世。
+
+MC-271652 — 持荊棘者，不如著之。
+
+MC-271654 — 肉搏之靈，不發粒焉。
+
+MC-271710 — 縛鍵之幕，暗於常色。
+
+MC-271725 — 靈實體效「apply_mob_effect」不採其率。
+
+MC-271726 — item.trident.thunder之聲，不復聞於見震者。
+
+參典
+
+津渡

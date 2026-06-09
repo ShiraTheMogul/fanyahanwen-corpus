@@ -1,0 +1,2381 @@
+# WORK_TITLE: 礦藝大典
+# PAGE_TITLE: 訃
+# URL: https://lzh.minecraft.wiki/%E8%A8%83
+# WIKI_CATEGORIES: 分類:待譯之篇，分類:戲事，分類:游戏内容，分類:見替
+# DATE: 2026-03-31T10:28:24Z
+# SCRAPED_AT: 2026-06-08T20:40:44+00:00
+# AUTHOR: 礦藝大典之用戶
+# CATEGORIES: 游戲，維基
+# LICENSE: CC-BY-NC-SA-3.0 https://creativecommons.org/licenses/by-nc-sa/3.0/
+# RIGHTS_NOTE: Non-commercial reuse only; ShareAlike applies to adaptations. Images and game assets excluded unless separately licensed.
+
+是篇之譯未成。
+
+儻協而譯之，善也。顧宜親力親爲，器械與機巧僞智者不足取也。
+
+訃（Death Message，俗謂死亡消息）乃生靈殞命之際告其因之文。
+
+機制
+
+生靈殞命之際或生訃，以告其因。
+
+若則「示訃」（show_death_messages[僅爪哇版]或showDeathMessages[僅基石版]）為true之際，訃將示於論板：
+
+爪哇版中，戲者之訃報受伍之設而定。若其無伍，訃將報予世上眾戲者。
+
+基石版中，戲者之訃一概報予世上眾戲者。
+
+爪哇版中，既馴之狼、貓、鸚鵡、鸚鵡螺和屍化鸚鵡螺之訃將報其主。
+
+基石版中，既馴之狼、貓、馬、驢、騾、屍馬、美洲駝、商駝、鸚鵡、鸚鵡螺屍化鸚鵡螺之訃將報予世上眾戲者。
+
+戲者殞命之際，訃將示於其亡幕。
+
+戲誌將錄經命名生靈之訃。此亦不以/damage許訃得現之方，如炎靈斃於雪團，魚涸斃，以及蜂失其螫針而亡。
+
+訃皆定制，即一因一告也。
+
+非因遇害而亡
+
+若生靈未遇害而亡，則訃不生焉。生靈孳衍之際若其存命或命極不逾零（）者，將即生即亡。更生靈實體之數，令其存命降至零（）或其下，可無傷斃之。
+
+戲者是法而亡，亡幕將無訃。
+
+訃文之構
+
+訃文含三變量：
+
+亡者乃殞命而生該訃之生靈。
+
+擊殺者乃令亡者殞命之實體，並計入該實體之擊殺數。
+若生靈亡於有源實體，擊殺者即致傷之源實體。此時不採.player訃。
+
+若生靈亡於無源實體，擊殺者乃亡者殞命前5秒內最終致傷之實體。此時採.player訃。
+
+若為彈致傷，且其具實體之數Owner則致傷源為該實體，反之致傷源為彈自身。
+
+若為既燃灹藥致傷，且其具實體源則致傷源為該實體，反之致傷源為灹藥自身。
+
+許殞命之事具擊殺者，唯訃文中無，諸如蜂螫、焰火爆及監守發所致之殞命。
+
+物乃擊殺者於致亡傷事之際所持之物，視同以該物致傷，唯該物具自定名方現於訃中。
+爪哇版中，生靈須受自擊殺者之傷乃致殞命，所生之訃方有物。若生靈經擊於擊殺者，而後亡於無實體源之傷，則該物弗現於訃中。
+
+爪哇版中，該變量示為[物名]，且若鼠標浮於是名，該物之述盡揭。
+
+基石版中，及物之訃未用。
+
+亡者可同為擊殺者，如生靈亡於自身所役之彈或灹藥。
+
+訃之擇
+
+爪哇版
+
+訃之擇方大體以傷類擇訃名，繼以-{}-death.attack.訃名為訃。
+
+若為無實體源之傷，唯該生靈於殞命前5秒曾為某實體所傷，則訃易為-{}-death.attack.訃名.player。
+
+若為有實體源之傷，且該實體源持經命名之物，則訃易為-{}-death.attack.訃名.item。
+
+另，有二殊訃：
+
+intentional_game_design：為bad_respawn_point傷類所用，是訃恆為death.attack.badRespawnPoint.message，必無.player或.item者。
+
+fall_variants：為fall傷類所用，乃若干殊限所致之墜斃訃-{}-death.fell.名，若是訃限立，則以墜斃之訃代death.attack.fall及其.player、.item變體。
+
+以/damage可使某生靈施以其常態所不能之傷類予他者，抑或施以常態應有然此時無實體源之傷予他者，此將致使字串弗能常顯：
+
+若此傷類常態必有實體源，然此時無，所生之訃將因欠缺擊殺者變量而弗能格之，如%1$s爲%2$s所殺（death.attack.mob）。
+
+若此傷類常態必有實體源，然此時無，且該生靈於殞命前5秒曾為實體源所傷，則亦採.player者。若無相應之-{}-death.attack.訃名.player訃，則未譯之本地化鍵名將逕顯。
+
+若此時擊殺者持經命名之物，則亦採.item者。若無相應之-{}-death.attack.訃名.item訃，則未譯之本地化鍵名將逕顯。
+
+基石版
+
+訃之擇方大體以傷類擇訃名，繼以-{}-death.attack.訃名為訃。
+
+雖訃之.player及.item二者亦存於文檔中，然實則弗用。
+
+另，若生靈亡於fall傷類之傷且墜高逾5格，則易之為death.fell.accident.generic訃。
+
+訃文
+
+爪哇版
+
+java訃
+
+訃
+
+本地化键名
+
+傷類
+
+詳述
+
+暴行
+
+亡者爲擊殺者所殺
+
+death.attack.player
+
+player_attack
+
+生靈亡於戲者之近攻。
+
+'亡者爲擊殺者以物所殺
+
+death.attack.player.item
+
+亡者爲擊殺者所殺
+
+death.attack.mob
+
+mob_attack
+mob_attack_no_aggro
+mob_projectile
+
+生靈亡於非戲者生靈之近攻，抑或為潜匿贆彈或美洲駝涎所殺。
+
+亡者爲擊殺者以物所殺
+
+death.attack.mob.item
+
+亡者'爲螫斃
+
+death.attack.sting
+
+sting
+
+生靈亡於蜂之近攻。
+欲生.player者須以/damage為之。
+
+亡者爲擊殺者以物所螫斃
+
+death.attack.sting.item
+
+亡者'爲擊殺者所螫斃
+
+death.attack.sting.player
+
+亡者爲擊殺者所射殺
+
+death.attack.arrow
+
+arrow
+
+生靈亡於矢。
+
+亡者爲擊殺者以物所射殺
+
+death.attack.arrow.item
+
+亡者爲擊殺者所穿殺
+
+death.attack.trident
+
+trident
+
+生靈亡於三叉戟。
+
+亡者爲擊殺者以物所穿殺
+
+death.attack.trident.item
+
+亡者爲擊殺者以火圓射殺
+
+death.attack.fireball
+
+fireball
+
+生靈亡於既發之火圓或小火圓（知孰所發）。
+
+亡者爲擊殺者以物之火圓射殺
+
+death.attack.fireball.item
+
+亡者爲擊殺者所擲殺
+
+death.attack.thrown
+
+thrown
+
+生靈亡於雪團、卵或終眇玥。
+
+亡者爲擊殺者以物所擲殺
+
+death.attack.thrown.item
+
+亡者斃於火爆
+
+death.attack.fireworks
+
+fireworks
+
+生靈亡於焰火。
+欲生.player者須以/damage為之。
+
+亡者斃於擊殺者以物所射火爆
+
+death.attack.fireworks.item
+
+搏擊殺者之時亡者斃於火爆
+
+death.attack.fireworks.player
+
+亡者爲擊殺者之首射而斃
+
+death.attack.witherSkull
+
+wither_skull
+
+生靈亡於凋靈首。
+
+亡者爲擊殺者以物射其首而斃
+
+death.attack.witherSkull.item
+
+欲傷擊殺者之時亡者斃
+
+death.attack.thorns
+
+thorns
+
+生靈亡於荆棘之靈或海衛尖刺。
+
+欲傷擊殺者之時亡者爲物所殺
+
+death.attack.thorns.item
+
+亡者爲擊殺者以神法所殺
+
+death.attack.indirectMagic
+
+indirect_magic
+
+生靈亡於他者之攻所致之魔傷。
+
+亡者爲擊殺者以物所殺
+
+death.attack.indirectMagic.item
+
+亡者爲厲嘯所夷
+
+death.attack.sonic_boom
+
+sonic_boom
+
+生靈亡於監守之遠攻。
+欲生.player者須以/damage為之。
+
+去擊殺者持物者之時亡者爲厲嘯所夷
+
+death.attack.sonic_boom.item
+
+去擊殺者之時亡者爲厲嘯所夷
+
+death.attack.sonic_boom.player
+
+亡者炙亡於龍涎中
+
+death.attack.dragonBreath
+
+dragon_breath
+
+迄一五週三一丙止，終眇龍攻以龍涎乃屬dragon_breath傷類，其後更為indirect_magic傷類。
+現時之傷源不存dragon_breath傷類之傷，故欲生是訃須以/damage為之。
+見MC-84595。
+
+亡者爲擊殺者所炙亡於龍涎中
+
+death.attack.dragonBreath.player
+
+亡者爲擊殺者所椎殺
+
+death.attack.mace_smash
+
+mace_smash
+
+生靈亡於椎擊。
+
+亡者爲擊殺者以物所椎殺
+
+death.attack.mace_smash.item
+
+亡者爲擊殺者所搠
+
+death.attack.spear
+
+spear
+
+生靈亡於槊刺。
+
+亡者爲擊殺者以物所搠
+
+death.attack.spear.item
+
+損效
+
+亡者灼斃
+
+death.attack.onFire
+
+on_fire
+unattributed_fireball
+
+生靈焚身而亡，抑或亡於既發之火圓或小火圓（不知孰所發）。
+欲生.item者須以/damage為之。
+
+搏擊殺者持物者之時亡者灼斃
+
+death.attack.onFire.item
+
+搏擊殺者之時亡者灼斃
+
+death.attack.onFire.player
+
+亡者斃於神法
+
+death.attack.magic
+
+magic
+
+生靈亡於實體源之魔傷，如飲瞬傷劑或得於後述之瞬傷：/effect、射械所射抑/summon所召之瞬傷矢、瞬傷噴劑、瞬傷滯劑及瞬傷效雲；/summon所召之魔齒；亡於湧靈核。
+
+去擊殺者之時亡者斃於神法
+
+death.attack.magic.player
+
+亡者凋斃
+
+death.attack.wither
+
+wither
+
+生靈凋零而亡。
+
+搏擊殺者之時亡者凋斃
+
+death.attack.wither.player
+
+亡者飢斃
+
+death.attack.starve
+
+starve
+
+戲者亡於飢盡之傷，抑惱鬼亡於存世逾時之傷。
+
+搏擊殺者之時亡者飢斃
+
+death.attack.starve.player
+
+險境
+
+死者爲仙人掌所刺斃
+
+death.attack.cactus
+
+cactus
+
+生靈觸仙人掌而亡。
+
+去击杀者之時死者爲仙人掌所刺斃
+
+death.attack.cactus.player
+
+死者浴火焚身
+
+death.attack.inFire
+
+in_fire
+
+生靈亡於火中。
+
+搏击杀者之時死者斃於焰
+
+death.attack.inFire.player
+
+死者融於熔石
+
+death.attack.lava
+
+lava
+
+生靈亡於熔石中。
+
+去击杀者之時死者融於熔石
+
+death.attack.lava.player
+
+死者方察地乃熔石也
+
+death.attack.hotFloor
+
+hot_floor
+
+生靈踐火漿塊而亡。
+
+死者欲避击杀者而步入險境
+
+death.attack.hotFloor.player
+
+死者爲甜莓叢所刺斃
+
+death.attack.sweetBerryBush
+
+sweet_berry_bush
+
+生靈入甜莓叢而亡。
+
+去击杀者之時死者爲甜莓叢所刺斃
+
+death.attack.sweetBerryBush.player
+
+死者窒於壁
+
+death.attack.inWall
+
+in_wall
+
+生靈亡於窒。
+
+搏击杀者之時死者窒於壁
+
+death.attack.inWall.player
+
+死者溺斃
+
+death.attack.drown
+
+drown
+
+生物被溺水杀死。
+
+去击杀者之時死者溺斃
+
+death.attack.drown.player
+
+死者涸斃
+
+death.attack.dryout
+
+dryout
+
+生物被脱水杀死。
+
+去击杀者之時死者涸斃
+
+death.attack.dryout.player
+
+死者凍斃矣
+
+death.attack.freeze
+
+freeze
+
+生物被冰冻杀死。
+
+死者爲击杀者所凍斃
+
+death.attack.freeze.player
+
+死者見壓而斃
+
+death.attack.cramming
+
+cramming
+
+生物被挤压杀死。
+
+死者爲击杀者所壓殺
+
+death.attack.cramming.player
+
+雷殛死者
+
+death.attack.lightningBolt
+
+lightning_bolt
+
+生物被闪电杀死。
+
+雷殛死者於搏击杀者之時
+
+death.attack.lightningBolt.player
+
+死者遺世而獨立
+
+death.attack.outsideBorder
+
+outside_border
+
+生物被世界边界杀死。
+
+搏击杀者之時死者遺世而獨立
+
+death.attack.outsideBorder.player
+
+死者墜離是世
+
+death.attack.outOfWorld
+
+out_of_world
+
+生物被虚空杀死。
+
+死者與击杀者不共戴天
+
+death.attack.outOfWorld.player
+
+意外事故
+
+死者墜斃
+
+death.attack.fall
+
+fall
+
+生物被摔落伤害杀死。
+
+去击杀者之時死者墜斃
+
+death.attack.fall.player
+
+死者爲石筍穿
+
+death.attack.stalagmite
+
+stalagmite
+
+生物摔落到作为石笋顶端的滴水石锥上而被摔落伤害杀死。
+
+搏击杀者之時死者爲石筍穿之
+
+death.attack.stalagmite.player
+
+死者爲墜鐵砧壓斃矣
+
+death.attack.anvil
+
+falling_anvil
+
+生物被下落的铁砧杀死。
+
+搏击杀者之時死者爲墜砧壓殺
+
+death.attack.anvil.player
+
+死者爲穴之石墜而穿
+
+death.attack.fallingStalactite
+
+falling_stalactite
+
+生物被下落的滴水石锥杀死。
+
+搏击杀者之時死者爲穴之石墜而穿
+
+death.attack.fallingStalactite.player
+
+死者爲墜塊壓斃
+
+death.attack.fallingBlock
+
+falling_block
+
+生物被其他的下落的方块杀死。
+
+搏击杀者之時死者爲墜塊壓斃
+
+death.attack.fallingBlock.player
+
+死者搶壁而亡
+
+death.attack.flyIntoWall
+
+fly_into_wall
+
+生物在使用鞘翅滑翔时撞击方块侧面而被杀死。
+
+去击杀者之時死者搶壁而亡
+
+death.attack.flyIntoWall.player
+
+摔死
+
+死者自險墜斃
+
+death.fell.accident.generic
+
+fall
+
+生物下落高度超过5格时被摔落伤害杀死。
+
+死者斃於攀梯
+
+death.fell.accident.ladder
+
+生物从梯子上脱离后被摔落伤害杀死。
+
+死者墜於棧架
+
+death.fell.accident.scaffolding
+
+生物从脚手架上脱离后被摔落伤害杀死。
+
+死者自藤墜斃
+
+death.fell.accident.vines
+
+生物从藤蔓上脱离后被摔落伤害杀死。
+
+死者墜於垂泣藤
+
+death.fell.accident.weeping_vines
+
+生物从垂泪藤上脱离后被摔落伤害杀死。
+
+死者墜於輪囷藤
+
+death.fell.accident.twisting_vines
+
+生物从缠怨藤上脱离后被摔落伤害杀死。
+
+死者緣壁時墜
+
+death.fell.accident.other_climbable
+
+生物从其他可攀爬方块上脱离后被摔落伤害杀死。
+
+death.fell.accident.water
+
+death.fell.accident.water
+
+生物处于水中时被摔落伤害杀死。
+
+死者受撃墜斃
+
+death.fell.killer
+
+生物受到非摔落伤害后，在三百刻（十五秒）内被摔落伤害杀死，且此时生物下落高度超过5格。
+摔落伤害有实体来源时，使用death.fell.finish死亡消息，但由于只有摔落会造成fall伤害类型的伤害，该死亡消息只能通过/damage产生。
+由于MC-121048，在23w03a前都无法出现此死亡消息。
+
+死者爲击杀者所擊而墜斃
+
+death.fell.assist
+
+死者爲击杀者以物品所擊而墜斃
+
+death.fell.assist.item
+
+死者墜後爲击杀者所殺
+
+death.fell.finish
+
+死者墜後爲击杀者以物品所殺
+
+death.fell.finish.item
+
+炸死
+
+死者爆斃
+
+death.attack.explosion
+
+explosion
+
+生物被没有实体来源的爆炸杀死。
+
+死者爲击杀者所爆殺
+
+death.attack.explosion.player
+
+死者爲击杀者所爆殺
+
+death.attack.explosion.player
+
+player_explosion
+
+生物被有实体来源的爆炸杀死。
+
+死者爲击杀者以物品所爆殺
+
+death.attack.explosion.player.item
+
+死者爲[既定之陷阱]所殺
+
+death.attack.badRespawnPoint.message
+
+bad_respawn_point
+
+生物被床或重生锚的爆炸杀死。
+包括点击事件链接，点击[既定之陷阱]会跳转到MCPE-28723页面。
+
+杂项
+
+死者既斃
+
+death.attack.generic
+
+generic
+
+蜜蜂被因失去螫针而受到的伤害杀死，鹦鹉被使用曲奇而受到的伤害杀死。
+使用/damage未指定伤害类型时使用此伤害类型。
+
+死者斃於击杀者
+
+death.attack.generic.player
+
+死者遭戮
+
+death.attack.genericKill
+
+generic_kill
+
+生物被/kill杀死。
+
+搏击杀者之時死者遭戮
+
+death.attack.genericKill.player
+
+消息太长
+
+死者斃於不測神力
+
+death.attack.even_more_magic
+
+无
+
+包括悬浮事件链接，光标悬浮于文本上时会显示-{}-祈蒙見恕，是訃誠甚長而弗能皆示。概如是：<被截断的信息>。
+这条死亡消息的触发条件是：玩家在多人游戏中死亡，并且死亡消息序列化为JSON格式的文本组件后长度超过262144个字符。此时服务器会将死亡消息替换为这条消息，并把原先的死亡消息截断到256个字符并发送给玩家。
+
+Java版3D Shareware v1.34
+
+Java版3D Shareware v1.34死亡消息
+
+死亡消息
+
+本地化键名
+
+说明
+
+死者 was too soft for this world
+
+death.attack.nightmare
+
+玩家被强制梦魇模式中持续造成的伤害杀死。
+
+死者 was too soft for this world (击杀者 helped)
+
+death.attack.nightmare.player
+
+Java版23w13a_or_b
+
+Java版23w13a_or_b死亡消息
+
+死亡消息
+
+本地化键名
+
+伤害类型
+
+说明
+
+死者 experienced the dark side of the moon
+
+death.attack.onMoon
+
+on_moon
+
+在月球维度中被窒息引发的伤害杀死。
+.player消息可以正常触发，但语言文件中没有对应的文本。
+
+death.attack.onMoon.player
+
+death.attack.onMoon.player
+
+死者 was turned into gold
+
+death.midas.turned_into_gold
+
+midas_curse
+
+规则minecraft:midas_touch启用时被玩家触碰而被杀死。
+伤害类型minecraft:midas_curse使用了死亡消息类型midas_curse，没有.player和.item变种。
+
+Java版24w14potato
+
+Java版24w14potato死亡消息
+
+死亡消息
+
+本地化键名
+
+伤害类型
+
+说明
+
+死者 held the hot potato for too long.
+
+death.attack.potato_heat
+
+potato_heat
+
+玩家被烫手洋芋造成的伤害杀死。
+.player消息可以正常触发，但语言文件中没有对应的文本。
+
+death.attack.potato_heat.player
+
+death.attack.potato_heat.player
+
+死者 was killed by a bad-tempered potato
+
+death.attack.potato_magic
+
+potato_magic
+
+生物被马铃薯电池或恶毒马铃薯杀死。
+.player消息可以正常触发，但语言文件中没有对应的文本。
+
+death.attack.potato_magic.player
+
+death.attack.potato_magic.player
+
+Java版13w02a
+
+是章所述，不復存於爪哇版也。
+
+此戲之所嚮具，然今絕矣。
+
+在爪哇版快照13w02a到13w04a中，存在一个复杂的系统来显示摔死或摔落后被其他东西杀死的死亡消息。
+
+有两种消息：“死者 开头”和“死者 开头 and 结尾”
+
+开头可以是：
+
+fell (off a ladder|off some vines|out of the water|from a high place)
+
+was (shot|pummeled|blown|fireballed|knocked) (off a ladder|off some vines|out of the water|from a high place)
+
+was (shot|pummeled|blown|fireballed|knocked) (off a ladder|off some vines|out of the water|from a high place) by 击杀者
+
+结尾可以是：
+
+into a pool of lava
+
+fell out of the world
+
+into a patch of fire
+
+into a patch of cacti
+
+got finished off by 击杀者
+
+got finished off by 击杀者 using 物品
+
+got finished off using 物品
+
+一共有352种不同的死亡消息。
+
+（在en_US.lang文件中有416种，因为动词“blown”出现了两次。）
+
+所有摔落死亡消息
+
+死者 fell off a ladder
+
+死者 fell off some vines
+
+死者 fell out of the water
+
+死者 fell from a high place
+
+死者 was shot off a ladder
+
+死者 was shot off some vines
+
+死者 was shot out of the water
+
+死者 was shot from a high place
+
+死者 was pummeled off a ladder
+
+死者 was pummeled off some vines
+
+死者 was pummeled out of the water
+
+死者 was pummeled from a high place
+
+死者 was blown off a ladder
+
+死者 was blown off some vines
+
+死者 was blown out of the water
+
+死者 was blown from a high place
+
+死者 was fireballed off a ladder
+
+死者 was fireballed off some vines
+
+死者 was fireballed out of the water
+
+死者 was fireballed from a high place
+
+死者 was knocked off a ladder
+
+死者 was knocked off some vines
+
+死者 was knocked out of the water
+
+死者 was knocked from a high place
+
+死者 was shot off a ladder by 击杀者
+
+死者 was shot off some vines by 击杀者
+
+死者 was shot out of the water by 击杀者
+
+死者 was shot from a high place by 击杀者
+
+死者 was pummeled off a ladder by 击杀者
+
+死者 was pummeled off some vines by 击杀者
+
+死者 was pummeled out of the water by 击杀者
+
+死者 was pummeled from a high place by 击杀者
+
+死者 was blown off a ladder by 击杀者
+
+死者 was blown off some vines by 击杀者
+
+死者 was blown out of the water by 击杀者
+
+死者 was blown from a high place by 击杀者
+
+死者 was fireballed off a ladder by 击杀者
+
+死者 was fireballed off some vines by 击杀者
+
+死者 was fireballed out of the water by 击杀者
+
+死者 was fireballed from a high place by 击杀者
+
+死者 was knocked off a ladder by 击杀者
+
+死者 was knocked off some vines by 击杀者
+
+死者 was knocked out of the water by 击杀者
+
+死者 was knocked from a high place by 击杀者
+
+死者 fell off a ladder and into a pool of lava
+
+死者 fell off some vines and into a pool of lava
+
+死者 fell out of the water and into a pool of lava
+
+死者 fell from a high place and into a pool of lava
+
+死者 was shot off a ladder and into a pool of lava
+
+死者 was shot off some vines and into a pool of lava
+
+死者 was shot out of the water and into a pool of lava
+
+死者 was shot from a high place and into a pool of lava
+
+死者 was pummeled off a ladder and into a pool of lava
+
+死者 was pummeled off some vines and into a pool of lava
+
+死者 was pummeled out of the water and into a pool of lava
+
+死者 was pummeled from a high place and into a pool of lava
+
+死者 was blown off a ladder and into a pool of lava
+
+死者 was blown off some vines and into a pool of lava
+
+死者 was blown out of the water and into a pool of lava
+
+死者 was blown from a high place and into a pool of lava
+
+死者 was fireballed off a ladder and into a pool of lava
+
+死者 was fireballed off some vines and into a pool of lava
+
+死者 was fireballed out of the water and into a pool of lava
+
+死者 was fireballed from a high place and into a pool of lav
+
+死者 was knocked off a ladder and into a pool of lava
+
+死者 was knocked off some vines and into a pool of lava
+
+死者 was knocked out of the water and into a pool of lava
+
+死者 was knocked from a high place and into a pool of lava
+
+死者 was shot off a ladder by 击杀者 and into a pool of lava
+
+死者 was shot off some vines by 击杀者 and into a pool of lava
+
+死者 was shot out of the water by 击杀者 and into a pool of lava
+
+死者 was shot from a high place by 击杀者 and into a pool of lava
+
+死者 was pummeled off a ladder by 击杀者 and into a pool of lava
+
+死者 was pummeled off some vines by 击杀者 and into a pool of lava
+
+死者 was pummeled out of the water by 击杀者 and into a pool of lava
+
+死者 was pummeled from a high place by 击杀者 and into a pool of lava
+
+死者 was blown off a ladder by 击杀者 and into a pool of lava
+
+死者 was blown off some vines by 击杀者 and into a pool of lava
+
+死者 was blown out of the water by 击杀者 and into a pool of lava
+
+死者 was blown from a high place by 击杀者 and into a pool of lava
+
+死者 was fireballed off a ladder by 击杀者 and into a pool of lava
+
+死者 was fireballed off some vines by 击杀者 and into a pool of lava
+
+死者 was fireballed out of the water by 击杀者 and into a pool of lava
+
+死者 was fireballed from a high place by 击杀者 and into a pool of lava
+
+死者 was knocked off a ladder by 击杀者 and into a pool of lava
+
+死者 was knocked off some vines by 击杀者 and into a pool of lava
+
+死者 was knocked out of the water by 击杀者 and into a pool of lava
+
+死者 was knocked from a high place by 击杀者 and into a pool of lava
+
+死者 fell off a ladder and fell out of the world
+
+死者 fell off some vines and fell out of the world
+
+死者 fell out of the water and fell out of the world
+
+死者 fell from a high place and fell out of the world
+
+死者 was shot off a ladder and fell out of the world
+
+死者 was shot off some vines and fell out of the world
+
+死者 was shot out of the water and fell out of the world
+
+死者 was shot from a high place and fell out of the world
+
+死者 was pummeled off a ladder and fell out of the world
+
+死者 was pummeled off some vines and fell out of the world
+
+死者 was pummeled out of the water and fell out of the world
+
+死者 was pummeled from a high place and fell out of the world
+
+死者 was blown off a ladder and fell out of the world
+
+死者 was blown off some vines and fell out of the world
+
+死者 was blown out of the water and fell out of the world
+
+死者 was blown from a high place and fell out of the world
+
+死者 was fireballed off a ladder and fell out of the world
+
+死者 was fireballed off some vines and fell out of the world
+
+死者 was fireballed out of the water and fell out of the world
+
+死者 was fireballed from a high place and fell out of the world
+
+死者 was knocked off a ladder and fell out of the world
+
+死者 was knocked off some vines and fell out of the world
+
+死者 was knocked out of the water and fell out of the world
+
+死者 was knocked from a high place and fell out of the world
+
+死者 was shot off a ladder by 击杀者 and fell out of the world
+
+死者 was shot off some vines by 击杀者 and fell out of the world
+
+死者 was shot out of the water by 击杀者 and fell out of the world
+
+死者 was shot from a high place by 击杀者 and fell out of the world
+
+死者 was pummeled off a ladder by 击杀者 and fell out of the world
+
+死者 was pummeled off some vines by 击杀者 and fell out of the world
+
+死者 was pummeled out of the water by 击杀者 and fell out of the world
+
+死者 was pummeled from a high place by 击杀者 and fell out of the world
+
+死者 was blown off a ladder by 击杀者 and fell out of the world
+
+死者 was blown off some vines by 击杀者 and fell out of the world
+
+死者 was blown out of the water by 击杀者 and fell out of the world
+
+死者 was blown from a high place by 击杀者 and fell out of the world
+
+死者 was fireballed off a ladder by 击杀者 and fell out of the world
+
+死者 was fireballed off some vines by 击杀者 and fell out of the world
+
+死者 was fireballed out of the water by 击杀者 and fell out of the world
+
+死者 was fireballed from a high place by 击杀者 and fell out of the world
+
+死者 was knocked off a ladder by 击杀者 and fell out of the world
+
+死者 was knocked off some vines by 击杀者 and fell out of the world
+
+死者 was knocked out of the water by 击杀者 and fell out of the world
+
+死者 was knocked from a high place by 击杀者 and fell out of the world
+
+死者 fell off a ladder and into a patch of fire
+
+死者 fell off some vines and into a patch of fire
+
+死者 fell out of the water and into a patch of fire
+
+死者 fell from a high place and into a patch of fire
+
+死者 was shot off a ladder and into a patch of fire
+
+死者 was shot off some vines and into a patch of fire
+
+死者 was shot out of the water and into a patch of fire
+
+死者 was shot from a high place and into a patch of fire
+
+死者 was pummeled off a ladder and into a patch of fire
+
+死者 was pummeled off some vines and into a patch of fire
+
+死者 was pummeled out of the water and into a patch of fire
+
+死者 was pummeled from a high place and into a patch of fire
+
+死者 was blown off a ladder and into a patch of fire
+
+死者 was blown off some vines and into a patch of fire
+
+死者 was blown out of the water and into a patch of fire
+
+死者 was blown from a high place and into a patch of fire
+
+死者 was fireballed off a ladder and into a patch of fire
+
+死者 was fireballed off some vines and into a patch of fire
+
+死者 was fireballed out of the water and into a patch of fire
+
+死者 was fireballed from a high place and into a patch of fire
+
+死者 was knocked off a ladder and into a patch of fire
+
+死者 was knocked off some vines and into a patch of fire
+
+死者 was knocked out of the water and into a patch of fire
+
+死者 was knocked from a high place and into a patch of fire
+
+死者 was shot off a ladder by 击杀者 and into a patch of fire
+
+死者 was shot off some vines by 击杀者 and into a patch of fire
+
+死者 was shot out of the water by 击杀者 and into a patch of fire
+
+死者 was shot from a high place by 击杀者 and into a patch of fire
+
+死者 was pummeled off a ladder by 击杀者 and into a patch of fire
+
+死者 was pummeled off some vines by 击杀者 and into a patch of fire
+
+死者 was pummeled out of the water by 击杀者 and into a patch of fire
+
+死者 was pummeled from a high place by 击杀者 and into a patch of fire
+
+死者 was blown off a ladder by 击杀者 and into a patch of fire
+
+死者 was blown off some vines by 击杀者 and into a patch of fire
+
+死者 was blown out of the water by 击杀者 and into a patch of fire
+
+死者 was blown from a high place by 击杀者 and into a patch of fire
+
+死者 was fireballed off a ladder by 击杀者 and into a patch of fire
+
+死者 was fireballed off some vines by 击杀者 and into a patch of fire
+
+死者 was fireballed out of the water by 击杀者 and into a patch of fire
+
+死者 was fireballed from a high place by 击杀者 and into a patch of fire
+
+死者 was knocked off a ladder by 击杀者 and into a patch of fire
+
+死者 was knocked off some vines by 击杀者 and into a patch of fire
+
+死者 was knocked out of the water by 击杀者 and into a patch of fire
+
+死者 was knocked from a high place by 击杀者 and into a patch of fire
+
+死者 fell off a ladder and into a patch of cacti
+
+死者 fell off some vines and into a patch of cacti
+
+死者 fell out of the water and into a patch of cacti
+
+死者 fell from a high place and into a patch of cacti
+
+死者 was shot off a ladder and into a patch of cacti
+
+死者 was shot off some vines and into a patch of cacti
+
+死者 was shot out of the water and into a patch of cacti
+
+死者 was shot from a high place and into a patch of cacti
+
+死者 was pummeled off a ladder and into a patch of cacti
+
+死者 was pummeled off some vines and into a patch of cacti
+
+死者 was pummeled out of the water and into a patch of cacti
+
+死者 was pummeled from a high place and into a patch of cacti
+
+死者 was blown off a ladder and into a patch of cacti
+
+死者 was blown off some vines and into a patch of cacti
+
+死者 was blown out of the water and into a patch of cacti
+
+死者 was blown from a high place and into a patch of cacti
+
+死者 was fireballed off a ladder and into a patch of cacti
+
+死者 was fireballed off some vines and into a patch of cacti
+
+死者 was fireballed out of the water and into a patch of cacti
+
+死者 was fireballed from a high place and into a patch of cacti
+
+死者 was knocked off a ladder and into a patch of cacti
+
+死者 was knocked off some vines and into a patch of cacti
+
+死者 was knocked out of the water and into a patch of cacti
+
+死者 was knocked from a high place and into a patch of cacti
+
+死者 was shot off a ladder by 击杀者 and into a patch of cacti
+
+死者 was shot off some vines by 击杀者 and into a patch of cacti
+
+死者 was shot out of the water by 击杀者 and into a patch of cacti
+
+死者 was shot from a high place by 击杀者 and into a patch of cacti
+
+死者 was pummeled off a ladder by 击杀者 and into a patch of cacti
+
+死者 was pummeled off some vines by 击杀者 and into a patch of cacti
+
+死者 was pummeled out of the water by 击杀者 and into a patch of cacti
+
+死者 was pummeled from a high place by 击杀者 and into a patch of cacti
+
+死者 was blown off a ladder by 击杀者 and into a patch of cacti
+
+死者 was blown off some vines by 击杀者 and into a patch of cacti
+
+死者 was blown out of the water by 击杀者 and into a patch of cacti
+
+死者 was blown from a high place by 击杀者 and into a patch of cacti
+
+死者 was fireballed off a ladder by 击杀者 and into a patch of cacti
+
+死者 was fireballed off some vines by 击杀者 and into a patch of cacti
+
+死者 was fireballed out of the water by 击杀者 and into a patch of cacti
+
+死者 was fireballed from a high place by 击杀者 and into a patch of cacti
+
+死者 was knocked off a ladder by 击杀者 and into a patch of cacti
+
+死者 was knocked off some vines by 击杀者 and into a patch of cacti
+
+死者 was knocked out of the water by 击杀者 and into a patch of cacti
+
+死者 was knocked from a high place by 击杀者 and into a patch of cacti
+
+死者 fell off a ladder and got finished off by 击杀者
+
+死者 fell off some vines and got finished off by 击杀者
+
+死者 fell out of the water and got finished off by 击杀者
+
+死者 fell from a high place and got finished off by 击杀者
+
+死者 was shot off a ladder and got finished off by 击杀者
+
+死者 was shot off some vines and got finished off by 击杀者
+
+死者 was shot out of the water and got finished off by 击杀者
+
+死者 was shot from a high place and got finished off by 击杀者
+
+死者 was pummeled off a ladder and got finished off by 击杀者
+
+死者 was pummeled off some vines and got finished off by 击杀者
+
+死者 was pummeled out of the water and got finished off by 击杀者
+
+死者 was pummeled from a high place and got finished off by 击杀者
+
+死者 was blown off a ladder and got finished off by 击杀者
+
+死者 was blown off some vines and got finished off by 击杀者
+
+死者 was blown out of the water and got finished off by 击杀者
+
+死者 was blown from a high place and got finished off by 击杀者
+
+死者 was fireballed off a ladder and got finished off by 击杀者
+
+死者 was fireballed off some vines and got finished off by 击杀者
+
+死者 was fireballed out of the water and got finished off by 击杀者
+
+死者 was fireballed from a high place and got finished off by 击杀者
+
+死者 was knocked off a ladder and got finished off by 击杀者
+
+死者 was knocked off some vines and got finished off by 击杀者
+
+死者 was knocked out of the water and got finished off by 击杀者
+
+死者 was knocked from a high place and got finished off by 击杀者
+
+死者 was shot off a ladder by 击杀者 and got finished off by 击杀者
+
+死者 was shot off some vines by 击杀者 and got finished off by 击杀者
+
+死者 was shot out of the water by 击杀者 and got finished off by 击杀者
+
+死者 was shot from a high place by 击杀者 and got finished off by 击杀者
+
+死者 was pummeled off a ladder by 击杀者 and got finished off by 击杀者
+
+死者 was pummeled off some vines by 击杀者 and got finished off by 击杀者
+
+死者 was pummeled out of the water by 击杀者 and got finished off by 击杀者
+
+死者 was pummeled from a high place by 击杀者 and got finished off by 击杀者
+
+死者 was blown off a ladder by 击杀者 and got finished off by 击杀者
+
+死者 was blown off some vines by 击杀者 and got finished off by 击杀者
+
+死者 was blown out of the water by 击杀者 and got finished off by 击杀者
+
+死者 was blown from a high place by 击杀者 and got finished off by 击杀者
+
+死者 was fireballed off a ladder by 击杀者 and got finished off by 击杀者
+
+死者 was fireballed off some vines by 击杀者 and got finished off by 击杀者
+
+死者 was fireballed out of the water by 击杀者 and got finished off by 击杀者
+
+死者 was fireballed from a high place by 击杀者 and got finished off by 击杀者
+
+死者 was knocked off a ladder by 击杀者 and got finished off by 击杀者
+
+死者 was knocked off some vines by 击杀者 and got finished off by 击杀者
+
+死者 was knocked out of the water by 击杀者 and got finished off by 击杀者
+
+死者 was knocked from a high place by 击杀者 and got finished off by 击杀者
+
+死者 fell off a ladder and got finished off by 击杀者 using 物品
+
+死者 fell off some vines and got finished off by 击杀者 using 物品
+
+死者 fell out of the water and got finished off by 击杀者 using 物品
+
+死者 fell from a high place and got finished off by 击杀者 using 物品
+
+死者 was shot off a ladder and got finished off by 击杀者 using 物品
+
+死者 was shot off some vines and got finished off by 击杀者 using 物品
+
+死者 was shot out of the water and got finished off by 击杀者 using 物品
+
+死者 was shot from a high place and got finished off by 击杀者 using 物品
+
+死者 was pummeled off a ladder and got finished off by 击杀者 using 物品
+
+死者 was pummeled off some vines and got finished off by 击杀者 using 物品
+
+死者 was pummeled out of the water and got finished off by 击杀者 using 物品
+
+死者 was pummeled from a high place and got finished off by 击杀者 using 物品
+
+死者 was blown off a ladder and got finished off by 击杀者 using 物品
+
+死者 was blown off some vines and got finished off by 击杀者 using 物品
+
+死者 was blown out of the water and got finished off by 击杀者 using 物品
+
+死者 was blown from a high place and got finished off by 击杀者 using 物品
+
+死者 was fireballed off a ladder and got finished off by 击杀者 using 物品
+
+死者 was fireballed off some vines and got finished off by 击杀者 using 物品
+
+死者 was fireballed out of the water and got finished off by 击杀者 using 物品
+
+死者 was fireballed from a high place and got finished off by 击杀者 using 物品
+
+死者 was knocked off a ladder and got finished off by 击杀者 using 物品
+
+死者 was knocked off some vines and got finished off by 击杀者 using 物品
+
+死者 was knocked out of the water and got finished off by 击杀者 using 物品
+
+死者 was knocked from a high place and got finished off by 击杀者 using 物品
+
+死者 was shot off a ladder by 击杀者 and got finished off by 击杀者 using 物品
+
+死者 was shot off some vines by 击杀者 and got finished off by 击杀者 using 物品
+
+死者 was shot out of the water by 击杀者 and got finished off by 击杀者 using 物品
+
+死者 was shot from a high place by 击杀者 and got finished off by 击杀者 using 物品
+
+死者 was pummeled off a ladder by 击杀者 and got finished off by 击杀者 using 物品
+
+死者 was pummeled off some vines by 击杀者 and got finished off by 击杀者 using 物品
+
+死者 was pummeled out of the water by 击杀者 and got finished off by 击杀者 using 物品
+
+死者 was pummeled from a high place by 击杀者 and got finished off by 击杀者 using 物品
+
+死者 was blown off a ladder by 击杀者 and got finished off by 击杀者 using 物品
+
+死者 was blown off some vines by 击杀者 and got finished off by 击杀者 using 物品
+
+死者 was blown out of the water by 击杀者 and got finished off by 击杀者 using 物品
+
+死者 was blown from a high place by 击杀者 and got finished off by 击杀者 using 物品
+
+死者 was fireballed off a ladder by 击杀者 and got finished off by 击杀者 using 物品
+
+死者 was fireballed off some vines by 击杀者 and got finished off by 击杀者 using 物品
+
+死者 was fireballed out of the water by 击杀者 and got finished off by 击杀者 using 物品
+
+死者 was fireballed from a high place by 击杀者 and got finished off by 击杀者 using 物品
+
+死者 was knocked off a ladder by 击杀者 and got finished off by 击杀者 using 物品
+
+死者 was knocked off some vines by 击杀者 and got finished off by 击杀者 using 物品
+
+死者 was knocked out of the water by 击杀者 and got finished off by 击杀者 using 物品
+
+死者 was knocked from a high place by 击杀者 and got finished off by 击杀者 using 物品
+
+死者 fell off a ladder and got finished off using 物品
+
+死者 fell off some vines and got finished off using 物品
+
+死者 fell out of the water and got finished off using 物品
+
+死者 fell from a high place and got finished off using 物品
+
+死者 was shot off a ladder and got finished off using 物品
+
+死者 was shot off some vines and got finished off using 物品
+
+死者 was shot out of the water and got finished off using 物品
+
+死者 was shot from a high place and got finished off using 物品
+
+死者 was pummeled off a ladder and got finished off using 物品
+
+死者 was pummeled off some vines and got finished off using 物品
+
+死者 was pummeled out of the water and got finished off using 物品
+
+死者 was pummeled from a high place and got finished off using 物品
+
+死者 was blown off a ladder and got finished off using 物品
+
+死者 was blown off some vines and got finished off using 物品
+
+死者 was blown out of the water and got finished off using 物品
+
+死者 was blown from a high place and got finished off using 物品
+
+死者 was fireballed off a ladder and got finished off using 物品
+
+死者 was fireballed off some vines and got finished off using 物品
+
+死者 was fireballed out of the water and got finished off using 物品
+
+死者 was fireballed from a high place and got finished off using 物品
+
+死者 was knocked off a ladder and got finished off using 物品
+
+死者 was knocked off some vines and got finished off using 物品
+
+死者 was knocked out of the water and got finished off using 物品
+
+死者 was knocked from a high place and got finished off using 物品
+
+死者 was shot off a ladder by 击杀者 and got finished off using 物品
+
+死者 was shot off some vines by 击杀者 and got finished off using 物品
+
+死者 was shot out of the water by 击杀者 and got finished off using 物品
+
+死者 was shot from a high place by 击杀者 and got finished off using 物品
+
+死者 was pummeled off a ladder by 击杀者 and got finished off using 物品
+
+死者 was pummeled off some vines by 击杀者 and got finished off using 物品
+
+死者 was pummeled out of the water by 击杀者 and got finished off using 物品
+
+死者 was pummeled from a high place by 击杀者 and got finished off using 物品
+
+死者 was blown off a ladder by 击杀者 and got finished off using 物品
+
+死者 was blown off some vines by 击杀者 and got finished off using 物品
+
+死者 was blown out of the water by 击杀者 and got finished off using 物品
+
+死者 was blown from a high place by 击杀者 and got finished off using 物品
+
+死者 was fireballed off a ladder by 击杀者 and got finished off using 物品
+
+死者 was fireballed off some vines by 击杀者 and got finished off using 物品
+
+死者 was fireballed out of the water by 击杀者 and got finished off using 物品
+
+死者 was fireballed from a high place by 击杀者 and got finished off using 物品
+
+死者 was knocked off a ladder by 击杀者 and got finished off using 物品
+
+死者 was knocked off some vines by 击杀者 and got finished off using 物品
+
+死者 was knocked out of the water by 击杀者 and got finished off using 物品
+
+死者 was knocked from a high place by 击杀者 and got finished off using 物品
+
+基岩版
+
+基岩版死亡消息
+
+死亡消息
+
+本地化键名
+
+说明
+
+暴力行为
+
+死者爲击杀者所殺
+
+death.attack.player
+
+生物被玩家的近战攻击杀死。
+
+死者爲击杀者所殺
+
+death.attack.mob
+
+生物被非玩家的近战攻击攻击杀死。
+
+死者被击杀者吹了纸团
+
+death.attack.spit
+
+生物被羊驼唾沫杀死。
+
+死者爲击杀者所射殺
+
+death.attack.arrow
+
+生物被箭杀死。
+
+死者爲击杀者所穿殺
+
+death.attack.trident
+
+生物被三叉戟杀死。
+
+死者爲击杀者以火圓射殺
+
+death.attack.fireball
+
+生物被小火球杀死。
+
+死者被击杀者狙击了
+
+death.attack.bullet
+
+生物被潜影弹杀死。
+
+死者爲击杀者所擲殺
+
+death.attack.thrown
+
+生物被雪球、鸡蛋或末影珍珠杀死。
+
+死者斃於火爆
+
+death.attack.fireworks
+
+生物被烟花火箭杀死。
+
+欲傷击杀者之時死者斃
+
+death.attack.thorns
+
+生物被荆棘魔咒或守卫者的尖-{}-刺效果的伤害杀死。
+
+死者爲击杀者以神法所殺
+
+death.attack.indirectMagic
+
+生物被其他生物的攻击造成的魔法伤害杀死。
+
+死者爲厲嘯所夷
+
+death.attack.sonicBoom
+
+生物被监守者的远程攻击杀死。
+.player消息只能通过/damage来产生。
+
+去击杀者之時死者爲厲嘯所夷
+
+death.attack.sonicBoom.player
+
+负面效果
+
+死者灼斃
+
+death.attack.onFire
+
+生物被着火杀死。
+
+死者斃於神法
+
+death.attack.magic
+
+生物被没有实体来源的魔法伤害杀死，如饮用瞬间伤害药水或/effect给予的瞬间伤害效果，发射器射出或由/summon召唤的伤害之箭、喷溅型伤害药水、滞留型伤害药水和瞬间伤害区域效果云给予的瞬间伤害效果，或/summon召唤的唤魔者尖牙。
+
+死者凋斃
+
+death.attack.wither
+
+生物被凋零杀死。
+
+死者凍斃矣
+
+death.attack.freeze
+
+生物被冰冻杀死。
+
+危险环境
+
+死者爲仙人掌所刺斃
+
+death.attack.cactus
+
+生物被仙人掌杀死。
+
+死者浴火焚身
+
+death.attack.inFire
+
+生物被火杀死。
+
+死者融於熔石
+
+death.attack.lava
+
+生物被熔岩杀死。
+
+死者方察地乃熔石也
+
+death.attack.magma
+
+生物被岩浆块杀死。
+
+死者爲甜莓叢所刺斃
+
+death.attack.sweetBerryBush
+
+生物被甜浆果丛杀死。
+
+死者窒於壁
+
+death.attack.inWall
+
+生物被窒息杀死。
+
+雷殛死者
+
+death.attack.lightningBolt
+
+生物被闪电杀死。
+
+死者溺斃
+
+death.attack.drown
+
+生物被溺水杀死。
+
+意外事故
+
+死者墜斃
+
+death.attack.fall
+
+生物被摔落伤害杀死。
+
+死者爲石筍穿
+
+death.attack.stalagmite
+
+生物摔落到作为石笋顶端的滴水石锥上而被摔落伤害杀死。
+
+死者自險墜斃
+
+death.fell.accident.generic
+
+生物下落高度超过5格时被摔落伤害杀死。
+
+死者爲墜鐵砧壓斃矣
+
+death.attack.anvil
+
+生物被下落的铁砧杀死。
+
+死者爲穴之石墜而穿
+
+death.attack.stalactite
+
+生物被下落的滴水石锥杀死。
+
+死者爲墜塊壓斃
+
+death.attack.fallingBlock
+
+生物被其他的下落的方块杀死。
+
+死者搶壁而亡
+
+death.attack.flyIntoWall
+
+生物在使用鞘翅滑翔时撞击方块侧面而被杀死。
+
+杂项
+
+死者飢斃
+
+death.attack.starve
+
+玩家被饥饿耗尽而受到的伤害杀死。
+
+死者爆斃
+
+death.attack.explosion
+
+生物被没有实体来源的爆炸杀死。
+
+死者爲击杀者所爆殺
+
+death.attack.explosion.player
+
+生物被有实体来源的爆炸杀死。
+
+死者墜離是世
+
+death.attack.outOfWorld
+
+生物被虚空杀死。
+
+死者既斃
+
+death.attack.generic
+
+生物被/kill杀死。
+
+未使用的死亡消息
+
+死者爲击杀者以物品所殺
+
+death.attack.player.item
+
+这些死亡消息存在于语言文件中，但是没有任何情况会使用它们。
+
+死者爲击杀者以物品所殺
+
+death.attack.mob.item
+
+死者爲击杀者以物品所射殺
+
+death.attack.arrow.item
+
+死者爲击杀者以物品之火圓射殺
+
+death.attack.fireball.item
+
+死者爲击杀者以物品所擲殺
+
+death.attack.thrown.item
+
+死者爲击杀者以物品所殺
+
+death.attack.indirectMagic.item
+
+搏击杀者之時死者灼斃
+
+death.attack.onFire.player
+
+去击杀者之時死者爲仙人掌所刺斃
+
+death.attack.cactus.player
+
+搏击杀者之時死者斃於焰
+
+death.attack.inFire.player
+
+去击杀者之時死者融於熔石
+
+death.attack.lava.player
+
+死者欲避击杀者而步入險境
+
+death.attack.magma.player
+
+去击杀者之時死者溺斃
+
+death.attack.drown.player
+
+死者斃於攀梯
+
+death.fell.accident.ladder
+
+死者自藤墜斃
+
+death.fell.accident.vines
+
+death.fell.accident.water
+
+死者受撃墜斃
+
+death.fell.killer
+
+死者爲击杀者所擊而墜斃
+
+death.fell.assist
+
+死者爲击杀者以物品所擊而墜斃
+
+death.fell.assist.item
+
+死者墜後爲击杀者所殺
+
+death.fell.finish
+
+死者墜後爲击杀者以物品所殺
+
+death.fell.finish.item
+
+历史
+
+是段當補其所敘。
+
+須補者：缺失基岩版历史、缺失繁中数据
+
+爪哇版復測版
+一點八
+預一
+加入了死亡消息。
+目前，死亡消息仅显示在多人游戏服务器中。
+加入了下列死亡消息：
+死者浴火焚身
+
+死者被烧死了
+
+死者试图在熔岩里游泳
+
+死者在墙里窒息而亡
+
+死者淹死了
+
+死者饿死了
+
+死者被戳死了
+
+死者落地过猛
+
+死者掉出了这个世界
+
+死者死了
+
+死者爆炸了
+
+死者被魔法杀死了
+
+死者被击杀者杀死了
+
+死者被击杀者射杀
+
+死者被击杀者用火球烧死了
+
+死者被击杀者给砸死了
+
+爪哇版
+一點〇點〇
+復測版一點九之預四
+加入了死亡消息“死者被击杀者杀死了”，在生物被喷溅型伤害药水杀死时触发。
+一點三點一
+一二週一六甲
+死亡消息“死者死了”现在是未使用的。
+一二週一八甲
+由于单人游戏世界现在在内部服务器中运行，死亡消息也会在单人游戏中显示。
+一點四點二
+一二週三四甲
+加入了死亡消息“死者凋零了”。
+一二週四一甲
+加入了死亡消息“死者被坠落的铁砧压扁了”。
+一二週四二甲
+加入了死亡消息“死者被下落的方块压扁了”。
+一點四點六
+一二週五〇甲
+加入了死亡消息“死者在试图伤害击杀者时被杀”。
+一點五
+一三週〇一甲
+加入了死亡消息“死者被击杀者用物品杀死了”。
+一三週〇二甲
+重写了死亡消息的翻译字符串系统。
+由摔落伤害产生的死亡消息现在会通过一个能够产生352种（在en_US.lang中为416种）不同死亡消息的系统来显示。
+加入了下列死亡消息：
+死者在与击杀者战斗时踏入了火中
+
+死者在与击杀者战斗时被烤得酥脆
+
+死者在逃离击杀者时试图在熔岩里游泳
+
+死者在试图逃离击杀者时淹死了
+
+死者在试图逃离击杀者时撞上了仙人掌
+
+死者被击杀者炸死了
+
+死者被击杀者用物品射杀
+
+死者被击杀者用物品发射的火球烧死了
+
+死者被击杀者用物品给砸死了
+
+死者被击杀者用物品杀死了
+
+死亡消息“死者被击杀者杀死了”被修改为“死者被击杀者使用的魔法杀死了”。
+一三週〇五甲
+由于相关死亡消息无法被翻译，移除了生成摔落死亡消息的系统。
+下列死亡消息属于上述系统的一部分，但并未被移除：
+死者从高处摔了下来
+
+死者从梯子上摔了下来
+
+死者从藤蔓上摔了下来
+
+死者从水中掉了下来（未使用）
+
+加入了下列死亡消息：
+死者因为击杀者注定要摔死
+
+死者因为击杀者使用了物品注定要摔死
+
+加入了下列未使用的死亡消息：
+死者注定要摔死
+
+死者摔伤得太重并被击杀者完结了生命
+
+死者摔伤得太重并被击杀者用物品完结了生命
+
+一點六點一
+一三週二一乙
+修改了下列未使用死亡消息的英文原文：
+将“死者 was fell too far and was finished by 击杀者”改为“死者 fell too far and was finished by 击杀者”
+
+将“死者 was fell too far and was finished by 击杀者 using 物品”改为“死者 fell too far and was finished by 击杀者 using 物品”
+
+一點七點四
+一三週四七甲
+下列死亡消息现在是未使用的：
+死者因为击杀者注定要摔死
+
+死者因为击杀者使用了物品注定要摔死
+
+一點八
+一四週一〇甲
+加入了游戏规则showDeathMessages。
+一四週三二甲
+加入了死亡消息“死者被闪电击中”。
+一點九
+一五週三一甲
+现在死亡消息会显示在死亡屏幕上。
+一五週三一丙
+加入了死亡消息“死者被龙息烤熟了”。
+一五週三二甲
+死亡消息“死者被龙息烤熟了”现在是未使用的。
+一五週四二甲
+加入了死亡消息“死者感受到了动能”。
+一點一〇
+一六週二〇甲
+加入了下列死亡消息：
+死者发现了地板是熔岩做的
+
+死者因击杀者而步入危险之地
+
+一點一一
+一六週四三甲
+加入了死亡消息“死者因被过度挤压而死”。
+一點一一點一
+一六週五〇甲
+加入了死亡消息“死者随着一声巨响消失了”。
+一點一三
+一七週四八甲
+加入了死亡消息“死者被[刻意的游戏设计]杀死了”。
+一八週〇一甲
+加入了下列死亡消息：
+死者在与击杀者战斗时被闪电击中
+
+死者在与击杀者战斗时在墙里窒息而亡
+
+死者被击杀者挤扁了
+
+死者在与击杀者战斗时饿死了
+
+死者被击杀者用物品炸死了
+
+death.attack.magic.player
+
+死者在与击杀者战斗时凋零了
+
+死者在与击杀者战斗时被坠落的铁砧压扁了
+
+死者在与击杀者战斗时被下落的方块压扁了
+
+死者被击杀者用物品杀死了
+
+死者在试图伤害击杀者时被物品杀死
+
+死者在试图逃离击杀者时落地过猛
+
+死者与击杀者不共戴天
+
+死者在试图逃离击杀者时感受到了动能
+
+死者在与击杀者战斗时随着一声巨响消失了
+
+加入了下列未使用的死亡消息：
+死者死于击杀者
+
+死者被击杀者的龙息烤熟了
+
+一八週〇七甲
+加入了下列死亡消息：
+死者被击杀者刺穿了
+
+死者被击杀者用物品刺穿了
+
+一八週一五甲
+加入了下列未使用的死亡消息：
+death.attack.dryout
+
+death.attack.dryout.player
+
+一八週二〇乙
+修改了下列死亡消息的英文原文：
+将“死者 was slaim by <mob> using 物品”改为“死者 was slain by <mob> using 物品”
+
+将“死者 discovered floor was lava”改为“死者 discovered the floor was lava”
+
+預五
+死亡消息“死者从水中掉了下来”现在可以在实际游戏中出现。
+一點一三點一
+一八週三一甲
+加入了未使用的死亡消息“死者被不为人知的魔法杀死了”，以及这条消息的悬停事件：“抱歉！消息过长，无法完整显示。截断后的消息为：<被截断的消息>”
+一點一四
+一八週四九甲
+加入了下列死亡消息：
+死者被甜浆果丛刺死了
+
+死者在试图逃离击杀者时被甜浆果丛刺死了
+
+一點一五
+一九週三四甲
+加入了下列死亡消息：
+死者被蛰死了
+
+death.attack.sting.item
+
+加入了未使用的死亡消息“死者被击杀者蛰死了”。
+一點一六
+二〇週〇七甲
+死亡消息“death.attack.magic.player”被修改为“死者在试图逃离击杀者时被魔法杀死了”。
+二〇週〇九甲
+加入了下列死亡消息：
+死者从垂泪藤上摔了下来
+
+死者在攀爬时摔了下来
+
+death.attack.fireworks.item
+
+移除了死亡消息“死者在与击杀者战斗时随着一声巨响消失了”，但其翻译字符串仍然存在。
+二〇週一一甲
+加入了下列死亡消息：
+死者从缠怨藤上摔了下来
+
+死者从脚手架上摔了下来
+
+二〇週一二甲
+移除了死亡消息“死者 fell out of the water”的翻译字符串，现在它显示为“death.fell.accident.water”。
+二〇週一三甲
+由于死亡消息“死者被[刻意的游戏设计]杀死了”现在也会在玩家被主世界或末地中的重生锚的爆炸杀死时出现，其原始翻译字符串“death.attack.netherBed.<message/link>”被改为"death.attack.badRespawnPoint.<message/link>"。
+二〇週一八甲
+修改了下列死亡消息：
+将“死者 fell off a scaffolding”的英文原文改为“死者 fell off scaffolding”
+
+将“death.attack.fireworks.item”改为“死者随着击杀者用物品发射的烟花发出的巨响消失了”
+
+二〇週二二甲
+加入了下列死亡消息：
+死者被击杀者发射的头颅射杀
+
+death.attack.witherSkull.item
+
+一點一六點二
+二〇週三〇甲
+死亡消息“死者被击杀者发射的头颅射杀”的英文原文“死者 was shot by a 击杀者's skull”被修改为“死者 was shot by a skull from 击杀者”。
+一點一七
+二〇週四六甲
+加入了下列死亡消息：
+死者被冻死了
+
+死者被击杀者冻死了
+
+二〇週四九甲
+加入了下列死亡消息：
+死者被坠落的钟乳石刺穿了
+
+死者在与击杀者战斗时被钟乳石刺穿了
+
+二一週〇三甲
+加入了下列死亡消息：
+死者被石笋刺穿了
+
+死者在与击杀者战斗时被石笋刺穿了
+
+一點一七點一
+預二
+下列死亡消息现在可以在实际游戏中出现：
+death.attack.dryout
+
+death.attack.dryout.player
+
+死者死了
+
+死者死于击杀者
+
+候一
+修改了下列死亡消息：
+将“death.attack.dryout”改为“死者因脱水而死”
+
+将“death.attack.dryout.player”改为“死者在试图逃离击杀者时因脱水而死”
+
+一點一九
+二二週一七甲
+加入了下列死亡消息：
+死者被一道音波尖啸抹除了
+
+死者在试图逃离击杀者被一道音波尖啸抹除了
+
+二二週一九甲
+加入了死亡消息“death.attack.sonic_boom.item”。
+移除了死亡消息“死者在试图逃离击杀者时被一道音波尖啸抹除了”，但其翻译字符串仍然存在。
+預二
+加入了死亡消息“死者在与持有物品的击杀者战斗时被烤得酥脆”，但其无法在实际游戏中出现，只存在于游戏代码中。
+修改了下列死亡消息：
+将“death.attack.sting.item”改为“死者被击杀者用物品蛰死了”
+
+将“death.attack.witherSkull.item”改为“死者被击杀者用物品发射的头颅射杀”
+
+将“death.attack.sonic_boom.item”改为“死者在试图逃离持有物品的击杀者时被一道音波尖啸抹除了”
+
+一點一九點三
+二二週四三甲
+加入了下列死亡消息：
+death.attack.anvil.item
+
+death.attack.fallingBlock.item
+
+death.attack.fallingStalactite.item
+
+移除了下列死亡消息，但它们的翻译字符串仍然存在：
+死者在与击杀者战斗时被坠落的铁砧压扁了
+
+死者在与击杀者战斗时被下落的方块压扁了
+
+死者在与击杀者战斗时被坠落的钟乳石刺穿了
+
+一點一九點四
+二三週〇三甲
+下列死亡消息现在可以在实际游戏中出现：
+死者注定要摔死
+
+死者因为击杀者注定要摔死
+
+死者因为击杀者使用了物品注定要摔死
+
+二三週〇六甲
+由于/damage命令的加入，所有有对应伤害类型的消息名称的死亡消息、及其无击杀者、.player或.item变种都可以产生。
+以下存在于语言文件中的死亡消息现在可以通过/damage来产生：
+死者爲击杀者所螫斃
+
+搏击杀者之時死者斃於火爆
+
+去击杀者之時死者爲厲嘯所夷
+
+死者炙亡於龍涎中
+
+死者爲击杀者所炙亡於龍涎中
+
+搏击杀者持物品者之時死者灼斃
+
+死者墜後爲击杀者所殺
+
+死者墜後爲击杀者以物品所殺
+
+預四
+修改了下列死亡消息的英文原文：
+将“死者 walked into danger zone due to 击杀者”改为“死者 walked into the danger zone due to 击杀者”
+
+将“死者 was roasted in dragon breath”改为“死者 was roasted in dragon's breath”
+
+将“死者 was roasted in dragon breath by 击杀者”改为“死者 was roasted in dragon's breath by 击杀者”
+
+一點二一點二
+二四週三三甲
+加入了被重锤猛击杀死时的死亡消息：
+死者爲击杀者所椎殺
+
+死者爲击杀者以物品所椎殺
+
+一點二一點一一
+二五週四一甲
+加入了被矛刺死时的死亡消息：
+死者爲击杀者所搠
+
+死者爲击杀者以物品所搠
+
+攜帶版首測
+〇點一一點〇
+建一
+加入了死亡消息。
+攜帶版
+一點〇點四
+一點〇點四點〇
+加入了死亡消息“死者感受到了动能”。
+一點一點三
+一點一點三點〇
+加入了下列死亡消息：
+死者发现了地板是熔岩做的
+
+死者因击杀者而步入危险之地（未使用）
+
+基石版
+一點二點〇
+一點二點〇點二
+加入了死亡消息“死者随着一声巨响消失了”。
+一點一六點二〇〇
+一點一六點二〇〇點五一
+加入了下列死亡消息：
+死者被击杀者狙击了
+
+死者被击杀者吹了纸团
+
+一點一六點二一〇
+一點一六點二一〇點五三
+加入了死亡消息“死者被冻死了”。
+一點一六點二二〇
+一點一六點二二〇點五〇
+加入了死亡消息“死者被坠落的钟乳石刺穿了”。
+一點一九點一〇
+一點一九點一〇點二一
+加入了关于甜浆果丛的死亡消息：
+“<死者> 被甜浆果灌木丛刺死了”
+
+现在死亡消息会显示在死亡屏幕上。
+一點二〇點五〇
+一點二〇點五〇點二〇
+加入了被床或重生锚炸死时的死亡消息：
+“”
+
+将被岩浆块杀死时的死亡消息由“”更改为“”。
+一點二一點三〇
+一點二一點三〇點二二
+加入了被重锤猛击杀死时的死亡消息：
+死者被击杀者击碎了
+
+死者被击杀者用物品击碎了
+
+戲驛四版
+一點八八
+加入了隐藏死亡消息的选项。
+
+原主機版
+凶匣三六零
+凶匣壹
+戲驛三
+戲驛四
+戲驛維他
+維優
+燧池
+
+題更五
+物更一
+一點〇〇
+一點〇〇
+一點〇〇
+補一
+一點〇點一
+加入了死亡消息。
+
+参考
+
+导航
+
+站誤：使用群組名稱 "说明" 的 <ref> 標籤已存在，但查無對應的 <references group="说明"/> 標籤

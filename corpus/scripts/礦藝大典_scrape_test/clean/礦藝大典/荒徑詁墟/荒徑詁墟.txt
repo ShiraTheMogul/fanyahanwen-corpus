@@ -1,0 +1,798 @@
+# WORK_TITLE: 礦藝大典
+# PAGE_TITLE: 荒徑詁墟
+# URL: https://lzh.minecraft.wiki/%E8%8D%92%E5%BE%91%E8%A9%81%E5%A2%9F
+# WIKI_CATEGORIES: 分類:方修之事，分類:須信摹之篇
+# DATE: 2026-03-26T14:11:19Z
+# SCRAPED_AT: 2026-06-08T20:30:07+00:00
+# AUTHOR: 礦藝大典之用戶
+# CATEGORIES: 游戲，維基
+# LICENSE: CC-BY-NC-SA-3.0 https://creativecommons.org/licenses/by-nc-sa/3.0/
+# RIGHTS_NOTE: Non-commercial reuse only; ShareAlike applies to adaptations. Images and game assets excluded unless separately licensed.
+
+是篇方修也。 議
+
+可補正於此。
+
+是篇須有信摹。
+
+既加繪之，宜去是誡。
+
+荒徑詁墟（Trail Ruins，俗謂古蹟廢墟）者，古時陶城也，久湮地中。
+
+生
+
+荒徑詁墟多湮於叢莽、棘林、諸古林，深十五方有加。偶以塔巔，秀穎地上。
+
+構
+
+荒徑詁墟之構由泥磚、諸色陶及釉陶所成，其內爲礫所湮。
+
+此構殊於眾者，蓋其寶藏不貯箱中，乃匿謎塊爾。是以戲者需尋匿於礫堆之謎塊，並以刷拭之或得詁貨焉。鮮有謎礫天成則懸，故而其週身塊竦乃致毀焉。
+
+组成荒徑詁墟的结构模板是随机的，同一类结构通常不会全部都生成。
+
+结构目录
+
+古迹废墟的4类结构（房屋、摆设、道路、塔楼）均位于文件夹client.jar/data/minecraft/structures/trail_ruins[僅爪哇版]或data/behavior_packs/vanilla/structures/trail_ruins[僅基石版]中。
+
+结构目录
+
+塔楼
+
+塔楼是古迹废墟的起始结构池。它由一座高塔（样式五选一）和几个较矮的小房间组成。
+
+结构名称
+
+描述
+
+包含
+
+图片
+
+trail_ruins/tower/hall_1
+
+带廊柱的方形厅堂
+
+trail_ruins/tower/hall_2
+
+弧形厅堂
+
+trail_ruins/tower/hall_3
+
+方形厅堂
+
+trail_ruins/tower/hall_4
+
+方形厅堂，天花板明显坍塌
+
+trail_ruins/tower/hall_5
+
+trail_ruins/tower/large_hall_1
+
+弧形厅堂
+
+trail_ruins/tower/large_hall_2
+
+trail_ruins/tower/large_hall_3
+
+trail_ruins/tower/large_hall_4
+
+弧形厅堂，天花板严重破损
+
+trail_ruins/tower/large_hall_5
+
+弧形厅堂，天花板和地板都严重破损
+
+trail_ruins/tower/one_room_1
+
+独栋小房间
+
+trail_ruins/tower/one_room_2
+
+独栋小房间，整体受损严重
+
+trail_ruins/tower/one_room_3
+
+独栋小房间
+
+trail_ruins/tower/one_room_4
+
+trail_ruins/tower/one_room_5
+
+独栋小房间，整体受损严重
+
+trail_ruins/tower/platform_1
+
+平台
+
+trail_ruins/tower/platform_2
+
+trail_ruins/tower/platform_3
+
+trail_ruins/tower/platform_4
+
+trail_ruins/tower/platform_5
+
+trail_ruins/tower/stable_1
+
+畜棚
+
+trail_ruins/tower/stable_2
+
+trail_ruins/tower/stable_3
+
+trail_ruins/tower/stable_4
+
+trail_ruins/tower/stable_5
+
+trail_ruins/tower/tower_1
+
+高塔
+
+trail_ruins/tower/tower_2
+
+trail_ruins/tower/tower_3
+
+trail_ruins/tower/tower_4
+
+trail_ruins/tower/tower_5
+
+trail_ruins/tower/tower_top_1
+
+塔顶
+
+trail_ruins/tower/tower_top_2
+
+trail_ruins/tower/tower_top_3
+
+trail_ruins/tower/tower_top_4
+
+trail_ruins/tower/tower_top_5
+
+道路
+
+圆石和石砖铺成的道路从高塔的正门向远处笔直延伸，两侧连接着各种房屋和摆设。整条道路实际上是由几小段结构模板拼接成的。
+
+结构名称
+
+描述
+
+包含
+
+图片
+
+trail_ruins/roads/long_road_end
+
+较长的路尾
+
+68 䃮
+
+5 裂磚
+
+14 沙
+
+5 石
+
+7 石磚
+
+trail_ruins/roads/road_end_1
+
+较短的路尾
+
+6 沙
+
+29 䃮
+
+trail_ruins/roads/road_end_1s
+
+29 䃮
+
+3 沙
+
+trail_ruins/roads/road_section_1
+
+路段
+
+26 䃮
+
+1 裂磚
+
+8 沙
+
+23 石
+
+trail_ruins/roads/road_section_2
+
+37 䃮
+
+6 裂磚
+
+10 沙
+
+5 石
+
+3 石磚
+
+trail_ruins/roads/road_section_3
+
+45 䃮
+
+11 沙
+
+11 石
+
+trail_ruins/roads/road_section_4
+
+45 䃮
+
+12 沙
+
+11 石
+
+trail_ruins/roads/road_spacer_1
+
+连接高塔正门的路段
+
+27 䃮
+
+5 裂磚
+
+9 沙
+
+13 石
+
+6 石磚
+
+房屋
+
+道路旁侧的房屋分为组合房、独栋房和大房间。其中组合房的主室为狭长的厅堂，两侧各连接着2个“耳房”。
+
+结构名称
+
+描述
+
+包含
+
+图片
+
+trail_ruins/buildings/group_full_1
+
+耳房，含地下室和顶楼
+
+trail_ruins/buildings/group_full_2
+
+trail_ruins/buildings/group_full_3
+
+trail_ruins/buildings/group_full_4
+
+耳房，含地下室和顶楼，屋顶严重受损
+
+trail_ruins/buildings/group_full_5
+
+trail_ruins/buildings/group_hall_1
+
+厅堂
+
+trail_ruins/buildings/group_hall_2
+
+trail_ruins/buildings/group_hall_3
+
+trail_ruins/buildings/group_hall_4
+
+trail_ruins/buildings/group_hall_5
+
+厅堂，天花板严重坍塌
+
+trail_ruins/buildings/group_lower_1
+
+耳房，含地下室
+
+trail_ruins/buildings/group_lower_2
+
+trail_ruins/buildings/group_lower_3
+
+trail_ruins/buildings/group_lower_4
+
+trail_ruins/buildings/group_lower_5
+
+trail_ruins/buildings/group_room_1
+
+耳房
+
+trail_ruins/buildings/group_room_2
+
+trail_ruins/buildings/group_room_3
+
+trail_ruins/buildings/group_room_4
+
+trail_ruins/buildings/group_room_5
+
+trail_ruins/buildings/group_upper_1
+
+耳房，含顶楼
+
+87 泥磚
+
+10 泥磚階
+
+2 泥磚版
+
+10 黃陶
+
+15 靛陶
+
+17 赤陶
+
+1 梯
+
+trail_ruins/buildings/group_upper_2
+
+78 泥磚
+
+4 泥磚階
+
+2 泥磚版
+
+30 白陶
+
+3 蒼陶
+
+13 黛陶
+
+1 梯
+
+1 製物案
+
+trail_ruins/buildings/group_upper_3
+
+77 泥磚
+
+4 泥磚階
+
+2 泥磚版
+
+29 白陶
+
+3 蒼陶
+
+13 橙陶
+
+1 梯
+
+1 製物案
+
+trail_ruins/buildings/group_upper_4
+
+87 磚塊
+
+11 磚版
+
+3 白陶
+
+15 靛陶
+
+17 蒼陶
+
+1 梯
+
+trail_ruins/buildings/group_upper_5
+
+87 磚塊
+
+11 磚版
+
+15 灰陶
+
+17 蒼陶
+
+3 赤陶
+
+1 梯
+
+trail_ruins/buildings/large_room_1
+
+匠铺
+
+150 泥磚
+
+2 泥磚階
+
+39 靛陶
+
+21 赤陶
+
+6 黃釉陶
+
+2 潤石版
+
+1 鍛案
+
+1 爐
+
+1 冶爐
+
+2 鐵檻
+
+1 土
+
+trail_ruins/buildings/large_room_2
+
+棚子
+
+67 泥磚
+
+9 夯泥
+
+10 泥磚階
+
+7 泥磚版
+
+9 泥磚垣
+
+28 白陶
+
+12 蒼釉陶
+
+9 黛陶
+
+1 營火
+
+1 土
+
+trail_ruins/buildings/large_room_3
+
+含地下室的大房间
+
+205 泥磚
+
+23 橙陶
+
+12 黃陶
+
+36 黛陶
+
+75 白陶
+
+11 橙釉陶
+
+1 梯
+
+1 機杼
+
+1 土
+
+1 釜
+
+trail_ruins/buildings/large_room_4
+
+严重受损的棚子
+
+56 磚塊
+
+7 磚階
+
+9 磚垣
+
+1 磚版
+
+6 泥磚
+
+3 靛陶
+
+1 白陶
+
+1 土
+
+trail_ruins/buildings/large_room_5
+
+含地下室的大房间
+
+187 磚塊
+
+172 褐陶
+
+20 黑釉陶
+
+3 梯
+
+2 冶爐
+
+1 土
+
+trail_ruins/buildings/one_room_1
+
+独栋圆顶屋
+
+70 泥磚
+
+31 靛陶
+
+15 赤陶
+
+1 土
+
+1 釜
+
+trail_ruins/buildings/one_room_2
+
+独栋圆顶屋，屋顶一角受损
+
+87 泥磚
+
+25 白陶
+
+15 黛陶
+
+1 泥磚階
+
+3 泥磚版
+
+1 土
+
+1 礪
+
+trail_ruins/buildings/one_room_3
+
+trail_ruins/buildings/one_room_4
+
+独栋圆顶屋，含阁楼
+
+trail_ruins/buildings/one_room_5
+
+独栋圆顶屋，整体严重受损
+
+摆设
+
+道路旁侧的摆设都较为小巧，多以圆石为底。
+
+结构名称
+
+描述
+
+包含
+
+图片
+
+trail_ruins/decor/decor_1
+
+方形池
+
+3 澱土
+
+30 䃮
+
+12 赤陶
+
+trail_ruins/decor/decor_2
+
+陶瓦雕塑
+
+18 䃮
+
+7 赤陶
+
+11 白陶
+
+trail_ruins/decor/decor_3
+
+石堆
+
+13 䃮
+
+trail_ruins/decor/decor_4
+
+破损的陶瓦雕塑
+
+1 靛陶
+
+18 䃮
+
+2 白陶
+
+trail_ruins/decor/decor_5
+
+破损的方形池
+
+1 澱土
+
+25 䃮
+
+6 赤陶
+
+trail_ruins/decor/decor_6
+
+苦力怕砖像
+
+3 磚版
+
+4 磚階
+
+3 磚塊
+
+12 䃮
+
+1 黛釉陶
+
+1 沙
+
+trail_ruins/decor/decor_7
+
+烤火架（仿照了Minecraft Live 2020中展示的用于烧结陶罐的烤架）
+
+48 䃮
+
+2 石炭塊
+
+4 磚階
+
+1 赤陶
+
+所構
+
+塊方
+
+黑釉陶
+
+黑陶
+
+冶爐
+
+石炭塊
+
+靛陶
+
+磚版
+
+磚階
+
+磚塊
+
+褐釉陶
+
+褐陶
+
+營火
+
+輿圖案
+
+釜
+
+澱土
+
+䃮
+
+肥箱
+
+裂磚
+
+製物案
+
+黛砼
+
+黛釉陶
+
+黛陶
+
+壞鐵砧
+
+爐
+
+灰釉陶
+
+灰陶
+
+礪
+
+鐵檻
+
+梯
+
+縹釉陶
+
+蒼釉陶
+
+蒼陶
+
+機杼
+
+泥磚版
+
+泥磚階
+
+泥磚
+
+橙釉陶
+
+橙陶
+
+夯泥
+
+赤砼
+
+赤陶
+
+鍛案
+
+潤石
+
+潤石版
+
+石
+
+石磚
+
+陶
+
+白釉陶
+
+黃釉陶
+
+黃陶
+
+可疑的沙砾属于在此结构中生成的方块，但它们不内置于结构文件中，它们是通过随机替换方块标签模板:TagLink内包含的方块（砂土、泥土或沙砾）而生成的。
+
+结构中会包含泥土和沙砾，但它们来自于地形，不属于结构内置方块，它们可被替换成可疑的沙砾。
+
+战利品
+
+可疑的方块
+
+模板:ArchaeologyLoot
+
+数据值
+
+棨信
+
+为了便于表示，在下面列出了各结构名称，但这些名称实际上并不显示在游戏中。
+
+爪哇版：
+
+名
+棨信
+荒徑詁墟
+trail_ruins
+
+基石版：
+
+名
+棨信
+荒徑詁墟
+trail_ruins
+
+历史
+
+2020年10月3日
+Minecraft Live 2020展示了一个供玩家考古的演示结构，与考古相关的特性最初计划于洞穴与山崖更新加入。
+爪哇版
+一點二〇
+二三週一二甲
+加入了古迹废墟。
+二三週一六甲
+将所有塔楼和房屋结构的变种增至5种，并且移除了一些结构。
+更改了一些结构的功能方块，并减少了陶瓦的种类。
+沙子和可疑的沙子不再生成于古迹废墟。
+调整了泥土、沙砾和可疑的沙砾的数量。
+将可疑的沙砾战利品表拆分为普通和稀有战利品表。
+二三週一七甲
+向稀有战利品表加入了音乐唱片Relic。
+基石版
+一點一九點八〇
+一點一九點八〇點二二
+加入了古迹废墟，属于或成之事。
+一點二〇點〇
+一點二〇點〇點二一
+古迹废墟不再属于或成之事。
+一點二〇點〇點二二
+将所有塔楼和房屋结构的变种增至5种，并且移除了一些结构。
+更改了一些结构的功能方块，并减少了陶瓦的种类。
+沙子和可疑的沙子不再生成于古迹废墟。
+调整了泥土、沙砾和可疑的沙砾的数量。
+将可疑的沙砾战利品表拆分为普通和稀有战利品表。
+一點二〇點〇點二三
+向稀有战利品表加入了音乐唱片Relic。
+
+你知道吗
+
+古迹废墟会自然生成于积雪针叶林、原始桦木森林等温带、寒冷或降雪的生物群系，Mojang表示这些建筑是“失落的文明所留下的”。
+
+开发者设计和建造古迹废墟大约用了16-20小时。

@@ -1,0 +1,549 @@
+# WORK_TITLE: 礦藝大典
+# PAGE_TITLE: 爪哇版二五週〇三甲
+# URL: https://lzh.minecraft.wiki/%E7%88%AA%E5%93%87%E7%89%88%E4%BA%8C%E4%BA%94%E9%80%B1%E3%80%87%E4%B8%89%E7%94%B2
+# WIKI_CATEGORIES: 分類:廣佈於甲辰年之快照，分類:方修之事，分類:爪哇版一點二一點五快照，分類:爪哇版之版
+# DATE: 2026-05-08T15:54:43Z
+# SCRAPED_AT: 2026-06-08T18:19:07+00:00
+# AUTHOR: 礦藝大典之用戶
+# CATEGORIES: 游戲，維基
+# LICENSE: CC-BY-NC-SA-3.0 https://creativecommons.org/licenses/by-nc-sa/3.0/
+# RIGHTS_NOTE: Non-commercial reuse only; ShareAlike applies to adaptations. Images and game assets excluded unless separately licensed.
+
+是篇方修也。 議
+
+可補正於此。
+
+二五週〇三甲（25w03a）者，爪哇版一點二一點五之次快照也，廣佈於甲辰年臘月十六日，許異術之通測，以物型應疊件，視鞍如被掛，並補疏漏焉。
+
+新者
+
+塊方
+
+Test Block
+
+以爲Block-Based Test者也。
+
+其罕惟珍。
+
+其道有四，曰：
+Start Mode（mode为start）：始測則出赭焉。
+
+Log Mode（mode为log）：入赭則錄之焉。
+
+Fail Mode（mode为fail）：入赭則敗績焉。
+
+Accept Mode（mode为accept）：入赭則成之焉。
+
+構中非有Start Mode、Start Mode之塊，不得行之。
+
+Test Instance Block
+
+世中行測之所由也。
+
+其罕惟珍。
+
+蓋以爲譬立之體也。
+
+可以有作於其測，或貯之、或覆之、或行之。
+
+行測既俶，各起烽芒以見善惡焉。
+灰者，方行也。
+
+赤者，恆測之敗績也。
+
+緼者，流測之敗績也。
+
+綠者，成事也。
+
+敗績則報謬於檯書、衣上。
+
+測之發於/test，亦立譬以牧之。
+
+闢世
+
+構
+
+增闕構，曰empty.nbt。
+
+戲事
+
+槽
+
+增生靈之槽，曰saddle。
+入者因於equippable疊物之件。
+
+惟自有者得鞍御旃。
+
+令範
+
+/test
+
+以立行測者也。
+
+按：戲目之以行諸平川，是以巖而覆之，障而衣之。
+
+其章則曰：
+test clear*：清測之所繋也。
+test clearall [<radius>]
+
+test clearthat
+
+test clearthese
+
+test create：立措測於此處，以俟其梁柱也。
+test create <test> [<width>] [<height> <depth>]
+
+test locate：尋測處於四裏。
+test locate <selector>
+
+test reset*：覆梁柱於既擇，剝障衣而復之。
+test resetclosest
+
+test reseetthese
+
+test resetthat
+
+test pos：見所指之經緯。既名其數，擊則用之。
+test pos [<variable>]
+
+test run*：諸測竝行，先構而後測也。竝則箔之，不容則依序以列。
+test run <selector> [<numberOfTimes>] [<untilFailed>] [<rotationSteps>] [<testsPerRow>]
+
+test runclosest [<numberOfTimes>] [<untilFailed>]
+
+test runfailed [<numberOfTimes>] [<untilFailed>] [<rotationSteps>] [<testsPerRow>]
+
+test runmultiple <selector> [<amount>]
+
+test runthat [<numberOfTimes>] [<untilFailed>]
+
+test runthese [<numberOfTimes>] [<untilFailed>]
+
+test stop：咸遏行測也。其餘威猶振耳。
+
+test verify <tests>：行諸例於一測以驗之。
+
+其數曰：
+radius：清之廣狹也。
+
+test：測之啟信也。
+
+selector：模棱之擇也，名宇以minecraft:爲本。
+譬：
+*:* - 咸應其啟信。
+
+* - 咸應啟信之於minecraft名宇者。
+
+custom:folder/*_test_? - 咸應啟信之於custom之名宇、folder之庫，而名<冠>_test_<一言之尾>者。
+
+width：（以5爲本）構之寬狹也。
+
+height：（取width以爲本）構之修短也。
+
+depth：（取width以爲本）構之淺深也。
+
+variable：鈔碼之數名也。
+
+numberOfTimes：（以1爲本）復測幾回也。
+
+untilFailed：（爻，以陰爲本）一敗而遏與否也。
+
+rotationSteps：（以0爲本）更旋幾回也。
+
+testsPerRow：（以8爲本）箔之寬狹也。
+
+常
+
+錄囊
+
+增闢test_environment、test_instance二庫。
+
+今可以立譬行測焉。
+
+名簿
+
+增恆簿，曰TEST_ENVIRONMENT_DEFINITION_TYPE、TEST_INSTANCE_TYPE與​TEST_FUNCTION。
+
+增流簿，曰TEST_ENVIRONMENT與​TEST_INSTANCE。
+
+疊物之件
+
+稍豐其件，以應品色。
+孳卵、漁桶、畫、匡之持之，則延諸所生。
+
+雖然，對靈取卵，件不附焉。
+
+其新件如左：
+axolotl/variant：或lucy、或wild、或gold、或cyan、或blue。
+
+fox/variant：或red、或snow。
+
+horse/variant：或white、或creamy、或chestnut、或brown、或black、或gray、或dark_brown。
+
+llama/variant：或creamy、或white、或brown、或gray。
+
+mooshroom/variant：或red、或brown。
+
+parrot/variant：或red_blue、或blue、或green、或yellow_blue、或gray。
+
+rabbit/variant：或brown、或white、或black、或white_splotched、或gold、或salt、或evil。
+
+villager/variant：或desert、或jungle、或plains、或savanna、或snow、或swamp、或taiga。
+
+salmon/size：或small、或medium、或large。
+
+tropical_fish/pattern：或kob、或sunstreak、或snooper、或dasher、或brinely、或spotty、或flopper、或stripey、或glitter、或blockfish、或betty、或clayfish。
+
+tropical_fish/base_color：十六色之一也。
+
+tropical_fish/pattern_color：十六色之一也。
+
+cat/collar：十六色之一也。
+
+wolf/collar：十六色之一也。
+
+sheep/color：十六色之一也。
+
+shulker/color：十六色之一也。
+
+cat/variant：名宇啟信之見錄於cat_variant之簿者也。
+
+frog/variant：名宇啟信之見錄於frog_variant之簿者也。
+
+painting/variant：名宇啟信之見錄於painting_variant之簿者也。
+
+pig/variant：名宇啟信之見錄於pig_variant之簿者也。
+
+wolf/variant：名宇啟信之見錄於wolf_variant之簿者也。
+
+桶畫之於創囊，今廢minecraft:entity_data之舊件而行新件焉。
+
+桶畫之於私註，今廢minecraft:bucket_entity_data與​minecraft:entity_data之舊件而行新件焉。
+
+實體之辝
+
+增新文，曰components。
+有則應於實體之件，如components之應於疊物之件然。
+
+其章法以品鍵照於件名也。
+
+甲型
+
+增豫型之層，曰pig_saddle、strider_saddle、camel_saddle、horse_saddle、donkey_saddle、mule_saddle、skeleton_horse_saddle與​zombie_horse_saddle。
+
+物型
+
+增臚性，曰component，以報其件直者也。
+其附文曰：
+component：疊物之件之名宇編碼也。
+
+直之廣狹，因於件之品類。譬如minecraft:wolf/collar之品，則容染色如lime者。
+
+伺服端芯檔
+
+增net.minecraft.gametest.Main之戶於server.jar，以自啟伺服端而咸行其測者也。
+其目曰：
+--help：見其則也。
+
+--packs <徑>：指資囊之所在也。或庫之有pack.mcmeta者，或橐之.zip者。
+
+--report <徑>：報以XML，其式稍類JUnit。
+
+--tests <擇>：指擇式之所行也，其式當與測例之啟信相和。簡如闕之，則咸行測焉。
+
+--universe <徑>：（以gametestserver爲本）指生界之所在也。平代其元庫也。
+
+--verify <爻>：（以陰爲本）證其測與否也。證則凡左右而旋者，以test抑testNamespace百測旃。
+
+譬：java -DbundlerMainClass="net.minecraft.gametest.Main" -jar server.jar --packs mytestpacks
+
+游戏测试实例定义格式
+
+游戏测试实例是定义运行测试的小型资产，可以在数据包注册表test_instance中定义。
+
+测试类型分为2种：Built-in Function Test和Block-Based Test。
+Built-in Function Test依赖内置函数来运行测试并指示成功或失败。
+
+Block-Based Test使用测试结构中的Test Block来运行测试并指示成功或失败。
+
+游戏内置一个永远成功的测试实例minecraft:always_pass。
+
+格式如下：
+
+父标签
+*batch：作为测试一部分的测试环境的命名空间ID。
+
+*structure：用于测试的结构的命名空间ID。
+
+*type：测试的类型。需为block_based或function之一。
+
+*max_ticks：（數大於0）允许测试通过而不超时的最大刻数。
+
+setup_ticks：（默认为0，數大於等於0）放置测试结构后、测试启动前需要等待的刻数。
+
+max_attempts：（默认为1，數大於0）尝试运行此测试的次数。
+
+required_successes：（默认为1，數大於等於0）此测试必须成功的次数。
+
+required：（默认为true）对要通过的完整测试套件而言，这个测试是否必须通过。
+
+manual_only：（默认为false）此测试是否不包含于自动测试运行组中。
+
+sky_access：（默认为false）此测试是否需要天空。为false时，测试结构被屏障完全包裹；为true时，屏障盒顶部敞开。
+
+rotation：（默认为none）对测试结构应用的旋转角度。或none、或clockwise_90、或180、或counterclockwise_90。
+type为function时，附加以下字段：
+
+*function：要运行的测试函数的命名空间ID。目前内置的测试函数只有minecraft:always_pass。
+
+测试环境定义格式
+
+游戏测试环境是对测试进行分组并为其提供正确的运行前提条件的一种方法，可以在数据包注册表test_environment中定义。
+
+游戏内置一个空测试环境minecraft:default。
+
+格式如下：
+
+父标签
+*type：测试环境的类型。需为all_of、function、game_rules、weather或time_of_day之一。
+type为all_of时，附加以下字段：
+
+*definitions：子定义设置列表，其中的定义均会应用。
+type为function时，附加以下字段：
+
+setup：用于安装的mcfunction文件的命名空间ID。
+
+teardown：用于卸载的mcfunction文件的命名空间ID。
+type为game_rules时，附加以下字段：
+
+*bool_rules：布尔型游戏规则的设置列表。
+：一个游戏规则与一个设置值。
+*rule：要设置的规则的精确ID。测试环境完成后，此规则会被重置为默认值。
+
+*value：规则的设置值。
+
+*int_rules：整型游戏规则的设置列表。
+：一个游戏规则与一个设置值。
+*rule：要设置的规则的精确ID。测试环境完成后，此规则会被重置为默认值。
+
+*value：规则的设置值。
+
+type为raining时，附加以下字段：
+
+*weather：要设置的天气。需为clear、rain與​thunder之一。
+type为time_of_day时，附加以下字段：
+
+*time：（數大於等於0）要设置的当日时间，单位为刻。
+
+戲測之桁
+
+今既篡戲碼，可以立術於TEST_FUNCTION之簿，厥得其桁普通於Block-Based Test也。
+
+籤
+
+增實體之件，曰#can_equip_saddle：horse、skeleton_horse、zombie_horse、donkey、mule、pig、strider與​camel。
+可以加鞍焉者也。惟施於鞍之本件，無有與其行止耳。
+
+改
+
+塊方
+
+Leaf Litter
+
+今得付諸肥箱，凡十有三，肥層一進焉。
+
+蕈塊
+
+今其生也，可以代Leaf Litter焉。
+
+落英
+
+黜嚮版之所更，今骨塵復滋之。
+
+Wildflowers
+
+今之施骨塵也，先滋而後遺。
+
+塊新
+
+嚮版之殘羡者，今得自新焉。
+
+生靈
+
+騎
+
+今其鞍既遺，全其名性焉。
+
+生靈之錄
+
+ArmorItems、HandItems與​body_armor_item之文，今竝諸equipment矣。
+其章則以甲槽照於疊件也。
+
+其槽曰：head、chest、legs、feet、mainhand、offhand、body與​saddle。
+
+闕則實體倮焉。
+
+實體之錄
+
+FallDistance者今爲fall_distance。
+
+闢世
+
+歸結界門
+
+今措泉關之塊，則遺其所代。
+
+地物數錄範式
+
+place_on_ground之栞也，不復得代#replaceable_by_trees中者。
+现在place_on_ground之栞也，卑之三尺，是以林塬之中，不復生枯葉焉。
+
+戲事
+
+槽
+
+廢horse.saddle之槽。
+
+墜
+
+今其危卑，紀於雙浮，非復單浮也。
+
+常
+
+錄囊
+
+晉錄囊於63。
+
+文件
+
+更懸事show_text之所爲如左：
+text今曰value。
+
+疊物之件
+
+weapon件之damage_per_attack文今曰item_damage_per_attack。
+
+equippable之件，今更如左：
+slot之文，今可以爲saddle，蓋曰鞍之槽也。
+
+今斯件之品，凡allowed_entities之靈，悉可被諸body之槽。
+
+增未必之件，曰equip_on_interaction，以陰爲本，曰其得衣於人手否。
+陽則可加衣焉。
+
+實體支辝
+
+除axolotl、fox、mooshroom、rabbit、horse、llama、villager、parrot、salmon、tropical_fish、painting、cat、frog、wolf與​pig之變辝，蓋悉以components辝、變件代之矣。
+
+color之文，見除於sheep之支辝。
+
+資囊
+
+晉資囊於48。
+
+更pig_saddle之制。
+
+鞍之紋，今悉遷諸textures/entity/equipment/<實體>-saddle/saddle.png，以供甲型之用。
+其嚮曰horse_skeleton、曰horse_zombie者，今則曰skeleton_horse、曰zombie_horse。
+
+籤
+
+增leaf_litter於#replaceable_by_mushrooms之塊籤。
+
+補
+
+修疏漏四十
+
+先之謬
+
+MC-13738 — 三馬之隱，鞍亦隨焉。
+
+MC-80243 — 鞍無所加於佩者。
+
+MC-189525 — 生界自一點九以下而昇來，則衣者左右執其甲胄焉。
+
+MC-190000 — 馬鞍不代。
+
+MC-227097 — 終界結界門代其所括。
+
+MC-256469 — 橐駝既隱，鞍不見焉。
+
+MC-266912 — 馬駝初有，佩鞍無聲。
+
+MC-269637 — 馬雖複鞍，不能複甲。
+
+MC-270192 — 實體雖斃，其鞍或長見也。
+
+MC-270197 — 豕、熾足獸雖斃，其鞍猶長見焉。
+
+MC-272100 — 馬之紋貌（horse_[brown/chestnut/creamy/white].png）有贅其色。
+
+MC-272790 — 贆櫝置泉關中，未覆先遺。
+
+一點二一之疏漏
+
+MC-274258 — 馬有篋囊之紋，未以之耳。
+
+一點二一點二之疏漏
+
+MC-279340 — 雪熊之少者過細。
+
+一點二一點四之疏漏
+
+MC-278673 — /teleport之經旋，以左右爲囿。
+
+先槧之謬
+
+MC-279206 — Leaf Litter不能付肥。
+
+MC-279208 — 戲者橫行，不復走焉。
+
+MC-279211 — 贆櫝之破，或且持且散以鈔其資。
+
+MC-279213 — Leaf Litter不代於蕈塊。
+
+MC-279221 — Leaf Litter生而代葉。
+
+MC-279224 — 施骨塵於艸地，而Wildflowers不滋焉。
+
+MC-279226 — 功珠皆細。
+
+MC-279233 — 贆櫝既破，其資散出。
+
+MC-279234 — 實體雖熄，而minecraft:entity.generic.extinguish_fire不奏。
+
+MC-279238 — 炎靈發灹藥礦車所爆殺者，不引咎焉。
+
+MC-279239 — 灹藥既燃，厲柔無常。
+
+MC-279245 — 雖以暝邇，敵獸罔生。
+
+MC-279248 — 熔石修甚其匡。
+
+MC-279281 — 六尺躍下而墜傷焉。
+
+MC-279282 — 鸚鵡不以戲者爲主，則戲崩隤焉。
+
+MC-279285 — 經驗珠衝地。
+
+MC-279301 — 戲者之墜也，六十九尺則無恙，六十八尺三微則就斃。
+
+MC-279313 — 物之厲柔，或有無常。
+
+MC-279314 — 彈飛而搐。
+
+MC-279316 — 氾標厲柔無常。
+
+MC-279326 — 探械既燭，而韝韛移之，不自新焉。
+
+MC-279339 — 陟降之軌，序齒有舛。
+
+MC-279345 — 落英、Wildflowers，骨塵不滋。
+
+MC-279357 — 戲者伏行，或墮其緣。
+
+MC-279459 — 塡令如/setblock者，難新其實體焉。
+
+參典
+
+津渡

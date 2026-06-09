@@ -1,0 +1,109 @@
+# WORK_TITLE: 礦藝大典
+# PAGE_TITLE: 爪哇版二三週四四甲
+# URL: https://lzh.minecraft.wiki/%E7%88%AA%E5%93%87%E7%89%88%E4%BA%8C%E4%B8%89%E9%80%B1%E5%9B%9B%E5%9B%9B%E7%94%B2
+# WIKI_CATEGORIES: 分類:廣佈於癸卯年之快照，分類:爪哇版一點二〇點三快照，分類:爪哇版之版
+# DATE: 2026-05-08T15:54:26Z
+# SCRAPED_AT: 2026-06-08T18:17:36+00:00
+# AUTHOR: 礦藝大典之用戶
+# CATEGORIES: 游戲，維基
+# LICENSE: CC-BY-NC-SA-3.0 https://creativecommons.org/licenses/by-nc-sa/3.0/
+# RIGHTS_NOTE: Non-commercial reuse only; ShareAlike applies to adaptations. Images and game assets excluded unless separately licensed.
+
+二三週四四甲（23w44a）者，爪哇版一點二〇點三之己快照也，廣佈於癸卯年九月十八日，補疏漏焉。
+
+改
+
+塊方
+
+飾甕
+
+今可以貨表，取於LootTable之籖也。
+
+令之範式
+
+/execute
+
+/execute (if|unless) function不再总因所有函数都没有返回值而失败。
+如果被调用的函数中没有/return命令，if会失败而unless会成功。
+
+任何函数中的首个/return命令会被返回（适用于单一上下文）。
+
+/function
+
+如果/function <函数标签>命令与/return run一起结合执行多个函数，命令会在其中任何一个函数的首个/return命令后停止执行。
+
+使用/return run执行时，单次/function命令调用总会有返回值。
+例如：/return run execute [分开的上下文] run function <一些具有条件return命令的函数>会总在处理首个上下文之后返回。
+
+/return
+
+/return run命令现在总是会返回。
+如果被返回的命令没有有效的result值，包含/return run命令的函数会失败（即success=0和result=0）。
+
+/return run命令现在会将success值与result值一起传送（之前success值总为1）。
+
+/return run命令现在允许存储返回值，像/execute store ... run return run 一些命令这样的命令现在可以存储返回值，并将其返回到函数外部。
+
+加入了新的子命令/return fail，用于使整个函数执行失败（即返回success=0和result=0）。
+
+/tick
+
+/tick step命令中的<time>现在为可选参数，默认值为1。
+
+常
+
+錄囊
+
+晉錄囊於23。
+
+改（試行）
+
+塊方
+
+雕銅塊
+
+今鑿割銅可得。
+
+銅（窖）門
+
+悉改其貌。
+
+積塊石磚、版、階、垣
+
+改其紋貌。
+
+修复
+
+修疏漏十三
+
+嚮完版之疏漏
+
+MC-219293 — 食頌緲以移形，其聲不位。
+
+槧二三週四四甲之謬
+
+MC-265805 — 索進益邃，嵌術益貪。
+
+MC-266052 — 銅燈明滅，旁註未譯。
+
+MC-266053 — 銅窖開關，旁註未譯。
+
+MC-266064 — 行於鎣積塊石，無有旁註。
+
+MC-266084 — 銅門之上有罅。
+
+MC-266086 — 積塊石磚不齊厥文。
+
+MC-266105 — 蟙䘃生於遏刻，則其首倒置。
+
+MC-266112 — 蟙䘃垂耳。
+
+MC-266117 — 割銅不成雕鏨。
+
+MC-266147 — 銅門之貌，塊物不一。
+
+前行版之疏漏
+
+MC-266197 — 領域「立遷」之鈕，不能鍵取之。
+
+MC-266215 — 蟙䘃新脊，異乎基石版。

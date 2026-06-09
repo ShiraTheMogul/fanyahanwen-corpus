@@ -1,0 +1,223 @@
+# WORK_TITLE: 礦藝大典
+# PAGE_TITLE: 爪哇版二六點一之預一
+# URL: https://lzh.minecraft.wiki/%E7%88%AA%E5%93%87%E7%89%88%E4%BA%8C%E5%85%AD%E9%BB%9E%E4%B8%80%E4%B9%8B%E9%A0%90%E4%B8%80
+# WIKI_CATEGORIES: 分類:廣佈於丙午年之預版，分類:待譯之篇，分類:方修之事，分類:爪哇版之版，分類:爪哇版二六點一預版
+# DATE: 2026-03-31T11:40:11Z
+# SCRAPED_AT: 2026-06-08T18:28:13+00:00
+# AUTHOR: 礦藝大典之用戶
+# CATEGORIES: 游戲，維基
+# LICENSE: CC-BY-NC-SA-3.0 https://creativecommons.org/licenses/by-nc-sa/3.0/
+# RIGHTS_NOTE: Non-commercial reuse only; ShareAlike applies to adaptations. Images and game assets excluded unless separately licensed.
+
+是篇方修也。 議
+
+可補正於此。
+
+是篇之譯未成。
+
+儻協而譯之，善也。顧宜親力親爲，器械與機巧僞智者不足取也。
+
+爪哇版二六點一之預一（26.1-pre-1）者，爪哇版二六點一之元預版也，廣布於丙午年正月廿二日，更迭全景圖，並補疏漏也。
+
+新物
+
+令式
+
+/time
+
+增time [of <clock>] rate <rate>子令式，設鐘步進之速率乘數。
+注意：是令唯更世界時鐘及其有關時間線內部時鐘之速率。
+如，於鐘minecraft:overworld，速率定為更大之值時晝夜更迭乃快，而實戲擬弗增速。
+
+常
+
+谓词
+
+增战利品表谓词minecraft:environment_attribute_check。
+于定位以精配周遭属性之值。
+
+若周遭属性可随位而迭，乃需具参数origin之战利品上下文。
+
+式：
+attribute：需测周遭属性之ID。
+
+value：要匹配的环境属性的精确值。
+
+示例：{condition: 'environment_attribute_check', attribute: 'gameplay/piglins_zombify', value: true}。
+
+数值提供器
+
+加入了minecraft:environment_attribute。
+获取并提供可以代表数值的环境属性的值。
+
+如果环境属性可以随位置变化，则需要具有参数origin的战利品上下文。
+
+格式：
+attribute：要获取的环境属性的ID。
+
+示例：{type: 'environment_attribute', attribute: 'gameplay/sky_light_level'}。
+
+整数提供器
+
+加入了整数提供器trapezoid。
+类似于浮点提供器trapezoid，根据梯形分布选择随机数。
+
+格式：
+min：整数，生成值的最小值。
+
+max：整数，生成值的最大值。
+
+plateau：整数，整个分布中概率相同的“平台”宽度。
+为0时代表三角分布。
+
+为max - min时代表均匀分布。
+
+标签
+
+加入了已配置的地物标签：
+#can_spawn_from_bone_meal：可以通过使用骨粉在生物群系中生成的地物。地物本身必须在对应的生物群系中引用。
+
+物品模型映射
+
+minecraft:end_cube特殊模型类型
+新的特殊模型类型，用相同的纹理效果渲染一个立方体，就像末地传送门和末地折跃门方块那样。
+
+格式：
+effect：纹理效果，必须为portal或gateway之一。
+
+改
+
+塊方
+
+滴水石锥
+
+现在当滴水石锥附着于下表面的滴水石块上方为含水方块时，下方的滴水石锥可以生长。
+
+生
+
+狼
+
+更改了幼年狼的尾巴的纹理映射。
+
+更改了幼年狼的纹理来修复重叠纹理的漏洞。
+
+僵尸猪灵
+
+更改了幼年僵尸猪灵的鼻子的纹理。
+
+常
+
+全景图
+
+更新了主菜单全景图以配合小鬼当家。
+
+数据包
+
+将数据包版本号更改为101.0。
+
+资源包
+
+将资源包版本号更改为84.0。
+
+数据组件
+
+更改了minecraft:provides_banner_patterns组件：
+此组件现在除了接受标签外，还接受ID或ID的。
+
+更改了minecraft:blocks_attacks组件：
+bypassed_by字段现在除了接受标签外，还接受ID或ID的。
+
+更改了minecraft:damage_resistant组件：
+types字段现在除了接受标签外，还接受ID或ID的。
+
+战利品表函数
+
+更改了minecraft:set_instrument：
+options字段现在除了接受标签外，还接受ID或ID的。
+
+已配置的地物
+
+通过使用骨粉生成的地物现在不再要求是flower地物类型，而是改为使用已配置的地物标签#can_spawn_from_bone_meal来控制。
+
+移除了flower、flower_no_bonemeal、和random_patch地物类型。
+作为替代，斑块可以表达为一个count和random_offset放置修饰器组成的序列。
+
+文本组件
+
+对object类型的更改：
+加入了新的可选字段fallback，内容为文本组件，当组件无法渲染时使用，例如在服务器控制台打印消息或复述文本。
+
+player类型的组件（渲染玩家的头）不再可以在服务器状态消息（MotD）中使用。
+所有此类型的组件都将被替换为回落文本。
+
+数据生成器
+
+默认组件报告生成器不再生成不存在任何组件的项目的输出文件。
+
+方块状态渲染
+
+末地传送门和末地折跃门现在在放置在世界中和在方块展示实体渲染中应该看起来相同。
+
+着色器和后处理管线
+
+移除了着色器core/rendertype_translucent_moving_block，以支持core/block。
+
+補
+
+修疏漏二十五
+
+先二六點一之預一之謬
+
+MC-195237 — 末影人手持的或作为方块展示实体的末地传送门方块和末地折跃门方块不渲染，但下界传送门方块渲染。
+
+MC-230746 — 滴水石锥上方2格是含水方块时，可以填充炼药锅，但不会生长。
+
+槧二六點一之預一之謬
+
+MC-305518 — 幼年狼的尾巴使用错误的UV映射。
+
+MC-305702 — 僵尸及其变种手持矛时不会播放独有动画。
+
+MC-305914 — 对玩家执行/swing时，玩家无法看到自己的手臂在挥动。
+
+MC-306056 — 打开并关闭游戏规则屏幕时，选定难度的文字没有更新。
+
+MC-306232 — 旗帜的方块破坏动画颜色变深了。
+
+MC-306315 — 幼年狼头部左侧没有对齐，导致出现缝隙和纹理错误。
+
+MC-306338 — 幼年僵尸猪灵的鼻子模型大小是3×3×1，但其纹理是针对4×3×1的模型设计的。
+
+MC-306341 — 幼年人形生物转动头部时，穿戴的头盔会偏离中心。
+
+MC-306427 — 手持有空kinetic_weapon组件物品的生物找到目标时，游戏崩溃。
+
+MC-306532 — 资源包使用过大的纹理时，日志中的报错现在难以理解。
+
+MC-306571 — CommandEncoder#copyTextureToBuffer的参数验证语句有误。
+
+MC-306612 — 现在幼年僵尸、尸壳和溺尸手持物品的动作和玩家一样。
+
+MC-306624 — 多种半透明物体现在会被名称标签挡住。
+
+MC-306631 — 对着成年个体使用刷怪蛋生成的幼年僵尸、尸壳、溺尸和僵尸猪灵不能捡起物品。
+
+MC-306633 — “切换界面”键绑定鼠标按键时无法使用。
+
+MC-306653 — 名称标签现在无法通过视觉不透明方块看到。
+
+先槧之謬
+
+MC-306705 — 非默认姿势的铜傀儡像在物品栏中上下颠倒。
+
+MC-306706 — 游戏在失去焦点时卡死。
+
+MC-306708 — left和right方块状态的箱子使用单个箱子的纹理进行渲染。
+
+MC-306713 — 渐淡旗帜中最透明的像素不再可见。
+
+MC-306742 — 渲染有oversized_in_gui的空物品模型会导致游戏崩溃。
+
+MC-306748 — 出现Profiler tick ended before path was fully popped (remainder: 'root'). Mismatched push/pop?错误。
+
+MC-306796 — see_through为1的文本展示实体与自身发生深度冲突。

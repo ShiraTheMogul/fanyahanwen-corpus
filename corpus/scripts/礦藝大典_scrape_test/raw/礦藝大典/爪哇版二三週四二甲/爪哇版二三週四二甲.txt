@@ -1,0 +1,188 @@
+# WORK_TITLE: 礦藝大典
+# PAGE_TITLE: 爪哇版二三週四二甲
+# URL: https://lzh.minecraft.wiki/%E7%88%AA%E5%93%87%E7%89%88%E4%BA%8C%E4%B8%89%E9%80%B1%E5%9B%9B%E4%BA%8C%E7%94%B2
+# WIKI_CATEGORIES: 分類:廣佈於癸卯年之快照，分類:爪哇版一點二〇點三快照，分類:爪哇版之版
+# DATE: 2026-05-08T15:54:17Z
+# SCRAPED_AT: 2026-06-08T18:17:05+00:00
+# AUTHOR: 礦藝大典之用戶
+# CATEGORIES: 游戲，維基
+# LICENSE: CC-BY-NC-SA-3.0 https://creativecommons.org/licenses/by-nc-sa/3.0/
+# RIGHTS_NOTE: Non-commercial reuse only; ShareAlike applies to adaptations. Images and game assets excluded unless separately licensed.
+
+二三週四二甲（23w42a）者，爪哇版一點二〇點三之丙快照也，廣佈於癸卯年九月初四日，納新囊，補疏漏。
+
+新者
+
+常
+
+錄囊
+
+增納錄囊，曰「一點二一更新」，以爲試行。
+
+章則
+
+增章則，曰playersNetherPortalDefaultDelay，曰playersNetherPortalCreativeDelay，以決門徑緩急也。
+
+增章則，曰projectilesCanBreakBlocks，以決矢之破方石也。
+
+選項
+
+增隱金批之助。
+
+options.txt
+
+增hideSplashTexts，本陽。
+
+改
+
+常
+
+自定之構
+
+地物既厝者(data/minecraft/worldgen/structure)，改之如左：
+向jigsaw类型的结构地物加入了可选的pool_aliases列表字段。
+
+别名代表通过重定向结构池在单独的结构实例上的引用，而重新建立拼图结构池联系的可能性。
+
+别名类型在type字段里指定，并可为下列之一：
+direct：从一个别名到一个结构池的一对一映射。
+alias：要被替换的结构池。
+
+target：要替换为的结构池。
+
+random：从一个别名到多个结构池的一对n映射，从n个结构池中随机选出一个用于此结构实例。
+alias：要被替换的结构池。
+
+targets：要替换为的结构池的候选结构池随机列表。
+
+random_group
+groups：每组均为上述别名类型的随机列表。
+
+每个结构实例仅选择一组。
+
+此字段使诸如“如果结构池X被X1替换，则也将结构池Y替换为Y1”这样建模选择可被实现。
+
+錄囊
+
+晉錄囊於21。
+
+實體範式
+
+tnt一物之範式：
+增block_state，以定既染攸代。
+
+改Fuse爲fuse。
+
+JSON原文範式
+
+改侃談序組：
+增source於nbt，曰entity、block與​storage。
+
+資囊
+
+晉資囊於19。
+
+增crafter之型態。
+
+增crafter之槽靈。
+
+增white_smoke之粒。
+
+籖
+
+增焰火於impact_projectiles之籖。
+
+新者（試行）
+
+塊方
+
+製械
+
+貌似製物案，集鐵錠五、案、硃砂二、擲械以成。
+內有九宮，撫槽以絕。
+既絕則斗械無所入，惟手填以解。
+
+成不徑取。
+
+可以共事。
+
+其嚮決於所置。
+
+宜掘以鎬，破則自遺。
+
+入其材而通赭，乃出所製。
+一通則一製。
+
+成物不一，則皆出之。
+
+斗可以導，擲械可以入。
+其序曰：
+絕則免之。
+
+空則自左而右，自上而下。
+
+盈則先少者，同則自左而右，自上而下。
+
+不得其所，斗械不作。
+
+赭電延察其盈虧以出赭。
+
+改（試行）
+
+常
+
+籖
+
+增製械於mineable/pickaxe與​needs_stone_tool之塊籖。
+
+補
+
+修疏漏十八
+
+嚮完版之疏漏
+
+MC-189261 — 領域鈕文多曲。
+
+MC-223774 — 焰火不傷頌緲。
+
+MC-232719 — 獨戲尋檔，韋紐不還。
+
+MC-234483 — 領域生界之列，左韋或染斑玷。
+
+一點二〇之疏漏
+
+MC-262888 — 「吾知所以爲也！」聞之聒耳。
+
+一點二〇點二之疏漏
+
+MC-264966 — 戲者之元，見報Signature is missing from Property textures於誌。
+
+MC-265515 — 「君似無領域」云者，引鼠不中之。
+
+MC-265517 — 欲增領域，自以爲賈。
+
+MC-265551 — 「無待定之客」云者，今不能譯。
+
+前行版之疏漏
+
+MC-265744 — 方入見逐，客端以謬。
+
+MC-265745 — 焰火發於弩，不克飾甕。
+
+MC-265751 — 飾甕註文不一。
+
+MC-265758 — 勇者射而破甕。
+
+MC-265761 — 飾甕不格爲紅石。
+
+MC-265767 — 令不謬於侃談。
+
+MC-265773 — 戲先獎功之術。
+
+MC-265778 — /gamerule maxCommandChainLength 0既行，令率無以存。
+
+MC-265789 — 領域之目，句讀不範。
+
+參典
+
+津渡

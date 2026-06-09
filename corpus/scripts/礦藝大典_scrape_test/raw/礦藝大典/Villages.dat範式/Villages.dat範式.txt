@@ -1,0 +1,94 @@
+# WORK_TITLE: 礦藝大典
+# PAGE_TITLE: Villages.dat範式
+# URL: https://lzh.minecraft.wiki/Villages.dat%E7%AF%84%E5%BC%8F
+# WIKI_CATEGORIES: 分類:爪哇版，分類:見替，分類:開發
+# DATE: 2026-04-06T09:50:49Z
+# SCRAPED_AT: 2026-06-08T14:38:49+00:00
+# AUTHOR: 礦藝大典之用戶
+# CATEGORIES: 游戲，維基
+# LICENSE: CC-BY-NC-SA-3.0 https://creativecommons.org/licenses/by-nc-sa/3.0/
+# RIGHTS_NOTE: Non-commercial reuse only; ShareAlike applies to adaptations. Images and game assets excluded unless separately licensed.
+
+是文所述，不復存於爪哇版也。
+
+此戲之所嚮具，然今絕矣。
+
+villages.dat者，存於生界夾下data夾中，以記鄉事也。以NBT格之，而以Gzip簡之。
+
+異世之鄉，則曰villages_nether.dat，曰villages_end.dat。
+
+區塊旦解，鄉亦佚焉。
+
+NBT架構
+
+: 根籤。
+data
+Tick: 壺漏。
+
+Villages: 闕則列之，盈則合之。
+: 鄉也。
+ACX: 舍經之和。
+
+ACY: 舍縱之和。
+
+ACZ: 舍緯之和。
+
+CX: 鄉心之經。
+
+CY: 鄉心之縱。
+
+CZ: 鄉心之緯。
+
+Golems: 鐵衛之計。
+
+MTick: 嚮有死於非命者幾時。
+
+PopSize: 丁口。
+
+Radius: 鄉之大小。
+
+Stable: 嚮有結盧者幾時。
+
+Tick: 壺漏。
+
+Doors: 鄉里門戶。
+: 門也。
+IDX: 門軸之經嚮背。
+
+IDZ: 門軸之緯嚮背。
+
+TS: 嚮有近傍者幾時。
+
+X: 經。
+
+Y: 縱。
+
+Z: 緯。
+
+Players: 闕則列之，盈則合之。
+: 與人賈、毆者。
+Name: 戲者名氏。
+
+S: 鄉民之臧否焉。
+
+史
+
+爪哇版
+一點四點二
+一二週三二甲
+今存主界鄉錄。
+一點八
+一四週〇二甲
+今存異界鄉錄。
+一點一四
+一九週一一甲
+以「所好（point of interest，poi）」取而代之。
+二六點一
+快照六
+由于存档格式的更改，旧存档残留的村庄数据文件被删除。
+
+另見
+
+教章/鄉制
+
+津渡

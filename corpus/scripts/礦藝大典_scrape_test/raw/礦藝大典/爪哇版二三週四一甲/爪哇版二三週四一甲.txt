@@ -1,0 +1,196 @@
+# WORK_TITLE: 礦藝大典
+# PAGE_TITLE: 爪哇版二三週四一甲
+# URL: https://lzh.minecraft.wiki/%E7%88%AA%E5%93%87%E7%89%88%E4%BA%8C%E4%B8%89%E9%80%B1%E5%9B%9B%E4%B8%80%E7%94%B2
+# WIKI_CATEGORIES: 分類:廣佈於癸卯年之快照，分類:爪哇版一點二〇點三快照，分類:爪哇版之版
+# DATE: 2026-05-08T15:54:08Z
+# SCRAPED_AT: 2026-06-08T18:16:32+00:00
+# AUTHOR: 礦藝大典之用戶
+# CATEGORIES: 游戲，維基
+# LICENSE: CC-BY-NC-SA-3.0 https://creativecommons.org/licenses/by-nc-sa/3.0/
+# RIGHTS_NOTE: Non-commercial reuse only; ShareAlike applies to adaptations. Images and game assets excluded unless separately licensed.
+
+二三週四一甲（23w41a）者，爪哇版一點二〇點三之次快照也，廣佈於癸卯年八月廿七日，普領域，豐飾甕，復術令，精權能，補疏漏。
+
+新者
+
+常
+
+粒
+
+增dust_plume之粒。
+
+改
+
+塊方
+
+飾甕
+
+今積貯一物，六十有四爲極。
+漏斗、車輿、擲械可以充引焉。
+
+較赭儀可以測其盈虧。
+
+戲者可以置物焉。
+入則搖之，爲震十一等。
+
+惟破乃取。
+
+今射中則破之，其物咸遺。
+
+今可疊之。
+
+實體
+
+常
+
+今之無靈者，CustomName既格，戲者見之則見名氏焉。CustomNameVisible既格，則長懸其名。
+
+令之範式
+
+術
+
+改/function之令以合乎/return。
+
+今之術也，惟令、謬以反。至於/function，不反不察。
+謬曰：
+查無此術。
+
+術籖以虛。
+
+宏不能實。
+
+果也者，/execute store之所錄也。
+
+去/execute store ... run 術名之悉錄術令。
+形如術名者，一錄而罷。不以/return，則乃不錄。
+
+術籖繁目，則累其果，或有綴從者。
+
+精進術制，以時變辟害：
+今雖疏行，制如如術。
+如/execute as @e run 術名所以，其制悉同。
+
+命令塊所行，猶單立也。
+
+今以如左者，maxCommandChainLength之章則悉以爲一行焉：
+一令而施左右。
+
+/execute之一章，不顧左右。
+
+術而見以。
+
+增章則，曰maxCommandForkCount，以制/execute等增注之極。
+如有五物，行/execute as @e則左右增注五，/execute as @e at @e則增廿五。
+
+/execute
+
+復(if|unless) function之機。
+以行術、籖，已而審其所反。籖則必行其端術。
+
+章法曰：... (if|unless) function <function> -> execute
+
+參數曰：
+function：所行者。
+
+惟有行以應，反必/return而不虛然。
+術之未央，if、unless皆不能行也。
+
+/return
+
+復run之支，其章法曰：/return run ...。
+取令之所反，而轉奉諸術也。
+令而不反，則/return不行，術不已。
+
+令敗績，則反〇。
+
+不然，則如/return之躬設。
+
+如復有歧，如/return run execute as @e run 令語者，則取其當先者。
+如無所行，如/return run execute if @e[自虛者] run 令語者，則令不反，術不輟。
+
+常
+
+錄囊
+
+晉諸20。
+
+領域
+
+今雖行測，亦可施焉。
+凡既有所僦，悉可立快照領域，分文不取也。
+
+二者分別，以免渾傷。
+
+嚮之所入，見諸領域之列。
+
+試行之事，新立者通之。
+
+補
+
+修疏漏二十六
+
+嚮完版之疏漏
+
+MC-16937 — 雖禁相毆，射於焱門，猶有所戕。
+
+MC-50319 — 矢出結界門，則忘其所自。
+
+MC-81656 — 凋靈首色，不載於NBT。
+
+MC-118403 — 御魔使而召惱鬼，不入其伍。
+
+MC-143266 — 嵌術方欲行，再察maxCommandChainLength章則之數。
+
+MC-143269 — 令既成伍，會maxCommandChainLength有更，所嵌函悉靡。
+
+MC-189227 — 教章採舊貌。
+
+MC-198113 — 令雖殘闕，術不以止。
+
+MC-233276 — 騾馬之類，雖飽可飼，手則不動。
+
+MC-234323 — 析文不精。
+
+MC-236341 — 騾馬長者可飼，手不動，噭不咀。
+
+MC-236501 — 舟車既名，置之不見乎上。
+
+MC-249408 — 艚置則奪名。
+
+MC-257786 — 領域者離群報邀，甚徐緩也。
+
+MC-260576 — /execute summon令雖殘猶行。
+
+MC-262105 — 戲者近物，則畢刷。
+
+一點二〇之疏漏
+
+MC-261682 — 雖絕沙礫，刷猶不已。
+
+一點二〇點一之疏漏
+
+MC-263575 — 刷而中絕，塊不稍墜。
+
+MC-263660 — 牌懸與否，註搖無異。
+
+一點二〇點二之疏漏
+
+MC-264595 — /return之令罷術。
+
+MC-264699 — 令非不云/return run者，術不以反。
+
+MC-264710 — /execute if function因術則必敗，/execute unless function則必成。
+
+MC-264880 — 《碼師之藝》採新貌於韋紐。
+
+MC-265516 — 領域之幕，雖惟罷鈕，猶鍵濟以去之。
+
+前行版之疏漏
+
+MC-265647 — 乘舟舉盾，其姿不正。
+
+MC-265656 — 鉸不鍥瓜。
+
+參典
+
+津渡

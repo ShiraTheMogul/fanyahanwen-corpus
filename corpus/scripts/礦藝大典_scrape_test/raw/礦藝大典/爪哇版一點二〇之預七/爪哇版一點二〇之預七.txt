@@ -1,0 +1,60 @@
+# WORK_TITLE: 礦藝大典
+# PAGE_TITLE: 爪哇版一點二〇之預七
+# URL: https://lzh.minecraft.wiki/%E7%88%AA%E5%93%87%E7%89%88%E4%B8%80%E9%BB%9E%E4%BA%8C%E3%80%87%E4%B9%8B%E9%A0%90%E4%B8%83
+# WIKI_CATEGORIES: 分類:廣佈於癸卯年之預版，分類:待譯之篇，分類:爪哇版一點二〇預版，分類:爪哇版之版
+# DATE: 2026-05-01T03:53:04Z
+# SCRAPED_AT: 2026-06-08T18:00:40+00:00
+# AUTHOR: 礦藝大典之用戶
+# CATEGORIES: 游戲，維基
+# LICENSE: CC-BY-NC-SA-3.0 https://creativecommons.org/licenses/by-nc-sa/3.0/
+# RIGHTS_NOTE: Non-commercial reuse only; ShareAlike applies to adaptations. Images and game assets excluded unless separately licensed.
+
+是篇之譯未成。
+
+儻協而譯之，善也。顧宜親力親爲，器械與機巧僞智者不足取也。
+
+一點二〇之預七（1.20-pre7）者，爪哇版一點二〇之庚末預版也，廣佈於癸卯年四月十一日，改world凖簿援引，並補疏漏焉。
+
+改
+
+常
+
+籖
+
+向#slabs方块和物品标签中加入了bamboo_mosaic_slab。
+
+向#stairs方块和物品标签中加入了bamboo_mosaic_stairs。
+
+常
+
+为提升安全性，游戏现在会检测world文件夹内的符号链接。
+如果符号链接指向的目标不在用户配置的白名单内，游戏将不会加载世界。
+世界文件夹自身可被链接。
+
+允许的符号链接目标存储于客户端或服务器文件夹顶层的allowed_symlinks.txt文件里。
+
+此文件由符合以下格式的条目（每行一个）组成：
+#起始的行是注释行，并会被忽略。
+
+格式：[type]pattern，type可以是glob、regex或prefix。
+prefix可匹配上开头包含此字符串的路径。例如/test可以匹配上/test、/test/與​/test/foo.txt这些路径。
+
+regex将正则表达式与整个路径相匹配。
+
+glob执行与操作系统有关的匹配模式。例如*.txt通常可以匹配上所有扩展名为txt的文件。
+
+路径分隔符与系统有关。
+
+格式：pattern，默认类型为prefix。
+
+補
+
+修疏漏一
+
+先一點二〇之預七之謬
+
+MC-257778 — 七巧版、階，不認於籖。
+
+參典
+
+津渡

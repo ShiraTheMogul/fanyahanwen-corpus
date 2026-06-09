@@ -1,0 +1,1336 @@
+# WORK_TITLE: 礦藝大典
+# PAGE_TITLE: 爪哇版一點二一點九/開發版
+# URL: https://lzh.minecraft.wiki/%E7%88%AA%E5%93%87%E7%89%88%E4%B8%80%E9%BB%9E%E4%BA%8C%E4%B8%80%E9%BB%9E%E4%B9%9D/%E9%96%8B%E7%99%BC%E7%89%88
+# WIKI_CATEGORIES: 分類:俗名，分類:方作版之列
+# DATE: 2026-02-03T22:03:32Z
+# SCRAPED_AT: 2026-06-08T18:08:27+00:00
+# AUTHOR: 礦藝大典之用戶
+# CATEGORIES: 游戲，維基
+# LICENSE: CC-BY-NC-SA-3.0 https://creativecommons.org/licenses/by-nc-sa/3.0/
+# RIGHTS_NOTE: Non-commercial reuse only; ShareAlike applies to adaptations. Images and game assets excluded unless separately licensed.
+
+是篇所列，爪哇版一點二一點九/開發版之方作版也。
+
+二五週三一甲
+
+二五週三一甲（25w31a）者，爪哇版一點二一點九之元快照也，廣佈於乙巳年閏六月初五日，增銅箱、銅傀儡、銅粒、櫥及銅甲胄、銅器具。
+
+新内容
+
+方块
+
+新者
+
+塊方
+
+銅箱
+
+箱之銅者也，鏽蠟自然。
+
+以八銅錠與一箱製成。
+
+可風蝕，亦可涂蜡、去蜡、除锈
+
+銅傀儡俑
+
+新飾塊也，鏽蠟自然。
+
+以斧刮之，銅傀儡生焉。
+
+身姿各異，赭以較焉。
+
+避雷针
+
+加入了斑驳、锈蚀、氧化以及对应的涂蜡变种，以与铜傀儡头顶的避雷针保持一致。
+现在避雷针能够氧化，也可以被涂蜡、除蜡或除锈。
+
+櫉
+
+新的装饰性方块，有12种木质变种。
+
+可用6个相同的去皮原木、去皮菌柄或去皮竹块合成6个，合成时需要将3×3合成方格的顶行和底行填满。
+
+正面有3个槽位，可存放最多3组物品。
+与任意槽位交互时，玩家的主手物品会与所交互槽位的物品交换。
+
+类似于物品展示框，展示架会在正面展示其包含的所有物品。
+
+被红石信号充能时，展示架的正面纹理会随之改变；充能的展示架可以相连接，最多可以连接3个。
+与单个展示架交互时，其包含的所有物品会与玩家快捷栏最右侧的3个物品交换。
+
+与两个相连接的展示架交互时，其包含的所有物品会与玩家快捷栏最右侧的6个物品交换。
+
+与三个相连接的展示架交互时，其包含的所有物品会与玩家快捷栏的所有物品交换。
+
+与其相接的红石比较器会按照槽位中是否有物品输出红石信号。
+类似于二进制，槽位内无物品视为0，而有物品视为1。个位数在最左侧的槽位，即信号等级=左+中×2+右×4，范围为000(2)至111(2)，即0至7。
+
+与是否被红石信号充能无关。
+
+物品
+
+盔甲
+
+加入了铜盔甲，即头盔、胸甲、护腿和靴子的铜质变种。
+可由铜锭合成。
+
+提供的护甲值高于皮革盔甲，但略低于金盔甲。
+
+耐久度高于皮革盔甲，但低于锁链盔甲和铁盔甲。
+
+附魔能力为8，低于铁盔甲。
+
+马铠
+
+加入了铜马铠。
+提供4（）护甲值。
+
+会在包含铁马铠的战利品表中出现，且生成概率与铁马铠相同。
+
+工具
+
+加入了铜质工具，即斧、锄、镐、锹和剑的铜质变种。
+可由铜锭和木棍合成。
+
+攻击伤害与石质工具相同，但耐久度高于石质工具。
+
+挖掘速度快于石质工具，但慢于铁质工具。
+
+附魔能力为13，高于钻石质工具，但略低于铁质工具。
+
+铜粒
+
+可由铜锭分解而成，也可通过烧炼铜盔甲和铜质工具获得。
+
+可重新合成为铜锭。
+
+刷怪蛋
+
+加入了铜傀儡刷怪蛋。
+
+生物
+
+铜傀儡
+
+将雕刻南瓜或南瓜灯放置在铜块的任意一面即可生成对应氧化程度的铜傀儡。
+铜傀儡会在放置雕刻南瓜或南瓜灯的位置上生成。
+
+铜傀儡的氧化程度与铜块相同，并且这个铜块会转变为对应的铜箱子。
+
+死亡后会掉落1-3个铜锭。
+
+能够分类箱子中的物品。
+未手持物品时，铜傀儡会尝试搜寻附近的铜箱子，从其中收集物品。
+每次最多可以收集16个物品。
+
+所有物品均可收集。
+
+手持物品时，铜傀儡会尝试搜寻附近的箱子或陷阱箱，将手持的物品放入其中。
+该容器必须是空的，或包含与铜傀儡手持物品种类相同的物品。
+
+会按顺序与最多10个箱子（或陷阱箱）或铜箱子进行交互。
+
+未能找到匹配的箱子时，铜傀儡会进入7秒的空闲状态，随后再次进行尝试。
+
+搜寻范围为自身位置水平方向32格，垂直方向8格。
+
+与铜质方块不同，铜傀儡的氧化基于游戏时间而非随机刻。
+例如，可通过/time add 552000使铜傀儡进入下一氧化阶段。
+
+处于完全氧化状态时会转变为铜傀儡像。
+转变后，铜傀儡会以随机姿势保持静止，并掉落手持物品。
+
+会保留转变前通过命名牌获得的名字。
+
+玩家空手与铜傀儡交互时，铜傀儡会掉落其手持物品。
+
+世界生成
+
+世界加载屏幕
+
+加入了一个显示在世界加载时所有需加载区块的加载进度条，包括：
+/forceload加载的区块。
+
+传送门活动的区块。
+
+单人游戏中，末影珍珠加载的区块。
+
+单人游戏中，玩家周围的区块。
+
+创建世界时，分配世界出生点所需的区块。
+
+噪声设置
+
+在噪声设置定义文件中加入了preliminary_surface_level字段以取代initial_density_without_jaggedness。
+原字段initial_density_without_jaggedness是通过扫描密度函数值>0.390625的首个点确定近似地表高度的3D密度函数。
+
+现字段preliminary_surface_level是直接生成近似地表Y坐标的2D密度函数。
+
+可用find_top_surface密度函数复现原字段的扫描行为。
+
+密度函数
+
+加入了find_top_surface密度函数，用于近似计算指定密度函数的顶层表面。
+此函数会从上限扫描到下限来定位密度函数值由负转正的位置。
+
+上限应尽可能接近实际地表以保证最佳性能，且不能低于实际地表高度。
+
+格式如下：
+
+根对象
+type：find_top_surface。
+
+density：所计算表面的密度函数。
+
+upper_bound：提供最高有效Y值的2D密度函数。
+
+lower_bound：最低有效Y值。
+
+cell_height：（數大於0）所扫描网格的分辨率。
+
+加入了invert密度函数，用于计算1/argument。
+格式如下：
+
+根对象
+type：invert。
+
+argument：输入的密度函数。
+
+常规
+
+调试屏幕
+
+加入了调试选项屏幕，使用F3 + F5打开。
+用于配置哪些调试信息需隐藏/仅在调试屏幕中显示/始终可见。
+
+其他F3调试组合键也可通过此屏幕开关。
+
+之前未向社区开放的调试功能（比如子区块八叉树）现在可通过此屏幕开关。
+
+调试选项屏幕有以下预设配置。
+：将所有选项重置为默认状态。
+
+：仅显示如FPS的简单性能指标。
+
+选项
+
+在“”界面中加入了“”按钮。
+此界面中的“自动跳跃”、“潜行”和“疾跑”设定键已移除。
+
+在“”界面中加入了用于调整“”及“”按键绑定模式（“按住”或“切换”）的按钮。
+
+在“”界面中加入了“”滑动条，控制双击前进键疾跑时双击有效的窗口期，单位为刻，最大为10，为“关”时无法通过双击前进键以疾跑。
+
+在“鼠标设置”界面中加入了“”按钮。
+原来的“鼠标反转”已重命名为“”。
+
+盔甲材料
+
+加入了铜质材料。
+
+工具材料
+
+加入了铜质材料。
+
+标签
+
+加入了下列方块标签：
+#copper_chests：copper_chest、exposed_copper_chest、weathered_copper_chest、oxidized_copper_chest、waxed_copper_chest、waxed_exposed_copper_chest、waxed_weathered_copper_chest與​waxed_oxidized_copper_chest
+
+#copper：copper_block、exposed_copper、weathered_copper、oxidized_copper、waxed_copper_block、waxed_exposed_copper、waxed_weathered_copper與​waxed_oxidized_copper
+
+#incorrect_for_copper_tool：#needs_diamond_tool與​#needs_iron_tool
+
+#copper_golem_statues：copper_golem_statue、exposed_copper_golem_statue、weathered_copper_golem_statue、oxidized_copper_golem_statue、waxed_copper_golem_statue、waxed_exposed_copper_golem_statue、waxed_weathered_copper_golem_statue與​waxed_oxidized_copper_golem_statue
+
+#lightning_rods：lightning_rod、exposed_lightning_rod、weathered_lightning_rod、oxidized_lightning_rod、waxed_lightning_rod、waxed_exposed_lightning_rod、waxed_weathered_lightning_rod與​waxed_oxidized_lightning_rod
+
+#wooden_shelves：acacia_shelf、bamboo_shelf、birch_shelf、cherry_shelf、crimson_shelf、dark_oak_shelf、jungle_shelf、mangrove_shelf、oak_shelf、pale_oak_shelf、spruce_shelf與​warped_shelf
+
+加入了下列物品标签：
+#copper_chests：copper_chest、exposed_copper_chest、weathered_copper_chest、oxidized_copper_chest、waxed_copper_chest、waxed_exposed_copper_chest、waxed_weathered_copper_chest與​waxed_oxidized_copper_chest
+
+#copper:copper_block、exposed_copper、weathered_copper、oxidized_copper、waxed_copper_block、waxed_exposed_copper、waxed_weathered_copper與​waxed_oxidized_copper
+
+#copper_tool_materials：copper_ingot
+
+#repairs_copper_armor：copper_ingot
+
+#copper_golem_statues：copper_golem_statue、exposed_copper_golem_statue、weathered_copper_golem_statue、oxidized_copper_golem_statue、waxed_copper_golem_statue、waxed_exposed_copper_golem_statue、waxed_weathered_copper_golem_statue與​waxed_oxidized_copper_golem_statue
+
+#lightning_rods：lightning_rod、exposed_lightning_rod、weathered_lightning_rod、oxidized_lightning_rod、waxed_lightning_rod、waxed_exposed_lightning_rod、waxed_weathered_lightning_rod與​waxed_oxidized_lightning_rod
+
+#wooden_shelves：acacia_shelf、bamboo_shelf、birch_shelf、cherry_shelf、crimson_shelf、dark_oak_shelf、jungle_shelf、mangrove_shelf、oak_shelf、pale_oak_shelf、spruce_shelf與​warped_shelf
+
+向#stronghold_biased_to生物群系标签中加入了cherry_grove。
+
+更改
+
+方块
+
+箱子、陷阱箱和末影箱
+
+现在音效音量更低。
+
+物品
+
+染料
+
+更新了染料的纹理。
+
+刷怪蛋
+
+现在在和平难度中会出现提示框文本。
+
+在和平难度中，怪物仍会在生成一刻后消失。
+
+生物
+
+快乐恶魂
+
+现在成年快乐恶魂的音效可在64个方块内听到。
+
+僵尸、骷髅及其变种
+
+现在有概率装备铜盔甲。
+铜盔甲的出现概率大于皮革盔甲和金盔甲。
+
+受此影响，金盔甲的出现概率现在低于皮革盔甲。
+
+世界生成
+
+生物群系
+
+现在即使温度低于0.15，不降雨的生物群系也不会降雪。
+
+区块加载
+
+与存在玩家活动或存在强制加载区块的维度相同，现在满足下方任一条件的维度也会被视为“活跃”并持续处理区块和实体。
+存在活动的传送门。
+
+存在飞行中的末影珍珠。
+
+出生点区块
+
+移除了用于永久加载世界出生点附近区块的出生点加载标签和计算标签。
+世界出生点仍有用于寻找玩家出生位置的加载标签。
+
+世界加载屏幕
+
+现在显示玩家将进入的周围区块，而非围绕世界出生点加载的区块。
+
+拼图结构定义格式
+
+max_distance_from_center字段现在可以指定垂直与水平轴上不同的限制。
+格式如下：
+
+max_distance_from_center
+*horizontal：（數大於等於1而小於等於128）
+
+vertical：（數大於等於1而小於等於4096，默认为4096）
+
+示例："max_distance_from_center": { "horizontal": 20, "vertical": 500 }。
+
+游戏内容
+
+游戏规则
+
+移除了spawnChunkRadius。
+
+命令格式
+
+/test
+
+/test pos [<var>]子命令：
+搜索半径由200格更改为250格。
+
+/test clearall [<radius>]子命令：
+<radius>的默认值由200更改为250。
+
+/summon
+
+现在在和平难度下尝试召唤无法在和平难度生成的敌对生物会执行失败。
+
+常规
+
+调试屏幕
+
+现在也可以在世界以外的屏幕中启用，且始终置于顶层。
+
+现在默认会显示较少的信息，包括FPS、TPS、游戏版本、系统规格、内存使用、玩家位置、玩家区段坐标和3D准星。
+
+音乐
+
+将音乐分类“”重命名为“”。
+
+物品堆叠组件
+
+block_attacks：
+不大于0的伤害现在不会触发抵挡行为，不会使具有block_attacks组件的物品进入冷却，也不会因抵挡而受到击退。
+
+选项
+
+将“显示字幕”选项重命名为“”，以更准确地描述它的作用。
+
+性能
+
+改进了实体渲染顺序以提高性能。
+
+数据包
+
+将数据包版本号更改为82.0。
+
+数据包版本号现在包含次要版本号。
+次要版本号允许同一主要版本号下的数据包向后兼容。
+
+资源包
+
+将资源包版本号更改为65.0。
+
+资源包版本号现在包含次要版本号。
+次要版本号允许同一主要版本号下的资源包向后兼容。
+
+pack.mcmeta
+
+更新了格式：
+移除了supported_formats。
+
+pack_format现在是可选的。
+
+加入了必选字段min_format和max_format。
+标准格式为包含两个整数的数组，如[74, 1]。
+
+对于最低版本号，单个整数被视为次要版本号为0，比如74、[74]與​[74, 0]是等价的。
+
+对于最高版本号，单个整数（也包括只有一个整数的数组）被视为0x7fffffff，即任何小版本号都接受。
+
+在overlays中的formats也被移除，并同样被entries内的min_format和max_format取代。
+
+战利品上下文
+
+加入了战利品上下文参数集entity_interact，提供以下参数：
+target_entity：被交互的实体
+
+interacting_entity：（可选）与target_entity交互的实体
+
+tool：与target_entity交互所用的工具
+
+加入了战利品上下文参数集block_interact，提供以下参数：
+block_state：被交互方块实体的方块状态
+
+block_entity：被交互的方块实体
+
+interacting_entity：（可选）与block_state交互的实体
+
+tool：与block_state交互所用的工具
+
+加入了战利品上下文参数target_entity與​interacting_entity。
+
+战利品表
+
+为实体被闪电苦力怕杀死时的掉落物加入了charged_creeper/战利品表。
+根战利品表charged_creeper/root根据具体实体类型分配到下列子表：
+charged_creeper/piglin
+
+charged_creeper/creeper
+
+charged_creeper/skeleton
+
+charged_creeper/wither_skeleton
+
+charged_creeper/zombie
+
+加入了下列战利品表：
+brush/armadillo：刷扫犰狳
+
+gameplay/turtle_grow：幼年海龟成年
+
+harvest/beehive：用剪刀采集蜂箱/蜂巢
+
+harvest/cave_vine：采集洞穴藤蔓上的发光浆果
+
+carve/pumpkin：用剪刀雕刻-{}-南瓜
+
+着色器与后处理效果
+
+移除了core/blit_screen.vsh、post/blit.vsh、post/blur.vsh、post/invert.vsh、post/sobel.vsh與​post/screenquad.vsh顶点着色器，现在由core/screenquad.vsh替代。
+
+用于后处理效果、亮度图生成和全屏位块传输的顶点着色器不再传递Position属性，而须通过gl_VertexID分配顶点坐标。
+
+修复
+
+修疏漏五十二
+
+先之謬
+
+MC-46634 — 音量不受“天气”音量设置影响。
+
+MC-73881 — 在和平难度中生成怪物会使其出现1游戏刻。
+
+MC-89142 — 将跳跃键绑定至↵ Enter会使玩家在补全聊天消息时跳跃。
+
+MC-94610 — 闪电苦力怕的生物头颅掉落物缺少战利品表项。
+
+MC-98200 — 除了主音量外的所有音量滑动条都会被指定高音量的/playsound忽略。
+
+MC-183776 — 用F3 + F4切换游戏模式后，需要通过连按两次F3来调试屏幕。
+
+MC-192907 — F3调试菜单不能在聊天打开时。
+
+MC-196443 — reducedDebugInfo为true时，即使没有效果，按下F3 + B和F3 + G仍会在聊天中告诉玩家相应功能已开启或关闭。
+
+MC-197247 — 使用F3 + D清除待处理消息时，新消息会保留之前的延迟。
+
+MC-203401 — 无法禁用或修改双击前进键的疾跑按键绑定。
+
+MC-220842 — 在旁观具有着色器效果的生物时打开游戏模式切换器会效果。
+
+MC-234479 — 能向已收到邀请或已经加入Realm中的玩家多次发送加入自己Realm的邀请。
+
+MC-235780 — 鼠标指针悬停于信标GUI内的“完成”和“取消”按钮上时会错展示“信标”提示框。
+
+MC-237016 — 即使游戏被暂停，聊天延迟功能也会继续输出消息。
+
+MC-237843 — 观看终末之诗和鸣谢名单时的玩家能因处于空闲状态而被踢出。
+
+MC-259692 — 在界面刚关闭时松开潜行/疾跑对应的输入按键会使这两种状态被不符预期地激活或切换。
+
+MC-259935 — 生物群系的降水性为NONE时仍可以降雪。
+
+MC-260822 — 信标GUI内的“完成”和“取消”按钮不再在鼠标指针悬停其上时展示提示框。
+
+MC-261387 — 红树放置器中存在冗余的block_predicate_filter检查。
+
+MC-262000 — 未使用的纹理：misc/white.png。
+
+MC-263597 — 末影龙重生噪音不能通过“敌对生物”音量滑动条降低。
+
+MC-269838 — 修剪南瓜的掉落物被硬编码为南瓜种子。
+
+MC-269839 — 修剪蜂巢和蜂箱的掉落物被硬编码为蜜脾。
+
+MC-270918 — 生物头颅的战利品表缺少包含custom_name的copy_components战利品表函数。
+
+MC-275244 — configured_carver文件中的width_smoothness设置为0会导致游戏冻结或崩溃。
+
+MC-275432 — 字幕在屏幕中难以观察。
+
+MC-276568 — 游戏会生成盔甲纹饰图集的Mipmap版本。
+
+MC-276629 — 洞穴藤蔓的掉落物似乎被硬编码为发光浆果。
+
+MC-276759 — 刷扫犰狳的掉落物被硬编码为犰狳鳞甲。
+
+MC-277447 — Minecraft会为箱子生成未使用的Mipmap纹理。
+
+MC-277450 — Minecraft会为潜影盒生成未使用的Mipmap纹理。
+
+MC-277470 — Minecraft会为床生成未使用的Mipmap纹理。
+
+MC-277471 — Minecraft会为告示牌生成未使用的Mipmap纹理。
+
+MC-277473 — Minecraft会为饰纹陶罐生成未使用的Mipmap纹理。
+
+MC-277481 — Minecraft会为旗帜生成未使用的Mipmap纹理。
+
+MC-277483 — Minecraft会为盾牌生成未使用的Mipmap纹理。
+
+MC-277770 — block_age处理器类型总是将台阶属性type改为bottom。
+
+MC-278965 — 樱花树林不属于#stronghold_biased_to标签。
+
+MC-279793 — 驾驶马、驴、骡、僵尸马、骷髅马和骆驼不再强制玩家面向前方。
+
+MC-289348 — 重新加载后，位于末地的末影珍珠不会在末地没有玩家时加载区块。
+
+MC-297593 — 从底部与炼药锅接触现在也会受到其中装有的物质影响。
+
+MC-298274 — 某些无效命令会输出无附加信息的“”。
+
+MC-298732 — 光标不再在非末行的行尾显示。
+
+MC-298805 — 盾牌即使没有阻挡攻击也会被斧停用。
+
+MC-298883 — 通过导航键Tab ↹在Realms中选中可用的世界时，此栏未高亮。
+
+MC-299450 — 在书与笔界面中，不再能通过双击选取字符。
+
+MC-299451 — 在书与笔中翻页时，页面不再自动聚焦。
+
+MC-299566 — 书与笔界面中的光标距左侧过远。
+
+MC-299628 — 骑乘中的玩家或生物会在世界加载时触发幽匿感测体。
+
+MC-299782 — 在拼图结构中保存的僵尸村民会在世界生成后遗忘其生物群系变种和职业。
+
+1.21.8的漏洞
+
+MC-299896 — 能将已过期Realms的世界移至空槽位，但这会导致在没有有效Realms订阅时误导性产生创建世界提示。
+
+MC-300021 — 村民交易屏幕中的部分元素现在渲染于光标所持物品上方。
+
+二五週三七甲
+
+二五週三七甲（25w37a）者，爪哇版一點二一點九[坊間之名]之壬快照也，廣佈於乙巳年七月十八日，昇OpenGL之所須，並補疏漏焉。
+
+新者
+
+戲事
+
+章則
+
+增spawnerBlocksEnabled之章則，以定孳衍籠之行廢，以陽爲本。
+
+常
+
+勘誤之器
+
+揭勘誤之器，嚮則削黜矣。
+
+其行廢在於爪哇栩生儀之數：
+-DMC_DEBUG_ENABLED、-DMC_DEBUG_ENABLED=true二數則咸佈。
+
+-DMC_DEBUG_BRAIN、-DMC_DEBUG_BRAIN=true二數則特指。
+
+贊-DMC_DEBUG_PRINT_PROPERTIES之數，則其表見焉。
+
+伺服端措置檔範
+
+增management-server-tls-enabled之性，以定契中TLS之行廢，以陽爲本。
+
+增management-server-tls-keystore之性，以定TLS管籥之所在，以闕爲本。
+TLS在而管籥亡，則其服不專。
+
+增management-server-tls-keystore-password=之性，以定TLS管籥之符節，以闕爲本。
+
+改
+
+塊方
+
+測例塊
+
+今生界之覆也，謬紀存焉。
+
+生靈
+
+銅傀儡
+
+略削其形，一尺有奇，以通狹塞。
+
+今得啟門，以應基石版。
+
+戲事
+
+嬉遊之道
+
+今自覽而創也，惟下履實形者斂羽焉。
+
+孳
+
+今披掛之至劣者，皮、銅、金三流，精者稍益常之，然則良甲之多寡復於其本矣。
+
+常
+
+章則
+
+改enableCommandBlocks爲commandBlocksEnabled，以應基石版。
+
+選項
+
+卷首聲樂之選項，有所豫聞焉。
+
+資、錄二囊之欄，始得檢索焉。
+
+礦藝伺服器治契
+
+客端不驗，則卯口不濟。
+客端須持Authorization之符節，樞機之管籥載焉。
+符節不驗，則拒以401 Unauthorized。
+
+管籥措於伺服端措置檔之management-server-secret=。
+爲文四十，字數相雜。
+
+不手書之，則依天命。
+
+TLS今以行爲本。
+可以廢諸措置之檔，曰management-server-tls-enabled=false。
+
+管籥之檔亦定於措置之檔，曰management-server-tls-keystore=path/to/keystore.p12。
+
+必以PKCS12之範。
+
+其符節之所定，悉列如左：
+天地之數：MINECRAFT_MANAGEMENT_TLS_KEYSTORE_PASSWORD
+
+爪哇栩生儀之數：Dmanagement.tls.keystore.password=
+
+伺服端措置之檔：management-server-tls-keystore-password=
+
+伺服端措置檔範
+
+management-server-port之本，自25585而0，每啟輒復給埠。
+
+錄囊
+
+晉錄囊於87.0。
+
+資囊
+
+晉資囊於69.0。
+
+揚gui/container/villager.png之所售以一元。
+
+染繪暨後渠
+
+增PER_FACE_LIGHTING之籤於諸染繪如左：
+core/entity.vsh
+
+core/entity.fsh
+
+本光既定，流照自如。
+
+OpenGL既昇，染繪之版亦自150而330。
+
+常
+
+昇OpenGL之所須，自三點二以至三點三。
+
+善實體之光，以融和於山水。
+背之夷者，今則正照。
+
+平以虛者，如甲胄、翼、膚、馬肋、雞足、鼃蹼、魘翅、龍翼、魚鰭等，咸有與焉。
+
+補
+
+修疏漏四十一
+
+先之謬
+
+MC-220913 — 生界之在去，聲樂之措置，曳桿也不奏其例焉。
+
+MC-254052 — /locate不作於築限之外。
+
+一點二一點八之疏漏
+
+MC-301494 — 沙礫之懸者，不復灑粒焉。
+
+槧之謬
+
+MC-295841 — 測衝之道敗矣。
+
+MC-300076 — 銅傀儡之搜箱也佁，是以浮而不履，不叩不推。
+
+MC-300077 — 銅傀儡得斜貫及箱。
+
+MC-300299 — 箱雖閡，銅傀儡得啟之。
+
+MC-300723 — 外甲之件，猶未善繪。
+
+MC-301294 — 自二五週三一甲以來，生靈著精甲者愈鮮矣。
+
+MC-301510 — 九宮之分合，其德枉矣。
+
+MC-301531 — 治契之收無效棨信，其報也謬。
+
+MC-301547 — 自覽而創，則斂羽墮地。
+
+MC-301554 — 治契之理，專而不泛。
+
+MC-301558 — 銅傀儡不通狹仄之甬。
+
+MC-301563 — 藥效既黯，則侃談諸幕，其文益暝。
+
+MC-301564 — 棨信之爲文也，治契不受。
+
+MC-301574 — spawnMonsters之章則不作。
+
+MC-301593 — spawnMonsters雖陰，敵獸猶孳於籠中。
+
+MC-301599 — 进入界面时，行动键会卡住，以至于无法退出界面，除非其立刻重开。
+
+MC-301620 — 渲染了两个旗帜时，旗帜动画不相互独立。
+
+MC-301661 — 服务端管理协议在控制台中输出部分错误的格式化消息。
+
+MC-301711 — 游戏规则enableCommandBlocks的名称与基岩版不一致。
+
+MC-301748 — 借助闪电击中具有非默认氧化等级的避雷针会使周围的红石元件保持充能。
+
+MC-301751 — 玩家在Mannequin刷怪笼附近时，客户端崩溃。
+
+MC-301752 — profile.model设为wide的Mannequin渲染为Steve皮肤。
+
+MC-301754 — 空手右键展示架时播放手部动画。
+
+MC-301758 — 盾牌模型穿过了展示架。
+
+MC-301759 — Realms“世界”标签页内的元素未在使用Tab ↹键时被有序选中。
+
+先槧之謬
+
+MC-301766 — 放置于展示架上的生物头颅似乎过高。
+
+MC-301768 — 旁观模式中，结构方块框架不显示。
+
+MC-301785 — 鱿鱼的墨粒子是黄色的。
+
+MC-301811 — 刷扫可疑的沙子时，战利品不会显示。
+
+MC-301833 — text_display实体的文本在see_through属性设为true时更暗。
+
+MC-301869 — 服务端管理方法minecraft:ip_bans回傳ip_ban数组，尽管其规范描述此方式傳玩家数组。
+
+MC-301870 — 未指定原因的/ban和/ban-ip命令成功时，命令反馈不会发送到客户端。
+
+MC-301889 — 记录的回傳型別與服务端管理协议的清空方法不相符。
+
+MC-301891 — 服务端管理方法minecraft:bans/clear会清空允许名单而非封禁名单。
+
+MC-301899 — 交易GUI中的输出槽位未与其他槽位对齐。
+
+MC-301903 — 掉落的箱子（包含变种）不再向上转换。
+
+MC-301935 — 箱子渲染于展示架底部隔板上，尽管其他物品不在此处。
+
+MC-301952 — 激活的潮涌核心在显示时偏斜，且其眼睛不会张开。
+
+二五週三二甲
+
+二五週三二甲（25w32a）者，爪哇版一點二一點九之次快照也，廣佈於乙巳年閏六月十二日，增銅物，補疏漏。
+
+新者
+
+塊方
+
+銅炬
+
+炬之銅者也。
+
+合銅粒、石炭、棍製得。
+
+銅檻
+
+鐵檻而銅者也。
+
+合六銅錠製得。
+
+鏽蠟自然。
+
+銅鏈
+
+鐵鏈而銅者也。
+
+以銅粒挾銅錠製成。
+
+鏽蠟自然。
+
+可以爲懸牌如鐵鏈。
+
+銅燈籠
+
+燈籠之銅者也。
+
+以銅粒圜銅炬製成。
+
+鏽蠟自然，不以晦明。
+
+戲事
+
+粒
+
+增copper_fire_flame之粒。
+
+常
+
+文件
+
+增object之格。
+以繪細圖，八元見方。
+
+其範曰：
+
+複籤之根
+type：object。
+
+atlas：（以minecraft:blocks爲本）紋貌圖集之名宇編碼也。
+
+sprite：圖集中細圖之棨信也。譬如：item/porkchop。
+
+貨表
+
+增harvest/sweet_berry_bush之貨表，以紀甜莓叢之所遺。
+
+籤
+
+增塊籤如左：
+#chains：chain、copper_chain、waxed_copper_chain、exposed_copper_chain、waxed_exposed_copper_chain、weathered_copper_chain、waxed_weathered_copper_chain、oxidized_copper_chain與​waxed_oxidized_copper_chain。
+
+#lanterns：lantern、soul_lantern、copper_lantern、waxed_copper_lantern、exposed_copper_lantern、waxed_exposed_copper_lantern、weathered_copper_lantern、waxed_weathered_copper_lantern、oxidized_copper_lantern與​waxed_oxidized_copper_lantern。
+
+#bars：iron_bars、copper_bars、waxed_copper_bars、exposed_copper_bars、waxed_exposed_copper_bars、weathered_copper_bars、waxed_weathered_copper_bars、oxidized_copper_bars與​waxed_oxidized_copper_bars。
+
+增物籤如左：
+#chains：chain、copper_chain、waxed_copper_chain、exposed_copper_chain、waxed_exposed_copper_chain、weathered_copper_chain、waxed_weathered_copper_chain、oxidized_copper_chain與​waxed_oxidized_copper_chain。
+
+#lanterns：lantern、soul_lantern、copper_lantern、waxed_copper_lantern、exposed_copper_lantern、waxed_exposed_copper_lantern、weathered_copper_lantern、waxed_weathered_copper_lantern、oxidized_copper_lantern與​waxed_oxidized_copper_lantern。
+
+#bars：iron_bars、copper_bars、waxed_copper_bars、exposed_copper_bars、waxed_exposed_copper_bars、weathered_copper_bars、waxed_weathered_copper_bars、oxidized_copper_bars與​waxed_oxidized_copper_bars。
+
+改
+
+塊方
+
+銅窖門
+
+削二錠於其方。
+
+銅傀儡俑
+
+今每破輒遺，韝韛之所摧亦然。
+
+龍卵
+
+今移形有節。
+
+鐵鏈
+
+改「鏈（Chain）」爲「鐵鏈（Iron Chain）」。
+
+櫥
+
+正諸囊槽。
+
+生靈
+
+銅傀儡
+
+weather_state今容文不容數。
+0→unaffected
+
+1→exposed
+
+2→weathered
+
+3→oxidized
+
+常
+
+錄囊
+
+晉錄囊於83.0。
+
+資囊
+
+晉資囊於65.1。
+
+補
+
+修疏漏五十
+
+先之謬
+
+MC-163218 — 潛伏之易也，開幕得踡。
+
+MC-174759 — 龍卵遁虛。
+
+MC-257540 — 自二一週三九甲以來，羊半饜於艸。
+
+一點二一之疏漏
+
+MC-273943 — 甜莓叢之遺，固不得奪。
+
+一點二一點一之疏漏
+
+MC-276431 — 龍卵高颺，自俾剟除。
+
+一點二一點五之疏漏
+
+MC-279548 — 灹藥礦車之墜而爆也，不憶其所以燃者。
+
+MC-295841 — 測衝敗徑。
+
+MC-296054 — 非彈而飛颺者，或不激蕩於所起。
+
+MC-296055 — 非彈而踽步者，或不激蕩於所起。
+
+MC-296057 — 非彈而橫行者，或不激蕩於所起。
+
+MC-296372 — 自一點二一點五以來，示旋之插直teleport_duration也無信。
+
+一點二一點七之疏漏
+
+MC-299314 — 破留聲機者，或不遏其絲竹。
+
+MC-299627 — 飛彈之插直，其謬甚矣。
+
+MC-299770 — enderPearlsVanishOnDeath雖陰，所載猶弭。
+
+一點二一點八之疏漏
+
+MC-299837 — 一刻而再/rotate，惟後來者得旋。
+
+MC-299872 — 凍者入火，則冰幕熒爍。
+
+MC-299913 — 「君似無領域」云者，其翳今涅。
+
+MC-300092 — F3餠圖，不名粒者。
+
+MC-300340 — 屢撳迎新幕之續鈕，則覆其明滅。
+
+先槧之謬
+
+MC-300051 — 護腿隱腰。
+
+MC-300094 — 隱者所持，不復搖動。
+
+MC-300100 — biome之選項，域名少闕。
+
+MC-300105 — 戲雖暫歇，戲者猶溺。
+
+MC-300108 — 鄉民襤褸。
+
+MC-300113 — pack.mcmeta之supported_formats文不受長範。
+
+MC-300121 — 櫥三聯而存取，則戲崩焉。
+
+MC-300122 — 馬甲稍匿。
+
+MC-300131 — debug.entry.currently.inF3之句，字體失格。
+
+MC-300136 — 同型所持，左右無忒。
+
+MC-300145 — “”选项设为“切换”时，玩家能在物品栏打开期间使用物品。
+
+MC-300146 — “”选项设为“切换”时难以退出界面。
+
+MC-300153 — 史莱姆内部的立方体偶尔不能从外部看见。
+
+MC-300155 — 即使游戏已暂停，站在细雪中的玩家仍会冻伤。
+
+MC-300164 — “Sprint Window”选项的值不保存。
+
+MC-300165 — 用盾牌防御能够停用盾牌的攻击时，玩家会受伤。
+
+MC-300166 — 启用调试选项中的looking_at_block或looking_at_fluid后，FPS会受到服务端游戏刻速率的影响。
+
+MC-300168 — Shelf的所有变种都在创造模式物品栏的红石标签页中。
+
+MC-300180 — 调试屏幕文本现在会在使用F1时保留到屏幕中。
+
+MC-300187 — 在物品栏中与拥有特定组件的物品交互会导致崩溃。
+
+MC-300193 — 在相同的维度中死亡和重生总会显示地形加载屏幕。
+
+MC-300196 — 游戏界面隐藏时，打开的“Local Difficulty”调试信息闪烁。
+
+MC-300214 — 现在幼年生物的阴影与其成年版大小相等。
+
+MC-300235 — 调试屏幕中实体计数的首个数字总是为0。
+
+MC-300248 — 字幕/Closed Captions会遮挡物品栏界面。
+
+MC-300275 — 在熔岩顶部骑乘炽足兽时暂停会使玩家着火。
+
+MC-300305 — 多名玩家使用钓鱼竿时会额外绘制一条黑线。
+
+MC-300394 — Copper Golem和Copper Golem Statue的氧化/涂蜡且氧化变种的脚底像素较于其他变种不合适。
+
+MC-300421 — F3 + Q调试菜单中的F3 + F5描述中大写用法不一致。
+
+MC-300440 — 暂停单人游戏时，鞘翅会消耗耐久度。
+
+MC-300464 — 调试十字准星在第三人称视角中显示。
+
+二五週三六乙
+
+二五週三六乙（25w36b）者，爪哇版一點二一點九之辛快照也，廣佈於乙巳年七月十一日，補疏漏焉。
+
+補
+
+修疏漏二
+
+先槧之謬
+
+MC-301745 — 置終眇箱於世中，則戲崩墜焉。
+
+MC-301749 — 近人則客端崩焉。
+
+二五週三六甲
+
+二五週三六甲（25w36a）者，爪哇版一點二一點九之庚快照也，廣佈於乙巳年七月十一日，此版增人偶，補疏漏焉。
+
+新内容
+
+生物
+
+人偶
+
+一种技术性实体，仅能由/summon生成。
+
+相当于没有被真实玩家操控的玩家实体。
+
+行为继承类似盔甲架，可以穿戴装备、手持物品、受到状态效果和属性影响、受到伤害，等等。
+
+在玩家的below_score记分板显示位置处总会显示“NPC”。
+
+在生物数据格式的基础上，额外有如下字段：
+
+实体数据
+profile：指定玩家游戏档案（格式同profile数据组件）或玩家模型档案。玩家模型档案格式见下：
+*texture：所使用皮肤纹理的命名空间ID，即使用textures目录下的.png文件。如entity/player/wide/steve会使用默认的Steve皮肤。
+
+cape：所使用披风纹理的命名空间ID。此字段不存在时，玩家模型没有披风。
+
+elytra：所使用鞘翅纹理的命名空间ID。此字段不存在时，玩家模型使用披风纹理（若有）或使用默认鞘翅纹理。
+
+model：（默认为wide）玩家模型类型，可以为wide或slim。
+
+hidden_layers：需隐藏的外部皮肤层列表，可以包含cape、jacket、left_sleeve、right_sleeve、left_pants_leg、right_pants_leg與​hat。
+
+main_hand：哪只手是玩家模型的主手，可以为left或right。
+
+更改
+
+方块
+
+铜火把和铜灯笼
+
+更改了颜色以方便色盲玩家区分于其他类似方块。
+
+铜傀儡像
+
+破坏后，方块状态copper_golem_pose和数据组件custom_name现在会保存到掉落物中。
+
+现在默认具有数据组件block_state。
+
+展示架
+
+现在激活的展示架只能连接到同方向的展示架。
+
+物品
+
+铜盔甲
+
+使用铜锭为铜盔甲附加盔甲纹饰时，纹饰颜色现在会更深。
+
+游戏内容
+
+世界边界
+
+现在每个维度的世界边界相互独立。
+现在可以为每个维度单独设置世界边界的尺寸、位置等。
+
+粒子
+
+现在玩家视野外的粒子不再渲染，以提升部分场景下的性能。
+
+末地闪光
+
+末影龙迷雾激活时，末地闪光源会隐藏，且末地闪光对世界的亮度影响会降低。
+
+常规
+
+数据包
+
+将数据包版本号更改为86.0。
+
+粒子数据格式
+
+dragon_breath粒子现在可以接受参数power（浮点数，默认为1），在随机数计算完毕后初始速度将乘上此值。
+
+instant_effect和effect粒子现在可以接受参数power（浮点数，默认为1）和color（RGB颜色，默认为0xFFFFFF）。
+
+flash现在必须指定参数color（ARGB颜色）。
+
+屏幕
+
+现在文件中的格式化代码不会显示。
+
+控制
+
+被分配相同按键的多个操作现在会同时工作，先前只有一个工作。
+例如，现在可以为“進”和“躍”同时绑定W键，则按下该键会同时执行前进和跳跃操作。
+
+因此，先前提示多个操作分配同一按键的红色指示条改为了黄色。
+
+旁观模式玩家快捷栏现在可以绑定按键。
+其与既有的“彰戲者”共同在新分类“覽者”下。
+
+用户界面
+
+现在双击编辑界面的文本会选中该文本。
+
+资源包
+
+将资源包版本号更改为68.0。
+
+着色器
+
+移除了未使用的着色器：
+core/position_color_lightmap.vsh
+
+core/position_color_lightmap.fsh
+
+core/position_color_tex_lightmap.vsh
+
+core/position_color_tex_lightmap.fsh
+
+修改了core/terrain.vsh中函数minecraft_sample_lightmap中UV计算的部分。
+
+修复
+
+修疏漏五十九
+
+先之謬
+
+MC-223142 — 玩家能在旁观标记时移动。
+
+MC-225088 — 亮度低时，主世界表层比之前更暗。
+
+MC-234737 — “EmtyPoolElement”异常信息中包含错误拼写。
+
+MC-236508 — “”菜单内的标题显示为“”。
+
+MC-237590 — 渲染距离和模拟距离滑动条内的“chunks”一词存在不当大小写。
+
+MC-238273 — “”缺少标点符号。
+
+MC-249205 — 在创造模式下通过使用水瓶创造泥巴会导致minecraft.used:minecraft.potion增加2。
+
+MC-250062 — 游戏中有几个字符串包含逗号拼接。
+
+MC-250193 — 服务器日志在加密过程中断开连接时未使用玩家游戏档案的字符串表示。
+
+MC-254052 — /locate不在建筑高度限制外工作。
+
+MC-254668 — 在死亡屏幕的标题屏幕警告上按下Esc会使玩家重生。
+
+MC-257792 — 交易菜单的输出槽位偏离中心。
+
+MC-258191 — 根部系统地物允许垂根的垂直跨度为0，导致报错。
+
+MC-259347 — 用铁桶右键位于建筑高度限制的方块顶部时会显示高度限制警告消息。
+
+MC-262370 — 部分多人游戏字符串不可翻译。
+
+MC-264962 — 包含给定行为的两个输入的字符串具有不一致的字距和省略号。
+
+MC-265807 — 生物不会在其AirNBT低于-19时溺水。
+
+1.21.3的漏洞
+
+MC-278435 — 即使原版数据包中指定了蘑菇岛生物群系生成南瓜斑块，南瓜斑块也不会在蘑菇岛生成。
+
+1.21.4的漏洞
+
+MC-277975 — 物品提示框中命令执行警告的首行缺少标点符号。
+
+MC-279123 — 部分引用Minecraft Realms的字符串使用不一致的动词形式或缺少动词。
+
+MC-279153 — 部分提及属性基值的字符串缺少冠词。
+
+MC-279173 — chat.disabled.invalid_command_signature字符串中的“Command”一词前缺少一个冠词。
+
+MC-279174 — gamerule.spawnChunkRadius.description字符串中的“Amount”一词前缺少一个冠词。
+
+MC-279175 — 部分多人游戏断开连接字符串中缺少冠词和指示代词。
+
+MC-279176 — gamerule.commandModificationBlockLimit.description字符串中的“Number”一词前缺少一个冠词。
+
+MC-279212 — 部分旁白字符串缺失冠词和所有格限定词。
+
+1.21.5的漏洞
+
+MC-295829 — 测试实例方块GUI使用“批次”而非“环境”。
+
+1.21.6的漏洞
+
+MC-298605 — 创建“水世界”超平坦世界时，玩家在海底出生。
+
+MC-299105 — Tears和Lava Chicken音乐唱片的“desc”翻译未使用。
+
+1.21.8的漏洞
+
+MC-301619 — 控制台消息中使用的游戏模式翻译键会在无权限的玩家尝试切换其游戏模式时发出。
+
+槧之謬
+
+MC-300055 — 能在手持蜜脾时通过更改铜傀儡像的姿势来达成进度“塗蠟”。
+
+MC-300088 — 被铜傀儡放置于大型箱子中的物品不会更新在大型箱子右侧读取信号的红石比较器。
+
+MC-300109 — 由避雷针引出的闪电束不会移除避雷针的氧化状态。
+
+MC-300169 — 铜傀儡像的CustomName标签未在被挖掘后保留。
+
+MC-300192 — 铜没有颜色更深的纹饰。
+
+MC-300201 — 破坏带有姿势的铜傀儡像不会保留其姿势。
+
+MC-300416 — 铜傀儡偏向寻路到西北的箱子。
+
+MC-300558 — 铜傀儡能在未持有适当的钥匙物品时打开上锁的箱子。
+
+MC-300729 — 锈蚀或斑驳的铜栏杆上有错误或异常明显的像素。
+
+MC-300961 — 尸壳的盔甲图层不再表现出尸壳相较于其他人形生物更大的尺寸。
+
+MC-301099 — 铜傀儡的头上穿戴的铜箱子不可见。
+
+MC-301250 — 在观看鸣谢名单时退出游戏模式切换器（F3 + F4）后，玩家仍未恢复观看状态，而是以幻影状态留在末地，直到重新登录。
+
+MC-301258 — 行走姿势的铜傀儡像的脖子有一点从手臂中探出。
+
+MC-301259 — 展示架方块实体数据中的align_items_to_bottom无效。
+
+MC-301261 — 铜傀儡像的右臂未与其身体相连。
+
+MC-301276 — 修剪铜傀儡时，手部动画不再播放。
+
+MC-301277 — 带地图或画的物品展示框不再能共用一个角落。
+
+MC-301278 — 行为准则屏幕会渲染回车字符。
+
+MC-301283 — 疾跑和潜行输入键会在被按下且屏幕打开的同时“卡住”。
+
+MC-301310 — Realms菜单中的“立即转移”按钮在选择框外显示。
+
+MC-301312 — 注视铜傀儡时不能开始使用物品。
+
+MC-301324 — 坐下的铜傀儡像的鼻子被异常翻转。
+
+MC-301330 — 恶意服务器能强制客户端在行为准则界面卡住。
+
+MC-301374 — 唤魔者现在会在和平难度下生成。
+
+先槧之謬
+
+MC-301519 — 在游戏规则enableCommandBlocks为false时，尝试在非服务器上使用命令方块会产生“”。
+
+MC-301523 — 部分游戏规则描述字符串包含不一致的末尾标点和多余的“or not”，且语法不正确。
+
+MC-301524 — 旗帜上的方块破坏动画现在会随已有的每种图案放大。
+
+MC-301546 — 附近有另一个钟时，钟不会显示响铃动画。
+
+MC-301577 — 方块光源在天空光照下会产生围绕自身的阴影。
+
+二五週三四乙
+
+二五週三四乙（25w34b）者，爪哇版一點二一點九[坊間之名]之戊快照也，廣佈於乙巳年六月廿六日，補疏漏焉。
+
+補
+
+修疏漏一
+
+槧之謬
+
+MC-300911 — 示之爍者，不復明焉。
+
+私謬
+
+領域之疏漏也。
+
+註按
+
+津渡

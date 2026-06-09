@@ -1,0 +1,273 @@
+# WORK_TITLE: 礦藝大典
+# PAGE_TITLE: 爪哇版二四週一〇甲
+# URL: https://lzh.minecraft.wiki/%E7%88%AA%E5%93%87%E7%89%88%E4%BA%8C%E5%9B%9B%E9%80%B1%E4%B8%80%E3%80%87%E7%94%B2
+# WIKI_CATEGORIES: 分類:廣佈於甲辰年之快照，分類:爪哇版一點二〇點五快照，分類:爪哇版之版
+# DATE: 2026-05-13T04:32:24Z
+# SCRAPED_AT: 2026-06-08T18:31:15+00:00
+# AUTHOR: 礦藝大典之用戶
+# CATEGORIES: 游戲，維基
+# LICENSE: CC-BY-NC-SA-3.0 https://creativecommons.org/licenses/by-nc-sa/3.0/
+# RIGHTS_NOTE: Non-commercial reuse only; ShareAlike applies to adaptations. Images and game assets excluded unless separately licensed.
+
+是篇涉未定之譯名也。
+
+其名未定者，已特標之。審考未決，勿擅易之。
+
+二四週一〇甲（24w10a）者，爪哇版一點二〇點五之甲戌快照也，廣佈於甲辰年正月廿六日，豐狼色，簡疊件，名囊槽，許疊方，補疏漏。
+
+新者
+
+生靈
+
+狼
+
+增狼毛色，染於生地，因於父母。
+蒼狼，元色也，生棘林中。
+
+林狼，生於林中。
+
+灰狼，生雪棘林中。
+
+玄狼，生松林中。
+
+栗狼，生樅林中。
+
+丹狼，生疏林中。
+
+斑狼，生於莽塬。
+
+彣狼，生於塬林。
+
+雪狼，獨行雪林，其蹤漫漫。
+
+別處孳於卵令者，盡蒼狼也。
+
+常
+
+實體之辝
+
+增亞辝，曰slots，以較其槽。
+但有合者，即咸允之。
+
+範：槽名比於辝鍵。
+
+例：
+
+{
+"condition": "minecraft:entity_properties",
+"entity": "this",
+"predicate": {
+"slots": {
+"container.*": {
+"items": "dirt"}}}}
+
+行囊
+
+增槽名如左：
+container.*：自container.0而container.53。
+
+hotbar.*：自hotbar.0而hotbar.8。
+
+inventory.*：自inventory.0而inventory.26。
+
+enderchest.*：自enderchest.0而enderchest.26。
+
+villager.*：自villager.0而villager.7。
+
+horse.*：自horse.0而horse.14。
+
+weapon.*：囊weapon.mainhand與​weapon.offhand。
+
+armor.*：囊armor.head、armor.chest、armor.legs、armor.feed與​armor.body。
+
+player.cursor：創囊之外，懸繫於鼠者。
+
+player.crafting.0、player.crafting.1、player.crafting.2、player.crafting.3與​player.crafting.*：行囊之製槽。
+
+改
+
+塊方
+
+礪
+
+持unbreakable而未靈者，今不與之。
+上物有損，則以下物不壞者繕之，而unbreakable不嗣；易之，則不銷不繕；不壞而靈，則銷其靈而件以如初。
+
+靈書不可竝銷。
+
+戲者之首
+
+物名今貯於custom_name之籤。
+
+代SkullOwner與​ExtraType以profile，以齊物件之範。
+
+物
+
+常
+
+物之有單，復錄其count。
+文敗則以爲一也。
+
+令範
+
+/execute
+
+支采items之格，可以計較。
+execute if|unless items <source> <slots> <item_predicate>
+<source>：同乎/item中者。
+譬如block <x> <y> <z>抑entity <target>（實體有復）。
+
+<slots>：或一槽（譬如container.0），或句之（譬如container.*）
+
+<item_predicate>：同乎/clear中辝。
+
+獨用則計中垛之物。
+
+/item
+
+slot今得句槽。
+微言爲句，猶單槽耳。
+
+生靈
+
+狼
+
+今生於澱灰之土。
+
+今生於稀叢莽、莽塬、塬林。
+
+闢世
+
+雪林
+
+雞豕牛羊，不復生焉。
+
+常
+
+錄囊
+
+晉錄囊於34。
+
+旗楷今冊於data/<名宇>/banner_pattern/<id>。
+
+：本籤。
+asset_id：（名宇編碼）以解紋之所在。如custom:pattern者，位諸assets/custom/textures/entity/banner/pattern.png和assets/custom/textures/entity/shield/pattern.png。
+
+translation_key：鍵首也。如block.minecraft.banner.custom.pattern者，解曰block.minecraft.banner.custom.pattern.<染色>。
+
+詳註
+
+鼠出於物，則不見詳註。
+
+方
+
+今可以定物件。
+crafting_shaped、crafting_shapeless、stonecutting與​smithing_transform之result垛今容components。
+
+smelting、blasting、smoking與​campfire_cooking方之result文，今疊且無數，必以id，可以components。
+
+籤
+
+coarse_dirt與​podzol入#wolves_spawnable_on之籤。
+
+疊物之件
+
+profile不復求name之文。
+
+件或可簡代之：
+profile亦可以爲profile，以見名氏，譬如profile="jeb_"。
+
+dyed_color亦可以爲dyed_color，譬如dyed_color=16711680。
+
+attribute_modifiers可以徑爲attribute_modifiers，譬如attribute_modifiers=[{type:'generic.scale',uuid:[1,2,3,4],name:'廣！',amount:1.0,operation:'add_multiplied_base'}]。
+
+potion_contents可以爲一劑之棨信，曰potion_contents，譬如potion_contents="invisibility"。
+
+enchantments、stored_enchantments二者，可以爲對鍵，以靈名對於其階，譬如enchantments={sharpness:1}。
+
+惟省筆墨耳，猶渾貯也。
+
+今container之件，咸佈諸皿，不啻贆櫝。
+
+改lodestone_target爲lodestone_tracker。
+pos、dimension二者，今歸於target（不必也）。
+
+target之無，司南斯旋。
+
+lore、fireworks/explosions二者弘其制，今爲皕五十有六。
+
+物之持can_break、can_place_on二件者，今得倚疊。
+
+改（試行）
+
+塊方
+
+寶篋
+
+復改寶篋未開者之貌。
+
+補
+
+修疏漏二十八
+
+嚮各完版之疏漏
+
+MC-140397 — 靈而不壞者，相比付礪，則得物相疊。
+
+MC-157133 — 礪疊咒靈之書。
+
+MC-174496 — 人首既置，其名喪焉。
+
+MC-217084 — 戲者之首，ExtraType之籤，不由DataFixerUpper之道，則不復貯。
+
+槧二四週一〇甲之謬
+
+MC-268392 — 不昇不墜者，以御空見逐。
+
+MC-268462 — 飽羹之效，今七秒而非七刻。
+
+先槧之謬
+
+MC-268800 — 具咸以4傷，1.6攻速。
+
+MC-268801 — 贆櫝存於捷槽者，件錄不齊。
+
+MC-268813 — 物持can_break、can_place_on敗件者，與之則崩。
+
+MC-268824 — 靈書銷於礪者，不與素書相疊。
+
+MC-268830 — 施/effect之令，粒猶有形。
+
+MC-268834 — 寶篋之紋不一。
+
+MC-268842 — 存物畫之世而崩頹。
+
+MC-268845 — 創囊之更也，物持can_break、can_place_on二件者必新。
+
+MC-268850 — 易手捷槽，而綴性不新。
+
+MC-268851 — 弩發無響。
+
+MC-268853 — 畫姿不能載。
+
+MC-268856 — 載贆櫝皮囊之有虛物者，則咸壞其件。
+
+MC-268864 — 綴物疊件既同，覆錄囊則漏之。
+
+MC-268879 — 損昂直者以崩。
+
+MC-268897 — 垛之單者，實體持之，則不能擇。
+
+MC-268904 — 謎羹不效。
+
+MC-268921 — 解世而矢失粒。
+
+MC-268971 — 破礠石而司南不作。
+
+MC-269005 — 〇七甲之首級，或崩或舛。
+
+MC-269062 — 皮囊雖削bundle_contents之件，右擊則復。
+
+MC-269066 — 綴物不廢custom_name。
+
+MC-269091 — 爻籤既墜其AttributeModifiers，則不成件。

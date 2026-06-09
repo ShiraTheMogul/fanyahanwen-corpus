@@ -1,0 +1,134 @@
+# WORK_TITLE: 礦藝大典
+# PAGE_TITLE: 爪哇版生界範式
+# URL: https://lzh.minecraft.wiki/%E7%88%AA%E5%93%87%E7%89%88%E7%94%9F%E7%95%8C%E7%AF%84%E5%BC%8F
+# WIKI_CATEGORIES: 分類:爪哇版將至/一點二一點一一，分類:爪哇版獨有篇
+# DATE: 2026-05-12T12:10:32Z
+# SCRAPED_AT: 2026-06-08T19:15:02+00:00
+# AUTHOR: 礦藝大典之用戶
+# CATEGORIES: 游戲，維基
+# LICENSE: CC-BY-NC-SA-3.0 https://creativecommons.org/licenses/by-nc-sa/3.0/
+# RIGHTS_NOTE: Non-commercial reuse only; ShareAlike applies to adaptations. Images and game assets excluded unless separately licensed.
+
+此篇乃爪哇版獨有也。
+
+存檔（Level），生界所以長記也。
+
+所在
+
+若夫客端，記世之資料夾，在於.minecraft/saves，其下每夾當一存檔。
+
+驗檔，則以level.dat或level.dat_old，無損方見于生界表。
+
+今有一檔，其名爲w，則存於.minecraft/saves/w。
+
+至若伺服端，其因有二：
+
+伺服器附項--universe <字串>（預設.，即斯夾）：定記世之資料夾。
+
+伺服器附項--world <字串>、server.properties之level-name（按次取試）：定記level.dat之資料夾名。
+
+今啓一服，附項--universe u--world w，則存於u/w。
+
+範式
+
+凡百存錄，悉循定法。下文之志粗者，必有也，否者非必有之，備者弗記。設生界成闢、戲者既入。
+
+以係維否，錄可別也，凡否者皆徑在記世之資料夾，下舉之：
+
+記世之夾
+icon.png：存檔之像。
+
+level.dat：存檔本案。
+
+resources.zip：既定資囊，見資囊 § 生界既定資囊。
+
+session.lock：存檔會話鎖案。
+
+advancements：功之存夾。
+<戶碼>.json：功之存案。
+
+data：存檔錄夾。
+command_storage_<命名空间>.dat：令之存案。
+
+idcounts.dat：輿次之存案。
+
+map_<輿ID>.dat：輿錄之存案。
+
+scoreboard.dat：計分板之存案。
+
+stopwatches.dat[將見於爪哇版一點二一點一一]：壺漏之存案。
+
+datapacks：既定錄囊。
+<錄囊名>
+
+generated：生錄之存夾。
+<冠别>：一冠别（Namespace）之錄。
+structures：生構之夾。
+<标识符>.nbt：構之存案。
+
+playerdata：戲者存夾。
+<戶碼>.dat：戲者之存案。
+
+stats：計之存夾。
+<戶碼>.json：計之存案。
+
+凡係維者，悉有所屬，是又在記世之資料夾之下矣，下舉之：
+
+維
+
+冠别ID
+
+宗路
+
+主界
+
+minecraft:overworld
+
+/
+
+終界
+
+minecraft:the_end
+
+/DIM1/
+
+焱界
+
+minecraft:the_nether
+
+/DIM-1/
+
+他
+
+<冠别>:<ID>
+
+/dimensions/<冠别>/<ID>/
+
+維錄之存循下構：
+
+記維之夾
+data：維錄之夾。
+chunks.dat：區塊籤之存案。
+
+raids.dat：襲之存案（非終界）。
+
+raids_end.dat：襲之存案（僅終界）。
+
+random_sequences.dat：無定序列之存案。
+
+world_border.dat：世疆之存案。
+
+entities：實體錄夾。
+r.<區域經距>.<區域緯距>.mca：區域實體之存案。區域，三十二冪之區塊也。
+
+c.<區塊經距>.<區塊緯距>.mcc：區域實體存案之延案。
+
+poi：所好錄夾。
+r.<區域經距>.<區域緯距>.mca：區域所好之存案。
+
+c.<區塊經距>.<區塊經距>.mcc：區域所好存案之延案。
+
+region：區塊本錄之夾。
+r.<區域經距>.<區域緯距>.mca：區域區塊之存案。
+
+c.<區塊經距>.<區塊經距>.mcc：區域區塊存案之延案。
