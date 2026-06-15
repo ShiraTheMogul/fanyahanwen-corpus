@@ -11,7 +11,7 @@
 #
 module DailyReadingsHelper
   SHIJING_SERIES_KEY  = "shijing"
-  SHIJING_ROOT_REL    = "中國漢文/clean/先秦/詩經"
+  SHIJING_ROOT_REL    = "中國漢文/clean/周朝/東周/戰國時代/周/詩經"
   MAX_LUNAR_BACKTRACK = 420
 
   # Returns a Hash for the widget, or nil if no reading can be found.
