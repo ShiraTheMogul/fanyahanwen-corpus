@@ -1,0 +1,24 @@
+{
+  "script_version": "song-author-date-regionaliser-2026-06-19",
+  "root": "C:\\Users\\chipp\\OneDrive\\Documents\\fanyahanwen-corpus\\corpus\\中國漢文\\clean\\宋朝",
+  "mode": "apply",
+  "created_at_utc": "2026-06-19T13:45:54+00:00",
+  "cutoff_year": 1127,
+  "decision_rule": {
+    "death_year_lte_1127": "北宋",
+    "death_year_gt_1127": "南宋",
+    "death_unknown_birth_year_gte_1127": "南宋",
+    "otherwise": "leave_in_不詳"
+  },
+  "unknown_work_groups": 531,
+  "unique_authors_looked_up": 296,
+  "move_plan_rows": 172,
+  "review_or_unresolved_rows": 364,
+  "work_page_author_fallback": true,
+  "merge_existing": false,
+  "metadata_policy": "No corpus metadata is changed.",
+  "date_source_order": [
+    "Wikisource Author page",
+    "Chinese Wikipedia exact-title page"
+  ]
+}
