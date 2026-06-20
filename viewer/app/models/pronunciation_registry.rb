@@ -91,27 +91,33 @@ module PronunciationRegistry
       entries = known.delete(family_meta[:key]) || []
       next if entries.empty?
 
-      direct = entries.select { |_prop, meta| meta[:variety_key].blank? }
+      # Every registered pronunciation belongs inside a second-level reading
+      # group. For living lects this is normally a variety (Shanghai, Shuri,
+      # Cantonese); for older material it can be a historical system or
+      # reconstruction (Guangyun, Menggu Ziyun, Baxter-Sagart 2014).
+      #
+      # A field without explicit group metadata still receives its own safe
+      # dropdown instead of leaking back into a long, flat family-level list.
       varieties = entries
-        .reject { |_prop, meta| meta[:variety_key].blank? }
-        .group_by { |_prop, meta| meta[:variety_key] }
-        .map do |variety_key, grouped|
+        .group_by { |_prop, meta| display_group_key(meta) }
+        .map do |group_key, grouped|
           first_meta = grouped.first.last
           {
-            key: variety_key,
-            label: display_variety_label(first_meta),
+            key: group_key,
+            label: display_group_label(first_meta),
             location: display_location_label(first_meta),
             references: first_meta[:references],
+            order: grouped.map { |_prop, meta| meta[:order].to_i }.min,
             props: sort_property_pairs(grouped).map(&:first)
           }
         end
-        .sort_by { |variety| variety[:label].to_s }
+        .sort_by { |group| [group[:order], group[:label].to_s] }
 
       {
         key: family_meta[:key],
         label: family_meta[:label],
         default_open: family_meta[:default_open],
-        props: sort_property_pairs(direct).map(&:first),
+        props: [],
         varieties: varieties,
         count: entries.length
       }
@@ -155,12 +161,33 @@ module PronunciationRegistry
         order: ruby.fetch("order", 999).to_i,
         family: metadata[:family],
         family_label: family(metadata[:family])&.fetch(:label, nil),
+        group_key: metadata[:group_key],
+        group_label: metadata[:group_label],
+        group_label_en: metadata[:group_label_en],
         variety_key: metadata[:variety_key],
         variety_label: metadata[:variety_label],
         variety_label_en: metadata[:variety_label_en],
         notation: metadata[:notation]
       }
     end.sort_by { |entry| [entry[:order], entry[:label]] }.freeze
+  end
+
+  # A display group is the second-level dropdown below a language family.
+  # It may be a geographic variety, a prestige variety, a historical source,
+  # or a scholarly reconstruction. Explicit group metadata wins; existing
+  # variety metadata remains fully supported for bulk topolect datasets.
+  def display_group_key(metadata)
+    metadata[:group_key].to_s.presence ||
+      metadata[:variety_key].to_s.presence ||
+      metadata[:field].to_s
+  end
+
+  def display_group_label(metadata)
+    metadata[:group_label_en].to_s.presence ||
+      metadata[:group_label].to_s.presence ||
+      display_variety_label(metadata).to_s.presence ||
+      metadata[:label].to_s.presence ||
+      humanize_key(display_group_key(metadata))
   end
 
   # The viewer is currently English-first. Keep the original Chinese label in
@@ -218,7 +245,7 @@ module PronunciationRegistry
           {
             key: entry[:key].to_s,
             label: entry[:label].to_s,
-            variety_label: display_variety_label(entry),
+            variety_label: display_group_label(entry),
             variety_label_en: entry[:variety_label_en].to_s.presence,
             notation: entry[:notation].to_s.presence
           }
@@ -270,6 +297,9 @@ module PronunciationRegistry
       family: value.fetch("family").to_s,
       label: value.fetch("label", humanize_key(field)),
       order: value.fetch("order", 999).to_i,
+      group_key: value["group_key"]&.to_s,
+      group_label: value["group_label"]&.to_s,
+      group_label_en: value["group_label_en"]&.to_s,
       variety_key: value["variety_key"]&.to_s,
       variety_label: value["variety_label"] || value["variety"]&.to_s,
       variety_label_en: value["variety_label_en"]&.to_s,

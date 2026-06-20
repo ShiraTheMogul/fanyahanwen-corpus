@@ -91,6 +91,8 @@ fields:
     family: translingual
     label: 反切 Fǎnqiè
     order: 10
+    group_key: fanqie
+    group_label_en: "Fanqie"
     ruby:
       key: fanqie
       label: Fanqie
@@ -101,11 +103,15 @@ fields:
     family: translingual
     label: General Chinese
     order: 20
+    group_key: general_chinese
+    group_label_en: "General Chinese (Chao, 1983)"
 
   kMandarin:
     family: mandarin
     label: Mandarin
     order: 10
+    group_key: standard_mandarin
+    group_label_en: "Standard Mandarin"
     ruby:
       key: mandarin
       label: Mandarin
@@ -116,22 +122,32 @@ fields:
     family: mandarin
     label: 漢語拼音 Hànyǔ Pīnyīn
     order: 20
+    group_key: standard_mandarin
+    group_label_en: "Standard Mandarin"
   kHanyuPinlu:
     family: mandarin
     label: 漢語頻率 Hànyǔ Pínlǜ (Pronunciation + Frequency)
     order: 30
+    group_key: standard_mandarin
+    group_label_en: "Standard Mandarin"
   kTGHZ2013:
     family: mandarin
     label: 通用規範漢字字典 (2013)
     order: 40
+    group_key: standard_mandarin
+    group_label_en: "Standard Mandarin"
   kXHC1983:
     family: mandarin
     label: 現代漢語詞典 (1983)
     order: 50
+    group_key: standard_mandarin
+    group_label_en: "Standard Mandarin"
   laoguoyin:
     family: mandarin
     label: Old National Pronunciation 老國音
     order: 60
+    group_key: old_national_pronunciation
+    group_label_en: "Old National Pronunciation"
     ruby:
       key: laoguoyin
       label: Old National Pronunciation
@@ -142,55 +158,81 @@ fields:
     family: mandarin
     label: 1763 Manchu transcription (Manchu script)
     order: 70
+    group_key: manju_hergen_1763
+    group_label_en: "Manju Hergen (1763)"
   manju_hergen_latin:
     family: mandarin
     label: 1763 Manchu transcription (Latin script)
     order: 80
+    group_key: manju_hergen_1763
+    group_label_en: "Manju Hergen (1763)"
   manju_hergen_ipa:
     family: mandarin
     label: 1763 Manchu transcription (IPA)
     order: 90
+    group_key: manju_hergen_1763
+    group_label_en: "Manju Hergen (1763)"
   menggu_ziyun_phags_pa:
     family: mandarin
     label: Menggu Ziyun 蒙古字韻 (Phags-pa script)
     order: 100
+    group_key: menggu_ziyun
+    group_label_en: "Menggu Ziyun"
   menggu_ziyun_transcription:
     family: mandarin
     label: Menggu Ziyun 蒙古字韻 (IPA)
     order: 110
+    group_key: menggu_ziyun
+    group_label_en: "Menggu Ziyun"
   menggu_ziyun_tone:
     family: mandarin
     label: Menggu Ziyun 蒙古字韻 tone
     order: 120
+    group_key: menggu_ziyun
+    group_label_en: "Menggu Ziyun"
   zhongyuan_yinyun_yang_naisi:
     family: mandarin
     label: Zhongyuan Yinyun 中原音韻 (楊耐思)
     order: 130
+    group_key: zhongyuan_yinyun
+    group_label_en: "Zhongyuan Yinyun"
   zhongyuan_yinyun_ning_jifu:
     family: mandarin
     label: Zhongyuan Yinyun 中原音韻 (寧繼福)
     order: 140
+    group_key: zhongyuan_yinyun
+    group_label_en: "Zhongyuan Yinyun"
   zhongyuan_yinyun_xue_fengsheng:
     family: mandarin
     label: Zhongyuan Yinyun 中原音韻 (薛鳳生)
     order: 150
+    group_key: zhongyuan_yinyun
+    group_label_en: "Zhongyuan Yinyun"
   zhongyuan_yinyun_unt_phonemic:
     family: mandarin
     label: Zhongyuan Yinyun 中原音韻 (untunt)
     order: 160
+    group_key: zhongyuan_yinyun
+    group_label_en: "Zhongyuan Yinyun"
   zhongyuan_yinyun_unt:
     family: mandarin
     label: Zhongyuan Yinyun 中原音韻 (unt)
     order: 170
+    group_key: zhongyuan_yinyun
+    group_label_en: "Zhongyuan Yinyun"
   zhongyuan_yinyun_tone:
     family: mandarin
     label: Zhongyuan Yinyun 中原音韻 tone
     order: 180
+    group_key: zhongyuan_yinyun
+    group_label_en: "Zhongyuan Yinyun"
 
   kCantonese:
     family: yue
     label: Cantonese
     order: 10
+    group_key: cantonese
+    group_label_en: "Cantonese"
     ruby:
       key: cantonese
       label: Cantonese
@@ -202,6 +244,8 @@ fields:
     family: middle_chinese
     label: Middle Chinese (Stimson, 1976)
     order: 10
+    group_key: stimson_1976
+    group_label_en: "Stimson (1976)"
     ruby:
       key: tang
       label: Tang pronunciation
@@ -212,6 +256,8 @@ fields:
     family: middle_chinese
     label: Middle Chinese
     order: 20
+    group_key: baxter_sagart_2014
+    group_label_en: "Baxter–Sagart (2014)"
     ruby:
       key: bs2014_mc
       label: Middle Chinese (Baxter & Sagart, 2014)
@@ -222,27 +268,39 @@ fields:
     family: middle_chinese
     label: Middle Chinese
     order: 30
+    group_key: baxter_with_sagart_2006
+    group_label_en: "Baxter (with Sagart, 2006)"
   guangyun_fanqie:
     family: middle_chinese
     label: Guangyun Fanqie 廣韻反切
     order: 40
+    group_key: guangyun
+    group_label_en: "Guangyun"
   guangyun_rhyme:
     family: middle_chinese
     label: Guangyun Rime 廣韻音韻
     order: 50
+    group_key: guangyun
+    group_label_en: "Guangyun"
   guangyun_tone:
     family: middle_chinese
     label: Guangyun Tone 廣韻聲調
     order: 60
+    group_key: guangyun
+    group_label_en: "Guangyun"
   menggu_ziyun_qieyun_position:
     family: middle_chinese
     label: Qieyun-system phonological position
     order: 70
+    group_key: menggu_ziyun
+    group_label_en: "Menggu Ziyun"
 
   bs2014_oc:
     family: old_chinese
     label: Old Chinese
     order: 10
+    group_key: baxter_sagart_2014
+    group_label_en: "Baxter–Sagart (2014)"
     ruby:
       key: bs2014_oc
       label: Old Chinese (Baxter & Sagart, 2014)
@@ -254,6 +312,8 @@ fields:
     family: japonic
     label: Japanese
     order: 10
+    group_key: japanese
+    group_label_en: "Japanese"
     ruby:
       key: japanese_kana
       label: Japanese Kana
@@ -264,6 +324,8 @@ fields:
     family: japonic
     label: Japanese on’yomi
     order: 20
+    group_key: japanese
+    group_label_en: "Japanese"
     ruby:
       key: japanese_on
       label: Japanese On
@@ -274,6 +336,8 @@ fields:
     family: japonic
     label: Japanese kun’yomi
     order: 30
+    group_key: japanese
+    group_label_en: "Japanese"
     ruby:
       key: japanese_kun
       label: Japanese Kun
@@ -284,30 +348,44 @@ fields:
     family: japonic
     label: Mora (romaji)
     order: 40
+    group_key: historical_kana_manyogana
+    group_label_en: "Historical kana and Man’yōgana"
   jp_manyogana_mora_table:
     family: japonic
     label: Man’yōgana mora table
     order: 50
+    group_key: historical_kana_manyogana
+    group_label_en: "Historical kana and Man’yōgana"
   jp_manyogana_hiragana_etym:
     family: japonic
     label: Man’yōgana (hiragana etymology)
     order: 60
+    group_key: historical_kana_manyogana
+    group_label_en: "Historical kana and Man’yōgana"
   jp_manyogana_katakana_etym:
     family: japonic
     label: Man’yōgana (katakana etymology)
     order: 70
+    group_key: historical_kana_manyogana
+    group_label_en: "Historical kana and Man’yōgana"
   jp_shakuon_kana:
     family: japonic
     label: Shakuon Kana 借音仮名
     order: 80
+    group_key: historical_kana_manyogana
+    group_label_en: "Historical kana and Man’yōgana"
   jp_shakkun_kana:
     family: japonic
     label: Shakkun Kana 借訓仮名
     order: 90
+    group_key: historical_kana_manyogana
+    group_label_en: "Historical kana and Man’yōgana"
   jp_manyogana_reading:
     family: japonic
     label: Man’yōgana reading (mora)
     order: 100
+    group_key: historical_kana_manyogana
+    group_label_en: "Historical kana and Man’yōgana"
 
   reading.japonic.okinawan_uchinaaguchi_shuri.ninjal:
     family: japonic
@@ -342,6 +420,8 @@ fields:
     family: koreanic
     label: Korean (Yale)
     order: 10
+    group_key: korean
+    group_label_en: "Korean"
     ruby:
       key: korean_yale
       label: Korean Yale
@@ -352,6 +432,8 @@ fields:
     family: koreanic
     label: Korean (Hangul)
     order: 20
+    group_key: korean
+    group_label_en: "Korean"
     ruby:
       key: korean_hangul
       label: Korean Hangul
@@ -363,6 +445,8 @@ fields:
     family: austroasiatic
     label: Vietnamese
     order: 10
+    group_key: vietnamese
+    group_label_en: "Vietnamese"
     ruby:
       key: vietnamese
       label: Vietnamese
@@ -374,6 +458,8 @@ fields:
     family: kra_dai
     label: Zhuang
     order: 10
+    group_key: zhuang
+    group_label_en: "Zhuang"
     ruby:
       key: zhuang
       label: Zhuang

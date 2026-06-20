@@ -45,8 +45,11 @@
               <% end %>
 
               <% if variety[:references].present? %>
-                <div class="pronun-variety-references">
-                  <strong>References:</strong>
+                <details class="pronun-variety-references">
+                  <summary title="Expand or collapse references">
+                    <span>References</span>
+                    <span class="pronun-reference-count"><%= variety[:references].length %></span>
+                  </summary>
                   <ol>
                     <% variety[:references].each do |reference| %>
                       <li>
@@ -68,7 +71,7 @@
                       </li>
                     <% end %>
                   </ol>
-                </div>
+                </details>
               <% end %>
             </div>
           <% end %>

@@ -31,6 +31,48 @@ class PronunciationRegistryTest < ActiveSupport::TestCase
     assert_equal [prop], section[:varieties].first[:props]
   end
 
+  test "puts hand-maintained prestige and historical readings in second-level groups" do
+    japanese_props = [
+      Property.new("kJapanese", "Unihan_Readings", "ジ"),
+      Property.new("kJapaneseOn", "Unihan_Readings", "JI"),
+      Property.new("kJapaneseKun", "Unihan_Readings", "aza")
+    ]
+
+    section = PronunciationRegistry.pronunciation_sections(japanese_props)
+      .find { |item| item[:key] == "japonic" }
+    group = section[:varieties].find { |item| item[:key] == "japanese" }
+
+    assert_empty section[:props]
+    assert_equal "Japanese", group[:label]
+    assert_equal japanese_props, group[:props]
+  end
+
+  test "groups related historical fields under one source dropdown" do
+    props = [
+      Property.new("guangyun_fanqie", "Guangyun", "武悲"),
+      Property.new("guangyun_rhyme", "Guangyun", "支"),
+      Property.new("guangyun_tone", "Guangyun", "上平聲")
+    ]
+
+    section = PronunciationRegistry.pronunciation_sections(props)
+      .find { |item| item[:key] == "middle_chinese" }
+    group = section[:varieties].find { |item| item[:key] == "guangyun" }
+
+    assert_empty section[:props]
+    assert_equal "Guangyun", group[:label]
+    assert_equal props, group[:props]
+  end
+
+  test "falls back to a safe dropdown for a registered field without group metadata" do
+    prop = Property.new("reading.wu.test_place.ipa", "Test source", "zaŋ53")
+    section = PronunciationRegistry.pronunciation_sections([prop])
+      .find { |item| item[:key] == "wu" }
+
+    assert_empty section[:props]
+    assert_equal "Test Place", section[:varieties].first[:label]
+    assert_equal [prop], section[:varieties].first[:props]
+  end
+
   test "ruby source options and lookup use the same registry" do
     assert_includes PronunciationRegistry.ruby_source_keys, :mandarin
     assert_equal "kMandarin", PronunciationRegistry.ruby_source(:mandarin)[:field]
