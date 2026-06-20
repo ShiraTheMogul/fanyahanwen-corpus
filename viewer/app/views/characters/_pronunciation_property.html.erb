@@ -1,7 +1,13 @@
 <%# Locals: prop, bs_mc_detail_by_source %>
 <li class="pronun-item">
   <strong><%= FieldLens.label_for(prop.field) %></strong>:
-  <%= view_text(romanise_unihan_value(prop.field, prop.value)) %>
+  <% displayed_value = romanise_unihan_value(prop.field, prop.value) %>
+  <% value_annotation = PronunciationRegistry.value_annotation_for(prop.field, displayed_value) %>
+  <% if value_annotation %>
+    <%= view_text(value_annotation[:base]) %><abbr title="<%= h(value_annotation[:label]) %>"><%= view_text(value_annotation[:annotation]) %></abbr>
+  <% else %>
+    <%= view_text(displayed_value) %>
+  <% end %>
 
   <% if prop.field == "bs2014_mc" %>
     <% details = bs_mc_detail_by_source[prop.source] || [] %>
@@ -11,5 +17,5 @@
     <% end %>
   <% end %>
 
-  <em>(<%= prop.source %>)</em>
+  <em>(<%= render_source(prop.source) %>)</em>
 </li>

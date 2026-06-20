@@ -38,6 +38,41 @@
             <span class="pronun-section-count"><%= variety[:props].length %></span>
           </summary>
 
+          <% if variety[:location].present? || variety[:references].present? %>
+            <div class="pronun-variety-meta">
+              <% if variety[:location].present? %>
+                <p><strong>Location:</strong> <%= variety[:location] %></p>
+              <% end %>
+
+              <% if variety[:references].present? %>
+                <div class="pronun-variety-references">
+                  <strong>References:</strong>
+                  <ol>
+                    <% variety[:references].each do |reference| %>
+                      <li>
+                        <% if reference[:label].present? %>
+                          <span class="pronun-reference-label"><%= reference[:label] %>:</span>
+                        <% end %>
+                        <% if reference[:url].present? %>
+                          <%= link_to reference[:citation], reference[:url], target: "_blank", rel: "noopener" %>
+                        <% else %>
+                          <%= reference[:citation] %>
+                        <% end %>
+                        <% if reference[:license].present? %>
+                          <% if reference[:license_url].present? %>
+                            (<%= link_to reference[:license], reference[:license_url], target: "_blank", rel: "noopener" %>)
+                          <% else %>
+                            (<%= reference[:license] %>)
+                          <% end %>
+                        <% end %>
+                      </li>
+                    <% end %>
+                  </ol>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+
           <ul class="pronun-section-list">
             <% variety[:props].each do |prop| %>
               <%= render partial: "pronunciation_property",

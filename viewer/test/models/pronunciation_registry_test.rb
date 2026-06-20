@@ -61,4 +61,33 @@ class PronunciationRegistryTest < ActiveSupport::TestCase
     )
   end
 
+  test "Okinawan entry carries English-first identity location and full references" do
+    field = "reading.japonic.okinawan_uchinaaguchi_shuri.ninjal"
+    metadata = PronunciationRegistry.field_metadata(field)
+
+    assert_equal "japonic", metadata[:family]
+    assert_equal "Okinawan (Uchinaaguchi)", PronunciationRegistry.display_variety_label(metadata)
+    assert_equal "Shuri, Naha, Okinawa Island", PronunciationRegistry.display_location_label(metadata)
+    assert_equal 2, metadata[:references].length
+    assert_match(/10\.15084\/00002266/, metadata[:references].first[:citation])
+    assert_match(/okinawa_01\.xlsx/, metadata[:references].last[:citation])
+    assert_equal :okinawan_uchinaaguchi_shuri_ninjal,
+                 PronunciationRegistry.ruby_source(:okinawan_uchinaaguchi_shuri_ninjal)[:key]
+  end
+
+  test "marks the Okinawan ASCII suffix as an accent class annotation" do
+    field = "reading.japonic.okinawan_uchinaaguchi_shuri.ninjal"
+
+    assert_equal(
+      { base: "?ee", annotation: "1", label: "Accent class" },
+      PronunciationRegistry.value_annotation_for(field, "?ee1")
+    )
+    assert_equal(
+      { base: "?ee", annotation: "0*", label: "Accent class" },
+      PronunciationRegistry.value_annotation_for(field, "?ee0*")
+    )
+    assert_nil PronunciationRegistry.value_annotation_for(field, "?ee")
+    assert_nil PronunciationRegistry.value_annotation_for("kMandarin", "ai4")
+  end
+
 end

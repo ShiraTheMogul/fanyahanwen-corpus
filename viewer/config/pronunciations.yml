@@ -309,6 +309,35 @@ fields:
     label: Man’yōgana reading (mora)
     order: 100
 
+  reading.japonic.okinawan_uchinaaguchi_shuri.ninjal:
+    family: japonic
+    label: NINJAL transcription
+    order: 110
+    variety_key: okinawan_uchinaaguchi_shuri
+    variety_label: 沖繩語（うちなーぐち）
+    variety_label_en: Okinawan (Uchinaaguchi)
+    location: 首里（沖縄本島・那覇市）
+    location_en: Shuri, Naha, Okinawa Island
+    notation: ninjal_transcription
+    value_annotation:
+      label: Accent class
+      suffix_pattern: '[01]\*?'
+    references:
+      - label: Book
+        citation: "The National Language Research Institute (国立国語研究所), ed. 2001 [1963]. A Dictionary of the Ryukyuan Language (Okinawa-go Jiten 沖繩語辞典), 9th printing. National Language Research Institute, Source 5. Tokyo: Ministry of Finance Printing Bureau. 854 pp. ISBN 4-171-49000-6. DOI: 10.15084/00002266."
+        url: "https://doi.org/10.15084/00002266"
+      - label: Open data
+        citation: "National Institute for Japanese Language and Linguistics. n.d. Okinawa-go Jiten Data Collection (沖縄語辞典 データ集): main text / Shuri Okinawan dictionary (okinawa_01.xlsx) and standard-language index (okinawa_02.xlsx), electronic data based on the revised ninth printing (2001). CC BY 4.0. Accessed 20 June 2026."
+        url: "https://mmsrv.ninjal.ac.jp/okinawago/"
+        license: CC BY 4.0
+        license_url: "https://creativecommons.org/licenses/by/4.0/"
+    ruby:
+      key: okinawan_uchinaaguchi_shuri_ninjal
+      label: Okinawan (Uchinaaguchi) — Shuri — NINJAL transcription
+      sources: [NINJAL Okinawa-go Jiten Data Collection]
+      formatter: raw
+      order: 120
+
   kKorean:
     family: koreanic
     label: Korean (Yale)

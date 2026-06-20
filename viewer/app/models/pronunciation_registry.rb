@@ -100,6 +100,8 @@ module PronunciationRegistry
           {
             key: variety_key,
             label: display_variety_label(first_meta),
+            location: display_location_label(first_meta),
+            references: first_meta[:references],
             props: sort_property_pairs(grouped).map(&:first)
           }
         end
@@ -168,6 +170,34 @@ module PronunciationRegistry
     metadata[:variety_label_en].to_s.presence ||
       metadata[:variety_label].to_s.presence ||
       humanize_key(metadata[:variety_key])
+  end
+
+  def display_location_label(metadata)
+    metadata[:location_en].to_s.presence || metadata[:location].to_s.presence
+  end
+
+
+  # Split a configured suffix annotation from a stored pronunciation value.
+  # The value remains one database string (for example ?ee1), while the view
+  # can mark only the final "1" with a hover label such as "Accent class".
+  def value_annotation_for(field, value)
+    metadata = field_metadata(field)
+    annotation = metadata&.fetch(:value_annotation, nil)
+    return nil unless annotation
+
+    pattern = annotation[:suffix_pattern].to_s
+    return nil if pattern.empty?
+
+    match = Regexp.new("\\A(?<base>.*?)(?<annotation>#{pattern})\\z").match(value.to_s)
+    return nil unless match
+
+    {
+      base: match[:base],
+      annotation: match[:annotation],
+      label: annotation[:label]
+    }
+  rescue RegexpError
+    nil
   end
 
   def ruby_source_keys
@@ -246,6 +276,10 @@ module PronunciationRegistry
       notation: value["notation"]&.to_s,
       source_dataset: value["source_dataset"]&.to_s,
       source_archive: value["source_archive"]&.to_s,
+      location: value["location"]&.to_s,
+      location_en: value["location_en"]&.to_s,
+      references: normalize_references(value["references"]),
+      value_annotation: normalize_value_annotation(value["value_annotation"]),
       dynamic: false
     }.tap do |metadata|
       if metadata[:variety_key].present? && metadata[:variety_label].blank?
@@ -254,6 +288,36 @@ module PronunciationRegistry
     end
   end
   private_class_method :normalize_field_metadata
+
+
+  def normalize_value_annotation(value)
+    return nil unless value.is_a?(Hash)
+
+    label = value["label"].to_s.strip
+    suffix_pattern = value["suffix_pattern"].to_s.strip
+    return nil if label.empty? || suffix_pattern.empty?
+
+    { label: label, suffix_pattern: suffix_pattern }
+  end
+  private_class_method :normalize_value_annotation
+
+  def normalize_references(value)
+    Array(value).filter_map do |reference|
+      next unless reference.is_a?(Hash)
+
+      citation = reference["citation"].to_s.strip
+      next if citation.empty?
+
+      {
+        label: reference["label"].to_s.strip.presence,
+        citation: citation,
+        url: reference["url"].to_s.strip.presence,
+        license: reference["license"].to_s.strip.presence,
+        license_url: reference["license_url"].to_s.strip.presence
+      }
+    end
+  end
+  private_class_method :normalize_references
 
   def sort_property_pairs(pairs)
     pairs.sort_by do |prop, metadata|
