@@ -25,6 +25,25 @@
   <%= simple_format(@ticket.reasoning.to_s) %>
 </p>
 
+<% if Array(@ticket.evidence_links).present? %>
+  <h2>Evidence links</h2>
+  <ul>
+    <% Array(@ticket.evidence_links).each do |link| %>
+      <li><%= link_to link, link, target: "_blank", rel: "noopener noreferrer" %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<% if @contact.present? %>
+  <h2>Optional contact details</h2>
+  <p class="cv-hint">Encrypted contact data. It expires at <%= @contact.expires_at %> or is deleted when the ticket closes.</p>
+  <p>
+    <% if @contact.name.present? %><strong>Name:</strong> <%= @contact.name %><br><% end %>
+    <% if @contact.email.present? %><strong>Email:</strong> <%= mail_to @contact.email %><br><% end %>
+    <% if @contact.notes.present? %><strong>Note:</strong><br><%= simple_format(@contact.notes) %><% end %>
+  </p>
+<% end %>
+
 <hr>
 
 <% annotation_meta = @ticket.diff_metadata.is_a?(Hash) ? @ticket.diff_metadata : {} %>

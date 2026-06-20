@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import { storeTicketOnDevice } from "controllers/ticket_submission_helpers"
 
 export default class extends Controller {
   static shouldLoad() { return true }
@@ -130,7 +131,9 @@ export default class extends Controller {
           summary,
           reasoning,
           annotations: { version: 1, items: this._items },
-          preview_items: previewItems
+          preview_items: previewItems,
+          evidence_links: this._ticketEvidenceLinks(),
+          contact: this._ticketContact()
         })
       })
 
@@ -144,13 +147,13 @@ export default class extends Controller {
       this._setTicketStatus("Ticket created. Save the key below.")
       this._setTicketResult(data.ticket_id || (data.ticket && data.ticket.id) || "", data.ticket_key || "")
 
-      if (data.ticket_id && data.ticket_key) {
+      if (data.ticket_id && data.ticket_key && this._storeOnDeviceCheckbox && this._storeOnDeviceCheckbox.checked) {
         try {
-          window.localStorage.setItem(`ticket_key:${data.ticket_id}`, data.ticket_key)
-          if (this._storeOnDeviceCheckbox && this._storeOnDeviceCheckbox.checked) {
-            this._storeTicketOnDevice(data.ticket_id, data.ticket_key, title || "Annotation edit")
-          }
-        } catch (_) {}
+          storeTicketOnDevice(data.ticket_id, data.ticket_key, {
+            title: title || "Annotation edit",
+            source: "annotation",
+          })
+        } catch (_error) {}
       }
 
       this._dirty = false
@@ -903,7 +906,19 @@ export default class extends Controller {
             <div class="cv-annotation-preview-list" data-role="ticket-preview-list"></div>
           </div>
           <div class="cv-form-row">
-            <label class="cv-inline-check"><input type="checkbox" data-role="store-on-device" checked /> Store this ticket on this device</label>
+            <label>Evidence links</label>
+            <textarea rows="3" data-role="ticket-evidence-links" placeholder="One http(s) link per line"></textarea>
+          </div>
+          <details class="cv-form-row">
+            <summary>Optional contact details</summary>
+            <p class="cv-hint">Stored separately and encrypted. Deleted after 30 days or when the ticket closes.</p>
+            <label>Name <input type="text" data-role="ticket-contact-name" autocomplete="name" /></label>
+            <label>Email <input type="email" data-role="ticket-contact-email" autocomplete="email" /></label>
+            <label>Contact note <textarea rows="2" data-role="ticket-contact-notes"></textarea></label>
+          </details>
+          <div class="cv-form-row">
+            <label class="cv-inline-check"><input type="checkbox" data-role="store-on-device" /> Store this ticket on this device</label>
+            <div class="cv-hint">Unchecked by default.</div>
           </div>
           <div class="cv-form-actions">
             <button type="submit" class="corpus-btn corpus-btn-primary">Create ticket</button>
@@ -952,6 +967,10 @@ export default class extends Controller {
     this._downloadTicketKeyBtn = panel.querySelector('[data-role="download-ticket-key"]')
     this._openTicketLink = panel.querySelector('[data-role="open-ticket-link"]')
     this._storeOnDeviceCheckbox = panel.querySelector('[data-role="store-on-device"]')
+    this._ticketEvidenceLinksInput = panel.querySelector('[data-role="ticket-evidence-links"]')
+    this._ticketContactNameInput = panel.querySelector('[data-role="ticket-contact-name"]')
+    this._ticketContactEmailInput = panel.querySelector('[data-role="ticket-contact-email"]')
+    this._ticketContactNotesInput = panel.querySelector('[data-role="ticket-contact-notes"]')
 
     const textInputs = panel.querySelectorAll("textarea, input[type=\"text\"]")
     textInputs.forEach((el) => {
@@ -1202,26 +1221,18 @@ export default class extends Controller {
     }
   }
 
-  _storeTicketOnDevice(ticketId, ticketKey, title) {
-    const key = "cv_ticket_keys_v1"
-    let list = []
-    try {
-      list = JSON.parse(window.localStorage.getItem(key) || "[]")
-      if (!Array.isArray(list)) list = []
-    } catch (_) {
-      list = []
+  _ticketEvidenceLinks() {
+    const value = this._ticketEvidenceLinksInput ? this._ticketEvidenceLinksInput.value : ""
+    return value.split(/\r?\n/).map((link) => link.trim()).filter((link) => link.length > 0)
+  }
+
+  _ticketContact() {
+    const contact = {
+      name: this._ticketContactNameInput ? this._ticketContactNameInput.value.trim() : "",
+      email: this._ticketContactEmailInput ? this._ticketContactEmailInput.value.trim() : "",
+      notes: this._ticketContactNotesInput ? this._ticketContactNotesInput.value.trim() : "",
     }
-
-    list = list.filter((t) => t.ticket_id !== ticketId)
-    list.unshift({
-      ticket_id: ticketId,
-      ticket_key: ticketKey,
-      title: title || "",
-      source: "annotation",
-      saved_at: new Date().toISOString(),
-    })
-
-    window.localStorage.setItem(key, JSON.stringify(list.slice(0, 25)))
+    return Object.values(contact).some((value) => value.length > 0) ? contact : null
   }
 
   _csrfToken() {

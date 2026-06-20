@@ -11,6 +11,7 @@
       <th style="text-align:left; border-bottom: 1px solid #ccc; padding: 0.25rem;">Name</th>
       <th style="text-align:left; border-bottom: 1px solid #ccc; padding: 0.25rem;">Scope</th>
       <th style="text-align:left; border-bottom: 1px solid #ccc; padding: 0.25rem;">Revoked</th>
+      <th style="text-align:left; border-bottom: 1px solid #ccc; padding: 0.25rem;">Action</th>
     </tr>
   </thead>
   <tbody>
@@ -20,6 +21,14 @@
         <td style="padding: 0.25rem; border-bottom: 1px solid #eee;"><%= t.name %></td>
         <td style="padding: 0.25rem; border-bottom: 1px solid #eee;"><%= t.scope %></td>
         <td style="padding: 0.25rem; border-bottom: 1px solid #eee;"><%= t.revoked? ? "yes" : "no" %></td>
+        <td style="padding: 0.25rem; border-bottom: 1px solid #eee;">
+          <% unless t.revoked? %>
+            <%= button_to "Revoke",
+                          "/moderator_tokens/#{t.id}/revoke",
+                          method: :post,
+                          form: { data: { turbo: false }, onsubmit: "return confirm('Revoke this moderator token?')" } %>
+          <% end %>
+        </td>
       </tr>
     <% end %>
   </tbody>

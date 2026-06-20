@@ -1,11 +1,13 @@
 import { Controller } from "@hotwired/stimulus"
+import { appendSubmissionExtras, downloadTicketKey, maybeStoreTicketOnDevice } from "controllers/ticket_submission_helpers"
 
 export default class extends Controller {
   static targets = [
-    "panel", "status", "ticketId", "ticketKey", "copyKeyBtn", "storeOnDevice",
+    "panel", "status", "ticketId", "ticketKey", "copyKeyBtn", "downloadKeyBtn", "storeOnDevice",
     "parentPath", "workFolder", "title", "summary", "nation", "workTitle", "author", "textType",
     "sourceCitation", "url", "contextDetails", "pageMode", "singleFields", "multiFields",
-    "fileName", "pageTitle", "body", "uploads", "pagesList"
+    "fileName", "pageTitle", "body", "uploads", "pagesList",
+    "evidenceLinks", "contactName", "contactEmail", "contactNotes"
   ]
 
   static values = {
@@ -103,11 +105,7 @@ export default class extends Controller {
       form.append("body", this.hasBodyTarget ? this.bodyTarget.value : "")
     }
 
-    if (this.hasUploadsTarget) {
-      for (const file of Array.from(this.uploadsTarget.files || [])) {
-        form.append("evidence_files[]", file)
-      }
-    }
+    appendSubmissionExtras(form, this)
 
     try {
       const resp = await fetch("/api/tickets", {
@@ -129,14 +127,12 @@ export default class extends Controller {
       this._setStatus("Ticket created ✅ (save the key below)")
       this._setTicket(data.ticket_id || (data.ticket && data.ticket.id) || "", data.ticket_key || "")
 
-      if (data.ticket_id && data.ticket_key) {
-        try {
-          window.localStorage.setItem(`ticket_key:${data.ticket_id}`, data.ticket_key)
-          if (this.hasStoreOnDeviceTarget && this.storeOnDeviceTarget.checked) {
-            this._storeTicketOnDevice(data.ticket_id, data.ticket_key)
-          }
-        } catch (_e) {}
-      }
+      try {
+        maybeStoreTicketOnDevice(this, data.ticket_id, data.ticket_key, {
+          title: this.hasTitleTarget ? this.titleTarget.value : "",
+          source: "corpus_submission",
+        })
+      } catch (_error) {}
     } catch (e) {
       this._setStatus(`Error: ${e.message || e}`)
     }
@@ -156,18 +152,11 @@ export default class extends Controller {
     })
   }
 
-  _storeTicketOnDevice(ticketId, ticketKey) {
-    const key = "cv_ticket_keys_v1"
-    let list = []
-    try {
-      list = JSON.parse(window.localStorage.getItem(key) || "[]")
-      if (!Array.isArray(list)) list = []
-    } catch (_e) {
-      list = []
-    }
-    list = list.filter((t) => t.ticket_id !== ticketId)
-    list.unshift({ ticket_id: ticketId, ticket_key: ticketKey, saved_at: new Date().toISOString() })
-    window.localStorage.setItem(key, JSON.stringify(list.slice(0, 25)))
+  downloadKey(event) {
+    event.preventDefault()
+    const id = this.hasTicketIdTarget ? this.ticketIdTarget.textContent : ""
+    const key = this.hasTicketKeyTarget ? this.ticketKeyTarget.textContent : ""
+    downloadTicketKey(id, key)
   }
 
   _csrfToken() {
@@ -182,5 +171,6 @@ export default class extends Controller {
   _setTicket(id, key) {
     if (this.hasTicketIdTarget) this.ticketIdTarget.textContent = id || ""
     if (this.hasTicketKeyTarget) this.ticketKeyTarget.textContent = key || ""
+    if (this.hasDownloadKeyBtnTarget) this.downloadKeyBtnTarget.hidden = !(id && key)
   }
 }

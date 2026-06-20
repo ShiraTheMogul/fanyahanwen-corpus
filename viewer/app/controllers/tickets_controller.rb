@@ -1,5 +1,3 @@
-require "shellwords"
-
 class TicketsController < ApplicationController
   before_action :require_moderator!
   before_action :load_ticket, only: %i[show approve reject close apply_patch create_message]
@@ -11,10 +9,7 @@ class TicketsController < ApplicationController
     scope = EditTicket.all.order(created_at: :desc)
     scope = scope.where(status: status) if status
     tickets = scope.limit(200)
-
-    if tag.present?
-      tickets = tickets.select { |t| Array(t.tags).map(&:to_s).include?(tag) }
-    end
+    tickets = tickets.select { |ticket| Array(ticket.tags).map(&:to_s).include?(tag) } if tag.present?
 
     @tickets = tickets.first(200)
     @status = status
@@ -27,33 +22,19 @@ class TicketsController < ApplicationController
     @attachments = @ticket.evidence_files.attachments
     @diff_text = load_diff_text
     @corpus_viewer_path = corpus_viewer_target_path
+    @contact = active_contact
   end
 
-  # In this workflow, approval means the change is accepted and applied.
+  # Approval is deliberately one operation here: accept the proposal and apply it.
+  # The JSON moderator endpoint uses the same TicketApplier service.
   def approve
     require_scope!(%w[apply_patch admin])
-
     apply_ticket_changes!
 
-    EditTickets::AuditLogger.log!(
-      ticket: @ticket,
-      action: "ticket_approved",
-      actor_type: "moderator_token",
-      actor_id: @moderator.id,
-      actor_label: @moderator.name,
-      metadata: { scope: @moderator.scope }
-    )
-
-    EditTickets::AuditLogger.log!(
-      ticket: @ticket,
-      action: "ticket_applied",
-      actor_type: "moderator_token",
-      actor_id: @moderator.id,
-      actor_label: @moderator.name,
-      metadata: { scope: @moderator.scope }
-    )
-
+    log_moderator_action!("ticket_approved")
+    log_moderator_action!("ticket_applied")
     @ticket.update!(status: "applied")
+
     redirect_to ticket_path(@ticket.public_id), notice: "Approved and applied to local corpus file."
   rescue => e
     redirect_to ticket_path(@ticket.public_id), alert: "Approve/apply failed: #{e.message}"
@@ -63,47 +44,22 @@ class TicketsController < ApplicationController
     require_scope!(%w[apply_patch admin])
     reason = params[:reason].to_s
     @ticket.update!(status: "rejected")
-    EditTickets::AuditLogger.log!(
-      ticket: @ticket,
-      action: "ticket_rejected",
-      actor_type: "moderator_token",
-      actor_id: @moderator.id,
-      actor_label: @moderator.name,
-      metadata: { scope: @moderator.scope, reason: reason }
-    )
+    log_moderator_action!("ticket_rejected", reason: reason)
     redirect_to ticket_path(@ticket.public_id), notice: "Rejected."
   end
 
   def close
     require_scope!(%w[apply_patch admin])
     @ticket.close!
-    EditTickets::AuditLogger.log!(
-      ticket: @ticket,
-      action: "ticket_closed",
-      actor_type: "moderator_token",
-      actor_id: @moderator.id,
-      actor_label: @moderator.name,
-      metadata: { scope: @moderator.scope }
-    )
+    log_moderator_action!("ticket_closed")
     @ticket.ticket_contact&.destroy!
     redirect_to ticket_path(@ticket.public_id), notice: "Closed."
   end
 
-  # Keep a separate manual apply button too.
   def apply_patch
     require_scope!(%w[apply_patch admin])
-
     apply_ticket_changes!
-
-    EditTickets::AuditLogger.log!(
-      ticket: @ticket,
-      action: "ticket_applied",
-      actor_type: "moderator_token",
-      actor_id: @moderator.id,
-      actor_label: @moderator.name,
-      metadata: { scope: @moderator.scope }
-    )
-
+    log_moderator_action!("ticket_applied")
     @ticket.update!(status: "applied")
     redirect_to ticket_path(@ticket.public_id), notice: "Applied to local corpus file."
   rescue => e
@@ -116,22 +72,14 @@ class TicketsController < ApplicationController
     body = params[:body].to_s
     raise ArgumentError, "message is empty" if body.strip.empty?
 
-    msg = @ticket.ticket_messages.create!(
+    message = @ticket.ticket_messages.create!(
       body: body,
       actor_type: "moderator_token",
       actor_label: @moderator.name.presence || "moderator",
       created_at: Time.current
     )
 
-    EditTickets::AuditLogger.log!(
-      ticket: @ticket,
-      action: "message_posted",
-      actor_type: "moderator_token",
-      actor_id: @moderator.id,
-      actor_label: @moderator.name,
-      metadata: { message_id: msg.id }
-    )
-
+    log_moderator_action!("message_posted", message_id: message.id)
     redirect_to ticket_path(@ticket.public_id), notice: "Message posted."
   rescue ArgumentError => e
     redirect_to ticket_path(@ticket.public_id), alert: e.message
@@ -174,191 +122,53 @@ class TicketsController < ApplicationController
     metadata = @ticket.diff_metadata.is_a?(Hash) ? @ticket.diff_metadata : {}
     return metadata["target_path"].presence if metadata["target_path"].present?
 
-    ref = @ticket.target_ref.to_s
+    reference = @ticket.target_ref.to_s
     prefix = "#{@ticket.source}/"
-    return nil unless ref.start_with?(prefix)
+    return nil unless reference.start_with?(prefix)
 
-    path = ref.delete_prefix(prefix)
-    path = path.sub(/#.*\z/, "")
-    path.presence
+    reference.delete_prefix(prefix).sub(/#.*\z/, "").presence
   end
 
   def load_diff_text
-    diff_attachment = find_diff_attachment
-    return nil unless diff_attachment
-
-    raw = diff_attachment.blob.download
-    raw.to_s.dup.force_encoding("UTF-8").scrub
-  end
-
-  def find_diff_attachment
-    @ticket.evidence_files.attachments.find do |a|
-      filename = a.blob.filename.to_s
-      content_type = a.blob.content_type.to_s
+    attachment = @ticket.evidence_files.attachments.find do |candidate|
+      filename = candidate.blob.filename.to_s
+      content_type = candidate.blob.content_type.to_s
       filename.end_with?(".diff") || content_type.include?("diff")
     end
+    return nil unless attachment
+
+    attachment.blob.download.to_s.dup.force_encoding("UTF-8").scrub
   end
 
-  def find_proposed_text_attachment
-    @ticket.evidence_files.attachments.find do |a|
-      filename = a.blob.filename.to_s
-      filename.end_with?(".proposed.txt") || filename.include?(".proposed")
+  def active_contact
+    contact = @ticket.ticket_contact
+    return nil if contact.nil?
+
+    if contact.expired?
+      contact.destroy!
+      nil
+    else
+      contact
     end
   end
 
   def apply_ticket_changes!
-    if annotation_ticket?
-      apply_annotation_ticket!
-      return
-    end
-
-    proposed = find_proposed_text_attachment
-    if proposed
-      write_proposed_text!(proposed.blob.download)
-      return
-    end
-
-    if preserve_front_matter_for_ticket?
-      raise "This ticket is missing its proposed text attachment, so applying the body-only diff would clobber metadata. Re-create the ticket after updating the server fix."
-    end
-
-    diff_attachment = find_diff_attachment
-    raise "No diff attachment found." if diff_attachment.nil?
-    apply_unified_diff!(diff_attachment.blob.download)
+    EditTickets::TicketApplier.new(
+      ticket: @ticket,
+      repo_root: repo_root,
+      corpus_root: corpus_root,
+      annotation_items: params[:annotation_items]
+    ).call
   end
 
-
-  def annotation_ticket?
-    @ticket.diff_metadata.is_a?(Hash) && @ticket.diff_metadata["kind"] == "annotations_edit"
-  end
-
-  def apply_annotation_ticket!
-    target_path = @ticket.diff_metadata["target_path"].to_s
-    raise "Missing target_path for annotation ticket" if target_path.blank?
-
-    parsed = annotation_override_payload
-
-    if parsed.nil?
-      proposed = find_proposed_text_attachment
-      raise "No proposed annotations attachment found." if proposed.nil?
-      parsed = JSON.parse(proposed.blob.download.to_s)
-    end
-
-    store = CorpusAnnotationsStore.new(root: corpus_root, rel_text_path: target_path)
-    store.write(parsed)
-  rescue JSON::ParserError => e
-    raise "Invalid proposed annotations JSON: #{e.message}"
-  end
-
-
-  def annotation_override_payload
-    raw_items = params[:annotation_items]
-    return nil if raw_items.blank?
-
-    items = Array(raw_items).map do |item|
-      start_idx = item[:start].to_i
-      end_idx = item[:end].to_i
-      next if end_idx <= start_idx
-
-      kind = item[:kind].to_s
-      next if kind.blank?
-
-      {
-        "start" => start_idx,
-        "end" => end_idx,
-        "kind" => kind,
-        "note" => item[:note].to_s.presence
-      }.compact
-    end.compact
-
-    { "version" => 1, "items" => items }
-  end
-
-  def write_proposed_text!(raw_text)
-    rel = extract_corpus_relative_path!
-    abs = safe_join_under_root(corpus_root, rel)
-    FileUtils.mkdir_p(File.dirname(abs))
-
-    proposed_body = normalize_ticket_text(raw_text)
-
-    if preserve_front_matter_for_ticket?
-      existing_text = File.exist?(abs) ? File.binread(abs).force_encoding("UTF-8").scrub : ""
-      front_matter, _existing_body = split_corpus_front_matter(existing_text)
-
-      if front_matter.present?
-        normalized_front_matter = front_matter.rstrip
-        normalized_body = proposed_body.sub(/\A\n+/, "")
-        final_text = normalized_front_matter + "\n\n" + normalized_body
-      else
-        final_text = proposed_body
-      end
-    else
-      final_text = proposed_body
-    end
-
-    File.open(abs, "wb:utf-8") { |f| f.write(final_text) }
-  end
-
-  def preserve_front_matter_for_ticket?
-    @ticket.diff_metadata.is_a?(Hash) && @ticket.diff_metadata["preserve_front_matter"] == true
-  end
-
-  def split_corpus_front_matter(raw)
-    lines = raw.to_s.lines
-    meta = []
-    i = 0
-
-    while i < lines.length && lines[i].start_with?("#")
-      meta << lines[i]
-      i += 1
-    end
-
-    [meta.join, lines[i..].join]
-  end
-
-  def normalize_ticket_text(text)
-    value = text.to_s.dup.force_encoding("UTF-8").scrub
-    value.end_with?("\n") ? value : (value + "\n")
-  end
-
-  def extract_corpus_relative_path!
-    files = Array(@ticket.diff_metadata && @ticket.diff_metadata["files"]).map(&:to_s)
-    path = files.first.to_s
-    raise "Ticket has no diff_metadata files list" if path.blank?
-    raise "Diff touches disallowed paths" unless path.start_with?("corpus/")
-
-    path.delete_prefix("corpus/")
-  end
-
-  def safe_join_under_root(root_dir, relative_path)
-    root = Pathname.new(root_dir).expand_path
-    rel = relative_path.to_s.sub(%r{\A/+}, "")
-    abs = root.join(rel).cleanpath
-    raise SecurityError, "path escapes root" unless abs.to_s.start_with?(root.to_s + File::SEPARATOR) || abs == root
-    abs.to_s
-  end
-
-  def apply_unified_diff!(diff_text)
-    allowed_roots = %w[corpus/ resources/ data/]
-    files = Array(@ticket.diff_metadata && @ticket.diff_metadata["files"]).map(&:to_s)
-    raise "Ticket has no diff_metadata files list" if files.empty?
-    unless files.all? { |f| allowed_roots.any? { |root| f.start_with?(root) } }
-      raise "Diff touches disallowed paths"
-    end
-
-    Tempfile.create(["ticket", ".diff"]) do |tf|
-      tf.binmode
-      tf.write(diff_text)
-      tf.flush
-
-      cmd = ["git", "apply", "--whitespace=nowarn", "-p1", tf.path]
-      out = nil
-      status = nil
-      Dir.chdir(repo_root) do
-        out = `#{cmd.map { |c| Shellwords.escape(c) }.join(" ")} 2>&1`
-        status = $?.exitstatus
-      end
-      raise "git apply failed (#{status}): #{out}" unless status == 0
-    end
+  def log_moderator_action!(action, metadata = {})
+    EditTickets::AuditLogger.log!(
+      ticket: @ticket,
+      action: action,
+      actor_type: "moderator_token",
+      actor_id: @moderator.id,
+      actor_label: @moderator.name,
+      metadata: { scope: @moderator.scope }.merge(metadata)
+    )
   end
 end

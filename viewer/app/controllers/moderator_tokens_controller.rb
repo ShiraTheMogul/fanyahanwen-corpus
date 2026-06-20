@@ -30,6 +30,12 @@ class ModeratorTokensController < ApplicationController
     render :created
   end
 
+  def revoke
+    token = TicketModeratorToken.find(params[:id])
+    token.update!(revoked_at: Time.current)
+    redirect_to moderator_tokens_path, notice: "Moderator token revoked."
+  end
+
   private
   def require_admin!
     token = session[:moderator_token].to_s

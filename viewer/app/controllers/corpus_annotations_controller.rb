@@ -51,6 +51,7 @@ class CorpusAnnotationsController < ApplicationController
     digest = EditTickets::KeyManager.digest(ticket_key, salt)
 
     source = params[:source].to_s.presence || "corpus_viewer"
+    links = EditTickets::SubmissionExtras.evidence_links(params[:evidence_links])
     ticket = EditTicket.new(
       public_id: SecureRandom.hex(12),
       title: params[:title].to_s.presence || "Annotation edit",
@@ -59,7 +60,7 @@ class CorpusAnnotationsController < ApplicationController
       source: source,
       target_ref: "#{source}/#{target_path}#annotations",
       status: "open",
-      evidence_links: [],
+      evidence_links: links,
       key_salt: salt,
       key_digest: digest,
       key_generated_at: Time.current,
@@ -71,7 +72,7 @@ class CorpusAnnotationsController < ApplicationController
       target_ref: ticket.target_ref,
       has_diff: true,
       has_uploads: true,
-      link_count: 0
+      link_count: links.size
     )
 
     ticket.transaction do
@@ -89,6 +90,7 @@ class CorpusAnnotationsController < ApplicationController
           content_type: "text/plain"
         }
       ])
+      EditTickets::SubmissionExtras.create_contact!(ticket, params[:contact])
 
       EditTickets::AuditLogger.log!(
         ticket: ticket,
@@ -112,11 +114,12 @@ class CorpusAnnotationsController < ApplicationController
         tags: ticket.tags
       },
       ticket_key: ticket_key,
-      warning: "This key is shown once. Save it now (copy it, download a txt, or store it on this device in the UI)."
+      warning: "This key is shown once. Save it now (copy it, download a txt, or explicitly store it on this device)."
     }, status: :created
   rescue ActionController::ParameterMissing
     render json: { ok: false, error: "Missing annotations payload" }, status: :unprocessable_entity
-  rescue EditTickets::UnifiedDiffValidator::ValidationError => e
+  rescue EditTickets::SubmissionExtras::ValidationError,
+         EditTickets::UnifiedDiffValidator::ValidationError => e
     render json: { ok: false, error: e.message }, status: :unprocessable_entity
   rescue ActiveRecord::RecordInvalid => e
     render json: { ok: false, error: e.record.errors.full_messages.join(", ") }, status: :unprocessable_entity

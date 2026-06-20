@@ -139,7 +139,6 @@ export default class extends Controller {
 
       if (ticketId && ticketKey) {
         try {
-          window.localStorage.setItem(`ticket_key:${ticketId}`, ticketKey);
           if (this.hasStoreOnDeviceTarget && this.storeOnDeviceTarget.checked) {
             this._storeTicketOnDevice(ticketId, ticketKey);
           }

@@ -17,9 +17,11 @@ module Api
       salt = EditTickets::KeyManager.generate_salt
       digest = EditTickets::KeyManager.digest(ticket_key, salt)
 
-      links = params[:evidence_links]
-      links = JSON.parse(links) if links.is_a?(String)
-      links = Array(links).map(&:to_s).map(&:strip).reject(&:blank?)
+      links = EditTickets::SubmissionExtras.evidence_links(params[:evidence_links])
+      diff_file = params[:diff_file]
+      uploads = EditTickets::SubmissionExtras.validate_uploads!(
+        [diff_file, *Array(params[:evidence_files])].compact
+      )
 
       ticket = EditTicket.new(
         public_id: SecureRandom.hex(12),
@@ -34,82 +36,47 @@ module Api
         key_generated_at: Time.current
       )
 
-      # Optional diff upload (unified diff). We store the file as evidence, but validate
-      # and record metadata so reviewers can see what it touches.
-      diff_file = params[:diff_file]
       if diff_file.present?
-        EditTickets::EvidenceValidator.validate!(diff_file)
-
         diff_text = diff_file.tempfile.read
         diff_file.tempfile.rewind
-
-        metadata = EditTickets::UnifiedDiffValidator.validate!(
+        ticket.diff_metadata = EditTickets::UnifiedDiffValidator.validate!(
           diff_text,
           allowed_roots: ["corpus/", "resources/", "data/"]
         )
-        ticket.diff_metadata = metadata
-        ticket.evidence_files.attach(diff_file)
-      end
-
-      # Optional evidence uploads.
-      uploads = Array(params[:evidence_files])
-      uploads.each do |uploaded|
-        EditTickets::EvidenceValidator.validate!(uploaded)
-        ticket.evidence_files.attach(uploaded)
       end
 
       ticket.tags = EditTickets::Tagger.tags_for(
         source: ticket.source,
         target_ref: ticket.target_ref,
         has_diff: ticket.diff_metadata.present? && ticket.diff_metadata["file_count"].to_i.positive?,
-        has_uploads: ticket.evidence_files.attached?,
+        has_uploads: uploads.any?,
         link_count: ticket.evidence_links.size
       )
 
-      ticket.save!
-
-      # Optional contact info (encrypted, expires after 30 days).
-      if params[:contact].present?
-        contact_hash = params[:contact]
-        contact_hash = JSON.parse(contact_hash) if contact_hash.is_a?(String)
-        contact_hash ||= {}
-
-        if contact_hash["email"].present? || contact_hash["name"].present? || contact_hash["notes"].present?
-          TicketContact.create!(
-            edit_ticket: ticket,
-            name: contact_hash["name"].to_s,
-            email: contact_hash["email"].to_s,
-            notes: contact_hash["notes"].to_s,
-            expires_at: 30.days.from_now
-          )
-        end
+      ticket.transaction do
+        ticket.save!
+        EditTickets::SubmissionExtras.attach_uploads!(ticket, uploads)
+        EditTickets::SubmissionExtras.create_contact!(ticket, params[:contact])
+        EditTickets::AuditLogger.log!(
+          ticket: ticket,
+          action: "ticket_created",
+          actor_type: "submitter",
+          metadata: { source: ticket.source, target_ref: ticket.target_ref, tags: ticket.tags }
+        )
       end
-
-      EditTickets::AuditLogger.log!(
-        ticket: ticket,
-        action: "ticket_created",
-        actor_type: "submitter",
-        metadata: { source: ticket.source, target_ref: ticket.target_ref, tags: ticket.tags }
-      )
 
       render json: {
         ok: true,
-        # Back-compat: some client UIs expect a top-level `ticket_id`.
         ticket_id: ticket.public_id,
-        ticket: {
-          id: ticket.public_id,
-          status: ticket.status,
-          tags: ticket.tags
-        },
+        ticket: { id: ticket.public_id, status: ticket.status, tags: ticket.tags },
         ticket_key: ticket_key,
-        warning: "This key is shown once. Save it now (copy it, download a txt, or store it on this device in the UI)."
+        warning: "This key is shown once. Save it now (copy it, download a txt, or explicitly store it on this device)."
       }, status: 201
-    rescue EditTickets::EvidenceValidator::ValidationError, EditTickets::UnifiedDiffValidator::ValidationError => e
+    rescue EditTickets::SubmissionExtras::ValidationError,
+           EditTickets::UnifiedDiffValidator::ValidationError => e
       render json: { ok: false, error: e.message }, status: 422
     rescue ActiveRecord::RecordInvalid => e
       render json: { ok: false, error: e.record.errors.full_messages.join(", ") }, status: 422
-    rescue JSON::ParserError
-      render json: { ok: false, error: "invalid JSON in evidence_links/contact" }, status: 422
     end
 
     # POST /api/tickets/text_edit
@@ -147,6 +114,8 @@ module Api
         diff_text,
         allowed_roots: ["corpus/"]
       )
+      links = EditTickets::SubmissionExtras.evidence_links(params[:evidence_links])
+      uploads = EditTickets::SubmissionExtras.validate_uploads!(params[:evidence_files])
 
       ticket_key = EditTickets::KeyManager.generate_plaintext
       salt = EditTickets::KeyManager.generate_salt
@@ -160,7 +129,7 @@ module Api
         source: source,
         target_ref: "#{source}/#{target_path}#1",
         status: "open",
-        evidence_links: [],
+        evidence_links: links,
         key_salt: salt,
         key_digest: digest,
         key_generated_at: Time.current,
@@ -176,7 +145,7 @@ module Api
         target_ref: ticket.target_ref,
         has_diff: true,
         has_uploads: true,
-        link_count: 0
+        link_count: links.size
       )
 
       ticket.transaction do
@@ -196,6 +165,8 @@ module Api
             content_type: "text/plain"
           }
         ])
+        EditTickets::SubmissionExtras.attach_uploads!(ticket, uploads)
+        EditTickets::SubmissionExtras.create_contact!(ticket, params[:contact])
         EditTickets::AuditLogger.log!(
           ticket: ticket,
           action: "ticket_created",
@@ -209,9 +180,10 @@ module Api
         ticket_id: ticket.public_id,
         ticket: ticket_json(ticket),
         ticket_key: ticket_key,
-        warning: "This key is shown once. Save it now (copy it, download a txt, or store it on this device in the UI)."
+        warning: "This key is shown once. Save it now (copy it, download a txt, or explicitly store it on this device)."
       }, status: 201
-    rescue EditTickets::UnifiedDiffValidator::ValidationError => e
+    rescue EditTickets::SubmissionExtras::ValidationError,
+           EditTickets::UnifiedDiffValidator::ValidationError => e
       render json: { ok: false, error: e.message }, status: 422
     rescue ActiveRecord::RecordInvalid => e
       render json: { ok: false, error: e.record.errors.full_messages.join(", ") }, status: 422
@@ -332,16 +304,27 @@ module Api
 
     # POST /api/tickets/:public_id/approve
     def approve
-      @ticket.update!(status: "approved")
-      EditTickets::AuditLogger.log!(
+      EditTickets::TicketApplier.new(
         ticket: @ticket,
-        action: "ticket_approved",
-        actor_type: "moderator_token",
-        actor_id: @moderator.id,
-        actor_label: @moderator.name,
-        metadata: { scope: @moderator.scope }
-      )
-      render json: { ok: true }
+        repo_root: ticket_repo_root,
+        corpus_root: ticket_corpus_root
+      ).call
+
+      %w[ticket_approved ticket_applied].each do |action|
+        EditTickets::AuditLogger.log!(
+          ticket: @ticket,
+          action: action,
+          actor_type: "moderator_token",
+          actor_id: @moderator.id,
+          actor_label: @moderator.name,
+          metadata: { scope: @moderator.scope }
+        )
+      end
+
+      @ticket.update!(status: "applied")
+      render json: { ok: true, status: @ticket.status }
+    rescue => e
+      render json: { ok: false, error: e.message }, status: 422
     end
 
     # POST /api/tickets/:public_id/reject
@@ -427,6 +410,8 @@ module Api
       context_details = params[:context_details].to_s
       title = params[:title].to_s.presence || "Corpus text submission"
       summary = params[:summary].to_s
+      links = EditTickets::SubmissionExtras.evidence_links(params[:evidence_links])
+      uploads = EditTickets::SubmissionExtras.validate_uploads!(params[:evidence_files])
 
       ticket_files = []
       preview_rows = []
@@ -517,7 +502,7 @@ module Api
         source: source,
         target_ref: "#{source}/#{target_dir_rel}",
         status: "open",
-        evidence_links: [],
+        evidence_links: links,
         key_salt: salt,
         key_digest: digest,
         key_generated_at: Time.current,
@@ -539,14 +524,12 @@ module Api
         )
       )
 
-      uploads = Array(params[:evidence_files])
-
       ticket.tags = EditTickets::Tagger.tags_for(
         source: ticket.source,
         target_ref: ticket.target_ref,
         has_diff: true,
         has_uploads: true,
-        link_count: 0
+        link_count: links.size
       )
 
       manifest_lines = [
@@ -580,10 +563,8 @@ module Api
           filename: "corpus_submission_#{work_folder}.manifest.txt",
           content_type: "text/plain"
         })
-        uploads.each do |uploaded|
-          EditTickets::EvidenceValidator.validate!(uploaded)
-          ticket.evidence_files.attach(uploaded)
-        end
+        EditTickets::SubmissionExtras.attach_uploads!(ticket, uploads)
+        EditTickets::SubmissionExtras.create_contact!(ticket, params[:contact])
         EditTickets::AuditLogger.log!(
           ticket: ticket,
           action: "ticket_created",
@@ -597,9 +578,10 @@ module Api
         ticket_id: ticket.public_id,
         ticket: ticket_json(ticket),
         ticket_key: ticket_key,
-        warning: "This key is shown once. Save it now (copy it, download a txt, or store it on this device in the UI)."
+        warning: "This key is shown once. Save it now (copy it, download a txt, or explicitly store it on this device)."
       }, status: 201
-    rescue EditTickets::UnifiedDiffValidator::ValidationError, EditTickets::EvidenceValidator::ValidationError => e
+    rescue EditTickets::SubmissionExtras::ValidationError,
+           EditTickets::UnifiedDiffValidator::ValidationError => e
       render json: { ok: false, error: e.message }, status: 422
     rescue ActiveRecord::RecordInvalid => e
       render json: { ok: false, error: e.record.errors.full_messages.join(", ") }, status: 422
@@ -619,6 +601,8 @@ module Api
       tradition = permitted_text_type(params[:tradition])
       body_text = params[:body_text].to_s
       generation_mode = params[:generation_mode].to_s.presence || "manual"
+      links = EditTickets::SubmissionExtras.evidence_links(params[:evidence_links])
+      uploads = EditTickets::SubmissionExtras.validate_uploads!(params[:evidence_files])
 
       return render(json: { ok: false, error: "base_path is required" }, status: 422) if base_path.blank?
       return render(json: { ok: false, error: "tradition must be kanbun, hanmun, or hanvan" }, status: 422) unless tradition.present? && tradition != "source"
@@ -658,7 +642,7 @@ module Api
         source: source,
         target_ref: "#{source}/#{target_rel}",
         status: "open",
-        evidence_links: [],
+        evidence_links: links,
         key_salt: salt,
         key_digest: digest,
         key_generated_at: Time.current,
@@ -677,7 +661,7 @@ module Api
         target_ref: ticket.target_ref,
         has_diff: true,
         has_uploads: true,
-        link_count: 0
+        link_count: links.size
       )
 
       ticket.transaction do
@@ -694,6 +678,8 @@ module Api
             content_type: "text/plain"
           }
         ])
+        EditTickets::SubmissionExtras.attach_uploads!(ticket, uploads)
+        EditTickets::SubmissionExtras.create_contact!(ticket, params[:contact])
         EditTickets::AuditLogger.log!(
           ticket: ticket,
           action: "ticket_created",
@@ -707,9 +693,10 @@ module Api
         ticket_id: ticket.public_id,
         ticket: ticket_json(ticket),
         ticket_key: ticket_key,
-        warning: "This key is shown once. Save it now (copy it, download a txt, or store it on this device in the UI)."
+        warning: "This key is shown once. Save it now (copy it, download a txt, or explicitly store it on this device)."
       }, status: 201
-    rescue EditTickets::UnifiedDiffValidator::ValidationError => e
+    rescue EditTickets::SubmissionExtras::ValidationError,
+           EditTickets::UnifiedDiffValidator::ValidationError => e
       render json: { ok: false, error: e.message }, status: 422
     rescue ActiveRecord::RecordInvalid => e
       render json: { ok: false, error: e.record.errors.full_messages.join(", ") }, status: 422
@@ -719,6 +706,17 @@ module Api
       Rails.logger.error("[create_derived_tradition_submission] #{e.class}: #{e.message}")
       Rails.logger.error(e.backtrace.join("\n"))
       render json: { ok: false, error: "internal error" }, status: 500
+    end
+
+    def ticket_repo_root
+      Rails.root.join("..").expand_path
+    end
+
+    def ticket_corpus_root
+      configured = Rails.configuration.x.corpus_root
+      return Pathname.new(configured).expand_path if configured.present?
+
+      ticket_repo_root.join("corpus")
     end
 
     def split_corpus_front_matter(raw)

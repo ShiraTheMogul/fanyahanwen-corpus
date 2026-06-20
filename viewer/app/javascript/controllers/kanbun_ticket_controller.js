@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import { appendSubmissionExtras, maybeStoreTicketOnDevice } from "controllers/ticket_submission_helpers"
 
 const TRADITIONS = ["kanbun", "hanmun", "hanvan"]
 
@@ -6,6 +7,7 @@ export default class extends Controller {
   static targets = [
     "panel", "status", "ticketId", "ticketKey", "copyKeyBtn", "downloadKeyBtn", "openTicketLink",
     "storeOnDevice", "tradition", "summary", "reasoning", "derived", "sourceSeed",
+    "evidenceLinks", "contactName", "contactEmail", "contactNotes", "uploads",
     "kanbunSeed", "hanmunSeed", "hanvanSeed", "aiNotice"
   ]
 
@@ -84,17 +86,17 @@ export default class extends Controller {
       hanvan: "Create 漢文: Hanvan",
     }
 
-    const payload = {
-      kind: "derived_tradition_submission",
-      source: this.sourceValue || "corpus_viewer",
-      base_path: this.targetPathValue || "",
-      tradition,
-      title: titleMap[tradition] || "Create 漢文",
-      summary: this.hasSummaryTarget ? this.summaryTarget.value : "",
-      reasoning: this.hasReasoningTarget ? this.reasoningTarget.value : "",
-      body_text: bodyText,
-      generation_mode: "manual",
-    }
+    const form = new FormData()
+    form.append("kind", "derived_tradition_submission")
+    form.append("source", this.sourceValue || "corpus_viewer")
+    form.append("base_path", this.targetPathValue || "")
+    form.append("tradition", tradition)
+    form.append("title", titleMap[tradition] || "Create 漢文")
+    form.append("summary", this.hasSummaryTarget ? this.summaryTarget.value : "")
+    form.append("reasoning", this.hasReasoningTarget ? this.reasoningTarget.value : "")
+    form.append("body_text", bodyText)
+    form.append("generation_mode", "manual")
+    appendSubmissionExtras(form, this)
 
     this._setStatus("Submitting ticket…")
     this._setTicket("", "")
@@ -103,11 +105,10 @@ export default class extends Controller {
       const resp = await fetch("/api/tickets", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           "Accept": "application/json",
           "X-CSRF-Token": this._csrfToken(),
         },
-        body: JSON.stringify(payload),
+        body: form,
       })
 
       const data = await resp.json().catch(() => null)
@@ -122,14 +123,12 @@ export default class extends Controller {
       this._setStatus("Ticket created ✅ (save the key below)")
       this._setTicket(ticketId, ticketKey)
 
-      if (ticketId && ticketKey) {
-        try {
-          window.localStorage.setItem(`ticket_key:${ticketId}`, ticketKey)
-          if (this.hasStoreOnDeviceTarget && this.storeOnDeviceTarget.checked) {
-            this._storeTicketOnDevice(ticketId, ticketKey)
-          }
-        } catch (_e) {}
-      }
+      try {
+        maybeStoreTicketOnDevice(this, ticketId, ticketKey, {
+          title: titleMap[tradition] || "Create 漢文",
+          source: tradition,
+        })
+      } catch (_error) {}
     } catch (e) {
       this._setStatus(`Error: ${e.message || e}`)
     }
@@ -192,21 +191,6 @@ export default class extends Controller {
   _syncAiNotice() {
     if (!this.hasAiNoticeTarget || !this.hasTraditionTarget) return
     this.aiNoticeTarget.hidden = this.traditionTarget.value === "kanbun"
-  }
-
-  _storeTicketOnDevice(ticketId, ticketKey) {
-    const key = "cv_ticket_keys_v1"
-    let list = []
-    try {
-      list = JSON.parse(window.localStorage.getItem(key) || "[]")
-      if (!Array.isArray(list)) list = []
-    } catch (_e) {
-      list = []
-    }
-
-    list = list.filter((t) => t.ticket_id !== ticketId)
-    list.unshift({ ticket_id: ticketId, ticket_key: ticketKey, saved_at: new Date().toISOString() })
-    window.localStorage.setItem(key, JSON.stringify(list.slice(0, 25)))
   }
 
   _csrfToken() {

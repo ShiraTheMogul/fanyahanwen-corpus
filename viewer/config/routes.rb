@@ -78,7 +78,9 @@ Rails.application.routes.draw do
 		end
 	end
 
-	resources :moderator_tokens, only: %i[index new create]
+  resources :moderator_tokens, only: %i[index new create] do
+    post :revoke, on: :member
+  end
 
 	namespace :api do
 	  get  "/tickets", to: "edit_tickets#index"

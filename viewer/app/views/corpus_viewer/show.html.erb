@@ -87,7 +87,7 @@
           <div class="cv-form-row">
             <label>Reference files</label>
             <input type="file" class="cv-input" multiple data-corpus-submission-ticket-target="uploads" />
-            <div class="cv-hint">Optional: scans, PDFs, screenshots, reference notes, and similar evidence.</div>
+            <div class="cv-hint">Optional: up to 10 files and 20 MB in total. HTML, XHTML, and SVG are rejected.</div>
           </div>
           <div class="cv-form-row">
             <label>Page setup</label>
@@ -123,9 +123,9 @@
             <p class="cv-hint">Multiple pages create numbered files like <code>work_folder__juan_0001.txt</code> inside the work folder.</p>
           </div>
 
-          <div class="cv-form-row">
-            <label><input type="checkbox" checked data-corpus-submission-ticket-target="storeOnDevice" /> Save ticket key on this device</label>
-          </div>
+          <%= render "corpus_viewer/ticket_optional_fields",
+                     stimulus_controller: "corpus-submission-ticket",
+                     include_uploads: false %>
 
           <div class="cv-form-actions">
             <button type="submit" class="corpus-btn corpus-btn-primary">Submit ticket</button>
@@ -141,6 +141,7 @@
               <strong>Ticket key (save this):</strong>
               <code data-corpus-submission-ticket-target="ticketKey"></code>
               <button type="button" class="corpus-btn" data-corpus-submission-ticket-target="copyKeyBtn" data-action="corpus-submission-ticket#copyKey">Copy</button>
+              <button type="button" class="corpus-btn" data-corpus-submission-ticket-target="downloadKeyBtn" data-action="corpus-submission-ticket#downloadKey" hidden>Download .txt</button>
             </div>
           </div>
         </div>
@@ -324,9 +325,9 @@
                 <textarea class="hidden" data-kanbun-ticket-target="hanmunSeed"><%= @derived_bodies['hanmun'].to_s %></textarea>
                 <textarea class="hidden" data-kanbun-ticket-target="hanvanSeed"><%= @derived_bodies['hanvan'].to_s %></textarea>
 
-                <div class="cv-form-row">
-                  <label><input type="checkbox" checked data-kanbun-ticket-target="storeOnDevice" /> Save ticket key on this device</label>
-                </div>
+                <%= render "corpus_viewer/ticket_optional_fields",
+                           stimulus_controller: "kanbun-ticket",
+                           include_uploads: true %>
 
                 <div class="cv-form-actions">
                   <button type="submit" class="corpus-btn corpus-btn-primary">Submit ticket</button>
@@ -404,6 +405,10 @@
 
               <textarea class="hidden" data-text-edit-ticket-target="original"><%= @raw_body %></textarea>
 
+              <%= render "corpus_viewer/ticket_optional_fields",
+                         stimulus_controller: "text-edit-ticket",
+                         include_uploads: true %>
+
               <div class="cv-form-actions">
                 <button type="submit" class="corpus-btn corpus-btn-primary">Submit ticket</button>
                 <button type="button" class="corpus-btn" data-action="text-edit-ticket#toggle">Close</button>
@@ -418,6 +423,7 @@
                   <strong>Ticket key (save this):</strong>
                   <code data-text-edit-ticket-target="ticketKey"></code>
                   <button type="button" class="corpus-btn" data-text-edit-ticket-target="copyKeyBtn" data-action="text-edit-ticket#copyKey">Copy</button>
+                  <button type="button" class="corpus-btn" data-text-edit-ticket-target="downloadKeyBtn" data-action="text-edit-ticket#downloadKey" hidden>Download .txt</button>
                 </div>
               </div>
             </div>

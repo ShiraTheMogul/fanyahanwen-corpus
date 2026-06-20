@@ -11,12 +11,14 @@ export default class extends Controller {
     "evidence",
     "rawJsonLink",
     "savedTickets",
+    "saveCurrentBtn",
   ]
 
   connect() {
     this.currentTicketId = null
     this.currentTicketKey = null
-    this._migrateLegacyKeys()
+
+    this._removeLegacyTicketKeys()
 
     const params = new URLSearchParams(window.location.search)
     const id = (params.get("id") || "").trim()
@@ -79,9 +81,9 @@ export default class extends Controller {
     this.currentTicketKey = key
 
     this._renderTicket(data.ticket || {})
-    this._rememberResolvedTicket(this.currentTicketId, key)
     this._setStatus("Ticket loaded.")
     this.ticketPanelTarget.hidden = false
+    if (this.hasSaveCurrentBtnTarget) this.saveCurrentBtnTarget.hidden = false
 
     const url = new URL(window.location.href)
     url.searchParams.delete("id")
@@ -130,9 +132,9 @@ export default class extends Controller {
     this.currentTicketKey = key
 
     this._renderTicket(data.ticket || {})
-    this._rememberResolvedTicket(this.currentTicketId, key)
     this._setStatus("Ticket loaded.")
     this.ticketPanelTarget.hidden = false
+    if (this.hasSaveCurrentBtnTarget) this.saveCurrentBtnTarget.hidden = false
 
     if (this.hasRawJsonLinkTarget) {
       this.rawJsonLinkTarget.hidden = false
@@ -180,6 +182,16 @@ export default class extends Controller {
     this.messageBodyTarget.value = ""
     this._setStatus("Message sent.")
     await this.loadTicket(this.currentTicketId, this.currentTicketKey)
+  }
+
+  saveCurrentTicket() {
+    if (!this.currentTicketKey) {
+      this._setStatus("Open a ticket first.")
+      return
+    }
+
+    this._rememberResolvedTicket(this.currentTicketId, this.currentTicketKey)
+    this._setStatus("Ticket key saved on this device.")
   }
 
   refreshSavedTickets() {
@@ -260,6 +272,19 @@ export default class extends Controller {
     this.refreshSavedTickets()
   }
 
+  _removeLegacyTicketKeys() {
+    const legacyKeys = []
+
+    for (let index = 0; index < window.localStorage.length; index += 1) {
+      const key = window.localStorage.key(index)
+      if (key && key.startsWith("ticket_key:")) legacyKeys.push(key)
+    }
+
+    for (const key of legacyKeys) {
+      window.localStorage.removeItem(key)
+    }
+  }
+
   _renderTicket(ticket) {
     const meta = ticket.diff_metadata || {}
     const summary = {
@@ -269,6 +294,7 @@ export default class extends Controller {
       source: ticket.source,
       target_ref: ticket.target_ref,
       tags: ticket.tags,
+      evidence_links: ticket.evidence_links,
       created_at: ticket.created_at,
       updated_at: ticket.updated_at,
       summary: ticket.summary,
@@ -378,28 +404,6 @@ export default class extends Controller {
     })
     this._writeSavedTickets(next)
     this.refreshSavedTickets()
-  }
-
-  _migrateLegacyKeys() {
-    const list = this._readSavedTickets()
-    const seen = new Set(list.map((t) => `${t.ticket_id || ""}:${t.ticket_key || ""}`))
-
-    for (let i = 0; i < window.localStorage.length; i += 1) {
-      const keyName = window.localStorage.key(i)
-      if (!keyName || !keyName.startsWith("ticket_key:")) continue
-      const ticketId = keyName.slice("ticket_key:".length)
-      const ticketKey = window.localStorage.getItem(keyName)
-      const sig = `${ticketId}:${ticketKey}`
-      if (!ticketId || !ticketKey || seen.has(sig)) continue
-      list.unshift({
-        ticket_id: ticketId,
-        ticket_key: ticketKey,
-        saved_at: new Date().toISOString(),
-      })
-      seen.add(sig)
-    }
-
-    this._writeSavedTickets(list)
   }
 
   _downloadTicketTxt(ticketId, ticketKey) {

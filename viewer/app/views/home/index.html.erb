@@ -151,6 +151,7 @@
       <div class="cv-form-row">
         <label>Reference files</label>
         <input type="file" class="cv-input" multiple data-corpus-submission-ticket-target="uploads" />
+        <div class="cv-hint">Up to 10 files and 20 MB in total. HTML, XHTML, and SVG are rejected.</div>
       </div>
       <div class="cv-form-row">
         <label>Page setup</label>
@@ -182,9 +183,9 @@
           <button type="button" class="corpus-btn" data-action="corpus-submission-ticket#addPage">Add page</button>
         </div>
       </div>
-      <div class="cv-form-row">
-        <label><input type="checkbox" checked data-corpus-submission-ticket-target="storeOnDevice" /> Save ticket key on this device</label>
-      </div>
+      <%= render "corpus_viewer/ticket_optional_fields",
+                 stimulus_controller: "corpus-submission-ticket",
+                 include_uploads: false %>
       <div class="cv-form-actions">
         <button type="submit" class="corpus-btn corpus-btn-primary">Submit ticket</button>
         <button type="button" class="corpus-btn" data-action="corpus-submission-ticket#toggle">Close</button>
@@ -195,7 +196,7 @@
       <div class="cv-ticket-status" data-corpus-submission-ticket-target="status"></div>
       <div class="cv-ticket-kv">
         <div><strong>Ticket ID:</strong> <span data-corpus-submission-ticket-target="ticketId"></span></div>
-        <div><strong>Ticket key (save this):</strong> <code data-corpus-submission-ticket-target="ticketKey"></code> <button type="button" class="corpus-btn" data-corpus-submission-ticket-target="copyKeyBtn" data-action="corpus-submission-ticket#copyKey">Copy</button></div>
+        <div><strong>Ticket key (save this):</strong> <code data-corpus-submission-ticket-target="ticketKey"></code> <button type="button" class="corpus-btn" data-corpus-submission-ticket-target="copyKeyBtn" data-action="corpus-submission-ticket#copyKey">Copy</button> <button type="button" class="corpus-btn" data-corpus-submission-ticket-target="downloadKeyBtn" data-action="corpus-submission-ticket#downloadKey" hidden>Download .txt</button></div>
       </div>
     </div>
   </div>

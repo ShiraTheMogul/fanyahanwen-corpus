@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus";
+import { appendSubmissionExtras, maybeStoreTicketOnDevice } from "controllers/ticket_submission_helpers";
 
 // Propose a corpus text edit by creating an EditTicket.
 //
@@ -24,6 +25,11 @@ export default class extends Controller {
     "openJsonLink",
     "openTicketLink",
     "storeOnDevice",
+    "evidenceLinks",
+    "contactName",
+    "contactEmail",
+    "contactNotes",
+    "uploads",
   ];
 
   static values = {
@@ -55,21 +61,22 @@ export default class extends Controller {
     this._setTicket("", "");
 
     try {
+      const form = new FormData();
+      form.append("title", title);
+      form.append("summary", summary);
+      form.append("reasoning", reasoning);
+      form.append("source", this.sourceValue || "corpus_viewer");
+      form.append("target_path", this.targetPathValue);
+      form.append("new_text", newText);
+      appendSubmissionExtras(form, this);
+
       const resp = await fetch("/api/tickets/text_edit", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           "Accept": "application/json",
           "X-CSRF-Token": this._csrfToken(),
         },
-        body: JSON.stringify({
-          title,
-          summary,
-          reasoning,
-          source: this.sourceValue || "corpus_viewer",
-          target_path: this.targetPathValue,
-          new_text: newText,
-        }),
+        body: form,
       });
 
       const data = await resp.json().catch(() => null);
@@ -82,14 +89,12 @@ export default class extends Controller {
       this._setStatus("Ticket created ✅ (save the key below)");
       this._setTicket(data.ticket_id || (data.ticket && data.ticket.id) || "", data.ticket_key || "");
 
-      if (data.ticket_id && data.ticket_key) {
-        try {
-          window.localStorage.setItem(`ticket_key:${data.ticket_id}`, data.ticket_key);
-          if (this.hasStoreOnDeviceTarget && this.storeOnDeviceTarget.checked) {
-            this._storeTicketOnDevice(data.ticket_id, data.ticket_key);
-          }
-        } catch (_e) {}
-      }
+      try {
+        maybeStoreTicketOnDevice(this, data.ticket_id, data.ticket_key, {
+          title,
+          source: "text_edit",
+        });
+      } catch (_error) {}
     } catch (e) {
       this._setStatus(`Error: ${e.message || e}`);
     }
@@ -126,26 +131,6 @@ export default class extends Controller {
     a.click();
     a.remove();
     URL.revokeObjectURL(url);
-  }
-
-  _storeTicketOnDevice(ticketId, ticketKey) {
-    const key = "cv_ticket_keys_v1";
-    let list = [];
-    try {
-      list = JSON.parse(window.localStorage.getItem(key) || "[]");
-      if (!Array.isArray(list)) list = [];
-    } catch (_e) {
-      list = [];
-    }
-
-    list = list.filter((t) => t.ticket_id !== ticketId);
-    list.unshift({
-      ticket_id: ticketId,
-      ticket_key: ticketKey,
-      saved_at: new Date().toISOString(),
-    });
-
-    window.localStorage.setItem(key, JSON.stringify(list.slice(0, 25)));
   }
 
   _csrfToken() {
