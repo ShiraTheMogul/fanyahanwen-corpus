@@ -9,37 +9,43 @@
          .transform_values { |arr| arr.map(&:value).compact.map(&:to_s).map(&:strip).reject(&:empty?).uniq } %>
 
   <% FieldLens.pronunciation_sections(all_props).each do |sec| %>
-    <% next if sec[:props].blank? %>
+    <% next if sec[:count].to_i.zero? %>
 
     <details class="pronun-section"
-             data-pref-key="pronun_sec_<%= sec[:key] %>"
+             data-pref-key="pronun_v2_sec_<%= sec[:key] %>"
              data-default-open="<%= sec[:default_open] ? "1" : "0" %>">
-      <summary>
+      <summary title="Expand or collapse <%= sec[:label] %>">
         <span class="pronun-section-title"><%= sec[:label] %></span>
-        <span class="pronun-section-count"><%= sec[:props].length %></span>
+        <span class="pronun-section-count"><%= sec[:count] %></span>
       </summary>
 
-      <ul class="pronun-section-list">
-        <% sec[:props].each do |prop| %>
-          <% next if prop.field == "bs2014_mc_detail" %>
+      <% if sec[:props].present? %>
+        <ul class="pronun-section-list">
+          <% sec[:props].each do |prop| %>
+            <% next if prop.field == "bs2014_mc_detail" %>
+            <%= render partial: "pronunciation_property",
+                       locals: { prop: prop, bs_mc_detail_by_source: bs_mc_detail_by_source } %>
+          <% end %>
+        </ul>
+      <% end %>
 
-          <li class="pronun-item">
-            <strong><%= FieldLens.label_for(prop.field) %></strong>:
-            <%= view_text(romanise_unihan_value(prop.field, prop.value)) %>
+      <% Array(sec[:varieties]).each do |variety| %>
+        <details class="pronun-variety"
+                 data-pref-key="pronun_v2_variety_<%= sec[:key] %>_<%= variety[:key] %>"
+                 data-default-open="0">
+          <summary title="Expand or collapse <%= variety[:label] %>">
+            <span class="pronun-section-title"><%= variety[:label] %></span>
+            <span class="pronun-section-count"><%= variety[:props].length %></span>
+          </summary>
 
-            <%# Tooltip for B&S 2014 Middle Chinese analysis (e.g. nr- + -ik D) %>
-            <% if prop.field == "bs2014_mc" %>
-              <% details = bs_mc_detail_by_source[prop.source] || [] %>
-              <% if details.any? %>
-                <span class="pronun-tooltip"
-                      title="<%= h(details.join(" / ")) %>">ⓘ</span>
-              <% end %>
+          <ul class="pronun-section-list">
+            <% variety[:props].each do |prop| %>
+              <%= render partial: "pronunciation_property",
+                         locals: { prop: prop, bs_mc_detail_by_source: bs_mc_detail_by_source } %>
             <% end %>
-
-            <em>(<%= prop.source %>)</em>
-          </li>
-        <% end %>
-      </ul>
+          </ul>
+        </details>
+      <% end %>
     </details>
   <% end %>
 </div>

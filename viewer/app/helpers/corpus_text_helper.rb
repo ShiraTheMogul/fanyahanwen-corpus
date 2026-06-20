@@ -3,8 +3,6 @@
 module CorpusTextHelper
   include PhoneticizationHelper
 
-  UNIHAN_READING_SOURCES = ["Unihan_Readings", "Unihan"].freeze
-
   def corpus_text_with_optional_ruby(text)
   s = text.to_s
   # Always render indexed spans so client-side annotations can map selections
@@ -56,29 +54,10 @@ private
     seen.keys
   end
 
-  def ruby_field_name_for(source)
-    case source
-    when :mandarin then "kMandarin"
-    when :cantonese then "kCantonese"
-    when :japanese_kana then "kJapanese"
-    when :japanese_on then "kJapaneseOn"
-    when :japanese_kun then "kJapaneseKun"
-    when :korean_yale then "kKorean"
-    when :korean_hangul then "kHangul"
-    when :vietnamese then "kVietnamese"
-    when :zhuang then "kZhuang"
-    when :fanqie then "kFanqie"
-    when :tang then "kTang"
-    when :bs2014_mc then "bs2014_mc"
-    when :bs2014_oc then "bs2014_oc"
-    else nil
-    end
-  end
-
-  def format_ruby_token(source, field, tok)
-    case source
+  def format_ruby_token(entry, tok)
+    case entry[:formatter]
     when :mandarin, :cantonese
-      phoneticize_unihan_value(field, tok)
+      phoneticize_unihan_value(entry[:field], tok)
     when :japanese_kana
       return tok if tok.match?(/[\p{Hiragana}\p{Katakana}]/)
       respond_to?(:hepburn_to_kana, true) ? hepburn_to_kana(tok) : tok
@@ -86,14 +65,13 @@ private
       tok.to_s.sub(/[：:].*$/, "").strip
     when :bs2014_oc
       tok.to_s.gsub(/[\[\]]/, "").strip
-	when :bs2014_mc
-		tok.to_s.strip
     else
       tok
     end
   rescue StandardError
     tok
   end
+
   def laoguoyin_reading_map(ids_by_chr, ids)
     scheme = current_laoguoyin_scheme rescue :latin
 
@@ -132,7 +110,8 @@ private
     {}
   end
   def corpus_ruby_readings_for(chars)
-    source = current_ruby_source_sym
+    entry = PronunciationRegistry.ruby_source(current_ruby_source_sym)
+    return {} unless entry
 
     # Avoid DB parameter limits (SQLite famously caps at 999).
     ids_by_chr = {}
@@ -142,68 +121,37 @@ private
     return {} if ids_by_chr.empty?
 
     ids = ids_by_chr.values
-
-    if source == :laoguoyin
+    if entry[:special] == :laoguoyin
       return laoguoyin_reading_map(ids_by_chr, ids)
     end
 
-    field = ruby_field_name_for(source)
-    return {} if field.nil?
-
-	# Baxter & Sagart 2014 readings are stored in character_properties with a
-	# single fixed source string, not in Unihan.
-	if source == :bs2014_mc || source == :bs2014_oc
-		rows = []
-		ids.each_slice(500) do |id_slice|
-			rows.concat(
-				CharacterProperty
-					.where(character_codepoint_id: id_slice, source: "Baxter & Sagart, 2014", field: field)
-					.pluck(:character_codepoint_id, :value)
-			)
-		end
-
-		best_value = {}
-		rows.each do |cid, v|
-			best_value[cid] ||= v
-		end
-
-		out = {}
-		ids_by_chr.each do |chr, cid|
-			raw = best_value[cid].to_s
-			tok = raw.strip.split(/\s+/).reject(&:blank?).first
-			next if tok.blank?
-			out[chr] = format_ruby_token(source, field, tok)
-		end
-		return out
-	end
-	rows = []
+    rows = []
     ids.each_slice(500) do |id_slice|
-      rows.concat(
-        CharacterProperty
-          .where(character_codepoint_id: id_slice, source: UNIHAN_READING_SOURCES, field: field)
-          .pluck(:character_codepoint_id, :source, :value)
+      relation = CharacterProperty.where(
+        character_codepoint_id: id_slice,
+        field: entry[:field]
       )
+      relation = relation.where(source: entry[:sources]) if entry[:sources].any?
+      rows.concat(relation.pluck(:character_codepoint_id, :source, :value))
     end
 
-    source_rank = { "Unihan_Readings" => 0, "Unihan" => 1 }
-
+    source_rank = entry[:sources].each_with_index.to_h
     best_value = {}
-    rows.sort_by { |cid, src, _v| [cid, source_rank[src] || 99] }.each do |cid, _src, v|
-      best_value[cid] ||= v
+    rows.sort_by { |cid, source, _value| [cid, source_rank.fetch(source.to_s, 999)] }.each do |cid, _source, value|
+      best_value[cid] ||= value
     end
 
-    out = {}
-    ids_by_chr.each do |chr, cid|
+    ids_by_chr.each_with_object({}) do |(chr, cid), output|
       raw = best_value[cid].to_s
-      tok = raw.strip.split(/\s+/).reject(&:blank?).first
-      next if tok.blank?
-      out[chr] = format_ruby_token(source, field, tok)
-    end
+      token = raw.strip.split(/\s+/).reject(&:blank?).first
+      next if token.blank?
 
-    out
+      output[chr] = format_ruby_token(entry, token)
+    end
   rescue StandardError
     {}
   end
+
 
 
   # Render text as HTML where each original character is wrapped with a span:

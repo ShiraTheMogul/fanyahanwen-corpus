@@ -1,0 +1,15 @@
+<%# Locals: prop, bs_mc_detail_by_source %>
+<li class="pronun-item">
+  <strong><%= FieldLens.label_for(prop.field) %></strong>:
+  <%= view_text(romanise_unihan_value(prop.field, prop.value)) %>
+
+  <% if prop.field == "bs2014_mc" %>
+    <% details = bs_mc_detail_by_source[prop.source] || [] %>
+    <% if details.any? %>
+      <span class="pronun-tooltip"
+            title="<%= h(details.join(" / ")) %>">ⓘ</span>
+    <% end %>
+  <% end %>
+
+  <em>(<%= prop.source %>)</em>
+</li>

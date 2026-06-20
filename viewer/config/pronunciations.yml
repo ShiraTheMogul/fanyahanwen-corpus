@@ -1,0 +1,353 @@
+# Central pronunciation registry.
+#
+# This file describes hand-maintained pronunciation fields already used by the
+# viewer. Large imported collections should be registered separately in
+# config/pronunciation_datasets.yml so this file remains readable.
+#
+# A field may optionally expose a ruby source. The ruby block tells the viewer
+# which session key to use, which CharacterProperty sources are valid, and how
+# to format the selected token.
+
+families:
+  translingual:
+    label: Translingual
+    order: 10
+    default_open: false
+  mandarin:
+    label: Mandarin Chinese
+    order: 20
+    default_open: false
+  jin:
+    label: Jin Chinese
+    order: 30
+    default_open: false
+  wu:
+    label: Wu Chinese
+    order: 40
+    default_open: false
+  hui:
+    label: Hui Chinese
+    order: 50
+    default_open: false
+  gan:
+    label: Gan Chinese
+    order: 60
+    default_open: false
+  xiang:
+    label: Xiang Chinese
+    order: 70
+    default_open: false
+  min:
+    label: Min Chinese
+    order: 80
+    default_open: false
+  yue:
+    label: Yue Chinese
+    order: 90
+    default_open: false
+  pinghua:
+    label: Pinghua
+    order: 100
+    default_open: false
+  hakka:
+    label: Hakka Chinese
+    order: 110
+    default_open: false
+  other_sinitic:
+    label: Other Sinitic varieties
+    order: 120
+    default_open: false
+  middle_chinese:
+    label: Middle Chinese
+    order: 130
+    default_open: false
+  old_chinese:
+    label: Old Chinese
+    order: 140
+    default_open: false
+  japonic:
+    label: Japonic
+    order: 150
+    default_open: false
+  koreanic:
+    label: Koreanic
+    order: 160
+    default_open: false
+  austroasiatic:
+    label: Austroasiatic
+    order: 170
+    default_open: false
+  kra_dai:
+    label: Kra–Dai
+    order: 180
+    default_open: false
+  qiangic:
+    label: Qiangic
+    order: 190
+    default_open: false
+
+fields:
+  kFanqie:
+    family: translingual
+    label: 反切 Fǎnqiè
+    order: 10
+    ruby:
+      key: fanqie
+      label: Fanqie
+      sources: [Unihan_Readings, Unihan]
+      formatter: raw
+      order: 120
+  general_chinese:
+    family: translingual
+    label: General Chinese
+    order: 20
+
+  kMandarin:
+    family: mandarin
+    label: Mandarin
+    order: 10
+    ruby:
+      key: mandarin
+      label: Mandarin
+      sources: [Unihan_Readings, Unihan]
+      formatter: mandarin
+      order: 10
+  kHanyuPinyin:
+    family: mandarin
+    label: 漢語拼音 Hànyǔ Pīnyīn
+    order: 20
+  kHanyuPinlu:
+    family: mandarin
+    label: 漢語頻率 Hànyǔ Pínlǜ (Pronunciation + Frequency)
+    order: 30
+  kTGHZ2013:
+    family: mandarin
+    label: 通用規範漢字字典 (2013)
+    order: 40
+  kXHC1983:
+    family: mandarin
+    label: 現代漢語詞典 (1983)
+    order: 50
+  laoguoyin:
+    family: mandarin
+    label: Old National Pronunciation 老國音
+    order: 60
+    ruby:
+      key: laoguoyin
+      label: Old National Pronunciation
+      special: laoguoyin
+      formatter: laoguoyin
+      order: 30
+  manju_hergen_manchu:
+    family: mandarin
+    label: 1763 Manchu transcription (Manchu script)
+    order: 70
+  manju_hergen_latin:
+    family: mandarin
+    label: 1763 Manchu transcription (Latin script)
+    order: 80
+  manju_hergen_ipa:
+    family: mandarin
+    label: 1763 Manchu transcription (IPA)
+    order: 90
+  menggu_ziyun_phags_pa:
+    family: mandarin
+    label: Menggu Ziyun 蒙古字韻 (Phags-pa script)
+    order: 100
+  menggu_ziyun_transcription:
+    family: mandarin
+    label: Menggu Ziyun 蒙古字韻 (IPA)
+    order: 110
+  menggu_ziyun_tone:
+    family: mandarin
+    label: Menggu Ziyun 蒙古字韻 tone
+    order: 120
+  zhongyuan_yinyun_yang_naisi:
+    family: mandarin
+    label: Zhongyuan Yinyun 中原音韻 (楊耐思)
+    order: 130
+  zhongyuan_yinyun_ning_jifu:
+    family: mandarin
+    label: Zhongyuan Yinyun 中原音韻 (寧繼福)
+    order: 140
+  zhongyuan_yinyun_xue_fengsheng:
+    family: mandarin
+    label: Zhongyuan Yinyun 中原音韻 (薛鳳生)
+    order: 150
+  zhongyuan_yinyun_unt_phonemic:
+    family: mandarin
+    label: Zhongyuan Yinyun 中原音韻 (untunt)
+    order: 160
+  zhongyuan_yinyun_unt:
+    family: mandarin
+    label: Zhongyuan Yinyun 中原音韻 (unt)
+    order: 170
+  zhongyuan_yinyun_tone:
+    family: mandarin
+    label: Zhongyuan Yinyun 中原音韻 tone
+    order: 180
+
+  kCantonese:
+    family: yue
+    label: Cantonese
+    order: 10
+    ruby:
+      key: cantonese
+      label: Cantonese
+      sources: [Unihan_Readings, Unihan]
+      formatter: cantonese
+      order: 20
+
+  kTang:
+    family: middle_chinese
+    label: Middle Chinese (Stimson, 1976)
+    order: 10
+    ruby:
+      key: tang
+      label: Tang pronunciation
+      sources: [Unihan_Readings, Unihan]
+      formatter: raw
+      order: 110
+  bs2014_mc:
+    family: middle_chinese
+    label: Middle Chinese
+    order: 20
+    ruby:
+      key: bs2014_mc
+      label: Middle Chinese (Baxter & Sagart, 2014)
+      sources: ["Baxter & Sagart, 2014"]
+      formatter: bs2014_mc
+      order: 130
+  bs2006_mc:
+    family: middle_chinese
+    label: Middle Chinese
+    order: 30
+  guangyun_fanqie:
+    family: middle_chinese
+    label: Guangyun Fanqie 廣韻反切
+    order: 40
+  guangyun_rhyme:
+    family: middle_chinese
+    label: Guangyun Rime 廣韻音韻
+    order: 50
+  guangyun_tone:
+    family: middle_chinese
+    label: Guangyun Tone 廣韻聲調
+    order: 60
+  menggu_ziyun_qieyun_position:
+    family: middle_chinese
+    label: Qieyun-system phonological position
+    order: 70
+
+  bs2014_oc:
+    family: old_chinese
+    label: Old Chinese
+    order: 10
+    ruby:
+      key: bs2014_oc
+      label: Old Chinese (Baxter & Sagart, 2014)
+      sources: ["Baxter & Sagart, 2014"]
+      formatter: bs2014_oc
+      order: 140
+
+  kJapanese:
+    family: japonic
+    label: Japanese
+    order: 10
+    ruby:
+      key: japanese_kana
+      label: Japanese Kana
+      sources: [Unihan_Readings, Unihan]
+      formatter: japanese_kana
+      order: 40
+  kJapaneseOn:
+    family: japonic
+    label: Japanese on’yomi
+    order: 20
+    ruby:
+      key: japanese_on
+      label: Japanese On
+      sources: [Unihan_Readings, Unihan]
+      formatter: raw
+      order: 50
+  kJapaneseKun:
+    family: japonic
+    label: Japanese kun’yomi
+    order: 30
+    ruby:
+      key: japanese_kun
+      label: Japanese Kun
+      sources: [Unihan_Readings, Unihan]
+      formatter: raw
+      order: 60
+  jp_mora_romaji:
+    family: japonic
+    label: Mora (romaji)
+    order: 40
+  jp_manyogana_mora_table:
+    family: japonic
+    label: Man’yōgana mora table
+    order: 50
+  jp_manyogana_hiragana_etym:
+    family: japonic
+    label: Man’yōgana (hiragana etymology)
+    order: 60
+  jp_manyogana_katakana_etym:
+    family: japonic
+    label: Man’yōgana (katakana etymology)
+    order: 70
+  jp_shakuon_kana:
+    family: japonic
+    label: Shakuon Kana 借音仮名
+    order: 80
+  jp_shakkun_kana:
+    family: japonic
+    label: Shakkun Kana 借訓仮名
+    order: 90
+  jp_manyogana_reading:
+    family: japonic
+    label: Man’yōgana reading (mora)
+    order: 100
+
+  kKorean:
+    family: koreanic
+    label: Korean (Yale)
+    order: 10
+    ruby:
+      key: korean_yale
+      label: Korean Yale
+      sources: [Unihan_Readings, Unihan]
+      formatter: raw
+      order: 70
+  kHangul:
+    family: koreanic
+    label: Korean (Hangul)
+    order: 20
+    ruby:
+      key: korean_hangul
+      label: Korean Hangul
+      sources: [Unihan_Readings, Unihan]
+      formatter: korean_hangul
+      order: 80
+
+  kVietnamese:
+    family: austroasiatic
+    label: Vietnamese
+    order: 10
+    ruby:
+      key: vietnamese
+      label: Vietnamese
+      sources: [Unihan_Readings, Unihan]
+      formatter: raw
+      order: 90
+
+  kZhuang:
+    family: kra_dai
+    label: Zhuang
+    order: 10
+    ruby:
+      key: zhuang
+      label: Zhuang
+      sources: [Unihan_Readings, Unihan]
+      formatter: raw
+      order: 100

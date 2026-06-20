@@ -560,14 +560,30 @@ pre.xiangqi-board.theme-mono {
 .pronun-section > summary {
   cursor: pointer;
   list-style: none;
-  display: flex;
+  display: grid;
+  grid-template-columns: 0.9rem minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: space-between;
-  gap: 10px;
+  gap: 8px;
   font-weight: 600;
 }
 
 .pronun-section > summary::-webkit-details-marker { display: none; }
+
+.pronun-section > summary::before,
+.pronun-variety > summary::before {
+  content: "▶";
+  display: inline-block;
+  font-size: 0.72em;
+  line-height: 1;
+  opacity: 0.72;
+  transform-origin: center;
+  transition: transform 120ms ease;
+}
+
+.pronun-section[open] > summary::before,
+.pronun-variety[open] > summary::before {
+  transform: rotate(90deg);
+}
 
 .pronun-section-title {
   display: inline-flex;
@@ -592,6 +608,25 @@ pre.xiangqi-board.theme-mono {
   font-size: 0.95em;
   opacity: 0.85;
 }
+
+/* --- Pronunciation varieties nested inside a language-family section --- */
+.pronun-variety {
+  margin: 8px 0 4px 12px;
+  padding: 5px 8px;
+  border-left: 3px solid rgba(0,0,0,0.12);
+}
+
+.pronun-variety > summary {
+  cursor: pointer;
+  list-style: none;
+  display: grid;
+  grid-template-columns: 0.9rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.pronun-variety > summary::-webkit-details-marker { display: none; }
 
 /* --- Xuanji Tu --- */
 .xuanji-toolbar {
@@ -847,131 +882,4 @@ body.rightbar-collapsed .rightbar {
     width: 100%;
     margin: 0 0 1rem 0;
   }
-}
-
-/* --- Corpus search ------------------------------------------------------ */
-.corpus-search-note,
-.corpus-search-summary,
-.corpus-search-meta,
-.corpus-search-path {
-  color: rgba(0, 0, 0, 0.72);
-}
-
-.corpus-search-form,
-.corpus-search-summary,
-.corpus-search-result {
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  border-radius: 14px;
-  padding: 1rem;
-  margin: 1rem 0;
-  background: rgba(255, 255, 255, 0.72);
-}
-
-.corpus-search-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 0.8rem;
-}
-
-.corpus-search-grid label {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  font-size: 0.95rem;
-}
-
-.corpus-search-input {
-  width: 100%;
-  padding: 0.45rem 0.55rem;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
-  font: inherit;
-}
-
-.corpus-search-filters {
-  margin-top: 1rem;
-}
-
-.corpus-search-filters summary {
-  cursor: pointer;
-  margin-bottom: 0.75rem;
-}
-
-.corpus-search-actions {
-  margin-top: 1rem;
-}
-
-.corpus-search-button {
-  display: inline-block;
-  padding: 0.5rem 0.75rem;
-  border: 1px solid rgba(0, 0, 0, 0.22);
-  border-radius: 10px;
-  background: rgba(0, 0, 0, 0.06);
-  color: inherit;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.corpus-search-button-secondary {
-  margin-top: 0.4rem;
-}
-
-.corpus-search-error {
-  border: 1px solid rgba(160, 0, 0, 0.32);
-  border-radius: 10px;
-  padding: 0.75rem;
-  background: rgba(160, 0, 0, 0.08);
-}
-
-.corpus-search-results {
-  padding-left: 1.4rem;
-}
-
-.corpus-search-result h2 {
-  margin-top: 0;
-  font-size: 1.12rem;
-}
-
-.corpus-search-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  font-size: 0.92rem;
-}
-
-.corpus-search-meta span::after {
-  content: " ·";
-}
-
-.corpus-search-meta span:last-child::after {
-  content: "";
-}
-
-.corpus-search-snippet {
-  font-size: 1.35rem;
-  line-height: 1.8;
-  word-break: break-word;
-}
-
-.corpus-search-snippet mark {
-  padding: 0.1rem 0.2rem;
-  border-radius: 0.25rem;
-}
-
-.corpus-search-context {
-  opacity: 0.82;
-}
-
-.corpus-search-path {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  font-size: 0.9rem;
-}
-
-.corpus-search-pagination {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  margin: 1rem 0;
 }

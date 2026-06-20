@@ -99,33 +99,42 @@
   <details class="rightbar-section rightbar-group" open>
     <summary class="rightbar-summary"><strong>Ruby settings</strong></summary>
 
-    <div class="rightbar-row" id="ruby_section">
-      <label for="ruby_source">Ruby text</label>
-      <%= select_tag :ruby_source,
-            options_for_select(
-              ViewOptions::RUBY_SOURCES.map do |k|
-                label =
-                case k
-                when :laoguoyin
-                  "Old National Pronunciation"
-                when :fanqie
-                  "Fanqie"
-                when :tang
-                  "Tang pronunciation"
-                when :zhuang
-                  "Zhuang"
-                when :bs2014_mc
-                  "Middle Chinese (Baxter & Sagart, 2014)"
-                when :bs2014_oc
-                  "Old Chinese (Baxter & Sagart, 2014)"
-                else
-                  k.to_s.tr("_", " ").split.map(&:capitalize).join(" ")
-                end
-                [label, k]
-              end,
-              (session[:ruby_source] || :mandarin).to_s
-            ),
-            class: "rightbar-select" %>
+    <% ruby_groups = ViewOptions.ruby_source_groups %>
+    <% current_ruby_key = (session[:ruby_source] || :mandarin).to_s %>
+    <% current_ruby_family = PronunciationRegistry.ruby_family_for_source(current_ruby_key) || ruby_groups.first&.dig(:key) %>
+
+    <div id="ruby_section"
+         data-controller="ruby-source"
+         data-ruby-source-groups-value="<%= h(ruby_groups.to_json) %>"
+         data-ruby-source-current-value="<%= h(current_ruby_key) %>">
+      <div class="rightbar-row">
+        <label for="ruby_family">Reading family</label>
+        <%= select_tag :ruby_family,
+              options_for_select(
+                ruby_groups.map { |group| [group[:label], group[:key]] },
+                current_ruby_family
+              ),
+              class: "rightbar-select",
+              data: {
+                ruby_source_target: "family",
+                action: "change->ruby-source#changeFamily"
+              } %>
+      </div>
+
+      <div class="rightbar-row">
+        <label for="ruby_source_choice">Variety / system</label>
+        <%= select_tag :ruby_source_choice,
+              "".html_safe,
+              class: "rightbar-select",
+              data: {
+                ruby_source_target: "source",
+                action: "change->ruby-source#changeSource"
+              } %>
+      </div>
+
+      <%= hidden_field_tag :ruby_source,
+            current_ruby_key,
+            data: { ruby_source_target: "hidden" } %>
     </div>
 
     <p class="rightbar-note">

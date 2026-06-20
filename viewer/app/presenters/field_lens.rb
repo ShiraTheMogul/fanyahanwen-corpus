@@ -203,53 +203,15 @@ module FieldLens
 	
 
 
-# Pronunciation is a giant bucket, so we use language families. 
+# Pronunciation sections are defined in one central registry.
 #
-# Each section declares:
-# - key: stable identifier used for cookie persistence
-# - label: header shown in UI
-# - fields: ordered list of CharacterProperty.field values that belong here
-# - default_open: whether the section starts expanded when the user has no saved preference
-#
-# Any pronunciation fields not claimed by a section will be shown under "Other".
-PRONUNCIATION_SECTIONS = [
-  { key: "translingual", label: "Translingual", fields: %w[kFanqie general_chinese], default_open: true },
-  { key: "mandarin", label: "Mandarin Chinese", fields: %w[kMandarin kHanyuPinyin kHanyuPinlu kTGHZ2013 kXHC1983 laoguoyin manju_hergen_manchu manju_hergen_latin manju_hergen_ipa menggu_ziyun_phags_pa menggu_ziyun_transcription menggu_ziyun_tone zhongyuan_yinyun_yang_naisi zhongyuan_yinyun_ning_jifu zhongyuan_yinyun_xue_fengsheng zhongyuan_yinyun_unt_phonemic zhongyuan_yinyun_unt zhongyuan_yinyun_tone], default_open: true },
-  { key: "yue", label: "Yue Chinese", fields: %w[kCantonese], default_open: true },
-  { key: "middle_chinese", label: "Middle Chinese", fields: %w[kTang bs2014_mc bs2006_mc guangyun_fanqie guangyun_rhyme guangyun_fanqie guangyun_rhyme guangyun_tone menggu_ziyun_qieyun_position], default_open: false },
-  { key: "old_chinese", label: "Old Chinese", fields: %w[bs2014_oc], default_open: false },
-  { key: "japonic", label: "Japonic", fields: %w[kJapanese kJapaneseOn kJapaneseKun jp_mora_romaji jp_manyogana_mora_table jp_manyogana_hiragana_etym jp_manyogana_katakana_etym jp_shakuon_kana jp_shakkun_kana jp_manyogana_reading], default_open: true },
-  { key: "koreanic", label: "Koreanic", fields: %w[kHangul kKorean], default_open: true },
-  { key: "austroasiatic", label: "Austroasiatic", fields: %w[kVietnamese], default_open: true },
-  { key: "kra_dai", label: "Kra–Dai", fields: %w[kZhuang], default_open: true },
-].freeze
-
-# Partition pronunciation props into the above sections.
-# Returns an array of hashes: { key:, label:, default_open:, props: [...] }.
+# The registry also understands namespaced bulk fields such as:
+#   reading.wu.shanghai.ipa
+# so adding a reviewed dataset does not require another FieldLens case branch.
 def self.pronunciation_sections(props)
-  props ||= []
-
-  remaining = props.dup
-  out = []
-
-  PRONUNCIATION_SECTIONS.each do |sec|
-    claimed = []
-    sec[:fields].each do |field|
-      hits = remaining.select { |p| p.field == field }
-      next if hits.empty?
-      claimed.concat(hits)
-      remaining -= hits
-    end
-
-    out << { key: sec[:key], label: sec[:label], default_open: !!sec[:default_open], props: claimed }
-  end
-
-  if remaining.any?
-    out << { key: "other", label: "Other", default_open: false, props: remaining }
-  end
-
-  out
+  PronunciationRegistry.pronunciation_sections(props)
 end
+
 	# These fields go unused; either because they're either superseded by better data or handled by something else. 
 	HIDDEN_FIELDS = %w[
 		bs2014_mc_detail
@@ -282,7 +244,6 @@ end
 		manju_hergen_initial
 		manju_hergen_occurrence_count
 		manju_hergen_page_number
-		manju_hergen_source_chunk
 		zhongyuan_yinyun_unt_phonemic
 	].freeze
 	
@@ -486,11 +447,7 @@ end
 		return "Strokes & radicals" if field.start_with?("kRS") || field == "kTotalStrokes" || field == "shuowen_category"
 		return "Education notes" if field.match?("kGradeLevel") || field.match?("kKoreanEducationHanja") || field == "cjk_808_common"
 		return "Education notes" if field == "context" 
-		return "Pronunciation" if 
-			field.start_with?("kFanqie") || field.start_with?("kMandarin") || field.start_with?("kHanyuPinyin") ||
-			field.start_with?("kHanyuPinlu") || field.start_with?("kTGHZ2013") || field.start_with?("kXHC1983") ||
-			field.start_with?("kCantonese") || field.start_with?("kJapanese") || field.start_with?("kKorean") ||
-			field.start_with?("kHangul") || field.start_with?("kVietnamese") || field.start_with?("kZhuang") || field == "laoguoyin" || field == "general_chinese" || field == "kTang" || field.start_with?("bs2014_") || field == "bs2006_mc" || field.start_with?("jp_manyogana_") || field.start_with?("jp_shakuon_") || field.start_with?("jp_shakkun_") || field == "jp_mora_romaji" || field == "jp_manyogana_reading" || field == "manju_hergen_manchu" || field == "manju_hergen_latin" || field == "manju_hergen_ipa" || field == "manju_hergen_ipa" || field == "guangyun_fanqie" || field == "guangyun_rhyme" || field == "guangyun_tone" || field == "menggu_ziyun_phags_pa" || field == "menggu_ziyun_transcription" || field == "menggu_ziyun_tone" || field == "menggu_ziyun_qieyun_position" || field == "zhongyuan_yinyun_yang_naisi" || field == "zhongyuan_yinyun_ning_jifu" || field == "zhongyuan_yinyun_xue_fengsheng" || field == "zhongyuan_yinyun_unt_phonemic" || field == "zhongyuan_yinyun_unt" || field == "zhongyuan_yinyun_tone"
+		return "Pronunciation" if PronunciationRegistry.pronunciation_field?(field)
 		return "Input" if %w[kCangjie kFourCornerCode kMainlandTelegraph kTaiwanTelegraph].include?(field)
 		return "Encodings & mappings" if field.include?("Variant") || field.start_with?("kSemantic") || field.start_with?("kSimplified") || field.start_with?("cedict_simp") || field.start_with?("kTraditional")
 		return "Dictionary indices" if field.include?("kPhonetic") || field.match?(/hanyu/i) || field.start_with?("kMorohashi") || field.include?("kCihai") || field.start_with?("kFenn") || field.match?("kCowles") || field.include?("DaeJaweon") || field.start_with?("kFennIndex") || field.start_with?("kGSR") || field.include?("KangXi") || field.match?("kLau") || field.match?("kMatthews") || field.match?("kMeyerWempe") || field.match?("kNelson") || field.start_with?("kSBGY") || field.match?("kSMSZD2003Index") || field.start_with?("kSMSZD2003Index") || field.start_with?("kHKGlyph") || field.match?("kKarlgren") || field.match?("guangyun_rhyme_number") || field.match?("guangyun_category") || field.match?("menggu_ziyun_category") || field.match?("menggu_ziyun_xiaoyun_key") || field.match?("menggu_ziyun_xiaoyun_number") || field == "menggu_ziyun_rhyme" || field == "zhongyuan_yinyun_initial" || field == "zhongyuan_yinyun_final" || field == "zhongyuan_yinyun_xiaoyun" || field == "zhongyuan_yinyun_category" || field == "zhongyuan_yinyun_xiaoyun_key"
@@ -588,7 +545,6 @@ end
 	"menggu_ziyun_transcription" => "Menggu Ziyun 蒙古字韻 (IPA)",
 	"menggu_ziyun_qieyun_position" => "Qieyun-system phonological position",
 	"menggu_ziyun_tone" => "Menggu Ziyun 蒙古字韻 tone",
-	"menggu_ziyun_tone" => "Menggu Ziyun 蒙古字韻 tone",
 	"menggu_ziyun_rhyme" => "Menggu Ziyun 蒙古字韻 rhyme group",
 	"menggu_ziyun_gloss" => "Menggu Ziyun 蒙古字韻 gloss",
 	"menggu_ziyun_variant" => "Menggu Ziyun 蒙古字韻 variant form",
@@ -620,6 +576,11 @@ end
 	
 	# and some automatic stuff in case
 	def self.label_for(field)
+		# Pronunciation labels live in the central registry so the dictionary,
+		# ruby UI and importers all use the same wording.
+		pronunciation_label = PronunciationRegistry.label_for_field(field)
+		return pronunciation_label if pronunciation_label.present?
+
 		# 1) Look up a "pretty label" rule for this field in PRETTY.
 		# If PRETTY does not contain this field, v will be nil.
 		v = PRETTY[field]

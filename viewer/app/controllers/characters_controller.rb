@@ -296,7 +296,6 @@ class CharactersController < ApplicationController
 			
 		# 19-1-26 - Fixed bug where overinheritance would occur.
 		family_rows = [@character, @base_character, *@variant_characters].compact
-		family_ids = family_rows.map(&:id).uniq
 		@cp_by_id = family_rows.index_by(&:id)
 
 		definition_pairs = [
@@ -357,13 +356,14 @@ class CharactersController < ApplicationController
 		# --- 5b) Old National Pronunciation (老國音 / Laoguoyin) ---
 		# This data is stored in laoguoyin_readings, not character_properties.
 		# To make it participate in the normal FieldLens + Properties pipeline,
-		# we project each reading row into an *unsaved* CharacterProperty-like object.
+		# we project each exact-character reading row into an unsaved
+		# CharacterProperty-like object. Pronunciations never inherit from variants.
 		#
 		# Field used in the UI: "laoguoyin"
 		# Value shape (best-effort): "<latin> <zhuyin> /<ipa>/"
 		if defined?(LaoguoyinReading)
 			LaoguoyinReading
-				.where(character_codepoint_id: family_ids)
+				.where(character_codepoint_id: @character.id)
 				.order(:character_codepoint_id, :laoguoyin, :zhuyin, :ipa, :source)
 				.each do |r|
 					parts = []
@@ -695,27 +695,32 @@ class CharactersController < ApplicationController
 		ruby_enabled = (session[:ruby_enabled] == true || session[:ruby_enabled].to_s == "1" || session[:ruby_enabled].to_s == "true")
 		ruby_source = (session[:ruby_source].presence || :mandarin).to_s.strip.downcase.tr(" ", "_").to_sym
 
-		field_name =
-			case ruby_source
-			when :mandarin then "kMandarin"
-			when :cantonese then "kCantonese"
-			when :japanese then "kJapanese"
-			when :japanese_kana then "kJapanese"
-			when :japanese_on then "kJapaneseOn"
-			when :japanese_kun then "kJapaneseKun"
-			when :korean_yale then "kKorean"
-			when :korean_hangul then "kHangul"
-			when :vietnamese then "kVietnamese"
-			when :zhuang then "kZhuang"
-			when :fanqie then "kFanqie"
-			when :tang then "kTang"
-			else
-				nil
-			end
-
+		ruby_entry = PronunciationRegistry.ruby_source(ruby_source)
 		ruby_reading = nil
-		if field_name
-			raw_reading = props.find { |p| ["Unihan_Readings", "Unihan"].include?(p.source) && p.field == field_name }&.value.to_s
+
+		if ruby_entry&.dig(:special) == :laoguoyin
+			reading = LaoguoyinReading.find_by(character_codepoint_id: cc.id)
+			if reading
+				parts = []
+				parts << reading.laoguoyin.to_s.strip if reading.laoguoyin.present?
+				parts << reading.zhuyin.to_s.strip if reading.zhuyin.present?
+				if reading.ipa.present?
+					ipa = reading.ipa.to_s.strip
+					parts << (ipa.start_with?("/") ? ipa : "/#{ipa}/")
+				end
+				raw = parts.join(" ")
+				scheme = (session[:laoguoyin_scheme].presence || :original).to_sym
+				ruby_reading = helpers.format_laoguoyin_value(raw, scheme: scheme) if raw.present?
+			end
+		elsif ruby_entry
+			candidates = props.select do |prop|
+				prop.field == ruby_entry[:field] &&
+					(ruby_entry[:sources].empty? || ruby_entry[:sources].include?(prop.source.to_s))
+			end
+			source_rank = ruby_entry[:sources].each_with_index.to_h
+			raw_reading = candidates.min_by do |prop|
+				[source_rank.fetch(prop.source.to_s, 999), prop.value.to_s]
+			end&.value.to_s
 			tokens = raw_reading.strip.split(/\s+/).map(&:strip).reject(&:blank?)
 			desired = session[:ruby_token].to_s.strip
 			ruby_reading = (desired.present? && tokens.include?(desired)) ? desired : tokens.first

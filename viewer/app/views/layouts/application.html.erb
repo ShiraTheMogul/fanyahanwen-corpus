@@ -42,6 +42,7 @@
           <div class="site-title"><%= link_to "泛亞漢文語料庫", root_path, class: "site-title-link" %></div>
           <nav class="site-nav" aria-label="Primary navigation">
             <%= link_to "Corpus Viewer", corpus_viewer_path, class: "site-nav-link" %>
+			<%= link_to "Search the Corpus", corpus_search_path, class: "site-nav-link" %>
 			<%= link_to "Dictionary", characters_path, class: "site-nav-link" %>
 			<%= link_to "Tools", tools_path, class: "site-nav-link" %>
 			<%= link_to "Tickets", ticket_access_path, class: "site-nav-link" %>
@@ -52,7 +53,7 @@
         <div class="site-header-center">
           <%= form_with url: characters_path, method: :get, local: true, class: "site-search" do %>
             <label class="sr-only" for="query">Search</label>
-            <%= text_field_tag :query, params[:query], placeholder: "Search: 泛 or U+6CDB!", class: "site-search-input" %>
+            <%= text_field_tag :query, params[:query], placeholder: "Search the Dictionary: 泛 or U+6CDB!", class: "site-search-input" %>
             <%= submit_tag "Go", class: "site-search-submit" %>
           <% end %>
         </div>

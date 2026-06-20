@@ -37,7 +37,7 @@ def update
     end
 
     if params.key?(:ruby_source)
-      new_ruby_source = safe_symbol(params[:ruby_source], allowed: ViewOptions::RUBY_SOURCES)
+      new_ruby_source = safe_symbol(params[:ruby_source], allowed: ViewOptions.ruby_sources)
 
       # If the ruby source changed, any previously chosen token is likely invalid.
       if session[:ruby_source].present? && session[:ruby_source].to_s != new_ruby_source.to_s

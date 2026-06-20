@@ -118,129 +118,75 @@ def current_ruby_orientation
 
   # Pull a reading string for the requested language/source.
   #
-  # We prefer the current character's own Unihan fields when present.
-  # If missing, we fall back to the base character, then to other variants.
-    def ruby_reading_for(source)
-    src = (source.presence || :mandarin).to_sym
+  # Pronunciation lookups are exact-character only. The registry supplies the
+  # field, allowed source labels and formatter for the selected reading system.
+  def ruby_reading_for(source)
+    entry = PronunciationRegistry.ruby_source(source.presence || :mandarin)
+    return nil unless entry
 
-    # 1) Pull the list of available readings for this character+source.
-    tokens = ruby_reading_tokens_for(src)
-
-    # 2) Pick which token the user wants (stored in session[:ruby_token]).
-    tok = pick_ruby_token_from_session(tokens)
-
+    # Pull the available readings for this character and select the requested
+    # token. The registry decides which field and formatter belong to the source.
+    tok = pick_ruby_token_from_session(ruby_reading_tokens_for(entry[:key]))
     return nil if tok.blank?
 
-    # 3) Apply per-source formatting (e.g., kana conversion) but do NOT
-    #    try to "pretty-print" a whole list here. Ruby text should be one
-    #    short annotation.
-    case src
+    case entry[:formatter]
     when :laoguoyin
-      # Old National Pronunciation (老國音): already formatted according to the
-      # user-selected "Phoneticization conventions" setting.
+      # Already formatted according to the selected 老國音 convention.
       tok
-    when :mandarin
-      romanise_unihan_value("kMandarin", tok)
-    when :cantonese
-      romanise_unihan_value("kCantonese", tok)
-
-    when :japanese
-      # kJapanese is usually kana already (space-separated). We show the chosen token.
-      tok
+    when :mandarin, :cantonese
+      romanise_unihan_value(entry[:field], tok)
     when :japanese_kana
-      # Try to ensure kana. If the token is already kana, keep it.
       tok.match?(/[\p{Hiragana}\p{Katakana}]/) ? tok : hepburn_to_kana(tok)
-    when :japanese_on
-      tok
-    when :japanese_kun
-      tok
-
-    when :korean_yale
-      tok
     when :korean_hangul
-      # Some sources include extra info after a colon, e.g. "가: ka".
       tok.to_s.sub(/[：:].*$/, "").strip
-    when :vietnamese
-      tok
+    when :bs2014_oc
+      tok.to_s.gsub(/[\[\]]/, "").strip
     else
       tok
     end
   end
 
-
-  # Return an array of possible ruby readings (tokens) for the given source,
-  # taken from the Unihan reading fields for the *current* character family.
-  #
-  # Why we return tokens:
-  # - Unihan fields often contain multiple readings in ONE value (space-separated).
-  # - Ruby text should be ONE short annotation for a glyph.
-  # - The sidebar can show a "Reading" dropdown if there are multiple tokens.
+  # Return all usable reading tokens for one registered ruby source.
+  # Readings are always restricted to the exact character being displayed.
   def ruby_reading_tokens_for(source_sym)
-    # Old National Pronunciation does not live in Unihan. It is injected into
-    # @properties as field "laoguoyin" by CharactersController.
-    if source_sym.to_sym == :laoguoyin
-      return laoguoyin_ruby_tokens
+    entry = PronunciationRegistry.ruby_source(source_sym)
+    return [] unless entry
+    return laoguoyin_ruby_tokens if entry[:special] == :laoguoyin
+
+    props = Array(@properties)
+    current_id = @character&.id
+    return [] if props.empty? || current_id.nil?
+
+    values = props
+      .select do |prop|
+        prop.character_codepoint_id == current_id &&
+          prop.field == entry[:field] &&
+          (entry[:sources].empty? || entry[:sources].include?(prop.source.to_s))
+      end
+      .map { |prop| prop.value.to_s.strip }
+      .reject(&:blank?)
+
+    tokens = values.flat_map { |value| split_unihan_tokens(value) }
+    expand_and_dedupe_reading_tokens(tokens)
+  end
+
+  def expand_and_dedupe_reading_tokens(tokens)
+    expanded = Array(tokens).flat_map do |token|
+      parts = token.to_s.split("/").map(&:strip).reject(&:blank?)
+      parts.length >= 2 ? parts : [token.to_s.strip]
     end
 
-	# Baxter & Sagart 2014 readings live in character_properties, not Unihan.
-	if source_sym.to_sym == :bs2014_mc
-	  return bs2014_property_ruby_tokens(field: "bs2014_mc")
-	end
-	if source_sym.to_sym == :bs2014_oc
-	  # For ruby display, remove the square bracket markers but keep the content.
-	  return bs2014_property_ruby_tokens(field: "bs2014_oc") do |tok|
-		tok.to_s.gsub(/[\[\]]/, "").strip
-	  end
-	end
-
-    field_name =
-      case source_sym
-      when :mandarin then "kMandarin"
-      when :fanqie then "kFanqie"
-      when :tang then "kTang"
-      when :cantonese then "kCantonese"
-      when :japanese then "kJapanese"
-      when :japanese_on then "kJapaneseOn"
-      when :japanese_kun then "kJapaneseKun"
-      when :japanese_kana then "kJapanese"
-      when :korean_yale then "kKorean"
-      when :korean_hangul then "kHangul"
-      when :vietnamese then "kVietnamese"
-	  when :zhuang then "kZhuang"
-	  when :fanqie then "kFanqie"
-	  when :tang then "kTang"
-      else nil
-      end
-
-    return [] if field_name.nil?
-
-    raw = preferred_unihan_reading(field_name: field_name)
-    tokens = split_unihan_tokens(raw)
-
-    # Expand tokens that look like "A/B" into ["A", "B"] so the user can select
-    # the actual reading directly (no "left-of" explanations).
-    expanded = []
-    tokens.each do |t|
-      parts = t.split("/").map { |x| x.strip }.reject(&:blank?)
-      if parts.length >= 2
-        expanded.concat(parts)
-      else
-        expanded << t
-      end
-    end
-
-    # De-dupe while preserving order
     seen = {}
-    expanded.each_with_object([]) do |t, out|
-      next if t.blank?
-      next if seen[t]
-      seen[t] = true
-      out << t
+    expanded.each_with_object([]) do |token, output|
+      next if token.blank? || seen[token]
+
+      seen[token] = true
+      output << token
     end
   end
 
-	# Return possible BS2014 ruby tokens for a given character_properties field.
-	# We prefer current -> base -> variants to match the rest of the UI.
+	# Backward-compatible helper retained for callers outside the registry path.
+	# Readings remain exact-character only.
 	def bs2014_property_ruby_tokens(field:)
 	  props = Array(@properties)
 	  return [] if props.empty?
@@ -274,16 +220,13 @@ def current_ruby_orientation
 	  end
 	end
 
-  # Return possible Old National Pronunciation ruby tokens for the current
-  # character family.
-  #
-  # We prefer current -> base -> variants, matching how other "best value"
-  # helpers behave.
+  # Return possible Old National Pronunciation ruby tokens for the exact
+  # current character. Pronunciations never inherit across variant families.
   def laoguoyin_ruby_tokens
     props = Array(@properties)
     return [] if props.empty?
 
-    preferred_ids = [@character&.id, @base_character&.id, *@variant_characters&.map(&:id)].compact
+    preferred_ids = [@character&.id].compact
 
 
     scheme = respond_to?(:current_laoguoyin_scheme) ? current_laoguoyin_scheme : :latin
