@@ -11,7 +11,8 @@ module Api
     # Creates a ticket and returns the key ONCE.
     def create
       return create_corpus_submission if params[:kind].to_s == "corpus_submission"
-      return create_derived_tradition_submission if params[:kind].to_s == "derived_tradition_submission"
+      return create_annotation_system_submission if %w[annotation_system_submission derived_tradition_submission].include?(params[:kind].to_s)
+      return create_companion_material_submission if params[:kind].to_s == "companion_material_submission"
 
       ticket_key = EditTickets::KeyManager.generate_plaintext
       salt = EditTickets::KeyManager.generate_salt
@@ -362,7 +363,8 @@ module Api
 
     # GET /api/tickets/:public_id/evidence/:attachment_id
     def download_evidence
-      attachment = @ticket.evidence_files.attachments.find(params[:attachment_id])
+      attachment = (@ticket.evidence_files.attachments.to_a + @ticket.material_files.attachments.to_a).find { |item| item.id.to_s == params[:attachment_id].to_s }
+      raise ActiveRecord::RecordNotFound if attachment.nil?
       blob = attachment.blob
 
       send_data(
@@ -377,6 +379,185 @@ module Api
 
     private
 
+
+    def create_companion_material_submission
+      source = params[:source].presence || "corpus_viewer"
+      base_path = params[:base_path].to_s.strip.sub(%r{\A/+}, "")
+      material_type = params[:material_type].to_s.strip
+      allowed_types = %w[translation gallery_image exemplar_manuscript variant_text]
+
+      return render(json: { ok: false, error: "base_path is required" }, status: 422) if base_path.blank?
+      return render(json: { ok: false, error: "invalid material type" }, status: 422) unless allowed_types.include?(material_type)
+      return render(json: { ok: false, error: "Choose the source page, not a derived or translation file" }, status: 422) if companion_segment_in_path?(base_path)
+
+      corpus_root = ticket_corpus_root
+      base_abs = safe_join_under_root(corpus_root, base_path)
+      return render(json: { ok: false, error: "Source page not found" }, status: 422) unless File.file?(base_abs)
+
+      material_metadata = EditTickets::MaterialMetadata.build!(params)
+      material_links = EditTickets::SubmissionExtras.evidence_links(params[:material_links])
+      evidence_links = EditTickets::SubmissionExtras.evidence_links(params[:evidence_links])
+      material_uploads = Array(params[:material_files]).compact
+      evidence_uploads = Array(params[:evidence_files]).compact
+      EditTickets::SubmissionExtras.validate_uploads!(material_uploads + evidence_uploads)
+
+      if material_uploads.any? && !%w[gallery_image exemplar_manuscript].include?(material_type)
+        return render(json: { ok: false, error: "Material files are only accepted for gallery images and exemplar manuscripts; use evidence files for supporting documents" }, status: 422)
+      end
+
+      invalid_material_upload = material_uploads.find do |upload|
+        !%w[.png .jpg .jpeg .pdf].include?(File.extname(upload.original_filename.to_s).downcase)
+      end
+      if invalid_material_upload
+        return render(json: { ok: false, error: "Permanent material files must be PNG, JPEG, or PDF" }, status: 422)
+      end
+
+      material_id = SecureRandom.hex(12)
+      material_title = params[:material_title].to_s.strip
+      related_path = params[:related_path].to_s.strip.sub(%r{\A/+}, "")
+      language_code = nil
+      language_name = nil
+      translator_name = nil
+      target_rel = nil
+      diff_text = nil
+      proposed_text = nil
+
+      case material_type
+      when "translation"
+        language_code = params[:language_code].to_s.strip.downcase
+        return render(json: { ok: false, error: "Choose a valid ISO 639-3 language" }, status: 422) unless IsoLanguageRegistry.include?(language_code)
+
+        language_name = IsoLanguageRegistry.name_for(language_code)
+        translator_name = params[:translator_name].to_s.strip.presence
+        proposed_text = normalize_ticket_text(params[:body_text].to_s)
+        return render(json: { ok: false, error: "translation text is required" }, status: 422) if proposed_text.strip.blank?
+
+        dir = File.dirname(base_path)
+        dir = nil if dir == "."
+        base = File.basename(base_path)
+        target_rel = [dir, "translation", language_code, material_id, base].reject(&:blank?).join("/")
+        diff_text = unified_diff_via_git("", proposed_text, "corpus/#{target_rel}")
+      when "gallery_image", "exemplar_manuscript"
+        if material_uploads.empty? && material_links.empty?
+          return render(json: { ok: false, error: "Add at least one material file or material link" }, status: 422)
+        end
+      when "variant_text"
+        if related_path.blank? && material_links.empty?
+          return render(json: { ok: false, error: "Add a related corpus path or material link" }, status: 422)
+        end
+
+        if related_path.present?
+          return render(json: { ok: false, error: "A text cannot be its own variant" }, status: 422) if related_path == base_path
+          return render(json: { ok: false, error: "Choose a source corpus text, not a translation or annotation-system file" }, status: 422) if companion_segment_in_path?(related_path)
+
+          related_abs = safe_join_under_root(corpus_root, related_path)
+          return render(json: { ok: false, error: "Related corpus file not found" }, status: 422) unless File.file?(related_abs)
+        end
+      end
+
+      diff_metadata = {
+        "kind" => "companion_material_submission",
+        "material_id" => material_id,
+        "material_type" => material_type,
+        "source_path" => base_path,
+        "title" => material_title.presence,
+        "links" => material_links,
+        "related_path" => related_path.presence,
+        "language_code" => language_code,
+        "language_name" => language_name,
+        "translator_name" => translator_name,
+        "target_path" => target_rel,
+        "material_file_count" => material_uploads.length
+      }.merge(material_metadata).compact
+
+      if diff_text.present?
+        validated = EditTickets::UnifiedDiffValidator.validate!(diff_text, allowed_roots: ["corpus/"])
+        diff_metadata = validated.merge(diff_metadata)
+      end
+
+      ticket_key = EditTickets::KeyManager.generate_plaintext
+      salt = EditTickets::KeyManager.generate_salt
+      digest = EditTickets::KeyManager.digest(ticket_key, salt)
+
+      ticket = EditTicket.new(
+        public_id: SecureRandom.hex(12),
+        title: params[:title].to_s.presence || companion_ticket_title(material_type, language_name),
+        summary: params[:summary].to_s.presence || material_metadata["note"],
+        reasoning: params[:reasoning].to_s,
+        source: source,
+        target_ref: "#{source}/#{base_path}#companion",
+        status: "open",
+        evidence_links: evidence_links,
+        key_salt: salt,
+        key_digest: digest,
+        key_generated_at: Time.current,
+        diff_metadata: diff_metadata
+      )
+
+      ticket.tags = EditTickets::Tagger.tags_for(
+        source: ticket.source,
+        target_ref: ticket.target_ref,
+        has_diff: diff_text.present?,
+        has_uploads: material_uploads.any? || evidence_uploads.any?,
+        link_count: evidence_links.size + material_links.size,
+        material_type: material_type
+      )
+
+      ticket.transaction do
+        ticket.save!
+
+        if diff_text.present?
+          ticket.evidence_files.attach([
+            {
+              io: StringIO.new(diff_text),
+              filename: "translation_#{language_code}_#{material_id}.diff",
+              content_type: "text/x-diff"
+            },
+            {
+              io: StringIO.new(proposed_text),
+              filename: "translation_#{language_code}_#{material_id}.proposed.txt",
+              content_type: "text/plain"
+            }
+          ])
+        end
+
+        EditTickets::SubmissionExtras.attach_uploads!(ticket, evidence_uploads)
+        material_uploads.each { |upload| ticket.material_files.attach(upload) }
+        EditTickets::SubmissionExtras.create_contact!(ticket, params[:contact])
+        EditTickets::AuditLogger.log!(
+          ticket: ticket,
+          action: "ticket_created",
+          actor_type: "submitter",
+          metadata: {
+            source: ticket.source,
+            target_ref: ticket.target_ref,
+            tags: ticket.tags,
+            kind: "companion_material_submission",
+            material_type: material_type
+          }
+        )
+      end
+
+      render json: {
+        ok: true,
+        ticket_id: ticket.public_id,
+        ticket: ticket_json(ticket),
+        ticket_key: ticket_key,
+        warning: "This key is shown once. Save it now (copy it, download a txt, or explicitly store it on this device)."
+      }, status: 201
+    rescue EditTickets::MaterialMetadata::ValidationError,
+           EditTickets::SubmissionExtras::ValidationError,
+           EditTickets::UnifiedDiffValidator::ValidationError => e
+      render json: { ok: false, error: e.message }, status: 422
+    rescue ActiveRecord::RecordInvalid => e
+      render json: { ok: false, error: e.record.errors.full_messages.join(", ") }, status: 422
+    rescue SecurityError
+      render json: { ok: false, error: "Bad path" }, status: 400
+    rescue => e
+      Rails.logger.error("[create_companion_material_submission] #{e.class}: #{e.message}")
+      Rails.logger.error(e.backtrace.join("\n"))
+      render json: { ok: false, error: "internal error" }, status: 500
+    end
 
     def create_corpus_submission
       source = params[:source].presence || "corpus_submission"
@@ -595,19 +776,20 @@ module Api
       render json: { ok: false, error: "internal error" }, status: 500
     end
 
-    def create_derived_tradition_submission
+    def create_annotation_system_submission
       source = params[:source].presence || "corpus_viewer"
       base_path = params[:base_path].to_s.strip.sub(%r{\A/+}, "")
-      tradition = permitted_text_type(params[:tradition])
+      annotation_system = permitted_annotation_system(params[:annotation_system].presence || params[:tradition])
       body_text = params[:body_text].to_s
       generation_mode = params[:generation_mode].to_s.presence || "manual"
+      material_metadata = EditTickets::MaterialMetadata.build!(params)
       links = EditTickets::SubmissionExtras.evidence_links(params[:evidence_links])
       uploads = EditTickets::SubmissionExtras.validate_uploads!(params[:evidence_files])
 
       return render(json: { ok: false, error: "base_path is required" }, status: 422) if base_path.blank?
-      return render(json: { ok: false, error: "tradition must be kanbun, hanmun, or hanvan" }, status: 422) unless tradition.present? && tradition != "source"
+      return render(json: { ok: false, error: "annotation_system must be kanbun, hanmun, or hanvan" }, status: 422) unless annotation_system.present?
       return render(json: { ok: false, error: "body_text is required" }, status: 422) if body_text.strip.blank?
-      return render(json: { ok: false, error: "Choose a source page, not an existing tradition file" }, status: 422) if tradition_segment_in_path?(base_path)
+      return render(json: { ok: false, error: "Choose a source page, not an existing annotation-system file" }, status: 422) if annotation_system_segment_in_path?(base_path)
 
       corpus_root = Rails.configuration.x.corpus_root
       corpus_root = Rails.root.join("..", "corpus") if corpus_root.to_s.strip.empty?
@@ -615,7 +797,7 @@ module Api
       base_abs = safe_join_under_root(corpus_root, base_path)
       return render(json: { ok: false, error: "Source page not found" }, status: 422) unless File.file?(base_abs)
 
-      target_rel = derived_target_rel_path(base_path, tradition)
+      target_rel = annotation_system_target_rel_path(base_path, annotation_system)
       target_abs = safe_join_under_root(corpus_root, target_rel)
 
       old_text = File.file?(target_abs) ? File.binread(target_abs).force_encoding("UTF-8").scrub : ""
@@ -636,7 +818,7 @@ module Api
 
       ticket = EditTicket.new(
         public_id: SecureRandom.hex(12),
-        title: params[:title].to_s.presence || "Create 漢文: #{tradition.titleize}",
+        title: params[:title].to_s.presence || "Create annotation system: #{annotation_system.titleize}",
         summary: params[:summary].to_s,
         reasoning: params[:reasoning].to_s,
         source: source,
@@ -647,13 +829,13 @@ module Api
         key_digest: digest,
         key_generated_at: Time.current,
         diff_metadata: metadata.merge(
-          "kind" => "derived_tradition_submission",
+          "kind" => "annotation_system_submission",
           "target_path" => target_rel,
           "source_path" => base_path,
-          "tradition" => tradition,
+          "annotation_system" => annotation_system,
           "preserve_front_matter" => false,
           "generation_mode" => generation_mode
-        )
+        ).merge(material_metadata)
       )
 
       ticket.tags = EditTickets::Tagger.tags_for(
@@ -661,7 +843,8 @@ module Api
         target_ref: ticket.target_ref,
         has_diff: true,
         has_uploads: true,
-        link_count: links.size
+        link_count: links.size,
+        material_type: "annotation_system"
       )
 
       ticket.transaction do
@@ -669,12 +852,12 @@ module Api
         ticket.evidence_files.attach([
           {
             io: StringIO.new(diff_text),
-            filename: "#{tradition}_#{File.basename(base_path)}.diff",
+            filename: "#{annotation_system}_#{File.basename(base_path)}.diff",
             content_type: "text/x-diff"
           },
           {
             io: StringIO.new(new_text),
-            filename: "#{tradition}_#{File.basename(base_path, ".txt")}.proposed.txt",
+            filename: "#{annotation_system}_#{File.basename(base_path, ".txt")}.proposed.txt",
             content_type: "text/plain"
           }
         ])
@@ -684,7 +867,7 @@ module Api
           ticket: ticket,
           action: "ticket_created",
           actor_type: "submitter",
-          metadata: { source: ticket.source, target_ref: ticket.target_ref, tags: ticket.tags, kind: "derived_tradition_submission", tradition: tradition, generation_mode: generation_mode }
+          metadata: { source: ticket.source, target_ref: ticket.target_ref, tags: ticket.tags, kind: "annotation_system_submission", annotation_system: annotation_system, generation_mode: generation_mode }
         )
       end
 
@@ -695,7 +878,8 @@ module Api
         ticket_key: ticket_key,
         warning: "This key is shown once. Save it now (copy it, download a txt, or explicitly store it on this device)."
       }, status: 201
-    rescue EditTickets::SubmissionExtras::ValidationError,
+    rescue EditTickets::MaterialMetadata::ValidationError,
+           EditTickets::SubmissionExtras::ValidationError,
            EditTickets::UnifiedDiffValidator::ValidationError => e
       render json: { ok: false, error: e.message }, status: 422
     rescue ActiveRecord::RecordInvalid => e
@@ -703,7 +887,7 @@ module Api
     rescue SecurityError
       render json: { ok: false, error: "Bad path" }, status: 400
     rescue => e
-      Rails.logger.error("[create_derived_tradition_submission] #{e.class}: #{e.message}")
+      Rails.logger.error("[create_annotation_system_submission] #{e.class}: #{e.message}")
       Rails.logger.error(e.backtrace.join("\n"))
       render json: { ok: false, error: "internal error" }, status: 500
     end
@@ -776,14 +960,38 @@ module Api
       allowed.include?(candidate) ? candidate : nil
     end
 
-    def tradition_segment_in_path?(relative_path)
+    def permitted_annotation_system(value)
+      candidate = value.to_s.strip.downcase
+      %w[kanbun hanmun hanvan].include?(candidate) ? candidate : nil
+    end
+
+    def annotation_system_segment_in_path?(relative_path)
       relative_path.to_s.split("/").any? { |segment| %w[kanbun hanmun hanvan].include?(segment) }
     end
 
-    def derived_target_rel_path(base_path, tradition)
+    def companion_segment_in_path?(relative_path)
+      relative_path.to_s.split("/").any? { |segment| %w[kanbun hanmun hanvan translation].include?(segment) }
+    end
+
+    def companion_ticket_title(material_type, language_name)
+      case material_type
+      when "translation"
+        "Translation#{language_name.present? ? " — #{language_name}" : ""}"
+      when "gallery_image"
+        "Image gallery submission"
+      when "exemplar_manuscript"
+        "Exemplar manuscript submission"
+      when "variant_text"
+        "Variant text connection"
+      else
+        "Companion material submission"
+      end
+    end
+
+    def annotation_system_target_rel_path(base_path, annotation_system)
       dir = File.dirname(base_path.to_s)
       base = File.basename(base_path.to_s)
-      [dir, tradition, base].reject(&:blank?).join("/")
+      [dir, annotation_system, base].reject(&:blank?).join("/")
     end
 
     def load_moderator_token_if_present
@@ -846,6 +1054,14 @@ module Api
         created_at: ticket.created_at,
         updated_at: ticket.updated_at,
         evidence_files: ticket.evidence_files.attachments.map { |att|
+          {
+            attachment_id: att.id,
+            filename: att.blob.filename.to_s,
+            content_type: att.blob.content_type,
+            byte_size: att.blob.byte_size
+          }
+        },
+        material_files: ticket.material_files.attachments.map { |att|
           {
             attachment_id: att.id,
             filename: att.blob.filename.to_s,

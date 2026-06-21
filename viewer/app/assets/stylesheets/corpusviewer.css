@@ -26,12 +26,27 @@
   flex: 1 1 auto;
 }
 
+.corpus-toolbar > .corpus-btn,
+.corpus-toolbar > .corpus-toolbar-control-group,
+.corpus-toolbar > .corpus-toolbar-traditions,
+.corpus-toolbar > .corpus-toolbar-editing {
+  flex: 0 0 auto;
+}
+
+/* Toolbar actions should share one visual height. Larger editing controls are
+   useful inside forms, but they make the reader toolbar look misaligned. */
+.corpus-toolbar .corpus-btn-editing:not(.corpus-btn-review-submit) {
+  min-height: 0;
+  padding: 6px 10px;
+  font-size: inherit;
+}
+
 .corpus-toolbar-editing {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   align-items: center;
-  margin-left: auto;
+  margin-left: 0;
 }
 
 @media (max-width: 900px) {
@@ -1204,5 +1219,243 @@ html.dark-mode .cv-annotate-note {
 
   .cv-kanbun-keyboard {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* ---------- Companion materials and ambiguous-character flags ---------- */
+:root {
+  --ne-ambiguous: #7c3aed;
+}
+
+.corpus-textflow .ne-ambiguous-character {
+  text-decoration: underline;
+  text-decoration-color: var(--ne-ambiguous);
+  text-decoration-style: dotted;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 0.18em;
+  background: color-mix(in srgb, var(--ne-ambiguous) 10%, transparent);
+}
+
+html.cv-annotations-off .corpus-textflow .ne-ambiguous-character {
+  text-decoration: none !important;
+  background: transparent !important;
+}
+
+.cv-annotate-popover button.cv-annotate-kind[data-kind="ambiguous_character"] {
+  border-color: var(--ne-ambiguous);
+}
+
+.cv-material-provenance {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem 1rem;
+  border: 1px solid rgba(0,0,0,0.14);
+  border-radius: 10px;
+  padding: 0.75rem;
+}
+
+.cv-material-provenance legend {
+  font-weight: 700;
+  padding: 0 0.3rem;
+}
+
+.cv-material-provenance .cv-hint {
+  flex-basis: 100%;
+}
+
+.cv-companion-submission-panel {
+  max-width: 980px;
+}
+
+.corpus-toolbar-control-group {
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.corpus-toolbar-control-group > .corpus-btn {
+  margin: 0;
+}
+
+.corpus-toolbar-control-group__trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border-radius: 4px 0 0 4px;
+}
+
+.corpus-toolbar-control-group__trigger[aria-expanded="true"] {
+  background: #e9e9e9;
+  border-color: #999;
+}
+
+.corpus-toolbar-control-group__trigger:disabled {
+  cursor: default;
+  opacity: 0.62;
+}
+
+.corpus-toolbar-control-group__add {
+  min-width: 2.2rem;
+  margin-left: -1px !important;
+  padding-left: 0.65rem;
+  padding-right: 0.65rem;
+  border-radius: 0 4px 4px 0;
+  font-weight: 700;
+}
+
+.corpus-toolbar-control-group--single .corpus-toolbar-control-group__trigger {
+  border-radius: 4px;
+}
+
+.corpus-toolbar-control-group__chevron {
+  font-size: 0.75em;
+  line-height: 1;
+}
+
+.corpus-toolbar-traditions {
+  display: inline-flex;
+  align-items: center;
+}
+
+.cv-toolbar-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.4rem);
+  z-index: 50;
+  min-width: 15rem;
+  max-width: min(32rem, 90vw);
+  max-height: 24rem;
+  overflow: auto;
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.65rem;
+  border: 1px solid rgba(0,0,0,0.18);
+  border-radius: 10px;
+  background: var(--cv-toolbar-bg, #fff);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.16);
+}
+
+.cv-toolbar-menu[hidden] {
+  display: none;
+}
+
+.cv-toolbar-menu .corpus-btn {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: left;
+  text-decoration: none;
+  font: inherit;
+  color: inherit;
+}
+
+.cv-toolbar-menu .is-active {
+  font-weight: 700;
+  background: rgba(0,0,0,0.12);
+}
+
+.cv-companion-materials {
+  margin: 1rem 0 0;
+  border: 1px solid rgba(0,0,0,0.14);
+  border-radius: 12px;
+  padding: 0.85rem;
+  background: rgba(255,255,255,0.92);
+}
+
+.cv-companion-materials__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.cv-companion-materials__header h2 {
+  margin: 0;
+}
+
+.cv-companion-section {
+  margin-top: 0.8rem;
+}
+
+.cv-companion-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0.8rem;
+  margin-top: 0.65rem;
+}
+
+.cv-companion-card {
+  border: 1px solid rgba(0,0,0,0.12);
+  border-radius: 10px;
+  padding: 0.75rem;
+  background: #fff;
+}
+
+.cv-companion-card h3 {
+  margin: 0 0 0.35rem;
+}
+
+.cv-companion-byline,
+.cv-companion-edition,
+.cv-companion-language-code {
+  margin: 0.25rem 0;
+}
+
+.cv-companion-language-code {
+  font-size: 0.84rem;
+  opacity: 0.72;
+}
+
+.corpus-reader.is-translation-view .corpus-toolbar {
+  gap: 0.55rem;
+}
+
+.cv-companion-media-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.65rem;
+}
+
+.cv-companion-media-list figure {
+  margin: 0;
+}
+
+.cv-companion-media-list img {
+  display: block;
+  width: 100%;
+  max-height: 28rem;
+  object-fit: contain;
+  border: 1px solid rgba(0,0,0,0.12);
+  border-radius: 8px;
+  background: rgba(0,0,0,0.03);
+}
+
+.cv-companion-media-list figcaption,
+.cv-companion-provenance {
+  font-size: 0.88rem;
+  opacity: 0.78;
+}
+
+.cv-ai-badge {
+  display: inline-block;
+  margin: 0 0 0.4rem;
+  padding: 0.12rem 0.45rem;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+@media (max-width: 760px) {
+  .cv-toolbar-menu {
+    position: fixed;
+    left: 5vw;
+    right: 5vw;
+    top: 20vh;
+    max-width: none;
   }
 }

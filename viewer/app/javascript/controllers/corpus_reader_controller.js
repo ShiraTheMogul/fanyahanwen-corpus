@@ -10,6 +10,7 @@ import { Controller } from "@hotwired/stimulus"
 // State is stored in localStorage so it persists across page loads.
 export default class extends Controller {
     static targets = ["viewbox", "content", "verticalBtn", "themeBtn", "punctBtn", "punctColorBtn", "judouBtn", "judouMenuBtn", "punctPresetBtn", "punctMenuBtn", "judouMenu", "punctOverlay", "punctPanel", "punctOkBtn", "punctCloseBtn", "verticalQuoteFormsChk"]
+    static values = { translationMode: Boolean, translationId: String }
 
 
   connect() {
@@ -535,8 +536,10 @@ export default class extends Controller {
   let jpRepeatMark = allowed.has(rawMark) ? rawMark : "none"
   if (jpRepeatMark === "none" && getBool("corpus.jpRepeatParticle", false)) jpRepeatMark = "kanji"
 
+  const orientationKey = this._orientationStorageKey()
+
   return {
-    vertical: getBool("corpus.vertical", true),
+    vertical: getBool(orientationKey, this.hasTranslationModeValue && this.translationModeValue ? false : true),
     vflow: getStr("corpus.verticalFlow", "rl"),
     theme: getStr("corpus.theme", "bamboo"),
     strip: getBool("corpus.stripPunct", false),
@@ -550,8 +553,17 @@ export default class extends Controller {
   }
 }
 
+  _orientationStorageKey() {
+    if (this.hasTranslationModeValue && this.translationModeValue) {
+      const id = this.hasTranslationIdValue ? this.translationIdValue.toString().trim() : ""
+      return id ? `corpus.translation.vertical.${id}` : "corpus.translation.vertical"
+    }
+    return "corpus.vertical"
+  }
+
   _saveState() {
-  window.localStorage.setItem("corpus.vertical", this._state.vertical ? "1" : "0")
+  window.localStorage.setItem(this._orientationStorageKey(), this._state.vertical ? "1" : "0")
+  if (this.hasTranslationModeValue && this.translationModeValue) return
   window.localStorage.setItem("corpus.verticalFlow", (this._state.vflow || "rl").toString())
   window.localStorage.setItem("corpus.theme", (this._state.theme || "bamboo").toString())
   window.localStorage.setItem("corpus.stripPunct", this._state.strip ? "1" : "0")
@@ -630,6 +642,7 @@ export default class extends Controller {
 
   _apply() {
     const { vertical, vflow, theme, strip, fontSizePx } = this._state
+    const translationMode = this.hasTranslationModeValue && this.translationModeValue
 
     const scrollState = this._captureScrollState()
 
@@ -647,11 +660,14 @@ export default class extends Controller {
     // Orientation class on the content.
     this.contentTarget.classList.toggle("is-vertical", vertical)
     this.contentTarget.classList.toggle("is-vflow-lr", vertical && (vflow === "lr"))
-    this.contentTarget.classList.toggle("judou-on", vertical && !!this._state.judouOn && !!this._state.judouPunctOn)
-    this.contentTarget.classList.toggle("judou-underline-on", vertical && !!this._state.judouOn && !!this._state.judouUnderlineOn)
+    this.contentTarget.classList.toggle("judou-on", !translationMode && vertical && !!this._state.judouOn && !!this._state.judouPunctOn)
+    this.contentTarget.classList.toggle("judou-underline-on", !translationMode && vertical && !!this._state.judouOn && !!this._state.judouUnderlineOn)
 
     // Buttons are optional targets.
-    if (this.hasVerticalBtnTarget) this.verticalBtnTarget.setAttribute("aria-pressed", vertical ? "true" : "false")
+    if (this.hasVerticalBtnTarget) {
+      this.verticalBtnTarget.setAttribute("aria-pressed", vertical ? "true" : "false")
+      if (translationMode) this.verticalBtnTarget.textContent = `Orientation: ${vertical ? "Vertical" : "Horizontal"}`
+    }
     if (this.hasThemeBtnTarget) {
       this.themeBtnTarget.setAttribute("aria-pressed", "true")
       const t = (theme || "bamboo").toString()
@@ -680,9 +696,9 @@ export default class extends Controller {
     // - "Source" = untouched
     // - "Strip" = get rid of punctuation
     // - Others = display-only conversion of punctuation + quotes
-    const preset = (this._punct?.preset || "source").toString()
+    const preset = translationMode ? "source" : (this._punct?.preset || "source").toString()
 
-    if (strip || preset === "strip") {
+    if (!translationMode && (strip || preset === "strip")) {
       this.contentTarget.innerHTML = this._getStrippedHTML()
     } else if (preset === "source") {
       this.contentTarget.innerHTML = this._originalHTML
@@ -690,10 +706,11 @@ export default class extends Controller {
       this.contentTarget.innerHTML = this._convertPunctuationHTML(this._originalHTML, preset)
     }
 
-    this._applyRepeatMark()
-    this._applyJudouColor()
-    this._applyJudouWrappers()
-
+    if (!translationMode) {
+      this._applyRepeatMark()
+      this._applyJudouColor()
+      this._applyJudouWrappers()
+    }
 
     this._updateRubySpacing()
 
@@ -707,6 +724,7 @@ export default class extends Controller {
         this.viewboxTarget.scrollLeft = wantRight ? this.viewboxTarget.scrollWidth : 0
       }
       this._justToggledOrientation = false
+      window.dispatchEvent(new CustomEvent("corpus-reader-applied"))
     })
 
   }
@@ -910,6 +928,7 @@ _applyRepeatMark() {
 // Right-click → toggle ruby for the clicked character (on-demand mode).
   // This avoids pre-wrapping the whole text (fast) while still letting learners reveal readings.
   onContextMenu(event) {
+    if (this.hasTranslationModeValue && this.translationModeValue) return
     if (!this._state?.rubyOnDemand) return
     if (!event) return
     // Only handle the actual context menu event (right click / long press).

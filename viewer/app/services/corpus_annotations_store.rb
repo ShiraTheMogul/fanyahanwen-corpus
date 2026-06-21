@@ -5,6 +5,8 @@ require "time"
   # frozen_string_literal: true
 
   class CorpusAnnotationsStore
+    KINDS = %w[title person place office ambiguous_character].freeze
+
     def initialize(root:, rel_text_path:)
       @fs = CorpusFs.new(root: root)
       @rel_text_path = rel_text_path.to_s

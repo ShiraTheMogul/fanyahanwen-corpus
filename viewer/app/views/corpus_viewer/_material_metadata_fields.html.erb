@@ -1,0 +1,41 @@
+<% stimulus_controller = local_assigns.fetch(:stimulus_controller) %>
+<% include_author_provided = local_assigns.fetch(:include_author_provided, false) %>
+
+<div class="cv-form-row">
+  <label>Material note <span aria-hidden="true">*</span></label>
+  <textarea class="cv-textarea" rows="3" required
+            placeholder="Explain what this material is, who made it, and how it relates to the corpus text."
+            data-<%= stimulus_controller %>-target="materialNote"></textarea>
+</div>
+
+<fieldset class="cv-form-row cv-material-provenance">
+  <legend>Provenance <span aria-hidden="true">*</span></legend>
+  <div class="cv-hint">Choose every label that applies. At least one is required.</div>
+  <label><input type="checkbox" value="user_made" data-ticket-provenance /> User-made</label>
+  <label><input type="checkbox" value="public_domain" data-ticket-provenance /> Public domain</label>
+  <label><input type="checkbox" value="historical_source" data-ticket-provenance /> Historical source or manuscript</label>
+  <% if include_author_provided %>
+    <label data-companion-material-ticket-target="authorProvidedRow">
+      <input type="checkbox" value="author_provided" data-ticket-provenance
+             data-companion-material-ticket-target="authorProvided" />
+      Author-provided: the work's author supplied this translation
+    </label>
+  <% end %>
+</fieldset>
+
+<div class="cv-form-row">
+  <label>References</label>
+  <textarea class="cv-textarea" rows="3"
+            placeholder="Give references in any clear, consistent style."
+            data-<%= stimulus_controller %>-target="references"></textarea>
+  <div class="cv-hint">A formal citation style is welcome but not required.</div>
+</div>
+
+<details class="cv-form-row">
+  <summary>AI assistance disclosure</summary>
+  <label><input type="checkbox" data-<%= stimulus_controller %>-target="aiAssisted" /> AI-assisted</label>
+  <label>What was assisted?</label>
+  <textarea class="cv-textarea" rows="2"
+            placeholder="Name the system and describe what it did."
+            data-<%= stimulus_controller %>-target="aiDetails"></textarea>
+</details>

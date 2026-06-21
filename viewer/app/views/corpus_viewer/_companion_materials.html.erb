@@ -1,0 +1,157 @@
+<% materials = Array(@companion_materials) %>
+<% unless materials.empty? %>
+  <%
+    provenance_labels = {
+      "user_made" => "User-made",
+      "public_domain" => "Public domain",
+      "historical_source" => "Historical source/manuscript",
+      "author_provided" => "Author-provided"
+    }
+    translation_materials = materials.select { |item| item["type"] == "translation" }
+    gallery_materials = materials.select { |item| item["type"] == "gallery_image" }
+    manuscript_materials = materials.select { |item| item["type"] == "exemplar_manuscript" }
+    variant_materials = materials.select { |item| item["type"] == "variant_text" }
+    note_materials = materials.select { |item| %w[annotation_system derived_tradition annotations].include?(item["type"]) }
+  %>
+
+  <section class="cv-companion-materials">
+    <div class="cv-companion-materials__header">
+      <h2>Companion materials</h2>
+      <% if materials.any? { |item| item["ai_assisted"] == true } %>
+        <label class="cv-companion-ai-toggle">
+          <input type="checkbox" data-companion-materials-target="hideAi" data-action="change->companion-materials#toggleAi" />
+          Hide AI-assisted material
+        </label>
+      <% end %>
+    </div>
+
+    <% if translation_materials.present? %>
+      <details class="cv-companion-section" open>
+        <summary><strong>Translations</strong> (<%= translation_materials.length %>)</summary>
+        <div class="cv-companion-grid">
+          <% translation_materials.each do |item| %>
+            <% language_label = item["language_name"].presence || item["language_code"].to_s.upcase %>
+            <article class="cv-companion-card"
+                     data-companion-materials-target="material"
+                     data-ai-assisted="<%= item["ai_assisted"] == true %>">
+              <h3><%= language_label %></h3>
+              <% if item["translator_name"].present? %>
+                <p class="cv-companion-byline"><strong>Translator:</strong> <%= item["translator_name"] %></p>
+              <% elsif Array(item["provenance"]).include?("author_provided") %>
+                <p class="cv-companion-byline"><strong>Translator:</strong> Author-provided</p>
+              <% end %>
+              <% if item["title"].present? %>
+                <p class="cv-companion-edition"><strong>Edition/label:</strong> <%= item["title"] %></p>
+              <% end %>
+              <p class="cv-companion-language-code">ISO 639-3: <%= item["language_code"].to_s %></p>
+              <% if item["ai_assisted"] == true %><span class="cv-ai-badge">AI-assisted</span><% end %>
+              <% if item["ai_assisted"] == true && item["ai_details"].present? %>
+                <details><summary>AI assistance</summary><%= simple_format(item["ai_details"]) %></details>
+              <% end %>
+              <%= simple_format(item["note"].to_s) %>
+              <p><%= link_to "Read this translation", corpus_viewer_path(@source_rel_path.split("/"), format: nil, translation: item["id"]) %></p>
+              <p class="cv-companion-provenance"><%= Array(item["provenance"]).filter_map { |value| provenance_labels[value] }.join(" · ") %></p>
+              <% if item["references"].present? %>
+                <details><summary>References</summary><%= simple_format(item["references"]) %></details>
+              <% end %>
+            </article>
+          <% end %>
+        </div>
+      </details>
+    <% end %>
+
+    <% [["Image gallery", gallery_materials], ["Exemplar manuscripts", manuscript_materials]].each do |heading, rows| %>
+      <% next if rows.empty? %>
+      <details class="cv-companion-section" open>
+        <summary><strong><%= heading %></strong> (<%= rows.length %>)</summary>
+        <div class="cv-companion-grid">
+          <% rows.each do |item| %>
+            <article class="cv-companion-card"
+                     data-companion-materials-target="material"
+                     data-ai-assisted="<%= item["ai_assisted"] == true %>">
+              <h3><%= item["title"].presence || heading.singularize %></h3>
+              <% if item["ai_assisted"] == true %><span class="cv-ai-badge">AI-assisted</span><% end %>
+              <% if item["ai_assisted"] == true && item["ai_details"].present? %>
+                <details><summary>AI assistance</summary><%= simple_format(item["ai_details"]) %></details>
+              <% end %>
+              <%= simple_format(item["note"].to_s) %>
+              <div class="cv-companion-media-list">
+                <% Array(item["files"]).each do |file| %>
+                  <% if file["content_type"].to_s.start_with?("image/") %>
+                    <figure>
+                      <%= image_tag file["url"], alt: item["title"].presence || file["filename"], loading: "lazy" %>
+                      <figcaption><%= file["filename"] %></figcaption>
+                    </figure>
+                  <% else %>
+                    <p><%= link_to file["filename"], file["url"], download: file["filename"], rel: "noopener" %></p>
+                  <% end %>
+                <% end %>
+              </div>
+              <% Array(item["links"]).each do |link| %>
+                <p><%= link_to link, link, target: "_blank", rel: "noopener noreferrer" %></p>
+              <% end %>
+              <p class="cv-companion-provenance"><%= Array(item["provenance"]).filter_map { |value| provenance_labels[value] }.join(" · ") %></p>
+              <% if item["references"].present? %>
+                <details><summary>References</summary><%= simple_format(item["references"]) %></details>
+              <% end %>
+            </article>
+          <% end %>
+        </div>
+      </details>
+    <% end %>
+
+    <% if variant_materials.present? %>
+      <details class="cv-companion-section" open>
+        <summary><strong>Variant texts</strong> (<%= variant_materials.length %>)</summary>
+        <% variant_materials.each do |item| %>
+          <article class="cv-companion-card"
+                   data-companion-materials-target="material"
+                   data-ai-assisted="<%= item["ai_assisted"] == true %>">
+            <h3><%= item["title"].presence || "Variant text" %></h3>
+            <% if item["ai_assisted"] == true %><span class="cv-ai-badge">AI-assisted</span><% end %>
+              <% if item["ai_assisted"] == true && item["ai_details"].present? %>
+                <details><summary>AI assistance</summary><%= simple_format(item["ai_details"]) %></details>
+              <% end %>
+            <%= simple_format(item["note"].to_s) %>
+            <% if item["related_path"].present? %>
+              <p><%= link_to "Open related corpus text", corpus_viewer_path(item["related_path"].split("/"), format: nil) %></p>
+            <% end %>
+            <% Array(item["links"]).each do |link| %>
+              <p><%= link_to link, link, target: "_blank", rel: "noopener noreferrer" %></p>
+            <% end %>
+            <p class="cv-companion-provenance"><%= Array(item["provenance"]).filter_map { |value| provenance_labels[value] }.join(" · ") %></p>
+            <% if item["references"].present? %>
+              <details><summary>References</summary><%= simple_format(item["references"]) %></details>
+            <% end %>
+          </article>
+        <% end %>
+      </details>
+    <% end %>
+
+    <% if note_materials.present? %>
+      <details class="cv-companion-section">
+        <summary><strong>Annotation systems and annotation notes</strong> (<%= note_materials.length %>)</summary>
+        <% note_materials.each do |item| %>
+          <article class="cv-companion-card"
+                   data-companion-materials-target="material"
+                   data-ai-assisted="<%= item["ai_assisted"] == true %>">
+            <h3><%= item["title"].presence || item["type"].humanize %></h3>
+            <% if item["ai_assisted"] == true %><span class="cv-ai-badge">AI-assisted</span><% end %>
+              <% if item["ai_assisted"] == true && item["ai_details"].present? %>
+                <details><summary>AI assistance</summary><%= simple_format(item["ai_details"]) %></details>
+              <% end %>
+            <%= simple_format(item["note"].to_s) %>
+            <% if item["target_path"].present? %>
+              <% link_label = %w[annotation_system derived_tradition].include?(item["type"]) ? "Open annotation-system text" : "Open annotated text" %>
+              <p><%= link_to link_label, corpus_viewer_path(item["target_path"].split("/"), format: nil) %></p>
+            <% end %>
+            <p class="cv-companion-provenance"><%= Array(item["provenance"]).filter_map { |value| provenance_labels[value] }.join(" · ") %></p>
+            <% if item["references"].present? %>
+              <details><summary>References</summary><%= simple_format(item["references"]) %></details>
+            <% end %>
+          </article>
+        <% end %>
+      </details>
+    <% end %>
+  </section>
+<% end %>

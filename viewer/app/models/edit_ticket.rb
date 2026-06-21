@@ -1,5 +1,6 @@
 class EditTicket < ApplicationRecord
   has_many_attached :evidence_files
+  has_many_attached :material_files
 
   has_one :ticket_contact, dependent: :destroy
   has_many :ticket_audit_events, dependent: :destroy

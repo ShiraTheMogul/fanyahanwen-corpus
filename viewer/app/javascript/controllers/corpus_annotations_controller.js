@@ -11,7 +11,9 @@ export default class extends Controller {
   static get values() {
     return {
       path: String,
-      url: String
+      sourcePath: String,
+      url: String,
+      translationMode: Boolean
     }
   }
 
@@ -24,15 +26,16 @@ export default class extends Controller {
     this._judouOn = true
     this._judouUnderlineOn = true
 
+    this._translationMode = this.hasTranslationModeValue && this.translationModeValue
     this._viewEnabled = this._loadBool("corpus.annot.view.v1", true)
     this._notesEnabled = this._loadBool("corpus.annot.notes.v1", false)
-    this._annotateEnabled = this._loadBool("corpus.annot.edit.v1", false)
+    this._annotateEnabled = this._translationMode ? false : this._loadBool("corpus.annot.edit.v1", false)
 
     this._palette = this._loadPalette()
 
     this._syncButtons()
     this._syncAnnotateModeClass()
-    this._bindAnnotateSelection()
+    if (!this._translationMode) this._bindAnnotateSelection()
 
     this._onReaderOptionsBound = (ev) => this._onReaderOptions(ev)
     window.addEventListener("corpus-reader-options", this._onReaderOptionsBound)
@@ -41,7 +44,8 @@ export default class extends Controller {
     this._onReaderAppliedBound = () => this._applyAll()
     window.addEventListener("corpus-reader-applied", this._onReaderAppliedBound)
 
-    this._loadFromServer()
+    const loadPromise = this._translationMode ? Promise.resolve() : this._loadFromServer()
+    loadPromise
       .then(() => this._applyAll())
       .catch((e) => console.warn("[corpus-annotations] load failed", e))
 
@@ -111,30 +115,72 @@ export default class extends Controller {
     const title = this._ticketTitleInput ? this._ticketTitleInput.value.trim() : "Annotation edit"
     const summary = this._ticketSummaryInput ? this._ticketSummaryInput.value.trim() : ""
     const reasoning = this._ticketReasoningInput ? this._ticketReasoningInput.value.trim() : ""
+    const materialNote = this._ticketMaterialNoteInput ? this._ticketMaterialNoteInput.value.trim() : ""
+    const provenance = this._ticketProvenanceInputs
+      ? Array.from(this._ticketProvenanceInputs).filter((input) => input.checked).map((input) => input.value)
+      : []
+    const references = this._ticketReferencesInput ? this._ticketReferencesInput.value.trim() : ""
+    const aiAssisted = !!(this._ticketAiAssistedInput && this._ticketAiAssistedInput.checked)
+    const aiDetails = this._ticketAiDetailsInput ? this._ticketAiDetailsInput.value.trim() : ""
     const previewItems = this._buildPreviewItems()
+
+    if (!materialNote) {
+      this._setTicketStatus("Material note is required.")
+      return
+    }
+    if (provenance.length === 0) {
+      this._setTicketStatus("Choose at least one provenance label.")
+      return
+    }
+    if (aiAssisted && !aiDetails) {
+      this._setTicketStatus("Describe the AI assistance.")
+      return
+    }
+    if (this._items.some((item) => item.kind === "ambiguous_character" && !String(item.note || "").trim())) {
+      this._setTicketStatus("Ambiguous/disputed character annotations require a note.")
+      return
+    }
 
     this._setTicketStatus("Creating ticket…")
     this._setTicketResult("", "")
 
     try {
+      const form = new FormData()
+      form.append("path", this.pathValue)
+      form.append("source_path", this.hasSourcePathValue ? this.sourcePathValue : this.pathValue)
+      form.append("source", "corpus_viewer")
+      form.append("title", title || "Annotation edit")
+      form.append("summary", summary)
+      form.append("reasoning", reasoning)
+      form.append("annotations", JSON.stringify({ version: 1, items: this._items }))
+      form.append("preview_items", JSON.stringify(previewItems))
+      form.append("material_note", materialNote)
+      form.append("provenance", JSON.stringify(provenance))
+      form.append("references", references)
+      form.append("ai_assisted", aiAssisted ? "1" : "0")
+      form.append("ai_details", aiDetails)
+      form.append("evidence_links", JSON.stringify(this._ticketEvidenceLinks()))
+
+      const contact = this._ticketContact()
+      if (contact) {
+        form.append("contact[name]", contact.name || "")
+        form.append("contact[email]", contact.email || "")
+        form.append("contact[notes]", contact.notes || "")
+      }
+
+      if (this._ticketEvidenceFilesInput) {
+        for (const file of Array.from(this._ticketEvidenceFilesInput.files || [])) {
+          form.append("evidence_files[]", file)
+        }
+      }
+
       const res = await fetch(this._endpoint(), {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           "Accept": "application/json",
           "X-CSRF-Token": this._csrfToken()
         },
-        body: JSON.stringify({
-          path: this.pathValue,
-          source: "corpus_viewer",
-          title: title || "Annotation edit",
-          summary,
-          reasoning,
-          annotations: { version: 1, items: this._items },
-          preview_items: previewItems,
-          evidence_links: this._ticketEvidenceLinks(),
-          contact: this._ticketContact()
-        })
+        body: form
       })
 
       const data = await res.json().catch(() => null)
@@ -303,9 +349,10 @@ export default class extends Controller {
         <button type="button" data-kind="person" class="cv-annotate-kind">丨Person</button>
         <button type="button" data-kind="place" class="cv-annotate-kind">‖Place</button>
         <button type="button" data-kind="office" class="cv-annotate-kind">﹏Office</button>
+        <button type="button" data-kind="ambiguous_character" class="cv-annotate-kind">? Ambiguous/disputed</button>
       </div>
       <div class="cv-annotate-row">
-        <textarea class="cv-annotate-note" rows="3" placeholder="Note (optional)" aria-label="Annotation note"></textarea>
+        <textarea class="cv-annotate-note" rows="3" placeholder="Note (required for ambiguous/disputed characters)" aria-label="Annotation note"></textarea>
       </div>
       <div class="cv-annotate-row cv-annotate-actions">
         <button type="button" class="cv-annotate-cancel">Cancel</button>
@@ -337,6 +384,14 @@ export default class extends Controller {
 
         const noteEl = pop.querySelector(".cv-annotate-note")
         const note = noteEl ? String(noteEl.value || "").trim() : ""
+        if (kind === "ambiguous_character" && !note) {
+          if (noteEl) {
+            noteEl.setCustomValidity("Explain why the character is ambiguous or disputed.")
+            noteEl.reportValidity()
+            noteEl.setCustomValidity("")
+          }
+          return
+        }
 
         this._items.push({ start: bounds.start, end: bounds.end, kind: kind, note: note })
         this._dirty = true
@@ -589,12 +644,22 @@ export default class extends Controller {
     if (!this._contentEl) return
 
     this._clearAllHighlights()
-    if (this._judouOn && this._judouUnderlineOn) this._applyHighlights()
+    if (!this._translationMode && this._judouOn && this._judouUnderlineOn) this._applyHighlights()
+    this._applyInlineFootnotes()
 
     if (this._notesEnabled) this._renderNotesPanel()
     else this._removeNotesPanel()
 
     if (this._ticketPanel && !this._ticketPanel.hidden) this._renderTicketPreview()
+  }
+
+
+  _applyInlineFootnotes() {
+    if (!this._translationMode || !this._contentEl) return
+
+    const hidden = !this._notesEnabled
+    const blocks = Array.from(this._contentEl.querySelectorAll(".corpus-note-block"))
+    blocks.forEach((block) => block.classList.toggle("notes-collapsed", hidden))
   }
 
   _spans() {
@@ -605,7 +670,7 @@ export default class extends Controller {
     const spans = this._spans()
     for (let i = 0; i < spans.length; i++) {
       const el = spans[i]
-      el.classList.remove("ne-title", "ne-person", "ne-place", "ne-office", "ne-auto-title", "ne-note-anchor")
+      el.classList.remove("ne-title", "ne-person", "ne-place", "ne-office", "ne-ambiguous-character", "ne-auto-title", "ne-note-anchor")
       el.removeAttribute("data-ne-note")
     }
   }
@@ -653,6 +718,7 @@ export default class extends Controller {
     if (kind === "person") return "ne-person"
     if (kind === "place") return "ne-place"
     if (kind === "office") return "ne-office"
+    if (kind === "ambiguous_character") return "ne-ambiguous-character"
     return null
   }
 
@@ -848,7 +914,10 @@ export default class extends Controller {
     }
 
     setLabel('[data-action*="corpus-annotations#toggleView"]', "Annotations: On", "Annotations: Off", (this._judouOn && this._viewEnabled))
-    setLabel('[data-action*="corpus-annotations#toggleNotes"]', "Notes: On", "Notes: Off", (this._judouOn && this._notesEnabled))
+    const notesOn = this._translationMode ? this._notesEnabled : (this._judouOn && this._notesEnabled)
+    const notesOnText = this._translationMode ? "Footnotes: On" : "Notes: On"
+    const notesOffText = this._translationMode ? "Footnotes: Off" : "Notes: Off"
+    setLabel('[data-action*="corpus-annotations#toggleNotes"]', notesOnText, notesOffText, notesOn)
     setLabel('[data-action*="corpus-annotations#toggleAnnotate"]', "Annotate: On", "Annotate: Off", this._annotateEnabled)
 
     const saveBtn = this.element.querySelector('[data-action*="corpus-annotations#save"]')
@@ -897,6 +966,27 @@ export default class extends Controller {
             <textarea class="cv-textarea" rows="3" placeholder="Why should this annotation be kept?" data-role="ticket-reasoning"></textarea>
           </div>
           <div class="cv-form-row">
+            <label>Material note *</label>
+            <textarea class="cv-textarea" rows="3" required placeholder="Explain what this annotation set is and how it should be used." data-role="ticket-material-note"></textarea>
+          </div>
+          <fieldset class="cv-form-row cv-material-provenance">
+            <legend>Provenance *</legend>
+            <div class="cv-hint">Choose every label that applies.</div>
+            <label><input type="checkbox" value="user_made" data-role="ticket-provenance" /> User-made</label>
+            <label><input type="checkbox" value="public_domain" data-role="ticket-provenance" /> Public domain</label>
+            <label><input type="checkbox" value="historical_source" data-role="ticket-provenance" /> Historical source or manuscript</label>
+          </fieldset>
+          <div class="cv-form-row">
+            <label>References</label>
+            <textarea class="cv-textarea" rows="3" placeholder="Any clear, consistent citation style is acceptable." data-role="ticket-references"></textarea>
+          </div>
+          <details class="cv-form-row">
+            <summary>AI assistance disclosure</summary>
+            <label><input type="checkbox" data-role="ticket-ai-assisted" /> AI-assisted</label>
+            <label>What was assisted?</label>
+            <textarea class="cv-textarea" rows="2" placeholder="Name the system and describe what it did." data-role="ticket-ai-details"></textarea>
+          </details>
+          <div class="cv-form-row">
             <div class="cv-annotation-preview-headline">
               <label>Preview</label>
               <div class="cv-form-actions">
@@ -908,6 +998,11 @@ export default class extends Controller {
           <div class="cv-form-row">
             <label>Evidence links</label>
             <textarea rows="3" data-role="ticket-evidence-links" placeholder="One http(s) link per line"></textarea>
+          </div>
+          <div class="cv-form-row">
+            <label>Evidence files</label>
+            <input type="file" multiple accept="application/pdf,text/plain,image/png,image/jpeg" data-role="ticket-evidence-files" />
+            <div class="cv-hint">Up to 10 files and 20 MB for this ticket. HTML, XHTML, and SVG are rejected.</div>
           </div>
           <details class="cv-form-row">
             <summary>Optional contact details</summary>
@@ -959,6 +1054,11 @@ export default class extends Controller {
     this._ticketTitleInput = panel.querySelector('[data-role="ticket-title"]')
     this._ticketSummaryInput = panel.querySelector('[data-role="ticket-summary"]')
     this._ticketReasoningInput = panel.querySelector('[data-role="ticket-reasoning"]')
+    this._ticketMaterialNoteInput = panel.querySelector('[data-role="ticket-material-note"]')
+    this._ticketProvenanceInputs = panel.querySelectorAll('[data-role="ticket-provenance"]')
+    this._ticketReferencesInput = panel.querySelector('[data-role="ticket-references"]')
+    this._ticketAiAssistedInput = panel.querySelector('[data-role="ticket-ai-assisted"]')
+    this._ticketAiDetailsInput = panel.querySelector('[data-role="ticket-ai-details"]')
     this._ticketPreviewList = panel.querySelector('[data-role="ticket-preview-list"]')
     this._ticketStatusEl = panel.querySelector('[data-role="ticket-status"]')
     this._ticketIdValue = panel.querySelector('[data-role="ticket-id"]')
@@ -968,6 +1068,7 @@ export default class extends Controller {
     this._openTicketLink = panel.querySelector('[data-role="open-ticket-link"]')
     this._storeOnDeviceCheckbox = panel.querySelector('[data-role="store-on-device"]')
     this._ticketEvidenceLinksInput = panel.querySelector('[data-role="ticket-evidence-links"]')
+    this._ticketEvidenceFilesInput = panel.querySelector('[data-role="ticket-evidence-files"]')
     this._ticketContactNameInput = panel.querySelector('[data-role="ticket-contact-name"]')
     this._ticketContactEmailInput = panel.querySelector('[data-role="ticket-contact-email"]')
     this._ticketContactNotesInput = panel.querySelector('[data-role="ticket-contact-notes"]')
@@ -1044,7 +1145,7 @@ export default class extends Controller {
 
 
   _kindOptionsHtml(selectedKind) {
-    const kinds = ["title", "person", "place", "office"]
+    const kinds = ["title", "person", "place", "office", "ambiguous_character"]
     return kinds.map((kind) => `<option value="${kind}"${kind === selectedKind ? " selected" : ""}>${this._humanKind(kind)}</option>`).join("")
   }
 
@@ -1129,7 +1230,7 @@ export default class extends Controller {
       item.start = Math.min(item.start, max - 1)
       item.end = Math.min(Math.max(item.end, item.start + 1), max)
     }
-    item.kind = ["title", "person", "place", "office"].includes(item.kind) ? item.kind : "person"
+    item.kind = ["title", "person", "place", "office", "ambiguous_character"].includes(item.kind) ? item.kind : "person"
     item.note = String(item.note || '')
   }
 
@@ -1182,6 +1283,7 @@ export default class extends Controller {
     if (kind === "person") return "Person"
     if (kind === "place") return "Place"
     if (kind === "office") return "Office"
+    if (kind === "ambiguous_character") return "Ambiguous/disputed character"
     return kind || "Annotation"
   }
 

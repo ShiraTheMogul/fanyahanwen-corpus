@@ -340,7 +340,13 @@ export default class extends Controller {
     }
 
     this.evidenceTarget.textContent = ""
-    const files = Array.isArray(ticket.evidence_files) ? ticket.evidence_files : []
+    const evidenceFiles = Array.isArray(ticket.evidence_files)
+      ? ticket.evidence_files.map((file) => ({ ...file, file_group: "Evidence" }))
+      : []
+    const materialFiles = Array.isArray(ticket.material_files)
+      ? ticket.material_files.map((file) => ({ ...file, file_group: "Submitted material" }))
+      : []
+    const files = [...materialFiles, ...evidenceFiles]
     if (files.length === 0) {
       const p = document.createElement("p")
       p.className = "cv-muted"
@@ -351,7 +357,7 @@ export default class extends Controller {
       for (const file of files) {
         const li = document.createElement("li")
         const a = document.createElement("a")
-        a.textContent = file.filename || "download"
+        a.textContent = `${file.file_group}: ${file.filename || "download"}`
         a.href = `/api/tickets/${encodeURIComponent(ticket.id)}/evidence/${encodeURIComponent(file.attachment_id)}?ticket_key=${encodeURIComponent(this.currentTicketKey)}`
         li.appendChild(a)
         ul.appendChild(li)

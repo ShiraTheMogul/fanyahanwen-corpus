@@ -3,11 +3,11 @@
 module CorpusTextHelper
   include PhoneticizationHelper
 
-  def corpus_text_with_optional_ruby(text)
+  def corpus_text_with_optional_ruby(text, allow_ruby: true)
   s = text.to_s
   # Always render indexed spans so client-side annotations can map selections
   # back to corpus character offsets.
-  if ruby_enabled_in_session?
+  if allow_ruby && ruby_enabled_in_session?
     corpus_text_with_ruby_indexed(s)
   else
     corpus_text_without_ruby_indexed(s)

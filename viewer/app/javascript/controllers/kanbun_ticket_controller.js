@@ -1,14 +1,15 @@
 import { Controller } from "@hotwired/stimulus"
-import { appendSubmissionExtras, maybeStoreTicketOnDevice } from "controllers/ticket_submission_helpers"
+import { appendMaterialMetadata, appendSubmissionExtras, materialMetadataFrom, maybeStoreTicketOnDevice } from "controllers/ticket_submission_helpers"
 
-const TRADITIONS = ["kanbun", "hanmun", "hanvan"]
+const ANNOTATION_SYSTEMS = ["kanbun", "hanmun", "hanvan"]
 
 export default class extends Controller {
   static targets = [
     "panel", "status", "ticketId", "ticketKey", "copyKeyBtn", "downloadKeyBtn", "openTicketLink",
-    "storeOnDevice", "tradition", "summary", "reasoning", "derived", "sourceSeed",
+    "storeOnDevice", "annotationSystem", "summary", "reasoning", "annotationText", "sourceSeed",
     "evidenceLinks", "contactName", "contactEmail", "contactNotes", "uploads",
-    "kanbunSeed", "hanmunSeed", "hanvanSeed", "aiNotice"
+    "kanbunSeed", "hanmunSeed", "hanvanSeed", "aiNotice",
+    "materialNote", "references", "aiAssisted", "aiDetails"
   ]
 
   static values = {
@@ -18,31 +19,31 @@ export default class extends Controller {
 
   connect() {
     this._lastDefault = ""
-    this.applyTraditionDefaults()
+    this.applyAnnotationSystemDefaults()
   }
 
   toggle() {
     if (!this.hasPanelTarget) return
     this.panelTarget.classList.toggle("hidden")
     if (!this.panelTarget.classList.contains("hidden")) {
-      this.applyTraditionDefaults()
+      this.applyAnnotationSystemDefaults()
       this._syncAiNotice()
     }
   }
 
-  traditionChanged() {
-    this.applyTraditionDefaults(true)
+  annotationSystemChanged() {
+    this.applyAnnotationSystemDefaults(true)
     this._syncAiNotice()
   }
 
-  applyTraditionDefaults(forceReplace = false) {
-    if (!this.hasDerivedTarget || !this.hasTraditionTarget) return
+  applyAnnotationSystemDefaults(forceReplace = false) {
+    if (!this.hasAnnotationTextTarget || !this.hasAnnotationSystemTarget) return
 
-    const nextDefault = this._defaultBodyFor(this.traditionTarget.value)
-    const currentValue = this.derivedTarget.value || ""
+    const nextDefault = this._defaultBodyFor(this.annotationSystemTarget.value)
+    const currentValue = this.annotationTextTarget.value || ""
 
     if (forceReplace || !currentValue || currentValue === this._lastDefault) {
-      this.derivedTarget.value = nextDefault
+      this.annotationTextTarget.value = nextDefault
     }
 
     this._lastDefault = nextDefault
@@ -50,10 +51,10 @@ export default class extends Controller {
 
   insertSymbol(event) {
     event.preventDefault()
-    if (!this.hasDerivedTarget) return
+    if (!this.hasAnnotationTextTarget) return
 
     const symbol = event.currentTarget.dataset.symbol || ""
-    const el = this.derivedTarget
+    const el = this.annotationTextTarget
     const start = el.selectionStart || 0
     const end = el.selectionEnd || 0
     const before = el.value.slice(0, start)
@@ -68,34 +69,49 @@ export default class extends Controller {
   async submit(event) {
     event.preventDefault()
 
-    const tradition = this.hasTraditionTarget ? this.traditionTarget.value : "kanbun"
-    if (!TRADITIONS.includes(tradition)) {
-      this._setStatus("Error: invalid tradition.")
+    const annotationSystem = this.hasAnnotationSystemTarget ? this.annotationSystemTarget.value : "kanbun"
+    if (!ANNOTATION_SYSTEMS.includes(annotationSystem)) {
+      this._setStatus("Error: invalid annotation system.")
       return
     }
 
-    const bodyText = this.hasDerivedTarget ? this.derivedTarget.value : ""
+    const bodyText = this.hasAnnotationTextTarget ? this.annotationTextTarget.value : ""
     if (!bodyText.trim()) {
-      this._setStatus("Error: derived text is empty.")
+      this._setStatus("Error: annotation-system text is empty.")
+      return
+    }
+
+    const materialMetadata = materialMetadataFrom(this)
+    if (!materialMetadata.material_note) {
+      this._setStatus("Error: material note is required.")
+      return
+    }
+    if (materialMetadata.provenance.length === 0) {
+      this._setStatus("Error: choose at least one provenance label.")
+      return
+    }
+    if (materialMetadata.ai_assisted && !materialMetadata.ai_details) {
+      this._setStatus("Error: describe the AI assistance.")
       return
     }
 
     const titleMap = {
-      kanbun: "Create 漢文: Kanbun",
-      hanmun: "Create 漢文: Hanmun",
-      hanvan: "Create 漢文: Hanvan",
+      kanbun: "Kanbun annotation-system submission",
+      hanmun: "Hanmun annotation-system submission",
+      hanvan: "Hanvan annotation-system submission",
     }
 
     const form = new FormData()
-    form.append("kind", "derived_tradition_submission")
+    form.append("kind", "annotation_system_submission")
     form.append("source", this.sourceValue || "corpus_viewer")
     form.append("base_path", this.targetPathValue || "")
-    form.append("tradition", tradition)
-    form.append("title", titleMap[tradition] || "Create 漢文")
+    form.append("annotation_system", annotationSystem)
+    form.append("title", titleMap[annotationSystem] || "Annotation-system submission")
     form.append("summary", this.hasSummaryTarget ? this.summaryTarget.value : "")
     form.append("reasoning", this.hasReasoningTarget ? this.reasoningTarget.value : "")
     form.append("body_text", bodyText)
-    form.append("generation_mode", "manual")
+    form.append("generation_mode", materialMetadata.ai_assisted ? "ai_assisted" : "manual")
+    appendMaterialMetadata(form, this)
     appendSubmissionExtras(form, this)
 
     this._setStatus("Submitting ticket…")
@@ -125,8 +141,8 @@ export default class extends Controller {
 
       try {
         maybeStoreTicketOnDevice(this, ticketId, ticketKey, {
-          title: titleMap[tradition] || "Create 漢文",
-          source: tradition,
+          title: titleMap[annotationSystem] || "Annotation-system submission",
+          source: annotationSystem,
         })
       } catch (_error) {}
     } catch (e) {
@@ -155,8 +171,8 @@ export default class extends Controller {
     if (!id || !key) return
 
     const target = this.targetPathValue || ""
-    const tradition = this.hasTraditionTarget ? this.traditionTarget.value : ""
-    const content = `TICKET ID: ${id}\nTICKET KEY: ${key}\nSOURCE PAGE: ${target}\nTRADITION: ${tradition}\n`
+    const annotationSystem = this.hasAnnotationSystemTarget ? this.annotationSystemTarget.value : ""
+    const content = `TICKET ID: ${id}\nTICKET KEY: ${key}\nSOURCE PAGE: ${target}\nANNOTATION SYSTEM: ${annotationSystem}\n`
     const blob = new Blob([content], { type: "text/plain;charset=utf-8" })
     const url = URL.createObjectURL(blob)
     const a = document.createElement("a")
@@ -168,15 +184,15 @@ export default class extends Controller {
     URL.revokeObjectURL(url)
   }
 
-  _defaultBodyFor(tradition) {
-    const seedTarget = this._seedTargetFor(tradition)
+  _defaultBodyFor(annotationSystem) {
+    const seedTarget = this._seedTargetFor(annotationSystem)
     const seedValue = seedTarget ? seedTarget.value : ""
     if (seedValue && seedValue.trim()) return seedValue
     return this.hasSourceSeedTarget ? this.sourceSeedTarget.value : ""
   }
 
-  _seedTargetFor(tradition) {
-    switch (tradition) {
+  _seedTargetFor(annotationSystem) {
+    switch (annotationSystem) {
       case "kanbun":
         return this.hasKanbunSeedTarget ? this.kanbunSeedTarget : null
       case "hanmun":
@@ -189,8 +205,8 @@ export default class extends Controller {
   }
 
   _syncAiNotice() {
-    if (!this.hasAiNoticeTarget || !this.hasTraditionTarget) return
-    this.aiNoticeTarget.hidden = this.traditionTarget.value === "kanbun"
+    if (!this.hasAiNoticeTarget || !this.hasAnnotationSystemTarget) return
+    this.aiNoticeTarget.hidden = this.annotationSystemTarget.value === "kanbun"
   }
 
   _csrfToken() {

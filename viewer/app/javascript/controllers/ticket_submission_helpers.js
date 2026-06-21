@@ -14,6 +14,30 @@ export function contactFrom(controller) {
   return Object.values(contact).some((value) => value.length > 0) ? contact : null
 }
 
+
+export function materialMetadataFrom(controller) {
+  const provenance = Array.from(controller.element.querySelectorAll('[data-ticket-provenance]'))
+    .filter((input) => input.checked)
+    .map((input) => input.value)
+
+  return {
+    material_note: valueFromTarget(controller, "materialNote").trim(),
+    provenance,
+    references: valueFromTarget(controller, "references").trim(),
+    ai_assisted: controller.hasAiAssistedTarget ? controller.aiAssistedTarget.checked : false,
+    ai_details: valueFromTarget(controller, "aiDetails").trim(),
+  }
+}
+
+export function appendMaterialMetadata(formData, controller) {
+  const metadata = materialMetadataFrom(controller)
+  formData.append("material_note", metadata.material_note)
+  formData.append("provenance", JSON.stringify(metadata.provenance))
+  formData.append("references", metadata.references)
+  formData.append("ai_assisted", metadata.ai_assisted ? "1" : "0")
+  formData.append("ai_details", metadata.ai_details)
+}
+
 export function appendSubmissionExtras(formData, controller) {
   formData.append("evidence_links", JSON.stringify(evidenceLinksFrom(controller)))
 

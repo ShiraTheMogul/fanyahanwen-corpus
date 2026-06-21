@@ -2,9 +2,8 @@
 
 <h1><%= @ticket.title.presence || "Ticket" %></h1>
 
-<% rel_target = @ticket.target_ref.to_s.sub(/\A#{Regexp.escape(@ticket.source.to_s)}\//, "").sub(/#\d+\z/, "") %>
-<% if @ticket.source.to_s == "corpus_viewer" && rel_target.present? %>
-  <p><%= link_to "Open target in corpus viewer", corpus_viewer_path(path: rel_target) %></p>
+<% if @corpus_viewer_path.present? %>
+  <p><%= link_to "Open target in corpus viewer", corpus_viewer_path(path: @corpus_viewer_path) %></p>
 <% end %>
 
 <p>
@@ -51,6 +50,8 @@
 <% annotation_items = Array(annotation_meta.dig("proposed_annotations", "items")) %>
 <% annotation_ticket = annotation_meta["kind"] == "annotations_edit" %>
 <% corpus_submission_ticket = annotation_meta["kind"] == "corpus_submission" %>
+<% companion_ticket = annotation_meta["kind"] == "companion_material_submission" %>
+<% annotation_system_ticket = %w[annotation_system_submission derived_tradition_submission].include?(annotation_meta["kind"]) %>
 
 <h2>Actions</h2>
 
@@ -73,7 +74,7 @@
                 <label>
                   Kind
                   <select name="annotation_items[][kind]">
-                    <% [["title", "Title"], ["person", "Person"], ["place", "Place"], ["office", "Office"]].each do |kind_value, label| %>
+                    <% [["title", "Title"], ["person", "Person"], ["place", "Place"], ["office", "Office"], ["ambiguous_character", "Ambiguous/disputed character"]].each do |kind_value, label| %>
                       <option value="<%= kind_value %>" <%= "selected" if item["kind"].to_s == kind_value %>><%= label %></option>
                     <% end %>
                   </select>
@@ -192,6 +193,42 @@
   <% end %>
 <% end %>
 
+<% if annotation_ticket || companion_ticket || annotation_system_ticket %>
+  <hr>
+  <h2>Material description</h2>
+  <p>
+    <strong>Type:</strong> <%= annotation_meta["material_type"].presence || annotation_meta["annotation_system"].presence || annotation_meta["tradition"].presence || (annotation_ticket ? "annotations" : "annotation system") %><br>
+    <strong>Note:</strong><br><%= simple_format(annotation_meta["note"].to_s) %>
+  </p>
+  <p><strong>Provenance:</strong> <%= Array(annotation_meta["provenance"]).join(", ") %></p>
+  <% if annotation_meta["references"].present? %>
+    <p><strong>References:</strong><br><%= simple_format(annotation_meta["references"].to_s) %></p>
+  <% end %>
+  <% if annotation_meta["ai_assisted"] == true %>
+    <p><strong>AI-assisted:</strong> yes<br><%= simple_format(annotation_meta["ai_details"].to_s) %></p>
+  <% end %>
+  <% if companion_ticket %>
+    <% if annotation_meta["language_code"].present? %><p><strong>Language:</strong> <%= annotation_meta["language_name"] %> [<%= annotation_meta["language_code"] %>]</p><% end %>
+    <% if annotation_meta["translator_name"].present? %><p><strong>Translator:</strong> <%= annotation_meta["translator_name"] %></p><% end %>
+    <% if annotation_meta["related_path"].present? %><p><strong>Related path:</strong> <code><%= annotation_meta["related_path"] %></code></p><% end %>
+    <% if Array(annotation_meta["links"]).present? %>
+      <h3>Material links</h3>
+      <ul><% Array(annotation_meta["links"]).each do |link| %><li><%= link_to link, link, target: "_blank", rel: "noopener noreferrer" %></li><% end %></ul>
+    <% end %>
+  <% end %>
+<% end %>
+
+<% if @material_attachments.present? %>
+  <hr>
+  <h2>Submitted material files</h2>
+  <p class="cv-hint">These remain ticket attachments until approval. Approval copies them into the permanent companion-material store.</p>
+  <ul>
+    <% @material_attachments.each do |att| %>
+      <li><%= att.blob.filename.to_s %> (<%= att.blob.content_type %>, <%= att.blob.byte_size %> bytes) — <%= link_to "download", rails_blob_path(att, disposition: "attachment") %></li>
+    <% end %>
+  </ul>
+<% end %>
+
 <hr>
 
 <h2>Evidence files</h2>
@@ -269,6 +306,7 @@
                   <option value="person" selected>Person</option>
                   <option value="place">Place</option>
                   <option value="office">Office</option>
+                  <option value="ambiguous_character">Ambiguous/disputed character</option>
                 </select>
               </label>
               <label>Start

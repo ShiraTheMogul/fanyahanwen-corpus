@@ -20,6 +20,7 @@ class TicketsController < ApplicationController
     @messages = @ticket.ticket_messages.order(created_at: :asc)
     @audit = @ticket.ticket_audit_events.order(created_at: :asc)
     @attachments = @ticket.evidence_files.attachments
+    @material_attachments = @ticket.material_files.attachments
     @diff_text = load_diff_text
     @corpus_viewer_path = corpus_viewer_target_path
     @contact = active_contact

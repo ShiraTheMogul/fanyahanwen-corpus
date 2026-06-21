@@ -15,6 +15,8 @@ module EditTickets
 
     def call
       return apply_annotation_ticket! if annotation_ticket?
+      return apply_companion_material_ticket! if companion_material_ticket?
+      return apply_annotation_system_ticket! if annotation_system_ticket?
 
       proposed = find_proposed_text_attachment
       return write_proposed_text!(proposed.blob.download) if proposed
@@ -50,6 +52,14 @@ module EditTickets
       metadata["kind"] == "annotations_edit"
     end
 
+    def companion_material_ticket?
+      metadata["kind"] == "companion_material_submission"
+    end
+
+    def annotation_system_ticket?
+      %w[annotation_system_submission derived_tradition_submission].include?(metadata["kind"])
+    end
+
     def apply_annotation_ticket!
       target_path = metadata["target_path"].to_s
       raise "Missing target_path for annotation ticket" if target_path.blank?
@@ -62,8 +72,87 @@ module EditTickets
       end
 
       CorpusAnnotationsStore.new(root: @corpus_root, rel_text_path: target_path).write(parsed)
+      record_companion_material!(
+        source_path: metadata["source_path"].presence || target_path,
+        type: "annotations",
+        title: @ticket.title,
+        target_path: target_path
+      )
     rescue JSON::ParserError => e
       raise "Invalid proposed annotations JSON: #{e.message}"
+    end
+
+    def apply_annotation_system_ticket!
+      proposed = find_proposed_text_attachment
+      raise "No proposed annotation-system text attachment found." if proposed.nil?
+
+      write_proposed_text!(proposed.blob.download)
+      record_companion_material!(
+        source_path: metadata["source_path"],
+        type: "annotation_system",
+        title: @ticket.title,
+        annotation_system: metadata["annotation_system"].presence || metadata["tradition"],
+        target_path: metadata["target_path"]
+      )
+    end
+
+    def apply_companion_material_ticket!
+      if metadata["material_type"] == "translation"
+        proposed = find_proposed_text_attachment
+        raise "No proposed translation attachment found." if proposed.nil?
+        write_proposed_text!(proposed.blob.download)
+      end
+
+      record_companion_material!(
+        source_path: metadata["source_path"],
+        type: metadata["material_type"],
+        title: metadata["title"].presence || @ticket.title,
+        language_code: metadata["language_code"],
+        language_name: metadata["language_name"],
+        translator_name: metadata["translator_name"],
+        target_path: metadata["target_path"],
+        related_path: metadata["related_path"],
+        attachments: @ticket.material_files.attachments
+      )
+
+      if metadata["material_type"] == "variant_text" && metadata["related_path"].present?
+        record_companion_material!(
+          source_path: metadata["related_path"],
+          type: "variant_text",
+          title: metadata["title"].presence || @ticket.title,
+          related_path: metadata["source_path"]
+        )
+      end
+    end
+
+    def record_companion_material!(source_path:, type:, title:, annotation_system: nil, language_code: nil, language_name: nil, translator_name: nil, target_path: nil, related_path: nil, attachments: [])
+      source_path = source_path.to_s
+      raise "Missing source_path for companion material" if source_path.blank?
+
+      material = {
+        "id" => metadata["material_id"].presence || @ticket.public_id,
+        "type" => type,
+        "title" => title,
+        "note" => metadata["note"].to_s,
+        "provenance" => Array(metadata["provenance"]),
+        "references" => metadata["references"],
+        "links" => Array(metadata["links"]).map(&:to_s).reject(&:blank?).uniq,
+        "evidence_links" => Array(@ticket.evidence_links).map(&:to_s).reject(&:blank?).uniq,
+        "language_code" => language_code,
+        "language_name" => language_name,
+        "translator_name" => translator_name,
+        "annotation_system" => annotation_system,
+        "target_path" => target_path,
+        "related_path" => related_path,
+        "ai_assisted" => metadata["ai_assisted"] == true,
+        "ai_details" => metadata["ai_details"],
+        "ticket_id" => @ticket.public_id
+      }
+
+      CorpusCompanionStore.new(source_path: source_path).append(
+        material: material,
+        attachments: attachments
+      )
     end
 
     def annotation_override_payload
@@ -75,13 +164,18 @@ module EditTickets
         next if end_idx <= start_idx
 
         kind = value_from(item, :kind).to_s
-        next if kind.blank?
+        next unless CorpusAnnotationsStore::KINDS.include?(kind)
+
+        note = value_from(item, :note).to_s.presence
+        if kind == "ambiguous_character" && note.blank?
+          raise "Ambiguous/disputed character annotations require a note."
+        end
 
         {
           "start" => start_idx,
           "end" => end_idx,
           "kind" => kind,
-          "note" => value_from(item, :note).to_s.presence
+          "note" => note
         }.compact
       end
 
@@ -133,6 +227,9 @@ module EditTickets
     end
 
     def extract_corpus_relative_path!
+      explicit = metadata["target_path"].to_s
+      return explicit if explicit.present?
+
       files = Array(metadata["files"]).map(&:to_s)
       path = files.first.to_s
       raise "Ticket has no diff_metadata files list" if path.blank?

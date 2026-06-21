@@ -1,3 +1,5 @@
+require "uri"
+
 module EditTickets
   class SubmissionExtras
     MAX_UPLOAD_FILES = 10
@@ -10,11 +12,16 @@ module EditTickets
       value = parse_json_if_needed(raw)
       values = value.is_a?(String) ? value.lines : Array(value)
 
-      values
+      links = values
         .flat_map { |item| item.to_s.lines }
         .map(&:strip)
         .reject(&:blank?)
         .uniq
+
+      invalid = links.find { |link| !http_url?(link) }
+      raise ValidationError, "links must use http:// or https://" if invalid
+
+      links
     rescue JSON::ParserError
       raise ValidationError, "invalid JSON in evidence_links"
     end
@@ -40,13 +47,13 @@ module EditTickets
       uploads = Array(raw_uploads).compact
 
       if uploads.length > MAX_UPLOAD_FILES
-        raise ValidationError, "too many evidence files (max #{MAX_UPLOAD_FILES})"
+        raise ValidationError, "too many uploaded files (max #{MAX_UPLOAD_FILES})"
       end
 
       total_bytes = uploads.sum { |upload| upload.size.to_i }
       if total_bytes > MAX_TOTAL_UPLOAD_BYTES
         max_mb = MAX_TOTAL_UPLOAD_BYTES / 1.megabyte
-        raise ValidationError, "evidence files are too large in total (max #{max_mb} MB)"
+        raise ValidationError, "uploaded files are too large for one ticket (max #{max_mb} MB)"
       end
 
       uploads.each { |upload| EditTickets::EvidenceValidator.validate!(upload) }
@@ -68,6 +75,14 @@ module EditTickets
         expires_at: CONTACT_RETENTION.from_now
       )
     end
+
+    def self.http_url?(value)
+      uri = URI.parse(value.to_s)
+      uri.is_a?(URI::HTTP) && uri.host.present?
+    rescue URI::InvalidURIError
+      false
+    end
+    private_class_method :http_url?
 
     def self.parse_json_if_needed(value)
       return JSON.parse(value) if value.is_a?(String) && value.strip.start_with?("[", "{")

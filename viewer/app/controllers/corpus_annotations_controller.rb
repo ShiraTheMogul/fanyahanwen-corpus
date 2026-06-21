@@ -25,6 +25,9 @@ class CorpusAnnotationsController < ApplicationController
     end
 
     payload = annotation_payload_from_params
+    source_path = params[:source_path].to_s.strip.sub(%r{\A/+}, "").presence || target_path
+    validate_source_path!(source_path)
+
     store = store_for_request
     existing = read_existing_annotations(store)
     proposed = { "version" => 1, "items" => payload["items"] }
@@ -41,6 +44,7 @@ class CorpusAnnotationsController < ApplicationController
     ).merge(
       "kind" => "annotations_edit",
       "target_path" => target_path,
+      "source_path" => source_path,
       "annotation_path" => "#{target_path}.annotations.json",
       "preview_items" => preview_items_from_params,
       "proposed_annotations" => proposed
@@ -51,7 +55,10 @@ class CorpusAnnotationsController < ApplicationController
     digest = EditTickets::KeyManager.digest(ticket_key, salt)
 
     source = params[:source].to_s.presence || "corpus_viewer"
+    material_metadata = EditTickets::MaterialMetadata.build!(params)
     links = EditTickets::SubmissionExtras.evidence_links(params[:evidence_links])
+    uploads = EditTickets::SubmissionExtras.validate_uploads!(params[:evidence_files])
+    metadata = metadata.merge(material_metadata)
     ticket = EditTicket.new(
       public_id: SecureRandom.hex(12),
       title: params[:title].to_s.presence || "Annotation edit",
@@ -72,7 +79,8 @@ class CorpusAnnotationsController < ApplicationController
       target_ref: ticket.target_ref,
       has_diff: true,
       has_uploads: true,
-      link_count: links.size
+      link_count: links.size,
+      material_type: "annotations"
     )
 
     ticket.transaction do
@@ -90,6 +98,7 @@ class CorpusAnnotationsController < ApplicationController
           content_type: "text/plain"
         }
       ])
+      EditTickets::SubmissionExtras.attach_uploads!(ticket, uploads)
       EditTickets::SubmissionExtras.create_contact!(ticket, params[:contact])
 
       EditTickets::AuditLogger.log!(
@@ -118,7 +127,10 @@ class CorpusAnnotationsController < ApplicationController
     }, status: :created
   rescue ActionController::ParameterMissing
     render json: { ok: false, error: "Missing annotations payload" }, status: :unprocessable_entity
-  rescue EditTickets::SubmissionExtras::ValidationError,
+  rescue JSON::ParserError
+    render json: { ok: false, error: "Invalid annotations payload" }, status: :unprocessable_entity
+  rescue EditTickets::MaterialMetadata::ValidationError,
+         EditTickets::SubmissionExtras::ValidationError,
          EditTickets::UnifiedDiffValidator::ValidationError => e
     render json: { ok: false, error: e.message }, status: :unprocessable_entity
   rescue ActiveRecord::RecordInvalid => e
@@ -130,7 +142,10 @@ class CorpusAnnotationsController < ApplicationController
   private
 
   def annotation_payload_from_params
-    payload = params.require(:annotations).permit(:version, items: [:start, :end, :kind, :note]).to_h
+    raw = params.require(:annotations)
+    raw = JSON.parse(raw) if raw.is_a?(String)
+    raw = ActionController::Parameters.new(raw) unless raw.respond_to?(:permit)
+    payload = raw.permit(:version, items: [:start, :end, :kind, :note]).to_h
 
     items = Array(payload["items"]).map do |item|
       start_idx = item["start"].to_i
@@ -143,7 +158,11 @@ class CorpusAnnotationsController < ApplicationController
         "kind" => item["kind"].to_s,
         "note" => item["note"].to_s.presence
       }.compact
-      next if normalized["kind"].blank?
+      next unless CorpusAnnotationsStore::KINDS.include?(normalized["kind"])
+
+      if normalized["kind"] == "ambiguous_character" && normalized["note"].blank?
+        raise EditTickets::MaterialMetadata::ValidationError, "Ambiguous/disputed character annotations require a note"
+      end
 
       normalized
     end.compact
@@ -188,11 +207,22 @@ class CorpusAnnotationsController < ApplicationController
   end
 
   def store_for_request
+    root = corpus_root
+    rel_path = params[:path].to_s
+    CorpusAnnotationsStore.new(root: root, rel_text_path: rel_path)
+  end
+
+  def validate_source_path!(source_path)
+    fs = CorpusFs.new(root: corpus_root)
+    absolute = fs.resolve(source_path)
+    raise SecurityError, "source path is not a corpus file" unless fs.file?(absolute)
+  end
+
+  def corpus_root
     root = Rails.configuration.x.corpus_root
     raise "Missing corpus_root (config/initializers/corpus.rb or ENV[CORPUS_ROOT])" if root.to_s.strip.empty?
 
-    rel_path = params[:path].to_s
-    CorpusAnnotationsStore.new(root: root, rel_text_path: rel_path)
+    root
   end
 
   def unified_diff_via_git(old_text, new_text, patch_path)

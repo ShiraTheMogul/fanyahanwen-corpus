@@ -4,7 +4,7 @@ class CorpusViewerController < ApplicationController
   include ApplicationHelper
   helper CorpusTextHelper
 
-  TRADITION_FOLDERS = %w[kanbun hanmun hanvan].freeze
+  ANNOTATION_SYSTEM_FOLDERS = %w[kanbun hanmun hanvan].freeze
 
   def show
     root = Rails.configuration.x.corpus_root
@@ -17,7 +17,7 @@ class CorpusViewerController < ApplicationController
 
     @rel_path = params[:path].to_s
     @abs_path = fs.resolve(@rel_path)
-    @requested_tradition = normalized_tradition_param(params[:tradition])
+    @requested_annotation_system = normalized_annotation_system_param(params[:annotation_system].presence || params[:tradition])
 
     if fs.directory?(@abs_path)
       @kind = :dir
@@ -28,26 +28,51 @@ class CorpusViewerController < ApplicationController
 
     if fs.file?(@abs_path)
       @kind = :file
-      @current_tradition_folder = tradition_folder_for(@rel_path)
-      @source_rel_path = source_rel_path_for(@rel_path, @current_tradition_folder)
+      direct_translation = translation_source_info(@rel_path)
+      @direct_translation_id = direct_translation && direct_translation[:material_id]
+      @current_annotation_system_folder = annotation_system_folder_for(@rel_path)
+      @source_rel_path = if direct_translation
+        direct_translation[:source_path]
+      else
+        source_rel_path_for(@rel_path, @current_annotation_system_folder)
+      end
       @source_abs_path = fs.resolve(@source_rel_path)
 
       source_raw = fs.read_text(@source_abs_path)
       @meta, @source_body = split_corpus_front_matter(source_raw)
 
-      @available_traditions = available_traditions_for(fs, @source_rel_path)
-      @derived_bodies = load_derived_bodies(fs, @available_traditions)
+      @available_annotation_systems = available_annotation_systems_for(fs, @source_rel_path)
+      @annotation_system_bodies = load_annotation_system_bodies(fs, @available_annotation_systems)
 
-      selected_tradition = selected_tradition_for_view
-      @display_tradition = selected_tradition
-      view_rel_path = selected_tradition.present? ? @available_traditions[selected_tradition] : @rel_path
+      companion_payload = CorpusCompanionStore.new(source_path: @source_rel_path).read
+      @companion_materials = Array(companion_payload["materials"])
+      @available_translations = available_translations_for(fs, @companion_materials)
+      @variant_materials = @companion_materials.select { |material| material["type"] == "variant_text" }
+      @annotation_system_materials = @companion_materials
+        .select { |material| %w[annotation_system derived_tradition].include?(material["type"]) && (material["annotation_system"].presence || material["tradition"]).present? }
+        .index_by { |material| material["annotation_system"].presence || material["tradition"] }
+
+      selected_annotation_system = selected_annotation_system_for_view
+      selected_translation = selected_annotation_system.present? ? nil : selected_translation_for_view
+      @display_annotation_system = selected_annotation_system
+      @display_translation = selected_translation
+
+      view_rel_path = if selected_annotation_system.present?
+        @available_annotation_systems[selected_annotation_system]
+      elsif selected_translation.present?
+        selected_translation["target_path"]
+      else
+        @rel_path
+      end
+
       @active_text_target_path = view_rel_path
       view_raw = fs.read_text(fs.resolve(view_rel_path))
       _view_meta, body = split_corpus_front_matter(view_raw)
 
       @raw_body = body
       @text = view_text(body)
-      @kanbun_editor_enabled = @current_tradition_folder.blank?
+      @annotation_system_editor_enabled = @current_annotation_system_folder.blank? && @display_translation.blank?
+      @companion_submission_enabled = @current_annotation_system_folder.blank? && @direct_translation_id.blank? && @display_translation.blank?
 
       render :show, formats: [:html]
       return
@@ -103,49 +128,80 @@ class CorpusViewerController < ApplicationController
     key.downcase.split("_").map(&:capitalize).join(" ")
   end
 
-  def normalized_tradition_param(value)
+  def normalized_annotation_system_param(value)
     tradition = value.to_s.strip.downcase
-    TRADITION_FOLDERS.include?(tradition) ? tradition : nil
+    ANNOTATION_SYSTEM_FOLDERS.include?(tradition) ? tradition : nil
   end
 
-  def tradition_folder_for(rel_path)
+  def annotation_system_folder_for(rel_path)
     dir_name = File.basename(File.dirname(rel_path.to_s))
-    TRADITION_FOLDERS.include?(dir_name) ? dir_name : nil
+    ANNOTATION_SYSTEM_FOLDERS.include?(dir_name) ? dir_name : nil
   end
 
-  def source_rel_path_for(rel_path, current_tradition_folder)
-    return rel_path.to_s if current_tradition_folder.blank?
+  def source_rel_path_for(rel_path, current_annotation_system_folder)
+    return rel_path.to_s if current_annotation_system_folder.blank?
 
-    rel_path.to_s.sub(%r{/#{Regexp.escape(current_tradition_folder)}/([^/]+)\z}, '/\1')
+    rel_path.to_s.sub(%r{/#{Regexp.escape(current_annotation_system_folder)}/([^/]+)\z}, '/\1')
   end
 
-  def derived_rel_path_for(source_rel_path, tradition)
+  def translation_source_info(rel_path)
+    match = rel_path.to_s.match(%r{\A(?:(?<dir>.+)/)?translation/(?<language>[a-z]{3})/(?<material_id>[^/]+)/(?<base>[^/]+)\z})
+    return nil unless match
+
+    {
+      source_path: [match[:dir], match[:base]].reject(&:blank?).join("/"),
+      material_id: match[:material_id]
+    }
+  end
+
+  def annotation_system_rel_path_for(source_rel_path, annotation_system)
     dir = File.dirname(source_rel_path.to_s)
     base = File.basename(source_rel_path.to_s)
-    [dir, tradition, base].reject(&:blank?).join('/')
+    [dir, annotation_system, base].reject(&:blank?).join('/')
   end
 
-  def available_traditions_for(fs, source_rel_path)
-    TRADITION_FOLDERS.each_with_object({}) do |tradition, memo|
-      rel = derived_rel_path_for(source_rel_path, tradition)
+  def available_annotation_systems_for(fs, source_rel_path)
+    ANNOTATION_SYSTEM_FOLDERS.each_with_object({}) do |annotation_system, memo|
+      rel = annotation_system_rel_path_for(source_rel_path, annotation_system)
       abs = fs.resolve(rel)
-      memo[tradition] = rel if fs.file?(abs)
+      memo[annotation_system] = rel if fs.file?(abs)
     end
   end
 
-  def load_derived_bodies(fs, available_traditions)
-    available_traditions.each_with_object({}) do |(tradition, rel), memo|
+  def load_annotation_system_bodies(fs, available_annotation_systems)
+    available_annotation_systems.each_with_object({}) do |(annotation_system, rel), memo|
       raw = fs.read_text(fs.resolve(rel))
       _meta, body = split_corpus_front_matter(raw)
-      memo[tradition] = body
+      memo[annotation_system] = body
     end
   end
 
-  def selected_tradition_for_view
-    return @current_tradition_folder if @current_tradition_folder.present?
-    return nil if @requested_tradition.blank?
-    return nil unless @available_traditions[@requested_tradition].present?
+  def selected_annotation_system_for_view
+    return @current_annotation_system_folder if @current_annotation_system_folder.present?
+    return nil if @requested_annotation_system.blank?
+    return nil unless @available_annotation_systems[@requested_annotation_system].present?
 
-    @requested_tradition
+    @requested_annotation_system
+  end
+
+  def available_translations_for(fs, materials)
+    Array(materials).filter_map do |material|
+      next unless material["type"] == "translation"
+
+      target_path = material["target_path"].to_s
+      next if target_path.blank?
+      next unless fs.file?(fs.resolve(target_path))
+
+      [material["id"].to_s, material]
+    rescue SecurityError
+      nil
+    end.to_h
+  end
+
+  def selected_translation_for_view
+    material_id = @direct_translation_id.to_s.presence || params[:translation].to_s
+    return nil if material_id.blank?
+
+    @available_translations[material_id]
   end
 end
