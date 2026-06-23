@@ -930,3 +930,91 @@ body.rightbar-collapsed .rightbar {
     margin: 0 0 1rem 0;
   }
 }
+
+/* --- Global site footer ------------------------------------------------ */
+.site-footer {
+  margin-top: 32px;
+  border-top: 1px solid #e6e6e6;
+  background: #fafafa;
+  color: #222;
+}
+
+.site-footer-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px 16px 16px;
+}
+
+.site-footer-identity {
+  max-width: 720px;
+}
+
+.site-footer-title,
+.site-footer-summary {
+  margin: 0;
+}
+
+.site-footer-title {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: baseline;
+  font-family: "WenJin Mincho", serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.site-footer-title span {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.site-footer-summary {
+  margin-top: 6px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  opacity: 0.82;
+}
+
+.site-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px 18px;
+}
+
+.site-footer-link {
+  color: inherit;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.site-footer-link:hover,
+.site-footer-link:focus-visible {
+  text-decoration: underline;
+}
+
+.site-footer-meta {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 12px 16px 16px;
+  border-top: 1px solid #ededed;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  opacity: 0.72;
+}
+
+@media (max-width: 700px) {
+  .site-footer-inner {
+    flex-direction: column;
+  }
+
+  .site-footer-links {
+    justify-content: flex-start;
+  }
+}
