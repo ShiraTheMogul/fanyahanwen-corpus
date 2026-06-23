@@ -6,6 +6,7 @@ require "fileutils"
 module Textbook
   class LessonStore
     LESSONS_DIR = Rails.root.join("config", "textbook", "lessons")
+    SLUG_FORMAT = /\A[a-z0-9][a-z0-9_-]{0,99}\z/i
 
     # Existing API (kept):
     # - .all -> array of parsed lesson hashes
@@ -31,23 +32,36 @@ module Textbook
     end
 
     def self.find!(slug)
+      slug = validated_slug!(slug)
       path = LESSONS_DIR.join("#{slug}.yml")
       raise ActiveRecord::RecordNotFound, "Unknown lesson" unless File.exist?(path)
       load_lesson(path)
     end
 
     def self.load_raw!(slug)
+      slug = validated_slug!(slug)
       path = LESSONS_DIR.join("#{slug}.yml")
       raise ActiveRecord::RecordNotFound, "Unknown lesson" unless File.exist?(path)
       File.read(path)
     end
 
     def self.write_raw!(slug, raw_yaml)
+      slug = validated_slug!(slug)
       # FileUtils.mkdir_p works on strings/paths; Pathname instances do not have mkdir_p.
       FileUtils.mkdir_p(LESSONS_DIR.to_s)
       path = LESSONS_DIR.join("#{slug}.yml")
       File.write(path, raw_yaml.to_s)
       true
+    end
+
+
+    def self.validated_slug!(slug)
+      candidate = slug.to_s.strip
+      unless SLUG_FORMAT.match?(candidate)
+        raise ArgumentError, "Lesson slug may contain only letters, numbers, underscores, and hyphens"
+      end
+
+      candidate
     end
 
     def self.load_lesson(path)

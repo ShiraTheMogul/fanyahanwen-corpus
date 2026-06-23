@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class TextbookEditorController < ApplicationController
+  before_action :require_editor_enabled!
+
   # Draft preview does not change server state (it does not write files),
   # so it's safe to skip CSRF verification for this one action.
   #
@@ -59,6 +61,13 @@ class TextbookEditorController < ApplicationController
   end
 
   private
+
+  def require_editor_enabled!
+    return unless Rails.env.production?
+    return if ENV["ENABLE_TEXTBOOK_EDITOR"].to_s == "1"
+
+    render plain: "Not found", status: :not_found
+  end
 
   def default_raw_yaml(slug)
     <<~YAML

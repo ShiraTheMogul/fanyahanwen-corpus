@@ -5,9 +5,11 @@
 <div class="tb-page">
   <div class="tb-header">
     <h1>Textbook</h1>
-    <div class="tb-actions">
-      <%= link_to "Author lessons", textbook_editor_path, class: "tb-btn" %>
-    </div>
+    <% if !Rails.env.production? || ENV["ENABLE_TEXTBOOK_EDITOR"].to_s == "1" %>
+      <div class="tb-actions">
+        <%= link_to "Author lessons", textbook_editor_path, class: "tb-btn" %>
+      </div>
+    <% end %>
   </div>
 
   <div class="tb-lesson-list">

@@ -1,64 +1,54 @@
 # frozen_string_literal: true
 
-# Active Record Encryption needs three secrets:
-#   - primary_key
-#   - deterministic_key
-#   - key_derivation_salt
-#
-# If you run `bin/rails db:encryption:init`, Rails will print values you can put
-# into credentials under `active_record_encryption:`.
-#
-# This project prefers "works out of the box" in development.
-# So:
-#   1) If credentials provide keys, we use them.
-#   2) Otherwise we derive stable keys from secret_key_base.
-#
-# Deriving from secret_key_base keeps encryption working across restarts as long
-# as secret_key_base is stable (it usually is). In production, you SHOULD set
-# explicit keys in credentials.
-
 require "base64"
 
 module ActiveRecordEncryptionKeys
   module_function
 
+  ENV_KEYS = {
+    primary_key: "ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY",
+    deterministic_key: "ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY",
+    key_derivation_salt: "ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT"
+  }.freeze
+
   def derive_key(label, length: 32)
-    # ActiveSupport::KeyGenerator derives cryptographic keys from a secret.
-    # "label" acts like a salt namespace.
-    generator = ActiveSupport::KeyGenerator.new(Rails.application.secret_key_base, iterations: 2**16)
+    generator = ActiveSupport::KeyGenerator.new(
+      Rails.application.secret_key_base,
+      iterations: 2**16
+    )
     bytes = generator.generate_key("fanyahanwen:ar_encryption:#{label}", length)
     Base64.strict_encode64(bytes)
   end
 
-  def configured_keys
-    creds = Rails.application.credentials
-    h = creds.respond_to?(:dig) ? creds.dig(:active_record_encryption) : nil
-    return {} unless h.is_a?(Hash)
+  def environment_keys
+    ENV_KEYS.to_h { |name, variable| [name, ENV[variable].presence] }.compact
+  end
+
+  def credential_keys
+    credentials = Rails.application.credentials
+    values = credentials.respond_to?(:dig) ? credentials.dig(:active_record_encryption) : nil
+    return {} unless values.is_a?(Hash)
 
     {
-      primary_key: h[:primary_key].presence,
-      deterministic_key: h[:deterministic_key].presence,
-      key_derivation_salt: h[:key_derivation_salt].presence,
+      primary_key: values[:primary_key].presence,
+      deterministic_key: values[:deterministic_key].presence,
+      key_derivation_salt: values[:key_derivation_salt].presence
     }.compact
+  rescue ActiveSupport::EncryptedFile::MissingKeyError, ActiveSupport::MessageEncryptor::InvalidMessage
+    {}
   end
 end
 
-keys = ActiveRecordEncryptionKeys.configured_keys
+keys = ActiveRecordEncryptionKeys.credential_keys.merge(
+  ActiveRecordEncryptionKeys.environment_keys
+)
 
-if keys[:primary_key].blank? || keys[:deterministic_key].blank? || keys[:key_derivation_salt].blank?
-  # Derive missing keys from secret_key_base.
-  keys[:primary_key] ||= ActiveRecordEncryptionKeys.derive_key("primary")
-  keys[:deterministic_key] ||= ActiveRecordEncryptionKeys.derive_key("deterministic")
-  keys[:key_derivation_salt] ||= ActiveRecordEncryptionKeys.derive_key("salt")
-
-  # Keep logs low-noise in production.
-  unless Rails.env.production?
-    Rails.logger.warn("[active_record_encryption] Using keys derived from secret_key_base. Set credentials.active_record_encryption.* for production.")
-  end
-end
+keys[:primary_key] ||= ActiveRecordEncryptionKeys.derive_key("primary")
+keys[:deterministic_key] ||= ActiveRecordEncryptionKeys.derive_key("deterministic")
+keys[:key_derivation_salt] ||= ActiveRecordEncryptionKeys.derive_key("salt")
 
 ActiveRecord::Encryption.configure(
-  primary_key: keys[:primary_key],
-  deterministic_key: keys[:deterministic_key],
-  key_derivation_salt: keys[:key_derivation_salt],
+  primary_key: keys.fetch(:primary_key),
+  deterministic_key: keys.fetch(:deterministic_key),
+  key_derivation_salt: keys.fetch(:key_derivation_salt)
 )
