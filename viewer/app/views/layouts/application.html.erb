@@ -39,7 +39,13 @@
     <header class="site-header">
       <div class="site-header-inner">
         <div class="site-header-left">
-          <div class="site-title"><%= link_to "泛亞漢文語料庫", root_path, class: "site-title-link" %></div>
+          <div class="site-title">
+            <%= link_to(root_path,
+                        class: "site-title-link",
+                        aria: { label: "泛亞漢文語料庫 — Fanya Hanwen Corpus" }) do %>
+              <span class="site-title-part site-title-part--region">泛亞</span><span class="site-title-part site-title-part--language">漢文</span><span class="site-title-part site-title-part--corpus">語料庫</span>
+            <% end %>
+          </div>
           <nav class="site-nav" aria-label="Primary navigation">
             <%= link_to "Corpus Viewer", corpus_viewer_path, class: "site-nav-link" %>
 			<%= link_to "Search the Corpus", corpus_search_path, class: "site-nav-link" %>

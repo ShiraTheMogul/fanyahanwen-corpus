@@ -212,80 +212,183 @@
   background: #fff;
   border-bottom: 1px solid #ddd;
   padding: 10px 16px;
+}
 
-  /* Layout: left title/nav + centered search bar */
+/*
+ * The header has three jobs:
+ *   1. title + navigation
+ *   2. dictionary search
+ *   3. options + lunar date
+ *
+ * Grid lets those jobs move onto new rows without squeezing individual
+ * navigation labels or the title into accidental vertical columns.
+ */
+.site-header-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(16rem, 32rem) max-content;
+  grid-template-areas: "left center right";
+  align-items: center;
+  gap: 0.75rem 1rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.site-header-left {
+  grid-area: left;
   display: flex;
   align-items: center;
-  gap: 16px;
-  justify-content: flex-start;
+  gap: clamp(0.75rem, 1.5vw, 1.5rem);
+  min-width: 0;
 }
 
 .site-title {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
+.site-title-link {
+  display: inline-grid;
+  grid-auto-flow: column;
+  grid-auto-columns: max-content;
+  color: inherit;
+  font-family: "WenJin Mincho", serif;
+  font-size: clamp(1rem, 1.25vw, 1.35rem);
+  font-weight: 600;
+  line-height: 1.05;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.site-title-link:hover,
+.site-title-link:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.site-title-part {
+  display: inline;
 }
 
 .site-nav {
   display: flex;
-  gap: 10px;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
   align-items: center;
+  gap: 0.35rem 0.9rem;
+  min-width: 0;
 }
 
 .site-nav-link {
-  text-decoration: none;
+  flex: 0 0 auto;
+  line-height: 1.2;
   opacity: 0.85;
+  text-decoration: none;
+  white-space: nowrap;
 }
 
-.site-nav-link:hover {
+.site-nav-link:hover,
+.site-nav-link:focus-visible {
   opacity: 1;
   text-decoration: underline;
 }
 
-.site-title a {
-  text-decoration: none;
-  color: inherit;
-  font-weight: 600;
+.site-header-center {
+  grid-area: center;
+  min-width: 0;
 }
 
-.header-search {
-  /* Take the remaining width so we can center the form */
-  flex: 1 1 auto;
+.site-search {
   display: flex;
-  justify-content: center;
-}
-
-.header-search-input {
-  width: min(420px, 55vw);
-  padding: 6px 10px;
-  font-size: 1rem;
-}
-
-.header-search-button {
-  padding: 6px 10px;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-.site-header-inner{
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
   width: 100%;
+  min-width: 0;
 }
 
-.site-header-right{
-  margin-left: auto;          /* push ganzhi to far right */
+.site-search-input {
+  box-sizing: border-box;
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+}
+
+.site-search-submit {
+  flex: 0 0 auto;
+}
+
+.site-header-right {
+  grid-area: right;
   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   justify-content: flex-end;
+  gap: 0.65rem;
+  min-width: 0;
 }
 
-/* GanZhi Date */
-.lunar-date{
-  white-space:nowrap;
-  font-size:0.9rem;
-  opacity:0.85;
+/* GanZhi date */
+.lunar-date {
+  font-size: 0.9rem;
+  opacity: 0.85;
+  white-space: nowrap;
+}
+
+/* Medium screens: let the header use two rows instead of trailing off-screen. */
+@media (max-width: 1180px) {
+  .site-header-inner {
+    grid-template-columns: minmax(0, 1fr) max-content;
+    grid-template-areas:
+      "left left"
+      "center right";
+  }
+}
+
+/* Phones: each header job gets its own predictable row. */
+@media (max-width: 700px) {
+  .site-header {
+    padding: 10px 12px;
+  }
+
+  .site-header-inner {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "left"
+      "center"
+      "right";
+    gap: 0.75rem;
+  }
+
+  .site-header-left {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.65rem;
+    width: 100%;
+  }
+
+  /* Deliberate two-line logo: 泛亞漢文 / 語料庫. */
+  .site-title-link {
+    grid-auto-flow: row;
+    grid-template-columns: max-content max-content;
+    font-size: clamp(1rem, 5vw, 1.25rem);
+    white-space: normal;
+  }
+
+  .site-title-part--corpus {
+    grid-column: 1 / -1;
+  }
+
+  .site-nav,
+  .site-search,
+  .site-header-right {
+    width: 100%;
+  }
+
+  .site-nav {
+    gap: 0.45rem 0.85rem;
+  }
+
+  .site-header-right {
+    justify-content: flex-start;
+  }
 }
 
 /* --- Page shell: main content + right sidebar --- */
@@ -539,12 +642,6 @@ pre.xiangqi-board.theme-mono {
   border: 1px solid #999;
   font-size: 20px;
 }
-
-/* Ensure the header logo/title uses WenJin Mincho (independent of user-selected study fonts). */
-.site-title-link {
-  font-family: "WenJin Mincho", serif;
-}
-
 
 /* --- Pronunciation sub-sections (collapsible language families) --- */
 .pronun-sections { margin: 0.25rem 0 1rem; }
@@ -1018,3 +1115,9 @@ body.rightbar-collapsed .rightbar {
     justify-content: flex-start;
   }
 }
+
+/* Ensure the header logo/title uses WenJin Mincho */
+.site-title-link {
+  font-family: "WenJin Mincho", serif;
+}
+
