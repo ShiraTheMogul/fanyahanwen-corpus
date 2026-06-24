@@ -1,0 +1,77 @@
+<h1>語料近況 Corpus activity</h1>
+
+<p>
+  This page exposes the corpus activity index so additions and unexpected edits are easier to inspect.
+  It reflects the current indexed files and their modification times; it is useful for review, but it is not an immutable history and cannot show deleted files.
+</p>
+
+<nav class="corpus-activity-tabs" aria-label="Corpus activity views">
+  <%= link_to "Latest texts",
+              corpus_activity_href(kind: "latest_texts"),
+              class: ["corpus-activity-tab", ("is-active" if @activity_kind == "latest_texts")] %>
+  <%= link_to "Recent changes",
+              corpus_activity_href(kind: "recent_changes"),
+              class: ["corpus-activity-tab", ("is-active" if @activity_kind == "recent_changes")] %>
+</nav>
+
+<% if @activity_kind == "latest_texts" %>
+  <h2>最新文本 Latest text folders</h2>
+  <p class="corpus-activity-explanation">Each row represents a text folder. Its date is the newest indexed file inside that folder.</p>
+<% else %>
+  <h2>近期變更 Recent file changes</h2>
+  <p class="corpus-activity-explanation">File names are presented as readable text titles rather than raw <code>.txt</code> names.</p>
+<% end %>
+
+<p class="corpus-activity-total"><%= number_with_delimiter(@activity_feed["total"]) %> entries</p>
+
+<% if @activity_feed["items"].empty? %>
+  <p>No indexed activity is available yet.</p>
+<% else %>
+  <ol class="corpus-activity-audit-list" start="<%= ((@activity_feed["page"] - 1) * @activity_feed["page_size"]) + 1 %>">
+    <% @activity_feed["items"].each do |item| %>
+      <li>
+        <div class="corpus-activity-audit-heading">
+          <% if @activity_kind == "latest_texts" %>
+            <%= link_to item["title"], corpus_activity_viewer_path(item["path"]), class: "corpus-activity-title" %>
+            <span><%= pluralize(item["file_count"], "file") %></span>
+          <% else %>
+            <%= link_to item["title"], corpus_activity_viewer_path(item["path"]), class: "corpus-activity-title" %>
+            <span>in <%= link_to item["work_title"], corpus_activity_viewer_path(item["work_path"]) %></span>
+          <% end %>
+        </div>
+
+        <div class="corpus-activity-audit-meta">
+          <% context = corpus_activity_context(item) %>
+          <% if context.present? %><span><%= context %></span><% end %>
+          <span><%= corpus_activity_time(item["changed_at"]) %></span>
+          <% if @activity_kind == "recent_changes" %>
+            <span><%= number_to_human_size(item["size"]) %></span>
+            <code><%= item["display_path"] %></code>
+          <% else %>
+            <code><%= item["path"] %></code>
+          <% end %>
+        </div>
+      </li>
+    <% end %>
+  </ol>
+<% end %>
+
+<% total_pages = @activity_feed["total_pages"].to_i %>
+<% current_page = @activity_feed["page"].to_i %>
+<% if total_pages > 1 %>
+  <nav class="corpus-activity-pagination" aria-label="Corpus activity pages">
+    <% if current_page > 1 %>
+      <%= link_to "Previous", corpus_activity_href(kind: @activity_kind, page: current_page - 1), rel: "prev" %>
+    <% else %>
+      <span aria-disabled="true">Previous</span>
+    <% end %>
+
+    <span>Page <%= number_with_delimiter(current_page) %> of <%= number_with_delimiter(total_pages) %></span>
+
+    <% if current_page < total_pages %>
+      <%= link_to "Next", corpus_activity_href(kind: @activity_kind, page: current_page + 1), rel: "next" %>
+    <% else %>
+      <span aria-disabled="true">Next</span>
+    <% end %>
+  </nav>
+<% end %>

@@ -5,6 +5,9 @@ namespace :corpus_search do
   task rebuild_manifest: :environment do
     manifest = CorpusSearch::Manifest.load(refresh: true, force: true)
     puts "Indexed #{manifest.documents.length} corpus text files."
+
+    activity = CorpusActivity::SnapshotBuilder.new(manifest: manifest).build!
+    puts "Built corpus activity feeds: #{activity.dig("feeds", "latest_texts", "total")} text folders and #{activity.dig("feeds", "recent_changes", "total")} changed files."
   end
 
   desc "Warm term indexes from resources/fanyahanwen_research/LC_frequency_list_1224_ranked.csv"

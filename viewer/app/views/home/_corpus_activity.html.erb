@@ -1,0 +1,54 @@
+<% if @corpus_activity&.available? %>
+  <% latest_feed = @corpus_activity_summary.dig("feeds", "latest_texts") || {} %>
+  <% recent_feed = @corpus_activity_summary.dig("feeds", "recent_changes") || {} %>
+  <% activity_id_prefix = local_assigns.fetch(:activity_id_prefix, "corpus-activity") %>
+  <% activity_variant = local_assigns[:activity_variant].to_s %>
+  <% activity_classes = ["corpus-activity-home"] %>
+  <% activity_classes << "corpus-activity-home--browser" if activity_variant == "browser" %>
+  <% latest_heading_id = "#{activity_id_prefix}-latest-texts-heading" %>
+  <% recent_heading_id = "#{activity_id_prefix}-recent-changes-heading" %>
+
+  <section class="<%= activity_classes.join(" ") %>" aria-label="Corpus activity">
+    <div class="corpus-activity-columns">
+      <section class="corpus-activity-panel" aria-labelledby="<%= latest_heading_id %>">
+        <div class="corpus-activity-panel-heading">
+          <h3 id="<%= latest_heading_id %>">最新文本 Latest texts</h3>
+          <%= link_to "All text folders", corpus_activity_href(kind: "latest_texts") %>
+        </div>
+
+        <div class="corpus-activity-flow" role="list">
+          <% Array(latest_feed["items"]).each do |item| %>
+            <span class="corpus-activity-flow-item" role="listitem">
+              <%= link_to item["title"], corpus_activity_viewer_path(item["path"]), class: "corpus-activity-title" %>
+              <% if item["file_count"].to_i > 1 %>
+                <span class="corpus-activity-count">(<%= pluralize(item["file_count"], "file") %>)</span>
+              <% end %>
+            </span>
+          <% end %>
+        </div>
+      </section>
+
+      <section class="corpus-activity-panel" aria-labelledby="<%= recent_heading_id %>">
+        <div class="corpus-activity-panel-heading">
+          <h3 id="<%= recent_heading_id %>">近期變更 Recent changes</h3>
+          <%= link_to "All changed files", corpus_activity_href(kind: "recent_changes") %>
+        </div>
+
+        <div class="corpus-activity-flow" role="list">
+          <% Array(recent_feed["items"]).each do |item| %>
+            <span class="corpus-activity-flow-item" role="listitem">
+              <%= link_to item["title"], corpus_activity_viewer_path(item["path"]), class: "corpus-activity-title" %>
+              <% if item["work_title"].present? && item["work_title"] != item["title"] %>
+                <span class="corpus-activity-work">(<%= link_to item["work_title"], corpus_activity_viewer_path(item["work_path"]) %>)</span>
+              <% end %>
+            </span>
+          <% end %>
+        </div>
+      </section>
+    </div>
+
+    <div class="corpus-activity-heading-row">
+      <%= link_to "Browse all activity", corpus_activity_href(kind: "recent_changes"), class: "corpus-activity-all-link" %>
+    </div>
+  </section>
+<% end %>

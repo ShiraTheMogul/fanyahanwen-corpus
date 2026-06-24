@@ -35,9 +35,12 @@ Rails.application.routes.draw do
 	
 	get "/corpus_viewer(/*path)", to: "corpus_viewer#show", as: :corpus_viewer, format: false # stop a silly attempt to output a txt file
 	
-	# config/routes.rb
+	# corpus annotation stuff
 	get  "/corpus_annotations", to: "corpus_annotations#show"
 	post "/corpus_annotations", to: "corpus_annotations#update"
+	
+	# activity!
+	get "/corpus/activity", to: "home#activity", as: :corpus_activity
 	
 	get "/fun", to: "fun#index", as: :fun # Minigame section
 
@@ -60,7 +63,6 @@ Rails.application.routes.draw do
 	post "/textbook/api/parse_numeral",  to: "textbook_api#parse_numeral"
 	
 	# Edit submissions and tickets
-	#
 	# Moderator UI (HTML) for reviewing and applying edit tickets.
 	get    "/tickets/login",  to: "tickets_sessions#new",     as: :tickets_login
 	post   "/tickets/login",  to: "tickets_sessions#create"

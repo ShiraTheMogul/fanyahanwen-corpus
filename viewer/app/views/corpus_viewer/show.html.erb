@@ -40,7 +40,7 @@
           </div>
           <div class="cv-form-row">
             <label>Work folder</label>
-            <input type="text" class="cv-input" placeholder="e.g. 皇黎一統志 or 在海牙府" data-corpus-submission-ticket-target="workFolder" />
+            <input type="text" class="cv-input" placeholder="e.g. 論語" data-corpus-submission-ticket-target="workFolder" />
           </div>
           <div class="cv-form-row">
             <label>Ticket title</label>
@@ -149,6 +149,21 @@
     </div>
   <% end %>
 
+  <% root_activity_available = @rel_path.blank? && @corpus_activity&.available? %>
+
+  <% if root_activity_available %>
+    <div class="corpus-root-layout">
+      <details class="corpus-root-activity"
+               data-controller="corpus-root-activity">
+        <summary class="corpus-root-activity-summary">最新動向 Recent corpus activity</summary>
+        <%= render "home/corpus_activity",
+                   activity_id_prefix: "corpus-root",
+                   activity_variant: "browser" %>
+      </details>
+
+      <div class="corpus-root-folder-list">
+  <% end %>
+
   <ul class="corpus-list">
     <% @children.each do |name| %>
       <% child_rel = @rel_path.present? ? "#{@rel_path}/#{name}" : name %>
@@ -157,6 +172,11 @@
       </li>
     <% end %>
   </ul>
+
+  <% if root_activity_available %>
+      </div>
+    </div>
+  <% end %>
 
 <% elsif @kind == :file %>
   <%= render "rightbar" %>

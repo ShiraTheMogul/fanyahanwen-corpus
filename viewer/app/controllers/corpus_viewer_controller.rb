@@ -3,8 +3,10 @@
 class CorpusViewerController < ApplicationController
   include ApplicationHelper
   helper CorpusTextHelper
+  helper HomeHelper
 
   ANNOTATION_SYSTEM_FOLDERS = %w[kanbun hanmun hanvan].freeze
+  ROOT_HIDDEN_ENTRIES = %w[scripts].freeze
 
   def show
     root = Rails.configuration.x.corpus_root
@@ -22,6 +24,13 @@ class CorpusViewerController < ApplicationController
     if fs.directory?(@abs_path)
       @kind = :dir
       @children = fs.list_dir(@abs_path)
+      @children -= ROOT_HIDDEN_ENTRIES if @rel_path.blank?
+
+      if @rel_path.blank?
+        @corpus_activity = CorpusActivity::Snapshot.new
+        @corpus_activity_summary = @corpus_activity.summary
+      end
+
       render :show, formats: [:html]
       return
     end

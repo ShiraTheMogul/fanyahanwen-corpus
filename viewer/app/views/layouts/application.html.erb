@@ -12,6 +12,7 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "rightbar", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "corpusviewer", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "corpus_activity", "data-turbo-track": "reload" if controller_name.in?(%w[home corpus_viewer]) %>
     <%= stylesheet_link_tag "textbook", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "xiangqi", "data-turbo-track": "reload" if controller_name == "xiangqi" %>
 
