@@ -1,0 +1,27 @@
+<%# Shared metadata for link previews. Individual pages may override social_title and social_description with content_for. %>
+<%
+  social_title = content_for?(:social_title) ? content_for(:social_title).to_s.strip : "泛亞漢文語料庫 Fanya Hanwen Corpus"
+  social_description = content_for?(:social_description) ? content_for(:social_description).to_s.strip : "A hub for Literary Chinese with a corpus viewer, dictionary, and learning tools."
+  social_page_url = request.original_url
+  social_image_url = "#{request.base_url}#{image_path('android-chrome-512x512.png')}"
+%>
+
+<meta name="description" content="<%= social_description %>">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Fanya Hanwen Corpus">
+<meta property="og:title" content="<%= social_title %>">
+<meta property="og:description" content="<%= social_description %>">
+<meta property="og:url" content="<%= social_page_url %>">
+<meta property="og:image" content="<%= social_image_url %>">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="512">
+<meta property="og:image:alt" content="The red seal icon of Fanya Hanwen Corpus">
+<meta property="og:locale" content="en_GB">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="<%= social_title %>">
+<meta name="twitter:description" content="<%= social_description %>">
+<meta name="twitter:image" content="<%= social_image_url %>">
+<meta name="twitter:image:alt" content="The red seal icon of Fanya Hanwen Corpus">
