@@ -1,0 +1,284 @@
+# PLACEHOLDER CATALOGUE: translate values only; do not rename keys.
+dng:
+  corpus_viewer:
+    title: Corpus Viewer
+    root: Root
+    unexpected_state: Minecraft How did we get here advancement
+    recent_activity:
+      summary: 最新動向 Recent corpus activity
+    directory_submission:
+      button: Submit text here
+      button_title: Propose a new text for this folder
+      heading: Submit a new text (creates a ticket)
+      explanation_html: This does <em>not</em> write into the corpus directly. It
+        creates a review ticket with a diff for one new work folder and one or more
+        new files inside it.
+      parent_directory: Parent clean directory
+      work_folder: Work folder
+      work_folder_placeholder: e.g. 論語
+      ticket_title: Ticket title
+      default_ticket_title: Corpus text submission
+      short_summary: Short summary
+      short_summary_placeholder: What is being submitted?
+      content_role: Content role
+      roles:
+        source: Source text
+        kanbun: Kanbun annotation system
+        hanmun: Hanmun annotation system
+        hanvan: Hanvan annotation system
+      metadata_fields:
+        nation: NATION
+        work_title: WORK_TITLE
+        author: AUTHOR
+        source: SOURCE
+        url: URL
+        page_title: PAGE_TITLE
+      source_placeholder: Write a reference here (ideally APA 7th)
+      url_placeholder: https://...
+      context_and_rights: Context and rights
+      context_placeholder: Explain where this text is from, whether it is public domain,
+        what licence applies, and any context a reviewer should know.
+      reference_files: Reference files
+      reference_files_hint: 'Optional: up to 10 files and 20 MB in total. HTML, XHTML,
+        and SVG are rejected.'
+      page_setup: Page setup
+      single_file: Single text file
+      multiple_files: Multiple page files
+      file_name: File name
+      file_name_placeholder: Defaults to work_folder.txt
+      text_body: Text body
+      pages: Pages
+      pages_hint_html: Multiple pages create numbered files like <code>work_folder__juan_0001.txt</code>
+        inside the work folder.
+    header:
+      work: 'Work:'
+      author: 'Author:'
+      viewing: 'Viewing:'
+      source: Source
+      translation: 'Translation: %{label}'
+      author_provided: Author-provided
+      ai_assisted_suffix: " — AI-assisted"
+      ai_assisted_menu_suffix: " · AI-assisted"
+    toolbar:
+      aria_label: Corpus viewer tools
+      vertical: Vertical
+      orientation_horizontal: 'Orientation: Horizontal'
+      theme: Theme
+      punctuation_source: 'Punct: Source'
+      punctuation_options: Punctuation options
+      judou_on: 'Judou: On'
+      notes_off: 'Notes: Off'
+      footnotes_off: 'Footnotes: Off'
+      colour_settings: Colour settings
+      translations: Translations (%{count})
+      add_translation: Add translation
+      source_text: Source text
+      variants: Variants (%{count})
+      external_variant: External variant
+      annotation_systems: Annotation systems (%{count})
+      create_annotation_system: Create annotation system
+      other_materials: Other materials
+      add_gallery_images: Add gallery images
+      add_exemplar_manuscript: Add exemplar manuscript
+      add_variant_connection: Add variant connection
+      annotate_off: 'Annotate: Off'
+      review_submit: Review & submit
+      text_edit: Text edit
+      text_edit_title: Propose a text change (creates a ticket)
+    annotation_systems:
+      names:
+        kanbun: Kanbun
+        hanmun: Hanmun
+        hanvan: Hanvan
+      editor:
+        heading: Create annotation system (creates a ticket)
+        explanation_html: Manual annotation is the default. Approved files are written
+          as sibling pages under <code>kanbun/</code>, <code>hanmun/</code>, or <code>hanvan/</code>
+          with the same filename as this source page.
+        system: Annotation system
+        options:
+          kanbun: Kanbun (Japanese reading/annotation system)
+          hanmun: Hanmun (Korean reading/annotation system)
+          hanvan: Hanvan (Vietnamese reading/annotation system)
+        summary_placeholder: What was added or corrected?
+        reasoning_placeholder: Explain any editorial choices a reviewer should know.
+        digital_keyboard: Digital keyboard
+        ai_notice: Kanbun-LM is not shown here because automatic generation is Japanese-only.
+          This patch keeps the manual path as the default workflow.
+        source_page: Source page
+        text: Annotation-system text
+    text_edit:
+      heading: Propose a text edit (creates a ticket)
+      explanation_html: This does <em>not</em> change the corpus directly. It creates
+        a ticket with a unified diff attached.
+      default_title: Text edit
+      summary_placeholder: What changed?
+      reasoning_placeholder: Why should this change be made?
+      edited_text: Edited text
+    metadata:
+      heading: Metadata
+      aria_label: Text metadata
+      wikisource: 维基文库
+    punctuation:
+      dialog_aria: Punctuation options
+      heading: Punctuation options
+      preset:
+        heading: Preset
+        source: Source
+        modern_traditional: Modern CJK (Traditional)
+        modern_prc: Modern CJK (Simplified / PRC)
+        pure_classical: Pure classical
+        strip: Strip
+        custom: Custom
+      quotes:
+        heading: Quotes
+        family: Family
+        chinese_quotation_marks: Chinese quotation marks 「」『』
+        latin_speech_marks: Latin speech marks “ ” ‘ ’
+        chinese_speech_marks: Chinese speech marks ＂ ＇
+        disabled: 'Off'
+        ordering: Ordering
+        traditional: 'Traditional: 「甲『乙』丙」'
+        simplified: 'Simplified: 『甲「乙」丙』'
+        vertical_forms: Vertical quote forms (﹁﹂﹃﹄)
+      question_exclamation:
+        heading: Question / Exclamation
+        keep_question: Keep ？
+        collapse_question: Collapse ? → 。
+        keep_exclamation: Keep ！
+        collapse_exclamation: Collapse ! → 。
+      semicolon_colon:
+        heading: Semicolon / Colon
+        keep_semicolon: Keep ；
+        collapse_semicolon: Collapse ; → 。
+        keep_colon: Keep ：
+        collapse_colon: 'Collapse : → 。'
+      comma:
+        heading: Comma
+        comma: Use ，
+        dunhao: Use 、
+      repetition:
+        heading: Repetition mark
+        none: No repetition mark (default)
+        kanji: 々 (Horizontal)
+        vertical: 〻 (Vertical)
+        zhou: 二 (Western Zhou-style)
+    rightbar:
+      heading: View options
+      group: Corpus viewer
+      reader_theme: Reader theme
+      themes:
+        light: White
+        bamboo: Bamboo
+        dark: Dark
+      vertical_text: Vertical text
+      vertical_flow: Vertical flow
+      flows:
+        right_to_left: Right-to-left (standard)
+        left_to_right: Left-to-right
+      font_size: Font size
+      sizes:
+        small: Small
+        medium: Medium
+        large: Large
+      font_size_aria: Font size in pixels
+      remove_punctuation: Remove punctuation
+      right_click_ruby: Right-click ruby
+      client_side_note: These toggles are client-side only and don’t need “Apply”.
+    companion_materials:
+      heading: Companion materials
+      hide_ai: Hide AI-assisted material
+      translations: Translations
+      translator: 'Translator:'
+      edition_label: 'Edition/label:'
+      iso_code: 'ISO 639-3:'
+      ai_badge: AI-assisted
+      ai_assistance: AI assistance
+      read_translation: Read this translation
+      references: References
+      image_gallery: Image gallery
+      image_gallery_singular: Image gallery
+      exemplar_manuscripts: Exemplar manuscripts
+      exemplar_manuscript_singular: Exemplar manuscript
+      variant_texts: Variant texts
+      variant_text: Variant text
+      open_related_text: Open related corpus text
+      annotations_heading: Annotation systems and annotation notes
+      open_annotation_system: Open annotation-system text
+      open_annotated_text: Open annotated text
+      note_type_labels:
+        annotation_system: Annotation system
+        derived_tradition: Derived tradition
+        annotations: Annotations
+      provenance:
+        user_made: User-made
+        public_domain: Public domain
+        historical_source: Historical source/manuscript
+        author_provided: Author-provided
+    companion_submission:
+      heading: Add companion material (creates a ticket)
+      explanation: Approved material appears beside this corpus text. The 20 MB limit
+        applies to this submission only; the text may accumulate any number of approved
+        submissions.
+      material_type: Material type
+      types:
+        translation: Translation
+        gallery_image: Image gallery material
+        exemplar_manuscript: Exemplar manuscript scan
+        variant_text: Variant text connection
+      optional_label: Optional edition or material label
+      optional_label_placeholder: Edition, manuscript shelfmark, or another concise
+        label
+      optional_label_hint: Translations are identified in menus by language and translator,
+        not by this label.
+      language: Translation language (ISO 639-3)
+      language_placeholder: Start typing a language name
+      language_hint: The stored value is the selected three-letter ISO 639-3 code.
+      translator: Translator
+      translator_placeholder: Name of the translator, if known
+      translator_hint: Leave blank for anonymous or unidentified translations.
+      translation_text: Translation text
+      material_files: Material files
+      material_files_hint: PNG, JPEG, or PDF. Together with evidence files, this ticket
+        may contain up to 10 files and 20 MB.
+      related_path: Related corpus path
+      related_path_placeholder: Path to another .txt file inside the corpus
+      material_links: Material links
+      material_links_placeholder: One public scan, edition, or material URL per line
+      ticket_summary: Ticket summary
+      ticket_summary_placeholder: A short reviewer-facing summary
+      reviewer_reasoning: Reviewer reasoning
+      reviewer_reasoning_placeholder: Explain any editorial decisions or uncertainties.
+    material_metadata:
+      note: Material note
+      note_placeholder: Explain what this material is, who made it, and how it relates
+        to the corpus text.
+      provenance: Provenance
+      provenance_hint: Choose every label that applies. At least one is required.
+      user_made: User-made
+      public_domain: Public domain
+      historical_source: Historical source or manuscript
+      author_provided: 'Author-provided: the work''s author supplied this translation'
+      references: References
+      references_placeholder: Give references in any clear, consistent style.
+      references_hint: A formal citation style is welcome but not required.
+      ai_disclosure: AI assistance disclosure
+      ai_assisted: AI-assisted
+      what_assisted: What was assisted?
+      ai_details_placeholder: Name the system and describe what it did.
+    optional_ticket_fields:
+      evidence_links: Evidence links
+      evidence_links_placeholder: One http(s) link per line
+      evidence_links_hint: Links are preferred when the evidence already exists online.
+      evidence_files: Evidence files
+      evidence_files_hint: Up to 10 files and 20 MB for this ticket. HTML, XHTML,
+        and SVG are rejected.
+      contact_heading: Optional contact details
+      contact_hint: Stored separately and encrypted. Deleted after 30 days or when
+        the ticket closes.
+      name: Name
+      email: Email
+      contact_note: Contact note
+      save_key: Save this ticket key on this device
+      save_key_hint: Unchecked by default. The key is otherwise shown once and is
+        not stored by the browser.

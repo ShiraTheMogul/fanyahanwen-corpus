@@ -1,0 +1,2632 @@
+# PLACEHOLDER CATALOGUE: translate values only; do not rename keys.
+cmn:
+  pronunciations:
+    fields:
+      kfanqie:
+        label: 反切 Fǎnqiè
+      general_chinese:
+        label: General Chinese
+      kmandarin:
+        label: Mandarin
+      khanyupinyin:
+        label: 漢語拼音 Hànyǔ Pīnyīn
+      khanyupinlu:
+        label: 漢語頻率 Hànyǔ Pínlǜ (Pronunciation + Frequency)
+      ktghz2013:
+        label: 通用規範漢字字典 (2013)
+      kxhc1983:
+        label: 現代漢語詞典 (1983)
+      laoguoyin:
+        label: Old National Pronunciation 老國音
+      manju_hergen_manchu:
+        label: 1763 Manchu transcription (Manchu script)
+      manju_hergen_latin:
+        label: 1763 Manchu transcription (Latin script)
+      manju_hergen_ipa:
+        label: 1763 Manchu transcription (IPA)
+      menggu_ziyun_phags_pa:
+        label: Menggu Ziyun 蒙古字韻 (Phags-pa script)
+      menggu_ziyun_transcription:
+        label: Menggu Ziyun 蒙古字韻 (IPA)
+      menggu_ziyun_tone:
+        label: Menggu Ziyun 蒙古字韻 tone
+      zhongyuan_yinyun_yang_naisi:
+        label: Zhongyuan Yinyun 中原音韻 (楊耐思)
+      zhongyuan_yinyun_ning_jifu:
+        label: Zhongyuan Yinyun 中原音韻 (寧繼福)
+      zhongyuan_yinyun_xue_fengsheng:
+        label: Zhongyuan Yinyun 中原音韻 (薛鳳生)
+      zhongyuan_yinyun_unt_phonemic:
+        label: Zhongyuan Yinyun 中原音韻 (untunt)
+      zhongyuan_yinyun_unt:
+        label: Zhongyuan Yinyun 中原音韻 (unt)
+      zhongyuan_yinyun_tone:
+        label: Zhongyuan Yinyun 中原音韻 tone
+      kcantonese:
+        label: Cantonese
+      ktang:
+        label: Middle Chinese (Stimson, 1976)
+      bs2014_mc:
+        label: Middle Chinese
+      bs2006_mc:
+        label: Middle Chinese
+      guangyun_fanqie:
+        label: Guangyun Fanqie 廣韻反切
+      guangyun_rhyme:
+        label: Guangyun Rime 廣韻音韻
+      guangyun_tone:
+        label: Guangyun Tone 廣韻聲調
+      menggu_ziyun_qieyun_position:
+        label: Qieyun-system phonological position
+      bs2014_oc:
+        label: Old Chinese
+      kjapanese:
+        label: Japanese
+      kjapaneseon:
+        label: Japanese on’yomi
+      kjapanesekun:
+        label: Japanese kun’yomi
+      jp_mora_romaji:
+        label: Mora (romaji)
+      jp_manyogana_mora_table:
+        label: Man’yōgana mora table
+      jp_manyogana_hiragana_etym:
+        label: Man’yōgana (hiragana etymology)
+      jp_manyogana_katakana_etym:
+        label: Man’yōgana (katakana etymology)
+      jp_shakuon_kana:
+        label: Shakuon Kana 借音仮名
+      jp_shakkun_kana:
+        label: Shakkun Kana 借訓仮名
+      jp_manyogana_reading:
+        label: Man’yōgana reading (mora)
+      reading_japonic_okinawan_uchinaaguchi_shuri_ninjal:
+        label: NINJAL transcription
+        value_annotation: Accent class
+      kkorean:
+        label: Korean (Yale)
+      khangul:
+        label: Korean (Hangul)
+      kvietnamese:
+        label: Vietnamese
+      kzhuang:
+        label: Zhuang
+      reading_gan_xiaoxuetang_168_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_169_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_170_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_171_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_172_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_173_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_174_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_175_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_176_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_177_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_178_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_179_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_180_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_181_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_182_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_183_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_184_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_185_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_186_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_187_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_188_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_189_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_190_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_191_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_192_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_193_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_194_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_195_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_196_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_197_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_198_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_199_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_200_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_201_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_202_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_203_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_204_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_205_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_206_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_207_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_208_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_209_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_210_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_211_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_212_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_213_ipa:
+        label: IPA
+      reading_gan_xiaoxuetang_214_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_362_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_363_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_364_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_365_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_366_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_367_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_368_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_369_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_370_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_371_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_372_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_373_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_374_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_375_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_376_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_377_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_378_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_379_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_380_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_381_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_382_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_383_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_384_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_385_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_386_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_387_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_388_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_389_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_390_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_391_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_392_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_393_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_394_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_395_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_396_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_397_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_398_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_399_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_400_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_401_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_402_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_403_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_404_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_405_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_406_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_407_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_408_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_409_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_410_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_411_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_412_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_413_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_414_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_415_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_416_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_417_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_418_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_419_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_420_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_421_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_422_ipa:
+        label: IPA
+      reading_hakka_xiaoxuetang_423_ipa:
+        label: IPA
+      reading_hui_xiaoxuetang_162_ipa:
+        label: IPA
+      reading_hui_xiaoxuetang_163_ipa:
+        label: IPA
+      reading_hui_xiaoxuetang_164_ipa:
+        label: IPA
+      reading_hui_xiaoxuetang_165_ipa:
+        label: IPA
+      reading_hui_xiaoxuetang_166_ipa:
+        label: IPA
+      reading_hui_xiaoxuetang_167_ipa:
+        label: IPA
+      reading_jin_xiaoxuetang_072_ipa:
+        label: IPA
+      reading_jin_xiaoxuetang_073_ipa:
+        label: IPA
+      reading_jin_xiaoxuetang_074_ipa:
+        label: IPA
+      reading_jin_xiaoxuetang_075_ipa:
+        label: IPA
+      reading_jin_xiaoxuetang_076_ipa:
+        label: IPA
+      reading_jin_xiaoxuetang_077_ipa:
+        label: IPA
+      reading_jin_xiaoxuetang_078_ipa:
+        label: IPA
+      reading_jin_xiaoxuetang_079_ipa:
+        label: IPA
+      reading_jin_xiaoxuetang_080_ipa:
+        label: IPA
+      reading_jin_xiaoxuetang_081_ipa:
+        label: IPA
+      reading_jin_xiaoxuetang_082_ipa:
+        label: IPA
+      reading_jin_xiaoxuetang_083_ipa:
+        label: IPA
+      reading_jin_xiaoxuetang_084_ipa:
+        label: IPA
+      reading_jin_xiaoxuetang_085_ipa:
+        label: IPA
+      reading_jin_xiaoxuetang_086_ipa:
+        label: IPA
+      reading_jin_xiaoxuetang_087_ipa:
+        label: IPA
+      reading_jin_xiaoxuetang_088_ipa:
+        label: IPA
+      reading_jin_xiaoxuetang_089_ipa:
+        label: IPA
+      reading_jin_xiaoxuetang_090_ipa:
+        label: IPA
+      reading_jin_xiaoxuetang_091_ipa:
+        label: IPA
+      reading_jin_xiaoxuetang_092_ipa:
+        label: IPA
+      reading_jin_xiaoxuetang_093_ipa:
+        label: IPA
+      reading_jin_xiaoxuetang_094_ipa:
+        label: IPA
+      reading_jin_xiaoxuetang_095_ipa:
+        label: IPA
+      reading_jin_xiaoxuetang_096_ipa:
+        label: IPA
+      reading_jin_xiaoxuetang_097_ipa:
+        label: IPA
+      reading_jin_xiaoxuetang_098_ipa:
+        label: IPA
+      reading_jin_xiaoxuetang_099_ipa:
+        label: IPA
+      reading_jin_xiaoxuetang_100_ipa:
+        label: IPA
+      reading_jin_xiaoxuetang_101_ipa:
+        label: IPA
+      reading_jin_xiaoxuetang_102_ipa:
+        label: IPA
+      reading_jin_xiaoxuetang_103_ipa:
+        label: IPA
+      reading_jin_xiaoxuetang_104_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_027_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_028_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_029_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_030_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_031_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_032_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_033_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_034_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_035_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_036_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_037_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_038_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_039_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_040_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_041_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_042_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_043_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_044_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_045_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_046_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_047_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_048_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_049_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_050_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_051_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_052_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_053_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_054_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_055_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_056_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_057_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_058_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_059_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_060_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_061_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_062_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_063_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_064_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_065_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_066_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_067_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_068_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_069_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_070_ipa:
+        label: IPA
+      reading_mandarin_xiaoxuetang_071_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_219_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_220_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_221_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_222_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_223_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_224_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_225_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_226_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_227_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_228_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_229_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_230_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_231_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_232_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_233_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_234_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_235_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_236_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_237_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_238_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_239_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_240_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_241_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_242_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_243_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_244_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_245_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_246_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_247_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_248_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_249_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_250_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_251_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_252_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_253_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_254_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_255_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_256_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_257_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_258_ipa:
+        label: IPA
+      reading_min_xiaoxuetang_259_ipa:
+        label: IPA
+      reading_other_sinitic_xiaoxuetang_424_ipa:
+        label: IPA
+      reading_other_sinitic_xiaoxuetang_425_ipa:
+        label: IPA
+      reading_other_sinitic_xiaoxuetang_426_ipa:
+        label: IPA
+      reading_other_sinitic_xiaoxuetang_427_ipa:
+        label: IPA
+      reading_other_sinitic_xiaoxuetang_428_ipa:
+        label: IPA
+      reading_other_sinitic_xiaoxuetang_429_ipa:
+        label: IPA
+      reading_other_sinitic_xiaoxuetang_430_ipa:
+        label: IPA
+      reading_other_sinitic_xiaoxuetang_431_ipa:
+        label: IPA
+      reading_other_sinitic_xiaoxuetang_432_ipa:
+        label: IPA
+      reading_other_sinitic_xiaoxuetang_433_ipa:
+        label: IPA
+      reading_other_sinitic_xiaoxuetang_434_ipa:
+        label: IPA
+      reading_pinghua_xiaoxuetang_339_ipa:
+        label: IPA
+      reading_pinghua_xiaoxuetang_340_ipa:
+        label: IPA
+      reading_pinghua_xiaoxuetang_341_ipa:
+        label: IPA
+      reading_pinghua_xiaoxuetang_342_ipa:
+        label: IPA
+      reading_pinghua_xiaoxuetang_343_ipa:
+        label: IPA
+      reading_pinghua_xiaoxuetang_344_ipa:
+        label: IPA
+      reading_pinghua_xiaoxuetang_345_ipa:
+        label: IPA
+      reading_pinghua_xiaoxuetang_346_ipa:
+        label: IPA
+      reading_pinghua_xiaoxuetang_347_ipa:
+        label: IPA
+      reading_pinghua_xiaoxuetang_348_ipa:
+        label: IPA
+      reading_pinghua_xiaoxuetang_349_ipa:
+        label: IPA
+      reading_pinghua_xiaoxuetang_350_ipa:
+        label: IPA
+      reading_pinghua_xiaoxuetang_351_ipa:
+        label: IPA
+      reading_pinghua_xiaoxuetang_352_ipa:
+        label: IPA
+      reading_pinghua_xiaoxuetang_353_ipa:
+        label: IPA
+      reading_pinghua_xiaoxuetang_354_ipa:
+        label: IPA
+      reading_pinghua_xiaoxuetang_355_ipa:
+        label: IPA
+      reading_pinghua_xiaoxuetang_356_ipa:
+        label: IPA
+      reading_pinghua_xiaoxuetang_357_ipa:
+        label: IPA
+      reading_pinghua_xiaoxuetang_358_ipa:
+        label: IPA
+      reading_pinghua_xiaoxuetang_359_ipa:
+        label: IPA
+      reading_pinghua_xiaoxuetang_360_ipa:
+        label: IPA
+      reading_pinghua_xiaoxuetang_361_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_105_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_106_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_107_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_108_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_109_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_110_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_111_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_112_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_113_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_114_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_115_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_116_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_117_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_118_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_119_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_120_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_121_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_122_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_123_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_124_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_125_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_126_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_127_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_128_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_129_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_130_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_131_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_132_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_133_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_134_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_135_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_136_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_137_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_138_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_139_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_140_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_141_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_142_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_143_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_144_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_145_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_146_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_147_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_148_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_149_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_150_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_151_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_152_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_153_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_154_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_155_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_156_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_157_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_158_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_159_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_160_ipa:
+        label: IPA
+      reading_wu_xiaoxuetang_161_ipa:
+        label: IPA
+      reading_xiang_xiaoxuetang_215_ipa:
+        label: IPA
+      reading_xiang_xiaoxuetang_216_ipa:
+        label: IPA
+      reading_xiang_xiaoxuetang_217_ipa:
+        label: IPA
+      reading_xiang_xiaoxuetang_218_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_260_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_261_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_262_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_263_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_264_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_265_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_266_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_267_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_268_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_269_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_270_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_271_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_272_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_273_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_274_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_275_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_276_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_277_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_278_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_279_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_280_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_281_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_282_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_283_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_284_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_285_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_286_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_287_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_288_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_289_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_290_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_291_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_292_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_293_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_294_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_295_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_296_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_297_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_298_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_299_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_300_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_301_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_302_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_303_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_304_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_305_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_306_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_307_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_308_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_309_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_310_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_311_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_312_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_313_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_314_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_315_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_316_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_317_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_318_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_319_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_320_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_321_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_322_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_323_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_324_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_325_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_326_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_327_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_328_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_329_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_330_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_331_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_332_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_333_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_334_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_335_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_336_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_337_ipa:
+        label: IPA
+      reading_yue_xiaoxuetang_338_ipa:
+        label: IPA
+    groups:
+      translingual:
+        fanqie:
+          label: Fanqie
+        general_chinese:
+          label: General Chinese (Chao, 1983)
+      mandarin:
+        standard_mandarin:
+          label: Standard Mandarin
+        old_national_pronunciation:
+          label: Old National Pronunciation
+        manju_hergen_1763:
+          label: Manju Hergen (1763)
+        menggu_ziyun:
+          label: Menggu Ziyun
+        zhongyuan_yinyun:
+          label: Zhongyuan Yinyun
+        xiaoxuetang_027:
+          label: Beijing
+        xiaoxuetang_028:
+          label: Jinan
+        xiaoxuetang_029:
+          label: Guangling
+        xiaoxuetang_030:
+          label: Suzhoushi
+        xiaoxuetang_031:
+          label: Woyang
+        xiaoxuetang_032:
+          label: Linquan
+        xiaoxuetang_033:
+          label: Yingshang
+        xiaoxuetang_034:
+          label: Xiaoxian
+        xiaoxuetang_035:
+          label: Bengbushi
+        xiaoxuetang_036:
+          label: Fengyang
+        xiaoxuetang_037:
+          label: Shouxian
+        xiaoxuetang_038:
+          label: Huozhou(Huoxian)
+        xiaoxuetang_039:
+          label: Linfen
+        xiaoxuetang_040:
+          label: Wenxi
+        xiaoxuetang_041:
+          label: Jixian
+        xiaoxuetang_042:
+          label: Xinjiang
+        xiaoxuetang_043:
+          label: Yuncheng
+        xiaoxuetang_044:
+          label: Yongji
+        xiaoxuetang_045:
+          label: Wanrong
+        xiaoxuetang_046:
+          label: Xian
+        xiaoxuetang_047:
+          label: Wuchang
+        xiaoxuetang_048:
+          label: Guilin(Lingui)
+        xiaoxuetang_049:
+          label: Liuzhou(Luorong)
+        xiaoxuetang_050:
+          label: Huaiyuan
+        xiaoxuetang_051:
+          label: Tianzhang
+        xiaoxuetang_052:
+          label: Huainan
+        xiaoxuetang_053:
+          label: Dingyuan
+        xiaoxuetang_054:
+          label: Chuxian(Chuzhou)
+        xiaoxuetang_055:
+          label: Chuzhou
+        xiaoxuetang_056:
+          label: Quanjiao
+        xiaoxuetang_057:
+          label: Hefei
+        xiaoxuetang_058:
+          label: Luan
+        xiaoxuetang_059:
+          label: Hanshan
+        xiaoxuetang_060:
+          label: Chaoxian(Chaohu)
+        xiaoxuetang_061:
+          label: Dangtu
+        xiaoxuetang_062:
+          label: Shucheng
+        xiaoxuetang_063:
+          label: Wuhu
+        xiaoxuetang_064:
+          label: Wuwei
+        xiaoxuetang_065:
+          label: Tongcheng
+        xiaoxuetang_066:
+          label: Tongcheng(Anhuishengzhi)
+        xiaoxuetang_067:
+          label: Xuancheng
+        xiaoxuetang_068:
+          label: Congyang
+        xiaoxuetang_069:
+          label: Guichi
+        xiaoxuetang_070:
+          label: Qingyang
+        xiaoxuetang_071:
+          label: Anqing
+      yue:
+        cantonese:
+          label: Cantonese
+        xiaoxuetang_260:
+          label: Lechang
+        xiaoxuetang_261:
+          label: Renhua
+        xiaoxuetang_262:
+          label: Shaoguan
+        xiaoxuetang_263:
+          label: Qujiang(Maba)
+        xiaoxuetang_264:
+          label: Yingde
+        xiaoxuetang_265:
+          label: Fugang
+        xiaoxuetang_266:
+          label: Qingyuan
+        xiaoxuetang_267:
+          label: Conghua(Chengnei)
+        xiaoxuetang_268:
+          label: Huaxian(Huashan)
+        xiaoxuetang_269:
+          label: Guiping(Xiancheng)
+        xiaoxuetang_270:
+          label: Zengcheng(Xiancheng)
+        xiaoxuetang_271:
+          label: Sanshui(Xinan)
+        xiaoxuetang_272:
+          label: Guangzhou
+        xiaoxuetang_273:
+          label: Zhaoqing(Gaoyao)
+        xiaoxuetang_274:
+          label: Foshan(Shiqu)
+        xiaoxuetang_275:
+          label: Panyu(Shiqiao)
+        xiaoxuetang_276:
+          label: Yunfu(Yuncheng)
+        xiaoxuetang_277:
+          label: Nanhai(Shatou)
+        xiaoxuetang_278:
+          label: Gaoming(Mingcheng)
+        xiaoxuetang_279:
+          label: Shunde(Daliang)
+        xiaoxuetang_280:
+          label: Xintianfantian(Weitouhua)
+        xiaoxuetang_281:
+          label: Xinxing
+        xiaoxuetang_282:
+          label: Dabusanmenzi(Danjiahua)
+        xiaoxuetang_283:
+          label: Dabutaiheng(Weitouhua)
+        xiaoxuetang_284:
+          label: Xianggang(Shiqu)
+        xiaoxuetang_285:
+          label: Xigonghaoyong(Weitouhua)
+        xiaoxuetang_286:
+          label: Aomen(Shiqu)
+        xiaoxuetang_287:
+          label: Ningming(Xiancheng)
+        xiaoxuetang_288:
+          label: Beihai(Lianzhouzhen)
+        xiaoxuetang_289:
+          label: Beihai(Nankangzhen)
+        xiaoxuetang_290:
+          label: Beihai(Shatianzhenhaibianhua)
+        xiaoxuetang_291:
+          label: Beihai(Shiqubaihua)
+        xiaoxuetang_292:
+          label: Beihai(Yingpanzhenwahua)
+        xiaoxuetang_293:
+          label: Bose(Shinei)
+        xiaoxuetang_294:
+          label: Nanning(Shinei)
+        xiaoxuetang_295:
+          label: Qinzhou(Shinei)
+        xiaoxuetang_296:
+          label: Beihai(Shinei)
+        xiaoxuetang_297:
+          label: Heshan(Yayao)
+        xiaoxuetang_298:
+          label: Jiangmen(Baisha)
+        xiaoxuetang_299:
+          label: Xinhui(Huicheng)
+        xiaoxuetang_300:
+          label: Kaiping(Chikan)
+        xiaoxuetang_301:
+          label: Doumen(Shanghengshuishanghua)
+        xiaoxuetang_302:
+          label: Taishan(Taicheng)
+        xiaoxuetang_303:
+          label: Doumen(Doumenzhen)
+        xiaoxuetang_304:
+          label: Enping(Niujiang)
+        xiaoxuetang_305:
+          label: Lingui(Wutong)(Tuhua)
+        xiaoxuetang_306:
+          label: Rongshui(Xiancheng)(Tuguaihua)
+        xiaoxuetang_307:
+          label: Lianxian(Qingshui)
+        xiaoxuetang_308:
+          label: Pingle(Zhangjia)(Tuhua)
+        xiaoxuetang_309:
+          label: Lianshan(Butian)
+        xiaoxuetang_310:
+          label: Yizhou(Desheng)(Baixinghua)
+        xiaoxuetang_311:
+          label: Yangshan
+        xiaoxuetang_312:
+          label: Mengshan(Xihe)
+        xiaoxuetang_313:
+          label: Xindou(Pumen)
+        xiaoxuetang_314:
+          label: Huaiji
+        xiaoxuetang_315:
+          label: Bose(Nabi)(Pinghua)
+        xiaoxuetang_316:
+          label: Guangning
+        xiaoxuetang_317:
+          label: Wuxuan(Zhangcun)(Yahua)
+        xiaoxuetang_318:
+          label: Fengkai(Nanfeng)
+        xiaoxuetang_319:
+          label: Sihui
+        xiaoxuetang_320:
+          label: Yunan(Pingtai)
+        xiaoxuetang_321:
+          label: Binyang(Xinqiao)(Binyanghua)
+        xiaoxuetang_322:
+          label: Deqing
+        xiaoxuetang_323:
+          label: Guigang(Nanjiang)
+        xiaoxuetang_324:
+          label: Nanning(Shajing)(Pinghua)
+        xiaoxuetang_325:
+          label: Luoding
+        xiaoxuetang_326:
+          label: Beiliu(Tangliao)
+        xiaoxuetang_327:
+          label: Hengxian(Xiancheng)
+        xiaoxuetang_328:
+          label: Fusui(Longtou)(Pinghua)
+        xiaoxuetang_329:
+          label: Chongzuo(Sipaihua)(Pinghua)
+        xiaoxuetang_330:
+          label: Bobai(Xiancheng)
+        xiaoxuetang_331:
+          label: Lingshan(Xiancheng)
+        xiaoxuetang_332:
+          label: Pubei(Xiancheng)
+        xiaoxuetang_333:
+          label: Zhongshan(Shiqi)
+        xiaoxuetang_334:
+          label: Zhuhai(Qianshan)
+        xiaoxuetang_335:
+          label: Dongguan(Guancheng)
+        xiaoxuetang_336:
+          label: Baoan(Shajing)
+        xiaoxuetang_337:
+          label: Xianggang(Xinjiejintian)
+        xiaoxuetang_338:
+          label: Mangu(Guangfuhua)
+      middle_chinese:
+        stimson_1976:
+          label: Stimson (1976)
+        baxter_sagart_2014:
+          label: Baxter–Sagart (2014)
+        baxter_with_sagart_2006:
+          label: Baxter (with Sagart, 2006)
+        guangyun:
+          label: Guangyun
+        menggu_ziyun:
+          label: Menggu Ziyun
+      old_chinese:
+        baxter_sagart_2014:
+          label: Baxter–Sagart (2014)
+      japonic:
+        japanese:
+          label: Japanese
+        historical_kana_manyogana:
+          label: Historical kana and Man’yōgana
+        okinawan_uchinaaguchi_shuri:
+          label: Okinawan (Uchinaaguchi)
+          location: Shuri, Naha, Okinawa Island
+      koreanic:
+        korean:
+          label: Korean
+      austroasiatic:
+        vietnamese:
+          label: Vietnamese
+      kra_dai:
+        zhuang:
+          label: Zhuang
+      gan:
+        xiaoxuetang_168:
+          label: Hukou
+        xiaoxuetang_169:
+          label: Xingzi
+        xiaoxuetang_170:
+          label: Duchang
+        xiaoxuetang_171:
+          label: Xiushui
+        xiaoxuetang_172:
+          label: Yongxiu
+        xiaoxuetang_173:
+          label: Pingjiang(Nanjiang)
+        xiaoxuetang_174:
+          label: Anyi
+        xiaoxuetang_175:
+          label: Fengxin
+        xiaoxuetang_176:
+          label: Nanchang
+        xiaoxuetang_177:
+          label: Gaoan
+        xiaoxuetang_178:
+          label: Yifeng
+        xiaoxuetang_179:
+          label: Shanggao
+        xiaoxuetang_180:
+          label: Wanzai
+        xiaoxuetang_181:
+          label: Xinyu(Shatu)
+        xiaoxuetang_182:
+          label: Liling(Baitutan)
+        xiaoxuetang_183:
+          label: Pingxiang
+        xiaoxuetang_184:
+          label: Yongfeng
+        xiaoxuetang_185:
+          label: Lianhua
+        xiaoxuetang_186:
+          label: Jian
+        xiaoxuetang_187:
+          label: Jishui(Luotian)
+        xiaoxuetang_188:
+          label: Yongxin
+        xiaoxuetang_189:
+          label: Taihe
+        xiaoxuetang_190:
+          label: Chaling
+        xiaoxuetang_191:
+          label: Dongxiang
+        xiaoxuetang_192:
+          label: Linchuan
+        xiaoxuetang_193:
+          label: Nancheng
+        xiaoxuetang_194:
+          label: Yihuang
+        xiaoxuetang_195:
+          label: Shaowu
+        xiaoxuetang_196:
+          label: Lichuan
+        xiaoxuetang_197:
+          label: Nanfeng
+        xiaoxuetang_198:
+          label: Taining(Chengguanhua)
+        xiaoxuetang_199:
+          label: Jianning
+        xiaoxuetang_200:
+          label: Jianning(Chengguanhua)
+        xiaoxuetang_201:
+          label: Leping
+        xiaoxuetang_202:
+          label: Boyang
+        xiaoxuetang_203:
+          label: Yugan
+        xiaoxuetang_204:
+          label: Hengfeng
+        xiaoxuetang_205:
+          label: Yiyang
+        xiaoxuetang_206:
+          label: Yangxin(Guohe)
+        xiaoxuetang_207:
+          label: Yuexi
+        xiaoxuetang_208:
+          label: Huaining
+        xiaoxuetang_209:
+          label: Qianshan
+        xiaoxuetang_210:
+          label: Taihu
+        xiaoxuetang_211:
+          label: Susong(Heta)
+        xiaoxuetang_212:
+          label: Susong(Anhuishengzhi)
+        xiaoxuetang_213:
+          label: Wangjiang
+        xiaoxuetang_214:
+          label: Dongzhi
+      hakka:
+        xiaoxuetang_362:
+          label: Conghua(Lütian)
+        xiaoxuetang_363:
+          label: Heyuan(Guangdong)
+        xiaoxuetang_364:
+          label: Jiexi(Guangdong)
+        xiaoxuetang_365:
+          label: Meixian(Guangdong)
+        xiaoxuetang_366:
+          label: Huizhou(Shiqu)
+        xiaoxuetang_367:
+          label: Dongguan(Qingxi)(Kegongfangyandiaochabaogao)
+        xiaoxuetang_368:
+          label: Dongguan(Qingxi)
+        xiaoxuetang_369:
+          label: Shenzhen(Shatoujiao)
+        xiaoxuetang_370:
+          label: Shatoujiaomaqueling(Xianggangxinjie)
+        xiaoxuetang_371:
+          label: Xigonglizhizhuang(Xianggangxinjie)
+        xiaoxuetang_372:
+          label: Shatianchiniping(Xianggangxinjie)
+        xiaoxuetang_373:
+          label: Xianggang
+        xiaoxuetang_374:
+          label: Tunmenyangxiaokeng(Xianggangxinjie)
+        xiaoxuetang_375:
+          label: Liannan(Guangdong)
+        xiaoxuetang_376:
+          label: Wengyuan(Guangdong)
+        xiaoxuetang_377:
+          label: Ninghua(Fujian)
+        xiaoxuetang_378:
+          label: Zhangting(Fujian)
+        xiaoxuetang_379:
+          label: Wuping(Fujian)
+        xiaoxuetang_380:
+          label: Xiuzhuan(Fujianzhaoan)
+        xiaoxuetang_381:
+          label: Ningdou(Jiangxi)
+        xiaoxuetang_382:
+          label: Ningdouxianmeijiangzhen
+        xiaoxuetang_383:
+          label: Shicheng
+        xiaoxuetang_384:
+          label: Longnan
+        xiaoxuetang_385:
+          label: Dingnan
+        xiaoxuetang_386:
+          label: Quannan
+        xiaoxuetang_387:
+          label: Quannanxianchengxiangzhen
+        xiaoxuetang_388:
+          label: Yudu
+        xiaoxuetang_389:
+          label: Shangyouxianshexixiangjiangtou
+        xiaoxuetang_390:
+          label: Gongxian(Jiangxipanlongzhen)
+        xiaoxuetang_391:
+          label: Shangyou(Jiangxi)
+        xiaoxuetang_392:
+          label: Nankang
+        xiaoxuetang_393:
+          label: Nankangshirongjiangzhen
+        xiaoxuetang_394:
+          label: Dayu(Jiangxi)
+        xiaoxuetang_395:
+          label: Anyuanxianxinshanzhen
+        xiaoxuetang_396:
+          label: Anyuan
+        xiaoxuetang_397:
+          label: Xiushuixianhuangshaqiaoxiang
+        xiaoxuetang_398:
+          label: Zaoxi
+        xiaoxuetang_399:
+          label: Sandou(Jiangxitonggu)
+        xiaoxuetang_400:
+          label: Tonggu
+        xiaoxuetang_401:
+          label: Jinggangshan
+        xiaoxuetang_402:
+          label: Xinyisihe
+        xiaoxuetang_403:
+          label: Xinyiqianpai
+        xiaoxuetang_404:
+          label: Yangchunsanjia
+        xiaoxuetang_405:
+          label: Gaozhouxindong
+        xiaoxuetang_406:
+          label: Lianjiangshijiao
+        xiaoxuetang_407:
+          label: Yangxitangkou
+        xiaoxuetang_408:
+          label: Dianbaishalang
+        xiaoxuetang_409:
+          label: Huazhouxinan
+        xiaoxuetang_410:
+          label: Lianjiangqingping
+        xiaoxuetang_411:
+          label: Wuzhouxihe(Mengshan)
+        xiaoxuetang_412:
+          label: Nanningmashan(Pianlian)
+        xiaoxuetang_413:
+          label: Yulinxingye(Gaofengxiang)
+        xiaoxuetang_414:
+          label: Yulinrongxian(Xiandizhenxiandicun)
+        xiaoxuetang_415:
+          label: Yulinbeiliu(Xilangzhenmumiancun)
+        xiaoxuetang_416:
+          label: Yulinbeiliu(Tangan)
+        xiaoxuetang_417:
+          label: Yulinfumian(Qiaozhenxinshacun)
+        xiaoxuetang_418:
+          label: Yulinluchuan(Kegongfangyandiaochabaogao)
+        xiaoxuetang_419:
+          label: Yulinluchuan(Hengshanxiangsihecun)
+        xiaoxuetang_420:
+          label: Yulinbobai(Xintianzhencuntoucun)
+        xiaoxuetang_421:
+          label: Zhongshan(Nanlangheshui)
+        xiaoxuetang_422:
+          label: Mangu(Banshankehua)
+        xiaoxuetang_423:
+          label: Malaixiya(Roufoshinaikejiahua)
+      hui:
+        xiaoxuetang_162:
+          label: Jingde(Anhuishengzhi)
+        xiaoxuetang_163:
+          label: Jixi(Anhuishengzhi)
+        xiaoxuetang_164:
+          label: Huangshan(Tangkou)(Anhuishengzhi)
+        xiaoxuetang_165:
+          label: Yixian(Anhuishengzhi)
+        xiaoxuetang_166:
+          label: Qimen(Anhuishengzhi)
+        xiaoxuetang_167:
+          label: Tunxi(Anhuishengzhi)
+      jin:
+        xiaoxuetang_072:
+          label: Loufan
+        xiaoxuetang_073:
+          label: Taiyuan
+        xiaoxuetang_074:
+          label: Qingxu
+        xiaoxuetang_075:
+          label: Wenshui
+        xiaoxuetang_076:
+          label: Taigu
+        xiaoxuetang_077:
+          label: Qixian
+        xiaoxuetang_078:
+          label: Pingyao
+        xiaoxuetang_079:
+          label: Xiaoyi
+        xiaoxuetang_080:
+          label: Linxian
+        xiaoxuetang_081:
+          label: Lishi
+        xiaoxuetang_082:
+          label: Fenyang
+        xiaoxuetang_083:
+          label: Lanxian
+        xiaoxuetang_084:
+          label: Shilou
+        xiaoxuetang_085:
+          label: Xixian
+        xiaoxuetang_086:
+          label: Fenxi
+        xiaoxuetang_087:
+          label: Qinxian
+        xiaoxuetang_088:
+          label: Pingshun
+        xiaoxuetang_089:
+          label: Zhangzhi
+        xiaoxuetang_090:
+          label: Zhangzi
+        xiaoxuetang_091:
+          label: Gaoping
+        xiaoxuetang_092:
+          label: Lingchuan
+        xiaoxuetang_093:
+          label: Shuozhou
+        xiaoxuetang_094:
+          label: Daixian
+        xiaoxuetang_095:
+          label: Wuzhai
+        xiaoxuetang_096:
+          label: Wutai
+        xiaoxuetang_097:
+          label: Xinzhou
+        xiaoxuetang_098:
+          label: Tianzhen
+        xiaoxuetang_099:
+          label: Datong
+        xiaoxuetang_100:
+          label: Shanyin
+        xiaoxuetang_101:
+          label: Pingding
+        xiaoxuetang_102:
+          label: Heshun
+        xiaoxuetang_103:
+          label: Jincheng
+        xiaoxuetang_104:
+          label: Yangcheng
+      min:
+        xiaoxuetang_219:
+          label: Nanan(Ximeizhen)
+        xiaoxuetang_220:
+          label: Jinjiang(Qingyangzhen)
+        xiaoxuetang_221:
+          label: Zhangzhou
+        xiaoxuetang_222:
+          label: Shamen
+        xiaoxuetang_223:
+          label: Zhangpu
+        xiaoxuetang_224:
+          label: Datian
+        xiaoxuetang_225:
+          label: Datian(Qianluhua)
+        xiaoxuetang_226:
+          label: Chaozhou(Fuchenghua)
+        xiaoxuetang_227:
+          label: Chaozhou(Hanyufangyinzihui)
+        xiaoxuetang_228:
+          label: Jieyang(Rongchenghua)
+        xiaoxuetang_229:
+          label: Chenghai
+        xiaoxuetang_230:
+          label: Shantou(Shantoushiqu)
+        xiaoxuetang_231:
+          label: Haifeng(Haichengzhen)
+        xiaoxuetang_232:
+          label: Lufeng(Neihuzhen)
+        xiaoxuetang_233:
+          label: Dabuyuanzhouzi(Xianggangxinjiefulaohua)
+        xiaoxuetang_234:
+          label: Dianbai(Xiadongzhenlihua)
+        xiaoxuetang_235:
+          label: Haikang(Leichenghua)
+        xiaoxuetang_236:
+          label: Xianyou(Chengguanhua)
+        xiaoxuetang_237:
+          label: Putian
+        xiaoxuetang_238:
+          label: Gutian
+        xiaoxuetang_239:
+          label: Mazu
+        xiaoxuetang_240:
+          label: Fuzhou
+        xiaoxuetang_241:
+          label: Fuqing
+        xiaoxuetang_242:
+          label: Zherong
+        xiaoxuetang_243:
+          label: Fuan
+        xiaoxuetang_244:
+          label: Ningde
+        xiaoxuetang_245:
+          label: Chongan(Chongchengzhenchengguanhua)
+        xiaoxuetang_246:
+          label: Shibei
+        xiaoxuetang_247:
+          label: Jianyang(Tanchengzhenchengguanhua)
+        xiaoxuetang_248:
+          label: Songxi
+        xiaoxuetang_249:
+          label: Jianou
+        xiaoxuetang_250:
+          label: Jianou(Shizhi)
+        xiaoxuetang_251:
+          label: Shaxian(Chengguanhua)
+        xiaoxuetang_252:
+          label: Mingxi(Chengguanhua)
+        xiaoxuetang_253:
+          label: Sanming(Sanyuanhua)
+        xiaoxuetang_254:
+          label: Pingnan(Shangduyabu)(Guangxihanyufangyan)
+        xiaoxuetang_255:
+          label: Zhongshan(Longdou)(Zhujiangsanjiaozhou)
+        xiaoxuetang_256:
+          label: Zhongshan(Longdou)(Guangdongminfangyan)
+        xiaoxuetang_257:
+          label: Zhongshan(Sanxiang)
+        xiaoxuetang_258:
+          label: Mangu(Chaozhouhua)
+        xiaoxuetang_259:
+          label: Jiangle(Chengguanhua)
+      other_sinitic:
+        xiaoxuetang_424:
+          label: Fuchuan(Qidouhua)
+        xiaoxuetang_425:
+          label: Fuchuan(Badouhua)
+        xiaoxuetang_426:
+          label: Zhongshan(Gongan)
+        xiaoxuetang_427:
+          label: Hezhou(Jiudouhua)
+        xiaoxuetang_428:
+          label: Hunan(Daoxian)
+        xiaoxuetang_429:
+          label: Jiangyongchengguan(Baishuicun)
+        xiaoxuetang_430:
+          label: Fengyang
+        xiaoxuetang_431:
+          label: Xingzi
+        xiaoxuetang_432:
+          label: Xian
+        xiaoxuetang_433:
+          label: Baoan
+        xiaoxuetang_434:
+          label: Lianzhou
+      pinghua:
+        xiaoxuetang_339:
+          label: Ningyuan(Qingshuiqiao)
+        xiaoxuetang_340:
+          label: Longsheng(Hongyao)
+        xiaoxuetang_341:
+          label: Lingchuan(Sanjie)
+        xiaoxuetang_342:
+          label: Lingchuan(Tanxia)
+        xiaoxuetang_343:
+          label: Guilin(Chaoyang)
+        xiaoxuetang_344:
+          label: Guilin(Yanshanzhuyuan)
+        xiaoxuetang_345:
+          label: Lingui(Liangjiang)
+        xiaoxuetang_346:
+          label: Yongfu(Taocheng)
+        xiaoxuetang_347:
+          label: Yangshuo(Jima)
+        xiaoxuetang_348:
+          label: Lingui(Wutong)
+        xiaoxuetang_349:
+          label: Rongshui(Rongshuizhen)
+        xiaoxuetang_350:
+          label: Pingle(Qinglong)
+        xiaoxuetang_351:
+          label: Funing(Boai)
+        xiaoxuetang_352:
+          label: Bose(Nabi)(Pinghuayinyunyanjiu)
+        xiaoxuetang_353:
+          label: Mashan(Qiaoli)
+        xiaoxuetang_354:
+          label: Tiandong(Linfeng)
+        xiaoxuetang_355:
+          label: Binyang(Luxu)
+        xiaoxuetang_356:
+          label: Nanning(Tingzi)
+        xiaoxuetang_357:
+          label: Hengxian(Hengzhou)
+        xiaoxuetang_358:
+          label: Fusui(Longtou)
+        xiaoxuetang_359:
+          label: Longzhou(Shanglong)
+        xiaoxuetang_360:
+          label: Tengxian(Tengcheng)
+        xiaoxuetang_361:
+          label: Yulin(Fumian)
+      wu:
+        xiaoxuetang_105:
+          label: Danyanghouxiangtongjiaqiao
+        xiaoxuetang_106:
+          label: Jingjiang
+        xiaoxuetang_107:
+          label: Danyang
+        xiaoxuetang_108:
+          label: Jiangyin
+        xiaoxuetang_109:
+          label: Changzhou
+        xiaoxuetang_110:
+          label: Jintanxigang
+        xiaoxuetang_111:
+          label: Liyang
+        xiaoxuetang_112:
+          label: Yixing
+        xiaoxuetang_113:
+          label: Changshu
+        xiaoxuetang_114:
+          label: Wuxi
+        xiaoxuetang_115:
+          label: Baoshanshuangcaodun
+        xiaoxuetang_116:
+          label: Baoshanluodian
+        xiaoxuetang_117:
+          label: Kunshan
+        xiaoxuetang_118:
+          label: Suzhou
+        xiaoxuetang_119:
+          label: Suzhou(Dangdaiwuyu)
+        xiaoxuetang_120:
+          label: Shanghai
+        xiaoxuetang_121:
+          label: Nanhuizhoupu
+        xiaoxuetang_122:
+          label: Songjiang
+        xiaoxuetang_123:
+          label: Wujianglili
+        xiaoxuetang_124:
+          label: Wujiangshengze
+        xiaoxuetang_125:
+          label: Jiaxing
+        xiaoxuetang_126:
+          label: Shanghai(Sanlintang)
+        xiaoxuetang_127:
+          label: Huzhoushuanglin
+        xiaoxuetang_128:
+          label: Hangzhou
+        xiaoxuetang_129:
+          label: Yuyao
+        xiaoxuetang_130:
+          label: Shaoxing
+        xiaoxuetang_131:
+          label: Zhujiwangjiajing
+        xiaoxuetang_132:
+          label: Shengxianchongren
+        xiaoxuetang_133:
+          label: Shengxiantaiping
+        xiaoxuetang_134:
+          label: Ningbo
+        xiaoxuetang_135:
+          label: Huangyan
+        xiaoxuetang_136:
+          label: Wenzhou
+        xiaoxuetang_137:
+          label: Jinhua
+        xiaoxuetang_138:
+          label: Yongkang
+        xiaoxuetang_139:
+          label: Yunhe
+        xiaoxuetang_140:
+          label: Kaihua
+        xiaoxuetang_141:
+          label: Longyou
+        xiaoxuetang_142:
+          label: Quzhou
+        xiaoxuetang_143:
+          label: Changshan
+        xiaoxuetang_144:
+          label: Jiangshan(Jiangshanshi)
+        xiaoxuetang_145:
+          label: Yushan
+        xiaoxuetang_146:
+          label: Suichang
+        xiaoxuetang_147:
+          label: Guangfeng(Yongfengzhen)
+        xiaoxuetang_148:
+          label: Pucheng(Nanpuzhenchengguanhua)
+        xiaoxuetang_149:
+          label: Qingyuan
+        xiaoxuetang_150:
+          label: Xuanzhoushiqiugongxiang
+        xiaoxuetang_151:
+          label: Wuhuxian
+        xiaoxuetang_152:
+          label: Fanchang
+        xiaoxuetang_153:
+          label: Tonglingxian
+        xiaoxuetang_154:
+          label: Nanling(Xianfanghua)
+        xiaoxuetang_155:
+          label: Jingxian
+        xiaoxuetang_156:
+          label: Guichishimaotanxiang
+        xiaoxuetang_157:
+          label: Ningguoshizhuangcunxiang
+        xiaoxuetang_158:
+          label: Guichishiguankouxiang
+        xiaoxuetang_159:
+          label: Ningguoshinanjixiang
+        xiaoxuetang_160:
+          label: Huangshanqugantangzhen
+        xiaoxuetang_161:
+          label: Shitai
+      xiang:
+        xiaoxuetang_215:
+          label: Zhangsha
+        xiaoxuetang_216:
+          label: Shuangfeng
+        xiaoxuetang_217:
+          label: Quanzhou(Xiancheng)
+        xiaoxuetang_218:
+          label: Guanyang(Wenshi)
+    ruby_sources:
+      fanqie:
+        label: Fanqie
+      mandarin:
+        label: Mandarin
+      laoguoyin:
+        label: Old National Pronunciation
+      cantonese:
+        label: Cantonese
+      tang:
+        label: Tang pronunciation
+      bs2014_mc:
+        label: Middle Chinese (Baxter & Sagart, 2014)
+      bs2014_oc:
+        label: Old Chinese (Baxter & Sagart, 2014)
+      japanese_kana:
+        label: Japanese Kana
+      japanese_on:
+        label: Japanese On
+      japanese_kun:
+        label: Japanese Kun
+      okinawan_uchinaaguchi_shuri_ninjal:
+        label: Okinawan (Uchinaaguchi) — Shuri — NINJAL transcription
+      korean_yale:
+        label: Korean Yale
+      korean_hangul:
+        label: Korean Hangul
+      vietnamese:
+        label: Vietnamese
+      zhuang:
+        label: Zhuang
+      xiaoxuetang_168:
+        label: Hukou — IPA
+      xiaoxuetang_169:
+        label: Xingzi — IPA
+      xiaoxuetang_170:
+        label: Duchang — IPA
+      xiaoxuetang_171:
+        label: Xiushui — IPA
+      xiaoxuetang_172:
+        label: Yongxiu — IPA
+      xiaoxuetang_173:
+        label: Pingjiang(Nanjiang) — IPA
+      xiaoxuetang_174:
+        label: Anyi — IPA
+      xiaoxuetang_175:
+        label: Fengxin — IPA
+      xiaoxuetang_176:
+        label: Nanchang — IPA
+      xiaoxuetang_177:
+        label: Gaoan — IPA
+      xiaoxuetang_178:
+        label: Yifeng — IPA
+      xiaoxuetang_179:
+        label: Shanggao — IPA
+      xiaoxuetang_180:
+        label: Wanzai — IPA
+      xiaoxuetang_181:
+        label: Xinyu(Shatu) — IPA
+      xiaoxuetang_182:
+        label: Liling(Baitutan) — IPA
+      xiaoxuetang_183:
+        label: Pingxiang — IPA
+      xiaoxuetang_184:
+        label: Yongfeng — IPA
+      xiaoxuetang_185:
+        label: Lianhua — IPA
+      xiaoxuetang_186:
+        label: Jian — IPA
+      xiaoxuetang_187:
+        label: Jishui(Luotian) — IPA
+      xiaoxuetang_188:
+        label: Yongxin — IPA
+      xiaoxuetang_189:
+        label: Taihe — IPA
+      xiaoxuetang_190:
+        label: Chaling — IPA
+      xiaoxuetang_191:
+        label: Dongxiang — IPA
+      xiaoxuetang_192:
+        label: Linchuan — IPA
+      xiaoxuetang_193:
+        label: Nancheng — IPA
+      xiaoxuetang_194:
+        label: Yihuang — IPA
+      xiaoxuetang_195:
+        label: Shaowu — IPA
+      xiaoxuetang_196:
+        label: Lichuan — IPA
+      xiaoxuetang_197:
+        label: Nanfeng — IPA
+      xiaoxuetang_198:
+        label: Taining(Chengguanhua) — IPA
+      xiaoxuetang_199:
+        label: Jianning — IPA
+      xiaoxuetang_200:
+        label: Jianning(Chengguanhua) — IPA
+      xiaoxuetang_201:
+        label: Leping — IPA
+      xiaoxuetang_202:
+        label: Boyang — IPA
+      xiaoxuetang_203:
+        label: Yugan — IPA
+      xiaoxuetang_204:
+        label: Hengfeng — IPA
+      xiaoxuetang_205:
+        label: Yiyang — IPA
+      xiaoxuetang_206:
+        label: Yangxin(Guohe) — IPA
+      xiaoxuetang_207:
+        label: Yuexi — IPA
+      xiaoxuetang_208:
+        label: Huaining — IPA
+      xiaoxuetang_209:
+        label: Qianshan — IPA
+      xiaoxuetang_210:
+        label: Taihu — IPA
+      xiaoxuetang_211:
+        label: Susong(Heta) — IPA
+      xiaoxuetang_212:
+        label: Susong(Anhuishengzhi) — IPA
+      xiaoxuetang_213:
+        label: Wangjiang — IPA
+      xiaoxuetang_214:
+        label: Dongzhi — IPA
+      xiaoxuetang_362:
+        label: Conghua(Lütian) — IPA
+      xiaoxuetang_363:
+        label: Heyuan(Guangdong) — IPA
+      xiaoxuetang_364:
+        label: Jiexi(Guangdong) — IPA
+      xiaoxuetang_365:
+        label: Meixian(Guangdong) — IPA
+      xiaoxuetang_366:
+        label: Huizhou(Shiqu) — IPA
+      xiaoxuetang_367:
+        label: Dongguan(Qingxi)(Kegongfangyandiaochabaogao) — IPA
+      xiaoxuetang_368:
+        label: Dongguan(Qingxi) — IPA
+      xiaoxuetang_369:
+        label: Shenzhen(Shatoujiao) — IPA
+      xiaoxuetang_370:
+        label: Shatoujiaomaqueling(Xianggangxinjie) — IPA
+      xiaoxuetang_371:
+        label: Xigonglizhizhuang(Xianggangxinjie) — IPA
+      xiaoxuetang_372:
+        label: Shatianchiniping(Xianggangxinjie) — IPA
+      xiaoxuetang_373:
+        label: Xianggang — IPA
+      xiaoxuetang_374:
+        label: Tunmenyangxiaokeng(Xianggangxinjie) — IPA
+      xiaoxuetang_375:
+        label: Liannan(Guangdong) — IPA
+      xiaoxuetang_376:
+        label: Wengyuan(Guangdong) — IPA
+      xiaoxuetang_377:
+        label: Ninghua(Fujian) — IPA
+      xiaoxuetang_378:
+        label: Zhangting(Fujian) — IPA
+      xiaoxuetang_379:
+        label: Wuping(Fujian) — IPA
+      xiaoxuetang_380:
+        label: Xiuzhuan(Fujianzhaoan) — IPA
+      xiaoxuetang_381:
+        label: Ningdou(Jiangxi) — IPA
+      xiaoxuetang_382:
+        label: Ningdouxianmeijiangzhen — IPA
+      xiaoxuetang_383:
+        label: Shicheng — IPA
+      xiaoxuetang_384:
+        label: Longnan — IPA
+      xiaoxuetang_385:
+        label: Dingnan — IPA
+      xiaoxuetang_386:
+        label: Quannan — IPA
+      xiaoxuetang_387:
+        label: Quannanxianchengxiangzhen — IPA
+      xiaoxuetang_388:
+        label: Yudu — IPA
+      xiaoxuetang_389:
+        label: Shangyouxianshexixiangjiangtou — IPA
+      xiaoxuetang_390:
+        label: Gongxian(Jiangxipanlongzhen) — IPA
+      xiaoxuetang_391:
+        label: Shangyou(Jiangxi) — IPA
+      xiaoxuetang_392:
+        label: Nankang — IPA
+      xiaoxuetang_393:
+        label: Nankangshirongjiangzhen — IPA
+      xiaoxuetang_394:
+        label: Dayu(Jiangxi) — IPA
+      xiaoxuetang_395:
+        label: Anyuanxianxinshanzhen — IPA
+      xiaoxuetang_396:
+        label: Anyuan — IPA
+      xiaoxuetang_397:
+        label: Xiushuixianhuangshaqiaoxiang — IPA
+      xiaoxuetang_398:
+        label: Zaoxi — IPA
+      xiaoxuetang_399:
+        label: Sandou(Jiangxitonggu) — IPA
+      xiaoxuetang_400:
+        label: Tonggu — IPA
+      xiaoxuetang_401:
+        label: Jinggangshan — IPA
+      xiaoxuetang_402:
+        label: Xinyisihe — IPA
+      xiaoxuetang_403:
+        label: Xinyiqianpai — IPA
+      xiaoxuetang_404:
+        label: Yangchunsanjia — IPA
+      xiaoxuetang_405:
+        label: Gaozhouxindong — IPA
+      xiaoxuetang_406:
+        label: Lianjiangshijiao — IPA
+      xiaoxuetang_407:
+        label: Yangxitangkou — IPA
+      xiaoxuetang_408:
+        label: Dianbaishalang — IPA
+      xiaoxuetang_409:
+        label: Huazhouxinan — IPA
+      xiaoxuetang_410:
+        label: Lianjiangqingping — IPA
+      xiaoxuetang_411:
+        label: Wuzhouxihe(Mengshan) — IPA
+      xiaoxuetang_412:
+        label: Nanningmashan(Pianlian) — IPA
+      xiaoxuetang_413:
+        label: Yulinxingye(Gaofengxiang) — IPA
+      xiaoxuetang_414:
+        label: Yulinrongxian(Xiandizhenxiandicun) — IPA
+      xiaoxuetang_415:
+        label: Yulinbeiliu(Xilangzhenmumiancun) — IPA
+      xiaoxuetang_416:
+        label: Yulinbeiliu(Tangan) — IPA
+      xiaoxuetang_417:
+        label: Yulinfumian(Qiaozhenxinshacun) — IPA
+      xiaoxuetang_418:
+        label: Yulinluchuan(Kegongfangyandiaochabaogao) — IPA
+      xiaoxuetang_419:
+        label: Yulinluchuan(Hengshanxiangsihecun) — IPA
+      xiaoxuetang_420:
+        label: Yulinbobai(Xintianzhencuntoucun) — IPA
+      xiaoxuetang_421:
+        label: Zhongshan(Nanlangheshui) — IPA
+      xiaoxuetang_422:
+        label: Mangu(Banshankehua) — IPA
+      xiaoxuetang_423:
+        label: Malaixiya(Roufoshinaikejiahua) — IPA
+      xiaoxuetang_162:
+        label: Jingde(Anhuishengzhi) — IPA
+      xiaoxuetang_163:
+        label: Jixi(Anhuishengzhi) — IPA
+      xiaoxuetang_164:
+        label: Huangshan(Tangkou)(Anhuishengzhi) — IPA
+      xiaoxuetang_165:
+        label: Yixian(Anhuishengzhi) — IPA
+      xiaoxuetang_166:
+        label: Qimen(Anhuishengzhi) — IPA
+      xiaoxuetang_167:
+        label: Tunxi(Anhuishengzhi) — IPA
+      xiaoxuetang_072:
+        label: Loufan — IPA
+      xiaoxuetang_073:
+        label: Taiyuan — IPA
+      xiaoxuetang_074:
+        label: Qingxu — IPA
+      xiaoxuetang_075:
+        label: Wenshui — IPA
+      xiaoxuetang_076:
+        label: Taigu — IPA
+      xiaoxuetang_077:
+        label: Qixian — IPA
+      xiaoxuetang_078:
+        label: Pingyao — IPA
+      xiaoxuetang_079:
+        label: Xiaoyi — IPA
+      xiaoxuetang_080:
+        label: Linxian — IPA
+      xiaoxuetang_081:
+        label: Lishi — IPA
+      xiaoxuetang_082:
+        label: Fenyang — IPA
+      xiaoxuetang_083:
+        label: Lanxian — IPA
+      xiaoxuetang_084:
+        label: Shilou — IPA
+      xiaoxuetang_085:
+        label: Xixian — IPA
+      xiaoxuetang_086:
+        label: Fenxi — IPA
+      xiaoxuetang_087:
+        label: Qinxian — IPA
+      xiaoxuetang_088:
+        label: Pingshun — IPA
+      xiaoxuetang_089:
+        label: Zhangzhi — IPA
+      xiaoxuetang_090:
+        label: Zhangzi — IPA
+      xiaoxuetang_091:
+        label: Gaoping — IPA
+      xiaoxuetang_092:
+        label: Lingchuan — IPA
+      xiaoxuetang_093:
+        label: Shuozhou — IPA
+      xiaoxuetang_094:
+        label: Daixian — IPA
+      xiaoxuetang_095:
+        label: Wuzhai — IPA
+      xiaoxuetang_096:
+        label: Wutai — IPA
+      xiaoxuetang_097:
+        label: Xinzhou — IPA
+      xiaoxuetang_098:
+        label: Tianzhen — IPA
+      xiaoxuetang_099:
+        label: Datong — IPA
+      xiaoxuetang_100:
+        label: Shanyin — IPA
+      xiaoxuetang_101:
+        label: Pingding — IPA
+      xiaoxuetang_102:
+        label: Heshun — IPA
+      xiaoxuetang_103:
+        label: Jincheng — IPA
+      xiaoxuetang_104:
+        label: Yangcheng — IPA
+      xiaoxuetang_027:
+        label: Beijing — IPA
+      xiaoxuetang_028:
+        label: Jinan — IPA
+      xiaoxuetang_029:
+        label: Guangling — IPA
+      xiaoxuetang_030:
+        label: Suzhoushi — IPA
+      xiaoxuetang_031:
+        label: Woyang — IPA
+      xiaoxuetang_032:
+        label: Linquan — IPA
+      xiaoxuetang_033:
+        label: Yingshang — IPA
+      xiaoxuetang_034:
+        label: Xiaoxian — IPA
+      xiaoxuetang_035:
+        label: Bengbushi — IPA
+      xiaoxuetang_036:
+        label: Fengyang — IPA
+      xiaoxuetang_037:
+        label: Shouxian — IPA
+      xiaoxuetang_038:
+        label: Huozhou(Huoxian) — IPA
+      xiaoxuetang_039:
+        label: Linfen — IPA
+      xiaoxuetang_040:
+        label: Wenxi — IPA
+      xiaoxuetang_041:
+        label: Jixian — IPA
+      xiaoxuetang_042:
+        label: Xinjiang — IPA
+      xiaoxuetang_043:
+        label: Yuncheng — IPA
+      xiaoxuetang_044:
+        label: Yongji — IPA
+      xiaoxuetang_045:
+        label: Wanrong — IPA
+      xiaoxuetang_046:
+        label: Xian — IPA
+      xiaoxuetang_047:
+        label: Wuchang — IPA
+      xiaoxuetang_048:
+        label: Guilin(Lingui) — IPA
+      xiaoxuetang_049:
+        label: Liuzhou(Luorong) — IPA
+      xiaoxuetang_050:
+        label: Huaiyuan — IPA
+      xiaoxuetang_051:
+        label: Tianzhang — IPA
+      xiaoxuetang_052:
+        label: Huainan — IPA
+      xiaoxuetang_053:
+        label: Dingyuan — IPA
+      xiaoxuetang_054:
+        label: Chuxian(Chuzhou) — IPA
+      xiaoxuetang_055:
+        label: Chuzhou — IPA
+      xiaoxuetang_056:
+        label: Quanjiao — IPA
+      xiaoxuetang_057:
+        label: Hefei — IPA
+      xiaoxuetang_058:
+        label: Luan — IPA
+      xiaoxuetang_059:
+        label: Hanshan — IPA
+      xiaoxuetang_060:
+        label: Chaoxian(Chaohu) — IPA
+      xiaoxuetang_061:
+        label: Dangtu — IPA
+      xiaoxuetang_062:
+        label: Shucheng — IPA
+      xiaoxuetang_063:
+        label: Wuhu — IPA
+      xiaoxuetang_064:
+        label: Wuwei — IPA
+      xiaoxuetang_065:
+        label: Tongcheng — IPA
+      xiaoxuetang_066:
+        label: Tongcheng(Anhuishengzhi) — IPA
+      xiaoxuetang_067:
+        label: Xuancheng — IPA
+      xiaoxuetang_068:
+        label: Congyang — IPA
+      xiaoxuetang_069:
+        label: Guichi — IPA
+      xiaoxuetang_070:
+        label: Qingyang — IPA
+      xiaoxuetang_071:
+        label: Anqing — IPA
+      xiaoxuetang_219:
+        label: Nanan(Ximeizhen) — IPA
+      xiaoxuetang_220:
+        label: Jinjiang(Qingyangzhen) — IPA
+      xiaoxuetang_221:
+        label: Zhangzhou — IPA
+      xiaoxuetang_222:
+        label: Shamen — IPA
+      xiaoxuetang_223:
+        label: Zhangpu — IPA
+      xiaoxuetang_224:
+        label: Datian — IPA
+      xiaoxuetang_225:
+        label: Datian(Qianluhua) — IPA
+      xiaoxuetang_226:
+        label: Chaozhou(Fuchenghua) — IPA
+      xiaoxuetang_227:
+        label: Chaozhou(Hanyufangyinzihui) — IPA
+      xiaoxuetang_228:
+        label: Jieyang(Rongchenghua) — IPA
+      xiaoxuetang_229:
+        label: Chenghai — IPA
+      xiaoxuetang_230:
+        label: Shantou(Shantoushiqu) — IPA
+      xiaoxuetang_231:
+        label: Haifeng(Haichengzhen) — IPA
+      xiaoxuetang_232:
+        label: Lufeng(Neihuzhen) — IPA
+      xiaoxuetang_233:
+        label: Dabuyuanzhouzi(Xianggangxinjiefulaohua) — IPA
+      xiaoxuetang_234:
+        label: Dianbai(Xiadongzhenlihua) — IPA
+      xiaoxuetang_235:
+        label: Haikang(Leichenghua) — IPA
+      xiaoxuetang_236:
+        label: Xianyou(Chengguanhua) — IPA
+      xiaoxuetang_237:
+        label: Putian — IPA
+      xiaoxuetang_238:
+        label: Gutian — IPA
+      xiaoxuetang_239:
+        label: Mazu — IPA
+      xiaoxuetang_240:
+        label: Fuzhou — IPA
+      xiaoxuetang_241:
+        label: Fuqing — IPA
+      xiaoxuetang_242:
+        label: Zherong — IPA
+      xiaoxuetang_243:
+        label: Fuan — IPA
+      xiaoxuetang_244:
+        label: Ningde — IPA
+      xiaoxuetang_245:
+        label: Chongan(Chongchengzhenchengguanhua) — IPA
+      xiaoxuetang_246:
+        label: Shibei — IPA
+      xiaoxuetang_247:
+        label: Jianyang(Tanchengzhenchengguanhua) — IPA
+      xiaoxuetang_248:
+        label: Songxi — IPA
+      xiaoxuetang_249:
+        label: Jianou — IPA
+      xiaoxuetang_250:
+        label: Jianou(Shizhi) — IPA
+      xiaoxuetang_251:
+        label: Shaxian(Chengguanhua) — IPA
+      xiaoxuetang_252:
+        label: Mingxi(Chengguanhua) — IPA
+      xiaoxuetang_253:
+        label: Sanming(Sanyuanhua) — IPA
+      xiaoxuetang_254:
+        label: Pingnan(Shangduyabu)(Guangxihanyufangyan) — IPA
+      xiaoxuetang_255:
+        label: Zhongshan(Longdou)(Zhujiangsanjiaozhou) — IPA
+      xiaoxuetang_256:
+        label: Zhongshan(Longdou)(Guangdongminfangyan) — IPA
+      xiaoxuetang_257:
+        label: Zhongshan(Sanxiang) — IPA
+      xiaoxuetang_258:
+        label: Mangu(Chaozhouhua) — IPA
+      xiaoxuetang_259:
+        label: Jiangle(Chengguanhua) — IPA
+      xiaoxuetang_424:
+        label: Fuchuan(Qidouhua) — IPA
+      xiaoxuetang_425:
+        label: Fuchuan(Badouhua) — IPA
+      xiaoxuetang_426:
+        label: Zhongshan(Gongan) — IPA
+      xiaoxuetang_427:
+        label: Hezhou(Jiudouhua) — IPA
+      xiaoxuetang_428:
+        label: Hunan(Daoxian) — IPA
+      xiaoxuetang_429:
+        label: Jiangyongchengguan(Baishuicun) — IPA
+      xiaoxuetang_430:
+        label: Fengyang — IPA
+      xiaoxuetang_431:
+        label: Xingzi — IPA
+      xiaoxuetang_432:
+        label: Xian — IPA
+      xiaoxuetang_433:
+        label: Baoan — IPA
+      xiaoxuetang_434:
+        label: Lianzhou — IPA
+      xiaoxuetang_339:
+        label: Ningyuan(Qingshuiqiao) — IPA
+      xiaoxuetang_340:
+        label: Longsheng(Hongyao) — IPA
+      xiaoxuetang_341:
+        label: Lingchuan(Sanjie) — IPA
+      xiaoxuetang_342:
+        label: Lingchuan(Tanxia) — IPA
+      xiaoxuetang_343:
+        label: Guilin(Chaoyang) — IPA
+      xiaoxuetang_344:
+        label: Guilin(Yanshanzhuyuan) — IPA
+      xiaoxuetang_345:
+        label: Lingui(Liangjiang) — IPA
+      xiaoxuetang_346:
+        label: Yongfu(Taocheng) — IPA
+      xiaoxuetang_347:
+        label: Yangshuo(Jima) — IPA
+      xiaoxuetang_348:
+        label: Lingui(Wutong) — IPA
+      xiaoxuetang_349:
+        label: Rongshui(Rongshuizhen) — IPA
+      xiaoxuetang_350:
+        label: Pingle(Qinglong) — IPA
+      xiaoxuetang_351:
+        label: Funing(Boai) — IPA
+      xiaoxuetang_352:
+        label: Bose(Nabi)(Pinghuayinyunyanjiu) — IPA
+      xiaoxuetang_353:
+        label: Mashan(Qiaoli) — IPA
+      xiaoxuetang_354:
+        label: Tiandong(Linfeng) — IPA
+      xiaoxuetang_355:
+        label: Binyang(Luxu) — IPA
+      xiaoxuetang_356:
+        label: Nanning(Tingzi) — IPA
+      xiaoxuetang_357:
+        label: Hengxian(Hengzhou) — IPA
+      xiaoxuetang_358:
+        label: Fusui(Longtou) — IPA
+      xiaoxuetang_359:
+        label: Longzhou(Shanglong) — IPA
+      xiaoxuetang_360:
+        label: Tengxian(Tengcheng) — IPA
+      xiaoxuetang_361:
+        label: Yulin(Fumian) — IPA
+      xiaoxuetang_105:
+        label: Danyanghouxiangtongjiaqiao — IPA
+      xiaoxuetang_106:
+        label: Jingjiang — IPA
+      xiaoxuetang_107:
+        label: Danyang — IPA
+      xiaoxuetang_108:
+        label: Jiangyin — IPA
+      xiaoxuetang_109:
+        label: Changzhou — IPA
+      xiaoxuetang_110:
+        label: Jintanxigang — IPA
+      xiaoxuetang_111:
+        label: Liyang — IPA
+      xiaoxuetang_112:
+        label: Yixing — IPA
+      xiaoxuetang_113:
+        label: Changshu — IPA
+      xiaoxuetang_114:
+        label: Wuxi — IPA
+      xiaoxuetang_115:
+        label: Baoshanshuangcaodun — IPA
+      xiaoxuetang_116:
+        label: Baoshanluodian — IPA
+      xiaoxuetang_117:
+        label: Kunshan — IPA
+      xiaoxuetang_118:
+        label: Suzhou — IPA
+      xiaoxuetang_119:
+        label: Suzhou(Dangdaiwuyu) — IPA
+      xiaoxuetang_120:
+        label: Shanghai — IPA
+      xiaoxuetang_121:
+        label: Nanhuizhoupu — IPA
+      xiaoxuetang_122:
+        label: Songjiang — IPA
+      xiaoxuetang_123:
+        label: Wujianglili — IPA
+      xiaoxuetang_124:
+        label: Wujiangshengze — IPA
+      xiaoxuetang_125:
+        label: Jiaxing — IPA
+      xiaoxuetang_126:
+        label: Shanghai(Sanlintang) — IPA
+      xiaoxuetang_127:
+        label: Huzhoushuanglin — IPA
+      xiaoxuetang_128:
+        label: Hangzhou — IPA
+      xiaoxuetang_129:
+        label: Yuyao — IPA
+      xiaoxuetang_130:
+        label: Shaoxing — IPA
+      xiaoxuetang_131:
+        label: Zhujiwangjiajing — IPA
+      xiaoxuetang_132:
+        label: Shengxianchongren — IPA
+      xiaoxuetang_133:
+        label: Shengxiantaiping — IPA
+      xiaoxuetang_134:
+        label: Ningbo — IPA
+      xiaoxuetang_135:
+        label: Huangyan — IPA
+      xiaoxuetang_136:
+        label: Wenzhou — IPA
+      xiaoxuetang_137:
+        label: Jinhua — IPA
+      xiaoxuetang_138:
+        label: Yongkang — IPA
+      xiaoxuetang_139:
+        label: Yunhe — IPA
+      xiaoxuetang_140:
+        label: Kaihua — IPA
+      xiaoxuetang_141:
+        label: Longyou — IPA
+      xiaoxuetang_142:
+        label: Quzhou — IPA
+      xiaoxuetang_143:
+        label: Changshan — IPA
+      xiaoxuetang_144:
+        label: Jiangshan(Jiangshanshi) — IPA
+      xiaoxuetang_145:
+        label: Yushan — IPA
+      xiaoxuetang_146:
+        label: Suichang — IPA
+      xiaoxuetang_147:
+        label: Guangfeng(Yongfengzhen) — IPA
+      xiaoxuetang_148:
+        label: Pucheng(Nanpuzhenchengguanhua) — IPA
+      xiaoxuetang_149:
+        label: Qingyuan — IPA
+      xiaoxuetang_150:
+        label: Xuanzhoushiqiugongxiang — IPA
+      xiaoxuetang_151:
+        label: Wuhuxian — IPA
+      xiaoxuetang_152:
+        label: Fanchang — IPA
+      xiaoxuetang_153:
+        label: Tonglingxian — IPA
+      xiaoxuetang_154:
+        label: Nanling(Xianfanghua) — IPA
+      xiaoxuetang_155:
+        label: Jingxian — IPA
+      xiaoxuetang_156:
+        label: Guichishimaotanxiang — IPA
+      xiaoxuetang_157:
+        label: Ningguoshizhuangcunxiang — IPA
+      xiaoxuetang_158:
+        label: Guichishiguankouxiang — IPA
+      xiaoxuetang_159:
+        label: Ningguoshinanjixiang — IPA
+      xiaoxuetang_160:
+        label: Huangshanqugantangzhen — IPA
+      xiaoxuetang_161:
+        label: Shitai — IPA
+      xiaoxuetang_215:
+        label: Zhangsha — IPA
+      xiaoxuetang_216:
+        label: Shuangfeng — IPA
+      xiaoxuetang_217:
+        label: Quanzhou(Xiancheng) — IPA
+      xiaoxuetang_218:
+        label: Guanyang(Wenshi) — IPA
+      xiaoxuetang_260:
+        label: Lechang — IPA
+      xiaoxuetang_261:
+        label: Renhua — IPA
+      xiaoxuetang_262:
+        label: Shaoguan — IPA
+      xiaoxuetang_263:
+        label: Qujiang(Maba) — IPA
+      xiaoxuetang_264:
+        label: Yingde — IPA
+      xiaoxuetang_265:
+        label: Fugang — IPA
+      xiaoxuetang_266:
+        label: Qingyuan — IPA
+      xiaoxuetang_267:
+        label: Conghua(Chengnei) — IPA
+      xiaoxuetang_268:
+        label: Huaxian(Huashan) — IPA
+      xiaoxuetang_269:
+        label: Guiping(Xiancheng) — IPA
+      xiaoxuetang_270:
+        label: Zengcheng(Xiancheng) — IPA
+      xiaoxuetang_271:
+        label: Sanshui(Xinan) — IPA
+      xiaoxuetang_272:
+        label: Guangzhou — IPA
+      xiaoxuetang_273:
+        label: Zhaoqing(Gaoyao) — IPA
+      xiaoxuetang_274:
+        label: Foshan(Shiqu) — IPA
+      xiaoxuetang_275:
+        label: Panyu(Shiqiao) — IPA
+      xiaoxuetang_276:
+        label: Yunfu(Yuncheng) — IPA
+      xiaoxuetang_277:
+        label: Nanhai(Shatou) — IPA
+      xiaoxuetang_278:
+        label: Gaoming(Mingcheng) — IPA
+      xiaoxuetang_279:
+        label: Shunde(Daliang) — IPA
+      xiaoxuetang_280:
+        label: Xintianfantian(Weitouhua) — IPA
+      xiaoxuetang_281:
+        label: Xinxing — IPA
+      xiaoxuetang_282:
+        label: Dabusanmenzi(Danjiahua) — IPA
+      xiaoxuetang_283:
+        label: Dabutaiheng(Weitouhua) — IPA
+      xiaoxuetang_284:
+        label: Xianggang(Shiqu) — IPA
+      xiaoxuetang_285:
+        label: Xigonghaoyong(Weitouhua) — IPA
+      xiaoxuetang_286:
+        label: Aomen(Shiqu) — IPA
+      xiaoxuetang_287:
+        label: Ningming(Xiancheng) — IPA
+      xiaoxuetang_288:
+        label: Beihai(Lianzhouzhen) — IPA
+      xiaoxuetang_289:
+        label: Beihai(Nankangzhen) — IPA
+      xiaoxuetang_290:
+        label: Beihai(Shatianzhenhaibianhua) — IPA
+      xiaoxuetang_291:
+        label: Beihai(Shiqubaihua) — IPA
+      xiaoxuetang_292:
+        label: Beihai(Yingpanzhenwahua) — IPA
+      xiaoxuetang_293:
+        label: Bose(Shinei) — IPA
+      xiaoxuetang_294:
+        label: Nanning(Shinei) — IPA
+      xiaoxuetang_295:
+        label: Qinzhou(Shinei) — IPA
+      xiaoxuetang_296:
+        label: Beihai(Shinei) — IPA
+      xiaoxuetang_297:
+        label: Heshan(Yayao) — IPA
+      xiaoxuetang_298:
+        label: Jiangmen(Baisha) — IPA
+      xiaoxuetang_299:
+        label: Xinhui(Huicheng) — IPA
+      xiaoxuetang_300:
+        label: Kaiping(Chikan) — IPA
+      xiaoxuetang_301:
+        label: Doumen(Shanghengshuishanghua) — IPA
+      xiaoxuetang_302:
+        label: Taishan(Taicheng) — IPA
+      xiaoxuetang_303:
+        label: Doumen(Doumenzhen) — IPA
+      xiaoxuetang_304:
+        label: Enping(Niujiang) — IPA
+      xiaoxuetang_305:
+        label: Lingui(Wutong)(Tuhua) — IPA
+      xiaoxuetang_306:
+        label: Rongshui(Xiancheng)(Tuguaihua) — IPA
+      xiaoxuetang_307:
+        label: Lianxian(Qingshui) — IPA
+      xiaoxuetang_308:
+        label: Pingle(Zhangjia)(Tuhua) — IPA
+      xiaoxuetang_309:
+        label: Lianshan(Butian) — IPA
+      xiaoxuetang_310:
+        label: Yizhou(Desheng)(Baixinghua) — IPA
+      xiaoxuetang_311:
+        label: Yangshan — IPA
+      xiaoxuetang_312:
+        label: Mengshan(Xihe) — IPA
+      xiaoxuetang_313:
+        label: Xindou(Pumen) — IPA
+      xiaoxuetang_314:
+        label: Huaiji — IPA
+      xiaoxuetang_315:
+        label: Bose(Nabi)(Pinghua) — IPA
+      xiaoxuetang_316:
+        label: Guangning — IPA
+      xiaoxuetang_317:
+        label: Wuxuan(Zhangcun)(Yahua) — IPA
+      xiaoxuetang_318:
+        label: Fengkai(Nanfeng) — IPA
+      xiaoxuetang_319:
+        label: Sihui — IPA
+      xiaoxuetang_320:
+        label: Yunan(Pingtai) — IPA
+      xiaoxuetang_321:
+        label: Binyang(Xinqiao)(Binyanghua) — IPA
+      xiaoxuetang_322:
+        label: Deqing — IPA
+      xiaoxuetang_323:
+        label: Guigang(Nanjiang) — IPA
+      xiaoxuetang_324:
+        label: Nanning(Shajing)(Pinghua) — IPA
+      xiaoxuetang_325:
+        label: Luoding — IPA
+      xiaoxuetang_326:
+        label: Beiliu(Tangliao) — IPA
+      xiaoxuetang_327:
+        label: Hengxian(Xiancheng) — IPA
+      xiaoxuetang_328:
+        label: Fusui(Longtou)(Pinghua) — IPA
+      xiaoxuetang_329:
+        label: Chongzuo(Sipaihua)(Pinghua) — IPA
+      xiaoxuetang_330:
+        label: Bobai(Xiancheng) — IPA
+      xiaoxuetang_331:
+        label: Lingshan(Xiancheng) — IPA
+      xiaoxuetang_332:
+        label: Pubei(Xiancheng) — IPA
+      xiaoxuetang_333:
+        label: Zhongshan(Shiqi) — IPA
+      xiaoxuetang_334:
+        label: Zhuhai(Qianshan) — IPA
+      xiaoxuetang_335:
+        label: Dongguan(Guancheng) — IPA
+      xiaoxuetang_336:
+        label: Baoan(Shajing) — IPA
+      xiaoxuetang_337:
+        label: Xianggang(Xinjiejintian) — IPA
+      xiaoxuetang_338:
+        label: Mangu(Guangfuhua) — IPA

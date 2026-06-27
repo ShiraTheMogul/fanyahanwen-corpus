@@ -2,51 +2,51 @@
 
   <div class="cv-text-edit-panel cv-companion-submission-panel hidden"
        data-companion-material-ticket-target="panel">
-    <h3 style="margin-top:0;">Add companion material (creates a ticket)</h3>
-    <p class="cv-hint">Approved material appears beside this corpus text. The 20 MB limit applies to this submission only; the text may accumulate any number of approved submissions.</p>
+    <h3 style="margin-top:0;"><%= t("corpus_viewer.companion_submission.heading") %></h3>
+    <p class="cv-hint"><%= t("corpus_viewer.companion_submission.explanation") %></p>
 
     <form data-action="submit->companion-material-ticket#submit">
       <div class="cv-form-row">
-        <label>Material type</label>
+        <label><%= t("corpus_viewer.companion_submission.material_type") %></label>
         <select class="cv-input"
                 data-companion-material-ticket-target="materialType"
                 data-action="change->companion-material-ticket#materialTypeChanged">
-          <option value="translation">Translation</option>
-          <option value="gallery_image">Image gallery material</option>
-          <option value="exemplar_manuscript">Exemplar manuscript scan</option>
-          <option value="variant_text">Variant text connection</option>
+          <option value="translation"><%= t("corpus_viewer.companion_submission.types.translation") %></option>
+          <option value="gallery_image"><%= t("corpus_viewer.companion_submission.types.gallery_image") %></option>
+          <option value="exemplar_manuscript"><%= t("corpus_viewer.companion_submission.types.exemplar_manuscript") %></option>
+          <option value="variant_text"><%= t("corpus_viewer.companion_submission.types.variant_text") %></option>
         </select>
       </div>
 
       <div class="cv-form-row">
-        <label>Optional edition or material label</label>
+        <label><%= t("corpus_viewer.companion_submission.optional_label") %></label>
         <input type="text" class="cv-input"
-               placeholder="Edition, manuscript shelfmark, or another concise label"
+               placeholder="<%= t("corpus_viewer.companion_submission.optional_label_placeholder") %>"
                data-companion-material-ticket-target="materialTitle" />
-        <div class="cv-hint">Translations are identified in menus by language and translator, not by this label.</div>
+        <div class="cv-hint"><%= t("corpus_viewer.companion_submission.optional_label_hint") %></div>
       </div>
 
       <div data-companion-material-ticket-target="translationFields">
         <div class="cv-form-row">
-          <label>Translation language (ISO 639-3)</label>
+          <label><%= t("corpus_viewer.companion_submission.language") %></label>
           <input type="search" class="cv-input" list="cv-iso-639-3-languages"
-                 placeholder="Start typing a language name"
+                 placeholder="<%= t("corpus_viewer.companion_submission.language_placeholder") %>"
                  autocomplete="off"
                  data-companion-material-ticket-target="languageSearch"
                  data-action="focus->companion-material-ticket#loadLanguages change->companion-material-ticket#languageChanged input->companion-material-ticket#languageChanged" />
           <input type="hidden" data-companion-material-ticket-target="languageCode" />
           <datalist id="cv-iso-639-3-languages" data-companion-material-ticket-target="languageList"></datalist>
-          <div class="cv-hint">The stored value is the selected three-letter ISO 639-3 code.</div>
+          <div class="cv-hint"><%= t("corpus_viewer.companion_submission.language_hint") %></div>
         </div>
         <div class="cv-form-row">
-          <label>Translator</label>
+          <label><%= t("corpus_viewer.companion_submission.translator") %></label>
           <input type="text" class="cv-input"
-                 placeholder="Name of the translator, if known"
+                 placeholder="<%= t("corpus_viewer.companion_submission.translator_placeholder") %>"
                  data-companion-material-ticket-target="translatorName" />
-          <div class="cv-hint">Leave blank for anonymous or unidentified translations.</div>
+          <div class="cv-hint"><%= t("corpus_viewer.companion_submission.translator_hint") %></div>
         </div>
         <div class="cv-form-row">
-          <label>Translation text</label>
+          <label><%= t("corpus_viewer.companion_submission.translation_text") %></label>
           <textarea class="cv-textarea cv-mono" rows="18"
                     data-companion-material-ticket-target="bodyText"></textarea>
         </div>
@@ -54,38 +54,38 @@
 
       <div data-companion-material-ticket-target="mediaFields" hidden>
         <div class="cv-form-row">
-          <label>Material files</label>
+          <label><%= t("corpus_viewer.companion_submission.material_files") %></label>
           <input type="file" class="cv-input" multiple accept="image/png,image/jpeg,application/pdf"
                  data-companion-material-ticket-target="materialFiles" />
-          <div class="cv-hint">PNG, JPEG, or PDF. Together with evidence files, this ticket may contain up to 10 files and 20 MB.</div>
+          <div class="cv-hint"><%= t("corpus_viewer.companion_submission.material_files_hint") %></div>
         </div>
       </div>
 
       <div data-companion-material-ticket-target="variantFields" hidden>
         <div class="cv-form-row">
-          <label>Related corpus path</label>
+          <label><%= t("corpus_viewer.companion_submission.related_path") %></label>
           <input type="text" class="cv-input cv-mono"
-                 placeholder="Path to another .txt file inside the corpus"
+                 placeholder="<%= t("corpus_viewer.companion_submission.related_path_placeholder") %>"
                  data-companion-material-ticket-target="relatedPath" />
         </div>
       </div>
 
       <div class="cv-form-row">
-        <label>Material links</label>
+        <label><%= t("corpus_viewer.companion_submission.material_links") %></label>
         <textarea class="cv-textarea" rows="3"
-                  placeholder="One public scan, edition, or material URL per line"
+                  placeholder="<%= t("corpus_viewer.companion_submission.material_links_placeholder") %>"
                   data-companion-material-ticket-target="materialLinks"></textarea>
       </div>
 
       <div class="cv-form-row">
-        <label>Ticket summary</label>
-        <input type="text" class="cv-input" placeholder="A short reviewer-facing summary"
+        <label><%= t("corpus_viewer.companion_submission.ticket_summary") %></label>
+        <input type="text" class="cv-input" placeholder="<%= t("corpus_viewer.companion_submission.ticket_summary_placeholder") %>"
                data-companion-material-ticket-target="summary" />
       </div>
       <div class="cv-form-row">
-        <label>Reviewer reasoning</label>
+        <label><%= t("corpus_viewer.companion_submission.reviewer_reasoning") %></label>
         <textarea class="cv-textarea" rows="3"
-                  placeholder="Explain any editorial decisions or uncertainties."
+                  placeholder="<%= t("corpus_viewer.companion_submission.reviewer_reasoning_placeholder") %>"
                   data-companion-material-ticket-target="reasoning"></textarea>
       </div>
 
@@ -98,20 +98,20 @@
                  include_uploads: true %>
 
       <div class="cv-form-actions">
-        <button type="submit" class="corpus-btn corpus-btn-primary">Submit ticket</button>
-        <button type="button" class="corpus-btn" data-action="companion-material-ticket#toggle">Close</button>
+        <button type="submit" class="corpus-btn corpus-btn-primary"><%= t("common.actions.submit_ticket") %></button>
+        <button type="button" class="corpus-btn" data-action="companion-material-ticket#toggle"><%= t("common.actions.close") %></button>
       </div>
     </form>
 
     <div class="cv-ticket-result">
       <div class="cv-ticket-status" data-companion-material-ticket-target="status"></div>
       <div class="cv-ticket-kv">
-        <div><strong>Ticket ID:</strong> <span data-companion-material-ticket-target="ticketId"></span></div>
+        <div><strong><%= t("common.tickets.ticket_id") %></strong> <span data-companion-material-ticket-target="ticketId"></span></div>
         <div>
-          <strong>Ticket key (save this):</strong>
+          <strong><%= t("common.tickets.ticket_key") %></strong>
           <code data-companion-material-ticket-target="ticketKey"></code>
-          <button type="button" class="corpus-btn" data-companion-material-ticket-target="copyKeyBtn" data-action="companion-material-ticket#copyKey">Copy</button>
-          <button type="button" class="corpus-btn" data-companion-material-ticket-target="downloadKeyBtn" data-action="companion-material-ticket#downloadKey" hidden>Download .txt</button>
+          <button type="button" class="corpus-btn" data-companion-material-ticket-target="copyKeyBtn" data-action="companion-material-ticket#copyKey"><%= t("common.actions.copy") %></button>
+          <button type="button" class="corpus-btn" data-companion-material-ticket-target="downloadKeyBtn" data-action="companion-material-ticket#downloadKey" hidden><%= t("common.actions.download_txt") %></button>
         </div>
       </div>
     </div>

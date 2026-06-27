@@ -4,9 +4,20 @@ class ApplicationController < ActionController::Base
   helper PhoneticizationHelper
   helper DailyReadingsHelper
 
+  around_action :use_interface_locale
   before_action :ensure_font_defaults
 
   private
+
+  # Run the whole request inside the interface locale stored in the session.
+  # Missing Literary Chinese keys fall back to the English source catalogue.
+  def use_interface_locale(&action)
+    allowed = I18n.available_locales.map(&:to_s)
+    selected = session[:locale].to_s
+    selected = I18n.default_locale.to_s unless allowed.include?(selected)
+
+    I18n.with_locale(selected, &action)
+  end
 
   # Ensure font preferences always have sane defaults.
   #

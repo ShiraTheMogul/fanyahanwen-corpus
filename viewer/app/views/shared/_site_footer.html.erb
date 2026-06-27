@@ -3,30 +3,30 @@
     <div class="site-footer-identity">
       <p class="site-footer-title">
         泛亞漢文語料庫
-        <span>Fanya Hanwen Corpus</span>
+        <span><%= t("site.footer.corpus_name") %></span>
       </p>
       <p class="site-footer-summary">
-        An open-source corpus and reading environment for Literary Chinese across Asia.
+        <%= t("site.footer.summary") %>
       </p>
     </div>
 
-    <nav class="site-footer-links" aria-label="Footer navigation">
-      <%= link_to "Contact and corrections", ticket_access_path, class: "site-footer-link" %>
-      <%= link_to "GitHub",
+    <nav class="site-footer-links" aria-label="<%= t("site.footer.navigation_aria") %>">
+      <%= link_to t("site.footer.contact"), ticket_access_path, class: "site-footer-link" %>
+      <%= link_to t("site.footer.github"),
                   "https://github.com/ShiraTheMogul/fanyahanwen-corpus",
                   class: "site-footer-link",
                   target: "_blank",
                   rel: "noopener noreferrer" %>
-		<%= link_to "Teaching Services",
+		<%= link_to t("site.footer.teaching_services"),
                   "https://en.amazingtalker.com/users/llinos-evans",
                   class: "site-footer-link" %>
-		<%= link_to "Discord", "https://discord.gg/CTzC6jAEfH", class: "site-footer-link" %>
+		<%= link_to t("site.footer.discord"), "https://discord.gg/CTzC6jAEfH", class: "site-footer-link" %>
     </nav>
   </div>
 
   <div class="site-footer-meta">
-    Individual corpus materials may carry source-specific licensing and attribution requirements.
+    <%= t("site.footer.licensing") %>
 	
-	Proudly hosted by Mythic Beasts!
+	<%= t("site.footer.hosting") %>
   </div>
 </footer>

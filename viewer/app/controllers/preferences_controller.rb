@@ -9,6 +9,12 @@ def update
     # - Some pages may submit a *subset* of preferences.
     # - If a param is missing, we keep the existing session value.
 
+    if params.key?(:locale)
+      requested_locale = params[:locale].to_s
+      allowed_locales = I18n.available_locales.map(&:to_s)
+      session[:locale] = requested_locale if allowed_locales.include?(requested_locale)
+    end
+
     if params.key?(:mandarin_scheme)
       session[:mandarin_scheme] = safe_symbol(
         params[:mandarin_scheme],

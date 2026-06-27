@@ -8,12 +8,12 @@
   <% latest_heading_id = "#{activity_id_prefix}-latest-texts-heading" %>
   <% recent_heading_id = "#{activity_id_prefix}-recent-changes-heading" %>
 
-  <section class="<%= activity_classes.join(" ") %>" aria-label="Corpus activity">
+  <section class="<%= activity_classes.join(" ") %>" aria-label="<%= t("home.corpus_activity.aria_label") %>">
     <div class="corpus-activity-columns">
       <section class="corpus-activity-panel" aria-labelledby="<%= latest_heading_id %>">
         <div class="corpus-activity-panel-heading">
-          <h3 id="<%= latest_heading_id %>">最新文本 Latest texts</h3>
-          <%= link_to "All text folders", corpus_activity_href(kind: "latest_texts") %>
+          <h3 id="<%= latest_heading_id %>"><%= t("home.corpus_activity.latest_texts") %></h3>
+          <%= link_to t("home.corpus_activity.all_text_folders"), corpus_activity_href(kind: "latest_texts") %>
         </div>
 
         <div class="corpus-activity-flow" role="list">
@@ -30,8 +30,8 @@
 
       <section class="corpus-activity-panel" aria-labelledby="<%= recent_heading_id %>">
         <div class="corpus-activity-panel-heading">
-          <h3 id="<%= recent_heading_id %>">近期變更 Recent changes</h3>
-          <%= link_to "All changed files", corpus_activity_href(kind: "recent_changes") %>
+          <h3 id="<%= recent_heading_id %>"><%= t("home.corpus_activity.recent_changes") %></h3>
+          <%= link_to t("home.corpus_activity.all_changed_files"), corpus_activity_href(kind: "recent_changes") %>
         </div>
 
         <div class="corpus-activity-flow" role="list">
@@ -48,7 +48,7 @@
     </div>
 
     <div class="corpus-activity-heading-row">
-      <%= link_to "Browse all activity", corpus_activity_href(kind: "recent_changes"), class: "corpus-activity-all-link" %>
+      <%= link_to t("home.corpus_activity.browse_all"), corpus_activity_href(kind: "recent_changes"), class: "corpus-activity-all-link" %>
     </div>
   </section>
 <% end %>

@@ -3,50 +3,50 @@
 %>
 
 <% content_for :rightbar do %>
-  <h3>View options</h3>
+  <h3><%= t("corpus_viewer.rightbar.heading") %></h3>
   <details class="rightbar-section rightbar-group" open data-controller="corpus-rightbar">
-    <summary class="rightbar-summary"><strong>Corpus viewer</strong></summary>
+    <summary class="rightbar-summary"><strong><%= t("corpus_viewer.rightbar.group") %></strong></summary>
 
     <div class="rightbar-row">
-      <label for="cv_theme">Reader theme</label>
+      <label for="cv_theme"><%= t("corpus_viewer.rightbar.reader_theme") %></label>
       <select id="cv_theme" class="rightbar-select"
               data-corpus-rightbar-target="theme"
               data-action="change->corpus-rightbar#change">
-        <option value="light">White</option>
-        <option value="bamboo">Bamboo</option>
-        <option value="dark">Dark</option>
+        <option value="light"><%= t("corpus_viewer.rightbar.themes.light") %></option>
+        <option value="bamboo"><%= t("corpus_viewer.rightbar.themes.bamboo") %></option>
+        <option value="dark"><%= t("corpus_viewer.rightbar.themes.dark") %></option>
       </select>
     </div>
 
     <div class="rightbar-row">
-      <label for="cv_vertical">Vertical text</label>
+      <label for="cv_vertical"><%= t("corpus_viewer.rightbar.vertical_text") %></label>
       <input id="cv_vertical" type="checkbox"
              data-corpus-rightbar-target="vertical"
              data-action="change->corpus-rightbar#change">
     </div>
 
     <div class="rightbar-row">
-      <label for="cv_vflow">Vertical flow</label>
+      <label for="cv_vflow"><%= t("corpus_viewer.rightbar.vertical_flow") %></label>
       <select id="cv_vflow" class="rightbar-select"
               data-corpus-rightbar-target="vflow"
               data-action="change->corpus-rightbar#change">
-        <option value="rl">Right-to-left (standard)</option>
-        <option value="lr">Left-to-right</option>
+        <option value="rl"><%= t("corpus_viewer.rightbar.flows.right_to_left") %></option>
+        <option value="lr"><%= t("corpus_viewer.rightbar.flows.left_to_right") %></option>
       </select>
     </div>
 
     <div class="rightbar-row rightbar-row-stack">
-      <label>Font size</label>
+      <label><%= t("corpus_viewer.rightbar.font_size") %></label>
       <div class="rightbar-inline">
-        <button type="button" class="rightbar-btn" data-size="16" data-action="click->corpus-rightbar#setSize">Small</button>
-        <button type="button" class="rightbar-btn" data-size="20" data-action="click->corpus-rightbar#setSize">Medium</button>
-        <button type="button" class="rightbar-btn" data-size="24" data-action="click->corpus-rightbar#setSize">Large</button>
+        <button type="button" class="rightbar-btn" data-size="16" data-action="click->corpus-rightbar#setSize"> <%= t("corpus_viewer.rightbar.sizes.small") %></button>
+        <button type="button" class="rightbar-btn" data-size="20" data-action="click->corpus-rightbar#setSize"> <%= t("corpus_viewer.rightbar.sizes.medium") %></button>
+        <button type="button" class="rightbar-btn" data-size="24" data-action="click->corpus-rightbar#setSize"> <%= t("corpus_viewer.rightbar.sizes.large") %></button>
       </div>
       <div class="rightbar-inline">
         <input id="cv_fontsize" type="number" min="10" max="72" step="1"
                class="rightbar-input"
                inputmode="numeric"
-               aria-label="Font size in pixels"
+               aria-label="<%= t("corpus_viewer.rightbar.font_size_aria") %>"
                data-corpus-rightbar-target="fontsize"
                data-action="input->corpus-rightbar#change">
         <span class="rightbar-unit">px</span>
@@ -54,7 +54,7 @@
     </div>
 
     <div class="rightbar-row">
-      <label for="cv_strip">Remove punctuation</label>
+      <label for="cv_strip"><%= t("corpus_viewer.rightbar.remove_punctuation") %></label>
       <input id="cv_strip" type="checkbox"
              data-corpus-rightbar-target="strip"
              data-action="change->corpus-rightbar#change">
@@ -62,13 +62,13 @@
 
 
     <div class="rightbar-row">
-      <label for="cv_ruby_ondemand">Right-click ruby</label>
+      <label for="cv_ruby_ondemand"><%= t("corpus_viewer.rightbar.right_click_ruby") %></label>
       <input id="cv_ruby_ondemand" type="checkbox"
              data-corpus-rightbar-target="rubyOnDemand"
              data-action="change->corpus-rightbar#change">
     </div>
     <p class="rightbar-note">
-      These toggles are client-side only and don’t need “Apply”.
+      <%= t("corpus_viewer.rightbar.client_side_note") %>
     </p>
   </details>
 

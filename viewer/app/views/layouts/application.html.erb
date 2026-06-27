@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="<%= I18n.locale %>">
   <head>
-    <title>泛亞漢文語料庫 Fanya Hanwen Corpus</title>
+    <title><%= t("site.title") %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= render "layouts/social_meta" %>
 	<%= favicon_link_tag 'favicon.ico', type: 'image/png' %>
@@ -44,38 +44,48 @@
                     <div class="site-title">
             <%= link_to(root_path,
                         class: "site-title-link",
-                        aria: { label: "泛亞漢文語料庫 — Fanya Hanwen Corpus" }) do %>
+                        aria: { label: t("site.title_aria") }) do %>
               <span class="site-title-part site-title-part--region">泛亞</span><span class="site-title-part site-title-part--language">漢文</span><span class="site-title-part site-title-part--corpus">語料庫</span>
             <% end %>
           </div>
-          <nav class="site-nav" aria-label="Primary navigation">
-            <%= link_to "Corpus Viewer", corpus_viewer_path, class: "site-nav-link" %>
-			<%= link_to "Search the Corpus", corpus_search_path, class: "site-nav-link" %>
-			<%= link_to "Dictionary", characters_path, class: "site-nav-link" %>
-			<%= link_to "Tools", tools_path, class: "site-nav-link" %>
-			<%= link_to "Tickets", ticket_access_path, class: "site-nav-link" %>
-			<%= link_to "Fun", fun_path, class: "site-nav-link" %>
+          <nav class="site-nav" aria-label="<%= t("site.navigation.aria_label") %>">
+            <%= link_to t("site.navigation.corpus_viewer"), corpus_viewer_path, class: "site-nav-link" %>
+			<%= link_to t("site.navigation.corpus_search"), corpus_search_path, class: "site-nav-link" %>
+			<%= link_to t("site.navigation.dictionary"), characters_path, class: "site-nav-link" %>
+			<%= link_to t("site.navigation.tools"), tools_path, class: "site-nav-link" %>
+			<%= link_to t("site.navigation.tickets"), ticket_access_path, class: "site-nav-link" %>
+			<%= link_to t("site.navigation.fun"), fun_path, class: "site-nav-link" %>
           </nav>
         </div>
 
         <div class="site-header-center">
           <%= form_with url: characters_path, method: :get, local: true, class: "site-search" do %>
-            <label class="sr-only" for="query">Search</label>
-            <%= text_field_tag :query, params[:query], placeholder: "Search the Dictionary: 泛 or U+6CDB!", class: "site-search-input" %>
-            <%= submit_tag "Go", class: "site-search-submit" %>
+            <label class="sr-only" for="query"><%= t("site.search.label") %></label>
+            <%= text_field_tag :query, params[:query], placeholder: t("site.search.placeholder"), class: "site-search-input" %>
+            <%= submit_tag t("site.search.submit"), class: "site-search-submit" %>
           <% end %>
         </div>
 
 	        <div class="site-header-right">
+              <% next_locale = I18n.locale == :lzh ? :en : :lzh %>
+              <% next_locale_name = t("site.locale_switch.languages.#{next_locale}") %>
+              <%= button_to next_locale_name,
+                            preferences_path,
+                            method: :post,
+                            params: { locale: next_locale, return_to: request.fullpath },
+                            class: "rightbar-toggle",
+                            form: { class: "site-locale-switch" },
+                            aria: { label: t("site.locale_switch.aria_label", language: next_locale_name) } %>
+
 	          <%# Only show the options toggle when a rightbar is actually present on the page. %>
 	          <% if content_for?(:rightbar) %>
 	            <button
 	              type="button"
 	              class="rightbar-toggle"
 	              data-action="rightbar-layout#toggle"
-	              aria-label="Toggle options panel"
+	              aria-label="<%= t("site.options.toggle_aria") %>"
 	            >
-	              Options
+	              <%= t("site.options.button") %>
 	            </button>
 	          <% end %>
 
@@ -93,7 +103,7 @@
       </main>
 
 	      <% if content_for?(:rightbar) %>
-	        <aside class="rightbar site-rightbar" aria-label="View options">
+	        <aside class="rightbar site-rightbar" aria-label="<%= t("site.options.panel_aria") %>">
 	          <div class="rightbar-section">
 	            <%= yield :rightbar %>
 	          </div>

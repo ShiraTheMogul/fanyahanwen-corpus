@@ -1,9 +1,9 @@
-<h1>Corpus Viewer</h1>
+<h1><%= t("corpus_viewer.title") %></h1>
 
 <p class="crumbs">
   <% if @rel_path.present? %>
     <% parts = @rel_path.to_s.split("/") %>
-    <%= link_to "Root", corpus_viewer_path %>
+    <%= link_to t("corpus_viewer.root"), corpus_viewer_path %>
     <% acc = [] %>
     <% parts.each do |part| %>
       <% acc << part %>
@@ -14,7 +14,7 @@
 </p>
 
 <% if @kind == :dir %>
-  <p><strong><%= @rel_path.present? ? @rel_path : "Root" %></strong></p>
+  <p><strong><%= @rel_path.present? ? @rel_path : t("corpus_viewer.root") %></strong></p>
 
   <% if @rel_path.to_s.split("/").include?("clean") %>
     <div class="corpus-dir-actions"
@@ -25,102 +25,102 @@
       <button type="button"
               class="corpus-btn corpus-btn-editing"
               data-action="corpus-submission-ticket#toggle"
-              title="Propose a new text for this folder">
-        Submit text here
+              title="<%= t("corpus_viewer.directory_submission.button_title") %>">
+        <%= t("corpus_viewer.directory_submission.button") %>
       </button>
 
       <div class="cv-text-edit-panel cv-submission-panel hidden" data-corpus-submission-ticket-target="panel">
-        <h3 style="margin-top: 0;">Submit a new text (creates a ticket)</h3>
-        <p class="cv-hint">This does <em>not</em> write into the corpus directly. It creates a review ticket with a diff for one new work folder and one or more new files inside it.</p>
+        <h3 style="margin-top: 0;"><%= t("corpus_viewer.directory_submission.heading") %></h3>
+        <p class="cv-hint"><%= t("corpus_viewer.directory_submission.explanation_html") %></p>
 
         <form data-action="submit->corpus-submission-ticket#submit">
           <div class="cv-form-row">
-            <label>Parent clean directory</label>
+            <label><%= t("corpus_viewer.directory_submission.parent_directory") %></label>
             <input type="text" class="cv-input cv-mono" data-corpus-submission-ticket-target="parentPath" />
           </div>
           <div class="cv-form-row">
-            <label>Work folder</label>
-            <input type="text" class="cv-input" placeholder="e.g. 論語" data-corpus-submission-ticket-target="workFolder" />
+            <label><%= t("corpus_viewer.directory_submission.work_folder") %></label>
+            <input type="text" class="cv-input" placeholder="<%= t("corpus_viewer.directory_submission.work_folder_placeholder") %>" data-corpus-submission-ticket-target="workFolder" />
           </div>
           <div class="cv-form-row">
-            <label>Ticket title</label>
-            <input type="text" class="cv-input" value="Corpus text submission" data-corpus-submission-ticket-target="title" />
+            <label><%= t("corpus_viewer.directory_submission.ticket_title") %></label>
+            <input type="text" class="cv-input" value="<%= t("corpus_viewer.directory_submission.default_ticket_title") %>" data-corpus-submission-ticket-target="title" />
           </div>
           <div class="cv-form-row">
-            <label>Short summary</label>
-            <input type="text" class="cv-input" placeholder="What is being submitted?" data-corpus-submission-ticket-target="summary" />
+            <label><%= t("corpus_viewer.directory_submission.short_summary") %></label>
+            <input type="text" class="cv-input" placeholder="<%= t("corpus_viewer.directory_submission.short_summary_placeholder") %>" data-corpus-submission-ticket-target="summary" />
           </div>
           <div class="cv-form-row">
-            <label>Content role</label>
+            <label><%= t("corpus_viewer.directory_submission.content_role") %></label>
             <select class="cv-input" data-corpus-submission-ticket-target="textType">
-              <option value="source">Source text</option>
-              <option value="kanbun">Kanbun annotation system</option>
-              <option value="hanmun">Hanmun annotation system</option>
-              <option value="hanvan">Hanvan annotation system</option>
+              <option value="source"><%= t("corpus_viewer.directory_submission.roles.source") %></option>
+              <option value="kanbun"><%= t("corpus_viewer.directory_submission.roles.kanbun") %></option>
+              <option value="hanmun"><%= t("corpus_viewer.directory_submission.roles.hanmun") %></option>
+              <option value="hanvan"><%= t("corpus_viewer.directory_submission.roles.hanvan") %></option>
             </select>
           </div>
 
           <div class="cv-form-row">
-            <label>NATION</label>
+            <label><%= t("corpus_viewer.directory_submission.metadata_fields.nation") %></label>
             <input type="text" class="cv-input" data-corpus-submission-ticket-target="nation" />
           </div>
           <div class="cv-form-row">
-            <label>WORK_TITLE</label>
+            <label><%= t("corpus_viewer.directory_submission.metadata_fields.work_title") %></label>
             <input type="text" class="cv-input" data-corpus-submission-ticket-target="workTitle" />
           </div>
           <div class="cv-form-row">
-            <label>AUTHOR</label>
+            <label><%= t("corpus_viewer.directory_submission.metadata_fields.author") %></label>
             <input type="text" class="cv-input" data-corpus-submission-ticket-target="author" />
           </div>
           <div class="cv-form-row">
-            <label>SOURCE</label>
-            <input type="text" class="cv-input" placeholder="Write a reference here (ideally APA 7th)" data-corpus-submission-ticket-target="sourceCitation" />
+            <label><%= t("corpus_viewer.directory_submission.metadata_fields.source") %></label>
+            <input type="text" class="cv-input" placeholder="<%= t("corpus_viewer.directory_submission.source_placeholder") %>" data-corpus-submission-ticket-target="sourceCitation" />
           </div>
           <div class="cv-form-row">
-            <label>URL</label>
-            <input type="url" class="cv-input" placeholder="https://..." data-corpus-submission-ticket-target="url" />
+            <label><%= t("corpus_viewer.directory_submission.metadata_fields.url") %></label>
+            <input type="url" class="cv-input" placeholder="<%= t("corpus_viewer.directory_submission.url_placeholder") %>" data-corpus-submission-ticket-target="url" />
           </div>
           <div class="cv-form-row">
-            <label>Context and rights</label>
-            <textarea class="cv-textarea" rows="4" placeholder="Explain where this text is from, whether it is public domain, what licence applies, and any context a reviewer should know." data-corpus-submission-ticket-target="contextDetails"></textarea>
+            <label><%= t("corpus_viewer.directory_submission.context_and_rights") %></label>
+            <textarea class="cv-textarea" rows="4" placeholder="<%= t("corpus_viewer.directory_submission.context_placeholder") %>" data-corpus-submission-ticket-target="contextDetails"></textarea>
           </div>
           <div class="cv-form-row">
-            <label>Reference files</label>
+            <label><%= t("corpus_viewer.directory_submission.reference_files") %></label>
             <input type="file" class="cv-input" multiple data-corpus-submission-ticket-target="uploads" />
-            <div class="cv-hint">Optional: up to 10 files and 20 MB in total. HTML, XHTML, and SVG are rejected.</div>
+            <div class="cv-hint"><%= t("corpus_viewer.directory_submission.reference_files_hint") %></div>
           </div>
           <div class="cv-form-row">
-            <label>Page setup</label>
+            <label><%= t("corpus_viewer.directory_submission.page_setup") %></label>
             <select class="cv-input" data-corpus-submission-ticket-target="pageMode" data-action="change->corpus-submission-ticket#togglePageMode">
-              <option value="single">Single text file</option>
-              <option value="multi">Multiple page files</option>
+              <option value="single"><%= t("corpus_viewer.directory_submission.single_file") %></option>
+              <option value="multi"><%= t("corpus_viewer.directory_submission.multiple_files") %></option>
             </select>
           </div>
 
           <div data-corpus-submission-ticket-target="singleFields">
             <div class="cv-form-row">
-              <label>File name</label>
-              <input type="text" class="cv-input" placeholder="Defaults to work_folder.txt" data-corpus-submission-ticket-target="fileName" />
+              <label><%= t("corpus_viewer.directory_submission.file_name") %></label>
+              <input type="text" class="cv-input" placeholder="<%= t("corpus_viewer.directory_submission.file_name_placeholder") %>" data-corpus-submission-ticket-target="fileName" />
             </div>
             <div class="cv-form-row">
-              <label>PAGE_TITLE</label>
+              <label><%= t("corpus_viewer.directory_submission.metadata_fields.page_title") %></label>
               <input type="text" class="cv-input" data-corpus-submission-ticket-target="pageTitle" />
             </div>
             <div class="cv-form-row">
-              <label>Text body</label>
+              <label><%= t("corpus_viewer.directory_submission.text_body") %></label>
               <textarea class="cv-textarea cv-mono" rows="16" data-corpus-submission-ticket-target="body"></textarea>
             </div>
           </div>
 
           <div data-corpus-submission-ticket-target="multiFields" hidden>
             <div class="cv-form-row">
-              <label>Pages</label>
+              <label><%= t("corpus_viewer.directory_submission.pages") %></label>
               <div data-corpus-submission-ticket-target="pagesList"></div>
             </div>
             <div class="cv-form-actions">
-              <button type="button" class="corpus-btn" data-action="corpus-submission-ticket#addPage">Add page</button>
+              <button type="button" class="corpus-btn" data-action="corpus-submission-ticket#addPage"><%= t("common.actions.add_page") %></button>
             </div>
-            <p class="cv-hint">Multiple pages create numbered files like <code>work_folder__juan_0001.txt</code> inside the work folder.</p>
+            <p class="cv-hint"><%= t("corpus_viewer.directory_submission.pages_hint_html") %></p>
           </div>
 
           <%= render "corpus_viewer/ticket_optional_fields",
@@ -128,20 +128,20 @@
                      include_uploads: false %>
 
           <div class="cv-form-actions">
-            <button type="submit" class="corpus-btn corpus-btn-primary">Submit ticket</button>
-            <button type="button" class="corpus-btn" data-action="corpus-submission-ticket#toggle">Close</button>
+            <button type="submit" class="corpus-btn corpus-btn-primary"><%= t("common.actions.submit_ticket") %></button>
+            <button type="button" class="corpus-btn" data-action="corpus-submission-ticket#toggle"><%= t("common.actions.close") %></button>
           </div>
         </form>
 
         <div class="cv-ticket-result">
           <div class="cv-ticket-status" data-corpus-submission-ticket-target="status"></div>
           <div class="cv-ticket-kv">
-            <div><strong>Ticket ID:</strong> <span data-corpus-submission-ticket-target="ticketId"></span></div>
+            <div><strong><%= t("common.tickets.ticket_id") %></strong> <span data-corpus-submission-ticket-target="ticketId"></span></div>
             <div>
-              <strong>Ticket key (save this):</strong>
+              <strong><%= t("common.tickets.ticket_key") %></strong>
               <code data-corpus-submission-ticket-target="ticketKey"></code>
-              <button type="button" class="corpus-btn" data-corpus-submission-ticket-target="copyKeyBtn" data-action="corpus-submission-ticket#copyKey">Copy</button>
-              <button type="button" class="corpus-btn" data-corpus-submission-ticket-target="downloadKeyBtn" data-action="corpus-submission-ticket#downloadKey" hidden>Download .txt</button>
+              <button type="button" class="corpus-btn" data-corpus-submission-ticket-target="copyKeyBtn" data-action="corpus-submission-ticket#copyKey"><%= t("common.actions.copy") %></button>
+              <button type="button" class="corpus-btn" data-corpus-submission-ticket-target="downloadKeyBtn" data-action="corpus-submission-ticket#downloadKey" hidden><%= t("common.actions.download_txt") %></button>
             </div>
           </div>
         </div>
@@ -155,7 +155,7 @@
     <div class="corpus-root-layout">
       <details class="corpus-root-activity"
                data-controller="corpus-root-activity">
-        <summary class="corpus-root-activity-summary">最新動向 Recent corpus activity</summary>
+        <summary class="corpus-root-activity-summary"><%= t("corpus_viewer.recent_activity.summary") %></summary>
         <%= render "home/corpus_activity",
                    activity_id_prefix: "corpus-root",
                    activity_variant: "browser" %>
@@ -197,26 +197,26 @@
   meta_work = derived_work if meta_work.blank? && derived_work.present?
 
   annotation_system_labels = {
-    "kanbun" => "Kanbun",
-    "hanmun" => "Hanmun",
-    "hanvan" => "Hanvan"
+    "kanbun" => t("corpus_viewer.annotation_systems.names.kanbun"),
+    "hanmun" => t("corpus_viewer.annotation_systems.names.hanmun"),
+    "hanvan" => t("corpus_viewer.annotation_systems.names.hanvan")
   }
   translation_label_for = lambda do |translation|
     language = translation["language_name"].presence || translation["language_code"].to_s.upcase
     translator = translation["translator_name"].presence
-    translator = "Author-provided" if translator.blank? && Array(translation["provenance"]).include?("author_provided")
+    translator = t("corpus_viewer.header.author_provided") if translator.blank? && Array(translation["provenance"]).include?("author_provided")
     [language, translator].compact.join(" — ")
   end
   active_view_label = if @display_annotation_system.present?
     label = annotation_system_labels[@display_annotation_system]
     material = @annotation_system_materials[@display_annotation_system]
-    material && material["ai_assisted"] == true ? "#{label} — AI-assisted" : label
+    material && material["ai_assisted"] == true ? "#{label}#{t("corpus_viewer.header.ai_assisted_suffix")}" : label
   elsif @display_translation.present?
     translation_label = translation_label_for.call(@display_translation)
-    ai_label = @display_translation["ai_assisted"] == true ? " — AI-assisted" : ""
-    "Translation: #{translation_label}#{ai_label}"
+    ai_label = @display_translation["ai_assisted"] == true ? t("corpus_viewer.header.ai_assisted_suffix") : ""
+    t("corpus_viewer.header.translation", label: "#{translation_label}#{ai_label}")
   else
-    "Source"
+    t("corpus_viewer.header.source")
   end
   active_view_ai_assisted = if @display_translation.present?
     @display_translation["ai_assisted"] == true
@@ -230,12 +230,12 @@
   <div class="corpus-filebar">
     <div class="corpus-headmeta">
       <% if meta_work.present? %>
-        <span class="corpus-headmeta-item"><strong>Work:</strong> <%= meta_work %></span>
+        <span class="corpus-headmeta-item"><strong><%= t("corpus_viewer.header.work") %></strong> <%= meta_work %></span>
       <% end %>
       <% if meta_author.present? %>
-        <span class="corpus-headmeta-item"><strong>Author:</strong> <%= meta_author %></span>
+        <span class="corpus-headmeta-item"><strong><%= t("corpus_viewer.header.author") %></strong> <%= meta_author %></span>
       <% end %>
-      <span class="corpus-headmeta-item"><strong>Viewing:</strong> <%= active_view_label %></span>
+      <span class="corpus-headmeta-item"><strong><%= t("corpus_viewer.header.viewing") %></strong> <%= active_view_label %></span>
     </div>
   </div>
 
@@ -252,13 +252,13 @@
        data-corpus-annotations-path-value="<%= @active_text_target_path %>"
        data-corpus-annotations-source-path-value="<%= @source_rel_path %>"
        data-corpus-annotations-url-value="/corpus_annotations">
-    <div class="corpus-toolbar" role="toolbar" aria-label="Corpus viewer tools">
+    <div class="corpus-toolbar" role="toolbar" aria-label="<%= t("corpus_viewer.toolbar.aria_label") %>">
       <button type="button"
               class="corpus-btn"
               data-action="corpus-reader#toggleVertical"
               data-corpus-reader-target="verticalBtn"
               aria-pressed="false">
-        <%= @display_translation.present? ? "Orientation: Horizontal" : "Vertical" %>
+        <%= @display_translation.present? ? t("corpus_viewer.toolbar.orientation_horizontal") : t("corpus_viewer.toolbar.vertical") %>
       </button>
 
       <% unless @display_translation.present? %>
@@ -267,20 +267,20 @@
                 data-action="corpus-reader#cycleTheme"
                 data-corpus-reader-target="themeBtn"
                 aria-pressed="false">
-          Theme
+          <%= t("corpus_viewer.toolbar.theme") %>
         </button>
         <button type="button"
                 class="corpus-btn"
                 data-action="corpus-reader#cyclePunctPreset"
                 data-corpus-reader-target="punctPresetBtn"
                 aria-pressed="false">
-          Punct: Source
+          <%= t("corpus_viewer.toolbar.punctuation_source") %>
         </button>
 
         <button type="button"
                 class="corpus-btn corpus-btn-split"
-                title="Punctuation options"
-                aria-label="Punctuation options"
+                title="<%= t("corpus_viewer.toolbar.punctuation_options") %>"
+                aria-label="<%= t("corpus_viewer.toolbar.punctuation_options") %>"
                 data-action="corpus-reader#togglePunctMenu"
                 data-corpus-reader-target="punctMenuBtn">
           ▸
@@ -291,7 +291,7 @@
                 data-action="corpus-reader#toggleJudou"
                 data-corpus-reader-target="judouBtn"
                 aria-pressed="true">
-          Judou: On
+          <%= t("corpus_viewer.toolbar.judou_on") %>
         </button>
       <% end %>
 
@@ -300,16 +300,16 @@
               data-action="corpus-annotations#toggleNotes"
               data-corpus-annotations-target="notesBtn"
               aria-pressed="false">
-        <%= @display_translation.present? ? "Footnotes: Off" : "Notes: Off" %>
+        <%= @display_translation.present? ? t("corpus_viewer.toolbar.footnotes_off") : t("corpus_viewer.toolbar.notes_off") %>
       </button>
 
       <% unless @display_translation.present? %>
         <button type="button"
                 class="corpus-btn"
                 data-action="corpus-annotations#openColorSettings"
-                title="Colour settings"
-                aria-label="Colour settings">
-          Colour settings
+                title="<%= t("corpus_viewer.toolbar.colour_settings") %>"
+                aria-label="<%= t("corpus_viewer.toolbar.colour_settings") %>">
+          <%= t("corpus_viewer.toolbar.colour_settings") %>
         </button>
       <% end %>
 
@@ -325,7 +325,7 @@
                     aria-expanded="false"
                     aria-haspopup="menu"
                     <%= "disabled" if @available_translations.blank? %>>
-              <span>Translations (<%= @available_translations.length %>)</span>
+              <span><%= t("corpus_viewer.toolbar.translations", count: @available_translations.length) %></span>
               <% if @available_translations.present? %>
                 <span class="corpus-toolbar-control-group__chevron" aria-hidden="true">▾</span>
               <% end %>
@@ -334,8 +334,8 @@
             <% if @companion_submission_enabled %>
               <button type="button"
                       class="corpus-btn corpus-toolbar-control-group__add"
-                      title="Add translation"
-                      aria-label="Add translation"
+                      title="<%= t("corpus_viewer.toolbar.add_translation") %>"
+                      aria-label="<%= t("corpus_viewer.toolbar.add_translation") %>"
                       data-action="companion-material-ticket#openForType"
                       data-companion-material-ticket-material-type-param="translation">+</button>
             <% end %>
@@ -345,13 +345,13 @@
                    data-toolbar-menu-target="menu"
                    role="menu"
                    hidden>
-                <%= link_to "Source text",
+                <%= link_to t("corpus_viewer.toolbar.source_text"),
                             corpus_viewer_path(@source_rel_path.split("/"), format: nil),
                             class: "corpus-btn #{@display_translation.blank? && @display_annotation_system.blank? ? 'is-active' : ''}",
                             role: "menuitem" %>
                 <% @available_translations.each_value do |translation| %>
                   <% label = translation_label_for.call(translation) %>
-                  <% label = "#{label} · AI-assisted" if translation["ai_assisted"] == true %>
+                  <% label = "#{label}#{t("corpus_viewer.header.ai_assisted_menu_suffix")}" if translation["ai_assisted"] == true %>
                   <%= link_to label,
                               corpus_viewer_path(@source_rel_path.split("/"), format: nil, translation: translation["id"]),
                               class: "corpus-btn #{@display_translation && @display_translation['id'] == translation['id'] ? 'is-active' : ''}",
@@ -376,7 +376,7 @@
                     data-toolbar-menu-target="button"
                     aria-expanded="false"
                     aria-haspopup="menu">
-              <span>Variants (<%= @variant_materials.length %>)</span>
+              <span><%= t("corpus_viewer.toolbar.variants", count: @variant_materials.length) %></span>
               <span class="corpus-toolbar-control-group__chevron" aria-hidden="true">▾</span>
             </button>
 
@@ -385,7 +385,7 @@
                  role="menu"
                  hidden>
               <% @variant_materials.each do |variant| %>
-                <% label = variant["title"].presence || (variant["related_path"].present? ? File.basename(variant["related_path"]) : "External variant") %>
+                <% label = variant["title"].presence || (variant["related_path"].present? ? File.basename(variant["related_path"]) : t("corpus_viewer.toolbar.external_variant")) %>
                 <% if variant["related_path"].present? %>
                   <%= link_to label,
                               corpus_viewer_path(variant["related_path"].split("/"), format: nil),
@@ -418,7 +418,7 @@
                       aria-expanded="false"
                       aria-haspopup="menu"
                       <%= "disabled" if @available_annotation_systems.blank? %>>
-                <span>Annotation systems (<%= @available_annotation_systems.length %>)</span>
+                <span><%= t("corpus_viewer.toolbar.annotation_systems", count: @available_annotation_systems.length) %></span>
                 <% if @available_annotation_systems.present? %>
                   <span class="corpus-toolbar-control-group__chevron" aria-hidden="true">▾</span>
                 <% end %>
@@ -427,8 +427,8 @@
               <% if @annotation_system_editor_enabled %>
                 <button type="button"
                         class="corpus-btn corpus-toolbar-control-group__add"
-                        title="Create annotation system"
-                        aria-label="Create annotation system"
+                        title="<%= t("corpus_viewer.toolbar.create_annotation_system") %>"
+                        aria-label="<%= t("corpus_viewer.toolbar.create_annotation_system") %>"
                         data-action="kanbun-ticket#toggle">+</button>
               <% end %>
 
@@ -437,14 +437,14 @@
                      data-toolbar-menu-target="menu"
                      role="menu"
                      hidden>
-                  <%= link_to "Source text",
+                  <%= link_to t("corpus_viewer.toolbar.source_text"),
                               corpus_viewer_path(@source_rel_path.split("/"), format: nil),
                               class: "corpus-btn #{@display_translation.blank? && @display_annotation_system.blank? ? 'is-active' : ''}",
                               role: "menuitem" %>
                   <% annotation_system_labels.each do |annotation_system, label| %>
                     <% next unless @available_annotation_systems[annotation_system].present? %>
                     <% material = @annotation_system_materials[annotation_system] %>
-                    <% display_label = material && material["ai_assisted"] == true ? "#{label} · AI-assisted" : label %>
+                    <% display_label = material && material["ai_assisted"] == true ? "#{label}#{t("corpus_viewer.header.ai_assisted_menu_suffix")}" : label %>
                     <%= link_to display_label,
                                 corpus_viewer_path(@source_rel_path.split("/"), format: nil, annotation_system: annotation_system),
                                 class: "corpus-btn #{@display_annotation_system == annotation_system ? 'is-active' : ''}",
@@ -461,31 +461,31 @@
 
             <% if @annotation_system_editor_enabled %>
               <div class="cv-text-edit-panel cv-kanbun-panel hidden" data-kanbun-ticket-target="panel">
-              <h3 style="margin-top: 0;">Create annotation system (creates a ticket)</h3>
-              <p class="cv-hint">Manual annotation is the default. Approved files are written as sibling pages under <code>kanbun/</code>, <code>hanmun/</code>, or <code>hanvan/</code> with the same filename as this source page.</p>
+              <h3 style="margin-top: 0;"><%= t("corpus_viewer.annotation_systems.editor.heading") %></h3>
+              <p class="cv-hint"><%= t("corpus_viewer.annotation_systems.editor.explanation_html") %></p>
 
               <form data-action="submit->kanbun-ticket#submit">
                 <div class="cv-form-row">
-                  <label>Annotation system</label>
+                  <label><%= t("corpus_viewer.annotation_systems.editor.system") %></label>
                   <select class="cv-input" data-kanbun-ticket-target="annotationSystem" data-action="change->kanbun-ticket#annotationSystemChanged">
-                    <option value="kanbun">Kanbun (Japanese reading/annotation system)</option>
-                    <option value="hanmun">Hanmun (Korean reading/annotation system)</option>
-                    <option value="hanvan">Hanvan (Vietnamese reading/annotation system)</option>
+                    <option value="kanbun"><%= t("corpus_viewer.annotation_systems.editor.options.kanbun") %></option>
+                    <option value="hanmun"><%= t("corpus_viewer.annotation_systems.editor.options.hanmun") %></option>
+                    <option value="hanvan"><%= t("corpus_viewer.annotation_systems.editor.options.hanvan") %></option>
                   </select>
                 </div>
 
                 <div class="cv-form-row">
-                  <label>Summary</label>
-                  <input type="text" class="cv-input" placeholder="What was added or corrected?" data-kanbun-ticket-target="summary" />
+                  <label><%= t("common.forms.summary") %></label>
+                  <input type="text" class="cv-input" placeholder="<%= t("corpus_viewer.annotation_systems.editor.summary_placeholder") %>" data-kanbun-ticket-target="summary" />
                 </div>
 
                 <div class="cv-form-row">
-                  <label>Reasoning</label>
-                  <textarea class="cv-textarea" rows="3" placeholder="Explain any editorial choices a reviewer should know." data-kanbun-ticket-target="reasoning"></textarea>
+                  <label><%= t("common.forms.reasoning") %></label>
+                  <textarea class="cv-textarea" rows="3" placeholder="<%= t("corpus_viewer.annotation_systems.editor.reasoning_placeholder") %>" data-kanbun-ticket-target="reasoning"></textarea>
                 </div>
 
                 <div class="cv-form-row">
-                  <label>Digital keyboard</label>
+                  <label><%= t("corpus_viewer.annotation_systems.editor.digital_keyboard") %></label>
                   <div class="cv-kanbun-keyboard">
                     <% ["㆐", "㆑", "㆒", "㆓", "㆔", "㆕", "㆖", "㆗", "㆘", "㆙", "㆚", "㆛", "㆜", "㆝", "㆞", "㆟"].each do |symbol| %>
                       <button type="button" class="corpus-btn cv-kanbun-key" data-symbol="<%= symbol %>" data-action="kanbun-ticket#insertSymbol"><%= symbol %></button>
@@ -493,15 +493,15 @@
                   </div>
                 </div>
 
-                <p class="cv-hint" data-kanbun-ticket-target="aiNotice" hidden>Kanbun-LM is not shown here because automatic generation is Japanese-only. This patch keeps the manual path as the default workflow.</p>
+                <p class="cv-hint" data-kanbun-ticket-target="aiNotice" hidden><%= t("corpus_viewer.annotation_systems.editor.ai_notice") %></p>
 
                 <div class="cv-kanbun-side-by-side">
                   <div class="cv-kanbun-pane">
-                    <label>Source page</label>
+                    <label><%= t("corpus_viewer.annotation_systems.editor.source_page") %></label>
                     <textarea class="cv-textarea cv-mono" rows="24" readonly><%= @source_body %></textarea>
                   </div>
                   <div class="cv-kanbun-pane">
-                    <label>Annotation-system text</label>
+                    <label><%= t("corpus_viewer.annotation_systems.editor.text") %></label>
                     <textarea class="cv-textarea cv-mono" rows="24" data-kanbun-ticket-target="annotationText"><%= @source_body %></textarea>
                   </div>
                 </div>
@@ -519,21 +519,21 @@
                            include_uploads: true %>
 
                 <div class="cv-form-actions">
-                  <button type="submit" class="corpus-btn corpus-btn-primary">Submit ticket</button>
-                  <button type="button" class="corpus-btn" data-action="kanbun-ticket#toggle">Close</button>
+                  <button type="submit" class="corpus-btn corpus-btn-primary"><%= t("common.actions.submit_ticket") %></button>
+                  <button type="button" class="corpus-btn" data-action="kanbun-ticket#toggle"><%= t("common.actions.close") %></button>
                 </div>
               </form>
 
               <div class="cv-ticket-result">
                 <div class="cv-ticket-status" data-kanbun-ticket-target="status"></div>
                 <div class="cv-ticket-kv">
-                  <div><strong>Ticket ID:</strong> <span data-kanbun-ticket-target="ticketId"></span></div>
+                  <div><strong><%= t("common.tickets.ticket_id") %></strong> <span data-kanbun-ticket-target="ticketId"></span></div>
                   <div>
-                    <strong>Ticket key (save this):</strong>
+                    <strong><%= t("common.tickets.ticket_key") %></strong>
                     <code data-kanbun-ticket-target="ticketKey"></code>
-                    <button type="button" class="corpus-btn" data-kanbun-ticket-target="copyKeyBtn" data-action="kanbun-ticket#copyKey">Copy</button>
-                    <button type="button" class="corpus-btn" data-kanbun-ticket-target="downloadKeyBtn" data-action="kanbun-ticket#downloadKey" hidden>Download .txt</button>
-                    <a href="#" class="corpus-btn" data-kanbun-ticket-target="openTicketLink" hidden>Open ticket</a>
+                    <button type="button" class="corpus-btn" data-kanbun-ticket-target="copyKeyBtn" data-action="kanbun-ticket#copyKey"><%= t("common.actions.copy") %></button>
+                    <button type="button" class="corpus-btn" data-kanbun-ticket-target="downloadKeyBtn" data-action="kanbun-ticket#downloadKey" hidden><%= t("common.actions.download_txt") %></button>
+                    <a href="#" class="corpus-btn" data-kanbun-ticket-target="openTicketLink" hidden><%= t("common.actions.open_ticket") %></a>
                   </div>
                 </div>
               </div>
@@ -551,7 +551,7 @@
                     data-toolbar-menu-target="button"
                     aria-expanded="false"
                     aria-haspopup="menu">
-              <span>Other materials</span>
+              <span><%= t("corpus_viewer.toolbar.other_materials") %></span>
               <span class="corpus-toolbar-control-group__chevron" aria-hidden="true">▾</span>
             </button>
 
@@ -563,17 +563,17 @@
                       class="corpus-btn"
                       role="menuitem"
                       data-action="toolbar-menu#close companion-material-ticket#openForType"
-                      data-companion-material-ticket-material-type-param="gallery_image">Add gallery images</button>
+                      data-companion-material-ticket-material-type-param="gallery_image"><%= t("corpus_viewer.toolbar.add_gallery_images") %></button>
               <button type="button"
                       class="corpus-btn"
                       role="menuitem"
                       data-action="toolbar-menu#close companion-material-ticket#openForType"
-                      data-companion-material-ticket-material-type-param="exemplar_manuscript">Add exemplar manuscript</button>
+                      data-companion-material-ticket-material-type-param="exemplar_manuscript"><%= t("corpus_viewer.toolbar.add_exemplar_manuscript") %></button>
               <button type="button"
                       class="corpus-btn"
                       role="menuitem"
                       data-action="toolbar-menu#close companion-material-ticket#openForType"
-                      data-companion-material-ticket-material-type-param="variant_text">Add variant connection</button>
+                      data-companion-material-ticket-material-type-param="variant_text"><%= t("corpus_viewer.toolbar.add_variant_connection") %></button>
             </div>
           </div>
         <% end %>
@@ -587,7 +587,7 @@
                 data-action="corpus-annotations#toggleAnnotate"
                 data-corpus-annotations-target="annotateBtn"
                 aria-pressed="false">
-          Annotate: Off
+          <%= t("corpus_viewer.toolbar.annotate_off") %>
         </button>
 
         <button type="button"
@@ -595,7 +595,7 @@
                 data-action="corpus-annotations#saveDraft"
                 data-corpus-annotations-target="saveBtn"
                 hidden>
-          Review &amp; submit
+          <%= t("corpus_viewer.toolbar.review_submit") %>
         </button>
 
         <span
@@ -605,30 +605,30 @@
           <button type="button"
                   class="corpus-btn corpus-btn-editing"
                   data-action="text-edit-ticket#toggle"
-                  title="Propose a text change (creates a ticket)">
-            Text edit
+                  title="<%= t("corpus_viewer.toolbar.text_edit_title") %>">
+            <%= t("corpus_viewer.toolbar.text_edit") %>
           </button>
 
           <div class="cv-text-edit-panel hidden" data-text-edit-ticket-target="panel">
-            <h3 style="margin-top: 0;">Propose a text edit (creates a ticket)</h3>
-            <p class="cv-hint">This does <em>not</em> change the corpus directly. It creates a ticket with a unified diff attached.</p>
+            <h3 style="margin-top: 0;"><%= t("corpus_viewer.text_edit.heading") %></h3>
+            <p class="cv-hint"><%= t("corpus_viewer.text_edit.explanation_html") %></p>
 
             <form data-action="submit->text-edit-ticket#submit">
               <div class="cv-form-row">
-                <label>Title</label>
-                <input type="text" class="cv-input" value="Text edit" data-text-edit-ticket-target="title" />
+                <label><%= t("common.forms.title") %></label>
+                <input type="text" class="cv-input" value="<%= t("corpus_viewer.text_edit.default_title") %>" data-text-edit-ticket-target="title" />
               </div>
               <div class="cv-form-row">
-                <label>Summary</label>
-                <input type="text" class="cv-input" placeholder="What changed?" data-text-edit-ticket-target="summary" />
+                <label><%= t("common.forms.summary") %></label>
+                <input type="text" class="cv-input" placeholder="<%= t("corpus_viewer.text_edit.summary_placeholder") %>" data-text-edit-ticket-target="summary" />
               </div>
               <div class="cv-form-row">
-                <label>Reasoning</label>
-                <textarea class="cv-textarea" rows="3" placeholder="Why should this change be made?" data-text-edit-ticket-target="reasoning"></textarea>
+                <label><%= t("common.forms.reasoning") %></label>
+                <textarea class="cv-textarea" rows="3" placeholder="<%= t("corpus_viewer.text_edit.reasoning_placeholder") %>" data-text-edit-ticket-target="reasoning"></textarea>
               </div>
 
               <div class="cv-form-row">
-                <label>Edited text</label>
+                <label><%= t("corpus_viewer.text_edit.edited_text") %></label>
                 <textarea class="cv-textarea cv-mono" rows="18" data-text-edit-ticket-target="edited"></textarea>
               </div>
 
@@ -639,20 +639,20 @@
                          include_uploads: true %>
 
               <div class="cv-form-actions">
-                <button type="submit" class="corpus-btn corpus-btn-primary">Submit ticket</button>
-                <button type="button" class="corpus-btn" data-action="text-edit-ticket#toggle">Close</button>
+                <button type="submit" class="corpus-btn corpus-btn-primary"><%= t("common.actions.submit_ticket") %></button>
+                <button type="button" class="corpus-btn" data-action="text-edit-ticket#toggle"><%= t("common.actions.close") %></button>
               </div>
             </form>
 
             <div class="cv-ticket-result">
               <div class="cv-ticket-status" data-text-edit-ticket-target="status"></div>
               <div class="cv-ticket-kv">
-                <div><strong>Ticket ID:</strong> <span data-text-edit-ticket-target="ticketId"></span></div>
+                <div><strong><%= t("common.tickets.ticket_id") %></strong> <span data-text-edit-ticket-target="ticketId"></span></div>
                 <div>
-                  <strong>Ticket key (save this):</strong>
+                  <strong><%= t("common.tickets.ticket_key") %></strong>
                   <code data-text-edit-ticket-target="ticketKey"></code>
-                  <button type="button" class="corpus-btn" data-text-edit-ticket-target="copyKeyBtn" data-action="text-edit-ticket#copyKey">Copy</button>
-                  <button type="button" class="corpus-btn" data-text-edit-ticket-target="downloadKeyBtn" data-action="text-edit-ticket#downloadKey" hidden>Download .txt</button>
+                  <button type="button" class="corpus-btn" data-text-edit-ticket-target="copyKeyBtn" data-action="text-edit-ticket#copyKey"><%= t("common.actions.copy") %></button>
+                  <button type="button" class="corpus-btn" data-text-edit-ticket-target="downloadKeyBtn" data-action="text-edit-ticket#downloadKey" hidden><%= t("common.actions.download_txt") %></button>
                 </div>
               </div>
             </div>
@@ -667,17 +667,17 @@
       <details class="corpus-metabox"
                style="margin: 0 0 10px; border: 1px solid rgba(0,0,0,0.10); border-radius: 12px; padding: 10px; background: #fff;">
         <summary class="corpus-metabox-summary">
-          <strong>Metadata</strong>
+          <strong><%= t("corpus_viewer.metadata.heading") %></strong>
           <% if meta_page_title.present? && meta_ws_cats.present? %>
             <span style="margin-left: 10px;">
-              <%= link_to "维基文库", "https://zh.wikisource.org/wiki/#{ERB::Util.url_encode(meta_page_title)}",
+              <%= link_to t("corpus_viewer.metadata.wikisource"), "https://zh.wikisource.org/wiki/#{ERB::Util.url_encode(meta_page_title)}",
                           target: "_blank", rel: "noopener",
                           class: "corpus-btn corpus-btn-ghost",
                           style: "text-decoration: none;" %>
             </span>
           <% end %>
         </summary>
-        <div class="corpus-metabox-scroll" role="region" aria-label="Text metadata"
+        <div class="corpus-metabox-scroll" role="region" aria-label="<%= t("corpus_viewer.metadata.aria_label") %>"
              style="max-height: 160px; overflow: auto; padding-top: 8px;">
           <dl class="corpus-metabox-dl" style="margin: 0;">
             <% @meta.each do |(k, v)| %>
@@ -702,71 +702,71 @@
       <div class="corpus-punct-panel"
            data-corpus-reader-target="punctPanel"
            role="dialog"
-           aria-label="Punctuation options">
+           aria-label="<%= t("corpus_viewer.toolbar.punctuation_options") %>">
         <div class="corpus-punct-header">
-          <div class="corpus-punct-title">Punctuation options</div>
+          <div class="corpus-punct-title"><%= t("corpus_viewer.punctuation.heading") %></div>
           <div class="corpus-punct-actions">
-            <button type="button" class="corpus-btn corpus-btn-ghost" data-action="click->corpus-reader#okPunctMenu" data-corpus-reader-target="punctOkBtn">OK</button>
+            <button type="button" class="corpus-btn corpus-btn-ghost" data-action="click->corpus-reader#okPunctMenu" data-corpus-reader-target="punctOkBtn"><%= t("common.actions.ok") %></button>
             <button type="button" class="corpus-btn corpus-btn-ghost" data-action="click->corpus-reader#closePunctMenu" data-corpus-reader-target="punctCloseBtn">✕</button>
           </div>
         </div>
 
         <div class="corpus-punct-grid">
           <fieldset class="corpus-fieldset preset-box">
-            <legend>Preset</legend>
-            <label><input type="radio" name="cv_preset" value="source" data-action="change->corpus-reader#setPunctPresetRadio"> Source</label>
-            <label><input type="radio" name="cv_preset" value="modern_trad" data-action="change->corpus-reader#setPunctPresetRadio"> Modern CJK (Traditional)</label>
-            <label><input type="radio" name="cv_preset" value="modern_prc" data-action="change->corpus-reader#setPunctPresetRadio"> Modern CJK (Simplified / PRC)</label>
-            <label><input type="radio" name="cv_preset" value="pure" data-action="change->corpus-reader#setPunctPresetRadio"> Pure classical</label>
-            <label><input type="radio" name="cv_preset" value="strip" data-action="change->corpus-reader#setPunctPresetRadio"> Strip</label>
-            <label><input type="radio" name="cv_preset" value="custom" data-action="change->corpus-reader#setPunctPresetRadio"> Custom</label>
+            <legend><%= t("corpus_viewer.punctuation.preset.heading") %></legend>
+            <label><input type="radio" name="cv_preset" value="source" data-action="change->corpus-reader#setPunctPresetRadio"> <%= t("corpus_viewer.punctuation.preset.source") %></label>
+            <label><input type="radio" name="cv_preset" value="modern_trad" data-action="change->corpus-reader#setPunctPresetRadio"> <%= t("corpus_viewer.punctuation.preset.modern_traditional") %></label>
+            <label><input type="radio" name="cv_preset" value="modern_prc" data-action="change->corpus-reader#setPunctPresetRadio"> <%= t("corpus_viewer.punctuation.preset.modern_prc") %></label>
+            <label><input type="radio" name="cv_preset" value="pure" data-action="change->corpus-reader#setPunctPresetRadio"> <%= t("corpus_viewer.punctuation.preset.pure_classical") %></label>
+            <label><input type="radio" name="cv_preset" value="strip" data-action="change->corpus-reader#setPunctPresetRadio"> <%= t("corpus_viewer.punctuation.preset.strip") %></label>
+            <label><input type="radio" name="cv_preset" value="custom" data-action="change->corpus-reader#setPunctPresetRadio"> <%= t("corpus_viewer.punctuation.preset.custom") %></label>
           </fieldset>
 
           <fieldset class="corpus-fieldset">
-            <legend>Quotes</legend>
-            <div class="corpus-subtitle">Family</div>
-            <label><input type="radio" name="cv_quote_family" value="corner" data-action="change->corpus-reader#setPunctOptionRadio"> Chinese quotation marks 「」『』</label>
-            <label><input type="radio" name="cv_quote_family" value="speech_curly" data-action="change->corpus-reader#setPunctOptionRadio"> Latin speech marks “ ” ‘ ’</label>
-            <label><input type="radio" name="cv_quote_family" value="speech_fullwidth" data-action="change->corpus-reader#setPunctOptionRadio"> Chinese speech marks ＂ ＇</label>
-            <label><input type="radio" name="cv_quote_family" value="off" data-action="change->corpus-reader#setPunctOptionRadio"> Off</label>
+            <legend><%= t("corpus_viewer.punctuation.quotes.heading") %></legend>
+            <div class="corpus-subtitle"><%= t("corpus_viewer.punctuation.quotes.family") %></div>
+            <label><input type="radio" name="cv_quote_family" value="corner" data-action="change->corpus-reader#setPunctOptionRadio"> <%= t("corpus_viewer.punctuation.quotes.chinese_quotation_marks") %></label>
+            <label><input type="radio" name="cv_quote_family" value="speech_curly" data-action="change->corpus-reader#setPunctOptionRadio"> <%= t("corpus_viewer.punctuation.quotes.latin_speech_marks") %></label>
+            <label><input type="radio" name="cv_quote_family" value="speech_fullwidth" data-action="change->corpus-reader#setPunctOptionRadio"> <%= t("corpus_viewer.punctuation.quotes.chinese_speech_marks") %></label>
+            <label><input type="radio" name="cv_quote_family" value="off" data-action="change->corpus-reader#setPunctOptionRadio"> <%= t("corpus_viewer.punctuation.quotes.disabled") %></label>
 
-            <div class="corpus-subtitle">Ordering</div>
-            <label><input type="radio" name="cv_quote_order" value="trad" data-action="change->corpus-reader#setPunctOptionRadio"> Traditional: 「甲『乙』丙」</label>
-            <label><input type="radio" name="cv_quote_order" value="simp" data-action="change->corpus-reader#setPunctOptionRadio"> Simplified: 『甲「乙」丙』</label>
+            <div class="corpus-subtitle"><%= t("corpus_viewer.punctuation.quotes.ordering") %></div>
+            <label><input type="radio" name="cv_quote_order" value="trad" data-action="change->corpus-reader#setPunctOptionRadio"> <%= t("corpus_viewer.punctuation.quotes.traditional") %></label>
+            <label><input type="radio" name="cv_quote_order" value="simp" data-action="change->corpus-reader#setPunctOptionRadio"> <%= t("corpus_viewer.punctuation.quotes.simplified") %></label>
 
-            <label class="corpus-check"><input type="checkbox" data-corpus-reader-target="verticalQuoteFormsChk" data-action="change->corpus-reader#toggleVerticalQuoteForms"> Vertical quote forms (﹁﹂﹃﹄)</label>
+            <label class="corpus-check"><input type="checkbox" data-corpus-reader-target="verticalQuoteFormsChk" data-action="change->corpus-reader#toggleVerticalQuoteForms"> <%= t("corpus_viewer.punctuation.quotes.vertical_forms") %></label>
           </fieldset>
 
           <fieldset class="corpus-fieldset">
-            <legend>Question / Exclamation</legend>
-            <label><input type="radio" name="cv_q" value="keep" data-action="change->corpus-reader#setPunctOptionRadio"> Keep ？</label>
-            <label><input type="radio" name="cv_q" value="collapse" data-action="change->corpus-reader#setPunctOptionRadio"> Collapse ? → 。</label>
+            <legend><%= t("corpus_viewer.punctuation.question_exclamation.heading") %></legend>
+            <label><input type="radio" name="cv_q" value="keep" data-action="change->corpus-reader#setPunctOptionRadio"> <%= t("corpus_viewer.punctuation.question_exclamation.keep_question") %></label>
+            <label><input type="radio" name="cv_q" value="collapse" data-action="change->corpus-reader#setPunctOptionRadio"> <%= t("corpus_viewer.punctuation.question_exclamation.collapse_question") %></label>
             <div style="height:6px"></div>
-            <label><input type="radio" name="cv_ex" value="keep" data-action="change->corpus-reader#setPunctOptionRadio"> Keep ！</label>
-            <label><input type="radio" name="cv_ex" value="collapse" data-action="change->corpus-reader#setPunctOptionRadio"> Collapse ! → 。</label>
+            <label><input type="radio" name="cv_ex" value="keep" data-action="change->corpus-reader#setPunctOptionRadio"> <%= t("corpus_viewer.punctuation.question_exclamation.keep_exclamation") %></label>
+            <label><input type="radio" name="cv_ex" value="collapse" data-action="change->corpus-reader#setPunctOptionRadio"> <%= t("corpus_viewer.punctuation.question_exclamation.collapse_exclamation") %></label>
           </fieldset>
 
           <fieldset class="corpus-fieldset">
-            <legend>Semicolon / Colon</legend>
-            <label><input type="radio" name="cv_semi" value="keep" data-action="change->corpus-reader#setPunctOptionRadio"> Keep ；</label>
-            <label><input type="radio" name="cv_semi" value="collapse" data-action="change->corpus-reader#setPunctOptionRadio"> Collapse ; → 。</label>
+            <legend><%= t("corpus_viewer.punctuation.semicolon_colon.heading") %></legend>
+            <label><input type="radio" name="cv_semi" value="keep" data-action="change->corpus-reader#setPunctOptionRadio"> <%= t("corpus_viewer.punctuation.semicolon_colon.keep_semicolon") %></label>
+            <label><input type="radio" name="cv_semi" value="collapse" data-action="change->corpus-reader#setPunctOptionRadio"> <%= t("corpus_viewer.punctuation.semicolon_colon.collapse_semicolon") %></label>
             <div style="height:6px"></div>
-            <label><input type="radio" name="cv_colon" value="keep" data-action="change->corpus-reader#setPunctOptionRadio"> Keep ：</label>
-            <label><input type="radio" name="cv_colon" value="collapse" data-action="change->corpus-reader#setPunctOptionRadio"> Collapse : → 。</label>
+            <label><input type="radio" name="cv_colon" value="keep" data-action="change->corpus-reader#setPunctOptionRadio"> <%= t("corpus_viewer.punctuation.semicolon_colon.keep_colon") %></label>
+            <label><input type="radio" name="cv_colon" value="collapse" data-action="change->corpus-reader#setPunctOptionRadio"> <%= t("corpus_viewer.punctuation.semicolon_colon.collapse_colon") %></label>
           </fieldset>
 
           <fieldset class="corpus-fieldset">
-            <legend>Comma</legend>
-            <label><input type="radio" name="cv_comma" value="keep" data-action="change->corpus-reader#setPunctOptionRadio"> Use ，</label>
-            <label><input type="radio" name="cv_comma" value="dunhao" data-action="change->corpus-reader#setPunctOptionRadio"> Use 、</label>
+            <legend><%= t("corpus_viewer.punctuation.comma.heading") %></legend>
+            <label><input type="radio" name="cv_comma" value="keep" data-action="change->corpus-reader#setPunctOptionRadio"> <%= t("corpus_viewer.punctuation.comma.comma") %></label>
+            <label><input type="radio" name="cv_comma" value="dunhao" data-action="change->corpus-reader#setPunctOptionRadio"> <%= t("corpus_viewer.punctuation.comma.dunhao") %></label>
           </fieldset>
 
           <fieldset class="corpus-fieldset">
-            <legend>Repetition mark</legend>
-            <label><input type="radio" name="cv_repeat_mark" value="none" data-action="change->corpus-reader#setRepeatMarkRadio"> No repetition mark (default)</label>
-            <label><input type="radio" name="cv_repeat_mark" value="kanji" data-action="change->corpus-reader#setRepeatMarkRadio"> 々 (Horizontal)</label>
-            <label><input type="radio" name="cv_repeat_mark" value="vertical" data-action="change->corpus-reader#setRepeatMarkRadio"> 〻 (Vertical)</label>
-            <label><input type="radio" name="cv_repeat_mark" value="zhou" data-action="change->corpus-reader#setRepeatMarkRadio"> 二 (Western Zhou-style)</label>
+            <legend><%= t("corpus_viewer.punctuation.repetition.heading") %></legend>
+            <label><input type="radio" name="cv_repeat_mark" value="none" data-action="change->corpus-reader#setRepeatMarkRadio"> <%= t("corpus_viewer.punctuation.repetition.none") %></label>
+            <label><input type="radio" name="cv_repeat_mark" value="kanji" data-action="change->corpus-reader#setRepeatMarkRadio"> <%= t("corpus_viewer.punctuation.repetition.kanji") %></label>
+            <label><input type="radio" name="cv_repeat_mark" value="vertical" data-action="change->corpus-reader#setRepeatMarkRadio"> <%= t("corpus_viewer.punctuation.repetition.vertical") %></label>
+            <label><input type="radio" name="cv_repeat_mark" value="zhou" data-action="change->corpus-reader#setRepeatMarkRadio"> <%= t("corpus_viewer.punctuation.repetition.zhou") %></label>
           </fieldset>
         </div>
       </div>
@@ -786,5 +786,5 @@
   </div>
 
 <% else %>
-  <p>Minecraft How did we get here advancement</p>
+  <p><%= t("corpus_viewer.unexpected_state") %></p>
 <% end %>

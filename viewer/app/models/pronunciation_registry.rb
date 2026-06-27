@@ -66,7 +66,13 @@ module PronunciationRegistry
   end
 
   def label_for_field(field)
-    field_metadata(field)&.fetch(:label, nil)
+    metadata = field_metadata(field)
+    return nil unless metadata
+
+    I18n.t(
+      "pronunciations.fields.#{translation_key_segment(metadata[:field])}.label",
+      default: metadata[:label]
+    )
   end
 
   def order_for_field(field)
@@ -115,7 +121,7 @@ module PronunciationRegistry
 
       {
         key: family_meta[:key],
-        label: family_meta[:label],
+        label: display_family_label(family_meta),
         default_open: family_meta[:default_open],
         props: [],
         varieties: varieties,
@@ -133,7 +139,7 @@ module PronunciationRegistry
     if unknown.any?
       sections << {
         key: "other",
-        label: "Other",
+        label: I18n.t("pronunciations.families.other", default: "Other"),
         default_open: false,
         props: unknown.sort_by { |prop| [prop.field.to_s, prop.source.to_s, prop.value.to_s] },
         varieties: [],
@@ -153,7 +159,11 @@ module PronunciationRegistry
       metadata = field_metadata(field) || {}
       {
         key: ruby.fetch("key").to_s.to_sym,
+        # Keep both source labels. Presentation chooses between them per locale;
+        # the registry data itself remains locale-neutral and reusable.
         label: ruby["label_en"].to_s.presence || ruby.fetch("label", humanize_key(ruby.fetch("key"))),
+        label_en: ruby["label_en"]&.to_s,
+        label_original: ruby.fetch("label", humanize_key(ruby.fetch("key"))).to_s,
         field: field,
         sources: Array(ruby["sources"]).map(&:to_s).freeze,
         special: ruby["special"]&.to_s&.to_sym,
@@ -183,24 +193,49 @@ module PronunciationRegistry
   end
 
   def display_group_label(metadata)
-    metadata[:group_label_en].to_s.presence ||
-      metadata[:group_label].to_s.presence ||
-      display_variety_label(metadata).to_s.presence ||
-      metadata[:label].to_s.presence ||
-      humanize_key(display_group_key(metadata))
+    fallback = default_group_label(metadata)
+    translation_key = group_translation_key(metadata)
+    return fallback unless translation_key
+
+    I18n.t("#{translation_key}.label", default: fallback)
   end
 
-  # The viewer is currently English-first. Keep the original Chinese label in
-  # the registry, but prefer the reviewed/generated English label for display.
-  # A future locale switch only needs to change this one method.
+  # Imported topolect records retain a reviewed English name and the canonical
+  # Chinese name used in the source data. Locale catalogues copy those values:
+  # English receives the English name, while Literary Chinese receives the same
+  # Chinese name verbatim. Other staged locales begin with the English value as
+  # an explicit placeholder for future human translation.
   def display_variety_label(metadata)
-    metadata[:variety_label_en].to_s.presence ||
-      metadata[:variety_label].to_s.presence ||
-      humanize_key(metadata[:variety_key])
+    fallback = default_variety_label(metadata)
+    translation_key = group_translation_key(metadata)
+    return fallback unless translation_key
+
+    I18n.t("#{translation_key}.label", default: fallback)
   end
 
   def display_location_label(metadata)
-    metadata[:location_en].to_s.presence || metadata[:location].to_s.presence
+    fallback = default_location_label(metadata)
+    return nil if fallback.blank?
+
+    translation_key = group_translation_key(metadata)
+    return fallback unless translation_key
+
+    I18n.t("#{translation_key}.location", default: fallback)
+  end
+
+  def display_family_label(metadata)
+    I18n.t("pronunciations.families.#{metadata[:key]}", default: metadata[:label])
+  end
+
+  def display_ruby_source_label(entry)
+    fallback = if literary_chinese_locale?
+      entry[:label_original].to_s.presence || entry[:label_en].to_s.presence || entry[:label].to_s
+    else
+      entry[:label_en].to_s.presence || entry[:label].to_s.presence || entry[:label_original].to_s
+    end
+
+    key = translation_key_segment(entry[:key])
+    I18n.t("pronunciations.ruby_sources.#{key}.label", default: fallback)
   end
 
 
@@ -221,7 +256,10 @@ module PronunciationRegistry
     {
       base: match[:base],
       annotation: match[:annotation],
-      label: annotation[:label]
+      label: I18n.t(
+        "pronunciations.fields.#{translation_key_segment(metadata[:field])}.value_annotation",
+        default: annotation[:label]
+      )
     }
   rescue RegexpError
     nil
@@ -232,19 +270,21 @@ module PronunciationRegistry
   end
 
   def ruby_source_options
-    ruby_sources.map { |entry| [entry[:label], entry[:key]] }
+    ruby_sources.map { |entry| [display_ruby_source_label(entry), entry[:key]] }
   end
 
   # Family -> reading-system data for the two-stage ruby selector. The stored
   # preference remains the stable ruby source key; family is only a UI filter.
   def ruby_source_groups
-    @ruby_source_groups ||= families.filter_map do |family_meta|
+    locale = I18n.locale.to_s
+    @ruby_source_groups ||= {}
+    @ruby_source_groups[locale] ||= families.filter_map do |family_meta|
       sources = ruby_sources
         .select { |entry| entry[:family] == family_meta[:key] }
         .map do |entry|
           {
             key: entry[:key].to_s,
-            label: entry[:label].to_s,
+            label: display_ruby_source_label(entry),
             variety_label: display_group_label(entry),
             variety_label_en: entry[:variety_label_en].to_s.presence,
             notation: entry[:notation].to_s.presence
@@ -255,7 +295,7 @@ module PronunciationRegistry
 
       {
         key: family_meta[:key],
-        label: family_meta[:label],
+        label: display_family_label(family_meta),
         sources: sources
       }
     end
@@ -269,6 +309,66 @@ module PronunciationRegistry
     normalized = key.to_s.strip.downcase.tr(" ", "_").to_sym
     ruby_sources.find { |entry| entry[:key] == normalized }
   end
+
+  def literary_chinese_locale?
+    I18n.locale.to_s == "lzh"
+  end
+
+
+  def default_group_label(metadata)
+    if literary_chinese_locale?
+      metadata[:group_label].to_s.presence ||
+        metadata[:variety_label].to_s.presence ||
+        metadata[:group_label_en].to_s.presence ||
+        metadata[:variety_label_en].to_s.presence ||
+        metadata[:label].to_s.presence ||
+        humanize_key(display_group_key(metadata))
+    else
+      metadata[:group_label_en].to_s.presence ||
+        metadata[:variety_label_en].to_s.presence ||
+        metadata[:group_label].to_s.presence ||
+        metadata[:variety_label].to_s.presence ||
+        metadata[:label].to_s.presence ||
+        humanize_key(display_group_key(metadata))
+    end
+  end
+  private_class_method :default_group_label
+
+  def default_variety_label(metadata)
+    if literary_chinese_locale?
+      metadata[:variety_label].to_s.presence ||
+        metadata[:variety_label_en].to_s.presence ||
+        humanize_key(metadata[:variety_key])
+    else
+      metadata[:variety_label_en].to_s.presence ||
+        metadata[:variety_label].to_s.presence ||
+        humanize_key(metadata[:variety_key])
+    end
+  end
+  private_class_method :default_variety_label
+
+  def default_location_label(metadata)
+    if literary_chinese_locale?
+      metadata[:location].to_s.presence || metadata[:location_en].to_s.presence
+    else
+      metadata[:location_en].to_s.presence || metadata[:location].to_s.presence
+    end
+  end
+  private_class_method :default_location_label
+
+  def group_translation_key(metadata)
+    family = metadata[:family].to_s
+    group = display_group_key(metadata).to_s
+    return nil if family.blank? || group.blank?
+
+    "pronunciations.groups.#{translation_key_segment(family)}.#{translation_key_segment(group)}"
+  end
+  private_class_method :group_translation_key
+
+  def translation_key_segment(value)
+    value.to_s.gsub(/[^A-Za-z0-9_]+/, "_").gsub(/\A_+|_+\z/, "").downcase.presence || "unnamed"
+  end
+  private_class_method :translation_key_segment
 
   def namespaced_field_metadata(field)
     match = NAMESPACED_FIELD.match(field)

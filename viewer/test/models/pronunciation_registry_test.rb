@@ -90,17 +90,63 @@ class PronunciationRegistryTest < ActiveSupport::TestCase
   end
 
   test "prefers English variety labels while keeping Chinese as fallback" do
-    assert_equal "Shanghai", PronunciationRegistry.display_variety_label(
-      variety_key: "shanghai",
-      variety_label: "上海",
-      variety_label_en: "Shanghai"
-    )
+    I18n.with_locale(:en) do
+      assert_equal "Shanghai", PronunciationRegistry.display_variety_label(
+        variety_key: "shanghai",
+        variety_label: "上海",
+        variety_label_en: "Shanghai"
+      )
 
-    assert_equal "上海", PronunciationRegistry.display_variety_label(
-      variety_key: "shanghai",
+      assert_equal "上海", PronunciationRegistry.display_variety_label(
+        variety_key: "shanghai",
+        variety_label: "上海",
+        variety_label_en: nil
+      )
+    end
+  end
+
+  test "Literary Chinese reuses stored Chinese topolect labels" do
+    metadata = {
+      field: "reading.wu.xiaoxuetang_test.ipa",
+      group_key: nil,
+      group_label: nil,
+      group_label_en: nil,
+      variety_key: "xiaoxuetang_test",
       variety_label: "上海",
-      variety_label_en: nil
-    )
+      variety_label_en: "Shanghai",
+      location: "上海市",
+      location_en: "Shanghai Municipality",
+      label: "IPA"
+    }
+
+    I18n.with_locale(:en) do
+      assert_equal "Shanghai", PronunciationRegistry.display_group_label(metadata)
+      assert_equal "Shanghai Municipality", PronunciationRegistry.display_location_label(metadata)
+    end
+
+    I18n.with_locale(:lzh) do
+      assert_equal "上海", PronunciationRegistry.display_group_label(metadata)
+      assert_equal "上海市", PronunciationRegistry.display_location_label(metadata)
+    end
+  end
+
+  test "ruby source group cache remains locale-specific" do
+    english = I18n.with_locale(:en) do
+      PronunciationRegistry.ruby_source_groups
+        .flat_map { |group| group[:sources] }
+        .find { |source| source[:key] == "xiaoxuetang_168" }
+        &.fetch(:label)
+    end
+
+    literary_chinese = I18n.with_locale(:lzh) do
+      PronunciationRegistry.ruby_source_groups
+        .flat_map { |group| group[:sources] }
+        .find { |source| source[:key] == "xiaoxuetang_168" }
+        &.fetch(:label)
+    end
+
+    assert_equal "Hukou — IPA", english
+    assert_equal "湖口 — IPA", literary_chinese
   end
 
   test "Okinawan entry carries English-first identity location and full references" do
@@ -115,6 +161,26 @@ class PronunciationRegistryTest < ActiveSupport::TestCase
     assert_match(/okinawa_01\.xlsx/, metadata[:references].last[:citation])
     assert_equal :okinawan_uchinaaguchi_shuri_ninjal,
                  PronunciationRegistry.ruby_source(:okinawan_uchinaaguchi_shuri_ninjal)[:key]
+  end
+
+
+  test "all requested interface locale codes are staged" do
+    expected = %i[en ja ryu vie ko jje cmn lzh yue nan wuu cjy hak hsn gan czh cnp csp dng zha ru]
+
+    assert_equal expected, InterfaceLocales::ALL
+    expected.each { |locale| assert_includes I18n.available_locales, locale }
+    assert_equal %i[en lzh], InterfaceLocales::SELECTABLE
+  end
+
+  test "untranslated staged locales use explicit English pronunciation placeholders" do
+    metadata = PronunciationRegistry.field_metadata("reading.gan.xiaoxuetang_168.ipa")
+
+    I18n.with_locale(:ru) do
+      assert_equal "Hukou", PronunciationRegistry.display_group_label(metadata)
+      assert_equal "Hukou — IPA", PronunciationRegistry.display_ruby_source_label(
+        PronunciationRegistry.ruby_source(:xiaoxuetang_168)
+      )
+    end
   end
 
   test "marks the Okinawan ASCII suffix as an accent class annotation" do

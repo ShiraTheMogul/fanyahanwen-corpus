@@ -2,31 +2,31 @@
 <% include_uploads = local_assigns.fetch(:include_uploads, false) %>
 
 <div class="cv-form-row">
-  <label>Evidence links</label>
-  <textarea class="cv-textarea" rows="3" placeholder="One http(s) link per line" data-<%= stimulus_controller %>-target="evidenceLinks"></textarea>
-  <div class="cv-hint">Links are preferred when the evidence already exists online.</div>
+  <label><%= t("corpus_viewer.optional_ticket_fields.evidence_links") %></label>
+  <textarea class="cv-textarea" rows="3" placeholder="<%= t("corpus_viewer.optional_ticket_fields.evidence_links_placeholder") %>" data-<%= stimulus_controller %>-target="evidenceLinks"></textarea>
+  <div class="cv-hint"><%= t("corpus_viewer.optional_ticket_fields.evidence_links_hint") %></div>
 </div>
 
 <% if include_uploads %>
   <div class="cv-form-row">
-    <label>Evidence files</label>
+    <label><%= t("corpus_viewer.optional_ticket_fields.evidence_files") %></label>
     <input type="file" class="cv-input" multiple data-<%= stimulus_controller %>-target="uploads" />
-    <div class="cv-hint">Up to 10 files and 20 MB for this ticket. HTML, XHTML, and SVG are rejected.</div>
+    <div class="cv-hint"><%= t("corpus_viewer.optional_ticket_fields.evidence_files_hint") %></div>
   </div>
 <% end %>
 
 <details class="cv-form-row">
-  <summary>Optional contact details</summary>
-  <p class="cv-hint">Stored separately and encrypted. Deleted after 30 days or when the ticket closes.</p>
-  <label>Name</label>
+  <summary><%= t("corpus_viewer.optional_ticket_fields.contact_heading") %></summary>
+  <p class="cv-hint"><%= t("corpus_viewer.optional_ticket_fields.contact_hint") %></p>
+  <label><%= t("corpus_viewer.optional_ticket_fields.name") %></label>
   <input type="text" class="cv-input" autocomplete="name" data-<%= stimulus_controller %>-target="contactName" />
-  <label>Email</label>
+  <label><%= t("corpus_viewer.optional_ticket_fields.email") %></label>
   <input type="email" class="cv-input" autocomplete="email" data-<%= stimulus_controller %>-target="contactEmail" />
-  <label>Contact note</label>
+  <label><%= t("corpus_viewer.optional_ticket_fields.contact_note") %></label>
   <textarea class="cv-textarea" rows="2" data-<%= stimulus_controller %>-target="contactNotes"></textarea>
 </details>
 
 <div class="cv-form-row">
-  <label><input type="checkbox" data-<%= stimulus_controller %>-target="storeOnDevice" /> Save this ticket key on this device</label>
-  <div class="cv-hint">Unchecked by default. The key is otherwise shown once and is not stored by the browser.</div>
+  <label><input type="checkbox" data-<%= stimulus_controller %>-target="storeOnDevice" /> <%= t("corpus_viewer.optional_ticket_fields.save_key") %></label>
+  <div class="cv-hint"><%= t("corpus_viewer.optional_ticket_fields.save_key_hint") %></div>
 </div>
