@@ -1,50 +1,49 @@
-# PLACEHOLDER CATALOGUE: translate values only; do not rename keys.
 lzh:
   site:
     title: 泛亞漢文語料庫 Fanya Hanwen Corpus
     title_aria: 泛亞漢文語料庫 — Fanya Hanwen Corpus
     navigation:
       aria_label: Primary navigation
-      corpus_viewer: Corpus Viewer
-      corpus_search: Search the Corpus
-      dictionary: Dictionary
-      tools: Tools
-      tickets: Tickets
-      fun: Fun
+      corpus_viewer: 語庫讀器
+      corpus_search: 尋
+      dictionary: 字典
+      tools: 器
+      tickets: 求
+      fun: 玩
     search:
-      label: Search
-      placeholder: 'Search the Dictionary: 泛 or U+6CDB!'
+      label: 尋
+      placeholder: '尋於字典: 泛 or U+6CDB!'
       submit: Go
     locale_switch:
       aria_label: 改用%{language}介面
       languages:
-        en: English
-        ja: Japanese
-        ryu: Okinawan
-        vie: Vietnamese
-        ko: Korean
-        jje: Jeju
-        cmn: Mandarin
+        en: 英語
+        ja: 日語
+        ryu: 沖縄語
+        vie: 越語
+        ko: 韓語
+        jje: 濟州語
+        cmn: 官話
         lzh: 文言
-        yue: Cantonese
-        nan: Hokkien
-        wuu: Shanghainese
-        cjy: Jin Chinese
-        hak: Hakka Chinese
-        hsn: Xiang Chinese
-        gan: Gan Chinese
-        czh: Hui Chinese
-        cnp: Northern Pinghua
-        csp: Southern Pinghua
-        dng: Dungan
-        zha: Zhuang
-        ru: Russian
+        yue: 粵語
+        nan: 閩南語
+        wuu: 吳語
+        cjy: 晉語
+        hak: 客家語
+        hsn: 湘語
+        gan: 贛語
+        czh: 徽語
+        cnp: 北平話
+        csp: 南平話
+        dng: 回族語
+        zha: 僮語
+        ru: 俄語
     options:
       button: Options
       toggle_aria: Toggle options panel
-      panel_aria: View options
+      panel_aria: 觀
     footer:
-      corpus_name: Fanya Hanwen Corpus
+      corpus_name: 泛亞漢文語料庫
       summary: An open-source corpus and reading environment for Literary Chinese
         across Asia.
       navigation_aria: Footer navigation
@@ -54,7 +53,7 @@ lzh:
       discord: Discord
       licensing: Individual corpus materials may carry source-specific licensing and
         attribution requirements.
-      hosting: Proudly hosted by Mythic Beasts!
+      hosting: 此頁由Mythic Beasts現也。
     social:
       description: A hub for Literary Chinese with a corpus viewer, dictionary, and
         learning tools.
