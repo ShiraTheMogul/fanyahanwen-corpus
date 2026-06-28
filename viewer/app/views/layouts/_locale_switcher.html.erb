@@ -1,0 +1,15 @@
+<%= form_with url: preferences_path,
+              method: :post,
+              local: true,
+              class: "site-locale-switcher" do %>
+  <%= hidden_field_tag :return_to, request.fullpath %>
+  <label class="sr-only" for="interface-locale"><%= t("site.locale_switch.selector_label") %></label>
+  <%= select_tag :locale,
+                 options_for_select(
+                   InterfaceLocales::SELECTABLE.map { |code| [InterfaceLocales.native_name(code), code] },
+                   I18n.locale
+                 ),
+                 id: "interface-locale",
+                 class: "site-locale-select" %>
+  <%= submit_tag t("site.locale_switch.apply"), class: "site-locale-submit" %>
+<% end %>

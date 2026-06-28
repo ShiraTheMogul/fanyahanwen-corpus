@@ -7,4 +7,87 @@ lzh:
       all_text_folders: 諸文目錄
       recent_changes: 監修
       all_changed_files: 諸更易檔
-      browse_all: 盡覽動向
+      browse_all: 盡覽近況
+    title: 卷首
+    hero:
+      daily_reading_aria: 今日《詩經》誦讀
+      summary: >-
+        歡迎至泛亞漢文語料庫。庫中漢文，篇幅逾《四庫全書》二倍；其觀兼及亞洲諸地，且通古今，冀使漢文傳統復行於當世。
+    introduction:
+      heading: 序
+      body: >-
+        泛亞漢文語料庫，收中國歷朝、朝鮮半島、日本、越南、琉球國、新加坡，及歷史上諸國諸地之漢文。漢文非死語；昔人用之，今人亦用之，其文章百體紛呈。盛時之地位，近於拉丁文，故宜等視之。此事由余一人經營，迄今約一年，事繁任重。所欲成者有三：一、以地域與文化為先，重建觀漢文之法；二、依此觀而立今世教學之制；三、建一易用之網站，使前二者得行，並使所得學問易近於人。今尚未臻其成，然日有進益。
+    corpus_viewer:
+      heading: 語料庫閱覽器
+      link: 觀
+      introduction: >-
+        本計畫迄今之一大成，為功能詳備之語料庫閱覽器；其旨在使人人皆能便覽漢文。
+      includes: 其所備者：
+      features:
+        pronunciation: >-
+          備亞洲諸語及方言之讀音旁訓：官話、日語、韓語、越語、壯語、老國音、中古漢語、上古漢語、沖繩語等。可依己語誦讀漢文。
+        punctuation: 可加標點（句讀），亦可盡去之。
+        underlining: 備傳統畫線法，或循原定之色，或改用易辨之配色。
+        annotation_systems: 備日本、韓國、越南之漢文訓讀註法。
+        fonts: 備諸字體，亦有篆書字體。
+        orientation: 縱書、橫書皆可，版面隨之調整。
+        character_forms: 可轉換諸漢字字形，含簡化字及已廢之簡化方案。
+        dictionary: 備詳實字典，收Unihan資料及余所輯者。
+        translations: 可呈譯文。
+    dictionary:
+      heading: 字典
+      overview: >-
+        本站字典務求廣收。今有Unihan資料、旁訓設定、諸標音體例；閱文時，亦可於正體、簡體及原形間切換，以處理雜用異體之文。庫中又收余獨立考察及OpenCC所得之異體字資料，欲盡繫諸異體，終成文字正規化之具。敬請賜正。
+      sources: >-
+        字典主要釋義見於彈窗，取自CC-CEDICT、Unihan及《康熙字典》。《康熙字典》按特定文例自動分行，冀其易讀，迄今效果尚佳。《廣韻》與《說文解字》亦已製成可閱之字典，其排序法亦有記述。
+      planned_intro: >-
+        又欲收入更多字典，以資比勘；如《四庫全書》所用諸書：
+      wider_scope: >-
+        亦欲廣收中國以外諸國字典。所期者，在今世教學之制中，使人得藉字典沉浸學習漢文，兼助學術研究。
+    submission:
+      heading: 呈新文
+      introduction: 欲增新文於庫乎？此處立待審提案，不直寫入語料庫。
+      open_button: 呈新文
+      path_hint_html: >-
+        請用%{first_path}或%{second_path}之類上級路徑；新文仍置於新立之作品目錄中。
+      parent_path_placeholder: 如：越南漢文/clean
+    future_plans:
+      heading: 後圖
+      body: >-
+        後欲增設列國圖譜、語法維基，並詳備異本及校正文。又欲為諸文撰梗概、簡介及提要。
+    publications:
+      heading: 論著
+      introduction: >-
+        余，汐洛思，嘗據此庫成數篇論著，其中有作於語料庫未全備之時者。列如下：
+    references:
+      heading: 引據
+      introduction: 下列諸書，為建此網站、語料庫及其餘諸事所取資。
+    daily_shijing:
+      aria_label: 今日誦詩
+      name: 今日誦詩
+      mao_prefix: 毛
+      open_in_corpus: 在語料庫中開啟
+      unavailable: 今日尚無可誦之詩。
+    activity:
+      title: 語料近況
+      introduction: >-
+        此頁列語料庫動向索引，以便檢視新收與意外更易。所示者，乃今已索諸檔及其更易之時；可供覆核，然非一成不變之史誌，亦不能示已刪之檔。
+      tabs_aria: 語料庫動向諸覽
+      latest_texts: 新收諸文
+      recent_changes: 監修
+      latest_heading: 新收諸文目錄
+      latest_explanation: 各列為一作品目錄；所示日期，取其中已索諸檔最新者。
+      recent_heading: 近期更易諸檔
+      recent_explanation_html: 檔名以可讀之文題示之，不直列原始<code>.txt</code>檔名。
+      entry_count:
+        one: 一項
+        other: 共%{count}項
+      empty: 尚無已索之動向。
+      file_count:
+        one: 一檔
+        other: 共%{count}檔
+      in_work_html: 於%{work}
+      pagination_aria: 語料庫動向分頁
+      previous: 前頁
+      next: 後頁
+      page_of: 第%{page}頁，共%{pages}頁

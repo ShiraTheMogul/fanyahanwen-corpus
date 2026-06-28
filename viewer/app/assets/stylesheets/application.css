@@ -1121,3 +1121,66 @@ body.rightbar-collapsed .rightbar {
   font-family: "WenJin Mincho", serif;
 }
 
+
+/* --- Interface locale selector ---
+   The Ruby registry decides whether this form is rendered. These colours are
+   deliberately for the site's light header; the previous white-on-white rules
+   made the selector present in the DOM but practically invisible. */
+.site-locale-switcher {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: stretch;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.site-locale-select,
+.site-locale-submit {
+  box-sizing: border-box;
+  min-height: 32px;
+  border: 1px solid #b9bec5;
+  background: #fff;
+  color: #222;
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+.site-locale-select {
+  max-width: 10rem;
+  padding: 5px 24px 5px 9px;
+  border-radius: 10px 0 0 10px;
+  cursor: pointer;
+}
+
+.site-locale-select option {
+  background: #fff;
+  color: #111;
+}
+
+.site-locale-submit {
+  padding: 5px 9px;
+  border-left: 0;
+  border-radius: 0 10px 10px 0;
+  background: #f3f4f6;
+  cursor: pointer;
+}
+
+.site-locale-select:hover,
+.site-locale-submit:hover {
+  background: #e9ecef;
+}
+
+.site-locale-select:focus-visible,
+.site-locale-submit:focus-visible {
+  position: relative;
+  z-index: 1;
+  outline: 2px solid #4b74a8;
+  outline-offset: 1px;
+}
+
+@media (max-width: 700px) {
+  .site-locale-select {
+    max-width: min(12rem, 65vw);
+  }
+}

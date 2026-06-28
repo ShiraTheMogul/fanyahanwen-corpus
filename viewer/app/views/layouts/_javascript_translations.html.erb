@@ -1,0 +1,8 @@
+<%
+  javascript_catalogue = I18n.t("javascript", default: {})
+  javascript_payload = {
+    locale: I18n.locale.to_s,
+    translations: javascript_catalogue
+  }
+%>
+<script type="application/json" id="interface-translations"><%= raw(json_escape(javascript_payload.to_json)) %></script>

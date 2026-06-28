@@ -11,8 +11,7 @@ def update
 
     if params.key?(:locale)
       requested_locale = params[:locale].to_s
-      allowed_locales = I18n.available_locales.map(&:to_s)
-      session[:locale] = requested_locale if allowed_locales.include?(requested_locale)
+      session[:locale] = requested_locale if InterfaceLocales.selectable?(requested_locale)
     end
 
     if params.key?(:mandarin_scheme)
@@ -97,7 +96,7 @@ def update
           han_font_stack: HanFonts.stack_for(selected_key),
           han_font_scope: (session[:han_font_scope].presence || HanFonts.default_scope).to_s,
           han_font_warn_missing: (session.key?(:han_font_warn_missing) ? session[:han_font_warn_missing] : true),
-          notice: "Font updated."
+          notice: I18n.t("common.notices.font_updated")
         }
       end
 

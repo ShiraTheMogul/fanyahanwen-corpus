@@ -9,9 +9,9 @@ module HomeHelper
 
   def corpus_activity_time(value)
     time = Time.iso8601(value.to_s)
-    content_tag(:time, time.strftime("%-d %B %Y, %H:%M UTC"), datetime: time.iso8601)
+    content_tag(:time, I18n.l(time, format: I18n.t("common.time.corpus_activity_format")), datetime: time.iso8601)
   rescue ArgumentError, TypeError
-    "Unknown time"
+    I18n.t("common.time.unknown")
   end
 
   def corpus_activity_context(item)

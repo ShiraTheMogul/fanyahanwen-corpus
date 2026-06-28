@@ -10,7 +10,7 @@ lzh:
       button: 在此呈文
       button_title: 提議於此目錄添文
       heading: 呈新文（立提案）
-      explanation_html: 此舉不直寫語料庫；乃立待審提案，附其差異，其中新設一作品目錄，並置一檔或數檔。
+      explanation_html: 此舉不直寫語料庫；乃立待審提案，附差異檔。其內新立一作品目錄，置一檔或數檔焉。
       parent_directory: 上級 clean 目錄
       work_folder: 作品目錄
       work_folder_placeholder: 如：論語
@@ -31,17 +31,17 @@ lzh:
         source: 所自（SOURCE）
         url: 網址（URL）
         page_title: 頁題（PAGE_TITLE）
-      source_placeholder: 於此書引據（APA第七版為佳）
+      source_placeholder: 於此列引據（APA第七版為佳）
       url_placeholder: https://…
       context_and_rights: 來歷與版權
-      context_placeholder: 述此文所自、是否已無版權、所依授權，及審者當知之事。
+      context_placeholder: 述此文所自、版權存否、所依授權，及審者當知之事。
       reference_files: 參考檔
       reference_files_hint: '選填：至多十檔，總計二十MB；不納HTML、XHTML及SVG。'
       page_setup: 分頁方式
       single_file: 單一文本檔
       multiple_files: 多頁檔
       file_name: 檔名
-      file_name_placeholder: 常以 work_folder.txt 為名
+      file_name_placeholder: 未另定則名曰 work_folder.txt
       text_body: 正文
       pages: 諸頁
       pages_hint_html: 多頁者，於作品目錄內立編號檔，如 <code>work_folder__juan_0001.txt</code>。
@@ -55,9 +55,9 @@ lzh:
       ai_assisted_suffix: " — AI襄助"
       ai_assisted_menu_suffix: " · AI襄助"
     toolbar:
-      aria_label: 語料庫閱覽器利器
+      aria_label: 語料庫閱覽器工具
       vertical: 縱書
-      orientation_horizontal: '文向：橫書'
+      orientation_horizontal: '書寫方向：橫書'
       theme: 外觀
       punctuation_source: '標點：從原文'
       punctuation_options: 標點選項
@@ -76,7 +76,7 @@ lzh:
       add_gallery_images: 添圖集
       add_exemplar_manuscript: 添寫本影像
       add_variant_connection: 添異本關聯
-      annotate_off: '註釋：閉'
+      annotate_off: '加註：閉'
       review_submit: 審閱呈案
       text_edit: 纂文
       text_edit_title: 提議纂文（立提案）
@@ -87,7 +87,7 @@ lzh:
         hanvan: 越南漢文訓讀
       editor:
         heading: 添訓讀體系（立提案）
-        explanation_html: 以手工訓註為常法。核可之檔，將以同名置於原文頁旁之 <code>kanbun/</code>、<code>hanmun/</code> 或 
+        explanation_html: 手工訓註為常法。核可之檔，以同名置於原文頁旁之 <code>kanbun/</code>、<code>hanmun/</code> 或 
           <code>hanvan/</code>。
         system: 訓讀體系
         options:
@@ -97,7 +97,7 @@ lzh:
         summary_placeholder: 所添所正為何？
         reasoning_placeholder: 編校取捨有審者當知者，具述之。
         digital_keyboard: 屏上鍵盤
-        ai_notice: 此處不示Kanbun-LM，蓋自動生成惟適日語。此補丁仍以手工之途為常法。
+        ai_notice: 此處不示Kanbun-LM，蓋自動生成惟適日語；故此項仍以手工為常法。
         source_page: 原文頁
         text: 訓讀文
     text_edit:
@@ -176,7 +176,7 @@ lzh:
       font_size_aria: 字體大小（像素）
       remove_punctuation: 除標點
       right_click_ruby: 右擊見旁訓
-      client_side_note: 此諸選項惟行於本機，無須按「施用」。
+      client_side_note: 諸選項惟行於本機，無須按「施用」。
     companion_materials:
       heading: 相關材料
       hide_ai: 藏AI襄助材料
@@ -209,7 +209,7 @@ lzh:
         author_provided: 作者所供
     companion_submission:
       heading: 添相關材料（立提案）
-      explanation: 相關材料經核可後，列於此庫文之側。二十MB之限惟及此一呈；同一文本可累收任意數量之核可材料。
+      explanation: 相關材料經核可後，列於此庫文之側。二十MB之限惟及此一呈；同一文本所收核可材料，數無定限。
       material_type: 材料類
       types:
         translation: 譯文
@@ -221,7 +221,7 @@ lzh:
       optional_label_hint: 譯文於選單以語言及譯者識之，不用此標識。
       language: 譯文語言（ISO 639-3）
       language_placeholder: 鍵入語名
-      language_hint: 所存者為選定之三字母ISO 639-3碼。
+      language_hint: 所存者，乃所選三字母ISO 639-3碼。
       translator: 譯者
       translator_placeholder: 譯者姓名（若知）
       translator_hint: 匿名或譯者不詳者，留空。
@@ -233,7 +233,7 @@ lzh:
       material_links: 材料鏈
       material_links_placeholder: 每行一公開掃描、版本或材料網址
       ticket_summary: 提案概要
-      ticket_summary_placeholder: 供審者閱之簡要概要
+      ticket_summary_placeholder: 供審者閱之簡述
       reviewer_reasoning: 供審緣由
       reviewer_reasoning_placeholder: 述編校取捨或未決之處。
     material_metadata:

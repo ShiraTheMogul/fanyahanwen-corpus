@@ -1,18 +1,23 @@
 en:
   common:
     actions:
-      add_page: "Add page"
-      apply: "Apply"
-      close: "Close"
-      copy: "Copy"
-      download_txt: "Download .txt"
-      open_ticket: "Open ticket"
-      ok: "OK"
-      submit_ticket: "Submit ticket"
+      add_page: Add page
+      apply: Apply
+      close: Close
+      copy: Copy
+      download_txt: Download .txt
+      open_ticket: Open ticket
+      ok: OK
+      submit_ticket: Submit ticket
     forms:
-      reasoning: "Reasoning"
-      summary: "Summary"
-      title: "Title"
+      reasoning: Reasoning
+      summary: Summary
+      title: Title
     tickets:
-      ticket_id: "Ticket ID:"
-      ticket_key: "Ticket key (save this):"
+      ticket_id: 'Ticket ID:'
+      ticket_key: 'Ticket key (save this):'
+    notices:
+      font_updated: Font updated.
+    time:
+      corpus_activity_format: '%-d %B %Y, %H:%M UTC'
+      unknown: Unknown time

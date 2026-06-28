@@ -8,10 +8,12 @@ require_relative "../config/interface_locales"
 ROOT = File.expand_path("..", __dir__)
 LOCALE_GLOB = File.join(ROOT, "config/locales/**/*.yml")
 VIEW_GLOB = File.join(ROOT, "app/views/**/*.erb")
+JAVASCRIPT_GLOB = File.join(ROOT, "app/javascript/**/*.js")
 PLACEHOLDER_NAMESPACES = %w[
   common
   corpus_viewer
   home
+  javascript
   pronunciations
   site
   view_options
@@ -55,6 +57,14 @@ def interpolation_names(value)
   value.to_s.scan(/%\{([^}]+)\}/).flatten.sort
 end
 
+invalid_statuses = InterfaceLocales::DEFINITIONS.filter_map do |code, definition|
+  status = definition[:status]
+  "#{code}=#{status.inspect}" unless InterfaceLocales::VALID_STATUSES.include?(status)
+end
+abort "Invalid locale statuses: #{invalid_statuses.join(', ')}" if invalid_statuses.any?
+abort "Source locale must be public." unless InterfaceLocales.selectable?(InterfaceLocales::SOURCE)
+abort "SELECTOR_VISIBLE must be true or false." unless [true, false].include?(InterfaceLocales::SELECTOR_VISIBLE)
+
 locale_tree = {}
 locale_files = Dir.glob(LOCALE_GLOB).sort
 abort "No locale files found under config/locales/." if locale_files.empty?
@@ -91,7 +101,17 @@ Dir.glob(VIEW_GLOB).sort.each do |path|
   end
 end
 
-missing_source = static_keys.reject { |(_, _, key)| key_present?(source, key) }
+javascript_keys = []
+Dir.glob(JAVASCRIPT_GLOB).sort.each do |path|
+  File.foreach(path, encoding: "UTF-8").with_index(1) do |line, line_number|
+    line.scan(/\bt\(\s*["']([^"']+)["']/) do |match|
+      javascript_keys << [path, line_number, "javascript.#{match.first}"]
+    end
+  end
+end
+
+all_static_keys = static_keys + javascript_keys
+missing_source = all_static_keys.reject { |(_, _, key)| key_present?(source, key) }
 if missing_source.any?
   warn "Missing source-locale keys:"
   missing_source.each do |path, line_number, key|
@@ -136,6 +156,8 @@ end
 
 puts "Locale YAML parsed successfully."
 puts "Checked #{static_keys.map(&:last).uniq.length} static view keys; all exist in English."
+puts "Checked #{javascript_keys.map(&:last).uniq.length} static JavaScript keys; all exist in English."
 puts "Checked #{source_placeholders.length} placeholder keys across #{InterfaceLocales::ALL.length} locales; catalogues match."
+puts "Selector visible: #{InterfaceLocales.selector_visible?}"
 puts "Selectable now: #{InterfaceLocales::SELECTABLE.join(', ')}"
 puts "Staged for later: #{(InterfaceLocales::ALL - InterfaceLocales::SELECTABLE).join(', ')}"

@@ -1,5 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 import { appendSubmissionExtras, downloadTicketKey, maybeStoreTicketOnDevice } from "controllers/ticket_submission_helpers"
+import { t } from "i18n"
 
 export default class extends Controller {
   static targets = [
@@ -47,15 +48,15 @@ export default class extends Controller {
     row.className = "cv-submission-page-card"
     row.innerHTML = `
       <div class="cv-form-row">
-        <label>Page label</label>
-        <input type="text" class="cv-input" data-role="page-label" value="卷${String(index).padStart(3, "0")}" />
+        <label>${t("corpus_submission.page_label")}</label>
+        <input type="text" class="cv-input" data-role="page-label" value="${t("corpus_submission.default_page_label", { number: String(index).padStart(3, "0") })}" />
       </div>
       <div class="cv-form-row">
-        <label>Page text</label>
+        <label>${t("corpus_submission.page_text")}</label>
         <textarea class="cv-textarea cv-mono" rows="10" data-role="page-body"></textarea>
       </div>
       <div class="cv-form-actions">
-        <button type="button" class="corpus-btn" data-action="corpus-submission-ticket#removePage">Remove page</button>
+        <button type="button" class="corpus-btn" data-action="corpus-submission-ticket#removePage">${t("corpus_submission.remove_page")}</button>
       </div>
     `
     this.pagesListTarget.appendChild(row)
@@ -72,7 +73,7 @@ export default class extends Controller {
 
   async submit(event) {
     event.preventDefault()
-    this._setStatus("Submitting ticket…")
+    this._setStatus(t("corpus_submission.submitting"))
     this._setTicket("", "")
 
     const form = new FormData()
@@ -120,11 +121,11 @@ export default class extends Controller {
       const data = await resp.json().catch(() => null)
       if (!resp.ok || !data || data.ok !== true) {
         const msg = (data && (data.error || data.detail)) ? (data.error || data.detail) : `HTTP ${resp.status}`
-        this._setStatus(`Error: ${msg}`)
+        this._setStatus(t("corpus_submission.error", { message: msg }))
         return
       }
 
-      this._setStatus("Ticket created ✅ (save the key below)")
+      this._setStatus(t("corpus_submission.created"))
       this._setTicket(data.ticket_id || (data.ticket && data.ticket.id) || "", data.ticket_key || "")
 
       try {
@@ -134,7 +135,7 @@ export default class extends Controller {
         })
       } catch (_error) {}
     } catch (e) {
-      this._setStatus(`Error: ${e.message || e}`)
+      this._setStatus(t("corpus_submission.error", { message: e.message || e }))
     }
   }
 
@@ -146,7 +147,7 @@ export default class extends Controller {
     navigator.clipboard.writeText(key).then(() => {
       if (this.hasCopyKeyBtnTarget) {
         const before = this.copyKeyBtnTarget.textContent
-        this.copyKeyBtnTarget.textContent = "Copied!"
+        this.copyKeyBtnTarget.textContent = t("corpus_submission.copied")
         setTimeout(() => (this.copyKeyBtnTarget.textContent = before), 1000)
       }
     })

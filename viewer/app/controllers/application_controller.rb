@@ -12,9 +12,8 @@ class ApplicationController < ActionController::Base
   # Run the whole request inside the interface locale stored in the session.
   # Missing Literary Chinese keys fall back to the English source catalogue.
   def use_interface_locale(&action)
-    allowed = I18n.available_locales.map(&:to_s)
     selected = session[:locale].to_s
-    selected = I18n.default_locale.to_s unless allowed.include?(selected)
+    selected = InterfaceLocales::SOURCE.to_s unless InterfaceLocales.selectable?(selected)
 
     I18n.with_locale(selected, &action)
   end

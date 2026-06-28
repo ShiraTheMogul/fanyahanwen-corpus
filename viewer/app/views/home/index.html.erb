@@ -1,261 +1,174 @@
-<h1>卷首 Home</h1>
+<h1><%= t("home.title") %></h1>
 
 <div class="home-hero">
-  <div class="home-hero-right" aria-label="Today's Shijing reading">
+  <div class="home-hero-right" aria-label="<%= t("home.hero.daily_reading_aria") %>">
     <%= render "shared/daily_shijing_widget" %>
   </div>
   <div class="home-hero-left">
-    <p>
-	    Welcome to Fanya Hanwen Corpus 泛亞漢文語料庫, a Literary Chinese corpus containing over twice as much text as Siku Quanshu! By employing a pan-Asian, diachronic perspective, the Fanya Hanwen Corpus hopes to propel the Literary Chinese tradition into the modern age.
-    </p>
+    <p><%= t("home.hero.summary") %></p>
   </div>
 </div>
 
-<h2>序 Introduction</h2>
-<p>
-	Welcome to Fanya Hanwen Corpus! It contains texts from each Chinese dynasty, the Korean peninsula, Japan, Vietnam, and the Ryukyu Kingdom, Singapore, and myriad historical countries and regions. Literary Chinese was and is a living language with a vibrant diversity in texts; it once enjoyed a similar status to Latin during its heyday and should be treated as such. This project has been ongoing for around a year with just myself. It has been a crushing amount of work, attempting to produce a website that meets three goals: (i) Develop a region and culture-first view of Literary Chinese, (ii) Develop a modern educational model that works with this view, and (iii) Develop an accessible website that operationalises these two goals and casualises the information that comes from them. I do not believe this success has been met yet, but it is progressing admirably. 
-</p>
+<h2><%= t("home.introduction.heading") %></h2>
+<p><%= t("home.introduction.body") %></p>
 
-<h2>語庫讀器 <a href="/corpus_viewer/">Corpus Viewer</a></h2>
+<h2>
+  <%= t("home.corpus_viewer.heading") %>
+  <%= link_to t("home.corpus_viewer.link"), corpus_viewer_path %>
+</h2>
 <%= render "corpus_activity" %>
-<p>
-	One of the biggest wins of the project so far has been an elaborate Corpus Viewer, which aims to make the Literary Chinese experience as accessible as can be for everyone. 
-	
-	This includes:
-</p>
-	<ul>
-		<li>Pronunciation annotations for myriad Asian languages and dialects; from Mandarin, Japanese, Korean, and Vietnamese, to Zhuang, Old National Pronunciation, Middle Chinese, Old Chinese, Okinawan, and more! Learn to recite Literary Chinese in your language!</li>
-		<li>Options for punctuation (judou 句讀) or to strip it.</li>
-		<li>Traditional underlining systems in original colours or colour-blind adjusted ones.</li>
-		<li>Kanbun, hanmun, and hanvan annotations.</li>
-		<li>Different fonts, including one for seal script.</li>
-		<li>Vertical or horizontal orientation with adaptations.</li>
-		<li>Conversion between different character traditions, including Simplified Chinese and scrapped initiatives.</li>
-		<li>A robust dictionary containing Unihan data, plus more data collected by myself.</li>
-		<li>The option to submit translations.</li>
-	</ul>
-
-<h2>字典 Dictionary</h2>
-<p>
-	This website contains a fairly robust dictionary that aims to be as inclusive as possible. At present, it contains Unihan data, Ruby text settings, ample phoneticization conventions, and the option to switch between Traditional and Simplified Chinese (as well as the original text in case of mix/var forms) whilst viewing things. Additionally, this database contains some variant form research derived from independent research and open-cc, which hopes to map variants as exhaustively as possible in hopes of an eventual text normaliser. Please give feedback on this!
-</p>
-
-<p>
-	The main dictionary definitions, which can appear in popups, come from CC-CEDICT, Unihan, and Kangxi Dictionary. Kangxi Dictionary is regex'd to have linebreaks according to specific wording patterns in hopes of making it more readable, and so far it seems to have been successful. The Guangyun and Shuowen Jiezi have also been turned into browsable Dictionaries, and their sorting mechanisms have been documented.
-</p>
-
-<p>
-	There are hopes to grab more dictionaries for comparison, such as these dictionaries, which are used in Siku Quanshu:
-</p>
-
+<p><%= t("home.corpus_viewer.introduction") %></p>
+<p><%= t("home.corpus_viewer.includes") %></p>
 <ul>
-	<li>切韻</li>
-	<li>重修廣韻</li>
-	<li>集韻</li>
-	<li>切韵指掌圖</li>
-	<li>韻補</li>
-	<li>附釋文互註禮部韻畧</li>
-	<li>増脩互注禮部韻畧</li>
-	<li>增修校正押韻釋疑</li>
-	<li>九經補韻</li>
-	<li>五音集韻</li>
-	<li>古今韻會舉要</li>
-	<li>四聲全形等子</li>
-	<li>經史正音切韻指南</li>
-	<li>洪武正韻</li>
-	<li>古音叢目</li>
-	<li>轉注古音略</li>
-	<li>屈宋古音義</li>
-	<li>御定音韻闡微</li>
-	<li>欽定同文韻統</li>
-	<li>欽定叶韻彚輯</li>
-	<li>欽定音韻述㣲</li>
-	<li>音論</li>
-	<li>詩本音</li>
-	<li>易音</li>
-	<li>唐韻正</li>
-	<li>古音表</li>
-	<li>韻補正</li>
-	<li>古今通韻</li>
-	<li>易韻</li>
-	<li>孫氏唐韻考</li>
-	<li>古韻標準</li>
-	<li>六藝綱目</li>
+  <% t("home.corpus_viewer.features").each_value do |feature| %>
+    <li><%= feature %></li>
+  <% end %>
 </ul>
 
-<p>
-	Of course, more dictionaries are desired, such as those from non-Chinese nations. The aim is to make immersive learning of Literary Chinese through dictionaries as easy as possible within modern pedagogical frameworks, whilst also promoting scholarly study. 
-</p>
+<h2><%= t("home.dictionary.heading") %></h2>
+<p><%= t("home.dictionary.overview") %></p>
+<p><%= t("home.dictionary.sources") %></p>
+<p><%= t("home.dictionary.planned_intro") %></p>
+<%= render "dictionary_wishlist" %>
+<p><%= t("home.dictionary.wider_scope") %></p>
 
-<h2>Text Submission</h2>
+<h2><%= t("home.submission.heading") %></h2>
 <div data-controller="corpus-submission-ticket"
      data-corpus-submission-ticket-source-value="homepage"
      data-corpus-submission-ticket-parent-path-value=""
      data-corpus-submission-ticket-lock-parent-path-value="false">
-  <p>Want to add a new text to the corpus? This creates a review ticket rather than writing straight into the corpus.</p>
-  <p><button type="button" class="corpus-btn corpus-btn-primary" data-action="corpus-submission-ticket#toggle">Submit a text</button></p>
+  <p><%= t("home.submission.introduction") %></p>
+  <p>
+    <button type="button" class="corpus-btn corpus-btn-primary" data-action="corpus-submission-ticket#toggle">
+      <%= t("home.submission.open_button") %>
+    </button>
+  </p>
 
   <div class="cv-text-edit-panel cv-submission-panel hidden" data-corpus-submission-ticket-target="panel">
-    <h3 style="margin-top: 0;">Submit a new text (creates a ticket)</h3>
-    <p class="cv-hint">Use a parent path like <code>越南漢文/clean</code> or <code>越南漢文/clean/皇黎一統志</code>. The new text will still be placed inside a fresh work folder.</p>
+    <h3 style="margin-top: 0;"><%= t("corpus_viewer.directory_submission.heading") %></h3>
+    <p class="cv-hint">
+      <%= t("home.submission.path_hint_html",
+            first_path: tag.code("越南漢文/clean"),
+            second_path: tag.code("越南漢文/clean/皇黎一統志")) %>
+    </p>
 
     <form data-action="submit->corpus-submission-ticket#submit">
       <div class="cv-form-row">
-        <label>Parent clean directory</label>
-        <input type="text" class="cv-input cv-mono" placeholder="e.g. 越南漢文/clean" data-corpus-submission-ticket-target="parentPath" />
+        <label><%= t("corpus_viewer.directory_submission.parent_directory") %></label>
+        <input type="text" class="cv-input cv-mono" placeholder="<%= t("home.submission.parent_path_placeholder") %>" data-corpus-submission-ticket-target="parentPath" />
       </div>
       <div class="cv-form-row">
-        <label>Work folder</label>
+        <label><%= t("corpus_viewer.directory_submission.work_folder") %></label>
         <input type="text" class="cv-input" data-corpus-submission-ticket-target="workFolder" />
       </div>
       <div class="cv-form-row">
-        <label>Ticket title</label>
-        <input type="text" class="cv-input" value="Corpus text submission" data-corpus-submission-ticket-target="title" />
+        <label><%= t("corpus_viewer.directory_submission.ticket_title") %></label>
+        <input type="text" class="cv-input" value="<%= t("corpus_viewer.directory_submission.default_ticket_title") %>" data-corpus-submission-ticket-target="title" />
       </div>
       <div class="cv-form-row">
-        <label>Short summary</label>
+        <label><%= t("corpus_viewer.directory_submission.short_summary") %></label>
         <input type="text" class="cv-input" data-corpus-submission-ticket-target="summary" />
       </div>
       <div class="cv-form-row">
-        <label>Content role</label>
+        <label><%= t("corpus_viewer.directory_submission.content_role") %></label>
         <select class="cv-input" data-corpus-submission-ticket-target="textType">
-          <option value="source">Source text</option>
-          <option value="kanbun">Kanbun annotation system</option>
-          <option value="hanmun">Hanmun annotation system</option>
-          <option value="hanvan">Hanvan annotation system</option>
+          <option value="source"><%= t("corpus_viewer.directory_submission.roles.source") %></option>
+          <option value="kanbun"><%= t("corpus_viewer.directory_submission.roles.kanbun") %></option>
+          <option value="hanmun"><%= t("corpus_viewer.directory_submission.roles.hanmun") %></option>
+          <option value="hanvan"><%= t("corpus_viewer.directory_submission.roles.hanvan") %></option>
         </select>
       </div>
       <div class="cv-form-row">
-        <label>NATION</label>
+        <label><%= t("corpus_viewer.directory_submission.metadata_fields.nation") %></label>
         <input type="text" class="cv-input" data-corpus-submission-ticket-target="nation" />
       </div>
       <div class="cv-form-row">
-        <label>WORK_TITLE</label>
+        <label><%= t("corpus_viewer.directory_submission.metadata_fields.work_title") %></label>
         <input type="text" class="cv-input" data-corpus-submission-ticket-target="workTitle" />
       </div>
       <div class="cv-form-row">
-        <label>AUTHOR</label>
+        <label><%= t("corpus_viewer.directory_submission.metadata_fields.author") %></label>
         <input type="text" class="cv-input" data-corpus-submission-ticket-target="author" />
       </div>
       <div class="cv-form-row">
-        <label>SOURCE</label>
-        <input type="text" class="cv-input" placeholder="Write a reference here (ideally APA 7th)" data-corpus-submission-ticket-target="sourceCitation" />
+        <label><%= t("corpus_viewer.directory_submission.metadata_fields.source") %></label>
+        <input type="text" class="cv-input" placeholder="<%= t("corpus_viewer.directory_submission.source_placeholder") %>" data-corpus-submission-ticket-target="sourceCitation" />
       </div>
       <div class="cv-form-row">
-        <label>URL</label>
-        <input type="url" class="cv-input" placeholder="https://..." data-corpus-submission-ticket-target="url" />
+        <label><%= t("corpus_viewer.directory_submission.metadata_fields.url") %></label>
+        <input type="url" class="cv-input" placeholder="<%= t("corpus_viewer.directory_submission.url_placeholder") %>" data-corpus-submission-ticket-target="url" />
       </div>
       <div class="cv-form-row">
-        <label>Context and rights</label>
-        <textarea class="cv-textarea" rows="4" placeholder="Explain where this text is from, whether it is public domain, what licence applies, and any context a reviewer should know." data-corpus-submission-ticket-target="contextDetails"></textarea>
+        <label><%= t("corpus_viewer.directory_submission.context_and_rights") %></label>
+        <textarea class="cv-textarea" rows="4" placeholder="<%= t("corpus_viewer.directory_submission.context_placeholder") %>" data-corpus-submission-ticket-target="contextDetails"></textarea>
       </div>
       <div class="cv-form-row">
-        <label>Reference files</label>
+        <label><%= t("corpus_viewer.directory_submission.reference_files") %></label>
         <input type="file" class="cv-input" multiple data-corpus-submission-ticket-target="uploads" />
-        <div class="cv-hint">Up to 10 files and 20 MB for this ticket. HTML, XHTML, and SVG are rejected.</div>
+        <div class="cv-hint"><%= t("corpus_viewer.directory_submission.reference_files_hint") %></div>
       </div>
       <div class="cv-form-row">
-        <label>Page setup</label>
+        <label><%= t("corpus_viewer.directory_submission.page_setup") %></label>
         <select class="cv-input" data-corpus-submission-ticket-target="pageMode" data-action="change->corpus-submission-ticket#togglePageMode">
-          <option value="single">Single text file</option>
-          <option value="multi">Multiple page files</option>
+          <option value="single"><%= t("corpus_viewer.directory_submission.single_file") %></option>
+          <option value="multi"><%= t("corpus_viewer.directory_submission.multiple_files") %></option>
         </select>
       </div>
       <div data-corpus-submission-ticket-target="singleFields">
         <div class="cv-form-row">
-          <label>File name</label>
-          <input type="text" class="cv-input" placeholder="Defaults to work_folder.txt" data-corpus-submission-ticket-target="fileName" />
+          <label><%= t("corpus_viewer.directory_submission.file_name") %></label>
+          <input type="text" class="cv-input" placeholder="<%= t("corpus_viewer.directory_submission.file_name_placeholder") %>" data-corpus-submission-ticket-target="fileName" />
         </div>
         <div class="cv-form-row">
-          <label>PAGE_TITLE</label>
+          <label><%= t("corpus_viewer.directory_submission.metadata_fields.page_title") %></label>
           <input type="text" class="cv-input" data-corpus-submission-ticket-target="pageTitle" />
         </div>
         <div class="cv-form-row">
-          <label>Text body</label>
+          <label><%= t("corpus_viewer.directory_submission.text_body") %></label>
           <textarea class="cv-textarea cv-mono" rows="16" data-corpus-submission-ticket-target="body"></textarea>
         </div>
       </div>
       <div data-corpus-submission-ticket-target="multiFields" hidden>
         <div class="cv-form-row">
-          <label>Pages</label>
+          <label><%= t("corpus_viewer.directory_submission.pages") %></label>
           <div data-corpus-submission-ticket-target="pagesList"></div>
         </div>
         <div class="cv-form-actions">
-          <button type="button" class="corpus-btn" data-action="corpus-submission-ticket#addPage">Add page</button>
+          <button type="button" class="corpus-btn" data-action="corpus-submission-ticket#addPage"><%= t("common.actions.add_page") %></button>
         </div>
+        <p class="cv-hint"><%= t("corpus_viewer.directory_submission.pages_hint_html") %></p>
       </div>
       <%= render "corpus_viewer/ticket_optional_fields",
                  stimulus_controller: "corpus-submission-ticket",
                  include_uploads: false %>
       <div class="cv-form-actions">
-        <button type="submit" class="corpus-btn corpus-btn-primary">Submit ticket</button>
-        <button type="button" class="corpus-btn" data-action="corpus-submission-ticket#toggle">Close</button>
+        <button type="submit" class="corpus-btn corpus-btn-primary"><%= t("common.actions.submit_ticket") %></button>
+        <button type="button" class="corpus-btn" data-action="corpus-submission-ticket#toggle"><%= t("common.actions.close") %></button>
       </div>
     </form>
 
     <div class="cv-ticket-result">
       <div class="cv-ticket-status" data-corpus-submission-ticket-target="status"></div>
       <div class="cv-ticket-kv">
-        <div><strong>Ticket ID:</strong> <span data-corpus-submission-ticket-target="ticketId"></span></div>
-        <div><strong>Ticket key (save this):</strong> <code data-corpus-submission-ticket-target="ticketKey"></code> <button type="button" class="corpus-btn" data-corpus-submission-ticket-target="copyKeyBtn" data-action="corpus-submission-ticket#copyKey">Copy</button> <button type="button" class="corpus-btn" data-corpus-submission-ticket-target="downloadKeyBtn" data-action="corpus-submission-ticket#downloadKey" hidden>Download .txt</button></div>
+        <div><strong><%= t("common.tickets.ticket_id") %></strong> <span data-corpus-submission-ticket-target="ticketId"></span></div>
+        <div>
+          <strong><%= t("common.tickets.ticket_key") %></strong>
+          <code data-corpus-submission-ticket-target="ticketKey"></code>
+          <button type="button" class="corpus-btn" data-corpus-submission-ticket-target="copyKeyBtn" data-action="corpus-submission-ticket#copyKey"><%= t("common.actions.copy") %></button>
+          <button type="button" class="corpus-btn" data-corpus-submission-ticket-target="downloadKeyBtn" data-action="corpus-submission-ticket#downloadKey" hidden><%= t("common.actions.download_txt") %></button>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<h2>來想 Future Plans</h2>
-<p>
-	There are hopes to implement a nation atlas, grammar wiki, and more detailed variant/corrected text items over time. Synopses, blurbs, and summaries are also desired. 
-</p>
+<h2><%= t("home.future_plans.heading") %></h2>
+<p><%= t("home.future_plans.body") %></p>
 
-<h2>所載 Publications</h2>
-<p>
-	I myself (Llinos Evans) have used this corpus to produce a few publications, some before the corpus was fully established. These go as follows...
-</p>
+<h2><%= t("home.publications.heading") %></h2>
+<p><%= t("home.publications.introduction") %></p>
+<%= render "publications" %>
 
-<ul>
-<li>Evans, L. (2025a). Fossil classifiers in Chinese chengyu and proverbs [Application/pdf]. Essex Student Journal, 17(1). https://doi.org/10.5526/ESJ.429
-<li>Evans, L. (2025b). 鷖詣醫鷁憶: A One-Syllable Classical Chinese Poem in the Style of Yuen Ren Chao [Application/pdf]. Essex Student Journal, 17(1). https://doi.org/10.5526/ESJ.433
-</ul>
-
-<h2>引據 References</h2>
-<p> The following texts were used in the making of this website, the corpus, and more.</p>
-
-<ul>
-<li> Aisin-Gioro H., Ji Y., & Lu X. (Eds). (2007). 四庫全書 [Complete Library of the Four Treasuries] (Vol. 1–36,381). Wikisource. https://zh.wikisource.org/wiki/%E5%9B%9B%E5%BA%AB%E5%85%A8%E6%9B%B8
-<li> Aun, C. (2025). Cheeaun/chengyu-wordle [JavaScript]. https://github.com/cheeaun/chengyu-wordle (Original work published 2022)
-<li> Behr, W. (2008). Dialects, diachrony, diglossia or all three? Tomb text glimpses into the language(s) of Chǔ [Lecture].
-<li> Boltach, J. V. (2013). Ханмун: Вводный Курс [Hanmun: Introductory Course]. Гиперион [Hyperion].
-<li> Aun, C. (2025). Cheeaun/chengyu-wordle [JavaScript]. https://github.com/cheeaun/chengyu-wordle (Original work published 2022)
-<li> Chao Y. R. (1983). 通字方案 [A Project for General Chinese]. 商务印书馆 [Commercial Press].
-<li> Editorial Board of the Encyclopedia of China. (2009). 《四庫七閣·四庫全書·四庫全書總目提要》. In 中国大百科全书 [Encyclopedia of China] (2nd ed). 中國大 [China Publishing House].
-<li> Dai, L., Li, T., Yang, Y., Jia, L., Magically Asia Limited, TudorTech System Co., Ltd, & Founder Electronics Company Limited. (1999). Siku Quanshu Online (Version 3.0 (Wenyuange Ed.)) [Computer software]. Digital Heritage Publishing Ltd, East View Information Services. http://skqs.com/
-<li> Guy, R. K. (1987). The emperor’s four treasuries: Scholars and the state in the late Chʻien-lung era. Council on East Asian Studies, Harvard University.
-<li>Han, D. (2022). 朝鲜汉诗选 [Anthology of Korean Sinitic Poetry] (1st ed). 江西教育出版社 [Jiangxi Education Press].
-<li> Lee, J., & Jung, Y. (2025). A Variant Character Dataset for Historical Narratives of Middle and Late Imperial China. Journal of Open Humanities Data, 11, 33. https://doi.org/10.5334/johd.325
-<li> Li, S., Hu, R., & Wang, L. (2025). AI太炎 [AI Taiyan] (Version v2.20240912.19) [Computer software]. Beijing Normal University. https://t.shenshen.wiki/
-<li> Lichtman, K., & VanPatten, B. (2021). Was Krashen right? Forty years later. Foreign Language Annals, 54(2), 283–305. https://doi.org/10.1111/flan.12552
-<li> Matsumoto J. (2025). 日本漢文の世界 [Nihon kanbun no sekai]. Kambun.jp. https://kambun.jp/
-<li> Meng, K. (2016). 孟子 [The Works of Mencius] (J. Legge & Y. Shi., Trans.; 1st ed.). 中州古籍出版社 [Zhongzhou Ancient Books Publishing House].
-<li>Shi, K. (Ed.). (2024). 日本汉诗选 [Anthology of Japanese Sinitic Poetry] (1st ed, Vols 1–2). 江西教育出版社 [Jiangxi Education Press].
-<li> Stimson, H. M. (1976). T’ang Poetic Vocabulary. Yale University Press.
-<li> Sturgeon, D. (2020). Digitizing Premodern Text with the Chinese Text Project. Journal of Chinese History, 4(2), 486–498. https://doi.org/10.1017/jch.2020.19
-<li> Sturgeon, D. (2021). Chinese Text Project: A dynamic digital library of premodern Chinese. Digital Scholarship in the Humanities, 36(Supplement_1), i101–i112. https://doi.org/10.1093/llc/fqz046
-<li> Takekoshi 竹越, Takeshi. 孝(2011). 『兼滿漢語滿洲套話清文啓蒙』満洲文字注音一覧表. KOTONOHA, (101).
-<li> Trilateral Cooperation Secretariat. (2015). 中日韩共同常用八百八汉字表 [Booklet of the 808 Commonly Used Chinese Characters in China, Japan and the ROK]. Trilateral Cooperation Secretariat.
-<li> The Unicode Consortium. (2025). CJK Unified Ideographs (Plus Extensions). In The Unicode Standard, Version 17.0 (17.0.0, pp. 553–1086). Unicode, Inc.
-<li> Trilateral Cooperation Secretariat. (2015). 中日韩共同常用八百八汉字表 [Booklet of the 808 Commonly Used Chinese Characters in China, Japan and the ROK]. Trilateral Cooperation Secretariat. https://tcs-asia.org/data/etcData/PUB_1570754349.pdf
-<li> untunt. (2025). Nk2028/zhongyuan-data [Python]. nk2028. https://github.com/nk2028/zhongyuan-data (Original work published 2023)
-<li> untunt. (2025). Nk2028/menggu-ziyun-data [Python]. nk2028. https://github.com/nk2028/menggu-ziyun-data (Original work published 2025)
-<li> Wang D., Liu C., Liu L., Liu J., Hu H., Shen S., & Li B. (2022). SikuBERT与SikuRoBERTa:面向数字人文的《四库全书》预训练模型构建及应用研究 [Construction and Application of Pre-trained Models of Siku Quanshu in Orientation to Digital Humanities]. 图书馆论坛 [Literary Tribune], 42(6), 14. https://doi.org/10.3969/j.issn.1002-1167.2022.06.005
-<li> Wang, D., Liu, C., & Zhu, Z. (2021). SikuBERT (Version 2.0) [Computer software]. Nanjing Agricultural University. https://huggingface.co/SIKU-BERT/sikubert, https://github.com/hsc748NLP/SikuBERT-for-digital-humanities-and-classical-Chinese-information-processing, https://gitee.com/onesleepyjoker/SikuBERT-for-digital-humanities-and-classical-Chinese-information-processing
-<li> Wang, H., Shimizu, H., & Kawahara, D. (2023). Kanbun-LM: Reading and Translating Classical Chinese in Japanese Methods by Language Models. In A. Rogers, J. Boyd-Graber, & N. Okazaki (Eds), Findings of the Association for Computational Linguistics: ACL 2023 (pp. 8589–8601). Association for Computational Linguistics. https://doi.org/10.18653/v1/2023.findings-acl.545
-<li> Wu, L. 吴留营 (2022). 琉球汉诗选 [Anthology of Ryukyu Sinitic Poetry] (1st ed). 江西教育出版社 [Jiangxi Education Press].
-<li> Wu, T. (2025). 文律宋体 [WenJin Mincho] (Version v1.100) [Lua]. Tianjin University. https://github.com/takushun-wu/WenJinMincho (Original work published 2024)
-<li> Xu S. (2025). 說文解字 [Shuowen Jiezi] (Sturgeon D., Ed.; Digitised ed., Vols 1–15). Chinese Text Project. https://ctext.org/shuo-wen-jie-zi
-<li> Huxley, T. H. (1898). 天演論 [Theory of Evolution] (F. Yan, Trans.). In 譯例言 [Evolution and Ethics] (Digitized ed.). Wikisource. https://zh.wikisource.org/wiki/%E5%A4%A9%E6%BC%94%E8%AB%96/%E8%AD%AF%E4%BE%8B%E8%A8%80
-<li>Yan, Y. (2023). 越南汉诗选 [Anthology of Vietnamese Sinitic Poetry] (1st ed, Vols 1–2). 江西教育出版社 [Jiangxi Education Press].
-<li> Yang, B. (2016). 文言语法 [Literary Chinese Grammar] (1st ed). 中华书局 [Zhonghua Book Company].
-<li> Yi, B. (2019). 字統网 [zi.tools] [Browser]. https://zi.tools/
-<li> Zhang, Y., & Chen, T. (with Aisin-Gioro, X.). (2015). 康熙字典 [Kāngxī Zìdiǎn] (H. Wang, Ed.; Revised Ed., Vols 1–2). 社会科学文献出版社 [Social Sciences Academic Press].
-</ul>
+<h2><%= t("home.references.heading") %></h2>
+<p><%= t("home.references.introduction") %></p>
+<%= render "references" %>

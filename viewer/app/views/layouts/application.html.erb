@@ -38,6 +38,8 @@
 	    data-han-font-primary="<%= _han_family %>"
 	    data-han-font-stack="<%= _han_stack %>"
 	    data-han-font-warn-missing="<%= _han_warn ? "1" : "0" %>">
+    <%= render "layouts/javascript_translations" %>
+
     <header class="site-header">
       <div class="site-header-inner">
         <div class="site-header-left">
@@ -67,15 +69,7 @@
         </div>
 
 	        <div class="site-header-right">
-              <% next_locale = I18n.locale == :lzh ? :en : :lzh %>
-              <% next_locale_name = t("site.locale_switch.languages.#{next_locale}") %>
-              <%= button_to next_locale_name,
-                            preferences_path,
-                            method: :post,
-                            params: { locale: next_locale, return_to: request.fullpath },
-                            class: "rightbar-toggle",
-                            form: { class: "site-locale-switch" },
-                            aria: { label: t("site.locale_switch.aria_label", language: next_locale_name) } %>
+              <%= render "layouts/locale_switcher" if InterfaceLocales.selector_visible? %>
 
 	          <%# Only show the options toggle when a rightbar is actually present on the page. %>
 	          <% if content_for?(:rightbar) %>
