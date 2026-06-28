@@ -1,46 +1,45 @@
 # PLACEHOLDER CATALOGUE: translate values only; do not rename keys.
 lzh:
   view_options:
-    heading: View options
+    heading: 閱覽選項
     phoneticization:
-      heading: Phoneticization conventions
-      mandarin: Mandarin
-      cantonese: Cantonese
-      old_national_pronunciation: Old National Pronunciation
-      original_unihan: Original (Unihan)
-      fanqie_chinese: Fanqie (Chinese)
-      tang_pronunciation: Tang pronunciation
-      original: Original
-      latin: Latin
-      zhuyin: Zhuyin
-      ipa: IPA
+      heading: 標音體例
+      mandarin: 官話
+      cantonese: 粵語
+      old_national_pronunciation: 老國音
+      original_unihan: 原錄（Unihan）
+      fanqie_chinese: 反切（漢字）
+      tang_pronunciation: 唐音
+      original: 原錄
+      latin: 拉丁字
+      zhuyin: 注音符號
+      ipa: 萬國音標（IPA）
     ruby:
-      heading: Ruby settings
-      reading_family: Reading family
-      variety_system: Variety / system
-      explanation_html: Ruby text controls tooltips and “right-click ruby” in the
-        Corpus Viewer. <em>Show all ruby</em> pre-wraps the entire page (can be slow).
-      show_all: Show all ruby
-      token: Ruby token
-      auto_first: Auto (first available)
-      layout: Ruby layout
-      horizontal: Horizontal
-      vertical_side: Vertical (side)
-      side: Ruby side
-      right: Right
-      left: Left
+      heading: 旁訓設定
+      reading_family: 讀音族類
+      variety_system: 語種／體系
+      explanation_html: 旁訓文字用於語料庫閱覽器之提示及「右擊見旁訓」。<em>盡示旁訓</em>會先包裹全頁，或稍遲。
+      show_all: 盡示旁訓
+      token: 旁訓單元
+      auto_first: 自動（取首得者）
+      layout: 旁訓排列
+      horizontal: 橫書
+      vertical_side: 縱書（側列）
+      side: 旁訓所在
+      right: 右
+      left: 左
     script:
-      heading: Han script settings
-      convert_text: Convert text
-      original: Original
-      traditional: Traditional
-      simplified: Simplified
+      heading: 漢字字形設定
+      convert_text: 轉換文字
+      original: 原形
+      traditional: 正體
+      simplified: 簡體
     font:
-      heading: Font settings
-      han_font: Han font
-      apply_to: Apply font to
-      all_han_text: All Han text
-      headwords_only: Headwords only
-      warn_missing_glyph: Warn on missing glyph
-      information: Font information
-      information_not_found: Information not found.
+      heading: 字體設定
+      han_font: 漢字字體
+      apply_to: 施於
+      all_han_text: 所有漢字
+      headwords_only: 惟字頭
+      warn_missing_glyph: 闕字警示
+      information: 字體詳情
+      information_not_found: 未得詳情。

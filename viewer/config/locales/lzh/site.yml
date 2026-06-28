@@ -3,23 +3,23 @@ lzh:
     title: 泛亞漢文語料庫 Fanya Hanwen Corpus
     title_aria: 泛亞漢文語料庫 — Fanya Hanwen Corpus
     navigation:
-      aria_label: Primary navigation
-      corpus_viewer: 語庫讀器
-      corpus_search: 尋
+      aria_label: 主導覽
+      corpus_viewer: 語料庫
+      corpus_search: 尋文
       dictionary: 字典
-      tools: 器
-      tickets: 求
-      fun: 玩
+      tools: 利器
+      tickets: 提案
+      fun: 遊戲
     search:
       label: 尋
-      placeholder: '尋於字典: 泛 or U+6CDB!'
-      submit: Go
+      placeholder: '尋於字典：泛或U+6CDB'
+      submit: 尋
     locale_switch:
       aria_label: 改用%{language}介面
       languages:
         en: 英語
         ja: 日語
-        ryu: 沖縄語
+        ryu: 沖繩語
         vie: 越語
         ko: 韓語
         jje: 濟州語
@@ -33,30 +33,27 @@ lzh:
         hsn: 湘語
         gan: 贛語
         czh: 徽語
-        cnp: 北平話
-        csp: 南平話
-        dng: 回族語
-        zha: 僮語
+        cnp: 北部平話
+        csp: 南部平話
+        dng: 東干語
+        zha: 壯語
         ru: 俄語
     options:
-      button: Options
-      toggle_aria: Toggle options panel
-      panel_aria: 觀
+      button: 選項
+      toggle_aria: 開闔選項欄
+      panel_aria: 選項欄
     footer:
       corpus_name: 泛亞漢文語料庫
-      summary: An open-source corpus and reading environment for Literary Chinese
-        across Asia.
-      navigation_aria: Footer navigation
-      contact: Contact and corrections
+      summary: 開源之漢文語料庫兼閱覽之所，收亞洲諸地漢文。
+      navigation_aria: 頁尾導覽
+      contact: 聯絡及訂正
       github: GitHub
-      teaching_services: Teaching Services
+      teaching_services: 講學服務
       discord: Discord
-      licensing: Individual corpus materials may carry source-specific licensing and
-        attribution requirements.
+      licensing: 庫中諸材，各依其源之授權及署名條件。
       hosting: 此頁由Mythic Beasts現也。
     social:
-      description: A hub for Literary Chinese with a corpus viewer, dictionary, and
-        learning tools.
-      site_name: Fanya Hanwen Corpus
-      image_alt: The red seal icon of Fanya Hanwen Corpus
+      description: 漢文之所，備語料庫、字典及治學利器。
+      site_name: 泛亞漢文語料庫
+      image_alt: 泛亞漢文語料庫之朱印圖標
       locale: zh_TW

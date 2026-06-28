@@ -3,94 +3,94 @@ lzh:
   pronunciations:
     fields:
       kfanqie:
-        label: 反切 Fǎnqiè
+        label: 反切
       general_chinese:
-        label: General Chinese
+        label: 通字方案
       kmandarin:
-        label: Mandarin
+        label: 官話
       khanyupinyin:
-        label: 漢語拼音 Hànyǔ Pīnyīn
+        label: 漢語拼音
       khanyupinlu:
-        label: 漢語頻率 Hànyǔ Pínlǜ (Pronunciation + Frequency)
+        label: 漢語頻率（讀音及頻次）
       ktghz2013:
-        label: 通用規範漢字字典 (2013)
+        label: 通用規範漢字字典（2013）
       kxhc1983:
-        label: 現代漢語詞典 (1983)
+        label: 現代漢語詞典（1983）
       laoguoyin:
-        label: Old National Pronunciation 老國音
+        label: 老國音
       manju_hergen_manchu:
-        label: 1763 Manchu transcription (Manchu script)
+        label: 1763年滿洲語轉寫（滿文）
       manju_hergen_latin:
-        label: 1763 Manchu transcription (Latin script)
+        label: 1763年滿洲語轉寫（拉丁字）
       manju_hergen_ipa:
-        label: 1763 Manchu transcription (IPA)
+        label: 1763年滿洲語轉寫（萬國音標）
       menggu_ziyun_phags_pa:
-        label: Menggu Ziyun 蒙古字韻 (Phags-pa script)
+        label: 蒙古字韻（八思巴字）
       menggu_ziyun_transcription:
-        label: Menggu Ziyun 蒙古字韻 (IPA)
+        label: 蒙古字韻（萬國音標）
       menggu_ziyun_tone:
-        label: Menggu Ziyun 蒙古字韻 tone
+        label: 蒙古字韻聲調
       zhongyuan_yinyun_yang_naisi:
-        label: Zhongyuan Yinyun 中原音韻 (楊耐思)
+        label: 中原音韻（楊耐思）
       zhongyuan_yinyun_ning_jifu:
-        label: Zhongyuan Yinyun 中原音韻 (寧繼福)
+        label: 中原音韻（寧繼福）
       zhongyuan_yinyun_xue_fengsheng:
-        label: Zhongyuan Yinyun 中原音韻 (薛鳳生)
+        label: 中原音韻（薛鳳生）
       zhongyuan_yinyun_unt_phonemic:
-        label: Zhongyuan Yinyun 中原音韻 (untunt)
+        label: 中原音韻（untunt）
       zhongyuan_yinyun_unt:
-        label: Zhongyuan Yinyun 中原音韻 (unt)
+        label: 中原音韻（unt）
       zhongyuan_yinyun_tone:
-        label: Zhongyuan Yinyun 中原音韻 tone
+        label: 中原音韻聲調
       kcantonese:
-        label: Cantonese
+        label: 粵語
       ktang:
-        label: Middle Chinese (Stimson, 1976)
+        label: 中古漢語（Stimson，1976）
       bs2014_mc:
-        label: Middle Chinese
+        label: 中古漢語
       bs2006_mc:
-        label: Middle Chinese
+        label: 中古漢語
       guangyun_fanqie:
-        label: Guangyun Fanqie 廣韻反切
+        label: 廣韻反切
       guangyun_rhyme:
-        label: Guangyun Rime 廣韻音韻
+        label: 廣韻音韻
       guangyun_tone:
-        label: Guangyun Tone 廣韻聲調
+        label: 廣韻聲調
       menggu_ziyun_qieyun_position:
-        label: Qieyun-system phonological position
+        label: 切韻系音韻地位
       bs2014_oc:
-        label: Old Chinese
+        label: 上古漢語
       kjapanese:
-        label: Japanese
+        label: 日語
       kjapaneseon:
-        label: Japanese on’yomi
+        label: 日語音讀
       kjapanesekun:
-        label: Japanese kun’yomi
+        label: 日語訓讀
       jp_mora_romaji:
-        label: Mora (romaji)
+        label: 音拍（羅馬字）
       jp_manyogana_mora_table:
-        label: Man’yōgana mora table
+        label: 萬葉假名音拍表
       jp_manyogana_hiragana_etym:
-        label: Man’yōgana (hiragana etymology)
+        label: 萬葉假名（平假名字源）
       jp_manyogana_katakana_etym:
-        label: Man’yōgana (katakana etymology)
+        label: 萬葉假名（片假名字源）
       jp_shakuon_kana:
-        label: Shakuon Kana 借音仮名
+        label: 借音假名
       jp_shakkun_kana:
-        label: Shakkun Kana 借訓仮名
+        label: 借訓假名
       jp_manyogana_reading:
-        label: Man’yōgana reading (mora)
+        label: 萬葉假名讀音（音拍）
       reading_japonic_okinawan_uchinaaguchi_shuri_ninjal:
-        label: NINJAL transcription
-        value_annotation: Accent class
+        label: NINJAL轉寫
+        value_annotation: 重音類
       kkorean:
-        label: Korean (Yale)
+        label: 韓語（耶魯式）
       khangul:
-        label: Korean (Hangul)
+        label: 韓語（諺文）
       kvietnamese:
-        label: Vietnamese
+        label: 越語
       kzhuang:
-        label: Zhuang
+        label: 壯語
       reading_gan_xiaoxuetang_168_ipa:
         label: IPA
       reading_gan_xiaoxuetang_169_ipa:
@@ -910,20 +910,20 @@ lzh:
     groups:
       translingual:
         fanqie:
-          label: Fanqie
+          label: 反切
         general_chinese:
-          label: General Chinese (Chao, 1983)
+          label: 通字方案（趙元任，1983）
       mandarin:
         standard_mandarin:
-          label: Standard Mandarin
+          label: 標準官話
         old_national_pronunciation:
-          label: Old National Pronunciation
+          label: 老國音
         manju_hergen_1763:
-          label: Manju Hergen (1763)
+          label: 滿洲語轉寫（1763）
         menggu_ziyun:
-          label: Menggu Ziyun
+          label: 蒙古字韻
         zhongyuan_yinyun:
-          label: Zhongyuan Yinyun
+          label: 中原音韻
         xiaoxuetang_027:
           label: 北京
         xiaoxuetang_028:
@@ -1016,7 +1016,7 @@ lzh:
           label: 安慶
       yue:
         cantonese:
-          label: Cantonese
+          label: 粵語
         xiaoxuetang_260:
           label: 樂昌
         xiaoxuetang_261:
@@ -1177,35 +1177,35 @@ lzh:
           label: 曼谷(廣府話)
       middle_chinese:
         stimson_1976:
-          label: Stimson (1976)
+          label: Stimson（1976）
         baxter_sagart_2014:
-          label: Baxter–Sagart (2014)
+          label: Baxter–Sagart（2014）
         baxter_with_sagart_2006:
-          label: Baxter (with Sagart, 2006)
+          label: Baxter（與Sagart，2006）
         guangyun:
-          label: Guangyun
+          label: 廣韻
         menggu_ziyun:
-          label: Menggu Ziyun
+          label: 蒙古字韻
       old_chinese:
         baxter_sagart_2014:
-          label: Baxter–Sagart (2014)
+          label: Baxter–Sagart（2014）
       japonic:
         japanese:
-          label: Japanese
+          label: 日語
         historical_kana_manyogana:
-          label: Historical kana and Man’yōgana
+          label: 古假名及萬葉假名
         okinawan_uchinaaguchi_shuri:
           label: 沖繩語（うちなーぐち）
           location: 首里（沖縄本島・那覇市）
       koreanic:
         korean:
-          label: Korean
+          label: 韓語
       austroasiatic:
         vietnamese:
-          label: Vietnamese
+          label: 越語
       kra_dai:
         zhuang:
-          label: Zhuang
+          label: 壯語
       gan:
         xiaoxuetang_168:
           label: 湖口
@@ -1785,35 +1785,35 @@ lzh:
           label: 灌陽(文市)
     ruby_sources:
       fanqie:
-        label: Fanqie
+        label: 反切
       mandarin:
-        label: Mandarin
+        label: 官話
       laoguoyin:
-        label: Old National Pronunciation
+        label: 老國音
       cantonese:
-        label: Cantonese
+        label: 粵語
       tang:
-        label: Tang pronunciation
+        label: 唐音
       bs2014_mc:
-        label: Middle Chinese (Baxter & Sagart, 2014)
+        label: 中古漢語（Baxter & Sagart，2014）
       bs2014_oc:
-        label: Old Chinese (Baxter & Sagart, 2014)
+        label: 上古漢語（Baxter & Sagart，2014）
       japanese_kana:
-        label: Japanese Kana
+        label: 日語假名
       japanese_on:
-        label: Japanese On
+        label: 日語音讀
       japanese_kun:
-        label: Japanese Kun
+        label: 日語訓讀
       okinawan_uchinaaguchi_shuri_ninjal:
-        label: Okinawan (Uchinaaguchi) — Shuri — NINJAL transcription
+        label: 沖繩語（Uchinaaguchi）— 首里 — NINJAL轉寫
       korean_yale:
-        label: Korean Yale
+        label: 韓語耶魯式
       korean_hangul:
-        label: Korean Hangul
+        label: 韓語諺文
       vietnamese:
-        label: Vietnamese
+        label: 越語
       zhuang:
-        label: Zhuang
+        label: 壯語
       xiaoxuetang_168:
         label: 湖口 — IPA
       xiaoxuetang_169:

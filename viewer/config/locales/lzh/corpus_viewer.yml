@@ -1,284 +1,267 @@
 # PLACEHOLDER CATALOGUE: translate values only; do not rename keys.
 lzh:
   corpus_viewer:
-    title: Corpus Viewer
-    root: Root
-    unexpected_state: Minecraft How did we get here advancement
+    title: 語料庫閱覽器
+    root: 總目
+    unexpected_state: 神魂顛倒
     recent_activity:
       summary: 最新動向
     directory_submission:
-      button: Submit text here
-      button_title: Propose a new text for this folder
-      heading: Submit a new text (creates a ticket)
-      explanation_html: This does <em>not</em> write into the corpus directly. It
-        creates a review ticket with a diff for one new work folder and one or more
-        new files inside it.
-      parent_directory: Parent clean directory
-      work_folder: Work folder
-      work_folder_placeholder: e.g. 論語
-      ticket_title: Ticket title
-      default_ticket_title: Corpus text submission
-      short_summary: Short summary
-      short_summary_placeholder: What is being submitted?
-      content_role: Content role
+      button: 在此呈文
+      button_title: 提議於此目錄添文
+      heading: 呈新文（立提案）
+      explanation_html: 此舉不直寫語料庫；乃立待審提案，附其差異，其中新設一作品目錄，並置一檔或數檔。
+      parent_directory: 上級 clean 目錄
+      work_folder: 作品目錄
+      work_folder_placeholder: 如：論語
+      ticket_title: 提案題
+      default_ticket_title: 呈交庫文
+      short_summary: 概要
+      short_summary_placeholder: 所呈何物？
+      content_role: 內容用途
       roles:
-        source: Source text
-        kanbun: Kanbun annotation system
-        hanmun: Hanmun annotation system
-        hanvan: Hanvan annotation system
+        source: 原文
+        kanbun: 日本漢文訓讀體
+        hanmun: 韓國漢文訓讀體
+        hanvan: 越南漢文訓讀體
       metadata_fields:
-        nation: NATION
-        work_title: WORK_TITLE
-        author: AUTHOR
-        source: SOURCE
-        url: URL
-        page_title: PAGE_TITLE
-      source_placeholder: Write a reference here (ideally APA 7th)
-      url_placeholder: https://...
-      context_and_rights: Context and rights
-      context_placeholder: Explain where this text is from, whether it is public domain,
-        what licence applies, and any context a reviewer should know.
-      reference_files: Reference files
-      reference_files_hint: 'Optional: up to 10 files and 20 MB in total. HTML, XHTML,
-        and SVG are rejected.'
-      page_setup: Page setup
-      single_file: Single text file
-      multiple_files: Multiple page files
-      file_name: File name
-      file_name_placeholder: Defaults to work_folder.txt
-      text_body: Text body
-      pages: Pages
-      pages_hint_html: Multiple pages create numbered files like <code>work_folder__juan_0001.txt</code>
-        inside the work folder.
+        nation: 國別（NATION）
+        work_title: 作品題（WORK_TITLE）
+        author: 作者（AUTHOR）
+        source: 所自（SOURCE）
+        url: 網址（URL）
+        page_title: 頁題（PAGE_TITLE）
+      source_placeholder: 於此書引據（APA第七版為佳）
+      url_placeholder: https://…
+      context_and_rights: 來歷與版權
+      context_placeholder: 述此文所自、是否已無版權、所依授權，及審者當知之事。
+      reference_files: 參考檔
+      reference_files_hint: '選填：至多十檔，總計二十MB；不納HTML、XHTML及SVG。'
+      page_setup: 分頁方式
+      single_file: 單一文本檔
+      multiple_files: 多頁檔
+      file_name: 檔名
+      file_name_placeholder: 常以 work_folder.txt 為名
+      text_body: 正文
+      pages: 諸頁
+      pages_hint_html: 多頁者，於作品目錄內立編號檔，如 <code>work_folder__juan_0001.txt</code>。
     header:
-      work: 'Work:'
-      author: 'Author:'
-      viewing: 'Viewing:'
-      source: Source
-      translation: 'Translation: %{label}'
-      author_provided: Author-provided
-      ai_assisted_suffix: " — AI-assisted"
-      ai_assisted_menu_suffix: " · AI-assisted"
+      work: '作品：'
+      author: '作者：'
+      viewing: '所閱：'
+      source: 原文
+      translation: '譯文：%{label}'
+      author_provided: 作者所供
+      ai_assisted_suffix: " — AI襄助"
+      ai_assisted_menu_suffix: " · AI襄助"
     toolbar:
-      aria_label: Corpus viewer tools
-      vertical: Vertical
-      orientation_horizontal: 'Orientation: Horizontal'
-      theme: Theme
-      punctuation_source: 'Punct: Source'
-      punctuation_options: Punctuation options
-      judou_on: 'Judou: On'
-      notes_off: 'Notes: Off'
-      footnotes_off: 'Footnotes: Off'
-      colour_settings: Colour settings
-      translations: Translations (%{count})
-      add_translation: Add translation
-      source_text: Source text
-      variants: Variants (%{count})
-      external_variant: External variant
-      annotation_systems: Annotation systems (%{count})
-      create_annotation_system: Create annotation system
-      other_materials: Other materials
-      add_gallery_images: Add gallery images
-      add_exemplar_manuscript: Add exemplar manuscript
-      add_variant_connection: Add variant connection
-      annotate_off: 'Annotate: Off'
-      review_submit: Review & submit
-      text_edit: Text edit
-      text_edit_title: Propose a text change (creates a ticket)
+      aria_label: 語料庫閱覽器利器
+      vertical: 縱書
+      orientation_horizontal: '文向：橫書'
+      theme: 外觀
+      punctuation_source: '標點：從原文'
+      punctuation_options: 標點選項
+      judou_on: '句讀：啟'
+      notes_off: '註釋：閉'
+      footnotes_off: '腳註：閉'
+      colour_settings: 配色
+      translations: 譯文（%{count}）
+      add_translation: 添譯文
+      source_text: 原文
+      variants: 異本（%{count}）
+      external_variant: 外部異本
+      annotation_systems: 訓讀體系（%{count}）
+      create_annotation_system: 添訓讀體系
+      other_materials: 其他材料
+      add_gallery_images: 添圖集
+      add_exemplar_manuscript: 添寫本影像
+      add_variant_connection: 添異本關聯
+      annotate_off: '註釋：閉'
+      review_submit: 審閱呈案
+      text_edit: 纂文
+      text_edit_title: 提議纂文（立提案）
     annotation_systems:
       names:
-        kanbun: Kanbun
-        hanmun: Hanmun
-        hanvan: Hanvan
+        kanbun: 日本漢文訓讀
+        hanmun: 韓國漢文訓讀
+        hanvan: 越南漢文訓讀
       editor:
-        heading: Create annotation system (creates a ticket)
-        explanation_html: Manual annotation is the default. Approved files are written
-          as sibling pages under <code>kanbun/</code>, <code>hanmun/</code>, or <code>hanvan/</code>
-          with the same filename as this source page.
-        system: Annotation system
+        heading: 添訓讀體系（立提案）
+        explanation_html: 以手工訓註為常法。核可之檔，將以同名置於原文頁旁之 <code>kanbun/</code>、<code>hanmun/</code> 或 
+          <code>hanvan/</code>。
+        system: 訓讀體系
         options:
-          kanbun: Kanbun (Japanese reading/annotation system)
-          hanmun: Hanmun (Korean reading/annotation system)
-          hanvan: Hanvan (Vietnamese reading/annotation system)
-        summary_placeholder: What was added or corrected?
-        reasoning_placeholder: Explain any editorial choices a reviewer should know.
-        digital_keyboard: Digital keyboard
-        ai_notice: Kanbun-LM is not shown here because automatic generation is Japanese-only.
-          This patch keeps the manual path as the default workflow.
-        source_page: Source page
-        text: Annotation-system text
+          kanbun: 日本漢文訓讀體
+          hanmun: 韓國漢文訓讀體
+          hanvan: 越南漢文訓讀體
+        summary_placeholder: 所添所正為何？
+        reasoning_placeholder: 編校取捨有審者當知者，具述之。
+        digital_keyboard: 屏上鍵盤
+        ai_notice: 此處不示Kanbun-LM，蓋自動生成惟適日語。此補丁仍以手工之途為常法。
+        source_page: 原文頁
+        text: 訓讀文
     text_edit:
-      heading: Propose a text edit (creates a ticket)
-      explanation_html: This does <em>not</em> change the corpus directly. It creates
-        a ticket with a unified diff attached.
-      default_title: Text edit
-      summary_placeholder: What changed?
-      reasoning_placeholder: Why should this change be made?
-      edited_text: Edited text
+      heading: 提議纂文（立提案）
+      explanation_html: 此舉不直改語料庫；乃立提案，並附統一差異檔。
+      default_title: 纂文
+      summary_placeholder: 何所更易？
+      reasoning_placeholder: 何以當易？
+      edited_text: 所纂之文
     metadata:
-      heading: Metadata
-      aria_label: Text metadata
-      wikisource: 维基文库
+      heading: 著錄
+      aria_label: 本文著錄
+      wikisource: 維基文庫
     punctuation:
-      dialog_aria: Punctuation options
-      heading: Punctuation options
+      dialog_aria: 標點選項
+      heading: 標點選項
       preset:
-        heading: Preset
-        source: Source
-        modern_traditional: Modern CJK (Traditional)
-        modern_prc: Modern CJK (Simplified / PRC)
-        pure_classical: Pure classical
-        strip: Strip
-        custom: Custom
+        heading: 成例
+        source: 從原文
+        modern_traditional: 今式漢字標點（正體）
+        modern_prc: 今式漢字標點（簡體／中國大陸）
+        pure_classical: 純古式
+        strip: 悉除
+        custom: 自定
       quotes:
-        heading: Quotes
-        family: Family
-        chinese_quotation_marks: Chinese quotation marks 「」『』
-        latin_speech_marks: Latin speech marks “ ” ‘ ’
-        chinese_speech_marks: Chinese speech marks ＂ ＇
-        disabled: 'Off'
-        ordering: Ordering
-        traditional: 'Traditional: 「甲『乙』丙」'
-        simplified: 'Simplified: 『甲「乙」丙』'
-        vertical_forms: Vertical quote forms (﹁﹂﹃﹄)
+        heading: 引號
+        family: 體例
+        chinese_quotation_marks: 漢文引號「」『』
+        latin_speech_marks: 拉丁引號“ ”‘ ’
+        chinese_speech_marks: 全形引號＂＇
+        disabled: '閉'
+        ordering: 層次
+        traditional: '正體：「甲『乙』丙」'
+        simplified: '簡體：『甲「乙」丙』'
+        vertical_forms: 縱書引號（﹁﹂﹃﹄）
       question_exclamation:
-        heading: Question / Exclamation
-        keep_question: Keep ？
-        collapse_question: Collapse ? → 。
-        keep_exclamation: Keep ！
-        collapse_exclamation: Collapse ! → 。
+        heading: 問號／歎號
+        keep_question: 留？
+        collapse_question: 改 ? 為。
+        keep_exclamation: 留！
+        collapse_exclamation: 改 ! 為。
       semicolon_colon:
-        heading: Semicolon / Colon
-        keep_semicolon: Keep ；
-        collapse_semicolon: Collapse ; → 。
-        keep_colon: Keep ：
-        collapse_colon: 'Collapse : → 。'
+        heading: 分號／冒號
+        keep_semicolon: 留；
+        collapse_semicolon: 改 ; 為。
+        keep_colon: 留：
+        collapse_colon: '改 : 為。'
       comma:
-        heading: Comma
-        comma: Use ，
-        dunhao: Use 、
+        heading: 逗號
+        comma: 用，
+        dunhao: 用、
       repetition:
-        heading: Repetition mark
-        none: No repetition mark (default)
-        kanji: 々 (Horizontal)
-        vertical: 〻 (Vertical)
-        zhou: 二 (Western Zhou-style)
+        heading: 疊字符
+        none: 不用疊字符（常法）
+        kanji: 々（橫書）
+        vertical: 〻（縱書）
+        zhou: 二（西周式）
     rightbar:
-      heading: View options
-      group: Corpus viewer
-      reader_theme: Reader theme
+      heading: 閱覽選項
+      group: 語料庫閱覽器
+      reader_theme: 閱文外觀
       themes:
-        light: White
-        bamboo: Bamboo
-        dark: Dark
-      vertical_text: Vertical text
-      vertical_flow: Vertical flow
+        light: 白
+        bamboo: 竹簡
+        dark: 暗
+      vertical_text: 縱書
+      vertical_flow: 縱書行向
       flows:
-        right_to_left: Right-to-left (standard)
-        left_to_right: Left-to-right
-      font_size: Font size
+        right_to_left: 自右而左（常法）
+        left_to_right: 自左而右
+      font_size: 字體大小
       sizes:
-        small: Small
-        medium: Medium
-        large: Large
-      font_size_aria: Font size in pixels
-      remove_punctuation: Remove punctuation
-      right_click_ruby: Right-click ruby
-      client_side_note: These toggles are client-side only and don’t need “Apply”.
+        small: 小
+        medium: 中
+        large: 大
+      font_size_aria: 字體大小（像素）
+      remove_punctuation: 除標點
+      right_click_ruby: 右擊見旁訓
+      client_side_note: 此諸選項惟行於本機，無須按「施用」。
     companion_materials:
-      heading: Companion materials
-      hide_ai: Hide AI-assisted material
-      translations: Translations
-      translator: 'Translator:'
-      edition_label: 'Edition/label:'
-      iso_code: 'ISO 639-3:'
-      ai_badge: AI-assisted
-      ai_assistance: AI assistance
-      read_translation: Read this translation
-      references: References
-      image_gallery: Image gallery
-      image_gallery_singular: Image gallery
-      exemplar_manuscripts: Exemplar manuscripts
-      exemplar_manuscript_singular: Exemplar manuscript
-      variant_texts: Variant texts
-      variant_text: Variant text
-      open_related_text: Open related corpus text
-      annotations_heading: Annotation systems and annotation notes
-      open_annotation_system: Open annotation-system text
-      open_annotated_text: Open annotated text
+      heading: 相關材料
+      hide_ai: 藏AI襄助材料
+      translations: 譯文
+      translator: '譯者：'
+      edition_label: '版本／標識：'
+      iso_code: 'ISO 639-3：'
+      ai_badge: AI襄助
+      ai_assistance: AI襄助
+      read_translation: 閱此譯文
+      references: 引據
+      image_gallery: 圖集
+      image_gallery_singular: 圖集
+      exemplar_manuscripts: 寫本影像
+      exemplar_manuscript_singular: 寫本影像
+      variant_texts: 異本
+      variant_text: 異本
+      open_related_text: 閱相關庫文
+      annotations_heading: 訓讀體系及註釋
+      open_annotation_system: 閱訓讀文
+      open_annotated_text: 閱註釋文
       note_type_labels:
-        annotation_system: Annotation system
-        derived_tradition: Derived tradition
-        annotations: Annotations
+        annotation_system: 訓讀體系
+        derived_tradition: 衍生傳統
+        annotations: 註釋
       provenance:
-        user_made: User-made
-        public_domain: Public domain
-        historical_source: Historical source/manuscript
-        author_provided: Author-provided
+        user_made: 用戶所作
+        public_domain: 公有領域（已無版權）
+        historical_source: 歷史原件／寫本
+        author_provided: 作者所供
     companion_submission:
-      heading: Add companion material (creates a ticket)
-      explanation: Approved material appears beside this corpus text. The 20 MB limit
-        applies to this submission only; the text may accumulate any number of approved
-        submissions.
-      material_type: Material type
+      heading: 添相關材料（立提案）
+      explanation: 相關材料經核可後，列於此庫文之側。二十MB之限惟及此一呈；同一文本可累收任意數量之核可材料。
+      material_type: 材料類
       types:
-        translation: Translation
-        gallery_image: Image gallery material
-        exemplar_manuscript: Exemplar manuscript scan
-        variant_text: Variant text connection
-      optional_label: Optional edition or material label
-      optional_label_placeholder: Edition, manuscript shelfmark, or another concise
-        label
-      optional_label_hint: Translations are identified in menus by language and translator,
-        not by this label.
-      language: Translation language (ISO 639-3)
-      language_placeholder: Start typing a language name
-      language_hint: The stored value is the selected three-letter ISO 639-3 code.
-      translator: Translator
-      translator_placeholder: Name of the translator, if known
-      translator_hint: Leave blank for anonymous or unidentified translations.
-      translation_text: Translation text
-      material_files: Material files
-      material_files_hint: PNG, JPEG, or PDF. Together with evidence files, this ticket
-        may contain up to 10 files and 20 MB.
-      related_path: Related corpus path
-      related_path_placeholder: Path to another .txt file inside the corpus
-      material_links: Material links
-      material_links_placeholder: One public scan, edition, or material URL per line
-      ticket_summary: Ticket summary
-      ticket_summary_placeholder: A short reviewer-facing summary
-      reviewer_reasoning: Reviewer reasoning
-      reviewer_reasoning_placeholder: Explain any editorial decisions or uncertainties.
+        translation: 譯文
+        gallery_image: 圖集材料
+        exemplar_manuscript: 寫本掃描
+        variant_text: 異本關聯
+      optional_label: 版本或材料標識（選填）
+      optional_label_placeholder: 版本、寫本館藏號，或其他簡明標識
+      optional_label_hint: 譯文於選單以語言及譯者識之，不用此標識。
+      language: 譯文語言（ISO 639-3）
+      language_placeholder: 鍵入語名
+      language_hint: 所存者為選定之三字母ISO 639-3碼。
+      translator: 譯者
+      translator_placeholder: 譯者姓名（若知）
+      translator_hint: 匿名或譯者不詳者，留空。
+      translation_text: 譯文
+      material_files: 材料檔
+      material_files_hint: 納PNG、JPEG或PDF。合佐證檔計，此提案至多十檔、二十MB。
+      related_path: 相關庫文路徑
+      related_path_placeholder: 語料庫內另一.txt檔之路徑
+      material_links: 材料鏈
+      material_links_placeholder: 每行一公開掃描、版本或材料網址
+      ticket_summary: 提案概要
+      ticket_summary_placeholder: 供審者閱之簡要概要
+      reviewer_reasoning: 供審緣由
+      reviewer_reasoning_placeholder: 述編校取捨或未決之處。
     material_metadata:
-      note: Material note
-      note_placeholder: Explain what this material is, who made it, and how it relates
-        to the corpus text.
-      provenance: Provenance
-      provenance_hint: Choose every label that applies. At least one is required.
-      user_made: User-made
-      public_domain: Public domain
-      historical_source: Historical source or manuscript
-      author_provided: 'Author-provided: the work''s author supplied this translation'
-      references: References
-      references_placeholder: Give references in any clear, consistent style.
-      references_hint: A formal citation style is welcome but not required.
-      ai_disclosure: AI assistance disclosure
-      ai_assisted: AI-assisted
-      what_assisted: What was assisted?
-      ai_details_placeholder: Name the system and describe what it did.
+      note: 材料說明
+      note_placeholder: 述此材料為何、何人所作，及其與庫文之關係。
+      provenance: 材料所自
+      provenance_hint: 凡合者皆選；至少須選一項。
+      user_made: 用戶所作
+      public_domain: 公有領域（已無版權）
+      historical_source: 歷史原件或寫本
+      author_provided: '作者所供：作品作者供此譯文'
+      references: 引據
+      references_placeholder: 以清楚一致之體例列引據。
+      references_hint: 歡迎正式引文體例，然非所必。
+      ai_disclosure: AI襄助申明
+      ai_assisted: AI襄助
+      what_assisted: 所襄何事？
+      ai_details_placeholder: 具名所用系統，並述其所為。
     optional_ticket_fields:
-      evidence_links: Evidence links
-      evidence_links_placeholder: One http(s) link per line
-      evidence_links_hint: Links are preferred when the evidence already exists online.
-      evidence_files: Evidence files
-      evidence_files_hint: Up to 10 files and 20 MB for this ticket. HTML, XHTML,
-        and SVG are rejected.
-      contact_heading: Optional contact details
-      contact_hint: Stored separately and encrypted. Deleted after 30 days or when
-        the ticket closes.
-      name: Name
-      email: Email
-      contact_note: Contact note
-      save_key: Save this ticket key on this device
-      save_key_hint: Unchecked by default. The key is otherwise shown once and is
-        not stored by the browser.
+      evidence_links: 佐證鏈
+      evidence_links_placeholder: 每行一http(s)鏈
+      evidence_links_hint: 佐證既在網上者，以鏈為佳。
+      evidence_files: 佐證檔
+      evidence_files_hint: 此提案至多十檔、二十MB；不納HTML、XHTML及SVG。
+      contact_heading: 聯絡資料（選填）
+      contact_hint: 另存並加密；三十日後或提案結案時刪之。
+      name: 姓名
+      email: 電郵
+      contact_note: 聯絡附言
+      save_key: 於本機留存此提案鑰
+      save_key_hint: 常不勾選。否則鑰惟示一次，瀏覽器不存之。
