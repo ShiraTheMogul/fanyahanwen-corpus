@@ -111,11 +111,11 @@ lzh:
       heading: 著錄
       aria_label: 本文著錄
       wikisource: 維基文庫
-      time_location: Time and/or location
-      category: Category
-      work: Work
-      page_title: Page title
-      author: Author
+      time_location: 時地
+      category: 類別
+      work: 作品
+      page_title: 頁題
+      author: 作者
     punctuation:
       dialog_aria: 標點選項
       heading: 標點選項
@@ -217,7 +217,7 @@ lzh:
         author_provided: 作者所供
     companion_submission:
       heading: 添相關材料（立提案）
-      explanation: 相關材料經核可後，列於此庫文之側。二十MB之限惟及此一呈；同一文本所收核可材料，數無定限。
+      explanation: 相關材料經核可後，列於此庫文之側。二十MB之限惟及此一提案；同一文本所收核可材料，數無定限。
       material_type: 材料類
       types:
         translation: 譯文
@@ -255,7 +255,7 @@ lzh:
       author_provided: 作者所供：作品作者供此譯文
       references: 引據
       references_placeholder: 以清楚一致之體例列引據。
-      references_hint: 歡迎正式引文體例，然非所必。
+      references_hint: 用正式引據體例亦佳，然非所必。
       ai_disclosure: AI襄助申明
       ai_assisted: AI襄助
       what_assisted: 所襄何事？
@@ -274,5 +274,5 @@ lzh:
       save_key: 於本機留存此提案鑰
       save_key_hint: 常不勾選。否則鑰惟示一次，瀏覽器不存之。
     errors:
-      not_found: Not found.
-      bad_path: Bad path.
+      not_found: 未見。
+      bad_path: 路徑不合。
