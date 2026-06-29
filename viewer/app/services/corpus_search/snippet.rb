@@ -46,7 +46,8 @@ module CorpusSearch
       tail = chars.last(80).join
       omitted = chars.length - 160
 
-      "#{head}……[#{omitted} chars omitted]……#{tail}"
+      omission = I18n.t("corpus_search.results.chars_omitted", count: omitted)
+      "#{head}……[#{omission}]……#{tail}"
     end
   end
 end

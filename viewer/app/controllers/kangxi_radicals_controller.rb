@@ -75,7 +75,11 @@ class KangxiRadicalsController < ApplicationController
         end
       end
 
-    @def_label = (@def_source == "kangxi") ? "Kangxi definition" : "Unihan definition"
+    @def_label = if @def_source == "kangxi"
+      I18n.t("dictionary.common.kangxi_definition")
+    else
+      I18n.t("dictionary.common.unihan_definition")
+    end
 
 
     render layout: false

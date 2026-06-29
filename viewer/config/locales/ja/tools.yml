@@ -1,0 +1,181 @@
+# PLACEHOLDER CATALOGUE: translate values only; do not rename keys.
+ja:
+  tools:
+    title: Tools
+    intro: This page gathers the various tools used by this website and presents them separately for convenient use. Other websites with useful components are also linked here.
+    common:
+      from: From
+      to: To
+      convert: Convert
+      extract: Extract
+      download_csv: Download CSV
+      character: Character
+      codepoint: Codepoint
+      source: Source
+      status: Status
+      row: Row
+      field: Field
+      error: 'Error: %{message}'
+      allowed: 'Allowed: %{schemes}'
+      label_separator: ':'
+    phonetic:
+      mandarin:
+        title: Mandarin phoneticisation
+        description_html: Mandarin has an unusually large number of phoneticisation systems, which can be overwhelming. This uses dohliam’s %{link} to convert between thirteen of them.
+        placeholder: han4 yu3 ...
+      cantonese:
+        title: Cantonese phoneticisation
+        placeholder: gwong2 dung1 waa2 ...
+      original: Original
+    character_extractor:
+      title: Character data extractor
+      description: This preserves the old Cangjie lookup while also allowing other stored character data to be extracted in bulk. Paste one character, a codepoint such as U+8BF4, or a complete sentence to produce one row for each unique Han character.
+      flashcard_help: 'This can enrich flashcards: definitions, dictionary entries, and readings can be previewed on the page or downloaded as CSV.'
+      input_placeholder: 'Character (for example 說), U+8BF4, or Cangjie letters (for example ABC)
+
+        Or paste a sentence to extract every unique character.'
+      show_hkcards: Show the HKCards table for Cangjie
+      options:
+        cangjie: Cangjie input
+        unicode_definition: Unicode definition (Unihan)
+        kangxi_entry: Kangxi dictionary entry
+        shuowen_entry: Shuowen entry
+        guangyun_definition: Guangyun definition
+        guangyun_fanqie: Guangyun fanqie
+        guangyun_rhyme: Guangyun rhyme
+        guangyun_tone: Guangyun tone
+        mandarin: Mandarin reading
+        cantonese: Cantonese reading
+        japanese_on: Japanese on reading
+        korean: Korean reading
+        vietnamese: Vietnamese reading
+        common_readings: Common readings (Mandarin, Cantonese, Japanese on, Korean, Vietnamese)
+      columns:
+        unicode_definition: Unicode definition
+        kangxi_definition: Kangxi definition
+        shuowen_entry: Shuowen entry
+        guangyun_definition: Guangyun definition
+        guangyun_fanqie: Guangyun fanqie
+        guangyun_rhyme: Guangyun rhyme
+        guangyun_tone: Guangyun tone
+        mandarin: Mandarin
+        cantonese: Cantonese
+        japanese_on: Japanese on
+        korean_yale: Korean (Yale)
+        korean_hangul: Korean (Hangul)
+        vietnamese: Vietnamese
+        cangjie: Cangjie
+        hkcards: HKCards
+      messages:
+        no_input: No input.
+        unknown_extractor: Unknown extractor.
+        no_han: No Han characters found.
+        cangjie_letters: The input appears to be Cangjie letters, so no character lookup was performed.
+        parse_failed: Could not parse a character or codepoint.
+        not_found: Not found in the database.
+        no_cangjie_property: No kCangjie property was found for this character.
+        no_cangjie_code: no Cangjie code
+        latin: Latin
+        han: Han
+        hkcards_alt: HKCards Cangjie decomposition
+        no_hkcards: No HKCards decomposition is available for this character.
+      csv_source: '%{label} source'
+    anki:
+      title: Anki deck enricher
+      description: Paste a tab-separated Anki export here and enrich one field using the characters found in another. This is useful when each note should carry Kangxi, Shuowen, Guangyun, or reading data as HTML for later AI prompting or flashcard study.
+      source_field: Field to read characters from
+      target_field: Field to write enrichment into
+      append_mode: Append to the existing target field
+      replace_mode: Replace the target field entirely
+      preview_rows: Preview rows
+      preview_start: Start preview at row
+      preview_mode: Preview mode
+      changed_only: Changed rows only
+      full_rows: Full rows
+      data_to_append: Data to append
+      input_placeholder: '#separator:tab
+
+        #html:true
+
+        #guid column:1
+
+        ... paste an Anki TXT export here ...'
+      enrich_deck: Enrich deck
+      fields:
+        kangxi_gloss: Kangxi definition
+        unicode_definition: Unicode definition
+        shuowen_entry: Shuowen entry
+        guangyun_definition: Guangyun definition
+        guangyun_fanqie: Guangyun fanqie
+        guangyun_rhyme: Guangyun rhyme
+        guangyun_tone: Guangyun tone
+        mandarin: Mandarin
+        cantonese: Cantonese
+        japanese_on: Japanese on
+        korean_yale: Korean (Yale)
+        korean_hangul: Korean (Hangul)
+        vietnamese: Vietnamese
+      live:
+        detected_fields: Detected fields
+        highest_metadata_field: Highest metadata field
+        note_rows: Note rows
+        metadata_help: 'The maximum field number is determined from the TSV itself and from metadata markers such as #tags column:N, so blank trailing tag fields are still counted.'
+        paste_to_preview: Paste Anki TXT to preview the first note row here.
+        automatic_preview: Automatic first-row preview
+        preview_help: This shows where the selected source and target fields point before enrichment is run.
+        field: Field
+        first_row_value: First-row value
+      errors:
+        no_text: No Anki TXT was pasted.
+        field_minimum: Field numbers must be 1 or greater.
+      modes:
+        append: append
+        replace: replace
+      statuses:
+        skipped: skipped
+        replace_existing: replace (target had content)
+        replace: replace
+        append_existing: append (target had content)
+        append: append
+      output:
+        summary_html: 'Updated <strong>%{updated_count}</strong> of <strong>%{note_count}</strong> note rows. Target field: <strong>%{target_field}</strong>. Source field: <strong>%{source_field}</strong>. Mode: <strong>%{mode}</strong>.'
+        details_html: 'Detected fields per note: <strong>%{detected_fields}</strong>. Highest metadata field marker: <strong>%{metadata_field}</strong>. Non-empty target fields before enrichment: <strong>%{nonempty_targets}</strong>. Changed rows where the target already had content: <strong>%{changed_existing}</strong>. Skipped rows: <strong>%{skipped}</strong>.'
+        inserted_html_preview: Preview of inserted HTML
+        raw_html: Raw HTML
+        rendered_html: Rendered HTML
+        preview_table: Preview table
+        preview_description_html: Showing up to <strong>%{limit}</strong> rows beginning at preview row <strong>%{start}</strong> in <strong>%{mode}</strong> mode. Select a field preview to inspect its full content below.
+        row: Row
+        guid: GUID
+        source_field: Source field %{field}
+        target_before: Target before
+        target_after: Target after
+        status: Status
+        source_field_detail: Source field %{field}
+        target_before_detail: Target field %{field} before
+        target_after_detail: Target field %{field} after
+        detail_label: Row %{row} · %{field}
+        clicked_detail: Selected field details
+        raw_field_content: Raw field content
+        rendered_field_content: Rendered field content
+        no_preview_rows: No preview rows matched the current preview settings.
+        download_txt: Download enriched TXT
+    lunar:
+      title: Lunar calendar date converter
+      description_html: The Chinese lunar calendar uses the sexagenary cycle to format dates. This uses %{link} to convert between Gregorian and Chinese calendar dates.
+      date_picker: Date picker
+      paste_date: Or paste a date
+      placeholder: 'Examples: 2026-01-07 | 07/01/2026 | 7 Jan 2026 | today'
+      solar: Solar
+      lunar: Lunar
+      note: Note
+      parse_failed: Could not parse a date.
+      warnings:
+        month_first: Interpreted as MM/DD/YYYY because the middle number exceeds 12.
+        ambiguous: Ambiguous numeric date; interpreted as DD/MM/YYYY (UK default).
+    numerals:
+      title: Numeral converter
+      description: A simple mapper for Chinese numerals that accounts for some occasional outliers and variant forms. It is not perfect, but works for most cases. It is also used to produce the more robust lunar-calendar representation shown in the site header.
+      placeholder: Paste text containing numbers…
+      use_you: Use 有 for gaps
+      use_abbreviations: Use 廿/卅/卌

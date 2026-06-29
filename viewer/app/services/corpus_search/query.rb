@@ -8,7 +8,7 @@ module CorpusSearch
     ORDERS = %w[either a_before_b b_before_a].freeze
 
     attr_reader :mode, :term_a, :term_b, :distance, :context, :order, :filters,
-                :page, :per_page
+                :page, :per_page, :locale
 
     def self.from_params(params)
       new(
@@ -20,6 +20,7 @@ module CorpusSearch
         order: params[:order],
         page: params[:page],
         per_page: params[:per_page],
+        locale: I18n.locale,
         filters: {
           nation: params[:nation],
           period: params[:period],
@@ -32,7 +33,7 @@ module CorpusSearch
     end
 
     def initialize(mode: "exact", term_a: nil, term_b: nil, distance: 200, context: 20,
-                   order: "either", page: 1, per_page: 20, filters: {})
+                   order: "either", page: 1, per_page: 20, locale: I18n.locale, filters: {})
       @mode = MODES.include?(mode.to_s) ? mode.to_s : "exact"
       @term_a = term_a.to_s.strip
       @term_b = term_b.to_s.strip
@@ -41,6 +42,7 @@ module CorpusSearch
       @order = ORDERS.include?(order.to_s) ? order.to_s : "either"
       @page = clamp_integer(page, default: 1, min: 1, max: 100_000)
       @per_page = clamp_integer(per_page, default: 20, min: 1, max: 50)
+      @locale = normalise_locale(locale)
       @filters = filters.to_h.transform_keys(&:to_s).transform_values { |value| value.to_s.strip }
     end
 
@@ -50,9 +52,9 @@ module CorpusSearch
 
     def errors
       list = []
-      list << "Enter a search term." if @term_a.blank?
-      list << "Enter a second term for proximity search." if proximity? && @term_b.blank?
-      list << "Search terms cannot be longer than 80 characters." if [@term_a, @term_b].any? { |term| term.each_char.count > 80 }
+      list << I18n.t("corpus_search.errors.enter_term") if @term_a.blank?
+      list << I18n.t("corpus_search.errors.enter_second_term") if proximity? && @term_b.blank?
+      list << I18n.t("corpus_search.errors.term_too_long", max: 80) if [@term_a, @term_b].any? { |term| term.each_char.count > 80 }
       list
     end
 
@@ -77,18 +79,23 @@ module CorpusSearch
     end
 
     def cache_key
-      CacheStore.hash_key(JSON.generate(to_h))
+      CacheStore.hash_key(JSON.generate(to_h.merge("_locale" => @locale)))
     end
 
     def display_label
       if proximity?
-        "#{@term_a} near #{@term_b} within #{@distance} characters"
+        I18n.t("corpus_search.query.proximity_label", term_a: @term_a, term_b: @term_b, distance: @distance)
       else
         @term_a
       end
     end
 
     private
+
+    def normalise_locale(value)
+      candidate = value.to_s
+      I18n.available_locales.map(&:to_s).include?(candidate) ? candidate : I18n.default_locale.to_s
+    end
 
     def clamp_integer(value, default:, min:, max:)
       integer = Integer(value)

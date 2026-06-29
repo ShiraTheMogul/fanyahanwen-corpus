@@ -1,0 +1,99 @@
+# PLACEHOLDER CATALOGUE: translate values only; do not rename keys.
+zha:
+  corpus_search:
+    title: Corpus Search
+    introduction: File-native search over the canonical corpus files. Exact and proximity
+      searches are supported first; public regex is deliberately avoided.
+    form:
+      mode: Mode
+      term_a: Term A
+      term_b: Term B
+      distance: Distance
+      order: Order
+      context_characters: Context characters
+      results_per_page: Results per page
+      metadata_filters: Metadata filters
+      nation: Nation
+      period: Period
+      region: Region
+      author: Author
+      year_from: Year from
+      year_to: Year to
+    modes:
+      exact: Exact
+      proximity: Proximity
+    orders:
+      either: Either order
+      a_before_b: A before B
+      b_before_a: B before A
+    placeholders:
+      term_a: 舜
+      term_b: 孝
+      nation: 日本 / 越南 / 中國...
+      period: 江戶時代 / 大越...
+    actions:
+      search: Search
+      prepare_export: Prepare full ZIP export in background
+      open_source_text: Open source text
+      download_zip: Download ZIP
+    results:
+      summary: 'Showing %{visible} result(s) on this page. Cached/checked candidate
+        files: %{candidates}. Files newly scanned for this request: %{scanned}.'
+      truncated: This interactive search stopped at %{limit} hits. Prepare a background
+        export for the complete result set.
+      complete_count: 'Complete interactive result count: %{count}.'
+      offset: offset %{start}–%{finish}
+      none: No results found.
+      chars_omitted:
+        one: "%{count} character omitted"
+        other: "%{count} characters omitted"
+    pagination:
+      aria_label: Search result pages
+      previous: Previous
+      next: Next
+      page_of: Page %{page} of %{pages}
+    prepared:
+      title: Prepared Corpus Search
+      status: Status
+      query: Query
+      progress: 'Stage: %{stage}. Files: %{scanned} / %{total}. Hits found: %{hits}.'
+      zip_contents: The ZIP contains results.csv, flashcards.csv, and metadata.json.
+      refresh_notice: This page will refresh every %{seconds} seconds while the job
+        is running.
+    statuses:
+      queued: Queued
+      running: Running
+      complete: Complete
+      failed: Failed
+    stages:
+      queued: Queued
+      searching: Searching
+      complete: Complete
+      failed: Failed
+    notices:
+      queued: The large search has been queued. You can keep using the site while
+        it runs.
+    errors:
+      enter_term: Enter a search term.
+      enter_second_term: Enter a second term for proximity search.
+      term_too_long: Search terms cannot be longer than %{max} characters.
+      search_failed: 'Search failed: %{message}'
+      prepared_not_found: Prepared search not found
+      download_not_ready: Download is not ready yet
+    query:
+      proximity_label: "%{term_a} near %{term_b} within %{distance} characters"
+    export:
+      flashcards:
+        front: |-
+          Translate or explain %{target} in context:
+          %{snippet}
+        back: |-
+          Target: %{target}
+          Source: %{source}
+      metadata_notes:
+        blank_years: Blank year_start/year_end cells mean that the corpus metadata
+          did not contain parseable year data.
+        offsets: Offsets are character offsets into the body text after front matter
+          is removed.
+        canonical_source: The source .txt files remain the canonical corpus; this
+          export is derived search output.

@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import { t } from "i18n"
 
 // Click-to-move + highlighting for the Xiangqi board.
 // Client-side logic only handles UI. All legality comes from the server.
@@ -44,7 +45,7 @@ export default class extends Controller {
   async _copyToClipboard(text) {
     try {
       await navigator.clipboard.writeText(text)
-      this._setHint("Copied")
+      this._setHint(t("fun.xiangqi.copied"))
       window.setTimeout(() => this._setHint(""), 800)
     } catch (_) {
       // Fallback: place text in the move input for manual copy.
@@ -52,7 +53,7 @@ export default class extends Controller {
         this.moveInputTarget.value = text
         this.moveInputTarget.focus()
         this.moveInputTarget.select()
-        this._setHint("Clipboard blocked — text placed in input.")
+        this._setHint(t("fun.xiangqi.clipboard_blocked"))
       }
     }
   }
@@ -130,12 +131,12 @@ export default class extends Controller {
       const data = await res.json()
 
       if (!data?.ok) {
-        this._setHint(data?.error || "Not selectable.")
+        this._setHint(data?.error || t("fun.xiangqi.not_selectable"))
         return
       }
 
       this._selected = { x: data.fx, y: data.fy }
-      this._setHint(`Selected: ${data.piece}. Click a highlighted square to move.`)
+      this._setHint(t("fun.xiangqi.selected_piece", { piece: data.piece }))
 
       for (const m of (data.moves || [])) {
         this._legal.set(this._key(m.tx, m.ty), { capture: !!m.capture })
@@ -143,7 +144,7 @@ export default class extends Controller {
 
       this._renderHighlights()
     } catch (_) {
-      this._setHint("Failed to query legal moves.")
+      this._setHint(t("fun.xiangqi.legal_moves_failed"))
     }
   }
 
@@ -205,7 +206,7 @@ export default class extends Controller {
         b.className = "xq-square"
         b.dataset.x = String(x)
         b.dataset.y = String(y)
-        b.setAttribute("aria-label", `square ${x},${y}`)
+        b.setAttribute("aria-label", t("fun.xiangqi.square_aria", { x, y }))
         b.dataset.action = "click->xiangqi-board#squareClick"
         overlay.appendChild(b)
       }

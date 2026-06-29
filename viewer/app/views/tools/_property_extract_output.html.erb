@@ -9,8 +9,8 @@
     <table class="cj-table">
       <thead>
         <tr>
-          <th>Char</th>
-          <th>Codepoint</th>
+          <th><%= t("tools.common.character") %></th>
+          <th><%= t("tools.common.codepoint") %></th>
           <% field_columns.each do |column| %>
             <th><%= h(column[:label]) %></th>
           <% end %>

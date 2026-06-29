@@ -2,19 +2,19 @@
 
 <div style="display:flex; gap: 12px; align-items:center; flex-wrap:wrap; margin: 6px 0 12px 0;">
   <% if page > 1 %>
-    <%= link_to "← Prev",
+    <%= link_to t("dictionary.common.previous"),
       "/dictionary/radicals/#{radical.number}/chars?page=#{page - 1}&per=#{per}&def=#{params[:def].presence || "unihan"}",
       data: { turbo_frame: "radical_chars" } %>
   <% end %>
 
   <% if (page * per) < total %>
-    <%= link_to "Next →",
+    <%= link_to t("dictionary.common.next"),
       "/dictionary/radicals/#{radical.number}/chars?page=#{page + 1}&per=#{per}&def=#{params[:def].presence || "unihan"}",
       data: { turbo_frame: "radical_chars" } %>
   <% end %>
 
   <span style="opacity:0.75;">
-    Jump:
+    <%= t("dictionary.common.jump") %>
     <%= link_to "50",  "/dictionary/radicals/#{radical.number}/chars?page=#{page}&per=50&def=#{params[:def].presence || "unihan"}",  data: { turbo_frame: "radical_chars" } %> |
     <%= link_to "100", "/dictionary/radicals/#{radical.number}/chars?page=#{page}&per=100&def=#{params[:def].presence || "unihan"}", data: { turbo_frame: "radical_chars" } %> |
     <%= link_to "200", "/dictionary/radicals/#{radical.number}/chars?page=#{page}&per=200&def=#{params[:def].presence || "unihan"}", data: { turbo_frame: "radical_chars" } %>
@@ -24,7 +24,7 @@
 <table style="width:100%; border-collapse: collapse;">
   <thead>
     <tr>
-      <th style="text-align:left; padding: 6px 4px; border-bottom: 1px solid rgba(0,0,0,0.15);">Glyph</th>
+      <th style="text-align:left; padding: 6px 4px; border-bottom: 1px solid rgba(0,0,0,0.15);"><%= t("dictionary.common.glyph") %></th>
       <th style="text-align:left; padding: 6px 4px; border-bottom: 1px solid rgba(0,0,0,0.15);"><%= def_label %></th>
     </tr>
   </thead>

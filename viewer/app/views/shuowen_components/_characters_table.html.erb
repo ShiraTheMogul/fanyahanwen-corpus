@@ -2,19 +2,19 @@
 
 <div style="display:flex; gap: 12px; align-items:center; flex-wrap:wrap; margin: 6px 0 12px 0;">
   <% if page > 1 %>
-    <%= link_to "← Prev",
+    <%= link_to t("dictionary.common.previous"),
       "/dictionary/shuowen/#{component.number}/chars?def=#{def_source}&page=#{page - 1}&per=#{per}",
       data: { turbo_frame: "shuowen_chars" } %>
   <% end %>
 
   <% if (page * per) < total %>
-    <%= link_to "Next →",
+    <%= link_to t("dictionary.common.next"),
       "/dictionary/shuowen/#{component.number}/chars?def=#{def_source}&page=#{page + 1}&per=#{per}",
       data: { turbo_frame: "shuowen_chars" } %>
   <% end %>
 
   <span style="opacity:0.75;">
-    Per:
+    <%= t("dictionary.common.per") %>
     <%= link_to "50",  "/dictionary/shuowen/#{component.number}/chars?def=#{def_source}&page=#{page}&per=50",  data: { turbo_frame: "shuowen_chars" } %> |
     <%= link_to "100", "/dictionary/shuowen/#{component.number}/chars?def=#{def_source}&page=#{page}&per=100", data: { turbo_frame: "shuowen_chars" } %> |
     <%= link_to "200", "/dictionary/shuowen/#{component.number}/chars?def=#{def_source}&page=#{page}&per=200", data: { turbo_frame: "shuowen_chars" } %>
@@ -24,9 +24,9 @@
 <table style="width:100%; border-collapse: collapse;">
   <thead>
     <tr>
-      <th style="text-align:left; padding: 6px 4px; border-bottom: 1px solid rgba(0,0,0,0.15);">Glyph</th>
+      <th style="text-align:left; padding: 6px 4px; border-bottom: 1px solid rgba(0,0,0,0.15);"><%= t("dictionary.common.glyph") %></th>
       <th style="text-align:left; padding: 6px 4px; border-bottom: 1px solid rgba(0,0,0,0.15);">
-        <%= def_source == "shuowen" ? "Shuowen entry" : "Unihan definition" %>
+        <%= def_source == "shuowen" ? t("dictionary.common.shuowen_entry") : t("dictionary.common.unihan_definition") %>
       </th>
     </tr>
   </thead>

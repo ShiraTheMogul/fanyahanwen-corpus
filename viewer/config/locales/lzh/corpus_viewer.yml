@@ -36,7 +36,7 @@ lzh:
       context_and_rights: 來歷與版權
       context_placeholder: 述此文所自、版權存否、所依授權，及審者當知之事。
       reference_files: 參考檔
-      reference_files_hint: '選填：至多十檔，總計二十MB；不納HTML、XHTML及SVG。'
+      reference_files_hint: 選填：至多十檔，總計二十MB；不納HTML、XHTML及SVG。
       page_setup: 分頁方式
       single_file: 單一文本檔
       multiple_files: 多頁檔
@@ -46,24 +46,24 @@ lzh:
       pages: 諸頁
       pages_hint_html: 多頁者，於作品目錄內立編號檔，如 <code>work_folder__juan_0001.txt</code>。
     header:
-      work: '作品：'
-      author: '作者：'
-      viewing: '所閱：'
+      work: 作品：
+      author: 作者：
+      viewing: 所閱：
       source: 原文
-      translation: '譯文：%{label}'
+      translation: 譯文：%{label}
       author_provided: 作者所供
       ai_assisted_suffix: " — AI襄助"
       ai_assisted_menu_suffix: " · AI襄助"
     toolbar:
       aria_label: 語料庫閱覽器工具
       vertical: 縱書
-      orientation_horizontal: '書寫方向：橫書'
+      orientation_horizontal: 書寫方向：橫書
       theme: 外觀
-      punctuation_source: '標點：從原文'
+      punctuation_source: 標點：從原文
       punctuation_options: 標點選項
-      judou_on: '句讀：啟'
-      notes_off: '註釋：閉'
-      footnotes_off: '腳註：閉'
+      judou_on: 句讀：啟
+      notes_off: 註釋：閉
+      footnotes_off: 腳註：閉
       colour_settings: 配色
       translations: 譯文（%{count}）
       add_translation: 添譯文
@@ -76,7 +76,7 @@ lzh:
       add_gallery_images: 添圖集
       add_exemplar_manuscript: 添寫本影像
       add_variant_connection: 添異本關聯
-      annotate_off: '加註：閉'
+      annotate_off: 加註：閉
       review_submit: 審閱呈案
       text_edit: 纂文
       text_edit_title: 提議纂文（立提案）
@@ -87,8 +87,8 @@ lzh:
         hanvan: 越南漢文訓讀
       editor:
         heading: 添訓讀體系（立提案）
-        explanation_html: 手工訓註為常法。核可之檔，以同名置於原文頁旁之 <code>kanbun/</code>、<code>hanmun/</code> 或 
-          <code>hanvan/</code>。
+        explanation_html: 手工訓註為常法。核可之檔，以同名置於原文頁旁之 <code>kanbun/</code>、<code>hanmun/</code>
+          或 <code>hanvan/</code>。
         system: 訓讀體系
         options:
           kanbun: 日本漢文訓讀體
@@ -111,9 +111,17 @@ lzh:
       heading: 著錄
       aria_label: 本文著錄
       wikisource: 維基文庫
+      time_location: Time and/or location
+      category: Category
+      work: Work
+      page_title: Page title
+      author: Author
     punctuation:
       dialog_aria: 標點選項
       heading: 標點選項
+      menu:
+        punctuation: 標點
+        underlining: 畫線
       preset:
         heading: 成例
         source: 從原文
@@ -128,10 +136,10 @@ lzh:
         chinese_quotation_marks: 漢文引號「」『』
         latin_speech_marks: 拉丁引號“ ”‘ ’
         chinese_speech_marks: 全形引號＂＇
-        disabled: '閉'
+        disabled: 閉
         ordering: 層次
-        traditional: '正體：「甲『乙』丙」'
-        simplified: '簡體：『甲「乙」丙』'
+        traditional: 正體：「甲『乙』丙」
+        simplified: 簡體：『甲「乙」丙』
         vertical_forms: 縱書引號（﹁﹂﹃﹄）
       question_exclamation:
         heading: 問號／歎號
@@ -181,9 +189,9 @@ lzh:
       heading: 相關材料
       hide_ai: 藏AI襄助材料
       translations: 譯文
-      translator: '譯者：'
-      edition_label: '版本／標識：'
-      iso_code: 'ISO 639-3：'
+      translator: 譯者：
+      edition_label: 版本／標識：
+      iso_code: ISO 639-3：
       ai_badge: AI襄助
       ai_assistance: AI襄助
       read_translation: 閱此譯文
@@ -244,7 +252,7 @@ lzh:
       user_made: 用戶所作
       public_domain: 公有領域（已無版權）
       historical_source: 歷史原件或寫本
-      author_provided: '作者所供：作品作者供此譯文'
+      author_provided: 作者所供：作品作者供此譯文
       references: 引據
       references_placeholder: 以清楚一致之體例列引據。
       references_hint: 歡迎正式引文體例，然非所必。
@@ -265,3 +273,6 @@ lzh:
       contact_note: 聯絡附言
       save_key: 於本機留存此提案鑰
       save_key_hint: 常不勾選。否則鑰惟示一次，瀏覽器不存之。
+    errors:
+      not_found: Not found.
+      bad_path: Bad path.

@@ -1,89 +1,95 @@
-<h1>Corpus Search</h1>
+<h1><%= t("corpus_search.title") %></h1>
 
 <p class="corpus-search-note">
-  File-native search over the canonical corpus files. Exact and proximity searches are supported first;
-  public regex is deliberately avoided.
+  <%= t("corpus_search.introduction") %>
 </p>
 
 <%= form_with url: "/corpus/search", method: :get, local: true, class: "corpus-search-form" do %>
   <div class="corpus-search-grid">
     <label>
-      Mode
+      <%= t("corpus_search.form.mode") %>
       <%= select_tag :mode,
-        options_for_select([["Exact", "exact"], ["Proximity", "proximity"]], @query&.mode || "exact"),
+        options_for_select([
+          [t("corpus_search.modes.exact"), "exact"],
+          [t("corpus_search.modes.proximity"), "proximity"]
+        ], @query&.mode || "exact"),
         class: "corpus-search-input" %>
     </label>
 
     <label>
-      Term A
-      <%= text_field_tag :term_a, @query&.term_a, class: "corpus-search-input", maxlength: 80, placeholder: "舜" %>
+      <%= t("corpus_search.form.term_a") %>
+      <%= text_field_tag :term_a, @query&.term_a, class: "corpus-search-input", maxlength: 80, placeholder: t("corpus_search.placeholders.term_a") %>
     </label>
 
     <label>
-      Term B
-      <%= text_field_tag :term_b, @query&.term_b, class: "corpus-search-input", maxlength: 80, placeholder: "孝" %>
+      <%= t("corpus_search.form.term_b") %>
+      <%= text_field_tag :term_b, @query&.term_b, class: "corpus-search-input", maxlength: 80, placeholder: t("corpus_search.placeholders.term_b") %>
     </label>
 
     <label>
-      Distance
+      <%= t("corpus_search.form.distance") %>
       <%= number_field_tag :distance, @query&.distance || 200, min: 1, max: 5000, class: "corpus-search-input" %>
     </label>
 
     <label>
-      Order
+      <%= t("corpus_search.form.order") %>
       <%= select_tag :order,
-        options_for_select([["Either order", "either"], ["A before B", "a_before_b"], ["B before A", "b_before_a"]], @query&.order || "either"),
+        options_for_select([
+          [t("corpus_search.orders.either"), "either"],
+          [t("corpus_search.orders.a_before_b"), "a_before_b"],
+          [t("corpus_search.orders.b_before_a"), "b_before_a"]
+        ], @query&.order || "either"),
         class: "corpus-search-input" %>
     </label>
 
     <label>
-      Context characters
+      <%= t("corpus_search.form.context_characters") %>
       <%= number_field_tag :context, @query&.context || 20, min: 0, max: 200, class: "corpus-search-input" %>
     </label>
 
     <label>
-      Results per page
+      <%= t("corpus_search.form.results_per_page") %>
       <%= number_field_tag :per_page, @query&.per_page || 20, min: 1, max: 50, class: "corpus-search-input" %>
     </label>
   </div>
 
   <details class="corpus-search-filters">
-    <summary>Metadata filters</summary>
+    <summary><%= t("corpus_search.form.metadata_filters") %></summary>
     <div class="corpus-search-grid">
       <label>
-        Nation
-        <%= text_field_tag :nation, @query&.filters&.dig("nation"), class: "corpus-search-input", placeholder: "日本 / 越南 / 中國..." %>
+        <%= t("corpus_search.form.nation") %>
+        <%= text_field_tag :nation, @query&.filters&.dig("nation"), class: "corpus-search-input", placeholder: t("corpus_search.placeholders.nation") %>
       </label>
 
       <label>
-        Period
-        <%= text_field_tag :period, @query&.filters&.dig("period"), class: "corpus-search-input", placeholder: "江戶時代 / 大越..." %>
+        <%= t("corpus_search.form.period") %>
+        <%= text_field_tag :period, @query&.filters&.dig("period"), class: "corpus-search-input", placeholder: t("corpus_search.placeholders.period") %>
       </label>
 
       <label>
-        Region
+        <%= t("corpus_search.form.region") %>
         <%= text_field_tag :region, @query&.filters&.dig("region"), class: "corpus-search-input" %>
       </label>
 
       <label>
-        Author
+        <%= t("corpus_search.form.author") %>
         <%= text_field_tag :author, @query&.filters&.dig("author"), class: "corpus-search-input" %>
       </label>
 
       <label>
-        Year from
+        <%= t("corpus_search.form.year_from") %>
         <%= number_field_tag :year_start, @query&.filters&.dig("year_start"), class: "corpus-search-input" %>
       </label>
 
       <label>
-        Year to
+        <%= t("corpus_search.form.year_to") %>
         <%= number_field_tag :year_end, @query&.filters&.dig("year_end"), class: "corpus-search-input" %>
       </label>
     </div>
   </details>
 
   <div class="corpus-search-actions">
-    <%= submit_tag "Search", class: "corpus-search-button" %>
+    <%= submit_tag t("corpus_search.actions.search"), class: "corpus-search-button" %>
   </div>
 <% end %>
 
@@ -102,18 +108,18 @@
 <% if @result_page %>
   <section class="corpus-search-summary">
     <p>
-      Showing <strong><%= @result_page.hits.length %></strong> result(s) on this page.
-      Cached/checked candidate files: <strong><%= @result_page.candidate_files %></strong>.
-      Files newly scanned for this request: <strong><%= @result_page.scanned_files %></strong>.
+      <%= t("corpus_search.results.summary",
+            visible: @result_page.hits.length,
+            candidates: @result_page.candidate_files,
+            scanned: @result_page.scanned_files) %>
     </p>
 
     <% if @result_page.truncated %>
       <p>
-        This interactive search stopped at <%= CorpusSearchController::INTERACTIVE_LIMIT %> hits.
-        Prepare a background export for the complete result set.
+        <%= t("corpus_search.results.truncated", limit: CorpusSearchController::INTERACTIVE_LIMIT) %>
       </p>
     <% elsif @result_page.complete %>
-      <p>Complete interactive result count: <strong><%= @result_page.total %></strong>.</p>
+      <p><%= t("corpus_search.results.complete_count", count: @result_page.total) %></p>
     <% end %>
 
     <% if @query.valid? %>
@@ -127,7 +133,7 @@
             <%= hidden_field_tag key, value %>
           <% end %>
         <% end %>
-        <%= submit_tag "Prepare full ZIP export in background", class: "corpus-search-button corpus-search-button-secondary" %>
+        <%= submit_tag t("corpus_search.actions.prepare_export"), class: "corpus-search-button corpus-search-button-secondary" %>
       <% end %>
     <% end %>
   </section>
@@ -148,24 +154,24 @@
           </p>
 
           <p class="corpus-search-path">
-            <%= link_to "Open source text", corpus_viewer_path(hit["path"].to_s.split("/"), format: nil) %>
-            <span>offset <%= hit["start_offset"] %>–<%= hit["end_offset"] %></span>
+            <%= link_to t("corpus_search.actions.open_source_text"), corpus_viewer_path(hit["path"].to_s.split("/"), format: nil) %>
+            <span><%= t("corpus_search.results.offset", start: hit["start_offset"], finish: hit["end_offset"]) %></span>
           </p>
         </li>
       <% end %>
     </ol>
 
-    <nav class="corpus-search-pagination" aria-label="Search result pages">
+    <nav class="corpus-search-pagination" aria-label="<%= t("corpus_search.pagination.aria_label") %>">
       <% base_params = request.query_parameters.except("page") %>
       <% if @result_page.previous_page %>
-        <%= link_to "Previous", "/corpus/search?#{base_params.merge(page: @result_page.previous_page).to_query}" %>
+        <%= link_to t("corpus_search.pagination.previous"), "/corpus/search?#{base_params.merge(page: @result_page.previous_page).to_query}" %>
       <% end %>
-      <span>Page <%= @result_page.page %> of <%= @result_page.total_pages %></span>
+      <span><%= t("corpus_search.pagination.page_of", page: @result_page.page, pages: @result_page.total_pages) %></span>
       <% if @result_page.next_page %>
-        <%= link_to "Next", "/corpus/search?#{base_params.merge(page: @result_page.next_page).to_query}" %>
+        <%= link_to t("corpus_search.pagination.next"), "/corpus/search?#{base_params.merge(page: @result_page.next_page).to_query}" %>
       <% end %>
     </nav>
   <% elsif @searched && @query.valid? %>
-    <p>No results found.</p>
+    <p><%= t("corpus_search.results.none") %></p>
   <% end %>
 <% end %>

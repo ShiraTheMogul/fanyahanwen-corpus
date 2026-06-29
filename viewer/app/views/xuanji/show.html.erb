@@ -1,14 +1,14 @@
-<h1>璇璣圖 Xuanji Tu</h1>
+<h1>
+  <% if show_han_ornament? %><%= t("fun.xuanji.name_han") %> <% end %><%= translated_interface_label("fun.xuanji.name", ornament_key: "fun.xuanji.name_han") %>
+</h1>
 
-<p>
-  This is the 29×29 brocade palindrome-poem attributed to 蘇蕙. Pick a reading rule below to trace a path through the grid and extract text.
-</p>
+<p><%= t("fun.xuanji.description") %></p>
 
 <div class="xuanji-toolbar">
   <div class="xuanji-variant">
-    <strong>Variant:</strong>
-    <%= link_to "Traditional", xuanji_path(variant: "trad"), class: (@variant == "trad" ? "active" : "") %>
-    <%= link_to "Simplified", xuanji_path(variant: "simp"), class: (@variant == "simp" ? "active" : "") %>
+    <strong><%= t("fun.xuanji.variant") %>:</strong>
+    <%= link_to t("fun.xuanji.traditional"), xuanji_path(variant: "trad"), class: (@variant == "trad" ? "active" : "") %>
+    <%= link_to t("fun.xuanji.simplified"), xuanji_path(variant: "simp"), class: (@variant == "simp" ? "active" : "") %>
   </div>
 </div>
 
@@ -23,60 +23,59 @@
 
   <div class="xuanji-controls">
     <% rules = [
-      ["Manual selection", "manual"],
-      ["Rows: L→R", "rows_lr"],
-      ["Rows: R→L", "rows_rl"],
-      ["Columns: T→B", "cols_tb"],
-      ["Columns: B→T", "cols_bt"],
-      ["Snake rows", "snake_rows"],
-      ["Snake columns", "snake_cols"],
-      ["Kang: Perimeter (outer ring)", "kang_perimeter"],
-      ["Kang: Boundary (inner ring)", "kang_boundary"],
+      [t("fun.xuanji.rules.manual"), "manual"],
+      [t("fun.xuanji.rules.rows_lr"), "rows_lr"],
+      [t("fun.xuanji.rules.rows_rl"), "rows_rl"],
+      [t("fun.xuanji.rules.cols_tb"), "cols_tb"],
+      [t("fun.xuanji.rules.cols_bt"), "cols_bt"],
+      [t("fun.xuanji.rules.snake_rows"), "snake_rows"],
+      [t("fun.xuanji.rules.snake_cols"), "snake_cols"],
+      [t("fun.xuanji.rules.kang_perimeter"), "kang_perimeter"],
+      [t("fun.xuanji.rules.kang_boundary"), "kang_boundary"]
     ] %>
 
     <label>
-      Rule
+      <%= t("fun.xuanji.controls.rule") %>
       <%= select_tag :rule,
             options_for_select(rules, @initial_rule || "rows_lr"),
             data: { xuanji_target: "rule", action: "change->xuanji#ruleChanged" } %>
     </label>
 
     <label>
-      Line length
+      <%= t("fun.xuanji.controls.line_length") %>
       <input type="number" min="1" max="29" value="<%= @initial_line_len || 7 %>" data-xuanji-target="lineLen" data-action="input->xuanji#ruleChanged">
     </label>
 
     <label>
-      Speed (ms)
+      <%= t("fun.xuanji.controls.speed_ms") %>
       <input type="number" min="10" max="2000" value="<%= @initial_speed || 40 %>" data-xuanji-target="speed">
     </label>
 
     <label>
-      Couplets → comma
+      <%= t("fun.xuanji.controls.couplets_comma") %>
       <input type="checkbox" data-xuanji-target="coupletComma" data-action="change->xuanji#ruleChanged">
     </label>
 
     <label>
-      Show phoneticization
+      <%= t("fun.xuanji.controls.show_phoneticization") %>
       <input type="checkbox" data-xuanji-target="showPhon" data-action="change->xuanji#phonSettingsChanged">
     </label>
 
     <label>
-      Reading system
+      <%= t("fun.xuanji.controls.reading_system") %>
       <select data-xuanji-target="readingSystem" data-action="change->xuanji#phonSettingsChanged">
-        <option value="mandarin">Mandarin (Unihan kMandarin)</option>
-        <option value="cantonese">Cantonese (Unihan kCantonese)</option>
-        <option value="tang">Tang pronunciation (kTang)</option>
-        <option value="fanqie">Fanqie (kFanqie)</option>
+        <option value="mandarin"><%= t("fun.xuanji.readings.mandarin") %></option>
+        <option value="cantonese"><%= t("fun.xuanji.readings.cantonese") %></option>
+        <option value="tang"><%= t("fun.xuanji.readings.tang") %></option>
+        <option value="fanqie"><%= t("fun.xuanji.readings.fanqie") %></option>
       </select>
     </label>
 
-    <button type="button" data-action="xuanji#play" data-xuanji-target="playBtn">Play</button>
-    <button type="button" data-action="xuanji#pause">Pause</button>
-    <button type="button" data-action="xuanji#step">Step</button>
-    <button type="button" data-action="xuanji#reset">Reset</button>
-
-    <button type="button" data-action="xuanji#clearManual" data-xuanji-target="clearManualBtn">Clear manual</button>
+    <button type="button" data-action="xuanji#play" data-xuanji-target="playBtn"><%= t("fun.actions.play") %></button>
+    <button type="button" data-action="xuanji#pause"><%= t("fun.actions.pause") %></button>
+    <button type="button" data-action="xuanji#step"><%= t("fun.actions.step") %></button>
+    <button type="button" data-action="xuanji#reset"><%= t("fun.actions.reset") %></button>
+    <button type="button" data-action="xuanji#clearManual" data-xuanji-target="clearManualBtn"><%= t("fun.xuanji.controls.clear_manual") %></button>
   </div>
 
   <div class="xuanji-main">
@@ -91,6 +90,7 @@
         viewBox="0 0 <%= w %> <%= h %>"
         width="<%= w %>"
         height="<%= h %>"
+        aria-label="<%= t("fun.xuanji.grid_aria") %>"
         data-action="pointerdown->xuanji#pointerDown pointermove->xuanji#pointerMove pointerup->xuanji#pointerUp pointercancel->xuanji#pointerUp"
       >
         <% indexed = @grid.xuanji_cells.index_by { |c| [c.x, c.y] } %>
@@ -121,7 +121,7 @@
     </div>
 
     <div class="xuanji-output">
-      <h2>Extracted text</h2>
+      <h2><%= t("fun.xuanji.extracted_text") %></h2>
       <div class="corpus-reader" data-controller="corpus-reader" data-corpus-reader-target="viewbox">
         <pre data-xuanji-target="output" data-corpus-reader-target="content"></pre>
       </div>

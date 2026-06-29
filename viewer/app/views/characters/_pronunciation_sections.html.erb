@@ -14,7 +14,7 @@
     <details class="pronun-section"
              data-pref-key="pronun_v2_sec_<%= sec[:key] %>"
              data-default-open="<%= sec[:default_open] ? "1" : "0" %>">
-      <summary title="Expand or collapse <%= sec[:label] %>">
+      <summary title="<%= t("dictionary.pronunciation.expand_or_collapse", label: sec[:label]) %>">
         <span class="pronun-section-title"><%= sec[:label] %></span>
         <span class="pronun-section-count"><%= sec[:count] %></span>
       </summary>
@@ -33,7 +33,7 @@
         <details class="pronun-variety"
                  data-pref-key="pronun_v2_variety_<%= sec[:key] %>_<%= variety[:key] %>"
                  data-default-open="0">
-          <summary title="Expand or collapse <%= variety[:label] %>">
+          <summary title="<%= t("dictionary.pronunciation.expand_or_collapse", label: variety[:label]) %>">
             <span class="pronun-section-title"><%= variety[:label] %></span>
             <span class="pronun-section-count"><%= variety[:props].length %></span>
           </summary>
@@ -41,13 +41,13 @@
           <% if variety[:location].present? || variety[:references].present? %>
             <div class="pronun-variety-meta">
               <% if variety[:location].present? %>
-                <p><strong>Location:</strong> <%= variety[:location] %></p>
+                <p><strong><%= t("dictionary.pronunciation.location") %></strong> <%= variety[:location] %></p>
               <% end %>
 
               <% if variety[:references].present? %>
                 <details class="pronun-variety-references">
-                  <summary title="Expand or collapse references">
-                    <span>References</span>
+                  <summary title="<%= t("dictionary.pronunciation.expand_or_collapse_references") %>">
+                    <span><%= t("dictionary.pronunciation.references") %></span>
                     <span class="pronun-reference-count"><%= variety[:references].length %></span>
                   </summary>
                   <ol>

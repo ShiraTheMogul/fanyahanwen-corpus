@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import { t } from "i18n"
 
 // Xuanji Tu controller
 //
@@ -131,7 +132,7 @@ export default class extends Controller {
     this.renderTextPreview()
 
     if (this.hasPlayBtnTarget) {
-      this.playBtnTarget.textContent = "Play"
+      this.playBtnTarget.textContent = t("fun.xuanji.play")
     }
   }
 
@@ -264,17 +265,17 @@ export default class extends Controller {
   play() {
     if (this.timer) {
       this.pause()
-      if (this.hasPlayBtnTarget) this.playBtnTarget.textContent = "Play"
+      if (this.hasPlayBtnTarget) this.playBtnTarget.textContent = t("fun.xuanji.play")
       return
     }
 
     const delay = Math.max(10, parseInt(this.speedTarget.value || "40", 10))
-    if (this.hasPlayBtnTarget) this.playBtnTarget.textContent = "Pause"
+    if (this.hasPlayBtnTarget) this.playBtnTarget.textContent = t("fun.xuanji.pause")
 
     this.timer = setInterval(() => {
       if (this.stepIndex >= this.currentPath.length) {
         this.pause()
-        if (this.hasPlayBtnTarget) this.playBtnTarget.textContent = "Play"
+        if (this.hasPlayBtnTarget) this.playBtnTarget.textContent = t("fun.xuanji.play")
         return
       }
       this.highlightAt(this.stepIndex)

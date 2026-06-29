@@ -70,7 +70,7 @@ module FieldLens
 			total = base.nil? ? nil : (base + add)
 
 			text = if context == :property_list
-				"#{rad_ideo}部 + #{add} #{add == 1 ? 'stroke' : 'strokes'}"
+				"#{rad_ideo}部 + #{I18n.t('dictionary.field_lens.stroke_count', count: add)}"
 			else
 				ch = "#{rad_ideo}部#{add}畫"
 				ch += " 共#{total}畫" if total
@@ -78,7 +78,7 @@ module FieldLens
 			end
 			parts << text
 
-			tip = "Kangxi radical ##{rad}"
+			tip = I18n.t("dictionary.field_lens.kangxi_radical", number: rad)
 			unless apos.empty?
 				tip += " (#{apostrophe_meaning(apos)})"
 			end
@@ -107,13 +107,13 @@ module FieldLens
 
 			rad_ideo = kangxi_radical_ideograph(rad)
 			parts << if context == :property_list
-				"#{rad_ideo}部 + #{res} #{res == 1 ? 'stroke' : 'strokes'}"
+				"#{rad_ideo}部 + #{I18n.t('dictionary.field_lens.stroke_count', count: res)}"
 			else
 				"#{rad_ideo}部#{res}畫 共#{total}畫"
 			end
 
-			type = (cv == "C") ? "direct" : "variant"
-			tips << "Adobe-Japan1-6 #{type}: CID #{cid}; radical ##{rad}"
+			type = (cv == "C") ? I18n.t("dictionary.field_lens.direct") : I18n.t("dictionary.field_lens.variant")
+			tips << I18n.t("dictionary.field_lens.adobe_tooltip", type: type, cid: cid, radical: rad)
 		end
 
 		return [raw, nil] if parts.empty?
@@ -167,13 +167,13 @@ module FieldLens
 	def self.apostrophe_meaning(apos)
 		case apos
 		when "'"
-			"Chinese simplified radical"
+			I18n.t("dictionary.field_lens.chinese_simplified_radical")
 		when "''"
-			"non-Chinese simplified radical"
+			I18n.t("dictionary.field_lens.non_chinese_simplified_radical")
 		when "'''"
-			"second non-Chinese simplified radical"
+			I18n.t("dictionary.field_lens.second_non_chinese_simplified_radical")
 		else
-			"radical variant"
+			I18n.t("dictionary.field_lens.radical_variant")
 		end
 	end
   
@@ -487,7 +487,7 @@ end
   
   # Manually replace some of Unihan's "kX" stuff with explicit, transparent wording, and/or characters when Chinese calques appear (e.g. Fanqie). 
   PRETTY = {
-	"kDefinition" => "Unihan Definition",
+	"kDefinition" => { i18n: "unihan_definition" },
 	"kFanqie" => {
 			han: "反切", 
 			pinyin: true,
@@ -498,11 +498,11 @@ end
 			pinyin: true,
 			pinyin_chunks: [2, 2],
 		},
-	"kHanyuPinlu" => "漢語頻率 Hànyǔ Pínlǜ (Pronunciation + Frequency)",
-	"laoguoyin" => "Old National Pronunciation 老國音",
-    "kCangjie" => "倉頡輸入法 Cāngjié input method",
-    "kFourCornerCode" => "角號碼檢字法 Four-corner input method",
-	"kKorean" => "Korean (Yale)",
+	"kHanyuPinlu" => { i18n: "hanyu_frequency" },
+	"laoguoyin" => { i18n: "old_national_pronunciation" },
+    "kCangjie" => { i18n: "cangjie_input" },
+    "kFourCornerCode" => { i18n: "four_corner_input" },
+	"kKorean" => { i18n: "korean_yale" },
 	"kKangXi" => {
 	  han: "康熙",
 	  pinyin: true,
@@ -514,64 +514,64 @@ end
 	  pinyin: true,
 	  pinyin_chunks: [2]
 	},
-	"general_chinese" => "General Chinese",
-	"bs2014_mc" => "Middle Chinese",
-	"bs2006_mc" => "Middle Chinese",
-	"bs2014_oc" => "Old Chinese",
-	"kTang" => "Middle Chinese (Stimson, 1976)", # T’ang Poetic Vocabulary by Hugh M. Stimson, Far Eastern Publications, Yale University 1976. Method unclear.
-	"kangxi_gloss" => "康熙字典解釋",
-	"kKoreanName" => "Official Korean name since", # 인명용 한자 (人名用漢字) - 1,800 glyph set used for educational purposes. Unihan says it is a year that corresponds to the list; 2015 or 2018. There have been updates in 2022 and 2024 but they do not have the data: Improve? 
-	"kGradeLevel" => "Hong Kong Primary School Grade (朗文初級中文詞典, 2001)",
-	"cedict_def" => "CC-CEDICT Definition",
-	"cedict_simp" => "CC-CEDICT Simplified",
-	"kPhonetic" => "Phonetic class", # Ten Thousand Characters: An Analytic Dictionary, by G. Hugh Casey, S.J. Hong Kong: Kelly and Walsh, 1980. https://analyticphysics.com/Language/Chinese%20Phonetic%20Groups.htm
-	"kRSUnicode" => "康熙字典 Kangxi Radicals & Strokes",
+	"general_chinese" => { i18n: "general_chinese" },
+	"bs2014_mc" => { i18n: "middle_chinese" },
+	"bs2006_mc" => { i18n: "middle_chinese" },
+	"bs2014_oc" => { i18n: "old_chinese" },
+	"kTang" => { i18n: "middle_chinese_stimson" }, # T’ang Poetic Vocabulary by Hugh M. Stimson, Far Eastern Publications, Yale University 1976. Method unclear.
+	"kangxi_gloss" => { i18n: "kangxi_explanation" },
+	"kKoreanName" => { i18n: "official_korean_name_since" }, # 인명용 한자 (人名用漢字) - 1,800 glyph set used for educational purposes. Unihan says it is a year that corresponds to the list; 2015 or 2018. There have been updates in 2022 and 2024 but they do not have the data: Improve? 
+	"kGradeLevel" => { i18n: "hong_kong_grade" },
+	"cedict_def" => { i18n: "cedict_definition" },
+	"cedict_simp" => { i18n: "cedict_simplified" },
+	"kPhonetic" => { i18n: "phonetic_class" }, # Ten Thousand Characters: An Analytic Dictionary, by G. Hugh Casey, S.J. Hong Kong: Kelly and Walsh, 1980. https://analyticphysics.com/Language/Chinese%20Phonetic%20Groups.htm
+	"kRSUnicode" => { i18n: "kangxi_radicals_strokes" },
 	"shuowen_category" => {
 	  han: "說文部首",
 	  pinyin: true,
 	  pinyin_chunks: [2, 2]
 	},
-	"cjk_808_common" => "808 Commonly Used CJK Characters",
-	"context" => "Context",
-	"jp_manyogana_hiragana_etym" => "Man’yōgana (hiragana etymology)",
-	"jp_manyogana_katakana_etym" => "Man’yōgana (katakana etymology)",
-	"jp_manyogana_mora_table" => "Man’yōgana mora table",
-	"jp_shakuon_kana" => "Shakuon Kana 借音仮名",
-	"jp_shakkun_kana" => "Shakkun Kana 借訓仮名",
-	"jp_mora_romaji" => "Mora (romaji)",
-	"jp_manyogana_reading" => "Man’yōgana reading (mora)",
-	"menggu_ziyun_phags_pa" => "Menggu Ziyun 蒙古字韻 (Phags-pa script)",
-	"menggu_ziyun_reconstruction" => "Menggu Ziyun 蒙古字韻 (IPA Reconstruction)",
-	"menggu_ziyun_transcription" => "Menggu Ziyun 蒙古字韻 (IPA)",
-	"menggu_ziyun_qieyun_position" => "Qieyun-system phonological position",
-	"menggu_ziyun_tone" => "Menggu Ziyun 蒙古字韻 tone",
-	"menggu_ziyun_rhyme" => "Menggu Ziyun 蒙古字韻 rhyme group",
-	"menggu_ziyun_gloss" => "Menggu Ziyun 蒙古字韻 gloss",
-	"menggu_ziyun_variant" => "Menggu Ziyun 蒙古字韻 variant form",
-	"menggu_ziyun_notes" => "Menggu Ziyun 蒙古字韻 notes",
-	"menggu_ziyun_needs_adjustment" => "Menggu Ziyun flagged adjustment",
-	"menggu_ziyun_xiaoyun_number" => "Menggu Ziyun xiaoyun number",
-	"menggu_ziyun_xiaoyun_key" => "Menggu Ziyun xiaoyun key",
-	"menggu_ziyun_category" => "Menggu Ziyun category",
-	"zhongyuan_yinyun_xiaoyun" => "Zhongyuan Yinyun 中原音韻 xiaoyun",
-	"zhongyuan_yinyun_initial" => "Zhongyuan Yinyun 中原音韻 initial",
-	"zhongyuan_yinyun_final" => "Zhongyuan Yinyun 中原音韻 final",
-	"zhongyuan_yinyun_tone" => "Zhongyuan Yinyun 中原音韻 tone",
-	"zhongyuan_yinyun_yang_naisi" => "Zhongyuan Yinyun 中原音韻 (楊耐思)",
-	"zhongyuan_yinyun_ning_jifu" => "Zhongyuan Yinyun 中原音韻 (寧繼福)",
-	"zhongyuan_yinyun_xue_fengsheng" => "Zhongyuan Yinyun 中原音韻 (薛鳳生)",
-	"zhongyuan_yinyun_unt_phonemic" => "Zhongyuan Yinyun 中原音韻 (untunt)",
-	"zhongyuan_yinyun_unt" => "Zhongyuan Yinyun 中原音韻 (unt)",
-	"zhongyuan_yinyun_gloss" => "Zhongyuan Yinyun 中原音韻 gloss",
-	"zhongyuan_yinyun_notes" => "Zhongyuan Yinyun 中原音韻 notes",
-	"zhongyuan_yinyun_category" => "Zhongyuan Yinyun category",
-	"zhongyuan_yinyun_xiaoyun_key" => "Zhongyuan Yinyun xiaoyun key",
-	"manju_hergen_ipa" => "1763 Manchu transcription (IPA)",
-	"manju_hergen_latin" => "1763 Manchu transcription (Latin script)",
-	"manju_hergen_manchu" => "1763 Manchu transcription (Manchu script)",
-	"guangyun_fanqie" => "Guangyun Fanqie 廣韻反切",
-	"guangyun_rhyme" => "Guangyun Rime 廣韻音韻",
-	"guangyun_tone" => "Guangyun Tone 廣韻聲調",
+	"cjk_808_common" => { i18n: "cjk_808_common" },
+	"context" => { i18n: "context" },
+	"jp_manyogana_hiragana_etym" => { i18n: "manyogana_hiragana_etymology" },
+	"jp_manyogana_katakana_etym" => { i18n: "manyogana_katakana_etymology" },
+	"jp_manyogana_mora_table" => { i18n: "manyogana_mora_table" },
+	"jp_shakuon_kana" => { i18n: "shakuon_kana" },
+	"jp_shakkun_kana" => { i18n: "shakkun_kana" },
+	"jp_mora_romaji" => { i18n: "mora_romaji" },
+	"jp_manyogana_reading" => { i18n: "manyogana_reading" },
+	"menggu_ziyun_phags_pa" => { i18n: "menggu_ziyun_phags_pa" },
+	"menggu_ziyun_reconstruction" => { i18n: "menggu_ziyun_reconstruction" },
+	"menggu_ziyun_transcription" => { i18n: "menggu_ziyun_transcription" },
+	"menggu_ziyun_qieyun_position" => { i18n: "qieyun_position" },
+	"menggu_ziyun_tone" => { i18n: "menggu_ziyun_tone" },
+	"menggu_ziyun_rhyme" => { i18n: "menggu_ziyun_rhyme" },
+	"menggu_ziyun_gloss" => { i18n: "menggu_ziyun_gloss" },
+	"menggu_ziyun_variant" => { i18n: "menggu_ziyun_variant" },
+	"menggu_ziyun_notes" => { i18n: "menggu_ziyun_notes" },
+	"menggu_ziyun_needs_adjustment" => { i18n: "menggu_ziyun_adjustment" },
+	"menggu_ziyun_xiaoyun_number" => { i18n: "menggu_ziyun_xiaoyun_number" },
+	"menggu_ziyun_xiaoyun_key" => { i18n: "menggu_ziyun_xiaoyun_key" },
+	"menggu_ziyun_category" => { i18n: "menggu_ziyun_category" },
+	"zhongyuan_yinyun_xiaoyun" => { i18n: "zhongyuan_yinyun_xiaoyun" },
+	"zhongyuan_yinyun_initial" => { i18n: "zhongyuan_yinyun_initial" },
+	"zhongyuan_yinyun_final" => { i18n: "zhongyuan_yinyun_final" },
+	"zhongyuan_yinyun_tone" => { i18n: "zhongyuan_yinyun_tone" },
+	"zhongyuan_yinyun_yang_naisi" => { i18n: "zhongyuan_yinyun_yang_naisi" },
+	"zhongyuan_yinyun_ning_jifu" => { i18n: "zhongyuan_yinyun_ning_jifu" },
+	"zhongyuan_yinyun_xue_fengsheng" => { i18n: "zhongyuan_yinyun_xue_fengsheng" },
+	"zhongyuan_yinyun_unt_phonemic" => { i18n: "zhongyuan_yinyun_unt_phonemic" },
+	"zhongyuan_yinyun_unt" => { i18n: "zhongyuan_yinyun_unt" },
+	"zhongyuan_yinyun_gloss" => { i18n: "zhongyuan_yinyun_gloss" },
+	"zhongyuan_yinyun_notes" => { i18n: "zhongyuan_yinyun_notes" },
+	"zhongyuan_yinyun_category" => { i18n: "zhongyuan_yinyun_category" },
+	"zhongyuan_yinyun_xiaoyun_key" => { i18n: "zhongyuan_yinyun_xiaoyun_key" },
+	"manju_hergen_ipa" => { i18n: "manchu_1763_ipa" },
+	"manju_hergen_latin" => { i18n: "manchu_1763_latin" },
+	"manju_hergen_manchu" => { i18n: "manchu_1763_manchu" },
+	"guangyun_fanqie" => { i18n: "guangyun_fanqie" },
+	"guangyun_rhyme" => { i18n: "guangyun_rime" },
+	"guangyun_tone" => { i18n: "guangyun_tone" },
 }.freeze
 	
 	# and some automatic stuff in case
@@ -591,6 +591,10 @@ end
 
 		# 3) If PRETTY stores a Hash for this field, we build the label from parts.
 		if v.is_a?(Hash)
+			if v[:i18n].present?
+				return I18n.t("dictionary.field_lens.property_labels.#{v[:i18n]}")
+			end
+
 			# A) Pull pieces out of the hash.
 			# v[:han] means "the value stored under the key :han"
 			han = v[:han].to_s

@@ -194,14 +194,14 @@ module Xiangqi
     # Returns { ok: true } or { ok: false, error: "..." }.
     def self.pseudo_legal_move_result(pos, fx, fy, tx, ty)
       board = pos.board
-      return { ok: false, error: "Move is out of bounds." } unless in_bounds?(fx, fy) && in_bounds?(tx, ty)
-      return { ok: false, error: "Source and target are the same square." } if fx == tx && fy == ty
+      return { ok: false, error: I18n.t("fun.xiangqi.errors.move_out_of_bounds") } unless in_bounds?(fx, fy) && in_bounds?(tx, ty)
+      return { ok: false, error: I18n.t("fun.xiangqi.errors.same_square") } if fx == tx && fy == ty
 
       piece = board[fy][fx]
-      return { ok: false, error: "No piece at source." } if piece.nil?
+      return { ok: false, error: I18n.t("fun.xiangqi.errors.no_piece_source") } if piece.nil?
 
       target = board[ty][tx]
-      return { ok: false, error: "You cannot capture your own piece." } if same_side?(piece, target)
+      return { ok: false, error: I18n.t("fun.xiangqi.errors.capture_own_piece") } if same_side?(piece, target)
 
       side = side_of_piece(piece)
       u = piece.upcase
@@ -213,46 +213,46 @@ module Xiangqi
 
       case u
       when "R"
-        return { ok: false, error: "Chariot must move in a straight line." } unless fx == tx || fy == ty
-        return { ok: false, error: "Chariot is blocked." } unless count_between_line(board, fx, fy, tx, ty) == 0
+        return { ok: false, error: I18n.t("fun.xiangqi.errors.chariot_straight") } unless fx == tx || fy == ty
+        return { ok: false, error: I18n.t("fun.xiangqi.errors.chariot_blocked") } unless count_between_line(board, fx, fy, tx, ty) == 0
         return { ok: true }
 
       when "C"
-        return { ok: false, error: "Cannon must move in a straight line." } unless fx == tx || fy == ty
+        return { ok: false, error: I18n.t("fun.xiangqi.errors.cannon_straight") } unless fx == tx || fy == ty
         between = count_between_line(board, fx, fy, tx, ty)
-        return { ok: false, error: "Cannon line is invalid." } if between.nil?
+        return { ok: false, error: I18n.t("fun.xiangqi.errors.cannon_line_invalid") } if between.nil?
 
         if target.nil?
-          return { ok: false, error: "Cannon cannot jump when not capturing." } unless between == 0
+          return { ok: false, error: I18n.t("fun.xiangqi.errors.cannon_no_jump") } unless between == 0
         else
-          return { ok: false, error: "Cannon capture requires exactly one screen." } unless between == 1
+          return { ok: false, error: I18n.t("fun.xiangqi.errors.cannon_one_screen") } unless between == 1
         end
         return { ok: true }
 
       when "H"
-        return { ok: false, error: "Horse moves 1 then 2 (an L shape)." } unless (adx == 2 && ady == 1) || (adx == 1 && ady == 2)
+        return { ok: false, error: I18n.t("fun.xiangqi.errors.horse_shape") } unless (adx == 2 && ady == 1) || (adx == 1 && ady == 2)
         leg_x = fx + (adx == 2 ? (dx < 0 ? -1 : 1) : 0)
         leg_y = fy + (ady == 2 ? (dy < 0 ? -1 : 1) : 0)
-        return { ok: false, error: "Horse leg is blocked." } unless board[leg_y][leg_x].nil?
+        return { ok: false, error: I18n.t("fun.xiangqi.errors.horse_blocked") } unless board[leg_y][leg_x].nil?
         return { ok: true }
 
       when "E"
-        return { ok: false, error: "Elephant moves exactly 2 diagonally." } unless adx == 2 && ady == 2
+        return { ok: false, error: I18n.t("fun.xiangqi.errors.elephant_diagonal") } unless adx == 2 && ady == 2
         eye_x = fx + (dx < 0 ? -1 : 1)
         eye_y = fy + (dy < 0 ? -1 : 1)
-        return { ok: false, error: "Elephant eye is blocked." } unless board[eye_y][eye_x].nil?
+        return { ok: false, error: I18n.t("fun.xiangqi.errors.elephant_blocked") } unless board[eye_y][eye_x].nil?
         river_ok = (side == :red) ? (ty <= 4) : (ty >= 5)
-        return { ok: false, error: "Elephant cannot cross the river." } unless river_ok
+        return { ok: false, error: I18n.t("fun.xiangqi.errors.elephant_river") } unless river_ok
         return { ok: true }
 
       when "A"
-        return { ok: false, error: "Advisor moves 1 diagonally." } unless adx == 1 && ady == 1
-        return { ok: false, error: "Advisor must stay inside the palace." } unless in_palace?(side, tx, ty)
+        return { ok: false, error: I18n.t("fun.xiangqi.errors.advisor_diagonal") } unless adx == 1 && ady == 1
+        return { ok: false, error: I18n.t("fun.xiangqi.errors.advisor_palace") } unless in_palace?(side, tx, ty)
         return { ok: true }
 
       when "K"
-        return { ok: false, error: "General moves 1 orthogonally." } unless (adx == 1 && ady == 0) || (adx == 0 && ady == 1)
-        return { ok: false, error: "General must stay inside the palace." } unless in_palace?(side, tx, ty)
+        return { ok: false, error: I18n.t("fun.xiangqi.errors.general_orthogonal") } unless (adx == 1 && ady == 0) || (adx == 0 && ady == 1)
+        return { ok: false, error: I18n.t("fun.xiangqi.errors.general_palace") } unless in_palace?(side, tx, ty)
         return { ok: true }
 
       when "P"
@@ -266,13 +266,13 @@ module Xiangqi
         end
 
         if adx == 1 && ady == 0
-          return { ok: false, error: "Soldier cannot move sideways before crossing the river." }
+          return { ok: false, error: I18n.t("fun.xiangqi.errors.soldier_sideways") }
         end
 
-        return { ok: false, error: "Soldier moves 1 forward (and sideways only after crossing the river)." }
+        return { ok: false, error: I18n.t("fun.xiangqi.errors.soldier_move") }
 
       else
-        { ok: false, error: "Unknown piece type." }
+        { ok: false, error: I18n.t("fun.xiangqi.errors.unknown_piece_type") }
       end
     end
 
@@ -284,10 +284,10 @@ module Xiangqi
 
     def self.legal_move?(pos, fx, fy, tx, ty)
       piece = pos.board[fy][fx]
-      return { ok: false, error: "No piece at source." } if piece.nil?
+      return { ok: false, error: I18n.t("fun.xiangqi.errors.no_piece_source") } if piece.nil?
 
       mover = side_of_piece(piece)
-      return { ok: false, error: "Not your turn." } unless mover == side_to_move(pos)
+      return { ok: false, error: I18n.t("fun.xiangqi.errors.not_your_turn") } unless mover == side_to_move(pos)
 
       pre = pseudo_legal_move_result(pos, fx, fy, tx, ty)
       return pre unless pre[:ok]
@@ -302,7 +302,7 @@ module Xiangqi
         # revert
         pos.board[fy][fx] = piece
         pos.board[ty][tx] = captured
-        return { ok: false, error: "Illegal: the two generals would face each other." }
+        return { ok: false, error: I18n.t("fun.xiangqi.errors.generals_face") }
       end
 
       illegal = in_check?(pos, mover)
@@ -311,7 +311,7 @@ module Xiangqi
       pos.board[fy][fx] = piece
       pos.board[ty][tx] = captured
 
-      return { ok: false, error: "Move leaves your general in check." } if illegal
+      return { ok: false, error: I18n.t("fun.xiangqi.errors.leaves_general_in_check") } if illegal
 
       { ok: true }
     end

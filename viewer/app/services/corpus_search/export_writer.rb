@@ -24,34 +24,36 @@ module CorpusSearch
     end
 
     def write!
-      @prepared_search.update!(status: "running", progress: { "stage" => "searching" })
+      I18n.with_locale(@prepared_search.locale) do
+        @prepared_search.update!(status: "running", progress: { "stage" => "searching" })
 
-      manifest = Manifest.load(cache_store: @cache_store)
-      runner = Runner.new(query: @query, manifest: manifest, cache_store: @cache_store)
+        manifest = Manifest.load(cache_store: @cache_store)
+        runner = Runner.new(query: @query, manifest: manifest, cache_store: @cache_store)
 
-      output_dir = @prepared_search.output_dir
-      result_csv = output_dir.join("results.csv")
-      flashcard_csv = output_dir.join("flashcards.csv")
-      metadata_json = output_dir.join("metadata.json")
-      zip_path = output_dir.join("corpus_search_#{@prepared_search.id}.zip")
+        output_dir = @prepared_search.output_dir
+        result_csv = output_dir.join("results.csv")
+        flashcard_csv = output_dir.join("flashcards.csv")
+        metadata_json = output_dir.join("metadata.json")
+        zip_path = output_dir.join("corpus_search_#{@prepared_search.id}.zip")
 
-      hit_count = write_streamed_csvs(result_csv, flashcard_csv, runner)
-      write_metadata(metadata_json, hit_count)
-      write_zip(zip_path, result_csv, flashcard_csv, metadata_json)
+        hit_count = write_streamed_csvs(result_csv, flashcard_csv, runner)
+        write_metadata(metadata_json, hit_count)
+        write_zip(zip_path, result_csv, flashcard_csv, metadata_json)
 
-      @prepared_search.update!(
-        status: "complete",
-        progress: {
-          "stage" => "complete",
-          "hits_found" => hit_count
-        },
-        outputs: {
-          "zip_path" => zip_path.to_s,
-          "hit_count" => hit_count
-        }
-      )
+        @prepared_search.update!(
+          status: "complete",
+          progress: {
+            "stage" => "complete",
+            "hits_found" => hit_count
+          },
+          outputs: {
+            "zip_path" => zip_path.to_s,
+            "hit_count" => hit_count
+          }
+        )
 
-      zip_path
+        zip_path
+      end
     rescue StandardError => e
       @prepared_search.update!(status: "failed", progress: { "stage" => "failed" }, error_message: "#{e.class}: #{e.message}")
       raise
@@ -118,8 +120,8 @@ module CorpusSearch
       tags = ["corpus", tag_value("target", target), tag_value("period", hit["period"]), tag_value("nation", hit["nation"])].compact.join(" ")
 
       [
-        "Translate or explain #{target} in context:\n#{hit["snippet"]}",
-        "Target: #{target}\nSource: #{source}",
+        I18n.t("corpus_search.export.flashcards.front", target: target, snippet: hit["snippet"]),
+        I18n.t("corpus_search.export.flashcards.back", target: target, source: source),
         target,
         hit["snippet"],
         source,
@@ -144,9 +146,9 @@ module CorpusSearch
           "flashcards_csv" => FLASHCARD_COLUMNS
         },
         "notes" => [
-          "Blank year_start/year_end cells mean that the corpus metadata did not contain parseable year data.",
-          "Offsets are character offsets into the body text after front matter is removed.",
-          "The source .txt files remain the canonical corpus; this export is derived search output."
+          I18n.t("corpus_search.export.metadata_notes.blank_years"),
+          I18n.t("corpus_search.export.metadata_notes.offsets"),
+          I18n.t("corpus_search.export.metadata_notes.canonical_source")
         ]
       }
 

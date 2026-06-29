@@ -1,22 +1,22 @@
-<% content_for :title, "Kangxi radicals" %>
+<% content_for :title, t("dictionary.kangxi.title") %>
 
 <% content_for :rightbar do %>
-  <h3>View options</h3>
+  <h3><%= t("view_options.heading") %></h3>
   <%= render "shared/view_options_rightbar" %>
 <% end %>
 
-<h1>Kangxi radicals</h1>
+<h1><%= t("dictionary.kangxi.title") %></h1>
 
 <p>
-	Browse characters by Kangxi radical using Unihan <code>kRSUnicode</code>. 
+  <%= t("dictionary.kangxi.browse_intro_html", field: tag.code("kRSUnicode")) %>
 </p>
 
 <p>
-	Kangxi Radicals (康熙部首) were first promulgated in 1615 by Mei Yingzuo 梅膺祚 in the dictionary Zihui 字彙. They are a system of categorisation for characters based on one of their visually prominent components; these are usually the semantic components that carry meaning. 
+  <%= t("dictionary.kangxi.history_html") %>
 </p>
 
 <p>
-	Kangxi Radicals are not the same as Shuowen Jiezi's categories, which were more about shared graphical elements rather than a consistent broader set of strokes forming a semantically or phonetically meaningful component. 
+  <%= t("dictionary.kangxi.comparison") %>
 </p>
 
 <div class="kangxi-radicals-grid">

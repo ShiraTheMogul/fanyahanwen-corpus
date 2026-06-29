@@ -2,45 +2,45 @@
 <% def_param = (@def_source.presence || params[:def].presence || "guangyun").to_s %>
 
 <p style="margin: 0 0 6px 0;">
-  Total characters: <%= @total %>. Page <%= @page %>. Per page: <%= @per %>.
+  <%= t("dictionary.common.total_characters_page_per_page", total: @total, page: @page, per: @per) %>
 </p>
 
 <div style="display:flex; gap: 12px; align-items:center; flex-wrap:wrap; margin: 6px 0 12px 0;">
   <% if @page > 1 %>
-    <%= link_to "← Prev",
+    <%= link_to t("dictionary.common.previous"),
       dictionary_guangyun_category_chars_path(category: category_param, page: @page - 1, per: @per, def: def_param),
       data: { turbo_frame: "guangyun_chars" } %>
   <% end %>
 
   <% if (@page * @per) < @total %>
-    <%= link_to "Next →",
+    <%= link_to t("dictionary.common.next"),
       dictionary_guangyun_category_chars_path(category: category_param, page: @page + 1, per: @per, def: def_param),
       data: { turbo_frame: "guangyun_chars" } %>
   <% end %>
 
   <span style="opacity:0.75;">
-    Jump:
+    <%= t("dictionary.common.jump") %>
     <%= link_to "50",  dictionary_guangyun_category_chars_path(category: category_param, page: @page, per: 50,  def: def_param), data: { turbo_frame: "guangyun_chars" } %> |
     <%= link_to "100", dictionary_guangyun_category_chars_path(category: category_param, page: @page, per: 100, def: def_param), data: { turbo_frame: "guangyun_chars" } %> |
     <%= link_to "200", dictionary_guangyun_category_chars_path(category: category_param, page: @page, per: 200, def: def_param), data: { turbo_frame: "guangyun_chars" } %>
   </span>
 
-  <span style="opacity:0.7;">(<%= @total %> total)</span>
+  <span style="opacity:0.7;"><%= t("dictionary.common.total_count", total: @total) %></span>
 </div>
 
 <table style="width:100%; border-collapse: collapse;">
   <thead>
     <tr>
-      <th style="text-align:left; padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.15);">Char</th>
-      <th style="text-align:left; padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.15);">Fanqie</th>
-      <th style="text-align:left; padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.15);">BS2014 (MC)</th>
-      <th style="text-align:left; padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.15);">Stimson 1976 (kTang)</th>
-      <th style="text-align:left; padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.15);">Mandarin</th>
-      <th style="text-align:left; padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.15);">Japanese</th>
-      <th style="text-align:left; padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.15);">Korean</th>
-      <th style="text-align:left; padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.15);">Vietnamese</th>
+      <th style="text-align:left; padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.15);"><%= t("dictionary.guangyun.table_character") %></th>
+      <th style="text-align:left; padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.15);"><%= t("dictionary.common.fanqie") %></th>
+      <th style="text-align:left; padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.15);"><%= t("dictionary.guangyun.bs2014_mc") %></th>
+      <th style="text-align:left; padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.15);"><%= t("dictionary.guangyun.stimson_ktang") %></th>
+      <th style="text-align:left; padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.15);"><%= t("dictionary.common.mandarin") %></th>
+      <th style="text-align:left; padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.15);"><%= t("dictionary.common.japanese") %></th>
+      <th style="text-align:left; padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.15);"><%= t("dictionary.common.korean") %></th>
+      <th style="text-align:left; padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.15);"><%= t("dictionary.common.vietnamese") %></th>
       <th style="text-align:left; padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.15);">
-        <%= def_param == "unihan" ? "Unihan definition" : "Guangyun definition" %>
+        <%= def_param == "unihan" ? t("dictionary.common.unihan_definition") : t("dictionary.common.guangyun_definition") %>
       </th>
     </tr>
   </thead>

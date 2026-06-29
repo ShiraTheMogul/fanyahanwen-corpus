@@ -1,0 +1,175 @@
+# PLACEHOLDER CATALOGUE: translate values only; do not rename keys.
+hsn:
+  fun:
+    title: Fun
+    introduction: This section contains games involving Han characters for people who want to bring a gamified perspective
+      to their learning.
+    actions:
+      play: Play
+      pause: Pause
+      step: Step
+      reset: Reset
+      undo: Undo
+    xuanji:
+      name_han: 璇璣圖
+      name: Xuanji Tu
+      summary: Su Hui’s Xuanji Tu is a 29×29 brocade palindrome-poem. This page lets you explore it as a coloured
+        grid, then apply reading rules (paths) that extract lines and stanzas.
+      description: This is the 29×29 brocade palindrome-poem attributed to 蘇蕙. Pick a reading rule below to trace
+        a path through the grid and extract text.
+      variant: Variant
+      traditional: Traditional
+      simplified: Simplified
+      grid_aria: Xuanji Tu character grid
+      extracted_text: Extracted text
+      controls:
+        rule: Rule
+        line_length: Line length
+        speed_ms: Speed (ms)
+        couplets_comma: Couplets → comma
+        show_phoneticization: Show phoneticization
+        reading_system: Reading system
+        clear_manual: Clear manual
+      rules:
+        manual: Manual selection
+        rows_lr: 'Rows: L→R'
+        rows_rl: 'Rows: R→L'
+        cols_tb: 'Columns: T→B'
+        cols_bt: 'Columns: B→T'
+        snake_rows: Snake rows
+        snake_cols: Snake columns
+        kang_perimeter: 'Kang: Perimeter (outer ring)'
+        kang_boundary: 'Kang: Boundary (inner ring)'
+      errors:
+        sync_simplified_only: Colour synchronisation applies only to the simplified grid.
+        no_matching_traditional_grid: No matching traditional grid was found.
+      readings:
+        mandarin: Mandarin (Unihan kMandarin)
+        cantonese: Cantonese (Unihan kCantonese)
+        tang: Tang pronunciation (kTang)
+        fanqie: Fanqie (kFanqie)
+      rightbar:
+        title: Xuanji output
+        remove_punctuation: Remove punctuation
+        note: This affects the extracted output only, not the SVG grid. It uses the same punctuation-stripping logic
+          as the Corpus Viewer.
+    xiangqi:
+      name_han: 象棋
+      name: Xiangqi
+      icon_alt: Xiangqi elephant-piece icon
+      summary: Xiangqi is a Chinese strategy game derived from chaturanga. Cannons, advisors, elephants, the palace,
+        and the river give it movement rules unlike western chess.
+      implementation_html: This is an ASCII representation of Xiangqi inspired by Andrew West’s work at %{babelstone_link}.
+        The output can be copied for correspondence games.
+      themes:
+        colour: Colour
+        mono: Mono
+        grid: Grid
+      sides:
+        red_han: 紅
+        black_han: 黑
+        red: Red
+        black: Black
+      to_move: to move
+      status:
+        check: check
+        checkmate: checkmate
+        stalemate: stalemate
+      board:
+        pretty_aria: Xiangqi board (pretty view)
+        grid_aria: Xiangqi board (grid view)
+        hint: Click a piece to see legal moves. Palace squares are shaded.
+      actions:
+        copy_iccs_replay: Copy ICCS (replay)
+        copy_chinese: Copy 中文
+        copy_current_fen: Copy current FEN
+        play_move: Play move
+      transcripts:
+        chinese_label: 中文
+        aria_label: Move transcripts
+        iccs_replay: ICCS line (replay)
+        copy_iccs_markers: Copy ICCS with check markers (+/#)
+        chinese_line: 中文 line
+        detailed_ply_list: Detailed ply list
+        fen_after: FEN (after)
+        no_moves: No moves yet.
+      move:
+        label: Move
+        placeholder: h2e2 | 炮二平五 | C8=7 | 炮八平七 砲8平3
+      fen: FEN
+      last_move: Last move
+      font_information: Font Information
+      errors:
+        advisor_diagonal: Advisor moves 1 diagonally.
+        advisor_palace: Advisor must stay inside the palace.
+        bad_file_token: 'Bad file token: %{token}'
+        bad_square: Bad square.
+        bad_step_token: 'Bad step token: %{token}'
+        cannon_line_invalid: Cannon line is invalid.
+        cannon_no_jump: Cannon cannot jump when not capturing.
+        cannon_one_screen: Cannon capture requires exactly one screen.
+        cannon_straight: Cannon must move in a straight line.
+        capture_own_piece: You cannot capture your own piece.
+        chariot_blocked: Chariot is blocked.
+        chariot_straight: Chariot must move in a straight line.
+        chinese_format: Chinese must look like 炮二平五 or 馬8進7.
+        elephant_blocked: Elephant eye is blocked.
+        elephant_diagonal: Elephant moves exactly 2 diagonally.
+        elephant_river: Elephant cannot cross the river.
+        enter_move: Enter a move (e.g. h2e2, 炮二平五, C8=7, 炮(32)-35).
+        fen_ten_ranks: FEN must have 10 ranks
+        general_orthogonal: General moves 1 orthogonally.
+        general_palace: General must stay inside the palace.
+        generals_face: 'Illegal: the two generals would face each other.'
+        horse_blocked: Horse leg is blocked.
+        horse_shape: Horse moves 1 then 2 (an L shape).
+        iccs_format: ICCS must look like h2e2 (files a-i, ranks 0-9).
+        illegal_move: Illegal move.
+        leaves_general_in_check: Move leaves your general in check.
+        move_out_of_bounds: Move is out of bounds.
+        multiple_files_ambiguous: Multiple files have multiple %{piece}; +/− is ambiguous.
+        multiple_pieces_on_file: 'Ambiguous: multiple %{piece} on that file.'
+        need_two_pieces: Need at least 2 %{piece} on that file for +/−.
+        no_file_with_multiple: No file has multiple %{piece} for +/−.
+        no_piece_on_file: No %{piece} found on that file.
+        no_piece_source: No piece at source.
+        no_piece_source_square: No piece at source square.
+        not_your_turn: Not your turn.
+        nothing_to_undo: Nothing to undo.
+        rank_nine_files: Rank must sum to 9 files
+        rank_too_long: Rank too long
+        romanised_format: Romanised must look like C8=7 or H8+7.
+        same_square: Source and target are the same square.
+        soldier_move: Soldier moves 1 forward (and sideways only after crossing the river).
+        soldier_sideways: Soldier cannot move sideways before crossing the river.
+        system1_files: System 1 files must be 1..9.
+        system1_format: System 1 must look like 炮(32)-35.
+        system1_ranks: System 1 ranks must be 1..10.
+        system3_ambiguous: 'Ambiguous System 3 move (needs disambiguation): %{token}'
+        system3_bad_destination: 'Bad System 3 destination in: %{token}'
+        system3_no_source: 'No matching source found for System 3 move: %{token}'
+        system3_unknown_piece: 'Unknown piece in System 3: %{piece}'
+        unknown_piece: 'Unknown piece: %{piece}'
+        unknown_piece_abbreviation: 'Unknown piece abbreviation: %{abbreviation}'
+        unknown_piece_type: Unknown piece type.
+        unrecognised_move: 'Unrecognised move token: %{token}. Try h2e2, 炮二平五, C8=7, or 炮(32)-35.'
+      font:
+        license_summary: BabelStone Xiangqi is licensed under the SIL Open Font License 1.1. You may use, redistribute,
+          and modify it for personal or commercial purposes, provided that the font is not sold by itself and a
+          modified font does not use “BabelStone” in its name.
+        license_link: Licence text
+        copyright: 'Copyright © 2013 Andrew West (www.babelstone.co.uk); Reserved Font Name: BabelStone.'
+        license_notice_html: This font software is licensed under the %{faq_link}; the linked page also provides
+          a FAQ.
+  javascript:
+    fun:
+      xuanji:
+        play: Play
+        pause: Pause
+      xiangqi:
+        copied: Copied
+        clipboard_blocked: Clipboard blocked — text placed in input.
+        not_selectable: Not selectable.
+        selected_piece: 'Selected: %{piece}. Click a highlighted square to move.'
+        legal_moves_failed: Failed to query legal moves.
+        square_aria: square %{x},%{y}

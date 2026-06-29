@@ -1,4 +1,6 @@
-<h1>象棋 Xiangqi<%= image_tag("xiang.png") %></h1>
+<h1>
+  <% if show_han_ornament? %><%= t("fun.xiangqi.name_han") %> <% end %><%= translated_interface_label("fun.xiangqi.name", ornament_key: "fun.xiangqi.name_han") %><%= image_tag("xiang.png", alt: t("fun.xiangqi.icon_alt")) %>
+</h1>
 
 <% if flash[:alert] %>
   <div class="xq-alert"><%= flash[:alert] %></div>
@@ -13,24 +15,24 @@
   <div class="xiangqi-toolbar">
     <button type="button" class="xq-btn <%= @theme == "colour" ? "is-active" : "" %>"
             data-action="click->xiangqi-board#pickTheme" data-theme="colour">
-      Colour
+      <%= t("fun.xiangqi.themes.colour") %>
     </button>
     <button type="button" class="xq-btn <%= @theme == "mono" ? "is-active" : "" %>"
             data-action="click->xiangqi-board#pickTheme" data-theme="mono">
-      Mono
+      <%= t("fun.xiangqi.themes.mono") %>
     </button>
     <button type="button" class="xq-btn <%= @theme == "grid" ? "is-active" : "" %>"
             data-action="click->xiangqi-board#pickTheme" data-theme="grid">
-      Grid
+      <%= t("fun.xiangqi.themes.grid") %>
     </button>
 
     <span class="xq-spacer"></span>
 
-    <%= button_to "Undo", "/xiangqi/undo",
+    <%= button_to t("fun.actions.undo"), "/xiangqi/undo",
           form: { data: { turbo: false } },
           class: "xq-btn" %>
 
-    <%= button_to "Reset", "/xiangqi/reset",
+    <%= button_to t("fun.actions.reset"), "/xiangqi/reset",
           form: { data: { turbo: false } },
           class: "xq-btn" %>
   </div>
@@ -41,16 +43,18 @@
         <% is_red = (@side_to_move.to_s == "red") %>
         <div class="xq-turnbadge <%= is_red ? "is-red" : "is-black" %>">
           <span class="xq-turndot" aria-hidden="true"></span>
-          <span class="xq-turnhan"><%= is_red ? "红" : "黑" %></span>
-          <span class="xq-turnen"><%= is_red ? "Red" : "Black" %></span>
-          <span class="xq-turnsmall">to move</span>
+          <% if show_han_ornament? %>
+            <span class="xq-turnhan"><%= is_red ? t("fun.xiangqi.sides.red_han") : t("fun.xiangqi.sides.black_han") %></span>
+          <% end %>
+          <span class="xq-turnen"><%= is_red ? t("fun.xiangqi.sides.red") : t("fun.xiangqi.sides.black") %></span>
+          <span class="xq-turnsmall"><%= t("fun.xiangqi.to_move") %></span>
         </div>
 
         <% if @status && @status != :ok %>
           <div class="xq-statusline">
-            <% if @status == :check %><span class="xq-status xq-status-check">check</span><% end %>
-            <% if @status == :checkmate %><span class="xq-status xq-status-mate">checkmate</span><% end %>
-            <% if @status == :stalemate %><span class="xq-status xq-status-mate">stalemate</span><% end %>
+            <% if @status == :check %><span class="xq-status xq-status-check"><%= t("fun.xiangqi.status.check") %></span><% end %>
+            <% if @status == :checkmate %><span class="xq-status xq-status-mate"><%= t("fun.xiangqi.status.checkmate") %></span><% end %>
+            <% if @status == :stalemate %><span class="xq-status xq-status-mate"><%= t("fun.xiangqi.status.stalemate") %></span><% end %>
           </div>
         <% end %>
       </div>
@@ -59,7 +63,7 @@
         <!-- Pretty board (BabelStone font) -->
         <div class="xq-pretty-wrap <%= @theme == "grid" ? "is-hidden" : "" %>"
              data-xiangqi-board-target="prettyWrap"
-             aria-label="Xiangqi board (pretty view)">
+             aria-label="<%= t("fun.xiangqi.board.pretty_aria") %>">
           <pre class="xiangqi-board <%= @theme == "mono" ? "theme-mono" : "theme-colour" %>"
                data-xiangqi-board-target="pretty"><%= @board_text %></pre>
           <div class="xq-pretty-overlay"
@@ -70,7 +74,7 @@
         <!-- Grid board (fallback/debug) -->
         <div class="xq-grid <%= @theme == "grid" ? "" : "is-hidden" %>"
              data-xiangqi-board-target="gridWrap"
-             aria-label="Xiangqi board (grid view)">
+             aria-label="<%= t("fun.xiangqi.board.grid_aria") %>">
           <div class="xq-top-label"></div>
           <% ("a".."i").each do |file| %>
             <div class="xq-top-label"><%= file %></div>
@@ -93,7 +97,7 @@
 
       <div class="xq-hintline">
         <div class="xq-hint" data-xiangqi-board-target="hint">
-          Click a piece to see legal moves. Palace squares are shaded.
+          <%= t("fun.xiangqi.board.hint") %>
         </div>
       </div>
     </div>
@@ -107,26 +111,27 @@
         <button type="button" class="xq-btn xq-btn-small"
                 data-action="click->xiangqi-board#copy"
                 data-copy-text="<%= iccs_raw_line %>">
-          Copy ICCS (replay)
+          <%= t("fun.xiangqi.actions.copy_iccs_replay") %>
         </button>
         <button type="button" class="xq-btn xq-btn-small"
                 data-action="click->xiangqi-board#copy"
                 data-copy-text="<%= zh_line %>">
-          Copy 中文
+          <%= t("fun.xiangqi.actions.copy_chinese") %>
         </button>
         <button type="button" class="xq-btn xq-btn-small"
                 data-action="click->xiangqi-board#copy"
                 data-copy-text="<%= @fen %>">
-          Copy current FEN
+          <%= t("fun.xiangqi.actions.copy_current_fen") %>
         </button>
       </div>
 
-      <div class="xq-moves" aria-label="Move transcripts">
+      <div class="xq-moves" aria-label="<%= t("fun.xiangqi.transcripts.aria_label") %>">
         <div class="xq-transcripts">
           <div class="xq-box xq-transcript-box">
             <div class="xq-box-head">
-              <span class="xq-box-title">ICCS line (replay)</span>
+              <span class="xq-box-title"><%= t("fun.xiangqi.transcripts.iccs_replay") %></span>
               <button type="button" class="xq-copy"
+                      aria-label="<%= t("common.actions.copy") %>"
                       data-action="click->xiangqi-board#copy"
                       data-copy-text="<%= iccs_raw_line %>">⧉</button>
             </div>
@@ -134,17 +139,19 @@
             <% if iccs_display_line != iccs_raw_line && iccs_display_line.present? %>
               <div class="xq-transcript-sub">
                 <button type="button" class="xq-copy"
+                        aria-label="<%= t("common.actions.copy") %>"
                         data-action="click->xiangqi-board#copy"
                         data-copy-text="<%= iccs_display_line %>">⧉</button>
-                <span class="xq-muted">Copy ICCS with check markers (+/#)</span>
+                <span class="xq-muted"><%= t("fun.xiangqi.transcripts.copy_iccs_markers") %></span>
               </div>
             <% end %>
           </div>
 
           <div class="xq-box xq-transcript-box">
             <div class="xq-box-head">
-              <span class="xq-box-title">中文 line</span>
+              <span class="xq-box-title"><%= t("fun.xiangqi.transcripts.chinese_line") %></span>
               <button type="button" class="xq-copy"
+                      aria-label="<%= t("common.actions.copy") %>"
                       data-action="click->xiangqi-board#copy"
                       data-copy-text="<%= zh_line %>">⧉</button>
             </div>
@@ -153,13 +160,13 @@
         </div>
 
         <details class="xq-details">
-          <summary>Detailed ply list</summary>
+          <summary><%= t("fun.xiangqi.transcripts.detailed_ply_list") %></summary>
           <% if @moves.any? %>
             <% @moves.each_with_index do |m, idx| %>
               <div class="xq-move-row">
                 <div class="xq-move-no"><%= idx + 1 %>.</div>
                 <div class="xq-move-side <%= m["side"] == "red" ? "is-red" : "is-black" %>">
-                  <%= m["side"] == "red" ? "红" : "黑" %>
+                  <%= m["side"] == "red" ? t("fun.xiangqi.sides.red_han") : t("fun.xiangqi.sides.black_han") %>
                 </div>
 
                 <div class="xq-move-boxes">
@@ -167,6 +174,7 @@
                     <div class="xq-box-head">
                       <span class="xq-box-title">ICCS</span>
                       <button type="button" class="xq-copy"
+                              aria-label="<%= t("common.actions.copy") %>"
                               data-action="click->xiangqi-board#copy"
                               data-copy-text="<%= m["iccs"] %>">⧉</button>
                     </div>
@@ -175,8 +183,9 @@
 
                   <div class="xq-box">
                     <div class="xq-box-head">
-                      <span class="xq-box-title">中文</span>
+                      <span class="xq-box-title"><%= t("fun.xiangqi.transcripts.chinese_label") %></span>
                       <button type="button" class="xq-copy"
+                              aria-label="<%= t("common.actions.copy") %>"
                               data-action="click->xiangqi-board#copy"
                               data-copy-text="<%= m["zh"] %>">⧉</button>
                     </div>
@@ -185,8 +194,9 @@
 
                   <div class="xq-box xq-box-wide">
                     <div class="xq-box-head">
-                      <span class="xq-box-title">FEN (after)</span>
+                      <span class="xq-box-title"><%= t("fun.xiangqi.transcripts.fen_after") %></span>
                       <button type="button" class="xq-copy"
+                              aria-label="<%= t("common.actions.copy") %>"
                               data-action="click->xiangqi-board#copy"
                               data-copy-text="<%= m["fen"] %>">⧉</button>
                     </div>
@@ -196,33 +206,33 @@
               </div>
             <% end %>
           <% else %>
-            <div class="xq-muted" style="margin-top: 8px;">No moves yet.</div>
+            <div class="xq-muted" style="margin-top: 8px;"><%= t("fun.xiangqi.transcripts.no_moves") %></div>
           <% end %>
         </details>
       </div>
 
       <div class="xq-compose">
         <%= form_with url: "/xiangqi/move", method: :post, data: { turbo: false }, html: { class: "xq-moveform", "data-xiangqi-board-target": "moveForm" } do %>
-          <label class="xq-label" for="xq-move"><strong>Move:</strong></label>
+          <label class="xq-label" for="xq-move"><strong><%= t("fun.xiangqi.move.label") %>:</strong></label>
           <input id="xq-move"
                  name="move"
                  type="text"
                  class="xq-input"
-                 placeholder="h2e2 | 炮二平五 | C8=7 | 炮八平七 砲8平3"
+                 placeholder="<%= t("fun.xiangqi.move.placeholder") %>"
                  data-xiangqi-board-target="moveInput">
-          <button type="submit" class="xq-btn">Play</button>
+          <button type="submit" class="xq-btn"><%= t("fun.xiangqi.actions.play_move") %></button>
         <% end %>
       </div>
 
       <div class="xq-meta">
-        <div><strong>FEN:</strong> <code class="xq-code xq-code-ellip"><%= @fen %></code></div>
+        <div><strong><%= t("fun.xiangqi.fen") %>:</strong> <code class="xq-code xq-code-ellip"><%= @fen %></code></div>
 
         <div>
-          <strong>Last move:</strong>
+          <strong><%= t("fun.xiangqi.last_move") %>:</strong>
           <% if @last_move %>
             ICCS <code><%= @last_move["iccs"] %></code>
             <span class="xq-muted">|</span>
-            中文 <code><%= @last_move["zh"] %></code>
+            <%= t("fun.xiangqi.transcripts.chinese_label") %> <code><%= @last_move["zh"] %></code>
           <% else %>
             <span class="xq-muted">—</span>
           <% end %>
@@ -231,21 +241,12 @@
     </aside>
   </div>
   
-  <h2>Font Information</h2>
-<p>
-BabelStone Xiangqi is licensed under the SIL Open Font License 1.1, which means you are free to use it for personal or commercial purposes, and to redistribute it by itself or as part of a free or commercial software package, just as long as you do not sell the font on its own. The license also allows you to modify the font in any way you like, as long as the modified font does not use "BabelStone" in its name. 
-</p>
-<p>
-https://www.babelstone.co.uk/Fonts/Xiangqi.html
-https://www.babelstone.co.uk/Fonts/BabelStoneOFL.txt
-</p>
-<p>
-Copyright (c) 2013, Andrew West (www.babelstone.co.uk),
-with Reserved Font Name BabelStone.
-</p>
-<p>
-This Font Software is licensed under the SIL Open Font License, Version 1.1.
-This license is copied below, and is also available with a FAQ at:
-http://scripts.sil.org/OFL
-</p>
+  <h2><%= t("fun.xiangqi.font_information") %></h2>
+  <p><%= t("fun.xiangqi.font.license_summary") %></p>
+  <p>
+    <%= link_to "BabelStone Xiangqi", "https://www.babelstone.co.uk/Fonts/Xiangqi.html" %><br>
+    <%= link_to t("fun.xiangqi.font.license_link"), "https://www.babelstone.co.uk/Fonts/BabelStoneOFL.txt" %>
+  </p>
+  <p><%= t("fun.xiangqi.font.copyright") %></p>
+  <p><%= t("fun.xiangqi.font.license_notice_html", faq_link: link_to("SIL Open Font License 1.1", "http://scripts.sil.org/OFL")).html_safe %></p>
 </div>

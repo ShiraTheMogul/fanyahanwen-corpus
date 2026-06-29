@@ -1,0 +1,165 @@
+lzh:
+  fun:
+    title: 遊戲
+    introduction: 此門收涉漢字之戲，俾學者寓學於戲。
+    actions:
+      play: 演示
+      pause: 暫停
+      step: 步進
+      reset: 重置
+      undo: 撤回
+    xuanji:
+      name_han: 璇璣圖
+      name: 璇璣圖
+      summary: 蘇蕙《璇璣圖》，錦織回文詩也，縱橫皆二十九字。此頁以彩格列之，可擇讀式循徑取句成章。
+      description: 此乃傳蘇蕙所作之二十九行二十九列錦織回文詩。擇下列讀式，循格成徑而取文。
+      variant: 字形
+      traditional: 正體
+      simplified: 簡體
+      grid_aria: 璇璣圖字格
+      extracted_text: 所取之文
+      controls:
+        rule: 讀式
+        line_length: 每行字數
+        speed_ms: 速度（毫秒）
+        couplets_comma: 對句以逗號相接
+        show_phoneticization: 示讀音
+        reading_system: 讀音體系
+        clear_manual: 清除手選
+      rules:
+        manual: 手選
+        rows_lr: 橫行：自左而右
+        rows_rl: 橫行：自右而左
+        cols_tb: 縱列：自上而下
+        cols_bt: 縱列：自下而上
+        snake_rows: 橫行蛇行
+        snake_cols: 縱列蛇行
+        kang_perimeter: 康氏：外周（外圈）
+        kang_boundary: 康氏：界線（內圈）
+      errors:
+        sync_simplified_only: 色彩同步惟施於簡體字格。
+        no_matching_traditional_grid: 未得相應之正體字格。
+      readings:
+        mandarin: 官話（Unihan kMandarin）
+        cantonese: 粵語（Unihan kCantonese）
+        tang: 唐音（kTang）
+        fanqie: 反切（kFanqie）
+      rightbar:
+        title: 璇璣輸出
+        remove_punctuation: 去標點
+        note: 惟及所取之文，不及SVG字格；所用去標點之法與語料庫閱覽器同。
+    xiangqi:
+      name_han: 象棋
+      name: 象棋
+      icon_alt: 象棋「象」子圖標
+      summary: 象棋，本出印度恰圖蘭卡之策戲也。其有炮、士、象、九宮、楚河，故行棋之法與西洋棋異。
+      implementation_html: 此為象棋之ASCII圖示，取法Andrew West於%{babelstone_link}所製者。其輸出可謄，便於通信對弈。
+      themes:
+        colour: 彩色
+        mono: 單色
+        grid: 方格
+      sides:
+        red_han: 紅
+        black_han: 黑
+        red: 紅方
+        black: 黑方
+      to_move: 行棋
+      status:
+        check: 將軍
+        checkmate: 將死
+        stalemate: 困斃
+      board:
+        pretty_aria: 象棋盤（字形圖）
+        grid_aria: 象棋盤（方格圖）
+        hint: 按棋子以見可行之步；九宮之格有陰影。
+      actions:
+        copy_iccs_replay: 謄錄ICCS（重演）
+        copy_chinese: 謄錄中文
+        copy_current_fen: 謄錄今局FEN
+        play_move: 行棋
+      transcripts:
+        chinese_label: 中文
+        aria_label: 棋譜
+        iccs_replay: ICCS棋譜（重演）
+        copy_iccs_markers: 謄錄含將軍標記（+/#）之ICCS棋譜
+        chinese_line: 中文棋譜
+        detailed_ply_list: 各步詳表
+        fen_after: 行後FEN
+        no_moves: 尚未行棋。
+      move:
+        label: 棋步
+        placeholder: h2e2 | 炮二平五 | C8=7 | 炮八平七 砲8平3
+      fen: FEN
+      last_move: 前一步
+      font_information: 字體詳情
+      errors:
+        advisor_diagonal: 士斜行一格。
+        advisor_palace: 士不得出九宮。
+        bad_file_token: 列號「%{token}」不合。
+        bad_square: 方格不合。
+        bad_step_token: 步數「%{token}」不合。
+        cannon_line_invalid: 炮路不合。
+        cannon_no_jump: 炮不取子則不得越子。
+        cannon_one_screen: 炮取子須隔一子為炮架。
+        cannon_straight: 炮須直行。
+        capture_own_piece: 不得取己方之子。
+        chariot_blocked: 車路有阻。
+        chariot_straight: 車須直行。
+        chinese_format: 中文棋步當如「炮二平五」或「馬8進7」。
+        elephant_blocked: 象眼受塞。
+        elephant_diagonal: 象行田字。
+        elephant_river: 象不得過河。
+        enter_move: 請輸入棋步（如h2e2、炮二平五、C8=7、炮(32)-35）。
+        fen_ten_ranks: FEN須有十橫行。
+        general_orthogonal: 將帥須直行一格。
+        general_palace: 將帥不得出九宮。
+        generals_face: 此步不可：將帥相對而無間子。
+        horse_blocked: 馬腿受塞。
+        horse_shape: 馬行日字。
+        iccs_format: ICCS當如h2e2（列a至i，行0至9）。
+        illegal_move: 此步不合棋規。
+        leaves_general_in_check: 此步使己方將帥受將軍。
+        move_out_of_bounds: 此步出棋盤。
+        multiple_files_ambiguous: 有數列各具數枚%{piece}；+/−之義不明。
+        multiple_pieces_on_file: 一列有數枚%{piece}，未可定。
+        need_two_pieces: 該列至少須有二枚%{piece}，方可用+/−。
+        no_file_with_multiple: 無一列有數枚%{piece}，不可用+/−。
+        no_piece_on_file: 該列無%{piece}。
+        no_piece_source: 起格無子。
+        no_piece_source_square: 起格無棋子。
+        not_your_turn: 未輪此方。
+        nothing_to_undo: 無步可撤。
+        rank_nine_files: 每橫行須合九列。
+        rank_too_long: 橫行過長。
+        romanised_format: 羅馬字棋步當如C8=7或H8+7。
+        same_square: 起格與止格相同。
+        soldier_move: 兵卒前行一格；過河後始可橫行。
+        soldier_sideways: 兵卒未過河不得橫行。
+        system1_files: 第一制列號須在1至9。
+        system1_format: 第一制棋步當如炮(32)-35。
+        system1_ranks: 第一制行號須在1至10。
+        system3_ambiguous: 第三制棋步「%{token}」未可定，須別之。
+        system3_bad_destination: 第三制棋步「%{token}」之止格不合。
+        system3_no_source: 第三制棋步「%{token}」未得相應起子。
+        system3_unknown_piece: 第三制有未識之棋子：%{piece}。
+        unknown_piece: 未識棋子：%{piece}。
+        unknown_piece_abbreviation: 未識棋子略號：%{abbreviation}。
+        unknown_piece_type: 未識棋子之類。
+        unrecognised_move: 未識棋步「%{token}」。可試h2e2、炮二平五、C8=7或炮(32)-35。
+      font:
+        license_summary: BabelStone Xiangqi奉SIL開放字體授權1.1版而行。可供私用、商用、轉布及改作；惟不得單售字體，改作之字體亦不得以「BabelStone」為名。
+        license_link: 授權全文
+        copyright: 版權所有 © 2013 Andrew West（www.babelstone.co.uk）；保留字體名稱：BabelStone。
+        license_notice_html: 此字體軟件奉%{faq_link}而行；所鏈頁亦備答問。
+  javascript:
+    fun:
+      xuanji:
+        play: 演示
+        pause: 暫停
+      xiangqi:
+        copied: 已謄錄
+        clipboard_blocked: 剪貼簿受阻；文字已置於輸入欄。
+        not_selectable: 此子不可選。
+        selected_piece: 已選%{piece}；按亮示方格以行棋。
+        legal_moves_failed: 未能查可行之步。
+        square_aria: 方格%{x},%{y}

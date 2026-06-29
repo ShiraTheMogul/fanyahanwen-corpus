@@ -119,9 +119,17 @@ zha:
       heading: Metadata
       aria_label: Text metadata
       wikisource: 维基文库
+      time_location: Time and/or location
+      category: Category
+      work: Work
+      page_title: Page title
+      author: Author
     punctuation:
       dialog_aria: Punctuation options
       heading: Punctuation options
+      menu:
+        punctuation: "Punctuation"
+        underlining: "Underlining"
       preset:
         heading: Preset
         source: Source
@@ -282,3 +290,6 @@ zha:
       save_key: Save this ticket key on this device
       save_key_hint: Unchecked by default. The key is otherwise shown once and is
         not stored by the browser.
+    errors:
+      not_found: Not found.
+      bad_path: Bad path.

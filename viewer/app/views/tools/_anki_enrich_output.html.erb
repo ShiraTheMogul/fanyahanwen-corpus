@@ -3,30 +3,37 @@
     <p><em><%= h(message) %></em></p>
   <% else %>
     <p>
-      Updated <strong><%= updated_count %></strong> of <strong><%= note_count %></strong> note rows.
-      Target field: <strong><%= target_field_number %></strong>.
-      Source field: <strong><%= source_field_number %></strong>.
-      Mode: <strong><%= h(append_mode) %></strong>.
+      <%= t(
+            "tools.anki.output.summary_html",
+            updated_count: updated_count,
+            note_count: note_count,
+            target_field: target_field_number,
+            source_field: source_field_number,
+            mode: t("tools.anki.modes.#{append_mode}")
+          ) %>
     </p>
 
     <p>
-      Detected fields per note: <strong><%= detected_field_count || 0 %></strong>.
-      Highest metadata field marker: <strong><%= metadata_max_field || 0 %></strong>.
-      Non-empty target fields before enrichment: <strong><%= target_nonempty_count %></strong>.
-      Changed rows where the target already had content: <strong><%= changed_with_existing_target_count %></strong>.
-      Skipped rows: <strong><%= skipped_count %></strong>.
+      <%= t(
+            "tools.anki.output.details_html",
+            detected_fields: detected_field_count || 0,
+            metadata_field: metadata_max_field || 0,
+            nonempty_targets: target_nonempty_count,
+            changed_existing: changed_with_existing_target_count,
+            skipped: skipped_count
+          ) %>
     </p>
 
     <% if sample_html.present? %>
       <details open>
-        <summary>Preview of inserted HTML</summary>
+        <summary><%= t("tools.anki.output.inserted_html_preview") %></summary>
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 1em; margin-top: 0.75em;">
           <div>
-            <p><strong>Raw HTML</strong></p>
+            <p><strong><%= t("tools.anki.output.raw_html") %></strong></p>
             <pre class="tool-output" style="white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word;"><%= h(sample_html) %></pre>
           </div>
           <div>
-            <p><strong>Rendered HTML</strong></p>
+            <p><strong><%= t("tools.anki.output.rendered_html") %></strong></p>
             <div style="border:1px solid #ccc; padding:0.75em; min-height:8em; overflow-wrap:anywhere; word-break:break-word;">
               <%= sample_html.html_safe %>
             </div>
@@ -35,11 +42,14 @@
       </details>
     <% end %>
 
-    <h3>Preview table</h3>
+    <h3><%= t("tools.anki.output.preview_table") %></h3>
     <p>
-      Showing up to <strong><%= preview_limit %></strong> rows starting at preview row <strong><%= preview_start %></strong> in
-      <strong><%= preview_mode == "full_rows" ? "full rows" : "changed rows only" %></strong> mode.
-      Click a field preview to inspect the full content below.
+      <%= t(
+            "tools.anki.output.preview_description_html",
+            limit: preview_limit,
+            start: preview_start,
+            mode: preview_mode == "full_rows" ? t("tools.anki.full_rows") : t("tools.anki.changed_only")
+          ) %>
     </p>
 
     <% if preview_rows.present? %>
@@ -49,19 +59,20 @@
           <table style="width: 100%; border-collapse: collapse; margin-bottom: 1em; table-layout: fixed;">
             <thead>
               <tr>
-                <th style="text-align:left; border-bottom:1px solid #ccc; padding:0.35em; width:4.5em;">Row</th>
-                <th style="text-align:left; border-bottom:1px solid #ccc; padding:0.35em; width:12em;">GUID</th>
-                <th style="text-align:left; border-bottom:1px solid #ccc; padding:0.35em; background:#f8f8f8;">Source field <%= source_field_number %></th>
-                <th style="text-align:left; border-bottom:1px solid #ccc; padding:0.35em;">Target before</th>
-                <th style="text-align:left; border-bottom:1px solid #ccc; padding:0.35em; background:#eef7ee;">Target after</th>
-                <th style="text-align:left; border-bottom:1px solid #ccc; padding:0.35em; width:14em;">Status</th>
+                <th style="text-align:left; border-bottom:1px solid #ccc; padding:0.35em; width:4.5em;"><%= t("tools.anki.output.row") %></th>
+                <th style="text-align:left; border-bottom:1px solid #ccc; padding:0.35em; width:12em;"><%= t("tools.anki.output.guid") %></th>
+                <th style="text-align:left; border-bottom:1px solid #ccc; padding:0.35em; background:#f8f8f8;"><%= t("tools.anki.output.source_field", field: source_field_number) %></th>
+                <th style="text-align:left; border-bottom:1px solid #ccc; padding:0.35em;"><%= t("tools.anki.output.target_before") %></th>
+                <th style="text-align:left; border-bottom:1px solid #ccc; padding:0.35em; background:#eef7ee;"><%= t("tools.anki.output.target_after") %></th>
+                <th style="text-align:left; border-bottom:1px solid #ccc; padding:0.35em; width:14em;"><%= t("tools.anki.output.status") %></th>
               </tr>
             </thead>
             <tbody>
               <% preview_rows.each do |row| %>
-                <% row_style = if row[:status].start_with?("replace")
+                <% row_style = case row[:status]
+                               when :replace_existing, :replace
                                  "background:#fff4e5;"
-                               elsif row[:status].start_with?("append")
+                               when :append_existing, :append
                                  "background:#f3fbf3;"
                                else
                                  ""
@@ -70,49 +81,49 @@
                   <td style="vertical-align:top; border-bottom:1px solid #eee; padding:0.35em;"><%= row[:row_number] %></td>
                   <td style="vertical-align:top; border-bottom:1px solid #eee; padding:0.35em; overflow-wrap:anywhere; word-break:break-word;"><%= h(row[:guid].presence || "—") %></td>
                   <% [
-                       ["Source field #{source_field_number}", row[:source_before], "#f8f8f8"],
-                       ["Target field #{target_field_number} before", row[:target_before], ""],
-                       ["Target field #{target_field_number} after", row[:target_after], "#eef7ee"]
-                     ].each do |label_text, field_text, bg| %>
-                    <td style="vertical-align:top; border-bottom:1px solid #eee; padding:0.35em; background:<%= bg %>; overflow-wrap:anywhere; word-break:break-word;">
+                       [t("tools.anki.output.source_field_detail", field: source_field_number), row[:source_before], "#f8f8f8"],
+                       [t("tools.anki.output.target_before_detail", field: target_field_number), row[:target_before], ""],
+                       [t("tools.anki.output.target_after_detail", field: target_field_number), row[:target_after], "#eef7ee"]
+                     ].each do |label_text, field_text, background| %>
+                    <td style="vertical-align:top; border-bottom:1px solid #eee; padding:0.35em; background:<%= background %>; overflow-wrap:anywhere; word-break:break-word;">
                       <button type="button"
                               style="display:block; width:100%; text-align:left; border:0; background:transparent; padding:0; cursor:pointer; white-space:normal; overflow-wrap:anywhere; word-break:break-word;"
                               onclick="(function(btn){var box=btn.closest('[data-anki-preview-root]'); box.querySelector('[data-detail-label]').textContent=btn.dataset.label; box.querySelector('[data-detail-raw]').textContent=btn.dataset.raw; box.querySelector('[data-detail-rendered]').innerHTML=btn.dataset.rendered; })(this)"
-                              data-label="Row <%= row[:row_number] %> · <%= label_text %>"
+                              data-label="<%= h(t("tools.anki.output.detail_label", row: row[:row_number], field: label_text)) %>"
                               data-raw="<%= h(field_text) %>"
                               data-rendered="<%= h(field_text) %>">
                         <span style="display:block; white-space:normal; overflow-wrap:anywhere; word-break:break-word;"><%= h(truncate(field_text.to_s, length: 160)) %></span>
                       </button>
                     </td>
                   <% end %>
-                  <td style="vertical-align:top; border-bottom:1px solid #eee; padding:0.35em; overflow-wrap:anywhere; word-break:break-word;"><%= h(row[:status]) %></td>
+                  <td style="vertical-align:top; border-bottom:1px solid #eee; padding:0.35em; overflow-wrap:anywhere; word-break:break-word;"><%= h(t("tools.anki.statuses.#{row[:status]}")) %></td>
                 </tr>
               <% end %>
             </tbody>
           </table>
         </div>
 
-        <h4>Clicked field detail</h4>
-        <p data-detail-label>Row <%= initial_row[:row_number] %> · Target field <%= target_field_number %> after</p>
+        <h4><%= t("tools.anki.output.clicked_detail") %></h4>
+        <p data-detail-label><%= t("tools.anki.output.detail_label", row: initial_row[:row_number], field: t("tools.anki.output.target_after_detail", field: target_field_number)) %></p>
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 1em; align-items:start;">
           <div style="min-width:0;">
-            <p><strong>Raw field content</strong></p>
+            <p><strong><%= t("tools.anki.output.raw_field_content") %></strong></p>
             <pre data-detail-raw class="tool-output" style="white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word;"><%= h(initial_row[:target_after]) %></pre>
           </div>
           <div style="min-width:0;">
-            <p><strong>Rendered field content</strong></p>
+            <p><strong><%= t("tools.anki.output.rendered_field_content") %></strong></p>
             <div data-detail-rendered style="border:1px solid #ccc; padding:0.75em; min-height:8em; white-space: normal; overflow-wrap:anywhere; word-break:break-word;"><%= initial_row[:target_after].to_s.html_safe %></div>
           </div>
         </div>
       </div>
     <% else %>
-      <p><em>No preview rows matched the current preview settings.</em></p>
+      <p><em><%= t("tools.anki.output.no_preview_rows") %></em></p>
     <% end %>
 
     <p>
       <button type="button"
               onclick="(function(btn){ var ta = btn.parentElement.parentElement.querySelector('textarea[data-download-source]'); var blob = new Blob([ta.value], {type: 'text/plain;charset=utf-8'}); var url = URL.createObjectURL(blob); var a = document.createElement('a'); a.href = url; a.download = 'anki_enriched.txt'; document.body.appendChild(a); a.click(); document.body.removeChild(a); setTimeout(function(){ URL.revokeObjectURL(url); }, 1000); })(this)">
-        Download enriched TXT
+        <%= t("tools.anki.output.download_txt") %>
       </button>
     </p>
 

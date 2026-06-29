@@ -28,7 +28,7 @@ class CorpusSearchController < ApplicationController
       )
     end
   rescue Errno::ENOENT, ArgumentError => e
-    @search_error = e.message
+    @search_error = I18n.t("corpus_search.errors.search_failed", message: e.message)
   end
 
   def prepare
@@ -39,21 +39,21 @@ class CorpusSearchController < ApplicationController
       return
     end
 
-    prepared = CorpusSearch::PreparedSearch.create!(query: query)
+    prepared = CorpusSearch::PreparedSearch.create!(query: query, locale: I18n.locale)
     CorpusSearchJob.perform_later(prepared.id)
 
-    redirect_to prepared_search_url(prepared), notice: "The large search has been queued. You can keep using the site while it runs."
+    redirect_to prepared_search_url(prepared), notice: I18n.t("corpus_search.notices.queued")
   end
 
   def prepared
     @prepared_search = find_prepared_search
-    render plain: "Prepared search not found", status: :not_found unless @prepared_search
+    render plain: I18n.t("corpus_search.errors.prepared_not_found"), status: :not_found unless @prepared_search
   end
 
   def download
     prepared_search = find_prepared_search
     unless prepared_search&.complete? && prepared_search.zip_path&.file?
-      render plain: "Download is not ready yet", status: :not_found
+      render plain: I18n.t("corpus_search.errors.download_not_ready"), status: :not_found
       return
     end
 

@@ -10,3 +10,146 @@ lzh:
       error: '誤：%{message}'
       created: 提案已立 ✅（請留存下列提案鑰）
       copied: 已謄錄！
+    corpus_reader:
+      orientation:
+        vertical: 書寫方向：縱書
+        horizontal: 書寫方向：橫書
+      theme: 外觀：%{label}
+      themes:
+        light: 白
+        bamboo: 竹簡
+        dark: 暗
+      punctuation:
+        label: 標點
+        source: 標點：從原文
+        modern_traditional: 標點：今式正體
+        modern_prc: 標點：今式簡體
+        pure: 標點：純古式
+        strip: 標點：悉除
+        custom: 標點：自定
+      judou:
+        'on': 句讀：啟
+        'off': 句讀：閉
+      dot_color: 句讀色：%{color}
+      colors:
+        red: 赤
+        black: 黑
+        white: 白
+        blue: 青
+        yellow: 黃
+    corpus_annotations:
+      actions:
+        cancel: 罷
+        apply: 施用
+        review_submit: 審閱呈案
+        close: 閉
+        add_row: 添一列
+        create_ticket: 立提案
+        copy_key: 謄錄提案鑰
+        download_txt: 載下txt
+        open_ticket: 閱提案
+        delete: 刪
+      toggles:
+        annotations_on: 註釋：啟
+        annotations_off: 註釋：閉
+        notes_on: 註記：啟
+        notes_off: 註記：閉
+        footnotes_on: 腳註：啟
+        footnotes_off: 腳註：閉
+        annotate_on: 加註：啟
+        annotate_off: 加註：閉
+      kinds:
+        title: 題名
+        person: 人名
+        place: 地名
+        office: 官職
+        ambiguous: 疑難／有爭議之字
+        ambiguous_short: 疑難／有爭議
+        annotation: 註釋
+      popup:
+        heading: 為所選文字加註
+        no_text_selected: （未選文字）
+        note_placeholder: 註記（疑難或有爭議之字必填）
+        note_aria: 註釋之註記
+        ambiguous_explanation_required: 請述此字何以疑難或有爭議。
+      colors:
+        heading: 配色
+        preset: 成例
+        presets:
+          default: 常例
+          deuteranopia: 綠色盲
+          protanopia: 紅色盲
+          tritanopia: 藍黃色盲
+        note_marker: 註記標識
+      status:
+        add_one: 立提案前，須至少添一註釋。
+        material_note_required: 材料註記不可闕。
+        provenance_required: 須至少擇一來歷標識。
+        ai_details_required: 請述AI所襄助者。
+        ambiguous_note_required: 疑難或有爭議之字，須附註記。
+        creating: 方立提案……
+        error: 誤：%{message}
+        created: 提案已立，請留存下列提案鑰。
+      ticket:
+        heading: 審閱註釋提案
+        explanation: 此覽示將呈之註釋範圍。立提案不直改語料庫。
+        title: 題
+        default_title: 註釋纂修
+        summary: 概要
+        summary_placeholder: 所註為何？
+        reasoning: 緣由
+        reasoning_placeholder: 此註何以當存？
+        material_note: 材料註記 *
+        material_note_placeholder: 述此註釋集為何、當如何用之。
+        provenance: 來歷 *
+        provenance_hint: 凡合者悉擇之。
+        user_made: 用戶所作
+        public_domain: 公有領域
+        historical_source: 歷史原件或寫本
+        references: 引據
+        references_placeholder: 引據體例明晰一致即可。
+        ai_disclosure: AI襄助申明
+        ai_assisted: AI襄助
+        ai_what: 所襄助者何？
+        ai_placeholder: 列系統之名，並述其所為。
+        preview: 草覽
+        evidence_links: 佐證鏈
+        evidence_links_placeholder: 每行一http(s)鏈
+        evidence_files: 佐證檔
+        evidence_files_hint: 此提案至多十檔、總計二十MB；不納HTML、XHTML及SVG。
+        contact_details: 聯絡資料（選填）
+        contact_hint: 另行加密存之；三十日後或提案既結即刪。
+        name: 姓名
+        email: 電郵
+        contact_note: 聯絡附言
+        store_on_device: 於本機存此提案
+        unchecked_default: 常法不勾選。
+        ticket_id: 提案號：
+        ticket_key: 提案鑰：
+      preview:
+        none: 尚無待呈註釋。
+        kind: 類
+        start: 始
+        end: 終
+        no_text: （無文字草覽）
+        note: 註記
+    companion_material:
+      status:
+        iso_load_error: 未能載入ISO 639-3表：%{message}
+        invalid_type: 誤：材料類無效。
+        material_note_required: 誤：材料註記不可闕。
+        provenance_required: 誤：須至少擇一來歷標識。
+        ai_details_required: 誤：請述AI所襄助者。
+        language_required: 誤：請自ISO 639-3表擇語言。
+        translation_required: 誤：譯文不可闕。
+        submitting: 正呈提案……
+        error: 誤：%{message}
+        created: 提案已立，請留存下列提案鑰。
+      actions:
+        copied: 已謄錄！
+      titles:
+        translation: 呈譯文
+        gallery_image: 呈圖集材料
+        exemplar_manuscript: 呈寫本影像
+        variant_text: 立異本關聯
+        default: 呈相關材料

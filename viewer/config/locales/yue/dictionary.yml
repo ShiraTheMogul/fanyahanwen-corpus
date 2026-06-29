@@ -1,0 +1,232 @@
+# PLACEHOLDER CATALOGUE: translate values only; do not rename keys.
+yue:
+  dictionary:
+    title_han: 字典
+    title: Dictionary
+    search_prompt: Try entering a character or Unicode identifier.
+    character_or_codepoint: Character or codepoint
+    submit: Submit
+    browse_by_component: Browse by component
+    browse_explanation: Use radicals and components to narrow the possibilities when you do not know the character. Radical
+      pages also show readings, meanings, and writing information that can support further study.
+    links:
+      kangxi_radicals: Kangxi radicals (Unihan kRSUnicode)
+      shuowen_components: Shuowen Jiezi components
+      guangyun_categories: Guangyun (廣韻) categories (tone + rhyme)
+    common:
+      view_options: View options
+      characters: Characters
+      definition_source: 'Definition source:'
+      total_page_per_page: 'Total: %{total}. Page %{page}. Per page: %{per}.'
+      total_characters_page_per_page: 'Total characters: %{total}. Page %{page}. Per page: %{per}.'
+      previous: ← Prev
+      next: Next →
+      jump: 'Jump:'
+      per: 'Per:'
+      total_count: (%{total} total)
+      loading_characters: Loading characters…
+      glyph: Glyph
+      character: Character
+      fanqie: Fanqie
+      mandarin: Mandarin
+      mandarin_pinyin: Mandarin (pinyin)
+      japanese: Japanese
+      korean: Korean
+      vietnamese: Vietnamese
+      sino_vietnamese: Sino-Vietnamese
+      unihan: Unihan
+      kangxi: Kangxi
+      shuowen: Shuowen
+      guangyun: Guangyun
+      unihan_definition: Unihan definition
+      kangxi_definition: Kangxi definition
+      guangyun_definition: Guangyun definition
+      shuowen_entry: Shuowen entry
+      stroke_count: 'Stroke count:'
+      meaning: 'Meaning:'
+      variants: 'Variants:'
+      readings: Readings
+      seal_font_chongxi: 'Seal font (Chongxi):'
+      chongxi_seal: 'Chongxi Seal:'
+      radical: 'Radical:'
+      component: 'Component:'
+      tone: 'Tone:'
+      rime: 'Rime:'
+      category: 'Category:'
+      about: About
+    character:
+      not_found: Character not found (yet)
+      not_in_database: '%{identifier} isn’t in the database!'
+      try_another: Let's try inputting another character or Unicode identifier!
+      stroke_unavailable: Stroke animation unavailable for this character.
+      stroke_library_failed: Stroke animation unavailable (HanziWriter failed to load).
+      no_stroke_data: No stroke data available for this character.
+      codepoint: 'Codepoint:'
+      unicode_block: Unicode block
+      base_character: Base character
+      variants: Variants
+      variant_kinds:
+        generic: Variant
+        semantic: Semantic variant
+        specialised_semantic: Specialised semantic variant
+        simplified: Simplified variant
+        traditional: Traditional variant
+      has_own_definition: (has its own definition text)
+      definitions: Definitions
+      inherited_definition_html: Showing %{source} from %{character_link} because this character is treated as a variant.
+      sources:
+        unihan_definition: Unihan definition
+        shuowen_text: Shuowen text
+        kangxi_text: Kangxi text
+        cedict_definitions: CC-CEDICT definitions
+      shuowen_jiezi: 說文解字
+      kangxi_dictionary: 康熙字典
+      guangyun_heading: 廣韻 Guangyun
+      radical_or_component: '部:'
+      variant_specific_definitions: Variant-specific definitions (%{count})
+      properties: Properties
+      property_groups:
+        strokes_radicals: Strokes & radicals
+        pronunciation: Pronunciation
+        input: Input
+        education_notes: Education notes
+        dictionary_indices: Dictionary indices
+        encodings_mappings: Encodings & mappings
+        irg_sources: Ideographic Research Group (IRG) sources
+        other: Other
+      cangjie_decomposition: Cangjie decomposition
+      no_hkcards_decomposition: No HKCards decomposition available for this character.
+      return_home: Return to home
+    pronunciation:
+      expand_or_collapse: Expand or collapse %{label}
+      expand_or_collapse_references: Expand or collapse references
+      location: 'Location:'
+      references: References
+    kangxi:
+      title: Kangxi radicals
+      history_html: Kangxi Radicals (康熙部首) were first promulgated in 1615 by Mei Yingzuo 梅膺祚 in the dictionary <i>Zihui</i>
+        字彙. They categorise characters by a visually prominent component, usually the semantic component that carries meaning.
+      comparison: Kangxi radicals are not the same as Shuowen Jiezi's categories, which focus more broadly on shared graphical
+        elements rather than a consistent set of strokes forming a semantically or phonetically meaningful component.
+      page_title: Radical %{number} %{radical}
+      heading: 'Radical %{number}:'
+      membership_empty_html: <strong>Radical membership index is empty.</strong> Run %{command} to build it from Unihan %{field}.
+      about: About this radical
+      back: Back to radicals index
+      browse_intro_html: Browse characters by Kangxi radical using Unihan %{field}.
+    shuowen:
+      title: Shuowen components
+      heading_html: '%{link} components 說文解字部首'
+      intro_html: 'Browse characters by Shuowen Jiezi components. Xu Shen 許慎 designed these 540 categories in the second century
+        during the Eastern Han 東漢 for his dictionary <i>Shuowen Jiezi</i> 說文解字, a landmark work of lexicography. %{text_link}
+        analyses characters chiefly through their structure and relates this analysis to <i>Zhengming</i> 正名, the “Rectification
+        of Names”. The work is therefore sociopolitical as well as lexicographical. Xu states in its preface:'
+      preface_translation_html: '<i>“Written language is the foundation of the classics and arts, and the beginning of kingly
+        government. Through it former people passed things down to later people, and later people recognise antiquity. Therefore
+        it is said: ‘When the root is established, the Way grows.’ Thus one may know the utmost intricacies under Heaven without
+        allowing them to fall into disorder.”</i>'
+      historical_caution_html: 'This is a deeply Confucian and inherently prescriptive idea rooted in <i>Zhengming</i>. Xu
+        could nevertheless be mistaken: the work is nearly two thousand years old, and modern palaeographic evidence—especially
+        oracle-bone script 甲骨文—was unavailable to him.'
+      comparison: Shuowen components are not the same as Kangxi radicals. They are broad categories based on visual similarity
+        and may be phonetic, semantic, or even a single stroke. This is why this site calls them components.
+      text_itself: The text itself
+      shuowen_jiezi: Shuowen Jiezi
+      page_title: Shuowen component %{number} %{glyph}
+      heading: 'Shuowen component %{number}:'
+      about: About this component
+      back: Back to Shuowen index
+    guangyun:
+      title: Guangyun categories
+      heading: Guangyun 廣韻
+      browse_intro_html: Browse Guangyun entries by <strong>tone</strong> (聲) and <strong>rime</strong> (韻).
+      categories_missing_html: <strong>No Guangyun categories were found.</strong> You currently have Guangyun payload rows,
+        but not the tone/rime mapping rows. Run the juan importer task to add them.
+      none: (none)
+      manual_lookup: Manual lookup
+      lookup_help: Enter a single character (e.g. 王) or a codepoint (e.g. U+738B) to inspect its Guangyun payload.
+      character_or_codepoint: Character / Codepoint
+      lookup: Lookup
+      character_row_missing_html: No CharacterCodepoint row found for <strong>%{character}</strong>.
+      no_payload: No Guangyun payload rows found for this character.
+      page_title: Guangyun %{category}
+      category_heading: 'Guangyun: %{category}'
+      category_rows_missing_html: <strong>No Guangyun category rows found for this value.</strong> This usually means the
+        importer did not generate %{field} rows.
+      about_rime: About this rime
+      character_information: Character information
+      back: Back to Guangyun categories
+      bs2014_mc: BS2014 (MC)
+      stimson_ktang: Stimson 1976 (kTang)
+      table_character: Char
+    field_lens:
+      stroke_count:
+        one: "%{count} stroke"
+        other: "%{count} strokes"
+      kangxi_radical: "Kangxi radical #%{number}"
+      direct: "direct"
+      variant: "variant"
+      adobe_tooltip: "Adobe-Japan1-6 %{type}: CID %{cid}; radical #%{radical}"
+      chinese_simplified_radical: "Chinese simplified radical"
+      non_chinese_simplified_radical: "non-Chinese simplified radical"
+      second_non_chinese_simplified_radical: "second non-Chinese simplified radical"
+      radical_variant: "radical variant"
+      property_labels:
+        unihan_definition: "Unihan Definition"
+        hanyu_frequency: "漢語頻率 Hànyǔ Pínlǜ (Pronunciation + Frequency)"
+        old_national_pronunciation: "Old National Pronunciation 老國音"
+        cangjie_input: "倉頡輸入法 Cāngjié input method"
+        four_corner_input: "角號碼檢字法 Four-corner input method"
+        korean_yale: "Korean (Yale)"
+        general_chinese: "General Chinese"
+        middle_chinese: "Middle Chinese"
+        old_chinese: "Old Chinese"
+        middle_chinese_stimson: "Middle Chinese (Stimson, 1976)"
+        kangxi_explanation: "康熙字典解釋"
+        official_korean_name_since: "Official Korean name since"
+        hong_kong_grade: "Hong Kong Primary School Grade (朗文初級中文詞典, 2001)"
+        cedict_definition: "CC-CEDICT Definition"
+        cedict_simplified: "CC-CEDICT Simplified"
+        phonetic_class: "Phonetic class"
+        kangxi_radicals_strokes: "康熙字典 Kangxi Radicals & Strokes"
+        cjk_808_common: "808 Commonly Used CJK Characters"
+        context: "Context"
+        manyogana_hiragana_etymology: "Man’yōgana (hiragana etymology)"
+        manyogana_katakana_etymology: "Man’yōgana (katakana etymology)"
+        manyogana_mora_table: "Man’yōgana mora table"
+        shakuon_kana: "Shakuon Kana 借音仮名"
+        shakkun_kana: "Shakkun Kana 借訓仮名"
+        mora_romaji: "Mora (romaji)"
+        manyogana_reading: "Man’yōgana reading (mora)"
+        menggu_ziyun_phags_pa: "Menggu Ziyun 蒙古字韻 (Phags-pa script)"
+        menggu_ziyun_reconstruction: "Menggu Ziyun 蒙古字韻 (IPA Reconstruction)"
+        menggu_ziyun_transcription: "Menggu Ziyun 蒙古字韻 (IPA)"
+        qieyun_position: "Qieyun-system phonological position"
+        menggu_ziyun_tone: "Menggu Ziyun 蒙古字韻 tone"
+        menggu_ziyun_rhyme: "Menggu Ziyun 蒙古字韻 rhyme group"
+        menggu_ziyun_gloss: "Menggu Ziyun 蒙古字韻 gloss"
+        menggu_ziyun_variant: "Menggu Ziyun 蒙古字韻 variant form"
+        menggu_ziyun_notes: "Menggu Ziyun 蒙古字韻 notes"
+        menggu_ziyun_adjustment: "Menggu Ziyun flagged adjustment"
+        menggu_ziyun_xiaoyun_number: "Menggu Ziyun xiaoyun number"
+        menggu_ziyun_xiaoyun_key: "Menggu Ziyun xiaoyun key"
+        menggu_ziyun_category: "Menggu Ziyun category"
+        zhongyuan_yinyun_xiaoyun: "Zhongyuan Yinyun 中原音韻 xiaoyun"
+        zhongyuan_yinyun_initial: "Zhongyuan Yinyun 中原音韻 initial"
+        zhongyuan_yinyun_final: "Zhongyuan Yinyun 中原音韻 final"
+        zhongyuan_yinyun_tone: "Zhongyuan Yinyun 中原音韻 tone"
+        zhongyuan_yinyun_yang_naisi: "Zhongyuan Yinyun 中原音韻 (楊耐思)"
+        zhongyuan_yinyun_ning_jifu: "Zhongyuan Yinyun 中原音韻 (寧繼福)"
+        zhongyuan_yinyun_xue_fengsheng: "Zhongyuan Yinyun 中原音韻 (薛鳳生)"
+        zhongyuan_yinyun_unt_phonemic: "Zhongyuan Yinyun 中原音韻 (untunt)"
+        zhongyuan_yinyun_unt: "Zhongyuan Yinyun 中原音韻 (unt)"
+        zhongyuan_yinyun_gloss: "Zhongyuan Yinyun 中原音韻 gloss"
+        zhongyuan_yinyun_notes: "Zhongyuan Yinyun 中原音韻 notes"
+        zhongyuan_yinyun_category: "Zhongyuan Yinyun category"
+        zhongyuan_yinyun_xiaoyun_key: "Zhongyuan Yinyun xiaoyun key"
+        manchu_1763_ipa: "1763 Manchu transcription (IPA)"
+        manchu_1763_latin: "1763 Manchu transcription (Latin script)"
+        manchu_1763_manchu: "1763 Manchu transcription (Manchu script)"
+        guangyun_fanqie: "Guangyun Fanqie 廣韻反切"
+        guangyun_rime: "Guangyun Rime 廣韻音韻"
+        guangyun_tone: "Guangyun Tone 廣韻聲調"

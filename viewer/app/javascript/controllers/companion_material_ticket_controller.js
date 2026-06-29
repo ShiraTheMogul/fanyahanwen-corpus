@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import { t } from "i18n"
 import {
   appendMaterialMetadata,
   appendSubmissionExtras,
@@ -68,7 +69,7 @@ export default class extends Controller {
       this._languages = await response.json()
       this._renderLanguageOptions()
     } catch (error) {
-      this._setStatus(`Could not load ISO 639-3 list: ${error.message || error}`)
+      this._setStatus(t("companion_material.status.iso_load_error", { message: error.message || error }))
     }
   }
 
@@ -86,32 +87,32 @@ export default class extends Controller {
 
     const materialType = this.hasMaterialTypeTarget ? this.materialTypeTarget.value : ""
     if (!MATERIAL_TYPES.includes(materialType)) {
-      this._setStatus("Error: invalid material type.")
+      this._setStatus(t("companion_material.status.invalid_type"))
       return
     }
 
     const metadata = materialMetadataFrom(this)
     if (!metadata.material_note) {
-      this._setStatus("Error: material note is required.")
+      this._setStatus(t("companion_material.status.material_note_required"))
       return
     }
     if (metadata.provenance.length === 0) {
-      this._setStatus("Error: choose at least one provenance label.")
+      this._setStatus(t("companion_material.status.provenance_required"))
       return
     }
     if (metadata.ai_assisted && !metadata.ai_details) {
-      this._setStatus("Error: describe the AI assistance.")
+      this._setStatus(t("companion_material.status.ai_details_required"))
       return
     }
 
     this.languageChanged()
     if (materialType === "translation") {
       if (!this.hasLanguageCodeTarget || !this.languageCodeTarget.value) {
-        this._setStatus("Error: choose a language from the ISO 639-3 list.")
+        this._setStatus(t("companion_material.status.language_required"))
         return
       }
       if (!this.hasBodyTextTarget || !this.bodyTextTarget.value.trim()) {
-        this._setStatus("Error: translation text is required.")
+        this._setStatus(t("companion_material.status.translation_required"))
         return
       }
     }
@@ -140,7 +141,7 @@ export default class extends Controller {
       }
     }
 
-    this._setStatus("Submitting ticket…")
+    this._setStatus(t("companion_material.status.submitting"))
     this._setTicket("", "")
 
     try {
@@ -156,13 +157,13 @@ export default class extends Controller {
       const data = await response.json().catch(() => null)
       if (!response.ok || !data || data.ok !== true) {
         const message = data && data.error ? data.error : `HTTP ${response.status}`
-        this._setStatus(`Error: ${message}`)
+        this._setStatus(t("companion_material.status.error", { message }))
         return
       }
 
       const ticketId = data.ticket_id || data.ticket?.id || ""
       const ticketKey = data.ticket_key || ""
-      this._setStatus("Ticket created. Save the key below.")
+      this._setStatus(t("companion_material.status.created"))
       this._setTicket(ticketId, ticketKey)
 
       maybeStoreTicketOnDevice(this, ticketId, ticketKey, {
@@ -170,7 +171,7 @@ export default class extends Controller {
         source: materialType,
       })
     } catch (error) {
-      this._setStatus(`Error: ${error.message || error}`)
+      this._setStatus(t("companion_material.status.error", { message: error.message || error }))
     }
   }
 
@@ -182,7 +183,7 @@ export default class extends Controller {
     navigator.clipboard.writeText(key).then(() => {
       if (!this.hasCopyKeyBtnTarget) return
       const oldText = this.copyKeyBtnTarget.textContent
-      this.copyKeyBtnTarget.textContent = "Copied!"
+      this.copyKeyBtnTarget.textContent = t("companion_material.actions.copied")
       setTimeout(() => { this.copyKeyBtnTarget.textContent = oldText }, 1000)
     })
   }
@@ -221,12 +222,12 @@ export default class extends Controller {
 
   _ticketTitle(materialType) {
     const labels = {
-      translation: "Translation submission",
-      gallery_image: "Image gallery submission",
-      exemplar_manuscript: "Exemplar manuscript submission",
-      variant_text: "Variant text connection",
+      translation: t("companion_material.titles.translation"),
+      gallery_image: t("companion_material.titles.gallery_image"),
+      exemplar_manuscript: t("companion_material.titles.exemplar_manuscript"),
+      variant_text: t("companion_material.titles.variant_text"),
     }
-    return labels[materialType] || "Companion material submission"
+    return labels[materialType] || t("companion_material.titles.default")
   }
 
   _linesFrom(value) {

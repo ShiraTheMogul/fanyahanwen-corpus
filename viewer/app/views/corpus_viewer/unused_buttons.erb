@@ -1,7 +1,7 @@
       <button type="button"
               class="corpus-btn corpus-btn-split"
-              title="Judou options"
-              aria-label="Judou options"
+              title="<%= t("corpus_viewer.punctuation.heading") %>"
+              aria-label="<%= t("corpus_viewer.punctuation.dialog_aria") %>"
               data-action="corpus-reader#toggleJudouMenu"
               data-corpus-reader-target="judouMenuBtn">
         ▸
@@ -10,10 +10,10 @@
       <div class="cv-judou-menu" hidden data-corpus-reader-target="judouMenu">
         <label class="cv-judou-opt">
           <input type="checkbox" data-judou-opt="punct" data-action="corpus-reader#setJudouOption">
-          Punctuation
+          <%= t("corpus_viewer.punctuation.menu.punctuation") %>
         </label>
         <label class="cv-judou-opt">
           <input type="checkbox" data-judou-opt="underline" data-action="corpus-reader#setJudouOption">
-          Underlining
+          <%= t("corpus_viewer.punctuation.menu.underlining") %>
         </label>
       </div>

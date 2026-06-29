@@ -1,57 +1,58 @@
-<h1>Tools</h1>
+<h1><%= t("tools.title") %></h1>
 
-<p>
-  This page is dedicated to various tools this website uses, presenting them in isolation for ease of use. Other websites with useful components will also be linked.
-</p>
+<p><%= t("tools.intro") %></p>
 
-<% mandarin_opts = ([:original] + Phoneticization::Converters::MANDARIN_SCHEMES.keys).map { |k| [k.to_s.tr("_"," "), k] } %>
-<% cantonese_opts = ([:original] + Phoneticization::Converters::CANTONESE_SCHEMES.keys).map { |k| [k.to_s.tr("_"," "), k] } %>
-<% extractor_options = @extractor_options || ToolsController::EXTRACTOR_OPTIONS %>
-<% enrichable_field_options = @enrichable_field_options || ToolsController::ENRICHABLE_FIELD_OPTIONS %>
+<%
+  scheme_label = lambda do |key|
+    key.to_sym == :original ? t("tools.phonetic.original") : key.to_s.tr("_", " ")
+  end
+  mandarin_opts = ([:original] + Phoneticization::Converters::MANDARIN_SCHEMES.keys).map { |key| [scheme_label.call(key), key] }
+  cantonese_opts = ([:original] + Phoneticization::Converters::CANTONESE_SCHEMES.keys).map { |key| [scheme_label.call(key), key] }
+  extractor_options = @extractor_options || ToolsController::EXTRACTOR_OPTIONS.map { |key, value| [t(key), value] }
+  enrichable_field_options = @enrichable_field_options || ToolsController::ENRICHABLE_FIELD_OPTIONS.transform_values { |key| t(key) }
+%>
 
-<h2>Mandarin phoneticisation</h2>
-<p>Mandarin has among the most amount of phoneticisations, which can be a bit overwhelming for some. This uses dohliam's <%= link_to "pinyin-rb", "https://github.com/dohliam/pinyin-rb" %> to display 13 of them.</p>
+<h2><%= t("tools.phonetic.mandarin.title") %></h2>
+<p><%= t("tools.phonetic.mandarin.description_html", link: link_to("pinyin-rb", "https://github.com/dohliam/pinyin-rb")) %></p>
 
 <%= form_with url: tools_phonetic_mandarin_path, method: :post, data: { turbo_frame: "mandarin_out" } do %>
-  <label>From: <%= select_tag :from, options_for_select(mandarin_opts, :pinyin_numbers) %></label>
-  <label style="margin-left:1em;">To: <%= select_tag :to, options_for_select(mandarin_opts, :pinyin_diacritics) %></label>
-  <textarea name="input" rows="4" style="width:100%;" placeholder="han4 yu3 ..."></textarea>
-  <button type="submit">Convert</button>
+  <label><%= t("tools.common.from") %><%= t("tools.common.label_separator") %> <%= select_tag :from, options_for_select(mandarin_opts, :pinyin_numbers) %></label>
+  <label style="margin-left:1em;"><%= t("tools.common.to") %><%= t("tools.common.label_separator") %> <%= select_tag :to, options_for_select(mandarin_opts, :pinyin_diacritics) %></label>
+  <textarea name="input" rows="4" style="width:100%;" placeholder="<%= t("tools.phonetic.mandarin.placeholder") %>"></textarea>
+  <button type="submit"><%= t("tools.common.convert") %></button>
 <% end %>
 <%= turbo_frame_tag "mandarin_out" do %><pre class="tool-output"></pre><% end %>
 
-<h2>Cantonese phoneticisation</h2>
+<h2><%= t("tools.phonetic.cantonese.title") %></h2>
 <%= form_with url: tools_phonetic_cantonese_path, method: :post, data: { turbo_frame: "cantonese_out" } do %>
-  <label>From: <%= select_tag :from, options_for_select(cantonese_opts, :jyutping) %></label>
-  <label style="margin-left:1em;">To: <%= select_tag :to, options_for_select(cantonese_opts, :ipa) %></label>
-  <textarea name="input" rows="4" style="width:100%;" placeholder="gwong2 dung1 waa2 ..."></textarea>
-  <button type="submit">Convert</button>
+  <label><%= t("tools.common.from") %><%= t("tools.common.label_separator") %> <%= select_tag :from, options_for_select(cantonese_opts, :jyutping) %></label>
+  <label style="margin-left:1em;"><%= t("tools.common.to") %><%= t("tools.common.label_separator") %> <%= select_tag :to, options_for_select(cantonese_opts, :ipa) %></label>
+  <textarea name="input" rows="4" style="width:100%;" placeholder="<%= t("tools.phonetic.cantonese.placeholder") %>"></textarea>
+  <button type="submit"><%= t("tools.common.convert") %></button>
 <% end %>
 <%= turbo_frame_tag "cantonese_out" do %><pre class="tool-output"></pre><% end %>
 
-<h2>Character data extractor</h2>
+<h2><%= t("tools.character_extractor.title") %></h2>
 
-<p>This keeps the old Cangjie lookup behaviour, but also lets you pull other stored character data in bulk. Paste one character, a codepoint like U+8BF4, or a whole sentence to extract one row per unique Han character.</p>
-
-<p>You can use this for flashcard enrichment: definitions, dictionary entries, and readings can be previewed in-page or downloaded as CSV.</p>
+<p><%= t("tools.character_extractor.description") %></p>
+<p><%= t("tools.character_extractor.flashcard_help") %></p>
 
 <%= form_with url: tools_cangjie_path, method: :post, data: { turbo_frame: "cangjie_out" } do %>
   <p>
-    <label>Extract:
+    <label><%= t("tools.common.extract") %><%= t("tools.common.label_separator") %>
       <%= select_tag :extract, options_for_select(extractor_options, "cangjie") %>
     </label>
   </p>
 
-  <textarea name="input" rows="3" style="width: 100%;" placeholder="Character (e.g. 說) or U+8BF4 or Cangjie letters (e.g. ABC)
-Or paste a sentence to get every unique character."></textarea>
+  <textarea name="input" rows="3" style="width: 100%;" placeholder="<%= t("tools.character_extractor.input_placeholder") %>"></textarea>
 
   <p>
-    <label><input type="checkbox" name="hkcards" value="1"> show HKCards table for Cangjie</label>
+    <label><input type="checkbox" name="hkcards" value="1"> <%= t("tools.character_extractor.show_hkcards") %></label>
   </p>
 
   <p>
-    <button type="submit">Extract</button>
-    <button type="submit" name="download" value="csv" formtarget="_top" data-turbo="false">Download CSV</button>
+    <button type="submit"><%= t("tools.common.extract") %></button>
+    <button type="submit" name="download" value="csv" formtarget="_top" data-turbo="false"><%= t("tools.common.download_csv") %></button>
   </p>
 <% end %>
 
@@ -59,44 +60,40 @@ Or paste a sentence to get every unique character."></textarea>
   <pre class="tool-output"></pre>
 <% end %>
 
-<h2>Anki deck enricher</h2>
-
-<p>
-  Paste a tab-separated Anki export here and enrich one field based on the characters found in another.
-  This is useful when you want each note to carry Kangxi, Shuowen, Guangyun, or reading data as HTML for later AI prompting or flashcard study.
-</p>
+<h2><%= t("tools.anki.title") %></h2>
+<p><%= t("tools.anki.description") %></p>
 
 <%= form_with url: tools_cangjie_path, method: :post, data: { turbo_frame: "anki_enrich_out" }, html: { data: { anki_enrich_form: true } } do %>
   <%= hidden_field_tag :mode, "anki_enrich" %>
 
   <p>
-    <label>Field to read characters from:
+    <label><%= t("tools.anki.source_field") %><%= t("tools.common.label_separator") %>
       <%= number_field_tag :source_field, 4, min: 1, step: 1, data: { anki_source_field: true } %>
     </label>
 
-    <label style="margin-left: 1em;">Field to write enrichment into:
+    <label style="margin-left: 1em;"><%= t("tools.anki.target_field") %><%= t("tools.common.label_separator") %>
       <%= number_field_tag :target_field, 10, min: 1, step: 1, data: { anki_target_field: true } %>
     </label>
   </p>
 
   <p>
-    <label><input type="radio" name="append_mode" value="append" checked> append to existing target field</label>
-    <label style="margin-left: 1em;"><input type="radio" name="append_mode" value="replace"> replace target field entirely</label>
+    <label><input type="radio" name="append_mode" value="append" checked> <%= t("tools.anki.append_mode") %></label>
+    <label style="margin-left: 1em;"><input type="radio" name="append_mode" value="replace"> <%= t("tools.anki.replace_mode") %></label>
   </p>
 
   <p>
-    <label>Preview rows:
+    <label><%= t("tools.anki.preview_rows") %><%= t("tools.common.label_separator") %>
       <%= select_tag :preview_limit, options_for_select([[5,5],[10,10],[25,25],[50,50],[100,100]], 10) %>
     </label>
-    <label style="margin-left: 1em;">Start preview at row:
+    <label style="margin-left: 1em;"><%= t("tools.anki.preview_start") %><%= t("tools.common.label_separator") %>
       <%= number_field_tag :preview_start, 1, min: 1, step: 1 %>
     </label>
-    <label style="margin-left: 1em;">Preview mode:
-      <%= select_tag :preview_mode, options_for_select([["changed rows only", "changed_only"],["full rows", "full_rows"]], "changed_only") %>
+    <label style="margin-left: 1em;"><%= t("tools.anki.preview_mode") %><%= t("tools.common.label_separator") %>
+      <%= select_tag :preview_mode, options_for_select([[t("tools.anki.changed_only"), "changed_only"], [t("tools.anki.full_rows"), "full_rows"]], "changed_only") %>
     </label>
   </p>
 
-  <p><strong>Data to append</strong></p>
+  <p><strong><%= t("tools.anki.data_to_append") %></strong></p>
   <div>
     <% enrichable_field_options.each do |field, label_text| %>
       <label style="display: inline-block; min-width: 15em; margin-right: 1em; margin-bottom: 0.35em;">
@@ -107,20 +104,33 @@ Or paste a sentence to get every unique character."></textarea>
   </div>
 
   <p>
-    <textarea name="input" rows="12" style="width: 100%;" placeholder="#separator:tab
-#html:true
-#guid column:1
-... paste Anki TXT export here ..." data-anki-input="true"></textarea>
+    <textarea name="input" rows="12" style="width: 100%;" placeholder="<%= t("tools.anki.input_placeholder") %>" data-anki-input="true"></textarea>
   </p>
 
   <div data-anki-live-summary style="margin-bottom: 0.75em;"></div>
   <div data-anki-first-row-preview style="margin-bottom: 0.75em;"></div>
 
-  <p><button type="submit">Enrich deck</button></p>
+  <p><button type="submit"><%= t("tools.anki.enrich_deck") %></button></p>
 <% end %>
 
+<%
+  anki_live_messages = {
+    detected_fields: t("tools.anki.live.detected_fields"),
+    highest_metadata_field: t("tools.anki.live.highest_metadata_field"),
+    note_rows: t("tools.anki.live.note_rows"),
+    metadata_help: t("tools.anki.live.metadata_help"),
+    paste_to_preview: t("tools.anki.live.paste_to_preview"),
+    automatic_preview: t("tools.anki.live.automatic_preview"),
+    preview_help: t("tools.anki.live.preview_help"),
+    field: t("tools.anki.live.field"),
+    first_row_value: t("tools.anki.live.first_row_value"),
+    label_separator: t("tools.common.label_separator")
+  }
+%>
 <script>
 (function() {
+  var messages = <%= raw(json_escape(anki_live_messages.to_json)) %>;
+
   function escapeHtml(str) {
     return String(str || "")
       .replace(/&/g, "&amp;")
@@ -150,7 +160,7 @@ Or paste a sentence to get every unique character."></textarea>
         if (match) { metadataMax = Math.max(metadataMax, parseInt(match[1], 10) || 0); }
         return;
       }
-      var cols = line.split("	");
+      var cols = line.split("\t");
       noteRows.push(cols);
       maxFields = Math.max(maxFields, cols.length);
     });
@@ -188,13 +198,13 @@ Or paste a sentence to get every unique character."></textarea>
       if (parseInt(sourceField.value || '0', 10) > maxFields) { sourceField.value = maxFields; }
       if (parseInt(targetField.value || '0', 10) > maxFields) { targetField.value = maxFields; }
 
-      summaryBox.innerHTML = '<p><strong>Detected fields:</strong> ' + maxFields +
-        ' · <strong>Highest metadata field:</strong> ' + (info.metadataMax || 0) +
-        ' · <strong>Note rows:</strong> ' + (info.noteCount || 0) + '</p>' +
-        '<p style="margin-top:0.35em;"><em>The maximum field number is set from the TSV itself and from metadata markers like #tags column:N, so blank trailing tags are still accounted for.</em></p>';
+      summaryBox.innerHTML = '<p><strong>' + escapeHtml(messages.detected_fields) + escapeHtml(messages.label_separator) + '</strong> ' + maxFields +
+        ' · <strong>' + escapeHtml(messages.highest_metadata_field) + escapeHtml(messages.label_separator) + '</strong> ' + (info.metadataMax || 0) +
+        ' · <strong>' + escapeHtml(messages.note_rows) + escapeHtml(messages.label_separator) + '</strong> ' + (info.noteCount || 0) + '</p>' +
+        '<p style="margin-top:0.35em;"><em>' + escapeHtml(messages.metadata_help) + '</em></p>';
 
       if (!info.firstRow) {
-        previewBox.innerHTML = '<p><em>Paste Anki TXT to preview the first note row here.</em></p>';
+        previewBox.innerHTML = '<p><em>' + escapeHtml(messages.paste_to_preview) + '</em></p>';
         return;
       }
 
@@ -213,11 +223,11 @@ Or paste a sentence to get every unique character."></textarea>
           '</tr>';
       }
 
-      previewBox.innerHTML = '<p><strong>Automatic first-row preview</strong></p>' +
-        '<p><em>This shows where your chosen source and target fields point before you run enrichment.</em></p>' +
+      previewBox.innerHTML = '<p><strong>' + escapeHtml(messages.automatic_preview) + '</strong></p>' +
+        '<p><em>' + escapeHtml(messages.preview_help) + '</em></p>' +
         '<div style="overflow-x:auto;">' +
         '<table style="width:100%; border-collapse:collapse; table-layout:fixed;">' +
-        '<thead><tr><th style="text-align:left; border-bottom:1px solid #ccc; padding:0.35em; width:5em;">Field</th><th style="text-align:left; border-bottom:1px solid #ccc; padding:0.35em;">First row value</th></tr></thead>' +
+        '<thead><tr><th style="text-align:left; border-bottom:1px solid #ccc; padding:0.35em; width:5em;">' + escapeHtml(messages.field) + '</th><th style="text-align:left; border-bottom:1px solid #ccc; padding:0.35em;">' + escapeHtml(messages.first_row_value) + '</th></tr></thead>' +
         '<tbody>' + rowsHtml + '</tbody></table></div>';
     }
 
@@ -240,42 +250,40 @@ Or paste a sentence to get every unique character."></textarea>
   <pre class="tool-output"></pre>
 <% end %>
 
-<h2>Lunar calendar date converter</h2>
-
-<p>The Chinese lunar calendar uses the GanZhi system for formatting dates. This uses <%= link_to "a gem by elct9620", "https://github.com/elct9620/lunar_calendar" %> to easily convert between the Gregorian and Chinese dating systems. </p>
+<h2><%= t("tools.lunar.title") %></h2>
+<p><%= t("tools.lunar.description_html", link: link_to("elct9620 lunar_calendar", "https://github.com/elct9620/lunar_calendar")) %></p>
 
 <%= form_with url: tools_lunar_path, method: :post, data: { turbo_frame: "lunar_out" } do %>
   <p>
-    <label>Date picker:
+    <label><%= t("tools.lunar.date_picker") %><%= t("tools.common.label_separator") %>
       <input type="date" name="date_iso">
     </label>
   </p>
 
   <p>
-    <label>Or paste a date:
-      <input name="input" style="width: 100%;" placeholder="Examples: 2026-01-07 | 07/01/2026 | 7 Jan 2026 | today">
+    <label><%= t("tools.lunar.paste_date") %><%= t("tools.common.label_separator") %>
+      <input name="input" style="width: 100%;" placeholder="<%= t("tools.lunar.placeholder") %>">
     </label>
   </p>
 
-  <p><button type="submit">Convert</button></p>
+  <p><button type="submit"><%= t("tools.common.convert") %></button></p>
 <% end %>
 
 <%= turbo_frame_tag "lunar_out" do %>
   <pre class="tool-output"></pre>
 <% end %>
 
-<h2>Numeral converter</h2>
-
-<p>A simple mapper for Chinese numerals, accounting for some of the outliers and variant forms that occasionally pop up. It isn't perfect but will work for most things. I used this to produce a more robust Lunar calendar representation that you see on the site header!</p>
+<h2><%= t("tools.numerals.title") %></h2>
+<p><%= t("tools.numerals.description") %></p>
 
 <%= form_with url: tools_numerals_path, method: :post, data: { turbo_frame: "numerals_out" } do %>
-  <textarea name="input" rows="4" style="width: 100%;" placeholder="Paste text with numbers…"></textarea>
+  <textarea name="input" rows="4" style="width: 100%;" placeholder="<%= t("tools.numerals.placeholder") %>"></textarea>
 
-  <label><input type="checkbox" name="use_you" value="1"> use 有 for gaps</label>
-  <label style="margin-left: 1em;"><input type="checkbox" name="use_abbrev" value="1"> use 廿/卅/卌</label>
+  <label><input type="checkbox" name="use_you" value="1"> <%= t("tools.numerals.use_you") %></label>
+  <label style="margin-left: 1em;"><input type="checkbox" name="use_abbrev" value="1"> <%= t("tools.numerals.use_abbreviations") %></label>
 
   <div style="margin-top: 0.5em;">
-    <button type="submit">Convert</button>
+    <button type="submit"><%= t("tools.common.convert") %></button>
   </div>
 <% end %>
 

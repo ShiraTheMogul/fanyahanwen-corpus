@@ -1,23 +1,14 @@
-<h1>Fun</h1>
+<h1><%= t("fun.title") %></h1>
 
-<p>
-	This is a section where games involving Han characters will be included, for those looking to bring their learning towards a gamified perspective. 
-</p>
+<p><%= t("fun.introduction") %></p>
 
-<h2>璇璣圖 <%= link_to "Xuanji Tu", xuanji_path, class: "site-nav-link" %></h2>
+<h2>
+  <% if show_han_ornament? %><%= t("fun.xuanji.name_han") %> <% end %><%= link_to translated_interface_label("fun.xuanji.name", ornament_key: "fun.xuanji.name_han"), xuanji_path, class: "site-nav-link" %>
+</h2>
+<p><%= t("fun.xuanji.summary") %></p>
 
-<p>
-  Su Hui's "Xuanji Tu" is a 29×29 brocade palindrome-poem. This page lets you explore it as a coloured grid, then apply reading rules (paths) that extract lines and stanzas.
-</p>
-
-</p>
-
-<h2>象棋 <%= link_to "Xiangqi", xiangqi_path, class: "site-nav-link" %><%= image_tag("xiang.png") %></h2>
-
-<p>
-	This is essentially Chinese chess. It was derived from chaturanga, an ancient Indian strategy game. The main difference to western Chess are the inclusion of cannons 砲炮, advisor 士, and elephant 象 pieces. There is also the inclusion of the palace 宫, from which the advisor and general (your king) cannot leave, and the Chu river, which cannot be crossed by certain pieces. This produces a very different game to chess that can be extremely quick or very slow. 
-</p>
-
-<p>
-	Gameplay-wise, this is an ASCII representation of Xiangqi that took inspiration from the work of Andrew West of <%= link_to "Babelstone", "http://www.babelstone.co.uk" %>. The output on the site is actually ASCII, so you can use this for correspondence games and whatnot. It isn't winning any awards, I just made it when I got bored of developing the rest of the site. 
-</p>
+<h2>
+  <% if show_han_ornament? %><%= t("fun.xiangqi.name_han") %> <% end %><%= link_to translated_interface_label("fun.xiangqi.name", ornament_key: "fun.xiangqi.name_han"), xiangqi_path, class: "site-nav-link" %><%= image_tag("xiang.png", alt: t("fun.xiangqi.icon_alt")) %>
+</h2>
+<p><%= t("fun.xiangqi.summary") %></p>
+<p><%= t("fun.xiangqi.implementation_html", babelstone_link: link_to("BabelStone", "http://www.babelstone.co.uk")).html_safe %></p>

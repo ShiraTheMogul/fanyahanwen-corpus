@@ -7,28 +7,28 @@
     <table class="cj-table">
       <thead>
         <tr>
-          <th>Char</th>
-          <th>Codepoint</th>
-          <th>Cangjie</th>
-          <th>HKCards</th>
+          <th><%= t("tools.common.character") %></th>
+          <th><%= t("tools.common.codepoint") %></th>
+          <th><%= t("tools.character_extractor.columns.cangjie") %></th>
+          <th><%= t("tools.character_extractor.columns.hkcards") %></th>
         </tr>
       </thead>
       <tbody>
-        <% rows.each do |r| %>
+        <% rows.each do |row| %>
           <tr>
-            <td class="cj-char"><%= h(r[:char]) %></td>
-            <td class="cj-cp">U+<%= r[:codepoint].to_i.to_s(16).upcase %></td>
+            <td class="cj-char"><%= h(row[:char]) %></td>
+            <td class="cj-cp">U+<%= row[:codepoint].to_i.to_s(16).upcase %></td>
             <td class="cj-code">
-              <% if r[:codes].empty? %>
+              <% if row[:codes].empty? %>
                 <em>—</em>
               <% else %>
-                <%= h(r[:codes].map { |c| "#{c[:han]} (#{c[:latin]})" }.join(" / ")) %>
+                <%= h(row[:codes].map { |code| "#{code[:han]} (#{code[:latin]})" }.join(" / ")) %>
               <% end %>
             </td>
             <td class="cj-img">
               <img class="cjimg cjimg-small"
-                   src="https://www.hkcards.com/img/cj/<%= h(r[:char]) %>.png"
-                   alt="HKCards Cangjie decomposition"
+                   src="https://www.hkcards.com/img/cj/<%= h(row[:char]) %>.png"
+                   alt="<%= t("tools.character_extractor.messages.hkcards_alt") %>"
                    loading="lazy"
                    onerror="this.outerHTML='<em>—</em>'">
             </td>

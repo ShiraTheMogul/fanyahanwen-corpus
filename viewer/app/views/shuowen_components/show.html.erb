@@ -1,12 +1,12 @@
-<% content_for :title, "Shuowen component #{@component.number} #{@component.glyph}" %>
+<% content_for :title, t("dictionary.shuowen.page_title", number: @component.number, glyph: @component.glyph) %>
 
 <% content_for :rightbar do %>
-  <h3>View options</h3>
+  <h3><%= t("view_options.heading") %></h3>
   <%= render "shared/view_options_rightbar" %>
 <% end %>
 
 <h1>
-  Shuowen component <%= @component.number %>:
+  <%= t("dictionary.shuowen.heading", number: @component.number) %>
   <span style="font-size:2.2rem;"><%= @component.glyph %></span>
 </h1>
 
@@ -29,23 +29,23 @@
       })();
     </script>
 
-    <h2>About this component</h2>
+    <h2><%= t("dictionary.shuowen.about") %></h2>
 
-    <p><strong>Component:</strong> <span style="font-size:1.7rem;"><%= @component.glyph %></span></p>
+    <p><strong><%= t("dictionary.common.component") %></strong> <span style="font-size:1.7rem;"><%= @component.glyph %></span></p>
 
     <% seal_family = HanFonts.family_for(:chongxi_seal) rescue nil %>
     <% if seal_family.present? %>
-      <p><strong>Seal font (Chongxi):</strong>
+      <p><strong><%= t("dictionary.common.seal_font_chongxi") %></strong>
       <span style='font-size:2rem; font-family:"<%= seal_family %>", serif;'>
           <%= @component.glyph %>
         </span>
       </p>
     <% end %>
 
-    <p><strong>Mandarin:</strong> <%= @component_readings[:mandarin].presence || "—" %></p>
-    <p><strong>Sino-Vietnamese:</strong> <%= @component_readings[:vietnamese].presence || "—" %></p>
+    <p><strong><%= t("dictionary.common.mandarin") %>:</strong> <%= @component_readings[:mandarin].presence || "—" %></p>
+    <p><strong><%= t("dictionary.common.sino_vietnamese") %>:</strong> <%= @component_readings[:vietnamese].presence || "—" %></p>
 
-    <p><strong>Japanese:</strong>
+    <p><strong><%= t("dictionary.common.japanese") %>:</strong>
       <% if @component_japanese_pairs.present? %>
         <% @component_japanese_pairs.each_with_index do |pair, i| %>
           <%= "; " if i > 0 %>
@@ -56,7 +56,7 @@
       <% end %>
     </p>
 
-    <p><strong>Korean:</strong>
+    <p><strong><%= t("dictionary.common.korean") %>:</strong>
       <% if @component_korean_pairs.present? %>
         <% @component_korean_pairs.each_with_index do |pair, i| %>
           <%= "; " if i > 0 %>
@@ -70,21 +70,21 @@
       <% end %>
     </p>
 
-    <p><strong>Unihan definition:</strong> <%= @component_unihan_def.presence || "—" %></p>
+    <p><strong><%= t("dictionary.common.unihan_definition") %>:</strong> <%= @component_unihan_def.presence || "—" %></p>
 
     <% if @component_variants.present? %>
-      <p><strong>Variants:</strong>
+      <p><strong><%= t("dictionary.common.variants") %></strong>
         <% @component_variants.each_with_index do |v, i| %>
           <%= ", " if i > 0 %>
           <%= link_to v.chr, character_path("U+%04X" % v.codepoint), data: { turbo: false } %>
         <% end %>
       </p>
     <% else %>
-      <p><strong>Variants:</strong> —</p>
+      <p><strong><%= t("dictionary.common.variants") %></strong> —</p>
     <% end %>
 
     <details style="margin-top: 10px;">
-      <summary><strong>Shuowen entry</strong></summary>
+      <summary><strong><%= t("dictionary.common.shuowen_entry") %></strong></summary>
       <% if @component_shuowen_entry.present? %>
         <pre style="white-space:pre-wrap;"><%= @component_shuowen_entry %></pre>
       <% else %>
@@ -93,36 +93,36 @@
     </details>
 
     <p style="margin-top: 14px;">
-      <%= link_to "Back to Shuowen index", "/dictionary/shuowen", data: { turbo: false } %>
+      <%= link_to t("dictionary.shuowen.back"), "/dictionary/shuowen", data: { turbo: false } %>
     </p>
   </div>
 
   <div style="flex:1; min-width: 420px;">
-    <h2>Characters</h2>
+    <h2><%= t("dictionary.common.characters") %></h2>
 
     <div style="margin: 6px 0 10px 0;">
-      <span style="margin-right: 12px;">Definition source:</span>
+      <span style="margin-right: 12px;"><%= t("dictionary.common.definition_source") %></span>
 
       <% unihan_on = (@def_source == "unihan") %>
       <% shuowen_on = (@def_source == "shuowen") %>
 
       <span style="margin-right:10px;">
         <span style="color:<%= unihan_on ? '#1e40af' : '#a5b4fc' %>; font-size: 1.2rem;">●</span>
-        <%= link_to "Unihan", dictionary_component_path(@component.number, def: "unihan", page: @page, per: @per), data: { turbo: false } %>
+        <%= link_to t("dictionary.common.unihan"), dictionary_component_path(@component.number, def: "unihan", page: @page, per: @per), data: { turbo: false } %>
       </span>
 
       <span>
         <span style="color:<%= shuowen_on ? '#1e40af' : '#a5b4fc' %>; font-size: 1.2rem;">●</span>
-        <%= link_to "Shuowen", dictionary_component_path(@component.number, def: "shuowen", page: @page, per: @per), data: { turbo: false } %>
+        <%= link_to t("dictionary.common.shuowen"), dictionary_component_path(@component.number, def: "shuowen", page: @page, per: @per), data: { turbo: false } %>
       </span>
     </div>
 
     <p style="margin: 0 0 8px 0;">
-      Total: <%= @total %>. Page <%= @page %>. Per page: <%= @per %>.
+      <%= t("dictionary.common.total_page_per_page", total: @total, page: @page, per: @per) %>
     </p>
 
     <turbo-frame id="shuowen_chars" src="<%= dictionary_component_chars_path(@component.number, def: @def_source, page: @page, per: @per) %>">
-      <p>Loading characters…</p>
+      <p><%= t("dictionary.common.loading_characters") %></p>
     </turbo-frame>
   </div>
 </div>

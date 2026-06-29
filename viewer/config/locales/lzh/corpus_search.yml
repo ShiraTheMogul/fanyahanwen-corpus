@@ -1,0 +1,90 @@
+lzh:
+  corpus_search:
+    title: 語料庫尋文
+    introduction: 直接尋於語料庫正本諸檔。今先備精確與鄰近二法；正則表達式不開放於眾。
+    form:
+      mode: 尋法
+      term_a: 詞甲
+      term_b: 詞乙
+      distance: 相距字數
+      order: 先後
+      context_characters: 前後文字數
+      results_per_page: 每頁項數
+      metadata_filters: 著錄濾器
+      nation: 國別
+      period: 時期
+      region: 地域
+      author: 作者
+      year_from: 始年
+      year_to: 終年
+    modes:
+      exact: 精確
+      proximity: 鄰近
+    orders:
+      either: 先後皆可
+      a_before_b: 甲先乙後
+      b_before_a: 乙先甲後
+    placeholders:
+      term_a: 舜
+      term_b: 孝
+      nation: 日本／越南／中國……
+      period: 江戶時代／大越……
+    actions:
+      search: 尋
+      prepare_export: 另行備製全數ZIP匯出檔
+      open_source_text: 閱原文
+      download_zip: 載下ZIP檔
+    results:
+      summary: 此頁示%{visible}項。候選檔（已快取或已查）凡%{candidates}；此次新查%{scanned}檔。
+      truncated: 互動尋文至%{limit}項而止；欲得全數，請另行備製匯出檔。
+      complete_count: 互動尋文所得凡%{count}項。
+      offset: 字位%{start}–%{finish}
+      none: 無所得。
+      chars_omitted:
+        one: 略%{count}字
+        other: 略%{count}字
+    pagination:
+      aria_label: 尋文結果分頁
+      previous: 前頁
+      next: 後頁
+      page_of: 第%{page}頁，共%{pages}頁
+    prepared:
+      title: 已備尋文
+      status: 狀態
+      query: 所尋
+      progress: 階段：%{stage}。諸檔：%{scanned}／%{total}。所得：%{hits}項。
+      zip_contents: ZIP檔內有results.csv、flashcards.csv及metadata.json。
+      refresh_notice: 作業未畢時，此頁每%{seconds}秒自新。
+    statuses:
+      queued: 候行
+      running: 行中
+      complete: 已畢
+      failed: 失敗
+    stages:
+      queued: 候行
+      searching: 尋文中
+      complete: 已畢
+      failed: 失敗
+    notices:
+      queued: 大規模尋文已入列；其行時仍可照常用本站。
+    errors:
+      enter_term: 請輸入所尋之詞。
+      enter_second_term: 鄰近尋文須輸入第二詞。
+      term_too_long: 所尋各詞不得逾%{max}字。
+      search_failed: 尋文失敗：%{message}
+      prepared_not_found: 未見所備尋文。
+      download_not_ready: 匯出檔尚未備妥。
+    query:
+      proximity_label: '%{term_a}與%{term_b}相距不逾%{distance}字'
+    export:
+      flashcards:
+        front: |-
+          於此文脈譯釋%{target}：
+          %{snippet}
+        back: |-
+          所問：%{target}
+          所自：%{source}
+      metadata_notes:
+        blank_years: year_start／year_end若空，則語料著錄無可解析之年份。
+        offsets: 字位自去除卷首著錄後之正文起算。
+        canonical_source: 原始.txt檔仍為語料庫正本；此匯出檔乃尋文所得之衍生物。

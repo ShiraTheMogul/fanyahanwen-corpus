@@ -26,7 +26,7 @@ module Xiangqi
       stm = parts[1] || "w"
 
       ranks = placement.split("/")
-      raise ArgumentError, "FEN must have 10 ranks" unless ranks.length == 10
+      raise ArgumentError, I18n.t("fun.xiangqi.errors.fen_ten_ranks") unless ranks.length == 10
 
       board = Array.new(10) { Array.new(9, nil) }
 
@@ -39,13 +39,13 @@ module Xiangqi
           if ch >= "1" && ch <= "9"
             x += ch.to_i
           else
-            raise ArgumentError, "Rank too long" if x >= 9
+            raise ArgumentError, I18n.t("fun.xiangqi.errors.rank_too_long") if x >= 9
             board[y][x] = ch
             x += 1
           end
         end
 
-        raise ArgumentError, "Rank must sum to 9 files" unless x == 9
+        raise ArgumentError, I18n.t("fun.xiangqi.errors.rank_nine_files") unless x == 9
       end
 
       new(board: board, side_to_move: stm)

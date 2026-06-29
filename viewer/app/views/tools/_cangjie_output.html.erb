@@ -9,9 +9,9 @@
     <div class="imgwrap cj-card">
       <img class="cjimg cjimg-small"
            src="https://www.hkcards.com/img/cj/<%= h(char) %>.png"
-           alt="HKCards Cangjie decomposition"
+           alt="<%= t("tools.character_extractor.messages.hkcards_alt") %>"
            loading="lazy"
-           onerror="this.outerHTML='<em>No HKCards decomposition available for this character.</em>'">
+           onerror="this.outerHTML='<em><%= j t("tools.character_extractor.messages.no_hkcards") %></em>'">
     </div>
   <% end %>
 

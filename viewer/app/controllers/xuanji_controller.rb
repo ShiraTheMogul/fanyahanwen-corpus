@@ -76,13 +76,13 @@ class XuanjiController < ApplicationController
     variant = params[:variant].in?(%w[trad simp]) ? params[:variant] : "simp"
     grid = XuanjiGrid.find_by!(variant: variant)
     unless grid.variant.to_s == "simp"
-      render json: { ok: false, error: "sync_colors only applies to the simplified grid" }, status: :unprocessable_entity
+      render json: { ok: false, error: I18n.t("fun.xuanji.errors.sync_simplified_only") }, status: :unprocessable_entity
       return
     end
 
     trad = XuanjiGrid.find_by(name: grid.name, variant: :trad)
     unless trad
-      render json: { ok: false, error: "no matching traditional grid found" }, status: :not_found
+      render json: { ok: false, error: I18n.t("fun.xuanji.errors.no_matching_traditional_grid") }, status: :not_found
       return
     end
 

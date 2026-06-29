@@ -36,7 +36,7 @@ module Xiangqi
     def self.parse_line(line, pos)
       s = normalize(line.to_s)
       tokens = s.split(/\s+/).reject(&:empty?)
-      return { ok: false, error: "Enter a move (e.g. h2e2, 炮二平五, C8=7, 炮(32)-35)." } if tokens.empty?
+      return { ok: false, error: I18n.t("fun.xiangqi.errors.enter_move") } if tokens.empty?
 
       side = (pos.side_to_move.to_s == "b") ? :black : :red
       moves = []
@@ -97,7 +97,7 @@ module Xiangqi
         return { ok: true, system: :system3, coords: r[:coords] }
       end
 
-      { ok: false, error: "Unrecognised move token: #{s}. Try h2e2, 炮二平五, C8=7, or 炮(32)-35." }
+      { ok: false, error: I18n.t("fun.xiangqi.errors.unrecognised_move", token: s) }
     end
 
     # Convert coords + moved piece letter into System 2 Chinese (e.g. 炮二平五).
@@ -137,7 +137,7 @@ module Xiangqi
     def self.parse_iccs(move)
       s = normalize(move.to_s).downcase
       m = s.match(/\A([a-i])([0-9])([a-i])([0-9])\z/)
-      return { ok: false, error: "ICCS must look like h2e2 (files a-i, ranks 0-9)." } unless m
+      return { ok: false, error: I18n.t("fun.xiangqi.errors.iccs_format") } unless m
 
       fx = FILES.index(m[1])
       fy = m[2].to_i
@@ -153,7 +153,7 @@ module Xiangqi
 
     def self.parse_system2_chinese(move, pos, side)
       m = normalize(move).match(/\A([車馬相象仕士帥將炮砲兵卒])([一二三四五六七八九1-9])([平進退])([一二三四五六七八九1-9])\z/)
-      return { ok: false, error: "Chinese must look like 炮二平五 or 馬8進7." } unless m
+      return { ok: false, error: I18n.t("fun.xiangqi.errors.chinese_format") } unless m
 
       zh_piece = m[1]
       from_tok = m[2]
@@ -161,7 +161,7 @@ module Xiangqi
       to_tok   = m[4]
 
       piece_letter = piece_letter_from_zh(side, zh_piece)
-      return { ok: false, error: "Unknown piece: #{zh_piece}" } if piece_letter.nil?
+      return { ok: false, error: I18n.t("fun.xiangqi.errors.unknown_piece", piece: zh_piece) } if piece_letter.nil?
 
       fx = file_x_from_token_relative(side, from_tok)
       fy = resolve_unique_source_y(pos, piece_letter, fx)
@@ -176,7 +176,7 @@ module Xiangqi
 
     def self.parse_system2_roman(move, pos, side)
       m = normalize(move).match(/\A([ACEGHRSPaceghrsp])([1-9\+\-])([=.\+\-])([1-9])\z/)
-      return { ok: false, error: "Romanised must look like C8=7 or H8+7." } unless m
+      return { ok: false, error: I18n.t("fun.xiangqi.errors.romanised_format") } unless m
 
       abbr = m[1].upcase
       from = m[2] # digit or +/-
@@ -184,7 +184,7 @@ module Xiangqi
       to   = m[4]
 
       piece_letter = piece_letter_from_abbr(side, abbr)
-      return { ok: false, error: "Unknown piece abbreviation: #{abbr}" } if piece_letter.nil?
+      return { ok: false, error: I18n.t("fun.xiangqi.errors.unknown_piece_abbreviation", abbreviation: abbr) } if piece_letter.nil?
 
       if from == "+" || from == "-"
         fx = resolve_file_with_multiple(pos, piece_letter)
@@ -210,15 +210,15 @@ module Xiangqi
     def self.parse_system1(move, side)
       s = normalize(move)
       m = s.match(/\A([車馬相象仕士帥將炮砲兵卒])\((\d)(\d)\)[\-–](\d)(\d)\z/)
-      return { ok: false, error: "System 1 must look like 炮(32)-35." } unless m
+      return { ok: false, error: I18n.t("fun.xiangqi.errors.system1_format") } unless m
 
       r1 = m[2].to_i
       f1 = m[3].to_i
       r2 = m[4].to_i
       f2 = m[5].to_i
 
-      return { ok: false, error: "System 1 ranks must be 1..10." } unless r1.between?(1, 10) && r2.between?(1, 10)
-      return { ok: false, error: "System 1 files must be 1..9." } unless f1.between?(1, 9) && f2.between?(1, 9)
+      return { ok: false, error: I18n.t("fun.xiangqi.errors.system1_ranks") } unless r1.between?(1, 10) && r2.between?(1, 10)
+      return { ok: false, error: I18n.t("fun.xiangqi.errors.system1_files") } unless f1.between?(1, 9) && f2.between?(1, 9)
 
       fx = (side == :red) ? (9 - f1) : (f1 - 1)
       tx = (side == :red) ? (9 - f2) : (f2 - 1)
@@ -246,14 +246,14 @@ module Xiangqi
       piece_abbr ||= "S" # pawn/soldier has no letter in many variants
 
       piece_letter = piece_letter_from_abbr(side, piece_abbr)
-      return { ok: false, error: "Unknown piece in System 3: #{piece_abbr}" } if piece_letter.nil?
+      return { ok: false, error: I18n.t("fun.xiangqi.errors.system3_unknown_piece", piece: piece_abbr) } if piece_letter.nil?
 
       disambig, dest = parse_system3_disambig_and_dest(rest)
-      return { ok: false, error: "Bad System 3 destination in: #{token}" } if dest.nil?
+      return { ok: false, error: I18n.t("fun.xiangqi.errors.system3_bad_destination", token: token) } if dest.nil?
 
       tx = FILES.index(dest[:file])
       ty = dest[:rank] - 1
-      return { ok: false, error: "Bad System 3 destination in: #{token}" } unless tx && ty.between?(0, 9)
+      return { ok: false, error: I18n.t("fun.xiangqi.errors.system3_bad_destination", token: token) } unless tx && ty.between?(0, 9)
 
       candidates = []
       0.upto(9) do |fy|
@@ -291,8 +291,8 @@ module Xiangqi
         end
       end
 
-      return { ok: false, error: "No matching source found for System 3 move: #{token}" } if candidates.empty?
-      return { ok: false, error: "Ambiguous System 3 move (needs disambiguation): #{token}" } if candidates.length > 1
+      return { ok: false, error: I18n.t("fun.xiangqi.errors.system3_no_source", token: token) } if candidates.empty?
+      return { ok: false, error: I18n.t("fun.xiangqi.errors.system3_ambiguous", token: token) } if candidates.length > 1
 
       src = candidates[0]
       { ok: true, coords: { fx: src[:fx], fy: src[:fy], tx: tx, ty: ty } }
@@ -434,7 +434,7 @@ module Xiangqi
     def self.compute_coords_from_op(side, piece_letter, fx, fy, op, to_tok)
       if op == "平"
         tx = file_x_from_token_relative(side, to_tok)
-        return { ok: false, error: "Bad file token: #{to_tok}" } if tx.nil?
+        return { ok: false, error: I18n.t("fun.xiangqi.errors.bad_file_token", token: to_tok) } if tx.nil?
         return { ok: true, coords: { fx: fx, fy: fy, tx: tx, ty: fy } }
       end
 
@@ -443,7 +443,7 @@ module Xiangqi
 
       if %w[H h E e A a].include?(piece_letter)
         tx = file_x_from_token_relative(side, to_tok)
-        return { ok: false, error: "Bad file token: #{to_tok}" } if tx.nil?
+        return { ok: false, error: I18n.t("fun.xiangqi.errors.bad_file_token", token: to_tok) } if tx.nil?
 
         dy = (piece_letter.upcase == "H" ? 2 : piece_letter.upcase == "E" ? 2 : 1)
         ty = fy + dir * dy
@@ -454,7 +454,7 @@ module Xiangqi
             to_tok.to_i
           else
             idx = RED_DIGITS.index(to_tok)
-            return { ok: false, error: "Bad step token: #{to_tok}" } if idx.nil?
+            return { ok: false, error: I18n.t("fun.xiangqi.errors.bad_step_token", token: to_tok) } if idx.nil?
             idx + 1
           end
 
@@ -470,16 +470,16 @@ module Xiangqi
     def self.resolve_unique_source_y(pos, piece_letter, fx)
       ys = []
       0.upto(9) { |y| ys << y if pos.board[y][fx] == piece_letter }
-      return { ok: false, error: "No #{piece_letter} found on that file." } if ys.empty?
-      return { ok: false, error: "Ambiguous: multiple #{piece_letter} on that file." } if ys.length > 1
+      return { ok: false, error: I18n.t("fun.xiangqi.errors.no_piece_on_file", piece: piece_letter) } if ys.empty?
+      return { ok: false, error: I18n.t("fun.xiangqi.errors.multiple_pieces_on_file", piece: piece_letter) } if ys.length > 1
       ys[0]
     end
 
     def self.resolve_front_rear_source_y(pos, piece_letter, fx, side, which)
       ys = []
       0.upto(9) { |y| ys << y if pos.board[y][fx] == piece_letter }
-      return { ok: false, error: "No #{piece_letter} found on that file." } if ys.empty?
-      return { ok: false, error: "Need at least 2 #{piece_letter} on that file for +/−." } if ys.length < 2
+      return { ok: false, error: I18n.t("fun.xiangqi.errors.no_piece_on_file", piece: piece_letter) } if ys.empty?
+      return { ok: false, error: I18n.t("fun.xiangqi.errors.need_two_pieces", piece: piece_letter) } if ys.length < 2
 
       if side == :red
         which == :front ? ys.max : ys.min
@@ -495,8 +495,8 @@ module Xiangqi
         0.upto(9) { |y| count += 1 if pos.board[y][x] == piece_letter }
         files << x if count > 1
       end
-      return { ok: false, error: "No file has multiple #{piece_letter} for +/−." } if files.empty?
-      return { ok: false, error: "Multiple files have multiple #{piece_letter}; +/− is ambiguous." } if files.length > 1
+      return { ok: false, error: I18n.t("fun.xiangqi.errors.no_file_with_multiple", piece: piece_letter) } if files.empty?
+      return { ok: false, error: I18n.t("fun.xiangqi.errors.multiple_files_ambiguous", piece: piece_letter) } if files.length > 1
       files[0]
     end
 

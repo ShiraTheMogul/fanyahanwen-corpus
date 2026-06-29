@@ -1,19 +1,20 @@
-<% content_for :title, "Radical #{@radical.number} #{@radical.radical}" %>
+<% content_for :title, t("dictionary.kangxi.page_title", number: @radical.number, radical: @radical.radical) %>
 
 <% content_for :rightbar do %>
-  <h3>View options</h3>
+  <h3><%= t("view_options.heading") %></h3>
   <%= render "shared/view_options_rightbar" %>
 <% end %>
 
 <h1>
-  Radical <%= @radical.number %>:
+  <%= t("dictionary.kangxi.heading", number: @radical.number) %>
   <span style="font-size:2.2rem;"><%= @radical.radical %></span>
 </h1>
 
 <% unless @memberships_exist %>
   <div style="padding:10px 12px; border:1px solid rgba(0,0,0,0.18); border-radius:10px; background: rgba(255,240,200,0.35); margin: 10px 0 14px 0;">
-    <strong>Radical membership index is empty.</strong>
-    Run <code>bin/rails kangxi:rebuild_memberships</code> to build it from Unihan <code>kRSUnicode</code>.
+    <%= t("dictionary.kangxi.membership_empty_html",
+          command: tag.code("bin/rails kangxi:rebuild_memberships"),
+          field: tag.code("kRSUnicode")) %>
   </div>
 <% end %>
 
@@ -36,53 +37,53 @@
       })();
     </script>
 
-    <h2>About this radical</h2>
+    <h2><%= t("dictionary.kangxi.about") %></h2>
 
-    <p><strong>Radical:</strong> <span style="font-size:2rem;"><%= @radical.radical %></span></p>
+    <p><strong><%= t("dictionary.common.radical") %></strong> <span style="font-size:2rem;"><%= @radical.radical %></span></p>
 
     <% seal_family = HanFonts.family_for(:chongxi_seal) %>
-    <p><strong>Seal font (Chongxi):</strong>
+    <p><strong><%= t("dictionary.common.seal_font_chongxi") %></strong>
       <span style='font-size:2rem; font-family:"<%= seal_family %>", serif;'>
         <%= @radical.radical %>
       </span>
     </p>
 
-    <p><strong>Stroke count:</strong> <%= @radical.stroke_count.presence || "—" %></p>
-    <p><strong>Meaning:</strong> <%= @radical.meaning.presence || "—" %></p>
-    <p><strong>Variants:</strong> <%= @radical.variants.presence || "—" %></p>
+    <p><strong><%= t("dictionary.common.stroke_count") %></strong> <%= @radical.stroke_count.presence || "—" %></p>
+    <p><strong><%= t("dictionary.common.meaning") %></strong> <%= @radical.meaning.presence || "—" %></p>
+    <p><strong><%= t("dictionary.common.variants") %></strong> <%= @radical.variants.presence || "—" %></p>
 
-    <h3>Readings</h3>
-    <p><strong>Mandarin (pinyin):</strong> <%= @radical.mandarin_pinyin.presence || "—" %></p>
-    <p><strong>Sino-Vietnamese:</strong> <%= @radical.vietnamese.presence || "—" %></p>
-    <p><strong>Japanese:</strong> <%= @radical.japanese.presence || "—" %></p>
-    <p><strong>Korean:</strong> <%= @radical.korean.presence || "—" %></p>
+    <h3><%= t("dictionary.common.readings") %></h3>
+    <p><strong><%= t("dictionary.common.mandarin_pinyin") %>:</strong> <%= @radical.mandarin_pinyin.presence || "—" %></p>
+    <p><strong><%= t("dictionary.common.sino_vietnamese") %>:</strong> <%= @radical.vietnamese.presence || "—" %></p>
+    <p><strong><%= t("dictionary.common.japanese") %>:</strong> <%= @radical.japanese.presence || "—" %></p>
+    <p><strong><%= t("dictionary.common.korean") %>:</strong> <%= @radical.korean.presence || "—" %></p>
 
     <p style="margin-top: 18px;">
-      <%= link_to "Back to radicals index", "/dictionary/radicals", data: { turbo: false } %>
+      <%= link_to t("dictionary.kangxi.back"), "/dictionary/radicals", data: { turbo: false } %>
     </p>
   </div>
 
   <div style="flex: 1 1 520px; min-width: 360px;">
-    <h2>Characters</h2>
+    <h2><%= t("dictionary.common.characters") %></h2>
 
     <div style="margin: 8px 0 10px 0; opacity: 0.9;">
-      <span style="margin-right: 10px;">Definition source:</span>
+      <span style="margin-right: 10px;"><%= t("dictionary.common.definition_source") %></span>
       <% unihan_on = (@def_source != "kangxi") %>
       <% kangxi_on  = (@def_source == "kangxi") %>
       <%= link_to (unihan_on ? "●" : "○"), "/dictionary/radicals/#{@radical.number}?def=unihan", data: { turbo: false }, style: "text-decoration:none; margin-right: 6px;" %>
-      <%= link_to "Unihan", "/dictionary/radicals/#{@radical.number}?def=unihan", data: { turbo: false }, style: "margin-right: 12px;" %>
+      <%= link_to t("dictionary.common.unihan"), "/dictionary/radicals/#{@radical.number}?def=unihan", data: { turbo: false }, style: "margin-right: 12px;" %>
 
       <%= link_to (kangxi_on ? "●" : "○"), "/dictionary/radicals/#{@radical.number}?def=kangxi", data: { turbo: false }, style: "text-decoration:none; margin-right: 6px;" %>
-      <%= link_to "Kangxi", "/dictionary/radicals/#{@radical.number}?def=kangxi", data: { turbo: false } %>
+      <%= link_to t("dictionary.common.kangxi"), "/dictionary/radicals/#{@radical.number}?def=kangxi", data: { turbo: false } %>
     </div>
 
     <p>
-      Total: <%= @total %>. Page <%= @page %>. Per page: <%= @per %>.
+      <%= t("dictionary.common.total_page_per_page", total: @total, page: @page, per: @per) %>
     </p>
 
     <turbo-frame id="radical_chars" src="/dictionary/radicals/<%= @radical.number %>/chars?page=<%= @page %>&per=<%= @per %>&def=<%= @def_source %>">
       <div style="padding: 10px 0; opacity: 0.75;">
-        Loading characters…
+        <%= t("dictionary.common.loading_characters") %>
       </div>
     </turbo-frame>
   </div>

@@ -36,6 +36,11 @@ module InterfaceLocales
     ru:  { native_name: "Русский", status: :hidden }
   }.freeze
 
+  # Locales whose interface translations are written primarily in Han script.
+  # For these locales, translated interface labels replace ornamental Han headings
+  # instead of being displayed beside them.
+  HAN_SCRIPT = %i[cmn lzh yue nan wuu cjy hak hsn gan czh cnp csp].freeze
+
   ALL = DEFINITIONS.keys.freeze
   SELECTABLE = DEFINITIONS.filter_map { |code, definition| code if definition[:status] == :public }.freeze
   DISPLAY_NAMES = DEFINITIONS.transform_values { |definition| definition.fetch(:native_name) }.freeze
@@ -44,6 +49,10 @@ module InterfaceLocales
 
   def selector_visible?
     SELECTOR_VISIBLE
+  end
+
+  def han_script?(code)
+    HAN_SCRIPT.include?(code.to_s.to_sym)
   end
 
   def selectable?(code)

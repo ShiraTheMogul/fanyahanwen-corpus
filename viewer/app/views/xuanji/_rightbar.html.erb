@@ -1,27 +1,15 @@
-<%#
-  Xuanji Tu right sidebar.
-
-  Goals:
-  - Keep the global viewer layout intact (layout provides <aside class="rightbar">).
-  - Provide a working punctuation toggle for the extracted output.
-  - Reuse the shared view-options form (ruby, fonts, phoneticization conventions).
-%>
-
 <% content_for :rightbar do %>
   <details class="rightbar-section rightbar-group" open data-controller="xuanji-rightbar">
-    <summary class="rightbar-summary"><strong>Xuanji output</strong></summary>
+    <summary class="rightbar-summary"><strong><%= t("fun.xuanji.rightbar.title") %></strong></summary>
 
     <div class="rightbar-row">
-      <label for="xj_strip">Remove punctuation</label>
+      <label for="xj_strip"><%= t("fun.xuanji.rightbar.remove_punctuation") %></label>
       <input id="xj_strip" type="checkbox"
              data-xuanji-rightbar-target="strip"
              data-action="change->xuanji-rightbar#change">
     </div>
 
-    <p class="rightbar-note">
-      This affects the extracted output only (not the SVG grid). It uses the same
-      punctuation stripping logic as the Corpus Viewer.
-    </p>
+    <p class="rightbar-note"><%= t("fun.xuanji.rightbar.note") %></p>
   </details>
 
   <%= render "shared/view_options_rightbar" %>

@@ -1,0 +1,180 @@
+lzh:
+  tools:
+    title: 工具
+    intro: 此頁彙列本站所用諸具，使可各自施用；他站有用之具，亦附鏈於此。
+    common:
+      from: 自
+      to: 至
+      convert: 轉換
+      extract: 擷取
+      download_csv: 存為CSV
+      character: 字
+      codepoint: 碼位
+      source: 所自
+      status: 狀態
+      row: 行
+      field: 欄
+      error: 有誤：%{message}
+      allowed: 可用者：%{schemes}
+      label_separator: ：
+    phonetic:
+      mandarin:
+        title: 官話標音轉換
+        description_html: 官話標音體例特繁，初學或苦其雜。此處用dohliam所作之%{link}，可互轉十三體。
+        placeholder: han4 yu3 ...
+      cantonese:
+        title: 粵語標音轉換
+        placeholder: gwong2 dung1 waa2 ...
+      original: 原文
+    character_extractor:
+      title: 漢字資料擷取
+      description: 舊有倉頡檢索之用仍存，亦可批量取庫中他種漢字資料。貼一字、如U+8BF4之碼位，或整句；諸字去其重者，各列一行。
+      flashcard_help: 可資增益卡片：釋義、字典條目及讀音，皆可先覽於頁中，亦可存為CSV。
+      input_placeholder: '漢字（如說）、U+8BF4，或倉頡字母（如ABC）
+
+        亦可貼入整句，以取其中諸字，去其重者。'
+      show_hkcards: 示倉頡HKCards表
+      options:
+        cangjie: 倉頡輸入法
+        unicode_definition: Unihan釋義
+        kangxi_entry: 《康熙字典》條目
+        shuowen_entry: 《說文解字》條目
+        guangyun_definition: 《廣韻》釋義
+        guangyun_fanqie: 《廣韻》反切
+        guangyun_rhyme: 《廣韻》韻
+        guangyun_tone: 《廣韻》聲調
+        mandarin: 官話讀音
+        cantonese: 粵語讀音
+        japanese_on: 日語音讀
+        korean: 朝鮮語讀音
+        vietnamese: 越南語讀音
+        common_readings: 常用讀音（官話、粵語、日語音讀、朝鮮語、越南語）
+      columns:
+        unicode_definition: Unihan釋義
+        kangxi_definition: 《康熙字典》釋義
+        shuowen_entry: 《說文解字》條目
+        guangyun_definition: 《廣韻》釋義
+        guangyun_fanqie: 《廣韻》反切
+        guangyun_rhyme: 《廣韻》韻
+        guangyun_tone: 《廣韻》聲調
+        mandarin: 官話
+        cantonese: 粵語
+        japanese_on: 日語音讀
+        korean_yale: 朝鮮語（耶魯式）
+        korean_hangul: 朝鮮語（諺文）
+        vietnamese: 越南語
+        cangjie: 倉頡
+        hkcards: HKCards
+      messages:
+        no_input: 未有輸入。
+        unknown_extractor: 未知之擷取器。
+        no_han: 未見漢字。
+        cangjie_letters: 所入似倉頡字母，故不檢字。
+        parse_failed: 字或碼位不可解析。
+        not_found: 庫中未見。
+        no_cangjie_property: 此字無kCangjie屬性。
+        no_cangjie_code: 無倉頡碼
+        latin: 拉丁字母
+        han: 漢字鍵
+        hkcards_alt: HKCards倉頡拆碼
+        no_hkcards: 此字無HKCards倉頡拆碼圖。
+      csv_source: '%{label}所自'
+    anki:
+      title: Anki牌組增益器
+      description: 貼上以製表符分欄之Anki匯出文，依一欄所見諸字，增益另一欄。若欲使每條筆記攜《康熙字典》《說文解字》《廣韻》或讀音資料，以HTML存之，備後日供AI提示或研習卡片，此具可用。
+      source_field: 讀字之欄
+      target_field: 寫入增益之欄
+      append_mode: 附於目標欄舊文之後
+      replace_mode: 盡代目標欄
+      preview_rows: 預覽行數
+      preview_start: 預覽起行
+      preview_mode: 預覽方式
+      changed_only: 僅示已變之行
+      full_rows: 諸行
+      data_to_append: 所附資料
+      input_placeholder: '#separator:tab
+
+        #html:true
+
+        #guid column:1
+
+        ……於此貼Anki TXT匯出文……'
+      enrich_deck: 增益牌組
+      fields:
+        kangxi_gloss: 《康熙字典》釋義
+        unicode_definition: Unihan釋義
+        shuowen_entry: 《說文解字》條目
+        guangyun_definition: 《廣韻》釋義
+        guangyun_fanqie: 《廣韻》反切
+        guangyun_rhyme: 《廣韻》韻
+        guangyun_tone: 《廣韻》聲調
+        mandarin: 官話
+        cantonese: 粵語
+        japanese_on: 日語音讀
+        korean_yale: 朝鮮語（耶魯式）
+        korean_hangul: 朝鮮語（諺文）
+        vietnamese: 越南語
+      live:
+        detected_fields: 所識欄數
+        highest_metadata_field: 補註所記最大欄號
+        note_rows: 筆記行數
+        metadata_help: 最大欄號兼取TSV本身與#tags column:N之類補註標記，故末尾空白標籤欄亦計之。
+        paste_to_preview: 貼上Anki TXT，即於此預覽首條筆記。
+        automatic_preview: 自動預覽首行
+        preview_help: 此示所選來源欄與目標欄之所在，增益前可先驗之。
+        field: 欄
+        first_row_value: 首行之值
+      errors:
+        no_text: 未貼Anki TXT。
+        field_minimum: 欄號須為一以上。
+      modes:
+        append: 附加
+        replace: 替換
+      statuses:
+        skipped: 略過
+        replace_existing: 替換（目標原有內容）
+        replace: 替換
+        append_existing: 附加（目標原有內容）
+        append: 附加
+      output:
+        summary_html: 筆記行凡<strong>%{note_count}</strong>，其中<strong>%{updated_count}</strong>行已更新。目標欄：<strong>%{target_field}</strong>；來源欄：<strong>%{source_field}</strong>；方式：<strong>%{mode}</strong>。
+        details_html: 每條筆記所識欄數：<strong>%{detected_fields}</strong>；補註所記最大欄號：<strong>%{metadata_field}</strong>；增益前目標欄非空者：<strong>%{nonempty_targets}</strong>；目標原有內容而仍變更者：<strong>%{changed_existing}</strong>；略過者：<strong>%{skipped}</strong>。
+        inserted_html_preview: 所插HTML之預覽
+        raw_html: HTML原文
+        rendered_html: 呈現後HTML
+        preview_table: 預覽表
+        preview_description_html: 自第<strong>%{start}</strong>行起，至多示<strong>%{limit}</strong>行；方式為<strong>%{mode}</strong>。按欄位預覽，則下方見全文。
+        row: 行
+        guid: GUID
+        source_field: 來源欄%{field}
+        target_before: 目標欄原文
+        target_after: 目標欄改後
+        status: 狀態
+        source_field_detail: 來源欄%{field}
+        target_before_detail: 目標欄%{field}原文
+        target_after_detail: 目標欄%{field}改後
+        detail_label: 第%{row}行 · %{field}
+        clicked_detail: 所按欄位詳情
+        raw_field_content: 欄位原文
+        rendered_field_content: 欄位呈現
+        no_preview_rows: 依今預覽設定，無相合之行。
+        download_txt: 存增益後TXT
+    lunar:
+      title: 陰曆日期轉換
+      description_html: 中國陰曆以干支記日。此處用%{link}，可互轉公曆與中國曆日。
+      date_picker: 擇日
+      paste_date: 或貼日期
+      placeholder: 例：2026-01-07 | 07/01/2026 | 7 Jan 2026 | today
+      solar: 公曆
+      lunar: 陰曆
+      note: 註
+      parse_failed: 日期不可解析。
+      warnings:
+        month_first: 中數逾十二，故依月／日／年解。
+        ambiguous: 數字日期有歧義；依英國慣例作日／月／年解。
+    numerals:
+      title: 漢字數字轉換
+      description: 一簡易映射之具，兼顧偶見之異例與異體。雖未盡善，多數情形足用。本站頁首之陰曆日期，亦由此具所成。
+      placeholder: 貼入含數字之文……
+      use_you: 空位用「有」
+      use_abbreviations: 用廿／卅／卌

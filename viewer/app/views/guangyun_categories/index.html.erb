@@ -1,29 +1,27 @@
-<% content_for :title, "Guangyun categories" %>
+<% content_for :title, t("dictionary.guangyun.title") %>
 
 <% content_for :rightbar do %>
-  <h3>View options</h3>
+  <h3><%= t("view_options.heading") %></h3>
   <%= render "shared/view_options_rightbar" %>
 <% end %>
 
-<h1>Guangyun 廣韻</h1>
+<h1><%= t("dictionary.guangyun.heading") %></h1>
 
 <p>
-  Browse Guangyun entries by <strong>tone</strong> (聲) and <strong>rime</strong> (韻).
+  <%= t("dictionary.guangyun.browse_intro_html") %>
 </p>
 
 <% has_any = @tone_groups.values.any? { |v| v.any? } %>
 <% unless has_any %>
   <div style="padding:10px 12px; border:1px solid rgba(0,0,0,0.18); border-radius:10px; background: rgba(255,240,200,0.35); margin: 10px 0 14px 0;">
-    <strong>No Guangyun categories were found.</strong>
-    You currently have Guangyun payload rows, but not the tone/rime mapping rows.
-    Run the juan importer task to add them.
+    <%= t("dictionary.guangyun.categories_missing_html") %>
   </div>
 <% end %>
 
 <% @tone_groups.each do |tone, rimes| %>
   <h2 style="margin-top: 18px;"><%= tone %> (<%= rimes.length %>)</h2>
   <% if rimes.empty? %>
-    <div style="opacity:0.6;">(none)</div>
+    <div style="opacity:0.6;"><%= t("dictionary.guangyun.none") %></div>
   <% else %>
     <ul style="columns: 4; column-gap: 16px; list-style: none; padding-left: 0;">
       <% rimes.each do |r| %>
@@ -39,22 +37,22 @@
 
 <hr style="margin: 22px 0;" />
 
-<h2>Manual lookup</h2>
+<h2><%= t("dictionary.guangyun.manual_lookup") %></h2>
 
 <p style="opacity:0.85;">
-  Enter a single character (e.g. 王) or a codepoint (e.g. U+738B) to inspect its Guangyun payload.
+  <%= t("dictionary.guangyun.lookup_help") %>
 </p>
 
 <%= form_with url: dictionary_guangyun_path, method: :get, local: true do %>
-  <label>Character / Codepoint
+  <label><%= t("dictionary.guangyun.character_or_codepoint") %>
     <%= text_field_tag :q, params[:q].to_s, style: "width: 240px;" %>
   </label>
-  <%= submit_tag "Lookup" %>
+  <%= submit_tag t("dictionary.guangyun.lookup") %>
 <% end %>
 
 <% if @lookup.present? %>
   <% if @lookup[:missing] %>
-    <p style="margin-top: 10px; opacity:0.8;">No CharacterCodepoint row found for <strong><%= @lookup[:chr] %></strong>.</p>
+    <p style="margin-top: 10px; opacity:0.8;"><%= t("dictionary.guangyun.character_row_missing_html", character: @lookup[:chr]) %></p>
   <% else %>
     <div style="margin-top: 10px; padding: 10px 12px; border: 1px solid rgba(0,0,0,0.18); border-radius: 10px;">
       <div style="font-size: 1.8rem; line-height: 1.1;">
@@ -65,12 +63,12 @@
 
       <% if @lookup[:category].present? %>
         <div style="margin-top: 6px; opacity:0.8;">
-          Category: <strong><%= @lookup[:category] %></strong>
+          <%= t("dictionary.common.category") %> <strong><%= @lookup[:category] %></strong>
         </div>
       <% end %>
 
       <% if @lookup[:pairs].blank? %>
-        <div style="margin-top: 8px; opacity:0.75;">No Guangyun payload rows found for this character.</div>
+        <div style="margin-top: 8px; opacity:0.75;"><%= t("dictionary.guangyun.no_payload") %></div>
       <% else %>
         <ol style="margin-top: 10px;">
           <% @lookup[:pairs].each do |pair| %>

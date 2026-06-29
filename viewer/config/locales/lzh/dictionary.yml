@@ -1,0 +1,217 @@
+lzh:
+  dictionary:
+    title_han: 字典
+    title: 字典
+    search_prompt: 試輸入一字或萬國碼位。
+    character_or_codepoint: 漢字或碼位
+    submit: 尋
+    browse_by_component: 依部件尋字
+    browse_explanation: 未知其字者，可由部首、部件縮小所求。部首之頁亦列讀音、字義及書寫資料，可資進學。
+    links:
+      kangxi_radicals: 康熙部首（Unihan kRSUnicode）
+      shuowen_components: 《說文解字》部首
+      guangyun_categories: 《廣韻》類目（聲調與韻）
+    common:
+      view_options: 閱覽選項
+      characters: 漢字
+      definition_source: '釋義所自：'
+      total_page_per_page: '凡%{total}；第%{page}頁；每頁%{per}。'
+      total_characters_page_per_page: '字凡%{total}；第%{page}頁；每頁%{per}。'
+      previous: ← 前頁
+      next: 後頁 →
+      jump: '每頁：'
+      per: '每頁：'
+      total_count: （凡%{total}）
+      loading_characters: 載入諸字中……
+      glyph: 字形
+      character: 字
+      fanqie: 反切
+      mandarin: 官話
+      mandarin_pinyin: 官話（漢語拼音）
+      japanese: 日語
+      korean: 朝鮮語
+      vietnamese: 越南語
+      sino_vietnamese: 漢越音
+      unihan: Unihan
+      kangxi: 《康熙字典》
+      shuowen: 《說文解字》
+      guangyun: 《廣韻》
+      unihan_definition: Unihan釋義
+      kangxi_definition: 《康熙字典》釋義
+      guangyun_definition: 《廣韻》釋義
+      shuowen_entry: 《說文解字》條目
+      stroke_count: '畫數：'
+      meaning: '義：'
+      variants: '異體：'
+      readings: 讀音
+      seal_font_chongxi: '篆體（崇熙）：'
+      chongxi_seal: '崇熙篆體：'
+      radical: '部首：'
+      component: '部件：'
+      tone: '聲調：'
+      rime: '韻：'
+      category: '類目：'
+      about: 詳情
+    character:
+      not_found: 尚無此字
+      not_in_database: '庫中未有%{identifier}。'
+      try_another: 試輸入他字或萬國碼位。
+      stroke_unavailable: 此字無筆順動畫。
+      stroke_library_failed: 筆順動畫不可用（HanziWriter未能載入）。
+      no_stroke_data: 此字無筆順資料。
+      codepoint: '碼位：'
+      unicode_block: 萬國碼區段
+      base_character: 基準字
+      variants: 異體
+      variant_kinds:
+        generic: 異體
+        semantic: 語義異體
+        specialised_semantic: 專義異體
+        simplified: 簡化異體
+        traditional: 傳統異體
+      has_own_definition: （自有釋文）
+      definitions: 釋義
+      inherited_definition_html: 此字視為異體，故示%{character_link}之%{source}。
+      sources:
+        unihan_definition: Unihan釋義
+        shuowen_text: 《說文解字》釋文
+        kangxi_text: 《康熙字典》釋文
+        cedict_definitions: CC-CEDICT釋義
+      shuowen_jiezi: 《說文解字》
+      kangxi_dictionary: 《康熙字典》
+      guangyun_heading: 《廣韻》
+      radical_or_component: '部：'
+      variant_specific_definitions: 異體別釋（%{count}）
+      properties: 屬性
+      property_groups:
+        strokes_radicals: 筆畫與部首
+        pronunciation: 讀音
+        input: 輸入法
+        education_notes: 教學註記
+        dictionary_indices: 字典索引
+        encodings_mappings: 編碼與映射
+        irg_sources: 表意文字研究組（IRG）來源
+        other: 其他
+      cangjie_decomposition: 倉頡拆碼
+      no_hkcards_decomposition: 此字無HKCards倉頡拆碼圖。
+      return_home: 返卷首
+    pronunciation:
+      expand_or_collapse: 展摺%{label}
+      expand_or_collapse_references: 展摺引據
+      location: '所在：'
+      references: 引據
+    kangxi:
+      title: 康熙部首
+      history_html: 康熙部首之制，梅膺祚始定於萬曆四十三年（1615）所撰《字彙》。其依字形中顯著之部件分類諸字，通常取承載字義之義符。
+      comparison: 康熙部首與《說文解字》部首不同；後者較廣，凡共見之形體皆可分類，不必為一組固定筆畫，亦不必具表義或表音之功。
+      page_title: 第%{number}部 %{radical}
+      heading: '第%{number}部：'
+      membership_empty_html: '<strong>部首歸屬索引尚空。</strong>請執行%{command}，依Unihan %{field}建立之。'
+      about: 此部首
+      back: 返部首索引
+      browse_intro_html: 依Unihan %{field}所記康熙部首尋字。
+    shuowen:
+      title: 《說文解字》部首
+      heading_html: '%{link}部首'
+      intro_html: 依《說文解字》部首尋字。許慎於東漢撰《說文解字》，立五百四十部，為文字訓詁之巨著。%{text_link}主要依字形結構析字，並以正名之說申其理，故其旨兼涉政教，非徒訓詁字義而已。許氏序曰：
+      preface_translation_html: '<i>其言以文字為經藝、王政之本，前人藉以傳後，後人藉以識古；本立則道生，故天下至賾亦可條理而不亂。</i>'
+      historical_caution_html: 此說深本儒家正名之旨，固有規範之意。然許氏亦未必盡是：其書去今近二千年，近世古文字材料，尤甲骨文，皆非當時所得見。
+      comparison: 《說文》部首與康熙部首不同。其以形體相似廣分諸字，或表音，或表義，甚至僅一筆，故本站稱之為「部件」。
+      text_itself: 原文
+      shuowen_jiezi: 《說文解字》
+      page_title: 《說文》部首%{number} %{glyph}
+      heading: '《說文》部首%{number}：'
+      about: 此部件
+      back: 返《說文》部首索引
+    guangyun:
+      title: 《廣韻》類目
+      heading: 《廣韻》
+      browse_intro_html: 依<strong>聲調</strong>（聲）與<strong>韻</strong>（韻）瀏覽《廣韻》條目。
+      categories_missing_html: '<strong>未見《廣韻》類目。</strong>今有《廣韻》內容列，而無聲調、韻之映射列；請執行卷次匯入工作以補之。'
+      none: （無）
+      manual_lookup: 手動尋字
+      lookup_help: 輸入一字（如王）或碼位（如U+738B），以察其《廣韻》資料。
+      character_or_codepoint: 漢字／碼位
+      lookup: 尋
+      character_row_missing_html: 未見<strong>%{character}</strong>之CharacterCodepoint列。
+      no_payload: 此字無《廣韻》資料列。
+      page_title: 《廣韻》%{category}
+      category_heading: '《廣韻》：%{category}'
+      category_rows_missing_html: '<strong>未見此值之《廣韻》類目列。</strong>通常因匯入器未生成%{field}列。'
+      about_rime: 此韻
+      character_information: 字之資料
+      back: 返《廣韻》類目
+      bs2014_mc: BS2014（中古音）
+      stimson_ktang: Stimson 1976（kTang）
+      table_character: 字
+    field_lens:
+      stroke_count:
+        one: '%{count}畫'
+        other: '%{count}畫'
+      kangxi_radical: '康熙部首第%{number}部'
+      direct: 直接
+      variant: 異體
+      adobe_tooltip: 'Adobe-Japan1-6 %{type}：CID %{cid}；第%{radical}部'
+      chinese_simplified_radical: 中國簡化部首
+      non_chinese_simplified_radical: 域外簡化部首
+      second_non_chinese_simplified_radical: 第二域外簡化部首
+      radical_variant: 部首異體
+      property_labels:
+        unihan_definition: Unihan釋義
+        hanyu_frequency: 漢語頻率（讀音與頻率）
+        old_national_pronunciation: 老國音
+        cangjie_input: 倉頡輸入法
+        four_corner_input: 四角號碼檢字法
+        korean_yale: 朝鮮語（耶魯式）
+        general_chinese: 通字方案
+        middle_chinese: 中古漢語
+        old_chinese: 上古漢語
+        middle_chinese_stimson: 中古漢語（Stimson，1976）
+        kangxi_explanation: 《康熙字典》釋義
+        official_korean_name_since: 朝鮮人名用字收錄始年
+        hong_kong_grade: 香港小學年級（《朗文初級中文詞典》，2001）
+        cedict_definition: CC-CEDICT釋義
+        cedict_simplified: CC-CEDICT簡化字
+        phonetic_class: 諧聲類
+        kangxi_radicals_strokes: 康熙部首與筆畫
+        cjk_808_common: 中日韓常用八百零八字
+        context: 文脈
+        manyogana_hiragana_etymology: 萬葉假名（平假名字源）
+        manyogana_katakana_etymology: 萬葉假名（片假名字源）
+        manyogana_mora_table: 萬葉假名音拍表
+        shakuon_kana: 借音假名
+        shakkun_kana: 借訓假名
+        mora_romaji: 音拍（羅馬字）
+        manyogana_reading: 萬葉假名讀音（音拍）
+        menggu_ziyun_phags_pa: 《蒙古字韻》（八思巴字）
+        menggu_ziyun_reconstruction: 《蒙古字韻》（萬國音標擬音）
+        menggu_ziyun_transcription: 《蒙古字韻》（萬國音標）
+        qieyun_position: 切韻系音韻地位
+        menggu_ziyun_tone: 《蒙古字韻》聲調
+        menggu_ziyun_rhyme: 《蒙古字韻》韻部
+        menggu_ziyun_gloss: 《蒙古字韻》釋義
+        menggu_ziyun_variant: 《蒙古字韻》異體
+        menggu_ziyun_notes: 《蒙古字韻》註記
+        menggu_ziyun_adjustment: 《蒙古字韻》標記待調
+        menggu_ziyun_xiaoyun_number: 《蒙古字韻》小韻號
+        menggu_ziyun_xiaoyun_key: 《蒙古字韻》小韻鍵
+        menggu_ziyun_category: 《蒙古字韻》類目
+        zhongyuan_yinyun_xiaoyun: 《中原音韻》小韻
+        zhongyuan_yinyun_initial: 《中原音韻》聲母
+        zhongyuan_yinyun_final: 《中原音韻》韻母
+        zhongyuan_yinyun_tone: 《中原音韻》聲調
+        zhongyuan_yinyun_yang_naisi: 《中原音韻》（楊耐思）
+        zhongyuan_yinyun_ning_jifu: 《中原音韻》（寧繼福）
+        zhongyuan_yinyun_xue_fengsheng: 《中原音韻》（薛鳳生）
+        zhongyuan_yinyun_unt_phonemic: 《中原音韻》（untunt）
+        zhongyuan_yinyun_unt: 《中原音韻》（unt）
+        zhongyuan_yinyun_gloss: 《中原音韻》釋義
+        zhongyuan_yinyun_notes: 《中原音韻》註記
+        zhongyuan_yinyun_category: 《中原音韻》類目
+        zhongyuan_yinyun_xiaoyun_key: 《中原音韻》小韻鍵
+        manchu_1763_ipa: 1763年滿語轉寫（萬國音標）
+        manchu_1763_latin: 1763年滿語轉寫（拉丁字）
+        manchu_1763_manchu: 1763年滿語轉寫（滿文字）
+        guangyun_fanqie: 《廣韻》反切
+        guangyun_rime: 《廣韻》韻
+        guangyun_tone: 《廣韻》聲調

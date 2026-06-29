@@ -55,7 +55,7 @@ class XiangqiController < ApplicationController
     fy = params[:fy].to_i
 
     if fx < 0 || fx > 8 || fy < 0 || fy > 9
-      return render json: { ok: false, error: "Bad square." }, status: :unprocessable_entity
+      return render json: { ok: false, error: I18n.t("fun.xiangqi.errors.bad_square") }, status: :unprocessable_entity
     end
 
     piece = pos.board[fy][fx]
@@ -112,14 +112,14 @@ class XiangqiController < ApplicationController
 
       moved_piece = pos.board[fy][fx]
       if moved_piece.nil?
-        flash[:alert] = "No piece at source square."
+        flash[:alert] = I18n.t("fun.xiangqi.errors.no_piece_source_square")
         return redirect_to "/xiangqi", status: :see_other
       end
 
       if defined?(Xiangqi::Rules) && Xiangqi::Rules.respond_to?(:legal_move?)
         res = Xiangqi::Rules.legal_move?(pos, fx, fy, tx, ty)
         unless res[:ok]
-          flash[:alert] = res[:error] || "Illegal move."
+          flash[:alert] = res[:error] || I18n.t("fun.xiangqi.errors.illegal_move")
           return redirect_to "/xiangqi", status: :see_other
         end
       end
@@ -144,7 +144,7 @@ class XiangqiController < ApplicationController
   def undo
     moves = stored_moves_iccs
     if moves.empty?
-      flash[:alert] = "Nothing to undo."
+      flash[:alert] = I18n.t("fun.xiangqi.errors.nothing_to_undo")
       return redirect_to "/xiangqi", status: :see_other
     end
 

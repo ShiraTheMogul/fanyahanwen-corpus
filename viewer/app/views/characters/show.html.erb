@@ -1,13 +1,13 @@
 <% if @character.nil? %>
-  <h1>Character not found (yet)</h1>
-  <p><%= params[:id] %> isn’t in the database!</p>
+  <h1><%= t("dictionary.character.not_found") %></h1>
+  <p><%= t("dictionary.character.not_in_database", identifier: params[:id]) %></p>
 
-  <p>Let's try inputting another character or Unicode identifier!</p>
+  <p><%= t("dictionary.character.try_another") %></p>
 
   <%= form_with url: characters_path, method: :get, local: true do %>
-    <label for="query">Character or codepoint:</label>
+    <label for="query"><%= t("dictionary.character_or_codepoint") %>:</label>
     <%= text_field_tag :query %>
-    <%= submit_tag "Submit" %>
+    <%= submit_tag t("dictionary.submit") %>
   <% end %>
 
 	<% else %>
@@ -19,7 +19,7 @@
     <div id="hw-wrap" class="hw-wrap">
       <div id="hanzi-writer" class="hanzi-writer-box"></div>
       <div id="hw-fallback" class="hw-fallback">
-        <em>Stroke animation unavailable for this character.</em>
+        <em><%= t("dictionary.character.stroke_unavailable") %></em>
       </div>
     </div>
   </div>
@@ -30,6 +30,10 @@
       var ch = "<%= @character.chr %>";
       var targetId = "hanzi-writer";
       var fallbackEl = document.getElementById("hw-fallback");
+      var messages = <%= raw json_escape({
+        libraryFailed: t("dictionary.character.stroke_library_failed"),
+        noData: t("dictionary.character.no_stroke_data")
+      }.to_json) %>;
 
       function showFallback(msg) {
         fallbackEl.innerHTML = "<em>" + msg + "</em>";
@@ -42,7 +46,7 @@
 
       // Failsafe: library didn't load :( (CSP/offline/etc.)
       if (typeof HanziWriter === "undefined") {
-        showFallback("Stroke animation unavailable (HanziWriter failed to load).");
+        showFallback(messages.libraryFailed);
         return;
       }
 
@@ -59,24 +63,24 @@
         writer.loopCharacterAnimation();
       } catch (e) {
         // Failsafe 2: library loaded, but no stroke data / unsupported char
-        showFallback("No stroke data available for this character.");
+        showFallback(messages.noData);
       }
     })();
   </script>
 
   <p>
-    Codepoint:
+    <%= t("dictionary.character.codepoint") %>
     U+<%= @character.codepoint.to_s(16).upcase.rjust(4, "0") %>
     (<%= @character.codepoint %>)
 	<% block = UnicodeRanges.han_block_label(@character.codepoint) %>
 	<% if block %>
-		<span class="unicode-block-badge" title="Unicode block"><%= block %></span>
+		<span class="unicode-block-badge" title="<%= t("dictionary.character.unicode_block") %>"><%= block %></span>
 	<% end %>
 
   </p>
 
   <% if @base_character.present? %>
-    <h2>Base character</h2>
+    <h2><%= t("dictionary.character.base_character") %></h2>
     <p>
       <%= link_to "#{@base_character.chr} (U+#{@base_character.codepoint.to_s(16).upcase})",
                   character_path("U+#{@base_character.codepoint.to_s(16).upcase}") %>
@@ -123,21 +127,28 @@
 
   <% unihan_variant_entries = [] %>
   <% unihan_variant_props.each do |p| %>
-    <% kind = (p.field.to_s == "kSemanticVariant") ? "Semantic variant" : "Specialised semantic variant" %>
+    <% kind_key = (p.field.to_s == "kSemanticVariant") ? "dictionary.character.variant_kinds.semantic" : "dictionary.character.variant_kinds.specialised_semantic" %>
     <% parse_variant_cps.call(p.value).each do |cp| %>
-      <% unihan_variant_entries << { codepoint: cp, kind: kind, source: p.source.to_s } %>
+      <% unihan_variant_entries << { codepoint: cp, kind_key: kind_key, source: p.source.to_s } %>
     <% end %>
   <% end %>
 
   <% if @variants.present? || unihan_variant_entries.any? %>
-    <h2>Variants</h2>
+    <h2><%= t("dictionary.character.variants") %></h2>
     <ul>
       <% (@variants || []).each do |v| %>
         <% hex = (v[:hex].presence rescue nil) || v[:codepoint].to_i.to_s(16).upcase %>
         <% glyph = (v[:glyph].presence rescue nil) || v[:label].to_s.each_char.first %>
         <% rest = v[:label].to_s.sub(/^#{Regexp.escape(glyph)}\s*/, "") %>
         <li>
-          <strong><%= v[:kind] %></strong>:
+          <% variant_kind_key = {
+               "Semantic variant" => "dictionary.character.variant_kinds.semantic",
+               "Specialised semantic variant" => "dictionary.character.variant_kinds.specialised_semantic",
+               "Simplified variant" => "dictionary.character.variant_kinds.simplified",
+               "Traditional variant" => "dictionary.character.variant_kinds.traditional",
+               "Variant" => "dictionary.character.variant_kinds.generic"
+             }[v[:kind].to_s] %>
+          <strong><%= variant_kind_key ? t(variant_kind_key) : v[:kind] %></strong>:
           <%= link_to character_path("U+#{hex}") do %>
             <% if v[:kind].to_s == "Simplified variant" %>
               <strong><%= view_text(glyph) %></strong> <%= view_text(rest) %>
@@ -146,7 +157,7 @@
             <% end %>
           <% end %>
           <% if v[:has_own_entry] %>
-            <span class="variant-note">(has its own definition text)</span>
+            <span class="variant-note"><%= t("dictionary.character.has_own_definition") %></span>
           <% end %>
           <em>(<%= v[:source].presence || "MOE 異典收字清單" %>)</em>
         </li>
@@ -160,7 +171,7 @@
                      nil
                    end %>
         <li>
-          <strong><%= e[:kind] %></strong>:
+          <strong><%= t(e[:kind_key]) %></strong>:
           <%= link_to character_path("U+#{hex}") do %>
             <%= view_text(glyph.present? ? "#{glyph} (U+#{hex})" : "U+#{hex}") %>
           <% end %>
@@ -170,16 +181,16 @@
     </ul>
   <% end %>
 
-  <h2>Definitions</h2>
+  <h2><%= t("dictionary.character.definitions") %></h2>
 
   <% if @cedict_defs.present? %>
     <h3>CC-CEDICT</h3>
     <% if @cedict_defs_inherited && @cedict_defs_from.present? %>
       <p>
-        Showing CC-CEDICT definitions from
-        <%= link_to "#{@cedict_defs_from.chr} (U+#{@cedict_defs_from.codepoint.to_s(16).upcase})",
-                    character_path("U+#{@cedict_defs_from.codepoint.to_s(16).upcase}") %>
-        because this character is treated as a variant.
+        <%= t("dictionary.character.inherited_definition_html",
+              source: t("dictionary.character.sources.cedict_definitions"),
+              character_link: link_to("#{@cedict_defs_from.chr} (U+#{@cedict_defs_from.codepoint.to_s(16).upcase})",
+                                      character_path("U+#{@cedict_defs_from.codepoint.to_s(16).upcase}"))) %>
       </p>
     <% end %>
     <ol>
@@ -190,13 +201,13 @@
   <% end %>
 
   <% if @unihan_definition.present? %>
-    <h3>Unihan definition</h3>
+    <h3><%= t("dictionary.common.unihan_definition") %></h3>
     <% if @unihan_definition_inherited && @unihan_definition_from.present? %>
       <p>
-        Showing Unihan definition from
-        <%= link_to "#{@unihan_definition_from.chr} (U+#{@unihan_definition_from.codepoint.to_s(16).upcase})",
-                    character_path("U+#{@unihan_definition_from.codepoint.to_s(16).upcase}") %>
-        because this character is treated as a variant.
+        <%= t("dictionary.character.inherited_definition_html",
+              source: t("dictionary.character.sources.unihan_definition"),
+              character_link: link_to("#{@unihan_definition_from.chr} (U+#{@unihan_definition_from.codepoint.to_s(16).upcase})",
+                                      character_path("U+#{@unihan_definition_from.codepoint.to_s(16).upcase}"))) %>
       </p>
     <% end %>
     <div class="unihan-def">
@@ -207,18 +218,18 @@
   <% end %>
 
     <% if @shuowen_entry.present? %>
-    <h3>說文解字</h3>
+    <h3><%= t("dictionary.character.shuowen_jiezi") %></h3>
     <% if @shuowen_entry_inherited && @shuowen_entry_from.present? %>
       <p>
-        Showing Shuowen text from
-        <%= link_to "#{@shuowen_entry_from.chr} (U+#{@shuowen_entry_from.codepoint.to_s(16).upcase})",
-                    character_path("U+#{@shuowen_entry_from.codepoint.to_s(16).upcase}") %>
-        because this character is treated as a variant.
+        <%= t("dictionary.character.inherited_definition_html",
+              source: t("dictionary.character.sources.shuowen_text"),
+              character_link: link_to("#{@shuowen_entry_from.chr} (U+#{@shuowen_entry_from.codepoint.to_s(16).upcase})",
+                                      character_path("U+#{@shuowen_entry_from.codepoint.to_s(16).upcase}"))) %>
       </p>
     <% end %>
 
     <% if @shuowen_category.present? %>
-      <p><strong>部:</strong> <%= view_text(@shuowen_category) %></p>
+      <p><strong><%= t("dictionary.character.radical_or_component") %></strong> <%= view_text(@shuowen_category) %></p>
     <% end %>
 
     <div class="shuowen">
@@ -227,10 +238,10 @@
   <% end %>
 
 <% if @kangxi_text.present? %>
-    <h3>康熙字典</h3>
+    <h3><%= t("dictionary.character.kangxi_dictionary") %></h3>
 
     <% if @kangxi_rsunicode_display.present? %>
-      <p><strong>部:</strong>
+      <p><strong><%= t("dictionary.character.radical_or_component") %></strong>
         <% if @kangxi_rsunicode_tooltip.present? %>
           <span title="<%= @kangxi_rsunicode_tooltip %>"><%= view_text(@kangxi_rsunicode_display) %></span>
         <% else %>
@@ -240,10 +251,10 @@
     <% end %>
     <% if @kangxi_text_inherited && @kangxi_text_from.present? %>
       <p>
-        Showing Kangxi text from
-        <%= link_to "#{@kangxi_text_from.chr} (U+#{@kangxi_text_from.codepoint.to_s(16).upcase})",
-                    character_path("U+#{@kangxi_text_from.codepoint.to_s(16).upcase}") %>
-        because this character is treated as a variant.
+        <%= t("dictionary.character.inherited_definition_html",
+              source: t("dictionary.character.sources.kangxi_text"),
+              character_link: link_to("#{@kangxi_text_from.chr} (U+#{@kangxi_text_from.codepoint.to_s(16).upcase})",
+                                      character_path("U+#{@kangxi_text_from.codepoint.to_s(16).upcase}"))) %>
       </p>
     <% end %>
     <div class="kangxi">
@@ -252,9 +263,9 @@
   <% end %>
 
     <% if @guangyun_payload_raw.present? %>
-    <h3>廣韻 Guangyun</h3>
+    <h3><%= t("dictionary.character.guangyun_heading") %></h3>
 
-    <p><strong>部:</strong> <%= view_text(@guangyun_category) %></p>
+    <p><strong><%= t("dictionary.character.radical_or_component") %></strong> <%= view_text(@guangyun_category) %></p>
 
     <div class="guangyun">
       <%= simple_format(h(view_text(@guangyun_payload_raw))) %>
@@ -264,7 +275,7 @@
   <% if @variant_definition_blocks.present? %>
     <details class="variant-defs">
       <summary>
-        Variant-specific definitions (<%= @variant_definition_blocks.length %>)
+        <%= t("dictionary.character.variant_specific_definitions", count: @variant_definition_blocks.length) %>
       </summary>
 
       <% @variant_definition_blocks.each do |blk| %>
@@ -284,14 +295,14 @@
         <% end %>
 
         <% if blk[:unihan_definition].present? %>
-          <h5>Unihan definition</h5>
+          <h5><%= t("dictionary.common.unihan_definition") %></h5>
           <div class="unihan-def">
             <%= simple_format(h(view_text(blk[:unihan_definition]))) %>
           </div>
         <% end %>
 
         <% if blk[:kangxi_text].present? %>
-          <h5>康熙字典</h5>
+          <h5><%= t("dictionary.character.kangxi_dictionary") %></h5>
           <div class="kangxi">
             <%= simple_format(h(view_text(FieldLens.format_kangxi(blk[:kangxi_text])))) %>
           </div>
@@ -300,11 +311,21 @@
     </details>
   <% end %>
 
-  <h2>Properties</h2>
+  <h2><%= t("dictionary.character.properties") %></h2>
   <% hkcards_image_rendered = false %>
   <% (@grouped_properties || {}).each do |group_name, props| %>
     
-<h3><%= group_name %></h3>
+<% property_group_key = {
+     "Strokes & radicals" => "dictionary.character.property_groups.strokes_radicals",
+     "Pronunciation" => "dictionary.character.property_groups.pronunciation",
+     "Input" => "dictionary.character.property_groups.input",
+     "Education notes" => "dictionary.character.property_groups.education_notes",
+     "Dictionary indices" => "dictionary.character.property_groups.dictionary_indices",
+     "Encodings & mappings" => "dictionary.character.property_groups.encodings_mappings",
+     "Ideographic Research Group (IRG) sources" => "dictionary.character.property_groups.irg_sources",
+     "Other" => "dictionary.character.property_groups.other"
+   }[group_name.to_s] %>
+<h3><%= property_group_key ? t(property_group_key) : group_name %></h3>
 
 <% if group_name == "Pronunciation" %>
   <%= render partial: "pronunciation_sections", locals: { props: (props || []), character: @character } %>
@@ -333,9 +354,9 @@
             <div class="imgwrap cj-card">
               <img class="cjimg cjimg-small"
                    src="https://www.hkcards.com/img/cj/<%= @character.chr %>.png"
-                   alt="Cangjie decomposition"
+                   alt="<%= t("dictionary.character.cangjie_decomposition") %>"
                    loading="lazy"
-                   onerror="this.outerHTML='<em>No HKCards decomposition available for this character.</em>'">
+                   onerror="this.outerHTML='<em><%= j t("dictionary.character.no_hkcards_decomposition") %></em>'">
             </div>
             <% hkcards_image_rendered = true %>
           <% end %>
@@ -348,5 +369,5 @@
 <% end %>
   <% end %>
 
-  <p><a href="/home/index">Return to home</a></p>
+  <p><a href="/home/index"><%= t("dictionary.character.return_home") %></a></p>
 <% end %>

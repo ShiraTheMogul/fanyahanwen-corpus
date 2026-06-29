@@ -4,133 +4,136 @@ require "csv"
 
 class ToolsController < ApplicationController
   EXTRACTOR_OPTIONS = [
-    ["Cangjie input", "cangjie"],
-    ["Unicode definition (Unihan)", "unicode_definition"],
-    ["Kangxi dictionary entry", "kangxi_entry"],
-    ["Shuowen entry", "shuowen_entry"],
-    ["Guangyun definition", "guangyun_definition"],
-    ["Guangyun fanqie", "guangyun_fanqie"],
-    ["Guangyun rhyme", "guangyun_rhyme"],
-    ["Guangyun tone", "guangyun_tone"],
-    ["Mandarin reading", "mandarin"],
-    ["Cantonese reading", "cantonese"],
-    ["Japanese on reading", "japanese_on"],
-    ["Korean reading", "korean"],
-    ["Vietnamese reading", "vietnamese"],
-    ["Common readings (Mandarin, Cantonese, Japanese on, Korean, Vietnamese)", "common_readings"]
+    ["tools.character_extractor.options.cangjie", "cangjie"],
+    ["tools.character_extractor.options.unicode_definition", "unicode_definition"],
+    ["tools.character_extractor.options.kangxi_entry", "kangxi_entry"],
+    ["tools.character_extractor.options.shuowen_entry", "shuowen_entry"],
+    ["tools.character_extractor.options.guangyun_definition", "guangyun_definition"],
+    ["tools.character_extractor.options.guangyun_fanqie", "guangyun_fanqie"],
+    ["tools.character_extractor.options.guangyun_rhyme", "guangyun_rhyme"],
+    ["tools.character_extractor.options.guangyun_tone", "guangyun_tone"],
+    ["tools.character_extractor.options.mandarin", "mandarin"],
+    ["tools.character_extractor.options.cantonese", "cantonese"],
+    ["tools.character_extractor.options.japanese_on", "japanese_on"],
+    ["tools.character_extractor.options.korean", "korean"],
+    ["tools.character_extractor.options.vietnamese", "vietnamese"],
+    ["tools.character_extractor.options.common_readings", "common_readings"]
   ].freeze
 
   EXTRACT_FIELD_CONFIGS = {
     "unicode_definition" => {
-      label: "Unicode definition (Unihan)",
-      columns: [{ field: "kDefinition", label: "Unicode definition" }]
+      label_key: "tools.character_extractor.options.unicode_definition",
+      columns: [{ field: "kDefinition", label_key: "tools.character_extractor.columns.unicode_definition" }]
     },
     "kangxi_entry" => {
-      label: "Kangxi dictionary entry",
-      columns: [{ field: "kangxi_gloss", label: "Kangxi definition" }]
+      label_key: "tools.character_extractor.options.kangxi_entry",
+      columns: [{ field: "kangxi_gloss", label_key: "tools.character_extractor.columns.kangxi_definition" }]
     },
     "shuowen_entry" => {
-      label: "Shuowen entry",
-      columns: [{ field: "shuowen_entry", label: "Shuowen entry" }]
+      label_key: "tools.character_extractor.options.shuowen_entry",
+      columns: [{ field: "shuowen_entry", label_key: "tools.character_extractor.columns.shuowen_entry" }]
     },
     "guangyun_definition" => {
-      label: "Guangyun definition",
-      columns: [{ field: "guangyun_definition", label: "Guangyun definition" }]
+      label_key: "tools.character_extractor.options.guangyun_definition",
+      columns: [{ field: "guangyun_definition", label_key: "tools.character_extractor.columns.guangyun_definition" }]
     },
     "guangyun_fanqie" => {
-      label: "Guangyun fanqie",
-      columns: [{ field: "guangyun_fanqie", label: "Guangyun fanqie" }]
+      label_key: "tools.character_extractor.options.guangyun_fanqie",
+      columns: [{ field: "guangyun_fanqie", label_key: "tools.character_extractor.columns.guangyun_fanqie" }]
     },
     "guangyun_rhyme" => {
-      label: "Guangyun rhyme",
-      columns: [{ field: "guangyun_rhyme", label: "Guangyun rhyme" }]
+      label_key: "tools.character_extractor.options.guangyun_rhyme",
+      columns: [{ field: "guangyun_rhyme", label_key: "tools.character_extractor.columns.guangyun_rhyme" }]
     },
     "guangyun_tone" => {
-      label: "Guangyun tone",
-      columns: [{ field: "guangyun_tone", label: "Guangyun tone" }]
+      label_key: "tools.character_extractor.options.guangyun_tone",
+      columns: [{ field: "guangyun_tone", label_key: "tools.character_extractor.columns.guangyun_tone" }]
     },
     "mandarin" => {
-      label: "Mandarin reading",
-      columns: [{ field: "kMandarin", label: "Mandarin" }]
+      label_key: "tools.character_extractor.options.mandarin",
+      columns: [{ field: "kMandarin", label_key: "tools.character_extractor.columns.mandarin" }]
     },
     "cantonese" => {
-      label: "Cantonese reading",
-      columns: [{ field: "kCantonese", label: "Cantonese" }]
+      label_key: "tools.character_extractor.options.cantonese",
+      columns: [{ field: "kCantonese", label_key: "tools.character_extractor.columns.cantonese" }]
     },
     "japanese_on" => {
-      label: "Japanese on reading",
-      columns: [{ field: "kJapaneseOn", label: "Japanese on" }]
+      label_key: "tools.character_extractor.options.japanese_on",
+      columns: [{ field: "kJapaneseOn", label_key: "tools.character_extractor.columns.japanese_on" }]
     },
     "korean" => {
-      label: "Korean reading",
+      label_key: "tools.character_extractor.options.korean",
       columns: [
-        { field: "kKorean", label: "Korean (Yale)" },
-        { field: "kHangul", label: "Korean (Hangul)" }
+        { field: "kKorean", label_key: "tools.character_extractor.columns.korean_yale" },
+        { field: "kHangul", label_key: "tools.character_extractor.columns.korean_hangul" }
       ]
     },
     "vietnamese" => {
-      label: "Vietnamese reading",
-      columns: [{ field: "kVietnamese", label: "Vietnamese" }]
+      label_key: "tools.character_extractor.options.vietnamese",
+      columns: [{ field: "kVietnamese", label_key: "tools.character_extractor.columns.vietnamese" }]
     },
     "common_readings" => {
-      label: "Common readings",
+      label_key: "tools.character_extractor.options.common_readings",
       columns: [
-        { field: "kMandarin", label: "Mandarin" },
-        { field: "kCantonese", label: "Cantonese" },
-        { field: "kJapaneseOn", label: "Japanese on" },
-        { field: "kKorean", label: "Korean (Yale)" },
-        { field: "kHangul", label: "Korean (Hangul)" },
-        { field: "kVietnamese", label: "Vietnamese" }
+        { field: "kMandarin", label_key: "tools.character_extractor.columns.mandarin" },
+        { field: "kCantonese", label_key: "tools.character_extractor.columns.cantonese" },
+        { field: "kJapaneseOn", label_key: "tools.character_extractor.columns.japanese_on" },
+        { field: "kKorean", label_key: "tools.character_extractor.columns.korean_yale" },
+        { field: "kHangul", label_key: "tools.character_extractor.columns.korean_hangul" },
+        { field: "kVietnamese", label_key: "tools.character_extractor.columns.vietnamese" }
       ]
     }
   }.freeze
 
   ENRICHABLE_FIELD_OPTIONS = {
-    "kangxi_gloss" => "Kangxi definition",
-    "kDefinition" => "Unicode definition",
-    "shuowen_entry" => "Shuowen entry",
-    "guangyun_definition" => "Guangyun definition",
-    "guangyun_fanqie" => "Guangyun fanqie",
-    "guangyun_rhyme" => "Guangyun rhyme",
-    "guangyun_tone" => "Guangyun tone",
-    "kMandarin" => "Mandarin",
-    "kCantonese" => "Cantonese",
-    "kJapaneseOn" => "Japanese on",
-    "kKorean" => "Korean (Yale)",
-    "kHangul" => "Korean (Hangul)",
-    "kVietnamese" => "Vietnamese"
+    "kangxi_gloss" => "tools.anki.fields.kangxi_gloss",
+    "kDefinition" => "tools.anki.fields.unicode_definition",
+    "shuowen_entry" => "tools.anki.fields.shuowen_entry",
+    "guangyun_definition" => "tools.anki.fields.guangyun_definition",
+    "guangyun_fanqie" => "tools.anki.fields.guangyun_fanqie",
+    "guangyun_rhyme" => "tools.anki.fields.guangyun_rhyme",
+    "guangyun_tone" => "tools.anki.fields.guangyun_tone",
+    "kMandarin" => "tools.anki.fields.mandarin",
+    "kCantonese" => "tools.anki.fields.cantonese",
+    "kJapaneseOn" => "tools.anki.fields.japanese_on",
+    "kKorean" => "tools.anki.fields.korean_yale",
+    "kHangul" => "tools.anki.fields.korean_hangul",
+    "kVietnamese" => "tools.anki.fields.vietnamese"
   }.freeze
 
   def index
-    @extractor_options = EXTRACTOR_OPTIONS
-    @enrichable_field_options = ENRICHABLE_FIELD_OPTIONS
+    @extractor_options = localized_extractor_options
+    @enrichable_field_options = localized_enrichable_field_options
   end
 
   # --- Lunar calendar converter ------------------------------------------
   def lunar
-    date, warning = parse_western_date(
+    date, warning_key = parse_western_date(
       input: params[:input].to_s,
       date_iso: params[:date_iso].to_s
     )
 
     if date.nil?
       return render partial: "tools/tool_output",
-                    locals: { frame_id: "lunar_out", output: "Could not parse a date." },
+                    locals: { frame_id: "lunar_out", output: I18n.t("tools.lunar.parse_failed") },
                     status: :bad_request
     end
 
     lunar = LunarCalendar.at_lunar(date.year, date.month, date.day)
 
     out = []
-    out << "Solar: #{date.iso8601}"
-    out << "Lunar: #{format_lunar(lunar)}"
-    out << "Note:  #{warning}" if warning.present?
+    out << "#{I18n.t('tools.lunar.solar')}#{I18n.t('tools.common.label_separator')} #{date.iso8601}"
+    out << "#{I18n.t('tools.lunar.lunar')}#{I18n.t('tools.common.label_separator')} #{format_lunar(lunar)}"
+    out << "#{I18n.t('tools.lunar.note')}#{I18n.t('tools.common.label_separator')} #{I18n.t(warning_key)}" if warning_key.present?
 
     render partial: "tools/tool_output",
            locals: { frame_id: "lunar_out", output: out.join("\n") }
   rescue StandardError => e
     render partial: "tools/tool_output",
-           locals: { frame_id: "lunar_out", output: "Error: #{e.class}: #{e.message}" },
+           locals: {
+             frame_id: "lunar_out",
+             output: I18n.t("tools.common.error", message: "#{e.class}: #{e.message}")
+           },
            status: :unprocessable_entity
   end
 
@@ -143,7 +146,7 @@ class ToolsController < ApplicationController
     allowed = [:original] + Phoneticization::Converters::MANDARIN_SCHEMES.keys
     unless allowed.include?(from) && allowed.include?(to)
       return render partial: "tools/tool_output",
-                    locals: { frame_id: "mandarin_out", output: "Allowed: #{allowed.sort.join(", ")}" },
+                    locals: { frame_id: "mandarin_out", output: I18n.t("tools.common.allowed", schemes: allowed.sort.join(", ")) },
                     status: :bad_request
     end
 
@@ -159,7 +162,7 @@ class ToolsController < ApplicationController
     allowed = [:original] + Phoneticization::Converters::CANTONESE_SCHEMES.keys
     unless allowed.include?(from) && allowed.include?(to)
       return render partial: "tools/tool_output",
-                    locals: { frame_id: "cantonese_out", output: "Allowed: #{allowed.sort.join(", ")}" },
+                    locals: { frame_id: "cantonese_out", output: I18n.t("tools.common.allowed", schemes: allowed.sort.join(", ")) },
                     status: :bad_request
     end
 
@@ -173,23 +176,23 @@ class ToolsController < ApplicationController
 
     raw = params[:input].to_s.strip
     return render partial: "tools/cangjie_output",
-                  locals: { char: nil, codepoint: nil, lines: [], message: "No input." },
+                  locals: { char: nil, codepoint: nil, lines: [], message: I18n.t("tools.character_extractor.messages.no_input") },
                   status: :bad_request if raw.empty?
 
     extractor_key = params[:extract].presence || "cangjie"
     return handle_cangjie_only(raw) if extractor_key == "cangjie"
 
-    config = EXTRACT_FIELD_CONFIGS[extractor_key]
+    config = localized_extract_config(extractor_key)
     unless config
       return render partial: "tools/tool_output",
-                    locals: { frame_id: "cangjie_out", output: "Unknown extractor." },
+                    locals: { frame_id: "cangjie_out", output: I18n.t("tools.character_extractor.messages.unknown_extractor") },
                     status: :bad_request
     end
 
     cps_in_text = extract_han_codepoints(raw)
     if cps_in_text.empty?
       return render partial: "tools/tool_output",
-                    locals: { frame_id: "cangjie_out", output: "No Han characters found." },
+                    locals: { frame_id: "cangjie_out", output: I18n.t("tools.character_extractor.messages.no_han") },
                     status: :bad_request
     end
 
@@ -221,9 +224,13 @@ class ToolsController < ApplicationController
       han   = CangjieKeymap.latin_to_han(latin)
       return render partial: "tools/cangjie_output",
                     locals: {
-                      char: nil, codepoint: nil,
-                      lines: ["Latin: #{latin}", "Han:   #{han}"],
-                      message: "Input looks like Cangjie letters (no character lookup)."
+                      char: nil,
+                      codepoint: nil,
+                      lines: [
+                        "#{I18n.t('tools.character_extractor.messages.latin')}#{I18n.t('tools.common.label_separator')} #{latin}",
+                        "#{I18n.t('tools.character_extractor.messages.han')}#{I18n.t('tools.common.label_separator')} #{han}"
+                      ],
+                      message: I18n.t("tools.character_extractor.messages.cangjie_letters")
                     }
     end
 
@@ -231,7 +238,12 @@ class ToolsController < ApplicationController
       if raw.match?(/\AU\+[0-9A-Fa-f]+\z/) || raw.match?(/\A[0-9A-Fa-f]+\z/)
         cp = parse_codepoint(raw)
         return render(partial: "tools/cangjie_output",
-                      locals: { char: nil, codepoint: nil, lines: [], message: "Could not parse a character/codepoint." },
+                      locals: {
+                        char: nil,
+                        codepoint: nil,
+                        lines: [],
+                        message: I18n.t("tools.character_extractor.messages.parse_failed")
+                      },
                       status: :bad_request) if cp.nil?
         [cp]
       else
@@ -242,17 +254,22 @@ class ToolsController < ApplicationController
       cp = cps_in_text.first
       cc = CharacterCodepoint.find_by(codepoint: cp)
       return render partial: "tools/cangjie_output",
-                    locals: { char: [cp].pack("U"), codepoint: cp, lines: [], message: "Not found in DB." },
+                    locals: {
+                      char: [cp].pack("U"),
+                      codepoint: cp,
+                      lines: [],
+                      message: I18n.t("tools.character_extractor.messages.not_found")
+                    },
                     status: :not_found if cc.nil?
 
       props = CharacterProperty.where(character_codepoint_id: cc.id, field: "kCangjie").order(:source, :value)
       lines = if props.empty?
-                ["No kCangjie property found for this character."]
+                [I18n.t("tools.character_extractor.messages.no_cangjie_property")]
               else
-                props.map do |p|
-                  latin = CangjieKeymap.normalise_cangjie(p.value.to_s)
+                props.map do |prop|
+                  latin = CangjieKeymap.normalise_cangjie(prop.value.to_s)
                   han   = CangjieKeymap.latin_to_han(latin)
-                  "#{latin} (#{han}) — #{p.source}"
+                  "#{latin} (#{han}) — #{prop.source}"
                 end
               end
 
@@ -266,12 +283,12 @@ class ToolsController < ApplicationController
     if show_hkcards
       render partial: "tools/cangjie_table_output", locals: { rows: rows, message: nil }
     else
-      lines = rows.map do |r|
-        if r[:codes].empty?
-          "* #{r[:char]}: (no Cangjie code)"
+      lines = rows.map do |row|
+        if row[:codes].empty?
+          "* #{row[:char]}: (#{I18n.t('tools.character_extractor.messages.no_cangjie_code')})"
         else
-          combos = r[:codes].map { |c| "#{c[:han]} (#{c[:latin]})" }.join(" / ")
-          "* #{r[:char]}: #{combos}"
+          combinations = row[:codes].map { |code| "#{code[:han]} (#{code[:latin]})" }.join(" / ")
+          "* #{row[:char]}: #{combinations}"
         end
       end
       render partial: "tools/cangjie_list_output", locals: { lines: lines, message: nil }
@@ -301,17 +318,17 @@ class ToolsController < ApplicationController
     }
 
     return render partial: "tools/anki_enrich_output",
-                  locals: default_locals.merge(message: "No Anki TXT pasted."),
+                  locals: default_locals.merge(message: I18n.t("tools.anki.errors.no_text")),
                   status: :bad_request if input_text.strip.empty?
 
     source_index = params[:source_field].to_i - 1
     target_index = params[:target_field].to_i - 1
-    enrich_fields = Array(params[:enrich_fields]).map(&:to_s).select { |f| ENRICHABLE_FIELD_OPTIONS.key?(f) }
+    enrich_fields = Array(params[:enrich_fields]).map(&:to_s).select { |field| ENRICHABLE_FIELD_OPTIONS.key?(field) }
     append_mode = params[:append_mode].to_s == "replace" ? "replace" : "append"
 
     if source_index.negative? || target_index.negative?
       return render partial: "tools/anki_enrich_output",
-                    locals: default_locals.merge(message: "Field numbers must be 1 or greater."),
+                    locals: default_locals.merge(message: I18n.t("tools.anki.errors.field_minimum")),
                     status: :bad_request
     end
 
@@ -326,11 +343,7 @@ class ToolsController < ApplicationController
 
     preview_mode = params[:preview_mode].to_s == "full_rows" ? "full_rows" : "changed_only"
 
-    lines = input_text.gsub("
-", "
-").gsub("", "
-").split("
-", -1)
+    lines = input_text.gsub("\r\n", "\n").gsub("\r", "\n").split("\n", -1)
     detected_field_count = 0
     metadata_max_field = 0
     metadata_pattern = /#(?:guid|notetype|deck|tags)\s+column:(\d+)/i
@@ -342,7 +355,8 @@ class ToolsController < ApplicationController
         next
       end
       next if line.empty?
-      detected_field_count = [detected_field_count, line.split("	", -1).length].max
+
+      detected_field_count = [detected_field_count, line.split("\t", -1).length].max
     end
 
     detected_field_count = [detected_field_count, metadata_max_field].max
@@ -362,12 +376,12 @@ class ToolsController < ApplicationController
         next
       end
 
-      cols = line.split("	", -1)
+      columns = line.split("\t", -1)
       needed_size = [source_index, target_index, detected_field_count - 1].max + 1
-      cols.fill("", cols.length...needed_size) if cols.length < needed_size
+      columns.fill("", columns.length...needed_size) if columns.length < needed_size
 
-      source_text = cols[source_index].to_s
-      target_before = cols[target_index].to_s
+      source_text = columns[source_index].to_s
+      target_before = columns[target_index].to_s
       html = build_anki_enrichment_html(source_text, enrich_fields)
       sample_html ||= html if html.present?
 
@@ -375,34 +389,34 @@ class ToolsController < ApplicationController
 
       if html.blank?
         target_after = target_before
-        status = "skipped"
+        status = :skipped
         skipped_count += 1
       elsif append_mode == "replace"
         target_after = html
         if target_before.present?
           changed_with_existing_target_count += 1
-          status = "replace (target had content)"
+          status = :replace_existing
         else
-          status = "replace"
+          status = :replace
         end
         updated_count += 1
       elsif target_before.present?
         target_after = "#{target_before}#{html}"
         changed_with_existing_target_count += 1
-        status = "append (target had content)"
+        status = :append_existing
         updated_count += 1
       else
         target_after = html
-        status = "append"
+        status = :append
         updated_count += 1
       end
 
-      cols[target_index] = target_after
+      columns[target_index] = target_after
       note_count += 1
-      output_lines << cols.join("	")
+      output_lines << columns.join("\t")
       preview_candidates << {
         row_number: note_count,
-        guid: cols[0].to_s,
+        guid: columns[0].to_s,
         source_before: source_text,
         target_before: target_before,
         target_after: target_after,
@@ -413,7 +427,7 @@ class ToolsController < ApplicationController
     preview_source = if preview_mode == "full_rows"
                        preview_candidates
                      else
-                       preview_candidates.reject { |row| row[:status] == "skipped" }
+                       preview_candidates.reject { |row| row[:status] == :skipped }
                      end
     preview_rows = preview_source.drop(preview_start - 1).first(preview_limit)
 
@@ -423,8 +437,7 @@ class ToolsController < ApplicationController
              note_count: note_count,
              updated_count: updated_count,
              sample_html: sample_html,
-             output_text: output_lines.join("
-"),
+             output_text: output_lines.join("\n"),
              target_field_number: target_index + 1,
              source_field_number: source_index + 1,
              append_mode: append_mode,
@@ -445,14 +458,14 @@ class ToolsController < ApplicationController
     return "" if cps.empty?
 
     unique_cps = unique_codepoints(cps)
-    rows = build_property_rows(unique_cps, enrich_fields.map { |field| { field: field, label: ENRICHABLE_FIELD_OPTIONS[field] } })
+    rows = build_property_rows(unique_cps, enrich_fields.map { |field| { field: field, label: enrichable_field_label(field) } })
     return "" if rows.empty?
 
     entries = rows.map do |row|
       items = enrich_fields.filter_map do |field|
         values = (row[:values_by_field][field] || []).map { |entry| compact_field_text(entry[:value]) }.reject(&:blank?).uniq
         next if values.empty?
-        label = ENRICHABLE_FIELD_OPTIONS[field]
+        label = enrichable_field_label(field)
         "<li><strong>#{ERB::Util.html_escape(label)}:</strong> #{ERB::Util.html_escape(values.join(' / '))}</li>"
       end
       next if items.empty?
@@ -512,7 +525,12 @@ class ToolsController < ApplicationController
 
   def generate_property_csv(rows, field_columns)
     CSV.generate do |csv|
-      csv << ["Character", "Codepoint", *field_columns.map { |c| c[:label] }, *field_columns.map { |c| "#{c[:label]} source" }]
+      csv << [
+        I18n.t("tools.common.character"),
+        I18n.t("tools.common.codepoint"),
+        *field_columns.map { |column| column[:label] },
+        *field_columns.map { |column| I18n.t("tools.character_extractor.csv_source", label: column[:label]) }
+      ]
       rows.each do |row|
         values = field_columns.map do |column|
           (row[:values_by_field][column[:field]] || []).map { |entry| compact_field_text(entry[:value]) }.reject(&:blank?).uniq.join(" / ")
@@ -549,6 +567,31 @@ class ToolsController < ApplicationController
   end
 
   # --- Helpers ------------------------------------------------------------
+
+  def localized_extractor_options
+    EXTRACTOR_OPTIONS.map { |key, value| [I18n.t(key), value] }
+  end
+
+  def localized_enrichable_field_options
+    ENRICHABLE_FIELD_OPTIONS.transform_values { |key| I18n.t(key) }
+  end
+
+  def localized_extract_config(extractor_key)
+    config = EXTRACT_FIELD_CONFIGS[extractor_key]
+    return nil unless config
+
+    {
+      label: I18n.t(config[:label_key]),
+      columns: config[:columns].map do |column|
+        { field: column[:field], label: I18n.t(column[:label_key]) }
+      end
+    }
+  end
+
+  def enrichable_field_label(field)
+    key = ENRICHABLE_FIELD_OPTIONS.fetch(field)
+    I18n.t(key)
+  end
 
   def allowed_schemes_for(lang)
     case lang
@@ -615,9 +658,9 @@ class ToolsController < ApplicationController
       if a > 12 && b <= 12
         return [Date.new(y, b, a), nil]
       elsif b > 12 && a <= 12
-        return [Date.new(y, a, b), "Interpreted as MM/DD/YYYY because the middle number exceeds 12."]
+        return [Date.new(y, a, b), "tools.lunar.warnings.month_first"]
       else
-        return [Date.new(y, b, a), "Ambiguous numeric date; interpreted as DD/MM/YYYY (UK default)."]
+        return [Date.new(y, b, a), "tools.lunar.warnings.ambiguous"]
       end
     end
 

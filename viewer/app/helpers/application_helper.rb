@@ -23,6 +23,24 @@ module ApplicationHelper
     raw.to_s.strip.downcase.to_sym
   end
 
+  # True when the selected interface locale is written primarily in Han script.
+  # In those locales the translation stands alone; an English-only ornamental
+  # Han heading would otherwise be repeated beside it.
+  def han_script_interface?
+    InterfaceLocales.han_script?(I18n.locale)
+  end
+
+  # Use the translated label, falling back to the ornamental Han form only when
+  # a catalogue has not yet supplied a translation.
+  def translated_interface_label(translation_key, ornament_key:)
+    t(translation_key, default: "").presence || t(ornament_key)
+  end
+
+  # Non-Han interfaces may retain the ornamental Han form beside the translation.
+  def show_han_ornament?
+    !han_script_interface?
+  end
+
   # Use this in views any time you output dictionary text.
   # It applies the user's "Chinese script" setting.
   def view_text(text)

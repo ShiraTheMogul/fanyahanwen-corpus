@@ -10,3 +10,146 @@ jje:
       error: 'Error: %{message}'
       created: Ticket created ✅ (save the key below)
       copied: Copied!
+    corpus_reader:
+      orientation:
+        vertical: 'Orientation: Vertical'
+        horizontal: 'Orientation: Horizontal'
+      theme: 'Theme: %{label}'
+      themes:
+        light: White
+        bamboo: Bamboo
+        dark: Dark
+      punctuation:
+        label: Punct
+        source: 'Punct: Source'
+        modern_traditional: 'Punct: Modern (Trad)'
+        modern_prc: 'Punct: Modern (PRC)'
+        pure: 'Punct: Pure'
+        strip: 'Punct: Strip'
+        custom: 'Punct: Custom'
+      judou:
+        'on': 'Judou: On'
+        'off': 'Judou: Off'
+      dot_color: 'Dot: %{color}'
+      colors:
+        red: Red
+        black: Black
+        white: White
+        blue: Blue
+        yellow: Yellow
+    corpus_annotations:
+      actions:
+        cancel: Cancel
+        apply: Apply
+        review_submit: Review & submit
+        close: Close
+        add_row: Add row
+        create_ticket: Create ticket
+        copy_key: Copy key
+        download_txt: Download txt
+        open_ticket: Open ticket
+        delete: Delete
+      toggles:
+        annotations_on: 'Annotations: On'
+        annotations_off: 'Annotations: Off'
+        notes_on: 'Notes: On'
+        notes_off: 'Notes: Off'
+        footnotes_on: 'Footnotes: On'
+        footnotes_off: 'Footnotes: Off'
+        annotate_on: 'Annotate: On'
+        annotate_off: 'Annotate: Off'
+      kinds:
+        title: Title
+        person: Person
+        place: Place
+        office: Office
+        ambiguous: Ambiguous/disputed character
+        ambiguous_short: Ambiguous/disputed
+        annotation: Annotation
+      popup:
+        heading: Annotate selection
+        no_text_selected: (no text selected)
+        note_placeholder: Note (required for ambiguous/disputed characters)
+        note_aria: Annotation note
+        ambiguous_explanation_required: Explain why the character is ambiguous or disputed.
+      colors:
+        heading: Colour settings
+        preset: Preset
+        presets:
+          default: Default
+          deuteranopia: Deuteranopia
+          protanopia: Protanopia
+          tritanopia: Tritanopia
+        note_marker: Note marker
+      status:
+        add_one: Add at least one annotation before creating a ticket.
+        material_note_required: Material note is required.
+        provenance_required: Choose at least one provenance label.
+        ai_details_required: Describe the AI assistance.
+        ambiguous_note_required: Ambiguous/disputed character annotations require a note.
+        creating: Creating ticket…
+        error: 'Error: %{message}'
+        created: Ticket created. Save the key below.
+      ticket:
+        heading: Review annotation ticket
+        explanation: This preview shows the annotation ranges that will be submitted. Creating the ticket does not change the corpus directly.
+        title: Title
+        default_title: Annotation edit
+        summary: Summary
+        summary_placeholder: What did you annotate?
+        reasoning: Reasoning
+        reasoning_placeholder: Why should this annotation be kept?
+        material_note: Material note *
+        material_note_placeholder: Explain what this annotation set is and how it should be used.
+        provenance: Provenance *
+        provenance_hint: Choose every label that applies.
+        user_made: User-made
+        public_domain: Public domain
+        historical_source: Historical source or manuscript
+        references: References
+        references_placeholder: Any clear, consistent citation style is acceptable.
+        ai_disclosure: AI assistance disclosure
+        ai_assisted: AI-assisted
+        ai_what: What was assisted?
+        ai_placeholder: Name the system and describe what it did.
+        preview: Preview
+        evidence_links: Evidence links
+        evidence_links_placeholder: One http(s) link per line
+        evidence_files: Evidence files
+        evidence_files_hint: Up to 10 files and 20 MB for this ticket. HTML, XHTML, and SVG are rejected.
+        contact_details: Optional contact details
+        contact_hint: Stored separately and encrypted. Deleted after 30 days or when the ticket closes.
+        name: Name
+        email: Email
+        contact_note: Contact note
+        store_on_device: Store this ticket on this device
+        unchecked_default: Unchecked by default.
+        ticket_id: 'Ticket ID:'
+        ticket_key: 'Ticket Key:'
+      preview:
+        none: No annotations queued yet.
+        kind: Kind
+        start: Start
+        end: End
+        no_text: (no text preview)
+        note: Note
+    companion_material:
+      status:
+        iso_load_error: 'Could not load ISO 639-3 list: %{message}'
+        invalid_type: 'Error: invalid material type.'
+        material_note_required: 'Error: material note is required.'
+        provenance_required: 'Error: choose at least one provenance label.'
+        ai_details_required: 'Error: describe the AI assistance.'
+        language_required: 'Error: choose a language from the ISO 639-3 list.'
+        translation_required: 'Error: translation text is required.'
+        submitting: Submitting ticket…
+        error: 'Error: %{message}'
+        created: Ticket created. Save the key below.
+      actions:
+        copied: Copied!
+      titles:
+        translation: Translation submission
+        gallery_image: Image gallery submission
+        exemplar_manuscript: Exemplar manuscript submission
+        variant_text: Variant text connection
+        default: Companion material submission

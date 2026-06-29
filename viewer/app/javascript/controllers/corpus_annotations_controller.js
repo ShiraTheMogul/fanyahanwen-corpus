@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import { t } from "i18n"
 import { storeTicketOnDevice } from "controllers/ticket_submission_helpers"
 
 export default class extends Controller {
@@ -108,11 +109,11 @@ export default class extends Controller {
   async submitTicket(event) {
     event.preventDefault()
     if (!this._items || this._items.length === 0) {
-      this._setTicketStatus("Add at least one annotation before creating a ticket.")
+      this._setTicketStatus(t("corpus_annotations.status.add_one"))
       return
     }
 
-    const title = this._ticketTitleInput ? this._ticketTitleInput.value.trim() : "Annotation edit"
+    const title = this._ticketTitleInput ? this._ticketTitleInput.value.trim() : t("corpus_annotations.ticket.default_title")
     const summary = this._ticketSummaryInput ? this._ticketSummaryInput.value.trim() : ""
     const reasoning = this._ticketReasoningInput ? this._ticketReasoningInput.value.trim() : ""
     const materialNote = this._ticketMaterialNoteInput ? this._ticketMaterialNoteInput.value.trim() : ""
@@ -125,23 +126,23 @@ export default class extends Controller {
     const previewItems = this._buildPreviewItems()
 
     if (!materialNote) {
-      this._setTicketStatus("Material note is required.")
+      this._setTicketStatus(t("corpus_annotations.status.material_note_required"))
       return
     }
     if (provenance.length === 0) {
-      this._setTicketStatus("Choose at least one provenance label.")
+      this._setTicketStatus(t("corpus_annotations.status.provenance_required"))
       return
     }
     if (aiAssisted && !aiDetails) {
-      this._setTicketStatus("Describe the AI assistance.")
+      this._setTicketStatus(t("corpus_annotations.status.ai_details_required"))
       return
     }
     if (this._items.some((item) => item.kind === "ambiguous_character" && !String(item.note || "").trim())) {
-      this._setTicketStatus("Ambiguous/disputed character annotations require a note.")
+      this._setTicketStatus(t("corpus_annotations.status.ambiguous_note_required"))
       return
     }
 
-    this._setTicketStatus("Creating ticket…")
+    this._setTicketStatus(t("corpus_annotations.status.creating"))
     this._setTicketResult("", "")
 
     try {
@@ -149,7 +150,7 @@ export default class extends Controller {
       form.append("path", this.pathValue)
       form.append("source_path", this.hasSourcePathValue ? this.sourcePathValue : this.pathValue)
       form.append("source", "corpus_viewer")
-      form.append("title", title || "Annotation edit")
+      form.append("title", title || t("corpus_annotations.ticket.default_title"))
       form.append("summary", summary)
       form.append("reasoning", reasoning)
       form.append("annotations", JSON.stringify({ version: 1, items: this._items }))
@@ -186,17 +187,17 @@ export default class extends Controller {
       const data = await res.json().catch(() => null)
       if (!res.ok || !data || data.ok !== true) {
         const msg = (data && (data.error || data.detail)) ? (data.error || data.detail) : `HTTP ${res.status}`
-        this._setTicketStatus(`Error: ${msg}`)
+        this._setTicketStatus(t("corpus_annotations.status.error", { message: msg }))
         return
       }
 
-      this._setTicketStatus("Ticket created. Save the key below.")
+      this._setTicketStatus(t("corpus_annotations.status.created"))
       this._setTicketResult(data.ticket_id || (data.ticket && data.ticket.id) || "", data.ticket_key || "")
 
       if (data.ticket_id && data.ticket_key && this._storeOnDeviceCheckbox && this._storeOnDeviceCheckbox.checked) {
         try {
           storeTicketOnDevice(data.ticket_id, data.ticket_key, {
-            title: title || "Annotation edit",
+            title: title || t("corpus_annotations.ticket.default_title"),
             source: "annotation",
           })
         } catch (_error) {}
@@ -205,7 +206,7 @@ export default class extends Controller {
       this._dirty = false
       this._syncButtons()
     } catch (e) {
-      this._setTicketStatus(`Error: ${e.message || e}`)
+      this._setTicketStatus(t("corpus_annotations.status.error", { message: e.message || e }))
     }
   }
 
@@ -221,7 +222,7 @@ export default class extends Controller {
     const key = this._ticketKeyValue ? this._ticketKeyValue.textContent : ""
     if (!id || !key) return
 
-    const content = `TICKET ID: ${id}\nTICKET KEY: ${key}\n`
+    const content = `${t("corpus_annotations.ticket.ticket_id")} ${id}\n${t("corpus_annotations.ticket.ticket_key")} ${key}\n`
     const blob = new Blob([content], { type: "text/plain;charset=utf-8" })
     const url = URL.createObjectURL(blob)
     const a = document.createElement("a")
@@ -339,24 +340,24 @@ export default class extends Controller {
 
     pop.innerHTML = `
       <div class="cv-annotate-head cv-annotate-drag-handle">
-        <strong>Annotate selection</strong>
+        <strong>${t("corpus_annotations.popup.heading")}</strong>
       </div>
       <div class="cv-annotate-row cv-annotate-selection-preview-row">
-        <div class="cv-annotate-selection-preview">${this._escapeHtml(this._textForRange(bounds.start, bounds.end) || "(no text selected)")}</div>
+        <div class="cv-annotate-selection-preview">${this._escapeHtml(this._textForRange(bounds.start, bounds.end) || t("corpus_annotations.popup.no_text_selected"))}</div>
       </div>
       <div class="cv-annotate-row">
-        <button type="button" data-kind="title" class="cv-annotate-kind">〖Title〗</button>
-        <button type="button" data-kind="person" class="cv-annotate-kind">丨Person</button>
-        <button type="button" data-kind="place" class="cv-annotate-kind">‖Place</button>
-        <button type="button" data-kind="office" class="cv-annotate-kind">﹏Office</button>
-        <button type="button" data-kind="ambiguous_character" class="cv-annotate-kind">? Ambiguous/disputed</button>
+        <button type="button" data-kind="title" class="cv-annotate-kind">〖${t("corpus_annotations.kinds.title")}〗</button>
+        <button type="button" data-kind="person" class="cv-annotate-kind">丨${t("corpus_annotations.kinds.person")}</button>
+        <button type="button" data-kind="place" class="cv-annotate-kind">‖${t("corpus_annotations.kinds.place")}</button>
+        <button type="button" data-kind="office" class="cv-annotate-kind">﹏${t("corpus_annotations.kinds.office")}</button>
+        <button type="button" data-kind="ambiguous_character" class="cv-annotate-kind">? ${t("corpus_annotations.kinds.ambiguous_short")}</button>
       </div>
       <div class="cv-annotate-row">
-        <textarea class="cv-annotate-note" rows="3" placeholder="Note (required for ambiguous/disputed characters)" aria-label="Annotation note"></textarea>
+        <textarea class="cv-annotate-note" rows="3" placeholder="${t("corpus_annotations.popup.note_placeholder")}" aria-label="${t("corpus_annotations.popup.note_aria")}"></textarea>
       </div>
       <div class="cv-annotate-row cv-annotate-actions">
-        <button type="button" class="cv-annotate-cancel">Cancel</button>
-        <button type="button" class="cv-annotate-apply primary">Apply</button>
+        <button type="button" class="cv-annotate-cancel">${t("corpus_annotations.actions.cancel")}</button>
+        <button type="button" class="cv-annotate-apply primary">${t("corpus_annotations.actions.apply")}</button>
       </div>
     `
 
@@ -386,7 +387,7 @@ export default class extends Controller {
         const note = noteEl ? String(noteEl.value || "").trim() : ""
         if (kind === "ambiguous_character" && !note) {
           if (noteEl) {
-            noteEl.setCustomValidity("Explain why the character is ambiguous or disputed.")
+            noteEl.setCustomValidity(t("corpus_annotations.popup.ambiguous_explanation_required"))
             noteEl.reportValidity()
             noteEl.setCustomValidity("")
           }
@@ -834,29 +835,29 @@ export default class extends Controller {
     dlg.innerHTML = `
       <form method="dialog" class="corpus-colors-form">
         <div class="corpus-colors-header">
-          <div class="corpus-colors-title">Colour settings</div>
+          <div class="corpus-colors-title">${t("corpus_annotations.colors.heading")}</div>
           <button type="button" class="corpus-colors-close" data-action="click->corpus-annotations#closeColorSettings">×</button>
         </div>
 
         <div class="corpus-colors-row">
-          <label>Preset</label>
+          <label>${t("corpus_annotations.colors.preset")}</label>
           <select id="cv_color_preset">
-            <option value="default">Default</option>
-            <option value="deuteranopia">Deuteranopia</option>
-            <option value="protanopia">Protanopia</option>
-            <option value="tritanopia">Tritanopia</option>
+            <option value="default">${t("corpus_annotations.colors.presets.default")}</option>
+            <option value="deuteranopia">${t("corpus_annotations.colors.presets.deuteranopia")}</option>
+            <option value="protanopia">${t("corpus_annotations.colors.presets.protanopia")}</option>
+            <option value="tritanopia">${t("corpus_annotations.colors.presets.tritanopia")}</option>
           </select>
         </div>
 
-        <div class="corpus-colors-row"><label>Title</label><input id="cv_color_title" type="color" /></div>
-        <div class="corpus-colors-row"><label>Person</label><input id="cv_color_person" type="color" /></div>
-        <div class="corpus-colors-row"><label>Place</label><input id="cv_color_place" type="color" /></div>
-        <div class="corpus-colors-row"><label>Office</label><input id="cv_color_office" type="color" /></div>
-        <div class="corpus-colors-row"><label>Note marker</label><input id="cv_color_note" type="color" /></div>
+        <div class="corpus-colors-row"><label>${t("corpus_annotations.kinds.title")}</label><input id="cv_color_title" type="color" /></div>
+        <div class="corpus-colors-row"><label>${t("corpus_annotations.kinds.person")}</label><input id="cv_color_person" type="color" /></div>
+        <div class="corpus-colors-row"><label>${t("corpus_annotations.kinds.place")}</label><input id="cv_color_place" type="color" /></div>
+        <div class="corpus-colors-row"><label>${t("corpus_annotations.kinds.office")}</label><input id="cv_color_office" type="color" /></div>
+        <div class="corpus-colors-row"><label>${t("corpus_annotations.colors.note_marker")}</label><input id="cv_color_note" type="color" /></div>
 
         <div class="corpus-colors-actions">
-          <button value="cancel" type="button" data-action="click->corpus-annotations#closeColorSettings">Cancel</button>
-          <button value="apply" type="submit" class="primary">Apply</button>
+          <button value="cancel" type="button" data-action="click->corpus-annotations#closeColorSettings">${t("corpus_annotations.actions.cancel")}</button>
+          <button value="apply" type="submit" class="primary">${t("corpus_annotations.actions.apply")}</button>
         </div>
       </form>
     `
@@ -913,17 +914,17 @@ export default class extends Controller {
       btn.setAttribute("aria-pressed", isOn ? "true" : "false")
     }
 
-    setLabel('[data-action*="corpus-annotations#toggleView"]', "Annotations: On", "Annotations: Off", (this._judouOn && this._viewEnabled))
+    setLabel('[data-action*="corpus-annotations#toggleView"]', t("corpus_annotations.toggles.annotations_on"), t("corpus_annotations.toggles.annotations_off"), (this._judouOn && this._viewEnabled))
     const notesOn = this._translationMode ? this._notesEnabled : (this._judouOn && this._notesEnabled)
-    const notesOnText = this._translationMode ? "Footnotes: On" : "Notes: On"
-    const notesOffText = this._translationMode ? "Footnotes: Off" : "Notes: Off"
+    const notesOnText = this._translationMode ? t("corpus_annotations.toggles.footnotes_on") : t("corpus_annotations.toggles.notes_on")
+    const notesOffText = this._translationMode ? t("corpus_annotations.toggles.footnotes_off") : t("corpus_annotations.toggles.notes_off")
     setLabel('[data-action*="corpus-annotations#toggleNotes"]', notesOnText, notesOffText, notesOn)
-    setLabel('[data-action*="corpus-annotations#toggleAnnotate"]', "Annotate: On", "Annotate: Off", this._annotateEnabled)
+    setLabel('[data-action*="corpus-annotations#toggleAnnotate"]', t("corpus_annotations.toggles.annotate_on"), t("corpus_annotations.toggles.annotate_off"), this._annotateEnabled)
 
     const saveBtn = this.element.querySelector('[data-action*="corpus-annotations#save"]')
     if (saveBtn) {
       saveBtn.hidden = !this._dirty
-      saveBtn.textContent = this._dirty ? "Review & submit" : "Review & submit"
+      saveBtn.textContent = t("corpus_annotations.actions.review_submit")
     }
   }
 
@@ -948,88 +949,88 @@ export default class extends Controller {
     panel.innerHTML = `
       <div class="cv-annotation-ticket-card">
         <div class="cv-annotation-ticket-head">
-          <h3 style="margin:0;">Review annotation ticket</h3>
-          <button type="button" class="corpus-btn" data-role="close-ticket-panel">Close</button>
+          <h3 style="margin:0;">${t("corpus_annotations.ticket.heading")}</h3>
+          <button type="button" class="corpus-btn" data-role="close-ticket-panel">${t("corpus_annotations.actions.close")}</button>
         </div>
-        <p class="cv-hint">This preview shows the annotation ranges that will be submitted. Creating the ticket does not change the corpus directly.</p>
+        <p class="cv-hint">${t("corpus_annotations.ticket.explanation")}</p>
         <form data-role="annotation-ticket-form">
           <div class="cv-form-row">
-            <label>Title</label>
-            <input type="text" class="cv-input" value="Annotation edit" data-role="ticket-title" />
+            <label>${t("corpus_annotations.ticket.title")}</label>
+            <input type="text" class="cv-input" value="${t("corpus_annotations.ticket.default_title")}" data-role="ticket-title" />
           </div>
           <div class="cv-form-row">
-            <label>Summary</label>
-            <input type="text" class="cv-input" placeholder="What did you annotate?" data-role="ticket-summary" />
+            <label>${t("corpus_annotations.ticket.summary")}</label>
+            <input type="text" class="cv-input" placeholder="${t("corpus_annotations.ticket.summary_placeholder")}" data-role="ticket-summary" />
           </div>
           <div class="cv-form-row">
-            <label>Reasoning</label>
-            <textarea class="cv-textarea" rows="3" placeholder="Why should this annotation be kept?" data-role="ticket-reasoning"></textarea>
+            <label>${t("corpus_annotations.ticket.reasoning")}</label>
+            <textarea class="cv-textarea" rows="3" placeholder="${t("corpus_annotations.ticket.reasoning_placeholder")}" data-role="ticket-reasoning"></textarea>
           </div>
           <div class="cv-form-row">
-            <label>Material note *</label>
-            <textarea class="cv-textarea" rows="3" required placeholder="Explain what this annotation set is and how it should be used." data-role="ticket-material-note"></textarea>
+            <label>${t("corpus_annotations.ticket.material_note")}</label>
+            <textarea class="cv-textarea" rows="3" required placeholder="${t("corpus_annotations.ticket.material_note_placeholder")}" data-role="ticket-material-note"></textarea>
           </div>
           <fieldset class="cv-form-row cv-material-provenance">
-            <legend>Provenance *</legend>
-            <div class="cv-hint">Choose every label that applies.</div>
-            <label><input type="checkbox" value="user_made" data-role="ticket-provenance" /> User-made</label>
-            <label><input type="checkbox" value="public_domain" data-role="ticket-provenance" /> Public domain</label>
-            <label><input type="checkbox" value="historical_source" data-role="ticket-provenance" /> Historical source or manuscript</label>
+            <legend>${t("corpus_annotations.ticket.provenance")}</legend>
+            <div class="cv-hint">${t("corpus_annotations.ticket.provenance_hint")}</div>
+            <label><input type="checkbox" value="user_made" data-role="ticket-provenance" /> ${t("corpus_annotations.ticket.user_made")}</label>
+            <label><input type="checkbox" value="public_domain" data-role="ticket-provenance" /> ${t("corpus_annotations.ticket.public_domain")}</label>
+            <label><input type="checkbox" value="historical_source" data-role="ticket-provenance" /> ${t("corpus_annotations.ticket.historical_source")}</label>
           </fieldset>
           <div class="cv-form-row">
-            <label>References</label>
-            <textarea class="cv-textarea" rows="3" placeholder="Any clear, consistent citation style is acceptable." data-role="ticket-references"></textarea>
+            <label>${t("corpus_annotations.ticket.references")}</label>
+            <textarea class="cv-textarea" rows="3" placeholder="${t("corpus_annotations.ticket.references_placeholder")}" data-role="ticket-references"></textarea>
           </div>
           <details class="cv-form-row">
-            <summary>AI assistance disclosure</summary>
-            <label><input type="checkbox" data-role="ticket-ai-assisted" /> AI-assisted</label>
-            <label>What was assisted?</label>
-            <textarea class="cv-textarea" rows="2" placeholder="Name the system and describe what it did." data-role="ticket-ai-details"></textarea>
+            <summary>${t("corpus_annotations.ticket.ai_disclosure")}</summary>
+            <label><input type="checkbox" data-role="ticket-ai-assisted" /> ${t("corpus_annotations.ticket.ai_assisted")}</label>
+            <label>${t("corpus_annotations.ticket.ai_what")}</label>
+            <textarea class="cv-textarea" rows="2" placeholder="${t("corpus_annotations.ticket.ai_placeholder")}" data-role="ticket-ai-details"></textarea>
           </details>
           <div class="cv-form-row">
             <div class="cv-annotation-preview-headline">
-              <label>Preview</label>
+              <label>${t("corpus_annotations.ticket.preview")}</label>
               <div class="cv-form-actions">
-                <button type="button" class="corpus-btn" data-role="add-annotation-item">Add row</button>
+                <button type="button" class="corpus-btn" data-role="add-annotation-item">${t("corpus_annotations.actions.add_row")}</button>
               </div>
             </div>
             <div class="cv-annotation-preview-list" data-role="ticket-preview-list"></div>
           </div>
           <div class="cv-form-row">
-            <label>Evidence links</label>
-            <textarea rows="3" data-role="ticket-evidence-links" placeholder="One http(s) link per line"></textarea>
+            <label>${t("corpus_annotations.ticket.evidence_links")}</label>
+            <textarea rows="3" data-role="ticket-evidence-links" placeholder="${t("corpus_annotations.ticket.evidence_links_placeholder")}"></textarea>
           </div>
           <div class="cv-form-row">
-            <label>Evidence files</label>
+            <label>${t("corpus_annotations.ticket.evidence_files")}</label>
             <input type="file" multiple accept="application/pdf,text/plain,image/png,image/jpeg" data-role="ticket-evidence-files" />
-            <div class="cv-hint">Up to 10 files and 20 MB for this ticket. HTML, XHTML, and SVG are rejected.</div>
+            <div class="cv-hint">${t("corpus_annotations.ticket.evidence_files_hint")}</div>
           </div>
           <details class="cv-form-row">
-            <summary>Optional contact details</summary>
-            <p class="cv-hint">Stored separately and encrypted. Deleted after 30 days or when the ticket closes.</p>
-            <label>Name <input type="text" data-role="ticket-contact-name" autocomplete="name" /></label>
-            <label>Email <input type="email" data-role="ticket-contact-email" autocomplete="email" /></label>
-            <label>Contact note <textarea rows="2" data-role="ticket-contact-notes"></textarea></label>
+            <summary>${t("corpus_annotations.ticket.contact_details")}</summary>
+            <p class="cv-hint">${t("corpus_annotations.ticket.contact_hint")}</p>
+            <label>${t("corpus_annotations.ticket.name")} <input type="text" data-role="ticket-contact-name" autocomplete="name" /></label>
+            <label>${t("corpus_annotations.ticket.email")} <input type="email" data-role="ticket-contact-email" autocomplete="email" /></label>
+            <label>${t("corpus_annotations.ticket.contact_note")} <textarea rows="2" data-role="ticket-contact-notes"></textarea></label>
           </details>
           <div class="cv-form-row">
-            <label class="cv-inline-check"><input type="checkbox" data-role="store-on-device" /> Store this ticket on this device</label>
-            <div class="cv-hint">Unchecked by default.</div>
+            <label class="cv-inline-check"><input type="checkbox" data-role="store-on-device" /> ${t("corpus_annotations.ticket.store_on_device")}</label>
+            <div class="cv-hint">${t("corpus_annotations.ticket.unchecked_default")}</div>
           </div>
           <div class="cv-form-actions">
-            <button type="submit" class="corpus-btn corpus-btn-primary">Create ticket</button>
-            <button type="button" class="corpus-btn" data-role="close-ticket-panel">Close</button>
+            <button type="submit" class="corpus-btn corpus-btn-primary">${t("corpus_annotations.actions.create_ticket")}</button>
+            <button type="button" class="corpus-btn" data-role="close-ticket-panel">${t("corpus_annotations.actions.close")}</button>
           </div>
         </form>
         <div class="cv-ticket-result">
           <div class="cv-ticket-status" data-role="ticket-status"></div>
           <div class="cv-ticket-kv">
-            <div><strong>Ticket ID:</strong> <span data-role="ticket-id"></span></div>
-            <div><strong>Ticket Key:</strong> <code data-role="ticket-key"></code></div>
+            <div><strong>${t("corpus_annotations.ticket.ticket_id")}</strong> <span data-role="ticket-id"></span></div>
+            <div><strong>${t("corpus_annotations.ticket.ticket_key")}</strong> <code data-role="ticket-key"></code></div>
           </div>
           <div class="cv-form-actions">
-            <button type="button" class="corpus-btn" data-role="copy-ticket-key" hidden>Copy key</button>
-            <button type="button" class="corpus-btn" data-role="download-ticket-key" hidden>Download txt</button>
-            <a class="corpus-btn" data-role="open-ticket-link" hidden>Open ticket</a>
+            <button type="button" class="corpus-btn" data-role="copy-ticket-key" hidden>${t("corpus_annotations.actions.copy_key")}</button>
+            <button type="button" class="corpus-btn" data-role="download-ticket-key" hidden>${t("corpus_annotations.actions.download_txt")}</button>
+            <a class="corpus-btn" data-role="open-ticket-link" hidden>${t("corpus_annotations.actions.open_ticket")}</a>
           </div>
         </div>
       </div>
@@ -1091,7 +1092,7 @@ export default class extends Controller {
     if (items.length === 0) {
       const p = document.createElement("p")
       p.className = "cv-muted"
-      p.textContent = "No annotations queued yet."
+      p.textContent = t("corpus_annotations.preview.none")
       this._ticketPreviewList.appendChild(p)
       return
     }
@@ -1108,18 +1109,18 @@ export default class extends Controller {
       const controls = document.createElement("div")
       controls.className = "cv-annotation-preview-controls"
       controls.innerHTML = `
-        <label>Kind
+        <label>${t("corpus_annotations.preview.kind")}
           <select data-field="kind">
             ${this._kindOptionsHtml(item.kind)}
           </select>
         </label>
-        <label>Start
+        <label>${t("corpus_annotations.preview.start")}
           <input type="number" min="0" step="1" data-field="start" value="${Number(item.start)}" />
         </label>
-        <label>End
+        <label>${t("corpus_annotations.preview.end")}
           <input type="number" min="1" step="1" data-field="end" value="${Number(item.end)}" />
         </label>
-        <button type="button" class="corpus-btn" data-action="delete-item">Delete</button>
+        <button type="button" class="corpus-btn" data-action="delete-item">${t("corpus_annotations.actions.delete")}</button>
       `
       card.appendChild(controls)
 
@@ -1130,12 +1131,12 @@ export default class extends Controller {
 
       const text = document.createElement("div")
       text.className = "cv-annotation-preview-text"
-      text.textContent = item.text || "(no text preview)"
+      text.textContent = item.text || t("corpus_annotations.preview.no_text")
       card.appendChild(text)
 
       const noteWrap = document.createElement("label")
       noteWrap.className = "cv-annotation-preview-note-editor"
-      noteWrap.innerHTML = `Note <textarea rows="2" data-field="note">${this._escapeHtml(item.note || "")}</textarea>`
+      noteWrap.innerHTML = `${t("corpus_annotations.preview.note")} <textarea rows="2" data-field="note">${this._escapeHtml(item.note || "")}</textarea>`
       card.appendChild(noteWrap)
 
       row.appendChild(card)
@@ -1279,12 +1280,12 @@ export default class extends Controller {
   }
 
   _humanKind(kind) {
-    if (kind === "title") return "Title"
-    if (kind === "person") return "Person"
-    if (kind === "place") return "Place"
-    if (kind === "office") return "Office"
-    if (kind === "ambiguous_character") return "Ambiguous/disputed character"
-    return kind || "Annotation"
+    if (kind === "title") return t("corpus_annotations.kinds.title")
+    if (kind === "person") return t("corpus_annotations.kinds.person")
+    if (kind === "place") return t("corpus_annotations.kinds.place")
+    if (kind === "office") return t("corpus_annotations.kinds.office")
+    if (kind === "ambiguous_character") return t("corpus_annotations.kinds.ambiguous")
+    return kind || t("corpus_annotations.kinds.annotation")
   }
 
   _showTicketPanel() {
@@ -1315,7 +1316,7 @@ export default class extends Controller {
       if (id && key) {
         this._openTicketLink.hidden = false
         this._openTicketLink.href = `/ticket_access?key=${encodeURIComponent(key)}`
-        this._openTicketLink.textContent = "Open ticket"
+        this._openTicketLink.textContent = t("corpus_annotations.actions.open_ticket")
       } else {
         this._openTicketLink.hidden = true
         this._openTicketLink.removeAttribute("href")

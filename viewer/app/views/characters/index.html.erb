@@ -1,23 +1,23 @@
-<h1>字典 Dictionary</h1>
+<h1>
+  <% if show_han_ornament? %><%= t("dictionary.title_han") %> <% end %><%= translated_interface_label("dictionary.title", ornament_key: "dictionary.title_han") %>
+</h1>
 
-<p>Let's try inputting a character or Unicode identifier!</p>
+<p><%= t("dictionary.search_prompt") %></p>
 
 <%= form_with url: characters_path, method: :get, local: true do %>
-  <label for="query">Character or codepoint:</label>
+  <label for="query"><%= t("dictionary.character_or_codepoint") %>:</label>
   <%= text_field_tag :query %>
-  <%= submit_tag "Submit" %>
+  <%= submit_tag t("dictionary.submit") %>
 <% end %>
 
 <hr>
 
-<h2>Browse by component</h2>
+<h2><%= t("dictionary.browse_by_component") %></h2>
 
-<p>
-  If you don't know the character you can use radicals and components to narrow things down. The radical pages also show the radical's own readings and meanings, as well as writing, which can be useful for further study. Radical awareness is known to assist with character recognition. 
-</p>
+<p><%= t("dictionary.browse_explanation") %></p>
 
 <ul>
-  <li><%= link_to "Kangxi radicals (Unihan kRSUnicode)", dictionary_radicals_path %></li>
-  <li><%= link_to "Shuowen Jiezi components", dictionary_components_path %></li>
-  <li><%= link_to "Guangyun (廣韻) categories (tone + rhyme)", dictionary_guangyun_path %></li>
+  <li><%= link_to t("dictionary.links.kangxi_radicals"), dictionary_radicals_path %></li>
+  <li><%= link_to t("dictionary.links.shuowen_components"), dictionary_components_path %></li>
+  <li><%= link_to t("dictionary.links.guangyun_categories"), dictionary_guangyun_path %></li>
 </ul>

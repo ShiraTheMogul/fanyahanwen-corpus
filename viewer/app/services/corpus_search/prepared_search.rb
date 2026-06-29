@@ -18,11 +18,11 @@ module CorpusSearch
 
     attr_reader :id, :key, :payload
 
-    def self.create!(query:, cache_store: CacheStore.new)
+    def self.create!(query:, locale: I18n.locale, cache_store: CacheStore.new)
       id = SecureRandom.hex(8)
       key = SecureRandom.urlsafe_base64(24)
       prepared = new(id: id, key: key, cache_store: cache_store)
-      prepared.write_initial!(query: query)
+      prepared.write_initial!(query: query, locale: locale)
       prepared
     end
 
@@ -53,13 +53,14 @@ module CorpusSearch
       @payload = nil
     end
 
-    def write_initial!(query:)
+    def write_initial!(query:, locale:)
       FileUtils.mkdir_p(@dir)
       @payload = {
         "version" => 1,
         "id" => safe_id,
         "key_digest" => digest(@key),
         "status" => "queued",
+        "locale" => locale.to_s,
         "query" => query.to_h,
         "created_at" => Time.now.utc.iso8601,
         "updated_at" => Time.now.utc.iso8601,
@@ -95,8 +96,14 @@ module CorpusSearch
         distance: hash["distance"],
         context: hash["context"],
         order: hash["order"],
+        locale: locale,
         filters: hash["filters"] || {}
       )
+    end
+
+    def locale
+      candidate = @payload["locale"].to_s
+      I18n.available_locales.map(&:to_s).include?(candidate) ? candidate : I18n.default_locale
     end
 
     def status

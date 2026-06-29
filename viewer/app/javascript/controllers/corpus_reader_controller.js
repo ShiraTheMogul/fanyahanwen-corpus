@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import { t } from "i18n"
 
 // Client-side view controls for the corpus reader. Client-side is used as it allows for instant changes. This makes the site run a bit faster!
 //
@@ -160,13 +161,13 @@ export default class extends Controller {
     if (!this.hasPunctPresetBtnTarget) return
     const p = (this._punct?.preset || "source").toString()
     const label = {
-      source: "Punct: Source",
-      modern_trad: "Punct: Modern (Trad)",
-      modern_prc: "Punct: Modern (PRC)",
-      pure: "Punct: Pure",
-      strip: "Punct: Strip",
-      custom: "Punct: Custom",
-    }[p] || "Punct"
+      source: t("corpus_reader.punctuation.source"),
+      modern_trad: t("corpus_reader.punctuation.modern_traditional"),
+      modern_prc: t("corpus_reader.punctuation.modern_prc"),
+      pure: t("corpus_reader.punctuation.pure"),
+      strip: t("corpus_reader.punctuation.strip"),
+      custom: t("corpus_reader.punctuation.custom"),
+    }[p] || t("corpus_reader.punctuation.label")
     this.punctPresetBtnTarget.textContent = label
   }
 
@@ -666,18 +667,18 @@ export default class extends Controller {
     // Buttons are optional targets.
     if (this.hasVerticalBtnTarget) {
       this.verticalBtnTarget.setAttribute("aria-pressed", vertical ? "true" : "false")
-      if (translationMode) this.verticalBtnTarget.textContent = `Orientation: ${vertical ? "Vertical" : "Horizontal"}`
+      if (translationMode) this.verticalBtnTarget.textContent = vertical ? t("corpus_reader.orientation.vertical") : t("corpus_reader.orientation.horizontal")
     }
     if (this.hasThemeBtnTarget) {
       this.themeBtnTarget.setAttribute("aria-pressed", "true")
-      const t = (theme || "bamboo").toString()
-      const label = (t === "light") ? "White" : (t === "dark") ? "Dark" : "Bamboo"
-      this.themeBtnTarget.textContent = `Theme: ${label}`
+      const themeName = (theme || "bamboo").toString()
+      const label = (themeName === "light") ? t("corpus_reader.themes.light") : (themeName === "dark") ? t("corpus_reader.themes.dark") : t("corpus_reader.themes.bamboo")
+      this.themeBtnTarget.textContent = t("corpus_reader.theme", { label })
     }
     if (this.hasPunctBtnTarget) this.punctBtnTarget.setAttribute("aria-pressed", strip ? "true" : "false")
     if (this.hasJudouBtnTarget) {
       this.judouBtnTarget.setAttribute("aria-pressed", this._state.judouOn ? "true" : "false")
-      this.judouBtnTarget.textContent = this._state.judouOn ? "Judou: On" : "Judou: Off"
+      this.judouBtnTarget.textContent = this._state.judouOn ? t("corpus_reader.judou.on") : t("corpus_reader.judou.off")
     }
 
     // Sync Judou submenu checkboxes (punctuation vs underlining)
@@ -689,7 +690,8 @@ export default class extends Controller {
     }
     if (this.hasPunctColorBtnTarget) {
       const c = (this._state.punctColor || "red").toString()
-      this.punctColorBtnTarget.textContent = `Dot: ${c[0].toUpperCase()}${c.slice(1)}`
+      const colorLabel = t(`corpus_reader.colors.${c}`)
+      this.punctColorBtnTarget.textContent = t("corpus_reader.dot_color", { color: colorLabel })
     }
 
     // Punctuation rendering:

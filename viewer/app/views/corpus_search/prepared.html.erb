@@ -1,27 +1,29 @@
-<h1>Prepared Corpus Search</h1>
+<h1><%= t("corpus_search.prepared.title") %></h1>
 
 <% if @prepared_search %>
   <% payload = @prepared_search.payload %>
   <section class="corpus-search-summary">
-    <p>Status: <strong><%= payload["status"] %></strong></p>
-    <p>Query: <strong><%= @prepared_search.query.display_label %></strong></p>
+    <p><%= t("corpus_search.prepared.status") %>: <strong><%= t("corpus_search.statuses.#{payload["status"]}", default: payload["status"].to_s.humanize) %></strong></p>
+    <p><%= t("corpus_search.prepared.query") %>: <strong><%= @prepared_search.query.display_label %></strong></p>
 
     <% progress = payload["progress"] || {} %>
     <p>
-      Stage: <%= progress["stage"] %>.
-      Files: <%= progress["files_scanned"] || 0 %> / <%= progress["files_total"] || 0 %>.
-      Hits found: <%= progress["hits_found"] || 0 %>.
+      <%= t("corpus_search.prepared.progress",
+            stage: t("corpus_search.stages.#{progress["stage"]}", default: progress["stage"].to_s.humanize),
+            scanned: progress["files_scanned"] || 0,
+            total: progress["files_total"] || 0,
+            hits: progress["hits_found"] || 0) %>
     </p>
 
     <% if @prepared_search.complete? %>
       <p>
-        <%= link_to "Download ZIP", "/corpus/search/prepared/#{@prepared_search.id}/download?key=#{ERB::Util.url_encode(@prepared_search.key)}", class: "corpus-search-button" %>
+        <%= link_to t("corpus_search.actions.download_zip"), "/corpus/search/prepared/#{@prepared_search.id}/download?key=#{ERB::Util.url_encode(@prepared_search.key)}", class: "corpus-search-button" %>
       </p>
-      <p>The ZIP contains <code>results.csv</code>, <code>flashcards.csv</code>, and <code>metadata.json</code>.</p>
+      <p><%= t("corpus_search.prepared.zip_contents") %></p>
     <% elsif @prepared_search.failed? %>
       <p class="corpus-search-error"><%= payload["error_message"] %></p>
     <% else %>
-      <p>This page will refresh every 10 seconds while the job is running.</p>
+      <p><%= t("corpus_search.prepared.refresh_notice", seconds: 10) %></p>
       <meta http-equiv="refresh" content="10">
     <% end %>
   </section>
