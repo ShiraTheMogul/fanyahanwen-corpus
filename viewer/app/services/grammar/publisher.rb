@@ -11,8 +11,8 @@ module Grammar
       @today = today
     end
 
-    def publish!(entry_id:, locale:, proposed_markdown:, credit:)
-      entry = @store.find!(entry_id)
+    def publish!(entry_id:, locale:, proposed_markdown:, credit:, catalogue_entry: nil)
+      entry = catalogue_entry.present? ? Entry.new(catalogue_entry) : @store.find!(entry_id)
       target = @store.article_path(entry, locale: locale)
       proposed = MarkdownDocument.parse(proposed_markdown)
       existing = target.file? ? MarkdownDocument.parse(target.read) : nil
@@ -37,8 +37,13 @@ module Grammar
       end
 
       final_markdown = MarkdownDocument.dump(metadata: metadata, body: proposed.body)
+      created_article = !target.file?
       atomic_write(target, final_markdown)
+      @store.append_catalogue_entry!(entry) if catalogue_entry.present?
       final_markdown
+    rescue
+      FileUtils.rm_f(target) if catalogue_entry.present? && created_article && target
+      raise
     end
 
     private

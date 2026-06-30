@@ -68,13 +68,11 @@ module EditTickets
         public_name: credit["name"],
         orcid: credit["orcid"],
         credit_role: credit["role"],
-        licence_agreed: true
+        licence_agreed: true,
+        entry_attributes: metadata["catalogue_entry"]
       )
 
-      expected_path = Grammar::EntryStore.default.repo_relative_article_path(
-        result.entry,
-        locale: result.locale
-      )
+      expected_path = result.target_path.relative_path_from(Rails.root).to_s
       supplied_path = metadata["target_path"].to_s
       unless supplied_path == expected_path
         raise SecurityError, "Grammar ticket target does not match the catalogue"
@@ -84,7 +82,8 @@ module EditTickets
         entry_id: result.entry.id,
         locale: result.locale,
         proposed_markdown: result.markdown,
-        credit: result.credit
+        credit: result.credit,
+        catalogue_entry: result.catalogue_entry
       )
     rescue Grammar::SubmissionValidator::ValidationError => e
       raise "Grammar ticket is no longer valid: #{e.message}"

@@ -189,4 +189,39 @@ class GrammarSubmissionAndPublisherTest < ActiveSupport::TestCase
 
     assert_match(/source article must be published/, error.message)
   end
+  test "publishes an accepted unlisted entry and adds it to the catalogue" do
+    result = @validator.validate!(
+      entry_id: "",
+      action: "create",
+      locale: "en",
+      raw_markdown: "## Explanation\n\nText.\n\n## References\n\nReference.\n",
+      public_name: "Example Author",
+      orcid: "",
+      credit_role: "author",
+      licence_agreed: true,
+      entry_attributes: {
+        "kind" => "function_word",
+        "headword" => "爾們",
+        "title" => "爾們"
+      }
+    )
+
+    Grammar::Publisher.new(
+      store: @store,
+      reviewer_name: "Llinos",
+      today: Date.new(2026, 6, 30)
+    ).publish!(
+      entry_id: result.entry.id,
+      locale: result.locale,
+      proposed_markdown: result.markdown,
+      credit: result.credit,
+      catalogue_entry: result.catalogue_entry
+    )
+
+    published_entry = @store.find!("fw-u723e-u5011")
+    assert_equal "function_words/爾們/index.md", published_entry.path
+    assert @store.article_path(published_entry, locale: "en").file?
+    assert_equal 1, @store.all.count { |entry| entry.id == "fw-u723e-u5011" }
+  end
+
 end

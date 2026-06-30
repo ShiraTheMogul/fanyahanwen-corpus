@@ -7,6 +7,7 @@ lzh:
     index:
       introduction: 可依部首閱虛詞、各用法、句式、連語、辨析及語法概念；亦可自選他序及條件。
       articles_needed: 待撰條目
+      suggest_unlisted: 建議未列新篇
       arrange_by: 次序
       entry_type: 條目類別
       importance: 重要度
@@ -136,6 +137,15 @@ lzh:
       available: 此碼今未用。
     submission:
       create_heading: 建議新篇
+      unlisted_heading: 建議未列之語法新篇
+      unlisted_explanation: 若此虛詞、句式或辨析尚未列入語法維基，請用此表。系統於提案中自生成並檢查識別碼。
+      unlisted_details: 新條目資料
+      unlisted_title: 篇名
+      unlisted_choose_parent: 選母虛詞條目
+      unlisted_generated_id: 所生成之條目識別碼
+      unlisted_id_available: 此碼可用
+      unlisted_id_collision: 此條目識別碼已存在，請改用既有條目頁。
+      unlisted_id_incomplete: 請先填妥新條目資料，然後預覽或提交。
       edit_heading: 建議修訂或翻譯
       explanation: 以Markdown撰修正文，可先覽其完整頁框，再由既有提案流程送編者審核。
       language: 篇章語言

@@ -24,6 +24,7 @@ module Grammar
       :markdown,
       :credit,
       :target_path,
+      :catalogue_entry,
       keyword_init: true
     )
 
@@ -39,15 +40,22 @@ module Grammar
       public_name:,
       orcid:,
       credit_role:,
-      licence_agreed:
+      licence_agreed:,
+      entry_attributes: nil
     )
-      entry = @store.find!(entry_id)
+      entry = if entry_attributes.present?
+                ProposedEntryBuilder.new(store: @store).build!(
+                  **symbolize_entry_attributes(entry_attributes)
+                )
+              else
+                @store.find!(entry_id)
+              end
       action = action.to_s
       raise ValidationError, "Invalid grammar submission action" unless ACTIONS.include?(action)
 
       locale = normalise_locale(locale)
       target = @store.article_path(entry, locale: locale)
-      validate_action_target!(entry, action, locale, target)
+      validate_action_target!(entry, action, locale, target, unlisted: entry_attributes.present?)
 
       unless truthy?(licence_agreed)
         raise ValidationError, "You must agree to publish the submission under CC BY"
@@ -106,9 +114,10 @@ module Grammar
         document: MarkdownDocument.parse(normalized),
         markdown: normalized,
         credit: credit,
-        target_path: target
+        target_path: target,
+        catalogue_entry: entry_attributes.present? ? entry.attributes : nil
       )
-    rescue Psych::SyntaxError, ArgumentError => e
+    rescue Psych::SyntaxError, ArgumentError, ProposedEntryBuilder::ValidationError => e
       raise ValidationError, e.message
     rescue ActiveRecord::RecordNotFound
       raise ValidationError, "Unknown grammar entry"
@@ -116,7 +125,14 @@ module Grammar
 
     private
 
-    def validate_action_target!(entry, action, locale, target)
+    def validate_action_target!(entry, action, locale, target, unlisted: false)
+      if unlisted
+        raise ValidationError, "An unlisted entry must be submitted as a new article" unless action == "create"
+        unless locale == EntryStore::SOURCE_LOCALE
+          raise ValidationError, "An unlisted entry must begin with a source-language article"
+        end
+      end
+
       case action
       when "create"
         raise ValidationError, "This article already exists; suggest an edit instead" if target.file?
@@ -145,6 +161,17 @@ module Grammar
 
         metadata[key] = ids
       end
+    end
+
+    def symbolize_entry_attributes(value)
+      attributes = MarkdownDocument.stringify_keys(value.to_h)
+      {
+        kind: attributes["kind"],
+        headword: attributes["headword"],
+        title: attributes["title"],
+        parent_id: attributes["parent_id"],
+        label: attributes["label"]
+      }
     end
 
     def normalise_locale(value)

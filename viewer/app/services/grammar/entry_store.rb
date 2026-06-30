@@ -3,6 +3,7 @@
 require "digest"
 require "fileutils"
 require "pathname"
+require "tempfile"
 require "yaml"
 
 module Grammar
@@ -141,9 +142,7 @@ module Grammar
 
     def template_for(entry_or_id, locale: SOURCE_LOCALE)
       entry = entry_or_id.is_a?(Entry) ? entry_or_id : find!(entry_or_id)
-      template_path = root.join("_templates", "#{entry.kind}.md")
-      template_path = root.join("_templates", "concept.md") unless template_path.file?
-      body = template_path.file? ? template_path.read : "## Explanation\n\n\n## References\n\n"
+      body = template_body_for(entry.kind)
 
       metadata = {
         "id" => entry.id,
@@ -155,6 +154,40 @@ module Grammar
       metadata["locale"] = normalise_locale(locale) unless normalise_locale(locale) == SOURCE_LOCALE
 
       MarkdownDocument.dump(metadata: metadata, body: body)
+    end
+
+    def template_body_for(kind)
+      template_path = root.join("_templates", "#{kind}.md")
+      template_path = root.join("_templates", "concept.md") unless template_path.file?
+      template_path.file? ? template_path.read : "## Explanation\n\n\n## References\n\n"
+    end
+
+    # Appends one reviewed entry without reserialising the existing catalogue.
+    # This preserves its current order and formatting.
+    def append_catalogue_entry!(entry_or_attributes)
+      entry = entry_or_attributes.is_a?(Entry) ? entry_or_attributes : Entry.new(entry_or_attributes)
+      raise ArgumentError, "Duplicate grammar ID: #{entry.id}" if find(entry.id)
+      raise ArgumentError, "Duplicate grammar path: #{entry.path}" if all.any? { |item| item.path == entry.path }
+      raise ArgumentError, "Unknown grammar kind: #{entry.kind}" unless Entry::KINDS.include?(entry.kind)
+      if entry.parent_id && !find(entry.parent_id)
+        raise ArgumentError, "Unknown parent #{entry.parent_id}"
+      end
+      safe_path(entry.path)
+
+      original = catalogue_path.binread.force_encoding("UTF-8").scrub
+      row = YAML.dump([entry.attributes.compact]).sub(/\A---\s*\n/, "")
+      replacement = original + (original.end_with?("\n") ? "" : "\n") + row
+
+      Tempfile.create(["grammar-catalogue", ".yml"], catalogue_path.dirname.to_s) do |file|
+        file.binmode
+        file.write(replacement)
+        file.flush
+        file.fsync
+        FileUtils.mv(file.path, catalogue_path)
+      end
+
+      @entries = nil
+      entry
     end
 
     def validate_catalogue!

@@ -891,3 +891,15 @@
     transition: none;
   }
 }
+
+.grammar-submission-entry-details {
+  margin: 0;
+  padding: .85rem;
+  border: 1px solid #ddd;
+  border-radius: .55rem;
+}
+
+.grammar-submission-entry-details > legend {
+  padding: 0 .35rem;
+  font-weight: 700;
+}

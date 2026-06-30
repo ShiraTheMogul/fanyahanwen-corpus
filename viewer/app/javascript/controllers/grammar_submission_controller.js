@@ -11,26 +11,40 @@ export default class extends Controller {
     "rawMarkdown", "summary", "reasoning", "evidenceLinks", "uploads",
     "contactName", "contactEmail", "contactNotes", "licence", "storeOnDevice",
     "submit", "status", "ticketResult", "ticketId", "ticketKey", "copyKeyBtn",
-    "downloadKeyBtn", "previewForm", "previewLocale", "previewMarkdown", "downloadTemplate"
+    "downloadKeyBtn", "previewForm", "previewEntryId", "previewLocale", "previewMarkdown",
+    "previewEntryKind", "previewEntryHeadword", "previewEntryTitle", "previewEntryParent",
+    "previewEntryLabel", "downloadTemplate", "entryKind", "entryHeadword", "entryTitle",
+    "entryParent", "entryLabel", "entryId", "idStatus", "functionParentField",
+    "functionLabelField"
   ]
 
   static values = {
     entryId: String,
+    unlisted: Boolean,
+    existingIds: Array,
+    templates: Object,
     publishedLocales: Array,
     sourceLocale: String,
     submittingMessage: String,
     successMessage: String,
     errorPrefix: String,
     changeLanguageWarning: String,
+    idAvailableMessage: String,
+    idCollisionMessage: String,
+    idIncompleteMessage: String,
   }
 
   connect() {
     this.loadedLocale = this.localeTarget.value
     this.loadedMarkdown = this.rawMarkdownTarget.value
+    this.loadedTemplateKind = this.hasEntryKindTarget ? this.entryKindTarget.value : null
     this._updateLocaleState(this.loadedLocale)
+    if (this.unlistedValue) this.entryDetailsChanged()
   }
 
   async localeChanged() {
+    if (this.unlistedValue) return
+
     const locale = this.hasLocaleTarget ? this.localeTarget.value : this.sourceLocaleValue
     const previousLocale = this.loadedLocale
     const changedText = this.rawMarkdownTarget.value !== this.loadedMarkdown
@@ -65,6 +79,37 @@ export default class extends Controller {
     }
   }
 
+  entryDetailsChanged() {
+    if (!this.unlistedValue) return
+
+    const kind = this.entryKindTarget.value
+    const isFunction = kind === "function"
+    if (this.hasFunctionParentFieldTarget) this.functionParentFieldTarget.hidden = !isFunction
+    if (this.hasFunctionLabelFieldTarget) this.functionLabelFieldTarget.hidden = !isFunction
+
+    const previousTemplate = this.templatesValue[this.loadedTemplateKind] || ""
+    const nextTemplate = this.templatesValue[kind] || ""
+    if (kind !== this.loadedTemplateKind && this.rawMarkdownTarget.value === previousTemplate) {
+      this.rawMarkdownTarget.value = nextTemplate
+      this.loadedMarkdown = nextTemplate
+    }
+    this.loadedTemplateKind = kind
+
+    const candidate = this._generatedEntryId()
+    this.entryIdTarget.value = candidate
+    const collision = candidate && this.existingIdsValue.includes(candidate)
+
+    if (!candidate) {
+      this.idStatusTarget.textContent = ""
+    } else if (collision) {
+      this.idStatusTarget.textContent = this.idCollisionMessageValue
+    } else {
+      this.idStatusTarget.textContent = `${this.idAvailableMessageValue}: ${candidate}`
+    }
+
+    this.submitTarget.disabled = !candidate || collision
+  }
+
   _updateLocaleState(locale) {
     const exists = this.publishedLocalesValue.includes(locale)
     const action = exists ? "edit" : (locale === this.sourceLocaleValue ? "create" : "translate")
@@ -97,9 +142,15 @@ export default class extends Controller {
   preview(event) {
     event.preventDefault()
     if (!this.hasPreviewFormTarget) return
+    if (this.unlistedValue && !this._unlistedEntryValid()) {
+      this._setStatus(`${this.errorPrefixValue}: ${this._unlistedEntryError()}`)
+      return
+    }
 
+    this.previewEntryIdTarget.value = this._currentEntryId()
     this.previewLocaleTarget.value = this.localeTarget.value
     this.previewMarkdownTarget.value = this.rawMarkdownTarget.value
+    if (this.unlistedValue) this._copyUnlistedPreviewFields()
     this.previewFormTarget.requestSubmit()
   }
 
@@ -108,6 +159,10 @@ export default class extends Controller {
 
     if (!this.licenceTarget.checked) {
       this._setStatus(`${this.errorPrefixValue}: CC BY agreement is required`)
+      return
+    }
+    if (this.unlistedValue && !this._unlistedEntryValid()) {
+      this._setStatus(`${this.errorPrefixValue}: ${this._unlistedEntryError()}`)
       return
     }
 
@@ -119,7 +174,7 @@ export default class extends Controller {
       const form = new FormData()
       form.append("kind", "grammar_entry_submission")
       form.append("source", "grammar_wiki")
-      form.append("entry_id", this.entryIdValue)
+      form.append("entry_id", this._currentEntryId())
       form.append("submission_action", this.submissionActionTarget.value)
       form.append("locale", this.localeTarget.value)
       form.append("raw_markdown", this.rawMarkdownTarget.value)
@@ -130,6 +185,7 @@ export default class extends Controller {
       form.append("title", this._ticketTitle())
       form.append("summary", this.summaryTarget.value)
       form.append("reasoning", this.reasoningTarget.value)
+      if (this.unlistedValue) this._appendUnlistedFields(form)
       appendSubmissionExtras(form, this)
 
       const response = await fetch("/api/tickets", {
@@ -156,12 +212,12 @@ export default class extends Controller {
       maybeStoreTicketOnDevice(this, ticketId, ticketKey, {
         title: this._ticketTitle(),
         source: "grammar_wiki",
-        entry_id: this.entryIdValue,
+        entry_id: this._currentEntryId(),
       })
     } catch (error) {
       this._setStatus(`${this.errorPrefixValue}: ${error.message || error}`)
     } finally {
-      this.submitTarget.disabled = false
+      this.submitTarget.disabled = this.unlistedValue && !this._unlistedEntryValid()
     }
   }
 
@@ -181,6 +237,77 @@ export default class extends Controller {
     )
   }
 
+  _appendUnlistedFields(form) {
+    form.append("unlisted_entry", "1")
+    form.append("entry_kind", this.entryKindTarget.value)
+    form.append("entry_headword", this.entryHeadwordTarget.value)
+    form.append("entry_title", this.entryTitleTarget.value)
+    form.append("entry_parent_id", this.entryParentTarget.value)
+    form.append("entry_label", this.entryLabelTarget.value)
+  }
+
+  _copyUnlistedPreviewFields() {
+    this.previewEntryKindTarget.value = this.entryKindTarget.value
+    this.previewEntryHeadwordTarget.value = this.entryHeadwordTarget.value
+    this.previewEntryTitleTarget.value = this.entryTitleTarget.value
+    this.previewEntryParentTarget.value = this.entryParentTarget.value
+    this.previewEntryLabelTarget.value = this.entryLabelTarget.value
+  }
+
+  _generatedEntryId() {
+    const kind = this.entryKindTarget.value
+    const headword = this.entryHeadwordTarget.value.trim()
+    if (!headword) return ""
+
+    if (kind === "function") {
+      const parent = this.entryParentTarget.value.trim()
+      const label = this.entryLabelTarget.value.trim()
+      if (!parent || !label) return ""
+      return `${parent}-${this._normaliseAscii(label) || this._tokenise(headword)}`
+    }
+
+    const prefixes = {
+      function_word: "fw",
+      pattern: "pattern",
+      binome: "binome",
+      comparison: "comparison",
+      concept: "concept",
+    }
+    const token = this._tokenise(headword)
+    return `${prefixes[kind] || kind}-${token || "entry"}`
+  }
+
+  _tokenise(value) {
+    const tokens = value.match(/\p{Script=Han}|[A-Za-z0-9]+/gu) || []
+    return tokens.map((token) => {
+      if (/^\p{Script=Han}$/u.test(token)) return `u${token.codePointAt(0).toString(16)}`
+      return this._normaliseAscii(token)
+    }).filter(Boolean).join("-")
+  }
+
+  _normaliseAscii(value) {
+    return value.toLowerCase()
+      .replace(/[^\x00-\x7F]/g, " ")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+  }
+
+  _unlistedEntryValid() {
+    const candidate = this._generatedEntryId()
+    return Boolean(candidate) && !this.existingIdsValue.includes(candidate)
+  }
+
+  _unlistedEntryError() {
+    const candidate = this._generatedEntryId()
+    return candidate && this.existingIdsValue.includes(candidate)
+      ? this.idCollisionMessageValue
+      : this.idIncompleteMessageValue
+  }
+
+  _currentEntryId() {
+    return this.unlistedValue ? this.entryIdTarget.value : this.entryIdValue
+  }
+
   _ticketTitle() {
     const action = this.submissionActionTarget.value
     const labels = {
@@ -188,7 +315,7 @@ export default class extends Controller {
       edit: "Grammar article edit",
       translate: "Grammar article translation",
     }
-    return `${labels[action] || "Grammar submission"} — ${this.entryIdValue}`
+    return `${labels[action] || "Grammar submission"} — ${this._currentEntryId()}`
   }
 
   _csrfToken() {

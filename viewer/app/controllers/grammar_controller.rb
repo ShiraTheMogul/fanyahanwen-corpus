@@ -27,7 +27,7 @@ class GrammarController < ApplicationController
     )
     @groups = builder.groups(@rows, sort: @sort)
     @categories = @store.all.flat_map(&:categories).uniq.sort
-    @identifier_result = identifier_result if params[:generate_id].present?
+    prepare_unlisted_submission if params[:unlisted].to_s == "1"
   end
 
   def show
@@ -39,7 +39,17 @@ class GrammarController < ApplicationController
 
   def preview
     @store = Grammar::EntryStore.default
-    @entry = @store.find!(params[:entry_id])
+    @entry = if params[:unlisted_entry].to_s == "1"
+               Grammar::ProposedEntryBuilder.new(store: @store).build!(
+                 kind: params[:entry_kind],
+                 headword: params[:entry_headword],
+                 title: params[:entry_title],
+                 parent_id: params[:entry_parent_id],
+                 label: params[:entry_label]
+               )
+             else
+               @store.find!(params[:entry_id])
+             end
     requested_locale = params[:locale].presence || I18n.locale.to_s
     document = Grammar::MarkdownDocument.parse(params[:raw_markdown].to_s)
 
@@ -55,7 +65,7 @@ class GrammarController < ApplicationController
     @preview = true
     prepare_show
     render :show
-  rescue Psych::SyntaxError, ArgumentError => e
+  rescue Psych::SyntaxError, ArgumentError, Grammar::ProposedEntryBuilder::ValidationError => e
     render plain: "Grammar preview error: #{e.message}", status: :unprocessable_entity
   end
 
@@ -118,24 +128,17 @@ class GrammarController < ApplicationController
     end
   end
 
-  def identifier_result
-    kind = params[:id_kind].presence || "function_word"
-    headword = params[:id_headword].to_s
-    label = params[:id_label].to_s
-    parent_id = params[:id_parent].to_s.presence
-    candidate = Grammar::Identifier.generate(
-      kind: kind,
-      headword: headword,
-      parent_id: parent_id,
-      label: label
-    )
-    collision = Grammar::Identifier.collision?(candidate, @store.existing_ids)
-
-    {
-      candidate: candidate,
-      collision: collision,
-      next_available: collision ? Grammar::Identifier.next_available(candidate, @store.existing_ids) : candidate
-    }
+  def prepare_unlisted_submission
+    @show_unlisted_submission = true
+    @published_locales = []
+    @submission_action = "create"
+    @submission_locale = Grammar::EntryStore::SOURCE_LOCALE
+    @submission_markdown = @store.template_body_for("function_word")
+    @unlisted_templates = Grammar::Entry::KINDS.index_with do |kind|
+      @store.template_body_for(kind)
+    end
+    @unlisted_existing_ids = @store.existing_ids
+    @unlisted_parent_options = @store.all.select { |entry| entry.kind == "function_word" }
   end
 
   def permitted_sort(value)

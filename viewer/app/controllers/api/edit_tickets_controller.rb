@@ -383,6 +383,15 @@ module Api
 
     def create_grammar_entry_submission
       validator = Grammar::SubmissionValidator.new
+      entry_attributes = if params[:unlisted_entry].to_s == "1"
+                           {
+                             "kind" => params[:entry_kind],
+                             "headword" => params[:entry_headword],
+                             "title" => params[:entry_title],
+                             "parent_id" => params[:entry_parent_id],
+                             "label" => params[:entry_label]
+                           }
+                         end
       result = validator.validate!(
         entry_id: params[:entry_id],
         action: params[:submission_action],
@@ -391,7 +400,8 @@ module Api
         public_name: params[:public_name],
         orcid: params[:orcid],
         credit_role: params[:credit_role],
-        licence_agreed: params[:licence_agreed]
+        licence_agreed: params[:licence_agreed],
+        entry_attributes: entry_attributes
       )
 
       target_path = result.target_path.relative_path_from(Rails.root).to_s
@@ -431,7 +441,8 @@ module Api
           "locale" => result.locale,
           "target_path" => target_path,
           "credit" => result.credit,
-          "licence" => "CC BY"
+          "licence" => "CC BY",
+          "catalogue_entry" => result.catalogue_entry
         )
       )
 

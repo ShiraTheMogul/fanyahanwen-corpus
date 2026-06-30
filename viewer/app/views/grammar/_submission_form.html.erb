@@ -1,33 +1,106 @@
+<% unlisted = local_assigns.fetch(:unlisted, false) %>
+<% entry_id = entry&.id.to_s %>
+<% published = article&.published? %>
 <section class="grammar-submission"
          data-controller="grammar-submission"
-         data-grammar-submission-entry-id-value="<%= entry.id %>"
+         data-grammar-submission-entry-id-value="<%= entry_id %>"
+         data-grammar-submission-unlisted-value="<%= unlisted %>"
+         data-grammar-submission-existing-ids-value="<%= (unlisted ? @unlisted_existing_ids : []).to_json %>"
+         data-grammar-submission-templates-value="<%= (unlisted ? @unlisted_templates : {}).to_json %>"
          data-grammar-submission-published-locales-value="<%= @published_locales.to_json %>"
          data-grammar-submission-source-locale-value="<%= Grammar::EntryStore::SOURCE_LOCALE %>"
          data-grammar-submission-submitting-message-value="<%= t("grammar.submission.submitting") %>"
          data-grammar-submission-success-message-value="<%= t("grammar.submission.success") %>"
          data-grammar-submission-error-prefix-value="<%= t("grammar.submission.error_prefix") %>"
-         data-grammar-submission-change-language-warning-value="<%= t("grammar.submission.change_language_warning") %>">
-  <h2><%= article.published? ? t("grammar.submission.edit_heading") : t("grammar.submission.create_heading") %></h2>
-  <p><%= t("grammar.submission.explanation") %></p>
+         data-grammar-submission-change-language-warning-value="<%= t("grammar.submission.change_language_warning") %>"
+         data-grammar-submission-id-available-message-value="<%= t("grammar.submission.unlisted_id_available") %>"
+         data-grammar-submission-id-collision-message-value="<%= t("grammar.submission.unlisted_id_collision") %>"
+         data-grammar-submission-id-incomplete-message-value="<%= t("grammar.submission.unlisted_id_incomplete") %>">
+  <h2><%= unlisted ? t("grammar.submission.unlisted_heading") : (published ? t("grammar.submission.edit_heading") : t("grammar.submission.create_heading")) %></h2>
+  <p><%= unlisted ? t("grammar.submission.unlisted_explanation") : t("grammar.submission.explanation") %></p>
 
   <form action="/grammar/preview"
         method="post"
         target="_blank"
-        id="grammar-preview-form-<%= entry.id %>"
+        id="grammar-preview-form-<%= entry_id.presence || "unlisted" %>"
         data-grammar-submission-target="previewForm">
     <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-    <%= hidden_field_tag :entry_id, entry.id %>
+    <%= hidden_field_tag :entry_id, entry_id, data: { grammar_submission_target: "previewEntryId" } %>
+    <%= hidden_field_tag :unlisted_entry, unlisted ? "1" : "0" %>
+    <%= hidden_field_tag :entry_kind, "", data: { grammar_submission_target: "previewEntryKind" } if unlisted %>
+    <%= hidden_field_tag :entry_headword, "", data: { grammar_submission_target: "previewEntryHeadword" } if unlisted %>
+    <%= hidden_field_tag :entry_title, "", data: { grammar_submission_target: "previewEntryTitle" } if unlisted %>
+    <%= hidden_field_tag :entry_parent_id, "", data: { grammar_submission_target: "previewEntryParent" } if unlisted %>
+    <%= hidden_field_tag :entry_label, "", data: { grammar_submission_target: "previewEntryLabel" } if unlisted %>
     <%= hidden_field_tag :locale, @submission_locale, data: { grammar_submission_target: "previewLocale" } %>
     <%= hidden_field_tag :raw_markdown, "", data: { grammar_submission_target: "previewMarkdown" } %>
   </form>
 
   <form data-action="submit->grammar-submission#submit">
+    <% if unlisted %>
+      <fieldset class="grammar-submission-entry-details">
+        <legend><%= t("grammar.submission.unlisted_details") %></legend>
+        <div class="grammar-submission-grid">
+          <label>
+            <span><%= t("grammar.ids.kind") %></span>
+            <select data-grammar-submission-target="entryKind"
+                    data-action="change->grammar-submission#entryDetailsChanged">
+              <% Grammar::Entry::KINDS.each do |kind| %>
+                <option value="<%= kind %>"><%= grammar_kind_label(kind) %></option>
+              <% end %>
+            </select>
+          </label>
+
+          <label>
+            <span><%= t("grammar.ids.headword") %></span>
+            <input type="text"
+                   required
+                   data-grammar-submission-target="entryHeadword"
+                   data-action="input->grammar-submission#entryDetailsChanged">
+          </label>
+
+          <label>
+            <span><%= t("grammar.submission.unlisted_title") %></span>
+            <input type="text"
+                   data-grammar-submission-target="entryTitle"
+                   data-action="input->grammar-submission#entryDetailsChanged">
+          </label>
+
+          <label hidden data-grammar-submission-target="functionParentField">
+            <span><%= t("grammar.ids.parent") %></span>
+            <select data-grammar-submission-target="entryParent"
+                    data-action="change->grammar-submission#entryDetailsChanged">
+              <option value=""><%= t("grammar.submission.unlisted_choose_parent") %></option>
+              <% @unlisted_parent_options.each do |parent| %>
+                <option value="<%= parent.id %>"><%= parent.title %> — <%= parent.id %></option>
+              <% end %>
+            </select>
+          </label>
+
+          <label hidden data-grammar-submission-target="functionLabelField">
+            <span><%= t("grammar.ids.label") %></span>
+            <input type="text"
+                   placeholder="attributive"
+                   data-grammar-submission-target="entryLabel"
+                   data-action="input->grammar-submission#entryDetailsChanged">
+          </label>
+
+          <label>
+            <span><%= t("grammar.submission.unlisted_generated_id") %></span>
+            <input type="text" readonly data-grammar-submission-target="entryId">
+          </label>
+        </div>
+        <p class="grammar-muted" data-grammar-submission-target="idStatus"></p>
+      </fieldset>
+    <% end %>
+
     <div class="grammar-submission-grid">
       <label>
         <span><%= t("grammar.submission.language") %></span>
         <select data-grammar-submission-target="locale"
                 data-action="change->grammar-submission#localeChanged">
-          <% InterfaceLocales::ALL.each do |locale| %>
+          <% locales = unlisted ? [Grammar::EntryStore::SOURCE_LOCALE] : InterfaceLocales::ALL %>
+          <% locales.each do |locale| %>
             <option value="<%= locale %>" <%= "selected" if locale.to_s == @submission_locale %>>
               <%= InterfaceLocales.native_name(locale) %> [<%= locale %>]
             </option>
@@ -85,10 +158,12 @@
               data-action="grammar-submission#preview">
         <%= t("grammar.submission.preview") %>
       </button>
-      <%= link_to t("grammar.submission.download_template"),
-                  grammar_template_path_for(entry, locale: @submission_locale),
-                  class: "grammar-btn grammar-btn-secondary",
-                  data: { grammar_submission_target: "downloadTemplate" } %>
+      <% unless unlisted %>
+        <%= link_to t("grammar.submission.download_template"),
+                    grammar_template_path_for(entry, locale: @submission_locale),
+                    class: "grammar-btn grammar-btn-secondary",
+                    data: { grammar_submission_target: "downloadTemplate" } %>
+      <% end %>
     </div>
 
     <label>

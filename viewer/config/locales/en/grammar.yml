@@ -8,6 +8,7 @@ en:
       introduction: Browse function words, individual functions, patterns, binomes, comparisons, and grammatical concepts.
         Radical order is the default; the other controls are optional.
       articles_needed: Articles needed
+      suggest_unlisted: Suggest an unlisted article
       arrange_by: Arrange by
       entry_type: Entry type
       importance: Importance
@@ -139,6 +140,15 @@ en:
       available: This ID is not currently used.
     submission:
       create_heading: Suggest an article
+      unlisted_heading: Suggest an unlisted grammar article
+      unlisted_explanation: Use this form when the word, construction, or comparison is not yet in the Grammar Wiki catalogue. The site generates and checks the technical ID as part of the submission.
+      unlisted_details: New entry details
+      unlisted_title: Article title
+      unlisted_choose_parent: Choose a function-word entry
+      unlisted_generated_id: Generated entry ID
+      unlisted_id_available: Available ID
+      unlisted_id_collision: This entry ID already exists. Use the existing entry page instead.
+      unlisted_id_incomplete: Complete the new entry details before previewing or submitting.
       edit_heading: Suggest an edit or translation
       explanation: Write or revise the article in Markdown, preview it in the full page frame, and submit it through the existing
         ticket workflow for editorial review.
