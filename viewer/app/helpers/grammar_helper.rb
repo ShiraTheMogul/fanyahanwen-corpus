@@ -39,6 +39,31 @@ module GrammarHelper
     t("grammar.categories.#{value}", default: value.to_s.humanize)
   end
 
+  def grammar_index_group_heading(group)
+    case group.type
+    when "radical"
+      return t("grammar.index.other_entries") unless group.radical_number
+
+      safe_join(
+        [
+          content_tag(:span, group.radical_glyph, class: "grammar-radical-glyph"),
+          content_tag(:span, t("grammar.index.radical_heading", number: group.radical_number))
+        ],
+        " "
+      )
+    when "stroke"
+      group.value.present? ? t("grammar.index.stroke_heading", count: group.value) : t("grammar.index.stroke_unknown")
+    when "importance"
+      grammar_importance_label(group.value)
+    when "kind"
+      group.value.present? ? grammar_kind_label(group.value) : t("grammar.index.kind_unknown")
+    when "category"
+      group.value.present? ? grammar_category_label(group.value) : t("grammar.index.category_unknown")
+    when "pronunciation"
+      group.value.presence || t("grammar.index.pronunciation_unknown")
+    end
+  end
+
   def grammar_search_url(search)
     values = Grammar::MarkdownDocument.stringify_keys(search.to_h)
     params = {

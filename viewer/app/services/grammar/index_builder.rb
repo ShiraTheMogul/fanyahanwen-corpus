@@ -16,7 +16,16 @@ module Grammar
       keyword_init: true
     )
 
-    SORTS = %w[radical stroke pronunciation frequency importance kind].freeze
+    Group = Struct.new(
+      :type,
+      :value,
+      :rows,
+      :radical_number,
+      :radical_glyph,
+      keyword_init: true
+    )
+
+    SORTS = %w[radical stroke importance kind category pronunciation frequency].freeze
 
     def initialize(store: EntryStore.default, locale: I18n.locale, pronunciation_source: :mandarin)
       @store = store
@@ -35,10 +44,11 @@ module Grammar
 
       if kind.present?
         rows = rows.select { |row| row.entry.kind == kind.to_s }
-      elsif !truthy?(needed) && importance.blank? && category.blank?
-        # Individual uses live inside their function-word tile by default. They
-        # remain directly browsable through the Entry type and taxonomy filters,
-        # as well as the Articles needed view.
+      elsif nest_individual_uses?(sort, importance: importance, category: category, needed: needed)
+        # Character-led arrangements keep individual uses inside their parent
+        # tile. Taxonomy-led arrangements show those uses as entries in their
+        # own right, because their type, importance, and categories may differ
+        # from the parent function word.
         rows = rows.reject { |row| row.entry.parent_id.present? }
       end
       rows = rows.select { |row| row.entry.importance == importance.to_s } if importance.present?
@@ -46,6 +56,38 @@ module Grammar
       rows = rows.reject(&:published) if truthy?(needed)
 
       rows.sort_by { |row| sort_key(row, sort) }
+    end
+
+    # Arrangement is expressed as visible sections rather than repeated labels
+    # inside every tile. Category entries may legitimately appear in more than
+    # one section because an entry can belong to several grammatical categories.
+    def groups(rows, sort: "radical")
+      sort = SORTS.include?(sort.to_s) ? sort.to_s : "radical"
+
+      case sort
+      when "radical"
+        radical_groups(rows).map do |(number, glyph), grouped_rows|
+          Group.new(
+            type: "radical",
+            value: number,
+            rows: grouped_rows,
+            radical_number: number,
+            radical_glyph: glyph
+          )
+        end
+      when "stroke"
+        grouped_values(rows, :total_strokes, type: "stroke")
+      when "importance"
+        ordered_groups(rows, Entry::IMPORTANCE, type: "importance") { |row| row.entry.importance.presence }
+      when "kind"
+        ordered_groups(rows, Entry::KINDS, type: "kind") { |row| row.entry.kind.presence }
+      when "category"
+        category_groups(rows)
+      when "pronunciation"
+        pronunciation_groups(rows)
+      else
+        [Group.new(type: sort, value: nil, rows: rows)]
+      end
     end
 
     def radical_groups(rows)
@@ -147,6 +189,8 @@ module Grammar
         [importance_rank(entry.importance), entry.headword, entry.id]
       when "kind"
         [Entry::KINDS.index(entry.kind) || 999, entry.headword, entry.id]
+      when "category"
+        [entry.categories.first.to_s, entry.headword, entry.id]
       else
         [
           entry.kind == "function_word" ? 0 : 1,
@@ -156,6 +200,64 @@ module Grammar
           entry.id
         ]
       end
+    end
+
+    def grouped_values(rows, method_name, type:)
+      rows.group_by { |row| row.public_send(method_name) }
+        .sort_by { |value, _| value.nil? ? [1, 0] : [0, value] }
+        .map { |value, grouped_rows| Group.new(type: type, value: value, rows: grouped_rows) }
+    end
+
+    def ordered_groups(rows, order, type:)
+      grouped = rows.group_by { |row| yield(row) }
+      values = order.select { |value| grouped.key?(value) }
+      values << nil if grouped.key?(nil)
+
+      values.map do |value|
+        Group.new(type: type, value: value, rows: grouped.fetch(value))
+      end
+    end
+
+    def category_groups(rows)
+      grouped = Hash.new { |hash, key| hash[key] = [] }
+      rows.each do |row|
+        categories = row.entry.categories.presence || [nil]
+        categories.each { |category| grouped[category] << row }
+      end
+
+      catalogue_order = @store.all.flat_map(&:categories).uniq
+      values = catalogue_order.select { |value| grouped.key?(value) }
+      values.concat((grouped.keys.compact - values).sort)
+      values << nil if grouped.key?(nil)
+
+      values.map do |value|
+        Group.new(type: "category", value: value, rows: grouped.fetch(value))
+      end
+    end
+
+    def pronunciation_groups(rows)
+      grouped = rows.group_by { |row| pronunciation_initial(row.pronunciation) }
+      values = grouped.keys.compact.sort
+      values << nil if grouped.key?(nil)
+
+      values.map do |value|
+        Group.new(type: "pronunciation", value: value, rows: grouped.fetch(value))
+      end
+    end
+
+    def pronunciation_initial(value)
+      text = value.to_s.strip
+      return nil if text.empty?
+
+      normalized = text.unicode_normalize(:nfd).gsub(/\p{Mn}/, "")
+      initial = normalized[/\A./m]
+      initial&.upcase
+    end
+
+    def nest_individual_uses?(sort, importance:, category:, needed:)
+      return false if truthy?(needed) || importance.present? || category.present?
+
+      !%w[importance kind category].include?(sort)
     end
 
     def importance_rank(value)

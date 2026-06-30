@@ -25,7 +25,7 @@ class GrammarController < ApplicationController
       category: @category,
       needed: @needed
     )
-    @radical_groups = builder.radical_groups(@rows)
+    @groups = builder.groups(@rows, sort: @sort)
     @categories = @store.all.flat_map(&:categories).uniq.sort
     @identifier_result = identifier_result if params[:generate_id].present?
   end

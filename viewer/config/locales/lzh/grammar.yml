@@ -26,11 +26,19 @@ lzh:
         other: '%{count}畫'
       corpus_frequency: 語料中凡%{count}見
       pronunciation: 讀音：%{value}
+      stroke_heading:
+        one: '%{count}畫'
+        other: '%{count}畫'
+      stroke_unknown: 筆畫未詳
+      pronunciation_unknown: 讀音未備
+      kind_unknown: 其他條目類別
+      category_unknown: 其他分類
     sorts:
       radical: 部首
       stroke: 筆畫
       importance: 重要度
       kind: 條目類別
+      category: 分類
       pronunciation: 讀音
       frequency: 語料頻次
     kinds:
@@ -69,6 +77,12 @@ lzh:
       label: 用法
       overview: '%{headword}之總論'
       individual_uses: '%{headword}之各用法'
+      use_count:
+        one: 一用
+        other: '%{count}用'
+      hide_uses: 收合用法
+      overview_label: 總論
+      use_label: 個別用法
     missing:
       heading: 此篇待撰
       explanation: 字形及辭書資料已備，而語法正文尚闕。

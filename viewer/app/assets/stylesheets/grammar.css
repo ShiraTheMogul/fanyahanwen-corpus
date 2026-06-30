@@ -114,101 +114,337 @@
   width: auto;
 }
 
-.grammar-radical-groups {
+.grammar-index-groups {
   display: grid;
-  gap: .9rem;
+  gap: 1.15rem;
   margin-top: 1rem;
 }
 
-.grammar-radical-group > h2 {
+.grammar-index-group {
+  min-width: 0;
+}
+
+.grammar-index-group-heading {
   display: flex;
   align-items: baseline;
   gap: .35rem;
   margin: 0 0 .35rem;
-  padding-bottom: .2rem;
+  padding: 0 0 .22rem;
   border-bottom: 1px solid #e4e4e4;
-  color: #555;
-  font-size: .82rem;
-  font-weight: 650;
-  line-height: 1.25;
-}
-
-.grammar-radical-glyph {
-  color: #222;
-  font-size: 1.05rem;
-}
-
-.grammar-entry-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
-  gap: .65rem;
-  margin: .75rem 0;
-}
-
-.grammar-entry-card {
-  padding: .8rem;
-  border: 1px solid #ddd;
-  border-radius: .7rem;
-  background: #fff;
-}
-
-.grammar-entry-card--expandable {
-  padding: 0;
-}
-
-.grammar-entry-expander > summary {
-  position: relative;
-  min-height: 10rem;
-  padding: .8rem 2rem .8rem .8rem;
-  cursor: pointer;
-  list-style: none;
-}
-
-.grammar-entry-expander > summary::-webkit-details-marker {
-  display: none;
-}
-
-.grammar-entry-expander:not([open]) > summary {
-  aspect-ratio: 1;
-}
-
-.grammar-entry-expander > summary::after {
-  position: absolute;
-  right: .7rem;
-  bottom: .55rem;
-  content: "+";
-  color: #666;
-  font-size: 1.2rem;
-  line-height: 1;
-}
-
-.grammar-entry-expander[open] > summary {
-  border-bottom: 1px solid #e4e4e4;
-}
-
-.grammar-entry-expander[open] > summary::after {
-  content: "−";
-}
-
-.grammar-entry-card-head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: .65rem;
-}
-
-.grammar-entry-card h3,
-.grammar-entry-card-title {
-  margin: 0;
-  font-size: 1.35rem;
+  color: #4f4f4f;
+  font-size: .92rem;
   font-weight: 700;
   line-height: 1.25;
 }
 
-.grammar-entry-link {
+.grammar-index-group-heading--radical {
+  color: #626262;
+  font-size: .76rem;
+  font-weight: 650;
+}
+
+.grammar-index-group-heading--pronunciation {
+  color: #222;
+  font-size: 1.15rem;
+  letter-spacing: .04em;
+}
+
+.grammar-radical-glyph {
+  color: #222;
+  font-size: .95rem;
+}
+
+.grammar-entry-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(6.75rem, 1fr));
+  gap: .65rem;
+  margin: .55rem 0 0;
+}
+
+.grammar-entry-cluster {
+  min-width: 0;
+}
+
+/* Article titles are prose, not display glyphs. Give them enough horizontal
+   room while character hubs retain the compact Shuowen-style square. */
+.grammar-entry-cluster--article {
+  grid-column: span 2;
+}
+
+.grammar-entry-cluster--expandable {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr) 0fr;
+  gap: 0;
+  transition: grid-template-columns 220ms ease, gap 220ms ease;
+}
+
+.grammar-entry-tile {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: .5rem;
+  padding: .62rem;
+  border: 1px solid rgb(0 0 0 / 18%);
+  border-radius: .75rem;
+  background: #fff;
   color: inherit;
-  text-decoration-thickness: .08em;
-  text-underline-offset: .15em;
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+}
+
+.grammar-entry-tile--headword {
+  min-height: 6.75rem;
+  aspect-ratio: 1;
+  align-items: center;
+  text-align: center;
+}
+
+.grammar-entry-tile--article {
+  min-height: 6.75rem;
+}
+
+.grammar-entry-tile:hover,
+.grammar-entry-tile:focus-visible {
+  border-color: #888;
+  box-shadow: 0 .18rem .65rem rgb(0 0 0 / 9%);
+  outline: none;
+  transform: translateY(-1px);
+}
+
+.grammar-entry-tile--button {
+  appearance: none;
+}
+
+.grammar-entry-tile-primary {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: .28rem .48rem;
+}
+
+.grammar-entry-tile--headword .grammar-entry-tile-primary {
+  justify-content: center;
+}
+
+.grammar-entry-tile-title {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.grammar-entry-tile-title--headword {
+  font-size: 2rem;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.grammar-entry-tile-title--article {
+  font-size: .98rem;
+  font-weight: 700;
+  line-height: 1.28;
+}
+
+.grammar-entry-tile-context {
+  flex: 0 0 auto;
+  color: #555;
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.grammar-entry-tile-pronunciation {
+  color: #555;
+  font-size: .88rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.grammar-entry-tile-emphasis {
+  color: #444;
+  font-size: .72rem;
+  line-height: 1.3;
+}
+
+.grammar-entry-tile-footer {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: .3rem;
+}
+
+.grammar-entry-tile--headword .grammar-entry-tile-footer {
+  width: 100%;
+  justify-content: center;
+}
+
+.grammar-entry-tile .grammar-status,
+.grammar-use-panel .grammar-status {
+  max-width: 100%;
+  font-size: .65rem;
+}
+
+.grammar-entry-expand-cue {
+  display: inline-flex;
+  align-items: center;
+  gap: .28rem;
+  color: #333;
+  font-size: .68rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.grammar-entry-expand-cue-open {
+  display: none;
+}
+
+.grammar-entry-expand-icon {
+  position: relative;
+  width: 1.05rem;
+  height: 1.05rem;
+  flex: 0 0 auto;
+  border: 1px solid #999;
+  border-radius: 50%;
+}
+
+.grammar-entry-expand-icon::before,
+.grammar-entry-expand-icon::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: .46rem;
+  height: 1px;
+  content: "";
+  background: currentColor;
+  transform: translate(-50%, -50%);
+  transition: transform 180ms ease;
+}
+
+.grammar-entry-expand-icon::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.grammar-entry-cluster.is-expanded {
+  grid-column: 1 / -1;
+  grid-template-columns: minmax(6.75rem, 7.5rem) minmax(0, 1fr);
+  gap: .65rem;
+  align-items: start;
+}
+
+.grammar-entry-cluster.is-expanded .grammar-entry-tile {
+  border-color: #888;
+  box-shadow: 0 .18rem .65rem rgb(0 0 0 / 8%);
+  transform: none;
+}
+
+.grammar-entry-cluster.is-expanded .grammar-entry-expand-cue-closed {
+  display: none;
+}
+
+.grammar-entry-cluster.is-expanded .grammar-entry-expand-cue-open {
+  display: inline;
+}
+
+.grammar-entry-cluster.is-expanded .grammar-entry-expand-icon::after {
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+
+/* The second grid track is genuinely zero-width while closed. This keeps the
+   use panels from influencing list layout before a learner opens them. */
+.grammar-entry-expansion {
+  display: grid;
+  width: 0;
+  height: 0;
+  min-width: 0;
+  max-width: 0;
+  overflow: hidden;
+  grid-template-columns: 0fr;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-.35rem);
+  visibility: hidden;
+  transition:
+    grid-template-columns 220ms ease,
+    max-width 220ms ease,
+    opacity 180ms ease,
+    transform 220ms ease,
+    visibility 0s linear 220ms;
+}
+
+.grammar-entry-expansion-inner {
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.grammar-entry-cluster.is-expanded .grammar-entry-expansion {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  grid-template-columns: 1fr;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.grammar-use-panel-grid {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr));
+  gap: .6rem;
+}
+
+.grammar-use-panel {
+  display: flex;
+  min-width: 0;
+  min-height: 6.75rem;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: .5rem;
+  padding: .68rem;
+  border: 1px solid rgb(0 0 0 / 18%);
+  border-radius: .75rem;
+  background: #fff;
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+}
+
+.grammar-use-panel:hover,
+.grammar-use-panel:focus-visible {
+  border-color: #888;
+  box-shadow: 0 .15rem .55rem rgb(0 0 0 / 8%);
+  outline: none;
+  transform: translateY(-1px);
+}
+
+.grammar-use-panel--overview {
+  background: #fafafa;
+}
+
+.grammar-use-panel-kicker {
+  color: #666;
+  font-size: .66rem;
+  font-weight: 750;
+  letter-spacing: .045em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.grammar-use-panel-title {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: .96rem;
+  font-weight: 700;
+  line-height: 1.3;
 }
 
 .grammar-search-buttons,
@@ -218,23 +454,18 @@
   gap: .45rem;
 }
 
-.grammar-entry-taxonomy,
 .grammar-entry-classification {
   display: flex;
   flex-wrap: wrap;
   gap: .5rem .8rem;
-  margin: .65rem 0 0;
+  margin: 0 0 .55rem;
 }
 
-.grammar-entry-taxonomy > div,
-.grammar-entry-classification > div,
-.grammar-entry-taxonomy-item {
+.grammar-entry-classification > div {
   min-width: 0;
 }
 
-.grammar-entry-taxonomy dt,
-.grammar-entry-classification dt,
-.grammar-entry-taxonomy-heading {
+.grammar-entry-classification dt {
   margin-bottom: .15rem;
   color: #666;
   font-size: .7rem;
@@ -244,69 +475,11 @@
   text-transform: uppercase;
 }
 
-.grammar-entry-taxonomy dd,
-.grammar-entry-classification dd,
-.grammar-entry-taxonomy-value {
+.grammar-entry-classification dd {
   display: flex;
   flex-wrap: wrap;
   gap: .25rem;
   margin: 0;
-}
-
-.grammar-entry-taxonomy--summary,
-.grammar-entry-taxonomy-item,
-.grammar-entry-taxonomy-heading,
-.grammar-entry-taxonomy-value {
-  display: flex;
-}
-
-.grammar-entry-taxonomy--summary {
-  flex-wrap: wrap;
-}
-
-.grammar-entry-taxonomy-item {
-  flex-direction: column;
-}
-
-.grammar-entry-taxonomy-categories {
-  flex-basis: 100%;
-}
-
-.grammar-entry-details {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .25rem .55rem;
-  margin-top: .55rem;
-  color: #555;
-  font-size: .82rem;
-}
-
-.grammar-use-cases {
-  padding: .7rem .8rem .85rem;
-}
-
-.grammar-use-cases h4 {
-  margin: 0 0 .45rem;
-  font-size: .85rem;
-}
-
-.grammar-use-cases ul {
-  display: grid;
-  gap: .4rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.grammar-use-cases li {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: .35rem;
-}
-
-.grammar-entry-classification {
-  margin: 0 0 .55rem;
 }
 
 .grammar-chip,
@@ -668,16 +841,53 @@
   }
 
   .grammar-entry-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(6.25rem, 1fr));
   }
 
-  .grammar-entry-expander:not([open]) > summary {
-    min-height: 8rem;
-    aspect-ratio: auto;
+  .grammar-entry-cluster--article {
+    grid-column: span 2;
+  }
+
+  .grammar-entry-cluster.is-expanded {
+    grid-template-columns: minmax(6.25rem, 7rem) minmax(0, 1fr);
+  }
+
+  .grammar-use-panel-grid {
+    grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
   }
 
   .grammar-character-regular,
   .grammar-character-seal {
     font-size: 3.75rem;
+  }
+}
+
+
+@media (max-width: 430px) {
+  .grammar-entry-cluster--article {
+    grid-column: 1 / -1;
+  }
+
+  .grammar-entry-cluster.is-expanded {
+    grid-template-columns: 1fr;
+  }
+
+  .grammar-entry-cluster.is-expanded .grammar-entry-tile--headword {
+    width: 6.75rem;
+    justify-self: start;
+  }
+
+  .grammar-entry-cluster.is-expanded .grammar-entry-expansion {
+    max-width: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grammar-entry-tile,
+  .grammar-use-panel,
+  .grammar-entry-expand-icon::before,
+  .grammar-entry-expand-icon::after,
+  .grammar-entry-expansion {
+    transition: none;
   }
 }

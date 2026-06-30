@@ -81,5 +81,12 @@ module Grammar
     def single_character?
       headword.each_char.count == 1 && headword.match?(/\A\p{Han}\z/)
     end
+
+    # Only character-level function-word hubs should receive the large glyph
+    # tile. Child function articles may share the same one-character headword,
+    # but their descriptive titles need ordinary article typography.
+    def character_hub?
+      kind == "function_word" && single_character?
+    end
   end
 end

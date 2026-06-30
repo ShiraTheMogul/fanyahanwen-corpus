@@ -27,11 +27,19 @@ en:
         other: '%{count} strokes'
       corpus_frequency: '%{count} corpus occurrences'
       pronunciation: 'Pronunciation: %{value}'
+      stroke_heading:
+        one: '%{count} stroke'
+        other: '%{count} strokes'
+      stroke_unknown: Stroke count unavailable
+      pronunciation_unknown: Pronunciation unavailable
+      kind_unknown: Other entry types
+      category_unknown: Other categories
     sorts:
       radical: Radical
       stroke: Stroke count
       importance: Importance
       kind: Entry type
+      category: Category
       pronunciation: Pronunciation
       frequency: Corpus frequency
     kinds:
@@ -70,6 +78,12 @@ en:
       label: Function
       overview: Overview of %{headword}
       individual_uses: Individual uses of %{headword}
+      use_count:
+        one: 1 use
+        other: "%{count} uses"
+      hide_uses: Hide uses
+      overview_label: Overview
+      use_label: Individual use
     missing:
       heading: Article needed
       explanation: The reference frame is available, but the grammatical article has not yet been written.

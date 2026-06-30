@@ -44,30 +44,21 @@
 
   <% if @rows.empty? %>
     <p class="grammar-empty"><%= t("grammar.index.no_entries") %></p>
-  <% elsif @sort == "radical" %>
-    <div class="grammar-radical-groups">
-      <% @radical_groups.each do |(number, glyph), rows| %>
-        <section class="grammar-radical-group">
-          <h2>
-            <% if number %>
-              <span class="grammar-radical-glyph"><%= glyph %></span>
-              <%= t("grammar.index.radical_heading", number: number) %>
-            <% else %>
-              <%= t("grammar.index.other_entries") %>
-            <% end %>
-          </h2>
+  <% else %>
+    <div class="grammar-index-groups grammar-index-groups--<%= @sort %>">
+      <% @groups.each do |group| %>
+        <section class="grammar-index-group grammar-index-group--<%= group.type %>">
+          <% heading = grammar_index_group_heading(group) %>
+          <% if heading.present? %>
+            <h2 class="grammar-index-group-heading grammar-index-group-heading--<%= group.type %>"><%= heading %></h2>
+          <% end %>
+
           <div class="grammar-entry-grid">
-            <% rows.each do |row| %>
-              <%= render "entry_card", row: row %>
+            <% group.rows.each do |row| %>
+              <%= render "entry_card", row: row, sort: @sort %>
             <% end %>
           </div>
         </section>
-      <% end %>
-    </div>
-  <% else %>
-    <div class="grammar-entry-grid">
-      <% @rows.each do |row| %>
-        <%= render "entry_card", row: row %>
       <% end %>
     </div>
   <% end %>
