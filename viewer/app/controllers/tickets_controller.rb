@@ -1,4 +1,5 @@
 class TicketsController < ApplicationController
+  helper GrammarHelper
   before_action :require_moderator!
   before_action :load_ticket, only: %i[show approve reject close apply_patch create_message]
 
@@ -22,6 +23,7 @@ class TicketsController < ApplicationController
     @attachments = @ticket.evidence_files.attachments
     @material_attachments = @ticket.material_files.attachments
     @diff_text = load_diff_text
+    load_grammar_proposal
     @corpus_viewer_path = corpus_viewer_target_path
     @contact = active_contact
   end
@@ -141,6 +143,22 @@ class TicketsController < ApplicationController
     attachment.blob.download.to_s.dup.force_encoding("UTF-8").scrub
   end
 
+  def load_grammar_proposal
+    metadata = @ticket.diff_metadata.is_a?(Hash) ? @ticket.diff_metadata : {}
+    return unless metadata["kind"] == "grammar_entry_submission"
+
+    attachment = @ticket.evidence_files.attachments.find do |candidate|
+      candidate.blob.filename.to_s.include?(".proposed")
+    end
+    return unless attachment
+
+    raw = attachment.blob.download.to_s.dup.force_encoding("UTF-8").scrub
+    @grammar_proposed_document = Grammar::MarkdownDocument.parse(raw)
+    @grammar_entry = Grammar::EntryStore.default.find(metadata["entry_id"])
+  rescue Psych::SyntaxError, ArgumentError => e
+    @grammar_proposed_error = e.message
+  end
+
   def active_contact
     contact = @ticket.ticket_contact
     return nil if contact.nil?
@@ -158,7 +176,8 @@ class TicketsController < ApplicationController
       ticket: @ticket,
       repo_root: repo_root,
       corpus_root: corpus_root,
-      annotation_items: params[:annotation_items]
+      annotation_items: params[:annotation_items],
+      reviewer_name: @moderator.name
     ).call
   end
 

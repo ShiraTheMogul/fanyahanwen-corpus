@@ -52,6 +52,7 @@
 <% corpus_submission_ticket = annotation_meta["kind"] == "corpus_submission" %>
 <% companion_ticket = annotation_meta["kind"] == "companion_material_submission" %>
 <% annotation_system_ticket = %w[annotation_system_submission derived_tradition_submission].include?(annotation_meta["kind"]) %>
+<% grammar_ticket = annotation_meta["kind"] == "grammar_entry_submission" %>
 
 <h2>Actions</h2>
 
@@ -130,6 +131,48 @@
   Approve now applies the ticket to the local corpus file as part of approval.
   Apply now is still available as a separate manual button.
 </p>
+
+<% if grammar_ticket %>
+  <hr>
+
+  <h2>Grammar Wiki proposal</h2>
+  <p>
+    <strong>Entry:</strong>
+    <% if @grammar_entry %>
+      <%= link_to @grammar_entry.title, "/grammar/#{ERB::Util.url_encode(@grammar_entry.id)}", target: "_blank", rel: "noopener noreferrer" %>
+    <% else %>
+      <%= annotation_meta["entry_title"].presence || annotation_meta["entry_id"] %>
+    <% end %><br>
+    <strong>Action:</strong> <%= annotation_meta["submission_action"].to_s.humanize %><br>
+    <strong>Language:</strong> <%= annotation_meta["locale"] %><br>
+    <strong>Target file:</strong> <code><%= annotation_meta["target_path"] %></code><br>
+    <strong>Licence:</strong> <%= annotation_meta["licence"] %>
+  </p>
+
+  <% grammar_credit = annotation_meta["credit"].is_a?(Hash) ? annotation_meta["credit"] : {} %>
+  <p>
+    <strong>Public credit:</strong>
+    <%= grammar_credit["role"].to_s.humanize %>
+    <% if grammar_credit["name"].present? %> — <%= grammar_credit["name"] %><% end %>
+    <% if grammar_credit["orcid"].present? %>
+      — <%= link_to "ORCID #{grammar_credit["orcid"]}", "https://orcid.org/#{ERB::Util.url_encode(grammar_credit["orcid"])}", target: "_blank", rel: "noopener noreferrer" %>
+    <% end %>
+  </p>
+
+  <% if @grammar_proposed_error.present? %>
+    <p class="grammar-notice"><strong>Preview error:</strong> <%= @grammar_proposed_error %></p>
+  <% elsif @grammar_proposed_document %>
+    <section class="grammar-article grammar-moderator-preview">
+      <%= grammar_markdown(@grammar_proposed_document) %>
+    </section>
+    <details class="grammar-moderator-source">
+      <summary>Raw submitted Markdown</summary>
+      <pre><%= h(@grammar_proposed_document.raw) %></pre>
+    </details>
+  <% else %>
+    <p>(The proposed Markdown attachment could not be loaded.)</p>
+  <% end %>
+<% end %>
 
 <% if annotation_ticket %>
   <hr>

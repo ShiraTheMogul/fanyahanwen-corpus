@@ -1,0 +1,162 @@
+en:
+  grammar:
+    title: Literary Chinese Grammar Wiki
+    breadcrumbs: Grammar Wiki navigation
+    preview_banner: Preview only — this article has not been published.
+    translation_fallback: This article is not yet available in the selected language. The source article is shown instead.
+    index:
+      introduction: Browse function words, individual functions, patterns, binomes, comparisons, and grammatical concepts.
+        Radical order is the default; the other controls are optional.
+      articles_needed: Articles needed
+      arrange_by: Arrange by
+      entry_type: Entry type
+      importance: Importance
+      category: Category
+      all: All
+      only_needed: Show only articles needed
+      apply: Apply
+      clear: Clear
+      no_entries: No grammar entries match these filters.
+      radical_heading: Kangxi radical %{number}
+      other_entries: Patterns, binomes, comparisons, and other entries
+      additional_strokes:
+        one: '%{count} additional stroke'
+        other: '%{count} additional strokes'
+      total_strokes:
+        one: '%{count} stroke'
+        other: '%{count} strokes'
+      corpus_frequency: '%{count} corpus occurrences'
+      pronunciation: 'Pronunciation: %{value}'
+    sorts:
+      radical: Radical
+      stroke: Stroke count
+      importance: Importance
+      kind: Entry type
+      pronunciation: Pronunciation
+      frequency: Corpus frequency
+    kinds:
+      function_word: Function word
+      function: Individual function
+      pattern: Pattern
+      binome: Binome or fixed expression
+      comparison: Comparison
+      concept: Grammatical concept
+    importance:
+      core: Core
+      common: Common
+      less_common: Less common
+      specialised: Specialised
+      unclassified: Unclassified
+    categories:
+      pronouns_and_interrogatives: Pronouns and interrogatives
+      relations_and_prepositions: Relations and prepositions
+      connectives_and_modifiers: Connectives and modifiers
+      particles: Particles
+      negation_and_modality: Negation and modality
+      noun_phrase: Noun phrase
+      possession: Possession
+      attribution: Attribution
+      pronoun: Pronoun
+      nominalisation: Nominalisation
+      verb: Verb
+      construction: Construction
+      fixed_expression: Fixed expression
+      comparison: Comparison
+    statuses:
+      article_needed: Article needed
+      published: Published
+      needs_expansion: Needs expansion
+    functions:
+      label: Function
+      overview: Overview of %{headword}
+      individual_uses: Individual uses of %{headword}
+    missing:
+      heading: Article needed
+      explanation: The reference frame is available, but the grammatical article has not yet been written.
+      suggest: Suggest an article
+    searches:
+      heading: Search the corpus
+      explanation: These prepared searches open the corpus search with useful terms and settings already filled in. Search
+        matches may include other grammatical uses.
+      default_label: Find more examples in the corpus
+      entry_label: Find %{headword} in the corpus
+    related:
+      heading: Related grammar entries
+    components:
+      heading: Characters in this entry
+      grammar: Grammar
+      dictionary: Dictionary
+    character:
+      codepoint: Code point
+      radical: Radical
+      pronunciations: Pronunciations
+      variants: Variants
+      shuowen: Shuowen Jiezi
+      kangxi: Kangxi Dictionary
+      open_dictionary: Open the full dictionary entry
+      stroke_unavailable: The stroke-order animation is unavailable.
+    credits:
+      heading: Credits and publication details
+      anonymous: Anonymous
+      first_published: First published
+      last_updated: Last updated
+      licence: Licence
+      revision: Revision
+      roles:
+        author: Author
+        contributor: Contributor
+        editor: Editor
+        translator: Translator
+    citation:
+      heading: Cite this page
+      apa: APA
+    ids:
+      heading: Generate an entry ID
+      explanation: Generate a stable suggestion from the entry type and headword. Existing IDs are checked; a collision is
+        never overwritten automatically.
+      kind: Entry type
+      headword: Headword
+      parent: Parent ID (for an individual function)
+      label: Short function label
+      generate: Generate ID
+      candidate: Suggested ID
+      collision: This ID already exists. Check whether the proposed entry is the same topic before using a numbered alternative.
+      next_available: Unused alternative
+      available: This ID is not currently used.
+    submission:
+      create_heading: Suggest an article
+      edit_heading: Suggest an edit or translation
+      explanation: Write or revise the article in Markdown, preview it in the full page frame, and submit it through the existing
+        ticket workflow for editorial review.
+      language: Article language
+      action: Submission type
+      actions:
+        create: Create article
+        edit: Suggest an edit
+        translate: Submit a translation
+      public_name: Public name or pseudonym
+      orcid: ORCID (optional)
+      credit_role: Public credit
+      markdown: Article Markdown
+      preview: Preview
+      download_template: Download Markdown template
+      summary: Short summary
+      reasoning: Reasoning or editorial note
+      evidence_links: Evidence links, one per line
+      evidence_files: Supporting files
+      contact_heading: Private contact details (optional)
+      contact_explanation: These details are stored privately by the ticket system and are not used as the public byline.
+      contact_name: Contact name
+      contact_email: Email
+      contact_notes: Contact note
+      cc_by_agreement: I wrote this material or have the right to submit it, and I agree to its publication under CC BY.
+      store_key: Store this ticket key on this device
+      submit: Submit for review
+      submitting: Submitting…
+      success: The grammar ticket was created. Save the key before leaving this page.
+      error_prefix: Submission failed
+      change_language_warning: Changing the article language will replace the Markdown currently in the editor. Continue?
+      ticket_id: Ticket ID
+      ticket_key: Ticket key
+      copy_key: Copy key
+      download_key: Download key

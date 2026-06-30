@@ -6,7 +6,9 @@ module EditTickets
       tags = []
       tags << "source:#{source}" if source.present?
 
-      if target_ref.to_s.include?("annotations")
+      if target_ref.to_s.include?("grammar") || source.to_s.include?("grammar")
+        tags << "area:grammar"
+      elsif target_ref.to_s.include?("annotations")
         tags << "area:annotations"
       elsif target_ref.to_s.include?("corpus")
         tags << "area:corpus"

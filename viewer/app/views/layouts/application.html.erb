@@ -14,6 +14,7 @@
     <%= stylesheet_link_tag "corpusviewer", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "corpus_activity", "data-turbo-track": "reload" if controller_name.in?(%w[home corpus_viewer]) %>
     <%= stylesheet_link_tag "textbook", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "grammar", "data-turbo-track": "reload" if controller_name.in?(%w[grammar tickets]) %>
     <%= stylesheet_link_tag "xiangqi", "data-turbo-track": "reload" if controller_name == "xiangqi" %>
 
     <%= render "layouts/dynamic_fonts" %>
@@ -54,6 +55,7 @@
             <%= link_to t("site.navigation.corpus_viewer"), corpus_viewer_path, class: "site-nav-link" %>
 			<%= link_to t("site.navigation.corpus_search"), corpus_search_path, class: "site-nav-link" %>
 			<%= link_to t("site.navigation.dictionary"), characters_path, class: "site-nav-link" %>
+			<%= link_to t("site.navigation.grammar"), "/grammar", class: "site-nav-link" %>
 			<%= link_to t("site.navigation.tools"), tools_path, class: "site-nav-link" %>
 			<%= link_to t("site.navigation.tickets"), ticket_access_path, class: "site-nav-link" %>
 			<%= link_to t("site.navigation.fun"), fun_path, class: "site-nav-link" %>

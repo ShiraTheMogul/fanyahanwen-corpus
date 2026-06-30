@@ -1,0 +1,158 @@
+lzh:
+  grammar:
+    title: 漢文語法維基
+    breadcrumbs: 語法維基導覽
+    preview_banner: 此乃預覽，尚未刊行。
+    translation_fallback: 此篇未有本介面語譯文，故示原文。
+    index:
+      introduction: 可依部首閱虛詞、各用法、句式、連語、辨析及語法概念；亦可自選他序及條件。
+      articles_needed: 待撰條目
+      arrange_by: 次序
+      entry_type: 條目類別
+      importance: 重要度
+      category: 分類
+      all: 全部
+      only_needed: 惟示待撰條目
+      apply: 施用
+      clear: 清除
+      no_entries: 無合此條件者。
+      radical_heading: 康熙部首第%{number}
+      other_entries: 句式、連語、辨析及其他條目
+      additional_strokes:
+        one: 餘%{count}畫
+        other: 餘%{count}畫
+      total_strokes:
+        one: '%{count}畫'
+        other: '%{count}畫'
+      corpus_frequency: 語料中凡%{count}見
+      pronunciation: 讀音：%{value}
+    sorts:
+      radical: 部首
+      stroke: 筆畫
+      importance: 重要度
+      kind: 條目類別
+      pronunciation: 讀音
+      frequency: 語料頻次
+    kinds:
+      function_word: 虛詞
+      function: 個別用法
+      pattern: 句式
+      binome: 連語及定式
+      comparison: 辨析
+      concept: 語法概念
+    importance:
+      core: 核心
+      common: 常用
+      less_common: 較少用
+      specialised: 專門
+      unclassified: 未分類
+    categories:
+      pronouns_and_interrogatives: 代詞及疑問詞
+      relations_and_prepositions: 關係詞及介詞
+      connectives_and_modifiers: 連接詞及修飾詞
+      particles: 語氣詞
+      negation_and_modality: 否定及情態
+      noun_phrase: 名詞短語
+      possession: 所屬
+      attribution: 修飾關係
+      pronoun: 代詞
+      nominalisation: 名詞化
+      verb: 動詞
+      construction: 句式
+      fixed_expression: 定式
+      comparison: 辨析
+    statuses:
+      article_needed: 待撰
+      published: 已刊
+      needs_expansion: 待增補
+    functions:
+      label: 用法
+      overview: '%{headword}之總論'
+      individual_uses: '%{headword}之各用法'
+    missing:
+      heading: 此篇待撰
+      explanation: 字形及辭書資料已備，而語法正文尚闕。
+      suggest: 建議新篇
+    searches:
+      heading: 檢索語料庫
+      explanation: 下列檢索已預填詞項及條件；所得諸例或兼有他用。
+      default_label: 於語料庫更尋其例
+      entry_label: 於語料庫尋%{headword}
+    related:
+      heading: 相關語法條目
+    components:
+      heading: 本條所含諸字
+      grammar: 語法
+      dictionary: 字典
+    character:
+      codepoint: 碼位
+      radical: 部首
+      pronunciations: 讀音
+      variants: 異體
+      shuowen: 說文解字
+      kangxi: 康熙字典
+      open_dictionary: 開完整字典條目
+      stroke_unavailable: 筆順動畫不可用。
+    credits:
+      heading: 撰修及刊行
+      anonymous: 匿名
+      first_published: 始刊
+      last_updated: 末次修訂
+      licence: 授權
+      revision: 版本
+      roles:
+        author: 撰者
+        contributor: 增補者
+        editor: 編者
+        translator: 譯者
+    citation:
+      heading: 引用此頁
+      apa: APA格式
+    ids:
+      heading: 生成條目識別碼
+      explanation: 依條目類別及字頭生成穩定之建議碼，並檢查重複；若重複，絕不自動覆寫。
+      kind: 條目類別
+      headword: 字頭
+      parent: 母條目識別碼（個別用法）
+      label: 用法短名
+      generate: 生成
+      candidate: 建議碼
+      collision: 此碼已存在。用帶序號之異碼前，宜先審是否同一條目。
+      next_available: 未用之異碼
+      available: 此碼今未用。
+    submission:
+      create_heading: 建議新篇
+      edit_heading: 建議修訂或翻譯
+      explanation: 以Markdown撰修正文，可先覽其完整頁框，再由既有提案流程送編者審核。
+      language: 篇章語言
+      action: 提案類別
+      actions:
+        create: 撰新篇
+        edit: 建議修訂
+        translate: 提交翻譯
+      public_name: 公開姓名或筆名
+      orcid: ORCID（選填）
+      credit_role: 署名身分
+      markdown: 篇章Markdown
+      preview: 預覽
+      download_template: 下載Markdown模板
+      summary: 提要
+      reasoning: 理由或編輯說明
+      evidence_links: 證據連結（一行一項）
+      evidence_files: 佐證檔案
+      contact_heading: 私人聯絡資料（選填）
+      contact_explanation: 此等資料惟提案系統私存，不作公開署名。
+      contact_name: 聯絡姓名
+      contact_email: 電郵
+      contact_notes: 聯絡附註
+      cc_by_agreement: 此文為我所作或我有權提交，並同意以CC BY授權刊行。
+      store_key: 於本機保存提案密鑰
+      submit: 送審
+      submitting: 提交中……
+      success: 語法提案已建。離頁前請保存密鑰。
+      error_prefix: 提交失敗
+      change_language_warning: 更換篇章語言將以該語文章或模板取代編輯框中之Markdown。是否繼續？
+      ticket_id: 提案編號
+      ticket_key: 提案密鑰
+      copy_key: 複製密鑰
+      download_key: 下載密鑰

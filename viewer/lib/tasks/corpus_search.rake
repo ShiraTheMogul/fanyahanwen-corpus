@@ -1,59 +1,87 @@
 # frozen_string_literal: true
 
 namespace :corpus_search do
-  desc "Rebuild the file manifest for corpus search"
+  desc "Rebuild the file manifest, current single-character term indexes, and corpus activity snapshots"
   task rebuild_manifest: :environment do
     manifest = CorpusSearch::Manifest.load(refresh: true, force: true)
     puts "Indexed #{manifest.documents.length} corpus text files."
+
+    term_limit = Integer(ENV.fetch("CORPUS_SEARCH_MANIFEST_TERM_LIMIT", CorpusSearch::WarmTermList::DEFAULT_LIMIT.to_s))
+    cache_store = CorpusSearch::CacheStore.new
+    grammar_store = Grammar::EntryStore.default
+    terms = CorpusSearch::WarmTermList.load(
+      limit: term_limit,
+      cache_store: cache_store,
+      grammar_store: grammar_store
+    )
+    progress_every = Integer(ENV.fetch("CORPUS_SEARCH_WARM_PROGRESS_EVERY", "1_000"))
+
+    puts "Refreshing #{terms.length} single-character term indexes from the rebuilt manifest."
+    warmed = CorpusSearch::TermIndex.refresh_single_character_terms!(
+      terms: terms,
+      manifest: manifest,
+      cache_store: cache_store,
+      force: true,
+      progress: lambda do |position, total, files_read, files_skipped, error = nil|
+        if error
+          puts "[corpus_search] term refresh skipped #{position}/#{total}: #{error.class}: #{error.message}"
+        elsif progress_every.positive? && (position % progress_every).zero?
+          puts "[corpus_search] term refresh: #{position}/#{total} documents; #{files_read} read; #{files_skipped} skipped"
+        end
+      end
+    )
+    puts "Refreshed #{warmed} single-character term indexes."
+
+    frequencies = CorpusSearch::FrequencySnapshot.build!(
+      terms: terms,
+      manifest: manifest,
+      cache_store: cache_store
+    )
+    puts "Built aggregate frequency snapshot for #{frequencies.fetch("counts", {}).length} characters."
 
     activity = CorpusActivity::SnapshotBuilder.new(manifest: manifest).build!
     puts "Built corpus activity feeds: #{activity.dig("feeds", "latest_texts", "total")} text folders and #{activity.dig("feeds", "recent_changes", "total")} changed files."
   end
 
-  desc "Warm term indexes from resources/fanyahanwen_research/LC_frequency_list_1224_ranked.csv"
+  desc "Warm ranked, Grammar Wiki, and existing single-character term indexes"
   task warm_frequency_terms: :environment do
-    require "csv"
-
-    csv_path = Rails.root.join("resources", "fanyahanwen_research", "LC_frequency_list_1224_ranked.csv")
-    abort "Missing #{csv_path}" unless csv_path.file?
-
-    # Default to a starter cache. Set LIMIT=0 only when you really want every
-    # single-character term from the CSV.
-    limit = Integer(ENV.fetch("LIMIT", "200"))
+    limit = Integer(ENV.fetch("LIMIT", CorpusSearch::WarmTermList::DEFAULT_LIMIT.to_s))
     progress_every = Integer(ENV.fetch("CORPUS_SEARCH_WARM_PROGRESS_EVERY", "1_000"))
-    batch_size = Integer(ENV.fetch("CORPUS_SEARCH_TERM_BATCH_SIZE", CorpusSearch::TermIndex::DEFAULT_BATCH_SIZE.to_s))
     force = ENV["FORCE"].to_s == "1"
+    cache_store = CorpusSearch::CacheStore.new
+    terms = CorpusSearch::WarmTermList.load(
+      limit: limit,
+      cache_store: cache_store,
+      grammar_store: Grammar::EntryStore.default
+    )
 
-    terms = []
-    CSV.foreach(csv_path, headers: true) do |row|
-      term = row["character"] || row["char"] || row["Character"] || row[0]
-      term = term.to_s.strip
-      next if term.empty?
-      next unless term.each_char.count == 1
-
-      terms << term
-      break if limit.positive? && terms.length >= limit
-    end
+    abort "No single-character terms were found." if terms.empty?
 
     puts "Preparing to warm #{terms.length} single-character term indexes."
-    puts "Batch size: #{batch_size}. Override with CORPUS_SEARCH_TERM_BATCH_SIZE=4 etc."
-    puts "Use LIMIT=0 rails corpus_search:warm_frequency_terms for the full CSV later."
+    puts "Use LIMIT=0 for the full ranked CSV only when the additional storage and runtime are intended."
 
     manifest = CorpusSearch::Manifest.load
     warmed = CorpusSearch::TermIndex.refresh_single_character_terms!(
       terms: terms,
       manifest: manifest,
-      batch_size: batch_size,
+      cache_store: cache_store,
       force: force,
       progress: lambda do |position, total, files_read, files_skipped, error = nil|
         if error
-          puts "[corpus_search] warm skipped file-pass at #{position}/#{total}: #{error.class}: #{error.message}"
+          puts "[corpus_search] warm skipped #{position}/#{total}: #{error.class}: #{error.message}"
         elsif progress_every.positive? && (position % progress_every).zero?
-          puts "[corpus_search] warm progress: #{position}/#{total} file-passes checked; #{files_read} read; #{files_skipped} skipped"
+          puts "[corpus_search] warm progress: #{position}/#{total} documents; #{files_read} read; #{files_skipped} skipped"
         end
       end
     )
 
+    frequencies = CorpusSearch::FrequencySnapshot.build!(
+      terms: terms,
+      manifest: manifest,
+      cache_store: cache_store
+    )
+
     puts "Warmed #{warmed} single-character term indexes."
+    puts "Built aggregate frequency snapshot for #{frequencies.fetch("counts", {}).length} characters."
   end
 end

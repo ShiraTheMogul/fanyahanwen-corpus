@@ -1,0 +1,179 @@
+<section class="grammar-submission"
+         data-controller="grammar-submission"
+         data-grammar-submission-entry-id-value="<%= entry.id %>"
+         data-grammar-submission-published-locales-value="<%= @published_locales.to_json %>"
+         data-grammar-submission-source-locale-value="<%= Grammar::EntryStore::SOURCE_LOCALE %>"
+         data-grammar-submission-submitting-message-value="<%= t("grammar.submission.submitting") %>"
+         data-grammar-submission-success-message-value="<%= t("grammar.submission.success") %>"
+         data-grammar-submission-error-prefix-value="<%= t("grammar.submission.error_prefix") %>"
+         data-grammar-submission-change-language-warning-value="<%= t("grammar.submission.change_language_warning") %>">
+  <h2><%= article.published? ? t("grammar.submission.edit_heading") : t("grammar.submission.create_heading") %></h2>
+  <p><%= t("grammar.submission.explanation") %></p>
+
+  <form action="/grammar/preview"
+        method="post"
+        target="_blank"
+        id="grammar-preview-form-<%= entry.id %>"
+        data-grammar-submission-target="previewForm">
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+    <%= hidden_field_tag :entry_id, entry.id %>
+    <%= hidden_field_tag :locale, @submission_locale, data: { grammar_submission_target: "previewLocale" } %>
+    <%= hidden_field_tag :raw_markdown, "", data: { grammar_submission_target: "previewMarkdown" } %>
+  </form>
+
+  <form data-action="submit->grammar-submission#submit">
+    <div class="grammar-submission-grid">
+      <label>
+        <span><%= t("grammar.submission.language") %></span>
+        <select data-grammar-submission-target="locale"
+                data-action="change->grammar-submission#localeChanged">
+          <% InterfaceLocales::ALL.each do |locale| %>
+            <option value="<%= locale %>" <%= "selected" if locale.to_s == @submission_locale %>>
+              <%= InterfaceLocales.native_name(locale) %> [<%= locale %>]
+            </option>
+          <% end %>
+        </select>
+      </label>
+
+      <label>
+        <span><%= t("grammar.submission.action") %></span>
+        <input type="text"
+               value="<%= t("grammar.submission.actions.#{@submission_action}") %>"
+               readonly
+               data-create-label="<%= t("grammar.submission.actions.create") %>"
+               data-edit-label="<%= t("grammar.submission.actions.edit") %>"
+               data-translate-label="<%= t("grammar.submission.actions.translate") %>"
+               data-grammar-submission-target="actionLabel">
+        <input type="hidden"
+               value="<%= @submission_action %>"
+               data-grammar-submission-target="submissionAction">
+      </label>
+
+      <label>
+        <span><%= t("grammar.submission.public_name") %></span>
+        <input type="text" data-grammar-submission-target="publicName">
+      </label>
+
+      <label>
+        <span><%= t("grammar.submission.orcid") %></span>
+        <input type="text"
+               placeholder="0000-0002-1825-0097"
+               data-grammar-submission-target="orcid">
+      </label>
+
+      <label>
+        <span><%= t("grammar.submission.credit_role") %></span>
+        <select data-grammar-submission-target="creditRole">
+          <option value="author"><%= t("grammar.credits.roles.author") %></option>
+          <option value="contributor"><%= t("grammar.credits.roles.contributor") %></option>
+          <option value="translator"><%= t("grammar.credits.roles.translator") %></option>
+          <option value="anonymous"><%= t("grammar.credits.anonymous") %></option>
+        </select>
+      </label>
+    </div>
+
+    <label class="grammar-submission-markdown">
+      <span><%= t("grammar.submission.markdown") %></span>
+      <textarea rows="28"
+                spellcheck="true"
+                data-grammar-submission-target="rawMarkdown"><%= @submission_markdown %></textarea>
+    </label>
+
+    <div class="grammar-submission-actions">
+      <button type="button"
+              class="grammar-btn grammar-btn-secondary"
+              data-action="grammar-submission#preview">
+        <%= t("grammar.submission.preview") %>
+      </button>
+      <%= link_to t("grammar.submission.download_template"),
+                  grammar_template_path_for(entry, locale: @submission_locale),
+                  class: "grammar-btn grammar-btn-secondary",
+                  data: { grammar_submission_target: "downloadTemplate" } %>
+    </div>
+
+    <label>
+      <span><%= t("grammar.submission.summary") %></span>
+      <input type="text" data-grammar-submission-target="summary">
+    </label>
+
+    <label>
+      <span><%= t("grammar.submission.reasoning") %></span>
+      <textarea rows="4" data-grammar-submission-target="reasoning"></textarea>
+    </label>
+
+    <label>
+      <span><%= t("grammar.submission.evidence_links") %></span>
+      <textarea rows="3"
+                placeholder="https://..."
+                data-grammar-submission-target="evidenceLinks"></textarea>
+    </label>
+
+    <label>
+      <span><%= t("grammar.submission.evidence_files") %></span>
+      <input type="file" multiple data-grammar-submission-target="uploads">
+    </label>
+
+    <details class="grammar-submission-contact">
+      <summary><%= t("grammar.submission.contact_heading") %></summary>
+      <p><%= t("grammar.submission.contact_explanation") %></p>
+      <div class="grammar-submission-grid">
+        <label>
+          <span><%= t("grammar.submission.contact_name") %></span>
+          <input type="text" data-grammar-submission-target="contactName">
+        </label>
+        <label>
+          <span><%= t("grammar.submission.contact_email") %></span>
+          <input type="email" data-grammar-submission-target="contactEmail">
+        </label>
+      </div>
+      <label>
+        <span><%= t("grammar.submission.contact_notes") %></span>
+        <textarea rows="3" data-grammar-submission-target="contactNotes"></textarea>
+      </label>
+    </details>
+
+    <label class="grammar-checkbox grammar-licence">
+      <input type="checkbox" required data-grammar-submission-target="licence">
+      <span><%= t("grammar.submission.cc_by_agreement") %></span>
+    </label>
+
+    <label class="grammar-checkbox">
+      <input type="checkbox" checked data-grammar-submission-target="storeOnDevice">
+      <span><%= t("grammar.submission.store_key") %></span>
+    </label>
+
+    <button type="submit" class="grammar-btn" data-grammar-submission-target="submit">
+      <%= t("grammar.submission.submit") %>
+    </button>
+  </form>
+
+  <div class="grammar-ticket-result" aria-live="polite">
+    <p data-grammar-submission-target="status"></p>
+    <dl hidden data-grammar-submission-target="ticketResult">
+      <div>
+        <dt><%= t("grammar.submission.ticket_id") %></dt>
+        <dd><code data-grammar-submission-target="ticketId"></code></dd>
+      </div>
+      <div>
+        <dt><%= t("grammar.submission.ticket_key") %></dt>
+        <dd><code data-grammar-submission-target="ticketKey"></code></dd>
+      </div>
+    </dl>
+    <div class="grammar-submission-actions">
+      <button type="button"
+              class="grammar-btn grammar-btn-secondary"
+              hidden
+              data-grammar-submission-target="copyKeyBtn"
+              data-action="grammar-submission#copyKey">
+        <%= t("grammar.submission.copy_key") %>
+      </button>
+      <button type="button"
+              class="grammar-btn grammar-btn-secondary"
+              hidden
+              data-grammar-submission-target="downloadKeyBtn"
+              data-action="grammar-submission#downloadKey">
+        <%= t("grammar.submission.download_key") %>
+      </button>
+    </div>
+  </div>
+</section>

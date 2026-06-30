@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
 require "digest"
+require "json"
 require "set"
 require "time"
+require "tmpdir"
 
 module CorpusSearch
   # On-demand index for one literal search term.
@@ -18,87 +20,95 @@ module CorpusSearch
       File.join("term_indexes", "#{CacheStore.hash_key(term)}.json.gz")
     end
 
-    # Efficient warmer for many single-character terms.
+    # Efficient refresher for many single-character terms.
     #
-    # The first implementation kept one full payload per term in memory and also
-    # stored zero-count entries. With a 491k-file corpus, LIMIT=200 could create
-    # tens of millions of Ruby hashes before anything was written. Linux then
-    # killed the process without a Ruby traceback.
-    #
-    # This version is deliberately boring and memory-safe:
-    #   * process terms in small batches
-    #   * read each file once per batch
-    #   * store only positive counts
-    #   * write each term index after each batch
+    # The corpus is read once. Positive hits are spooled to small temporary files
+    # and each final compressed term index is assembled one term at a time. This
+    # keeps memory bounded without re-reading the entire corpus for every batch.
     def self.refresh_single_character_terms!(terms:, manifest:, cache_store: CacheStore.new, progress: nil, batch_size: nil, force: false)
       terms = terms.map(&:to_s).map(&:strip).select { |term| term.each_char.count == 1 }.uniq
       return 0 if terms.empty?
 
-      batch_size = Integer(batch_size || ENV.fetch("CORPUS_SEARCH_TERM_BATCH_SIZE", DEFAULT_BATCH_SIZE))
-      batch_size = DEFAULT_BATCH_SIZE if batch_size <= 0
+      # Retain the keyword for compatibility with older task invocations. The
+      # one-pass spooler no longer needs a corpus-reading batch size.
 
       manifest_key = manifest_fingerprint(manifest)
       total_documents = manifest.documents.length
-      batches = terms.each_slice(batch_size).to_a
-      total_file_passes = total_documents * batches.length
+      terms_to_refresh = terms.reject do |term|
+        next false if force
 
+        current_for_manifest?(cache_store.read_json(cache_path_for(term)), manifest_key)
+      end
+      return terms.length if terms_to_refresh.empty?
+
+      target_terms = terms_to_refresh.to_set
       fs = CorpusFs.new(root: Rails.configuration.x.corpus_root)
-      file_passes_read = 0
-      file_passes_skipped = 0
+      files_read = 0
+      files_skipped = 0
 
-      batches.each_with_index do |batch_terms, batch_index|
-        batch_set = batch_terms.to_set
-        payloads = batch_terms.to_h do |term|
-          if !force
-            existing = cache_store.read_json(cache_path_for(term))
-            if current_for_manifest?(existing, manifest_key)
-              next [term, existing]
-            end
-          end
-
-          [term, fresh_payload_for(term, manifest_fingerprint: manifest_key, total_documents: total_documents)]
+      Dir.mktmpdir("corpus-term-indexes") do |directory|
+        paths = terms_to_refresh.to_h do |term|
+          [term, File.join(directory, "#{CacheStore.hash_key(term)}.jsonl")]
         end
-
-        # If every term in this batch is already current, there is nothing to scan.
-        next if payloads.values.all? { |payload| current_for_manifest?(payload, manifest_key) && payload["generated_at"].present? }
-
-        scan_offset = batch_index * total_documents
+        buffers = terms_to_refresh.to_h { |term| [term, +""] }
+        buffer_limit = [[16_777_216 / terms_to_refresh.length, 1_024].max, 65_536].min
 
         manifest.documents.each_with_index do |doc, index|
           body = body_for_doc(fs, doc)
           counts = Hash.new(0)
-          body.each_char { |char| counts[char] += 1 if batch_set.include?(char) }
+          body.each_char { |character| counts[character] += 1 if target_terms.include?(character) }
 
-          batch_terms.each do |term|
-            count = counts[term].to_i
-            next unless count.positive?
-
-            payloads[term]["entries"][doc["id"]] = {
-              "fingerprint" => doc["fingerprint"],
-              "count" => count
-            }
+          counts.each do |term, count|
+            buffers[term] << JSON.generate([doc["id"], doc["fingerprint"], count]) << "\n"
+            flush_buffer!(paths.fetch(term), buffers.fetch(term)) if buffers.fetch(term).bytesize >= buffer_limit
           end
 
-          file_passes_read += 1
-          progress&.call(scan_offset + index + 1, total_file_passes, file_passes_read, file_passes_skipped)
+          files_read += 1
+          progress&.call(index + 1, total_documents, files_read, files_skipped)
         rescue Errno::ENOENT, Errno::EACCES, Errno::EIO, SecurityError, Encoding::CompatibilityError => e
-          file_passes_skipped += 1
-          progress&.call(scan_offset + index + 1, total_file_passes, file_passes_read, file_passes_skipped, e)
+          files_skipped += 1
+          progress&.call(index + 1, total_documents, files_read, files_skipped, e)
           next
         end
 
+        buffers.each { |term, buffer| flush_buffer!(paths.fetch(term), buffer) }
+
         generated_at = Time.now.utc.iso8601
-        payloads.each do |term, payload|
-          payload["version"] = 2
+        terms_to_refresh.each do |term|
+          entries = {}
+          path = paths.fetch(term)
+
+          if File.file?(path)
+            File.foreach(path, chomp: true) do |line|
+              doc_id, fingerprint, count = JSON.parse(line)
+              entries[doc_id.to_s] = {
+                "fingerprint" => fingerprint,
+                "count" => count.to_i
+              }
+            end
+          end
+
+          payload = fresh_payload_for(
+            term,
+            manifest_fingerprint: manifest_key,
+            total_documents: total_documents
+          )
           payload["generated_at"] = generated_at
-          payload["manifest_fingerprint"] = manifest_key
-          payload["total_documents"] = total_documents
+          payload["entries"] = entries
           cache_store.write_json(cache_path_for(term), payload)
         end
       end
 
       terms.length
     end
+
+    def self.flush_buffer!(path, buffer)
+      return if buffer.empty?
+
+      File.open(path, "ab") { |file| file.write(buffer) }
+      buffer.clear
+    end
+    private_class_method :flush_buffer!
 
     def initialize(term:, manifest:, cache_store: CacheStore.new)
       @term = term.to_s

@@ -1,0 +1,187 @@
+<div class="grammar-page grammar-show">
+  <% if @preview %>
+    <div class="grammar-preview-banner"><%= t("grammar.preview_banner") %></div>
+  <% end %>
+
+  <nav class="grammar-breadcrumbs" aria-label="<%= t("grammar.breadcrumbs") %>">
+    <%= link_to t("grammar.title"), "/grammar" %>
+    <% if @parent_entry %>
+      <span aria-hidden="true">›</span>
+      <%= link_to @parent_entry.title, grammar_entry_path_for(@parent_entry) %>
+    <% end %>
+    <span aria-hidden="true">›</span>
+    <span><%= @entry.title %></span>
+  </nav>
+
+  <header class="grammar-entry-header">
+    <div>
+      <dl class="grammar-entry-classification">
+        <div>
+          <dt><%= t("grammar.index.entry_type") %></dt>
+          <dd><span class="grammar-chip"><%= grammar_kind_label(@entry.kind) %></span></dd>
+        </div>
+        <% if @entry.importance.present? %>
+          <div>
+            <dt><%= t("grammar.index.importance") %></dt>
+            <dd><span class="grammar-chip"><%= grammar_importance_label(@entry.importance) %></span></dd>
+          </div>
+        <% end %>
+        <% if @entry.categories.any? %>
+          <div>
+            <dt><%= t("grammar.index.category") %></dt>
+            <dd>
+              <% @entry.categories.each do |category| %>
+                <span class="grammar-chip"><%= grammar_category_label(category) %></span>
+              <% end %>
+            </dd>
+          </div>
+        <% end %>
+      </dl>
+      <h1><%= @entry.title %></h1>
+    </div>
+
+    <% function_options = [] %>
+    <% if @parent_entry %>
+      <% function_options << [t("grammar.functions.overview", headword: @parent_entry.headword), grammar_entry_path_for(@parent_entry)] %>
+      <% @siblings.each { |child| function_options << [child.title, grammar_entry_path_for(child)] } %>
+    <% elsif @children.any? %>
+      <% function_options << [t("grammar.functions.overview", headword: @entry.headword), grammar_entry_path_for(@entry)] %>
+      <% @children.each { |child| function_options << [child.title, grammar_entry_path_for(child)] } %>
+    <% end %>
+
+    <% if function_options.any? %>
+      <label class="grammar-function-selector">
+        <span><%= t("grammar.functions.label") %></span>
+        <%= select_tag :grammar_function,
+                       options_for_select(function_options, grammar_entry_path_for(@entry)),
+                       onchange: "window.location.href=this.value" %>
+      </label>
+    <% end %>
+  </header>
+
+  <% if @article.fallback %>
+    <p class="grammar-notice"><%= t("grammar.translation_fallback") %></p>
+  <% end %>
+
+  <div class="grammar-entry-layout">
+    <main class="grammar-article">
+      <% if @article.published? %>
+        <%= grammar_markdown(@article.document) %>
+      <% else %>
+        <section class="grammar-missing-article">
+          <h2><%= t("grammar.missing.heading") %></h2>
+          <p><%= t("grammar.missing.explanation") %></p>
+          <div class="grammar-submission-actions">
+            <a href="#suggest-article" class="grammar-btn"><%= t("grammar.missing.suggest") %></a>
+            <%= link_to t("grammar.submission.download_template"),
+                        grammar_template_path_for(@entry, locale: I18n.locale),
+                        class: "grammar-btn grammar-btn-secondary" %>
+          </div>
+        </section>
+      <% end %>
+
+      <% if @article_searches.any? %>
+        <section class="grammar-searches">
+          <h2><%= t("grammar.searches.heading") %></h2>
+          <p><%= t("grammar.searches.explanation") %></p>
+          <div class="grammar-search-buttons">
+            <% @article_searches.each do |search| %>
+              <% label = search["label"].presence || t("grammar.searches.entry_label", headword: @entry.headword) %>
+              <%= link_to label, grammar_search_url(search), class: "grammar-btn grammar-btn-secondary" %>
+            <% end %>
+          </div>
+        </section>
+      <% end %>
+
+      <% if @related_entries.any? %>
+        <section class="grammar-related">
+          <h2><%= t("grammar.related.heading") %></h2>
+          <ul>
+            <% @related_entries.each do |related| %>
+              <li>
+                <%= link_to related.title, grammar_entry_path_for(related) %>
+                <span class="grammar-muted">— <%= grammar_kind_label(related.kind) %></span>
+              </li>
+            <% end %>
+          </ul>
+        </section>
+      <% end %>
+
+      <% if !@preview && @article.published? && @article.metadata.present? %>
+        <% source_contributors = @article.translated? ? Array(@canonical_article.metadata["contributors"]) : [] %>
+        <% translation_contributors = Array(@article.metadata["contributors"]) %>
+        <% contributors = (source_contributors + translation_contributors).select { |row| row.is_a?(Hash) }.uniq %>
+        <section class="grammar-accountability">
+          <h2><%= t("grammar.credits.heading") %></h2>
+
+          <% if contributors.any? %>
+            <div class="grammar-credit-list">
+              <% contributors.each do |contributor| %>
+                <%= grammar_contributor_label(contributor) %>
+              <% end %>
+            </div>
+          <% end %>
+
+          <dl class="grammar-dates">
+            <% if @article.metadata["published_at"].present? %>
+              <div>
+                <dt><%= t("grammar.credits.first_published") %></dt>
+                <dd><%= @article.metadata["published_at"] %></dd>
+              </div>
+            <% end %>
+            <% if @article.metadata["updated_at"].present? %>
+              <div>
+                <dt><%= t("grammar.credits.last_updated") %></dt>
+                <dd><%= @article.metadata["updated_at"] %></dd>
+              </div>
+            <% end %>
+            <div>
+              <dt><%= t("grammar.credits.licence") %></dt>
+              <dd><%= @article.metadata["licence"].presence || "CC BY" %></dd>
+            </div>
+            <div>
+              <dt><%= t("grammar.credits.revision") %></dt>
+              <dd><code><%= grammar_revision_label(@article) %></code></dd>
+            </div>
+          </dl>
+
+          <details class="grammar-citation">
+            <summary><%= t("grammar.citation.heading") %></summary>
+            <p><%= t("grammar.citation.apa") %></p>
+            <textarea readonly rows="5"><%= grammar_apa_citation(@article, request_url: request.original_url, canonical_article: @canonical_article) %></textarea>
+          </details>
+        </section>
+      <% end %>
+    </main>
+
+    <div class="grammar-reference-column">
+      <% if @character_frame&.present? %>
+        <%= render "character_frame", frame: @character_frame, entry: @entry %>
+      <% elsif @entry.characters.any? %>
+        <aside class="grammar-component-frame">
+          <h2><%= t("grammar.components.heading") %></h2>
+          <ul>
+            <% @entry.characters.each do |character| %>
+              <% grammar_hub = @store.all.find { |candidate| candidate.kind == "function_word" && candidate.headword == character } %>
+              <li>
+                <span class="grammar-component-glyph"><%= character %></span>
+                <div>
+                  <% if grammar_hub %>
+                    <%= link_to t("grammar.components.grammar"), grammar_entry_path_for(grammar_hub) %>
+                  <% end %>
+                  <%= link_to t("grammar.components.dictionary"), "/characters/#{ERB::Util.url_encode(character)}" %>
+                </div>
+              </li>
+            <% end %>
+          </ul>
+        </aside>
+      <% end %>
+    </div>
+  </div>
+
+  <% unless @preview %>
+    <div id="suggest-article">
+      <%= render "submission_form", entry: @entry, article: @article %>
+    </div>
+  <% end %>
+</div>

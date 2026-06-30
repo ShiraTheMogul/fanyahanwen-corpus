@@ -11,6 +11,7 @@ module Api
     # Creates a ticket and returns the key ONCE.
     def create
       return create_corpus_submission if params[:kind].to_s == "corpus_submission"
+      return create_grammar_entry_submission if params[:kind].to_s == "grammar_entry_submission"
       return create_annotation_system_submission if %w[annotation_system_submission derived_tradition_submission].include?(params[:kind].to_s)
       return create_companion_material_submission if params[:kind].to_s == "companion_material_submission"
 
@@ -308,7 +309,8 @@ module Api
       EditTickets::TicketApplier.new(
         ticket: @ticket,
         repo_root: ticket_repo_root,
-        corpus_root: ticket_corpus_root
+        corpus_root: ticket_corpus_root,
+        reviewer_name: @moderator.name
       ).call
 
       %w[ticket_approved ticket_applied].each do |action|
@@ -379,6 +381,122 @@ module Api
 
     private
 
+    def create_grammar_entry_submission
+      validator = Grammar::SubmissionValidator.new
+      result = validator.validate!(
+        entry_id: params[:entry_id],
+        action: params[:submission_action],
+        locale: params[:locale],
+        raw_markdown: params[:raw_markdown],
+        public_name: params[:public_name],
+        orcid: params[:orcid],
+        credit_role: params[:credit_role],
+        licence_agreed: params[:licence_agreed]
+      )
+
+      target_path = result.target_path.relative_path_from(Rails.root).to_s
+      old_markdown = result.target_path.file? ? result.target_path.binread.force_encoding("UTF-8").scrub : ""
+      diff_text = unified_diff_via_git(old_markdown, result.markdown, target_path)
+      return render(json: { ok: false, error: "No changes detected" }, status: 422) if diff_text.blank?
+
+      validated_diff = EditTickets::UnifiedDiffValidator.validate!(
+        diff_text,
+        allowed_roots: ["content/grammar/"]
+      )
+      links = EditTickets::SubmissionExtras.evidence_links(params[:evidence_links])
+      uploads = EditTickets::SubmissionExtras.validate_uploads!(params[:evidence_files])
+
+      ticket_key = EditTickets::KeyManager.generate_plaintext
+      salt = EditTickets::KeyManager.generate_salt
+      digest = EditTickets::KeyManager.digest(ticket_key, salt)
+
+      ticket = EditTicket.new(
+        public_id: SecureRandom.hex(12),
+        title: params[:title].to_s.presence || "Grammar Wiki: #{result.entry.title}",
+        summary: params[:summary].to_s,
+        reasoning: params[:reasoning].to_s,
+        source: params[:source].to_s.presence || "grammar_wiki",
+        target_ref: "grammar/#{result.entry.id}?locale=#{result.locale}",
+        status: "open",
+        evidence_links: links,
+        key_salt: salt,
+        key_digest: digest,
+        key_generated_at: Time.current,
+        diff_metadata: validated_diff.merge(
+          "kind" => "grammar_entry_submission",
+          "submission_action" => result.action,
+          "entry_id" => result.entry.id,
+          "entry_kind" => result.entry.kind,
+          "entry_title" => result.entry.title,
+          "locale" => result.locale,
+          "target_path" => target_path,
+          "credit" => result.credit,
+          "licence" => "CC BY"
+        )
+      )
+
+      ticket.tags = EditTickets::Tagger.tags_for(
+        source: ticket.source,
+        target_ref: ticket.target_ref,
+        has_diff: true,
+        has_uploads: true,
+        link_count: links.size,
+        material_type: "grammar_article"
+      )
+
+      safe_name = result.entry.id.gsub(/[^a-z0-9-]/i, "-")
+      ticket.transaction do
+        ticket.save!
+        ticket.evidence_files.attach([
+          {
+            io: StringIO.new(diff_text),
+            filename: "grammar_#{safe_name}_#{result.locale}.diff",
+            content_type: "text/x-diff"
+          },
+          {
+            io: StringIO.new(result.markdown),
+            filename: "grammar_#{safe_name}_#{result.locale}.proposed.md",
+            content_type: "text/markdown"
+          }
+        ])
+        EditTickets::SubmissionExtras.attach_uploads!(ticket, uploads)
+        EditTickets::SubmissionExtras.create_contact!(ticket, params[:contact])
+        EditTickets::AuditLogger.log!(
+          ticket: ticket,
+          action: "ticket_created",
+          actor_type: "submitter",
+          metadata: {
+            source: ticket.source,
+            target_ref: ticket.target_ref,
+            tags: ticket.tags,
+            kind: "grammar_entry_submission",
+            submission_action: result.action,
+            entry_id: result.entry.id,
+            locale: result.locale
+          }
+        )
+      end
+
+      render json: {
+        ok: true,
+        ticket_id: ticket.public_id,
+        ticket: ticket_json(ticket),
+        ticket_key: ticket_key,
+        warning: "This key is shown once. Save it now (copy it, download a txt, or explicitly store it on this device)."
+      }, status: 201
+    rescue Grammar::SubmissionValidator::ValidationError,
+           EditTickets::SubmissionExtras::ValidationError,
+           EditTickets::UnifiedDiffValidator::ValidationError => e
+      render json: { ok: false, error: e.message }, status: 422
+    rescue ActiveRecord::RecordInvalid => e
+      render json: { ok: false, error: e.record.errors.full_messages.join(", ") }, status: 422
+    rescue SecurityError
+      render json: { ok: false, error: "Bad grammar article path" }, status: 400
+    rescue => e
+      Rails.logger.error("[create_grammar_entry_submission] #{e.class}: #{e.message}")
+      Rails.logger.error(e.backtrace.join("\n"))
+      render json: { ok: false, error: "internal error" }, status: 500
+    end
 
     def create_companion_material_submission
       source = params[:source].presence || "corpus_viewer"

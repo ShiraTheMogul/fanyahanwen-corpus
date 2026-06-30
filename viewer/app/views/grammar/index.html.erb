@@ -1,0 +1,117 @@
+<div class="grammar-page grammar-index">
+  <header class="grammar-page-header">
+    <div>
+      <h1><%= t("grammar.title") %></h1>
+      <p><%= t("grammar.index.introduction") %></p>
+    </div>
+
+    <%= link_to t("grammar.index.articles_needed"), "/grammar?needed=1", class: "grammar-btn grammar-btn-secondary" %>
+  </header>
+
+  <%= form_with url: "/grammar", method: :get, local: true, class: "grammar-filter-form" do %>
+    <label>
+      <span><%= t("grammar.index.arrange_by") %></span>
+      <%= select_tag :sort,
+                     options_for_select(Grammar::IndexBuilder::SORTS.map { |value| [t("grammar.sorts.#{value}"), value] }, @sort) %>
+    </label>
+
+    <label>
+      <span><%= t("grammar.index.entry_type") %></span>
+      <%= select_tag :kind,
+                     options_for_select([[t("grammar.index.all"), ""]] + Grammar::Entry::KINDS.map { |value| [grammar_kind_label(value), value] }, @kind.to_s) %>
+    </label>
+
+    <label>
+      <span><%= t("grammar.index.importance") %></span>
+      <%= select_tag :importance,
+                     options_for_select([[t("grammar.index.all"), ""]] + Grammar::Entry::IMPORTANCE.map { |value| [grammar_importance_label(value), value] }, @importance.to_s) %>
+    </label>
+
+    <label>
+      <span><%= t("grammar.index.category") %></span>
+      <%= select_tag :category,
+                     options_for_select([[t("grammar.index.all"), ""]] + @categories.map { |value| [grammar_category_label(value), value] }, @category.to_s) %>
+    </label>
+
+    <label class="grammar-checkbox">
+      <%= check_box_tag :needed, "1", @needed %>
+      <span><%= t("grammar.index.only_needed") %></span>
+    </label>
+
+    <%= submit_tag t("grammar.index.apply"), class: "grammar-btn" %>
+    <%= link_to t("grammar.index.clear"), "/grammar", class: "grammar-btn grammar-btn-secondary" %>
+  <% end %>
+
+  <% if @rows.empty? %>
+    <p class="grammar-empty"><%= t("grammar.index.no_entries") %></p>
+  <% elsif @sort == "radical" %>
+    <div class="grammar-radical-groups">
+      <% @radical_groups.each do |(number, glyph), rows| %>
+        <section class="grammar-radical-group">
+          <h2>
+            <% if number %>
+              <span class="grammar-radical-glyph"><%= glyph %></span>
+              <%= t("grammar.index.radical_heading", number: number) %>
+            <% else %>
+              <%= t("grammar.index.other_entries") %>
+            <% end %>
+          </h2>
+          <div class="grammar-entry-grid">
+            <% rows.each do |row| %>
+              <%= render "entry_card", row: row %>
+            <% end %>
+          </div>
+        </section>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="grammar-entry-grid">
+      <% @rows.each do |row| %>
+        <%= render "entry_card", row: row %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <section class="grammar-id-tool">
+    <h2><%= t("grammar.ids.heading") %></h2>
+    <p><%= t("grammar.ids.explanation") %></p>
+
+    <%= form_with url: "/grammar", method: :get, local: true, class: "grammar-id-form" do %>
+      <%= hidden_field_tag :generate_id, "1" %>
+      <label>
+        <span><%= t("grammar.ids.kind") %></span>
+        <%= select_tag :id_kind,
+                       options_for_select(Grammar::Entry::KINDS.map { |value| [grammar_kind_label(value), value] }, params[:id_kind]) %>
+      </label>
+      <label>
+        <span><%= t("grammar.ids.headword") %></span>
+        <%= text_field_tag :id_headword, params[:id_headword], required: true %>
+      </label>
+      <label>
+        <span><%= t("grammar.ids.parent") %></span>
+        <%= text_field_tag :id_parent, params[:id_parent], placeholder: "fw-u4e4b" %>
+      </label>
+      <label>
+        <span><%= t("grammar.ids.label") %></span>
+        <%= text_field_tag :id_label, params[:id_label], placeholder: "attributive" %>
+      </label>
+      <%= submit_tag t("grammar.ids.generate"), class: "grammar-btn" %>
+    <% end %>
+
+    <% if @identifier_result %>
+      <div class="grammar-id-result <%= "grammar-id-result--collision" if @identifier_result[:collision] %>">
+        <strong><%= t("grammar.ids.candidate") %></strong>
+        <code><%= @identifier_result[:candidate] %></code>
+        <% if @identifier_result[:collision] %>
+          <p><%= t("grammar.ids.collision") %></p>
+          <p>
+            <strong><%= t("grammar.ids.next_available") %></strong>
+            <code><%= @identifier_result[:next_available] %></code>
+          </p>
+        <% else %>
+          <p><%= t("grammar.ids.available") %></p>
+        <% end %>
+      </div>
+    <% end %>
+  </section>
+</div>

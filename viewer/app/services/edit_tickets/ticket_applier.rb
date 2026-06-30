@@ -6,14 +6,16 @@ require "tempfile"
 
 module EditTickets
   class TicketApplier
-    def initialize(ticket:, repo_root:, corpus_root:, annotation_items: nil)
+    def initialize(ticket:, repo_root:, corpus_root:, annotation_items: nil, reviewer_name: nil)
       @ticket = ticket
       @repo_root = Pathname.new(repo_root).expand_path
       @corpus_root = Pathname.new(corpus_root).expand_path
       @annotation_items = annotation_items
+      @reviewer_name = reviewer_name.to_s.strip
     end
 
     def call
+      return apply_grammar_entry_ticket! if grammar_entry_ticket?
       return apply_annotation_ticket! if annotation_ticket?
       return apply_companion_material_ticket! if companion_material_ticket?
       return apply_annotation_system_ticket! if annotation_system_ticket?
@@ -46,6 +48,46 @@ module EditTickets
         filename = attachment.blob.filename.to_s
         filename.end_with?(".proposed.txt") || filename.include?(".proposed")
       end
+    end
+
+    def grammar_entry_ticket?
+      metadata["kind"] == "grammar_entry_submission"
+    end
+
+    def apply_grammar_entry_ticket!
+      proposed = find_proposed_text_attachment
+      raise "No proposed grammar Markdown attachment found." if proposed.nil?
+
+      credit = metadata["credit"].is_a?(Hash) ? metadata["credit"] : {}
+      validator = Grammar::SubmissionValidator.new
+      result = validator.validate!(
+        entry_id: metadata["entry_id"],
+        action: metadata["submission_action"],
+        locale: metadata["locale"],
+        raw_markdown: proposed.blob.download.to_s,
+        public_name: credit["name"],
+        orcid: credit["orcid"],
+        credit_role: credit["role"],
+        licence_agreed: true
+      )
+
+      expected_path = Grammar::EntryStore.default.repo_relative_article_path(
+        result.entry,
+        locale: result.locale
+      )
+      supplied_path = metadata["target_path"].to_s
+      unless supplied_path == expected_path
+        raise SecurityError, "Grammar ticket target does not match the catalogue"
+      end
+
+      Grammar::Publisher.new(reviewer_name: @reviewer_name).publish!(
+        entry_id: result.entry.id,
+        locale: result.locale,
+        proposed_markdown: result.markdown,
+        credit: result.credit
+      )
+    rescue Grammar::SubmissionValidator::ValidationError => e
+      raise "Grammar ticket is no longer valid: #{e.message}"
     end
 
     def annotation_ticket?

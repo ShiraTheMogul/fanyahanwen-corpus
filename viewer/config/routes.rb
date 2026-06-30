@@ -43,7 +43,14 @@ Rails.application.routes.draw do
 	get "/corpus/activity", to: "home#activity", as: :corpus_activity
 	
 	get "/fun", to: "fun#index", as: :fun # Minigame section
-
+	
+	# Literary Chinese Grammar Wiki
+	get  "/grammar",              to: "grammar#index",    as: :grammar
+	post "/grammar/preview",      to: "grammar#preview",  as: :preview_grammar_entry
+	get  "/grammar/:id/template", to: "grammar#template", as: :grammar_entry_template
+	get  "/grammar/:id",          to: "grammar#show",     as: :grammar_entry
+	
+	# The Textbook is currently unused.
 	# Textbook (interactive lessons)
 	get  "/textbook", to: "textbook#index", as: :textbook
 

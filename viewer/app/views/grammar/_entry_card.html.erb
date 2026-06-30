@@ -1,0 +1,113 @@
+<% expandable = row.entry.kind == "function_word" && row.children.any? %>
+<article class="grammar-entry-card <%= "grammar-entry-card--expandable" if expandable %>">
+  <% if expandable %>
+    <details class="grammar-entry-expander">
+      <summary class="grammar-entry-card-summary">
+        <span class="grammar-entry-card-head">
+          <span class="grammar-entry-card-title" role="heading" aria-level="3"><%= row.entry.title %></span>
+          <span class="grammar-status grammar-status--<%= row.status %>"><%= grammar_status_label(row.status) %></span>
+        </span>
+
+        <span class="grammar-entry-taxonomy grammar-entry-taxonomy--summary">
+          <span class="grammar-entry-taxonomy-item">
+            <span class="grammar-entry-taxonomy-heading"><%= t("grammar.index.entry_type") %></span>
+            <span class="grammar-entry-taxonomy-value"><%= grammar_kind_label(row.entry.kind) %></span>
+          </span>
+          <% if row.entry.importance.present? %>
+            <span class="grammar-entry-taxonomy-item">
+              <span class="grammar-entry-taxonomy-heading"><%= t("grammar.index.importance") %></span>
+              <span class="grammar-entry-taxonomy-value"><%= grammar_importance_label(row.entry.importance) %></span>
+            </span>
+          <% end %>
+          <% if row.entry.categories.any? %>
+            <span class="grammar-entry-taxonomy-item grammar-entry-taxonomy-categories">
+              <span class="grammar-entry-taxonomy-heading"><%= t("grammar.index.category") %></span>
+              <span class="grammar-entry-taxonomy-value">
+                <% row.entry.categories.each do |category| %>
+                  <span class="grammar-chip"><%= grammar_category_label(category) %></span>
+                <% end %>
+              </span>
+            </span>
+          <% end %>
+        </span>
+
+        <span class="grammar-entry-details">
+          <% if row.total_strokes.present? %>
+            <span><%= t("grammar.index.total_strokes", count: row.total_strokes) %></span>
+          <% elsif row.additional_strokes.present? %>
+            <span><%= t("grammar.index.additional_strokes", count: row.additional_strokes) %></span>
+          <% end %>
+          <% if row.pronunciation.present? %>
+            <span><%= t("grammar.index.pronunciation", value: row.pronunciation) %></span>
+          <% end %>
+          <% unless row.corpus_frequency.nil? %>
+            <span><%= t("grammar.index.corpus_frequency", count: row.corpus_frequency) %></span>
+          <% end %>
+        </span>
+      </summary>
+
+      <div class="grammar-use-cases">
+        <h4><%= t("grammar.functions.individual_uses", headword: row.entry.headword) %></h4>
+        <ul>
+          <li>
+            <%= link_to t("grammar.functions.overview", headword: row.entry.headword), grammar_entry_path_for(row.entry) %>
+            <span class="grammar-status grammar-status--<%= row.status %>"><%= grammar_status_label(row.status) %></span>
+          </li>
+          <% row.children.each do |child_row| %>
+            <li>
+              <%= link_to child_row.entry.title, grammar_entry_path_for(child_row.entry) %>
+              <% if child_row.entry.importance.present? %>
+                <span class="grammar-chip"><%= grammar_importance_label(child_row.entry.importance) %></span>
+              <% end %>
+              <span class="grammar-status grammar-status--<%= child_row.status %>"><%= grammar_status_label(child_row.status) %></span>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </details>
+  <% else %>
+    <div class="grammar-entry-card-head">
+      <h3>
+        <%= link_to row.entry.title, grammar_entry_path_for(row.entry), class: "grammar-entry-link" %>
+      </h3>
+      <span class="grammar-status grammar-status--<%= row.status %>"><%= grammar_status_label(row.status) %></span>
+    </div>
+
+    <dl class="grammar-entry-taxonomy">
+      <div>
+        <dt><%= t("grammar.index.entry_type") %></dt>
+        <dd><%= grammar_kind_label(row.entry.kind) %></dd>
+      </div>
+      <% if row.entry.importance.present? %>
+        <div>
+          <dt><%= t("grammar.index.importance") %></dt>
+          <dd><%= grammar_importance_label(row.entry.importance) %></dd>
+        </div>
+      <% end %>
+      <% if row.entry.categories.any? %>
+        <div class="grammar-entry-taxonomy-categories">
+          <dt><%= t("grammar.index.category") %></dt>
+          <dd>
+            <% row.entry.categories.each do |category| %>
+              <span class="grammar-chip"><%= grammar_category_label(category) %></span>
+            <% end %>
+          </dd>
+        </div>
+      <% end %>
+    </dl>
+
+    <div class="grammar-entry-details">
+      <% if row.total_strokes.present? %>
+        <span><%= t("grammar.index.total_strokes", count: row.total_strokes) %></span>
+      <% elsif row.additional_strokes.present? %>
+        <span><%= t("grammar.index.additional_strokes", count: row.additional_strokes) %></span>
+      <% end %>
+      <% if row.pronunciation.present? %>
+        <span><%= t("grammar.index.pronunciation", value: row.pronunciation) %></span>
+      <% end %>
+      <% unless row.corpus_frequency.nil? %>
+        <span><%= t("grammar.index.corpus_frequency", count: row.corpus_frequency) %></span>
+      <% end %>
+    </div>
+  <% end %>
+</article>
