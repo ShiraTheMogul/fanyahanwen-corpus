@@ -101,10 +101,10 @@ class GrammarController < ApplicationController
       metadata: @canonical_article.metadata
     )
     @character_frame = Grammar::CharacterFrame.for(@entry.headword) if @entry.single_character?
-    @article_searches = (
-      @entry.corpus_searches +
-      Array(@article.metadata["corpus_searches"]).select { |value| value.is_a?(Hash) }
-    ).uniq
+    @article_searches = Grammar::ArticleSearches.for(
+      entry: @entry,
+      article_metadata: @article.metadata
+    )
 
     @published_locales = InterfaceLocales::ALL.map(&:to_s).select do |locale|
       @store.article_exists?(@entry, locale: locale)

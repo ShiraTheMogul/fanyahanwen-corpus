@@ -1,7 +1,15 @@
 <% unlisted = local_assigns.fetch(:unlisted, false) %>
 <% entry_id = entry&.id.to_s %>
 <% published = article&.published? %>
-<section class="grammar-submission"
+<% show_heading = local_assigns.fetch(:show_heading, true) %>
+<% embedded = local_assigns.fetch(:embedded, false) %>
+<% snippet_headword = entry&.headword.presence || t("grammar.submission.snippets.search_term_placeholder") %>
+<% snippets = {
+     quote: "<!-- #{t("grammar.submission.snippets.quote_comment")} -->\n{% corpus_quote path=\"#{t("grammar.submission.snippets.path_placeholder")}\" text=\"#{t("grammar.submission.snippets.text_placeholder")}\" highlight=\"#{t("grammar.submission.snippets.highlight_placeholder")}\" source=\"#{t("grammar.submission.snippets.source_placeholder")}\" %}",
+     exact_search: "  # #{t("grammar.submission.snippets.exact_comment")}\n  - mode: exact\n    term_a: \"#{snippet_headword}\"",
+     proximity_search: "  # #{t("grammar.submission.snippets.proximity_comment")}\n  - mode: proximity\n    term_a: \"#{snippet_headword}\"\n    term_b: \"#{t("grammar.submission.snippets.second_term_placeholder")}\"\n    distance: 200\n    order: either\n    context: 20"
+   } %>
+<section class="<%= class_names("grammar-submission", "grammar-submission--embedded": embedded) %>"
          data-controller="grammar-submission"
          data-grammar-submission-entry-id-value="<%= entry_id %>"
          data-grammar-submission-unlisted-value="<%= unlisted %>"
@@ -15,8 +23,11 @@
          data-grammar-submission-change-language-warning-value="<%= t("grammar.submission.change_language_warning") %>"
          data-grammar-submission-id-available-message-value="<%= t("grammar.submission.unlisted_id_available") %>"
          data-grammar-submission-id-collision-message-value="<%= t("grammar.submission.unlisted_id_collision") %>"
-         data-grammar-submission-id-incomplete-message-value="<%= t("grammar.submission.unlisted_id_incomplete") %>">
-  <h2><%= unlisted ? t("grammar.submission.unlisted_heading") : (published ? t("grammar.submission.edit_heading") : t("grammar.submission.create_heading")) %></h2>
+         data-grammar-submission-id-incomplete-message-value="<%= t("grammar.submission.unlisted_id_incomplete") %>"
+         data-grammar-submission-snippets-value="<%= snippets.to_json %>">
+  <% if show_heading %>
+    <h2><%= unlisted ? t("grammar.submission.unlisted_heading") : (published ? t("grammar.submission.edit_heading") : t("grammar.submission.create_heading")) %></h2>
+  <% end %>
   <p><%= unlisted ? t("grammar.submission.unlisted_explanation") : t("grammar.submission.explanation") %></p>
 
   <form action="/grammar/preview"
@@ -143,6 +154,44 @@
           <option value="anonymous"><%= t("grammar.credits.anonymous") %></option>
         </select>
       </label>
+    </div>
+
+    <div class="grammar-snippet-tools">
+      <div>
+        <strong><%= t("grammar.submission.snippets.heading") %></strong>
+        <p><%= t("grammar.submission.snippets.explanation") %></p>
+      </div>
+      <div class="grammar-submission-actions">
+        <button type="button"
+                class="grammar-btn grammar-btn-secondary"
+                data-action="grammar-submission#insertCorpusQuote">
+          <%= t("grammar.submission.snippets.quote_button") %>
+        </button>
+        <button type="button"
+                class="grammar-btn grammar-btn-secondary"
+                data-action="grammar-submission#insertExactSearch">
+          <%= t("grammar.submission.snippets.exact_button") %>
+        </button>
+        <button type="button"
+                class="grammar-btn grammar-btn-secondary"
+                data-action="grammar-submission#insertProximitySearch">
+          <%= t("grammar.submission.snippets.proximity_button") %>
+        </button>
+      </div>
+      <details class="grammar-snippet-guide">
+        <summary><%= t("grammar.submission.snippets.guide_heading") %></summary>
+        <dl>
+          <div><dt><code>path</code></dt><dd><%= t("grammar.submission.snippets.path_help") %></dd></div>
+          <div><dt><code>text</code></dt><dd><%= t("grammar.submission.snippets.text_help") %></dd></div>
+          <div><dt><code>highlight</code></dt><dd><%= t("grammar.submission.snippets.highlight_help") %></dd></div>
+          <div><dt><code>source</code></dt><dd><%= t("grammar.submission.snippets.source_help") %></dd></div>
+          <div><dt><code>term_a</code></dt><dd><%= t("grammar.submission.snippets.term_a_help") %></dd></div>
+          <div><dt><code>term_b</code></dt><dd><%= t("grammar.submission.snippets.term_b_help") %></dd></div>
+          <div><dt><code>distance</code></dt><dd><%= t("grammar.submission.snippets.distance_help") %></dd></div>
+          <div><dt><code>order</code></dt><dd><%= t("grammar.submission.snippets.order_help") %></dd></div>
+          <div><dt><code>context</code></dt><dd><%= t("grammar.submission.snippets.context_help") %></dd></div>
+        </dl>
+      </details>
     </div>
 
     <label class="grammar-submission-markdown">

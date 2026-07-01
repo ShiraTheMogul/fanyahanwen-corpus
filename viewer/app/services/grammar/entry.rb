@@ -59,18 +59,8 @@ module Grammar
     end
 
     def corpus_searches
-      configured = Array(attributes["corpus_searches"]).filter_map do |value|
+      Array(attributes["corpus_searches"]).filter_map do |value|
         value.is_a?(Hash) ? MarkdownDocument.stringify_keys(value) : nil
-      end
-      return configured if configured.any?
-
-      if kind == "function_word" && headword.present?
-        [{
-          "mode" => "exact",
-          "term_a" => headword
-        }]
-      else
-        []
       end
     end
 

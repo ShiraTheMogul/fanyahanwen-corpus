@@ -162,6 +162,31 @@ en:
       orcid: ORCID (optional)
       credit_role: Public credit
       markdown: Article Markdown
+      snippets:
+        heading: Insert a template
+        explanation: These buttons put valid starter syntax into the Markdown editor. Corpus quotations are inserted at the cursor; corpus searches are added to the YAML front matter automatically.
+        quote_button: Add corpus quotation
+        exact_button: Add one-term search
+        proximity_button: Add proximity search
+        guide_heading: What each field does
+        quote_comment: path opens the corpus source; text is the quotation; highlight marks matching text yellow; source is the displayed source name.
+        exact_comment: exact searches for one uninterrupted string; term_a is the text to find.
+        proximity_comment: proximity finds term_a and term_b near one another; distance is their maximum separation.
+        path_placeholder: Place the corpus file path here
+        text_placeholder: Place the quoted text here
+        highlight_placeholder: Place the text to highlight yellow here
+        source_placeholder: Place the displayed source title here
+        search_term_placeholder: Place the first search term here
+        second_term_placeholder: Place the second search term here
+        path_help: The corpus file path. It makes the source caption open the quoted text in the corpus viewer.
+        text_help: The passage shown to the reader.
+        highlight_help: Text within the passage that should be marked yellow. Separate alternatives with a vertical bar (|).
+        source_help: The readable source title shown beneath the quotation.
+        term_a_help: The text sought by an exact search, or the first term in a proximity search.
+        term_b_help: The second term in a proximity search.
+        distance_help: The greatest permitted distance between the two terms, measured in characters.
+        order_help: either allows both orders; a_before_b or b_before_a requires one order.
+        context_help: The number of surrounding characters shown with each result.
       preview: Preview
       download_template: Download Markdown template
       summary: Short summary

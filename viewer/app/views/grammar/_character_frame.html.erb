@@ -7,34 +7,17 @@
     </div>
   </div>
 
-  <div class="grammar-hanzi-writer">
-    <div id="grammar-hanzi-writer-<%= entry.id %>" class="grammar-hanzi-writer-canvas"></div>
-    <div id="grammar-hanzi-fallback-<%= entry.id %>" class="grammar-hanzi-fallback" hidden>
+  <div class="grammar-hanzi-writer"
+       data-controller="grammar-hanzi-writer"
+       data-grammar-hanzi-writer-glyph-value="<%= frame.glyph %>">
+    <div class="grammar-hanzi-writer-canvas"
+         data-grammar-hanzi-writer-target="canvas"></div>
+    <div class="grammar-hanzi-fallback"
+         data-grammar-hanzi-writer-target="fallback"
+         hidden>
       <%= t("grammar.character.stroke_unavailable") %>
     </div>
   </div>
-
-  <script>
-    (function () {
-      var target = "grammar-hanzi-writer-<%= entry.id %>";
-      var fallback = document.getElementById("grammar-hanzi-fallback-<%= entry.id %>");
-      if (typeof HanziWriter === "undefined") {
-        fallback.hidden = false;
-        return;
-      }
-
-      try {
-        var writer = HanziWriter.create(target, "<%= j frame.glyph %>", {
-          width: 132,
-          height: 132,
-          padding: 8
-        });
-        writer.loopCharacterAnimation();
-      } catch (_error) {
-        fallback.hidden = false;
-      }
-    })();
-  </script>
 
   <dl class="grammar-character-facts">
     <div>

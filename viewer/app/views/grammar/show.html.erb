@@ -1,4 +1,4 @@
-<div class="grammar-page grammar-show">
+<div class="grammar-page grammar-show" data-controller="grammar-edit-panel">
   <% if @preview %>
     <div class="grammar-preview-banner"><%= t("grammar.preview_banner") %></div>
   <% end %>
@@ -72,7 +72,9 @@
           <h2><%= t("grammar.missing.heading") %></h2>
           <p><%= t("grammar.missing.explanation") %></p>
           <div class="grammar-submission-actions">
-            <a href="#suggest-article" class="grammar-btn"><%= t("grammar.missing.suggest") %></a>
+            <a href="#suggest-article"
+               class="grammar-btn"
+               data-action="grammar-edit-panel#open"><%= t("grammar.missing.suggest") %></a>
             <%= link_to t("grammar.submission.download_template"),
                         grammar_template_path_for(@entry, locale: I18n.locale),
                         class: "grammar-btn grammar-btn-secondary" %>
@@ -180,8 +182,14 @@
   </div>
 
   <% unless @preview %>
-    <div id="suggest-article">
-      <%= render "submission_form", entry: @entry, article: @article %>
-    </div>
+    <% submission_heading = @article.published? ? t("grammar.submission.edit_heading") : t("grammar.submission.create_heading") %>
+    <details id="suggest-article"
+             class="grammar-submission-panel"
+             data-grammar-edit-panel-target="panel">
+      <summary><%= submission_heading %></summary>
+      <div class="grammar-submission-panel-body">
+        <%= render "submission_form", entry: @entry, article: @article, show_heading: false, embedded: true %>
+      </div>
+    </details>
   <% end %>
 </div>

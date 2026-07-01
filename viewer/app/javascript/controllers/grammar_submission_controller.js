@@ -32,6 +32,7 @@ export default class extends Controller {
     idAvailableMessage: String,
     idCollisionMessage: String,
     idIncompleteMessage: String,
+    snippets: Object,
   }
 
   connect() {
@@ -137,6 +138,77 @@ export default class extends Controller {
 
   _templateUrl(locale) {
     return `/grammar/${encodeURIComponent(this.entryIdValue)}/template?locale=${encodeURIComponent(locale)}`
+  }
+
+  insertCorpusQuote() {
+    this._insertAtCursor(this.snippetsValue.quote || "")
+  }
+
+  insertExactSearch() {
+    this._insertCorpusSearch(this.snippetsValue.exact_search || "")
+  }
+
+  insertProximitySearch() {
+    this._insertCorpusSearch(this.snippetsValue.proximity_search || "")
+  }
+
+  _insertAtCursor(snippet) {
+    if (!snippet) return
+
+    const textarea = this.rawMarkdownTarget
+    const start = textarea.selectionStart ?? textarea.value.length
+    const end = textarea.selectionEnd ?? start
+    const before = textarea.value.slice(0, start)
+    const after = textarea.value.slice(end)
+    const prefix = before.length && !before.endsWith("\n") ? "\n" : ""
+    const suffix = after.length && !after.startsWith("\n") ? "\n" : ""
+    const insertion = `${prefix}${snippet}\n${suffix}`
+
+    textarea.setRangeText(insertion, start, end, "end")
+    textarea.focus()
+  }
+
+  _insertCorpusSearch(itemSnippet) {
+    if (!itemSnippet) return
+
+    const textarea = this.rawMarkdownTarget
+    const newline = textarea.value.includes("\r\n") ? "\r\n" : "\n"
+    const normalizedItem = itemSnippet.replace(/\n/g, newline)
+    let text = textarea.value
+
+    if (!text.match(/^---\r?\n/)) {
+      textarea.value = `---${newline}corpus_searches:${newline}${normalizedItem}${newline}---${newline}${newline}${text}`
+      textarea.focus()
+      return
+    }
+
+    const lines = text.split(/\r?\n/)
+    const closingIndex = lines.findIndex((line, index) => index > 0 && line.trim() === "---")
+    if (closingIndex < 0) {
+      this._insertAtCursor(`corpus_searches:${newline}${normalizedItem}`)
+      return
+    }
+
+    const keyIndex = lines.slice(1, closingIndex).findIndex((line) => /^corpus_searches:\s*(?:\[\])?\s*$/.test(line))
+    if (keyIndex < 0) {
+      lines.splice(closingIndex, 0, "corpus_searches:", ...normalizedItem.split(newline))
+    } else {
+      const absoluteKeyIndex = keyIndex + 1
+      if (/^corpus_searches:\s*\[\]\s*$/.test(lines[absoluteKeyIndex])) {
+        lines[absoluteKeyIndex] = "corpus_searches:"
+      }
+
+      let insertionIndex = absoluteKeyIndex + 1
+      while (insertionIndex < closingIndex) {
+        const line = lines[insertionIndex]
+        if (line.length && !/^\s/.test(line) && !/^#/.test(line)) break
+        insertionIndex += 1
+      }
+      lines.splice(insertionIndex, 0, ...normalizedItem.split(newline))
+    }
+
+    textarea.value = lines.join(newline)
+    textarea.focus()
   }
 
   preview(event) {

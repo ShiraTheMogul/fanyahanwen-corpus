@@ -1,7 +1,3 @@
-corpus_searches:
-  - mode: exact
-    term_a: 不
-
 ## Explanation
 
 Provide a basic, fluff-free explanation of what the word does.

@@ -158,6 +158,31 @@ lzh:
       orcid: ORCID（選填）
       credit_role: 署名身分
       markdown: 篇章Markdown
+      snippets:
+        heading: 插入模板
+        explanation: 此諸按鈕可將合式之起始語法置入Markdown編輯框。語料引文插於游標所在；語料檢索則自動加入YAML頁首。
+        quote_button: 加語料引文
+        exact_button: 加單詞檢索
+        proximity_button: 加鄰近檢索
+        guide_heading: 各欄何用
+        quote_comment: path通往語料原文；text為所引之文；highlight使相應文字標黃；source為所示出處名。
+        exact_comment: exact檢索一段連續文字；term_a為所尋之文。
+        proximity_comment: proximity尋相近之term_a、term_b；distance定其最遠間隔。
+        path_placeholder: 此處填語料檔案路徑
+        text_placeholder: 此處填所引文字
+        highlight_placeholder: 此處填欲標黃之文字
+        source_placeholder: 此處填所示出處名
+        search_term_placeholder: 此處填第一檢索詞
+        second_term_placeholder: 此處填第二檢索詞
+        path_help: 語料檔案之路徑，使引文下之出處可開語料庫原文。
+        text_help: 示於讀者之引文。
+        highlight_help: 引文中須標黃之文字；多項可用豎線（|）相隔。
+        source_help: 示於引文下之易讀出處名。
+        term_a_help: 精確檢索所尋之文，或鄰近檢索之第一詞。
+        term_b_help: 鄰近檢索之第二詞。
+        distance_help: 兩詞相隔最多字數。
+        order_help: either不拘先後；a_before_b或b_before_a則限定其次序。
+        context_help: 每條結果前後所示字數。
       preview: 預覽
       download_template: 下載Markdown模板
       summary: 提要
