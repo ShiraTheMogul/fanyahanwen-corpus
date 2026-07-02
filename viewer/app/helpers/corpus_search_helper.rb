@@ -57,6 +57,43 @@ module CorpusSearchHelper
     ])
   end
 
+  def corpus_search_analysis_metric_label(metric)
+    t("corpus_search.analysis.metrics.#{metric}", default: metric.to_s.humanize)
+  end
+
+  def corpus_search_analysis_dimension_label(dimension)
+    t("corpus_search.analysis.dimensions.#{dimension}", default: dimension.to_s.humanize)
+  end
+
+  def corpus_search_analysis_value(metric, value)
+    number = value.to_f
+    case metric.to_s
+    when "document_prevalence"
+      number_to_percentage(number * 100, precision: 2)
+    when "occurrences_per_million"
+      number_with_precision(number, precision: 2, strip_insignificant_zeros: true)
+    else
+      number_with_delimiter(number.round)
+    end
+  end
+
+  def corpus_search_analysis_svg(report, chart)
+    svg = report&.svg(chart)
+    return nil if svg.blank?
+
+    # The SVG is produced by the fixed application-owned R script. Base R's
+    # graphics device escapes text labels before writing XML. Strip the XML
+    # declaration and doctype before embedding the <svg> element in HTML.
+    embedded = svg.sub(/\A.*?(?=<svg\b)/m, "")
+    return nil if embedded.match?(/<(?:script|foreignObject)\b|\son[a-z]+\s*=/i)
+
+    embedded.html_safe
+  end
+
+  def corpus_search_analysis_role_label(role)
+    t("corpus_search.roles.#{role}", default: role.to_s.humanize)
+  end
+
   def corpus_search_folder_checkbox_id(path, scope)
     digest = Digest::SHA256.hexdigest(path.to_s).first(12)
     "corpus-search-folder-#{scope}-#{digest}"

@@ -5,6 +5,7 @@ class CorpusSearchController < ApplicationController
   helper CorpusSearchHelper
 
   INTERACTIVE_LIMIT = 1_000
+  DEFAULT_ANALYSIS_METRIC = "occurrences_per_million"
 
   def index
     @query = CorpusSearch::Query.from_params(params)
@@ -58,6 +59,10 @@ class CorpusSearchController < ApplicationController
 
     @live_query_url = "#{request.base_url}#{@prepared_search.query.relative_url(include_presentation: false)}"
     @frozen_result_url = request.original_url
+    @analysis_metric = analysis_metric
+    @analysis_report = if @prepared_search.complete?
+      CorpusSearch::AnalysisReport.load(@prepared_search.output_dir.join("analysis", "standard"))
+    end
   end
 
   def download
@@ -78,6 +83,12 @@ class CorpusSearchController < ApplicationController
 
   def prepared_search_url(prepared)
     "/corpus/search/prepared/#{prepared.id}?key=#{ERB::Util.url_encode(prepared.key)}"
+  end
+
+
+  def analysis_metric
+    candidate = params[:metric].to_s
+    CorpusSearch::AnalysisReport::METRICS.include?(candidate) ? candidate : DEFAULT_ANALYSIS_METRIC
   end
 
   def live_query_url(query)

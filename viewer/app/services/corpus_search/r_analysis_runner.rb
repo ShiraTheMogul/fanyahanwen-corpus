@@ -6,6 +6,7 @@ require "open3"
 require "pathname"
 require "timeout"
 require "time"
+require "tmpdir"
 
 module CorpusSearch
   # Runs only application-owned R profiles. Visitors cannot provide code,
@@ -13,7 +14,7 @@ module CorpusSearch
   # runtime version, stdout/stderr, timing, and status for reproducibility.
   class RAnalysisRunner
     PROFILE_PATHS = {
-      "dataset_summary" => Rails.root.join("analysis", "r", "profiles", "dataset_summary.R")
+      "standard_analysis" => Rails.root.join("analysis", "r", "profiles", "standard_analysis.R")
     }.freeze
 
     Result = Data.define(
@@ -24,7 +25,7 @@ module CorpusSearch
       def available? = status != "unavailable"
     end
 
-    DEFAULT_TIMEOUT_SECONDS = 120
+    DEFAULT_TIMEOUT_SECONDS = 180
     DEFAULT_MEMORY_MB = 1_024
 
     @runtime_mutex = Mutex.new
@@ -57,14 +58,13 @@ module CorpusSearch
       @memory_mb = [memory_mb.to_i, 0].max
     end
 
-    def run(profile:, input_path:, output_dir:)
+    def run(profile:, document_counts_path:, occurrences_path:, output_dir:)
       profile_name = profile.to_s
       script_path = PROFILE_PATHS.fetch(profile_name) { raise ArgumentError, "Unknown R analysis profile: #{profile_name}" }
       raise Errno::ENOENT, script_path.to_s unless script_path.file?
 
-      input = Pathname(input_path).expand_path
-      raise Errno::ENOENT, input.to_s unless input.file?
-
+      document_counts = checked_input(document_counts_path)
+      occurrences = checked_input(occurrences_path)
       output = Pathname(output_dir).expand_path
       FileUtils.mkdir_p(output)
       copied_script = output.join("analysis.R")
@@ -78,6 +78,14 @@ module CorpusSearch
       started_at = Time.now.utc
       monotonic_start = Process.clock_gettime(Process::CLOCK_MONOTONIC)
       version = self.class.runtime_version(@executable)
+      command = [
+        @executable,
+        "--vanilla",
+        copied_script.to_s,
+        document_counts.to_s,
+        occurrences.to_s,
+        output.to_s
+      ]
 
       unless version
         warning_path.write("Rscript was not available. Set CORPUS_SEARCH_RSCRIPT to the executable path.\n")
@@ -88,17 +96,17 @@ module CorpusSearch
           duration_seconds: elapsed(monotonic_start),
           exit_status: nil,
           r_version: nil,
-          command: [@executable, "--vanilla", copied_script.basename.to_s, input.to_s, output.to_s]
+          command: command,
+          inputs: [document_counts, occurrences]
         )
         metadata_path.write(JSON.pretty_generate(metadata))
         return result_from(metadata, output, stdout_path, stderr_path, metadata_path)
       end
 
-      command = [@executable, "--vanilla", copied_script.to_s, input.to_s, output.to_s]
       exit_status, timed_out = spawn_and_wait(command, output, stdout_path, stderr_path)
       status = if timed_out
         "timed_out"
-      elsif exit_status&.success?
+      elsif exit_status&.success? && output.join("analysis_report.json").file?
         "complete"
       else
         "failed"
@@ -115,7 +123,8 @@ module CorpusSearch
         duration_seconds: elapsed(monotonic_start),
         exit_status: exit_status&.exitstatus,
         r_version: version,
-        command: command
+        command: command,
+        inputs: [document_counts, occurrences]
       )
       metadata_path.write(JSON.pretty_generate(metadata))
       result_from(metadata, output, stdout_path, stderr_path, metadata_path)
@@ -132,13 +141,21 @@ module CorpusSearch
         duration_seconds: 0.0,
         exit_status: nil,
         r_version: nil,
-        command: []
+        command: [],
+        inputs: []
       ).merge("error" => { "class" => e.class.name, "message" => e.message })
       metadata_path.write(JSON.pretty_generate(metadata))
       result_from(metadata, output, output.join("stdout.txt"), output.join("stderr.txt"), metadata_path)
     end
 
     private
+
+    def checked_input(path)
+      input = Pathname(path).expand_path
+      raise Errno::ENOENT, input.to_s unless input.file?
+
+      input
+    end
 
     def spawn_and_wait(command, output_dir, stdout_path, stderr_path)
       spawn_options = {
@@ -184,35 +201,36 @@ module CorpusSearch
       Process.kill("TERM", -pid)
       sleep 0.25
       Process.kill("KILL", -pid)
-    rescue Errno::ESRCH, Errno::ECHILD
+    rescue Errno::ESRCH
       nil
     end
 
     def runtime_environment
       {
-        "LC_ALL" => ENV.fetch("LC_ALL", "C.UTF-8"),
+        "HOME" => Dir.tmpdir,
+        "R_ENVIRON_USER" => "",
+        "R_PROFILE_USER" => "",
+        "R_DEFAULT_PACKAGES" => "datasets,utils,grDevices,graphics,stats,methods",
         "LANG" => ENV.fetch("LANG", "C.UTF-8"),
-        "TZ" => "UTC"
+        "LC_ALL" => ENV.fetch("LC_ALL", ENV.fetch("LANG", "C.UTF-8"))
       }
     end
 
-    def copy_lockfile(output)
-      lockfile = Rails.root.join("analysis", "r", "renv.lock")
-      FileUtils.cp(lockfile, output.join("renv.lock")) if lockfile.file?
-    end
-
-    def metadata_payload(status:, profile:, started_at:, duration_seconds:, exit_status:, r_version:, command:)
+    def metadata_payload(status:, profile:, started_at:, duration_seconds:, exit_status:, r_version:, command:, inputs:)
       {
-        "version" => 1,
+        "version" => 2,
         "status" => status,
         "profile" => profile,
-        "started_at" => started_at.utc.iso8601,
-        "duration_seconds" => duration_seconds.round(6),
+        "started_at" => started_at.iso8601,
+        "duration_seconds" => duration_seconds.round(4),
         "exit_status" => exit_status,
         "r_version" => r_version,
-        "timeout_seconds" => @timeout_seconds,
-        "memory_limit_mb" => @memory_mb,
-        "command" => command.map { |part| File.basename(part.to_s) == @executable ? @executable : part.to_s }
+        "command" => command.map(&:to_s),
+        "inputs" => inputs.map { |path| { "path" => path.to_s, "bytes" => path.file? ? path.size : nil } },
+        "limits" => {
+          "timeout_seconds" => @timeout_seconds,
+          "memory_mb" => @memory_mb
+        }
       }
     end
 
@@ -230,14 +248,23 @@ module CorpusSearch
       )
     end
 
+    def copy_lockfile(output)
+      source = Rails.root.join("analysis", "r", "renv.lock")
+      FileUtils.cp(source, output.join("renv.lock")) if source.file?
+    end
+
     def elapsed(start)
       Process.clock_gettime(Process::CLOCK_MONOTONIC) - start
     end
 
-    def integer_env(name, default)
-      Integer(ENV.fetch(name, default.to_s))
+    def self.integer_env(name, fallback)
+      Integer(ENV.fetch(name, fallback))
     rescue ArgumentError, TypeError
-      default
+      fallback
+    end
+
+    def integer_env(name, fallback)
+      self.class.integer_env(name, fallback)
     end
   end
 end

@@ -56,7 +56,7 @@ module CorpusSearch
     def write_initial!(query:, locale:)
       FileUtils.mkdir_p(@dir)
       @payload = {
-        "version" => 3,
+        "version" => 7,
         "id" => safe_id,
         "key_digest" => digest(@key),
         "status" => "queued",

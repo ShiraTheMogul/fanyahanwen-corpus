@@ -269,18 +269,23 @@
           <%= t("corpus_search.actions.copy_live_url") %>
         </button>
 
-        <%= form_with url: prepare_corpus_search_path, method: :post, local: true do %>
-          <% @query.canonical_params(include_presentation: true).each do |key, value| %>
-            <%= hidden_field_tag key, value %>
-          <% end %>
-          <%= submit_tag t("corpus_search.actions.prepare_export"), class: "corpus-search-button corpus-search-button-secondary" %>
-        <% end %>
       </div>
     <% end %>
   </section>
 
   <% if @query.valid? %>
-    <details class="corpus-search-query-details">
+    <nav class="corpus-search-workspace-tabs" aria-label="<%= t("corpus_search.analysis.workspace", default: "Search workspace") %>">
+      <a href="#results" class="corpus-search-workspace-tab" aria-current="page"><%= t("corpus_search.analysis.tabs.results", default: "Results") %></a>
+      <%= form_with url: prepare_corpus_search_path, method: :post, local: true, class: "corpus-search-workspace-tab-form" do %>
+        <% @query.canonical_params(include_presentation: true).each do |key, value| %>
+          <%= hidden_field_tag key, value %>
+        <% end %>
+        <%= submit_tag t("corpus_search.actions.prepare_analysis", default: "Prepare R analysis"), class: "corpus-search-workspace-tab corpus-search-workspace-tab-button" %>
+      <% end %>
+      <a href="#query-details" class="corpus-search-workspace-tab"><%= t("corpus_search.analysis.tabs.query_details", default: "Query details") %></a>
+    </nav>
+
+    <details id="query-details" class="corpus-search-query-details">
       <summary><%= t("corpus_search.query_details.heading") %></summary>
       <dl>
         <div><dt><%= t("corpus_search.query_details.mode") %></dt><dd><%= t("corpus_search.modes.#{@query.mode}") %></dd></div>
@@ -301,7 +306,7 @@
   <% end %>
 
   <% if @result_page.hits.any? %>
-    <ol class="corpus-search-results" start="<%= ((@result_page.page - 1) * @result_page.per_page) + 1 %>">
+    <ol id="results" class="corpus-search-results" start="<%= ((@result_page.page - 1) * @result_page.per_page) + 1 %>">
       <% @result_page.hits.each do |hit| %>
         <% source_path = corpus_viewer_path(hit["path"].to_s.split("/"), format: nil) %>
         <% source_url = "#{source_path}?#{ { start: hit["start_offset"], end: hit["end_offset"], source: "corpus_search" }.to_query }" %>

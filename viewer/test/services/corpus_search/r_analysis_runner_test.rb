@@ -5,8 +5,10 @@ require "tmpdir"
 class CorpusSearchRAnalysisRunnerTest < ActiveSupport::TestCase
   setup do
     @directory = Pathname.new(Dir.mktmpdir("r-analysis-runner"))
-    @input = @directory.join("document_counts.csv")
-    @input.write("doc_id,document_role,searchable_characters,occurrences,matching_document\n1,canonical,10,2,1\n")
+    @documents = @directory.join("document_counts.csv")
+    @results = @directory.join("results.csv")
+    @documents.write("doc_id,path,folder_path,document_role,title,author,year_start,year_end,nation,period,region,searchable_characters,occurrences,matching_document\n1,a.txt,root,canonical,A,,1,1,N,P,R,10,2,1\n")
+    @results.write("occurrence_id,mode,path,doc_id,search_start_offset,search_end_offset\n1,exact,a.txt,1,0,1\n")
   end
 
   teardown do
@@ -16,8 +18,9 @@ class CorpusSearchRAnalysisRunnerTest < ActiveSupport::TestCase
 
   test "records an unavailable R runtime without accepting visitor code" do
     result = CorpusSearch::RAnalysisRunner.new(executable: @directory.join("missing-Rscript").to_s).run(
-      profile: "dataset_summary",
-      input_path: @input,
+      profile: "standard_analysis",
+      document_counts_path: @documents,
+      occurrences_path: @results,
       output_dir: @directory.join("output")
     )
 
@@ -27,7 +30,7 @@ class CorpusSearchRAnalysisRunnerTest < ActiveSupport::TestCase
     assert @directory.join("output/warnings.txt").file?
   end
 
-  test "runs a fixed profile through a controlled executable" do
+  test "runs the fixed standard profile through a controlled executable" do
     fake = @directory.join("Rscript")
     fake.write(<<~SH)
       #!/bin/sh
@@ -35,7 +38,8 @@ class CorpusSearchRAnalysisRunnerTest < ActiveSupport::TestCase
         echo "R scripting front-end version TEST"
         exit 0
       fi
-      output="$4"
+      output="$5"
+      printf '{"version":1,"profile":"standard_analysis","overall":{},"charts":[],"tables":{}}\n' > "$output/analysis_report.json"
       printf 'metric,value\ndocuments,1\n' > "$output/summary.csv"
       printf 'R version TEST\n' > "$output/sessionInfo.txt"
       : > "$output/warnings.txt"
@@ -44,14 +48,15 @@ class CorpusSearchRAnalysisRunnerTest < ActiveSupport::TestCase
     fake.chmod(0o755)
 
     result = CorpusSearch::RAnalysisRunner.new(executable: fake.to_s, timeout_seconds: 5).run(
-      profile: "dataset_summary",
-      input_path: @input,
+      profile: "standard_analysis",
+      document_counts_path: @documents,
+      occurrences_path: @results,
       output_dir: @directory.join("output")
     )
 
     assert result.success?
     assert_equal 0, result.exit_status
-    assert @directory.join("output/summary.csv").file?
+    assert @directory.join("output/analysis_report.json").file?
     assert_match(/TEST/, result.r_version)
   end
 end

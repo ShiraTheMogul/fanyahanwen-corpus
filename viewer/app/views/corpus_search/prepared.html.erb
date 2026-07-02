@@ -1,13 +1,15 @@
-<h1><%= t("corpus_search.prepared.title") %></h1>
+<h1><%= t("corpus_search.analysis.title", default: "Corpus Search Analysis") %></h1>
 
 <% if @prepared_search %>
   <% payload = @prepared_search.payload %>
+  <% outputs = payload["outputs"] || {} %>
+  <% progress = payload["progress"] || {} %>
+  <% prepared_base = "/corpus/search/prepared/#{@prepared_search.id}?key=#{ERB::Util.url_encode(@prepared_search.key)}" %>
+
   <section class="corpus-search-summary">
     <div>
       <p><%= t("corpus_search.prepared.status") %>: <strong><%= t("corpus_search.statuses.#{payload["status"]}", default: payload["status"].to_s.humanize) %></strong></p>
       <p><%= t("corpus_search.prepared.query") %>: <strong><%= @prepared_search.query.display_label %></strong></p>
-
-      <% progress = payload["progress"] || {} %>
       <p>
         <%= t("corpus_search.prepared.progress",
               stage: t("corpus_search.stages.#{progress["stage"]}", default: progress["stage"].to_s.humanize),
@@ -18,21 +20,201 @@
     </div>
 
     <div class="corpus-search-summary-actions">
-      <%= link_to t("corpus_search.actions.open_live_query"), @live_query_url, class: "corpus-search-button corpus-search-button-secondary" %>
-
       <span data-controller="copy-url" data-copy-url-url-value="<%= @frozen_result_url %>" data-copy-url-success-label-value="<%= t("corpus_search.actions.copied") %>">
         <button type="button" class="corpus-search-button corpus-search-button-secondary" data-copy-url-target="button" data-action="copy-url#copy">
           <%= t("corpus_search.actions.copy_frozen_url") %>
         </button>
       </span>
+
+      <% if @prepared_search.complete? %>
+        <%= link_to t("corpus_search.actions.download_zip"), "/corpus/search/prepared/#{@prepared_search.id}/download?key=#{ERB::Util.url_encode(@prepared_search.key)}", class: "corpus-search-button" %>
+      <% end %>
     </div>
   </section>
 
+  <nav class="corpus-search-workspace-tabs" aria-label="<%= t("corpus_search.analysis.workspace", default: "Search workspace") %>">
+    <%= link_to t("corpus_search.analysis.tabs.results", default: "Results"), @live_query_url, class: "corpus-search-workspace-tab" %>
+    <a href="#analysis" class="corpus-search-workspace-tab" aria-current="page"><%= t("corpus_search.analysis.tabs.analysis", default: "Analysis") %></a>
+    <a href="#query-details" class="corpus-search-workspace-tab"><%= t("corpus_search.analysis.tabs.query_details", default: "Query details") %></a>
+  </nav>
+
   <% if @prepared_search.complete? %>
-    <p>
-      <%= link_to t("corpus_search.actions.download_zip"), "/corpus/search/prepared/#{@prepared_search.id}/download?key=#{ERB::Util.url_encode(@prepared_search.key)}", class: "corpus-search-button" %>
-    </p>
-    <p><%= t("corpus_search.prepared.zip_contents") %></p>
+    <section id="analysis" class="corpus-search-analysis">
+      <% if @analysis_report %>
+        <% overall = @analysis_report.overall %>
+        <header class="corpus-search-analysis-header">
+          <div>
+            <h2><%= t("corpus_search.analysis.overview", default: "Analysis overview") %></h2>
+            <p><%= t("corpus_search.analysis.body_only_note", default: "All rates use searchable body characters. Metadata headers never contribute to matches or denominators.") %></p>
+          </div>
+          <p class="corpus-search-analysis-runtime">
+            <%= t("corpus_search.analysis.r_runtime", default: "R analysis") %>:
+            <strong><%= outputs["analysis_status"].to_s.humanize %></strong>
+          </p>
+        </header>
+
+        <div class="corpus-search-analysis-metrics">
+          <% [
+               ["occurrences", overall["occurrences"]],
+               ["matching_documents", overall["matching_documents"]],
+               ["documents", overall["documents"]],
+               ["searchable_characters", overall["searchable_characters"]],
+               ["document_prevalence", overall["document_prevalence"]],
+               ["occurrences_per_million", overall["occurrences_per_million"]]
+             ].each do |metric, value| %>
+            <article class="corpus-search-analysis-metric">
+              <span><%= t("corpus_search.analysis.metrics.#{metric}", default: metric.humanize) %></span>
+              <strong><%= corpus_search_analysis_value(metric, value) %></strong>
+            </article>
+          <% end %>
+        </div>
+
+        <section class="corpus-search-analysis-measure" aria-labelledby="analysis-measure-heading">
+          <h3 id="analysis-measure-heading"><%= t("corpus_search.analysis.measure", default: "Measure shown in grouped figures") %></h3>
+          <div class="corpus-search-analysis-measure-options">
+            <% CorpusSearch::AnalysisReport::METRICS.each do |metric| %>
+              <% href = "#{prepared_base}&metric=#{ERB::Util.url_encode(metric)}#analysis" %>
+              <%= link_to corpus_search_analysis_metric_label(metric),
+                          href,
+                          class: "corpus-search-analysis-measure-option",
+                          aria: { current: (@analysis_metric == metric ? "true" : nil) } %>
+            <% end %>
+          </div>
+        </section>
+
+        <div class="corpus-search-analysis-chart-grid">
+          <% CorpusSearch::AnalysisReport::DIMENSIONS.each do |dimension| %>
+            <% chart = @analysis_report.chart(dimension: dimension, metric: @analysis_metric) %>
+            <% svg = corpus_search_analysis_svg(@analysis_report, chart) %>
+            <% next if svg.blank? %>
+            <details class="corpus-search-analysis-chart" <%= "open" if %w[period nation].include?(dimension) %>>
+              <summary>
+                <span><%= corpus_search_analysis_dimension_label(dimension) %></span>
+                <small><%= corpus_search_analysis_metric_label(@analysis_metric) %></small>
+              </summary>
+              <div class="corpus-search-analysis-figure"><%= svg %></div>
+              <% if chart["omitted_groups"].to_i.positive? %>
+                <p class="corpus-search-hint"><%= t("corpus_search.analysis.groups_omitted", default: "%{count} additional groups remain in the downloadable CSV table.", count: chart["omitted_groups"]) %></p>
+              <% end %>
+            </details>
+          <% end %>
+        </div>
+
+        <section class="corpus-search-analysis-secondary">
+          <% distribution_chart = @analysis_report.special_chart("matches_per_document") %>
+          <% distribution_svg = corpus_search_analysis_svg(@analysis_report, distribution_chart) %>
+          <% if distribution_svg.present? %>
+            <article class="corpus-search-analysis-card">
+              <h3><%= t("corpus_search.analysis.matches_per_document", default: "Matches per document") %></h3>
+              <p><%= t("corpus_search.analysis.matches_per_document_note", default: "This shows whether the result is spread across the corpus or concentrated in a smaller set of documents.") %></p>
+              <div class="corpus-search-analysis-figure"><%= distribution_svg %></div>
+            </article>
+          <% end %>
+
+          <% proximity_chart = @analysis_report.special_chart("proximity_span_histogram") %>
+          <% proximity_svg = corpus_search_analysis_svg(@analysis_report, proximity_chart) %>
+          <% if proximity_svg.present? %>
+            <article class="corpus-search-analysis-card">
+              <h3><%= t("corpus_search.analysis.proximity_spans", default: "Proximity spans") %></h3>
+              <p><%= t("corpus_search.analysis.proximity_note", default: "The span is the number of searchable characters from the first matched term to the end of the last matched term.") %></p>
+              <div class="corpus-search-analysis-figure"><%= proximity_svg %></div>
+            </article>
+          <% end %>
+        </section>
+
+        <% top_documents = @analysis_report.table("top_documents", limit: 25) %>
+        <% if top_documents.any? %>
+          <section class="corpus-search-analysis-table-section">
+            <h3><%= t("corpus_search.analysis.top_documents", default: "Documents contributing the most occurrences") %></h3>
+            <div class="corpus-search-analysis-table-wrap">
+              <table class="corpus-search-analysis-table">
+                <thead>
+                  <tr>
+                    <th><%= t("corpus_search.analysis.table.document", default: "Document") %></th>
+                    <th><%= t("corpus_search.analysis.table.layer", default: "Layer") %></th>
+                    <th><%= t("corpus_search.analysis.table.occurrences", default: "Occurrences") %></th>
+                    <th><%= t("corpus_search.analysis.table.share", default: "Share of all hits") %></th>
+                    <th><%= t("corpus_search.analysis.table.per_million", default: "Per million") %></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% top_documents.each do |row| %>
+                    <tr>
+                      <td>
+                        <strong><%= row["title"].presence || File.basename(row["path"].to_s, ".txt") %></strong>
+                        <% if row["author"].present? %><small><%= row["author"] %></small><% end %>
+                        <small><%= row["path"] %></small>
+                      </td>
+                      <td><%= corpus_search_analysis_role_label(row["document_role"]) %></td>
+                      <td><%= number_with_delimiter(row["occurrences"].to_i) %></td>
+                      <td><%= number_to_percentage(row["occurrence_share"].to_f * 100, precision: 2) %></td>
+                      <td><%= number_with_precision(row["occurrences_per_million"].to_f, precision: 2, strip_insignificant_zeros: true) %></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        <% end %>
+
+        <% concentration = @analysis_report.table("concentration") %>
+        <% if concentration.any? %>
+          <% concentration_values = concentration.to_h { |row| [row["measure"], row["value"].to_f] } %>
+          <section class="corpus-search-analysis-concentration">
+            <h3><%= t("corpus_search.analysis.concentration", default: "Result concentration") %></h3>
+            <p>
+              <%= t(
+                    "corpus_search.analysis.concentration_summary",
+                    default: "Top document: %{top1}. Top five: %{top5}. Top ten: %{top10}.",
+                    top1: number_to_percentage(concentration_values.fetch("top_1_share", 0) * 100, precision: 2),
+                    top5: number_to_percentage(concentration_values.fetch("top_5_share", 0) * 100, precision: 2),
+                    top10: number_to_percentage(concentration_values.fetch("top_10_share", 0) * 100, precision: 2)
+                  ) %>
+            </p>
+          </section>
+        <% end %>
+
+        <% if @analysis_report.warnings.any? %>
+          <details class="corpus-search-analysis-warnings">
+            <summary><%= t("corpus_search.analysis.warnings", default: "Analysis notes and warnings") %></summary>
+            <ul>
+              <% @analysis_report.warnings.each do |warning| %>
+                <li><%= warning %></li>
+              <% end %>
+            </ul>
+          </details>
+        <% end %>
+
+        <section class="corpus-search-analysis-download-note">
+          <h3><%= t("corpus_search.analysis.reproducibility", default: "Reproducibility files") %></h3>
+          <p><%= t("corpus_search.analysis.reproducibility_note", default: "The ZIP includes the exact R script, body-only input tables, every grouped CSV, SVG and PNG figures, warnings, timing, and sessionInfo().") %></p>
+          <%= link_to t("corpus_search.actions.download_zip"), "/corpus/search/prepared/#{@prepared_search.id}/download?key=#{ERB::Util.url_encode(@prepared_search.key)}", class: "corpus-search-button" %>
+        </section>
+      <% else %>
+        <div class="corpus-search-analysis-unavailable">
+          <h2><%= t("corpus_search.analysis.unavailable", default: "R analysis is unavailable") %></h2>
+          <p><%= t("corpus_search.analysis.unavailable_note", default: "The search export completed, but no analysis report was produced. The ZIP still contains the input data, exact R script, warnings, and runtime metadata so the analysis can be run elsewhere.") %></p>
+        </div>
+      <% end %>
+    </section>
+
+    <details id="query-details" class="corpus-search-query-details">
+      <summary><%= t("corpus_search.query_details.heading") %></summary>
+      <% query = @prepared_search.query %>
+      <dl>
+        <div><dt><%= t("corpus_search.query_details.mode") %></dt><dd><%= t("corpus_search.modes.#{query.mode}") %></dd></div>
+        <div><dt><%= t("corpus_search.query_details.query") %></dt><dd><code><%= query.display_label %></code></dd></div>
+        <div><dt><%= t("corpus_search.query_details.punctuation") %></dt><dd><%= t("corpus_search.punctuation.#{query.punctuation}") %></dd></div>
+        <div><dt><%= t("corpus_search.query_details.character_matching") %></dt><dd><%= t("corpus_search.characters.#{query.character_equivalence}") %></dd></div>
+        <div><dt><%= t("corpus_search.query_details.text_witnesses") %></dt><dd><%= query.document_roles.map { |role| t("corpus_search.roles.#{role}") }.join(", ") %></dd></div>
+        <div><dt><%= t("corpus_search.query_details.folders") %></dt><dd><%= query.include_folders.presence&.join("; ") || t("corpus_search.query_details.all_selected_folders") %></dd></div>
+        <% if query.exclude_folders.any? %>
+          <div><dt><%= t("corpus_search.query_details.excluded_folders") %></dt><dd><%= query.exclude_folders.join("; ") %></dd></div>
+        <% end %>
+        <div><dt><%= t("corpus_search.query_details.metadata") %></dt><dd><%= t("corpus_search.query_details.never_searched") %></dd></div>
+        <div class="corpus-search-query-url"><dt><%= t("corpus_search.query_details.live_url") %></dt><dd><code><%= @live_query_url %></code></dd></div>
+      </dl>
+    </details>
   <% elsif @prepared_search.failed? %>
     <p class="corpus-search-error"><%= payload["error_message"] %></p>
   <% else %>

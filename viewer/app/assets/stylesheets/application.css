@@ -1848,3 +1848,301 @@ body.rightbar-collapsed .rightbar {
   font-size: 0.9rem;
   font-weight: 600;
 }
+
+/* --- Corpus search phase 7: R-backed analysis workspace ---------------- */
+.corpus-search-workspace-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 78rem;
+  gap: 0;
+  margin: 16px 0;
+  border-bottom: 1px solid #cfd5dd;
+}
+
+.corpus-search-workspace-tab-form {
+  display: contents;
+}
+
+.corpus-search-workspace-tab {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 8px 15px;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  background: transparent;
+  color: #344256;
+  font: inherit;
+  font-weight: 650;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.corpus-search-workspace-tab:hover {
+  background: #f1f4f7;
+}
+
+.corpus-search-workspace-tab[aria-current="page"] {
+  border-bottom-color: #25364d;
+  color: #172437;
+}
+
+.corpus-search-workspace-tab-button {
+  appearance: none;
+}
+
+.corpus-search-analysis {
+  display: grid;
+  max-width: 78rem;
+  gap: 22px;
+  margin: 20px 0 28px;
+}
+
+.corpus-search-analysis-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.corpus-search-analysis-header h2,
+.corpus-search-analysis-header p {
+  margin-top: 0;
+}
+
+.corpus-search-analysis-runtime {
+  flex: 0 0 auto;
+  padding: 7px 10px;
+  border: 1px solid #d8dce2;
+  border-radius: 999px;
+  background: #f7f9fb;
+  font-size: 0.88rem;
+}
+
+.corpus-search-analysis-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10.5rem, 1fr));
+  gap: 10px;
+}
+
+.corpus-search-analysis-metric {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  padding: 13px 14px;
+  border: 1px solid #d8dce2;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.corpus-search-analysis-metric span {
+  color: #596473;
+  font-size: 0.84rem;
+  line-height: 1.3;
+}
+
+.corpus-search-analysis-metric strong {
+  font-size: 1.35rem;
+  overflow-wrap: anywhere;
+}
+
+.corpus-search-analysis-measure {
+  display: grid;
+  gap: 9px;
+  padding: 13px 14px;
+  border: 1px solid #d8dce2;
+  border-radius: 10px;
+  background: #f8fafc;
+}
+
+.corpus-search-analysis-measure h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.corpus-search-analysis-measure-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.corpus-search-analysis-measure-option {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border: 1px solid #bcc4ce;
+  border-radius: 999px;
+  background: #fff;
+  color: #344256;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.corpus-search-analysis-measure-option[aria-current="true"] {
+  border-color: #25364d;
+  background: #25364d;
+  color: #fff;
+}
+
+.corpus-search-analysis-chart-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 28rem), 1fr));
+  gap: 14px;
+}
+
+.corpus-search-analysis-chart,
+.corpus-search-analysis-card,
+.corpus-search-analysis-table-section,
+.corpus-search-analysis-concentration,
+.corpus-search-analysis-download-note,
+.corpus-search-analysis-warnings,
+.corpus-search-analysis-unavailable {
+  min-width: 0;
+  border: 1px solid #d8dce2;
+  border-radius: 11px;
+  background: #fff;
+}
+
+.corpus-search-analysis-chart > summary {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 11px 13px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.corpus-search-analysis-chart[open] > summary {
+  border-bottom: 1px solid #e3e6ea;
+}
+
+.corpus-search-analysis-chart > summary small {
+  color: #657183;
+  font-weight: 500;
+}
+
+.corpus-search-analysis-chart > .corpus-search-hint {
+  margin: 0;
+  padding: 0 14px 13px;
+}
+
+.corpus-search-analysis-figure {
+  min-width: 0;
+  overflow: auto;
+  padding: 10px;
+}
+
+.corpus-search-analysis-figure svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-width: 30rem;
+  max-width: 100%;
+}
+
+.corpus-search-analysis-secondary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 31rem), 1fr));
+  gap: 14px;
+}
+
+.corpus-search-analysis-card,
+.corpus-search-analysis-table-section,
+.corpus-search-analysis-concentration,
+.corpus-search-analysis-download-note,
+.corpus-search-analysis-unavailable {
+  padding: 15px 16px;
+}
+
+.corpus-search-analysis-card h3,
+.corpus-search-analysis-table-section h3,
+.corpus-search-analysis-concentration h3,
+.corpus-search-analysis-download-note h3,
+.corpus-search-analysis-unavailable h2 {
+  margin-top: 0;
+}
+
+.corpus-search-analysis-table-wrap {
+  overflow-x: auto;
+}
+
+.corpus-search-analysis-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.corpus-search-analysis-table th,
+.corpus-search-analysis-table td {
+  padding: 8px 9px;
+  border-bottom: 1px solid #e3e6ea;
+  text-align: left;
+  vertical-align: top;
+}
+
+.corpus-search-analysis-table th {
+  background: #f5f7f9;
+  white-space: nowrap;
+}
+
+.corpus-search-analysis-table td:not(:first-child) {
+  white-space: nowrap;
+}
+
+.corpus-search-analysis-table td small {
+  display: block;
+  max-width: 36rem;
+  margin-top: 2px;
+  color: #657183;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.corpus-search-analysis-warnings > summary {
+  padding: 11px 13px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.corpus-search-analysis-warnings ul {
+  margin: 0;
+  padding: 0 30px 14px;
+}
+
+.corpus-search-analysis-download-note p,
+.corpus-search-analysis-concentration p,
+.corpus-search-analysis-card p {
+  line-height: 1.55;
+}
+
+@media (max-width: 700px) {
+  .corpus-search-workspace-tabs,
+  .corpus-search-workspace-tab,
+  .corpus-search-workspace-tab-form {
+    width: 100%;
+  }
+
+  .corpus-search-workspace-tab {
+    justify-content: flex-start;
+  }
+
+  .corpus-search-analysis-header {
+    flex-direction: column;
+  }
+
+  .corpus-search-analysis-runtime {
+    align-self: flex-start;
+  }
+
+  .corpus-search-analysis-chart-grid,
+  .corpus-search-analysis-secondary {
+    grid-template-columns: 1fr;
+  }
+
+  .corpus-search-analysis-figure svg {
+    min-width: 36rem;
+  }
+}

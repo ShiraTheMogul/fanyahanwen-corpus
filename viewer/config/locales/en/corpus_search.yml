@@ -64,6 +64,7 @@ en:
     actions:
       search: Search
       prepare_export: Prepare full ZIP export in background
+      prepare_analysis: Prepare R analysis
       open_source_text: Open source text at this match
       download_zip: Download ZIP
       copy_live_url: Copy live query URL
@@ -112,8 +113,52 @@ en:
       status: Status
       query: Query
       progress: 'Stage: %{stage}. Files: %{scanned} / %{total}. Hits found: %{hits}.'
-      zip_contents: The ZIP contains concordance results, a body-only analysis dataset, the exact R script, structured R outputs, and runtime provenance.
+      zip_contents: The ZIP contains concordance results, body-only analysis data, grouped CSV tables, the exact R script, SVG and PNG figures, and runtime provenance.
       refresh_notice: This page will refresh every %{seconds} seconds while the job is running.
+    analysis:
+      title: Corpus Search Analysis
+      workspace: Search workspace
+      tabs:
+        results: Results
+        analysis: Analysis
+        query_details: Query details
+      overview: Analysis overview
+      body_only_note: All rates use searchable body characters. Metadata headers never contribute to matches or denominators.
+      r_runtime: R analysis
+      measure: Measure shown in grouped figures
+      groups_omitted: '%{count} additional groups remain in the downloadable CSV table.'
+      matches_per_document: Matches per document
+      matches_per_document_note: This shows whether the result is spread across the corpus or concentrated in a smaller set of documents.
+      proximity_spans: Proximity spans
+      proximity_note: The span is the number of searchable characters from the first matched term to the end of the last matched term.
+      top_documents: Documents contributing the most occurrences
+      concentration: Result concentration
+      concentration_summary: 'Top document: %{top1}. Top five: %{top5}. Top ten: %{top10}.'
+      warnings: Analysis notes and warnings
+      reproducibility: Reproducibility files
+      reproducibility_note: The ZIP includes the exact R script, body-only input tables, every grouped CSV, SVG and PNG figures, warnings, timing, and sessionInfo().
+      unavailable: R analysis is unavailable
+      unavailable_note: The search export completed, but no analysis report was produced. The ZIP still contains the input data, exact R script, warnings, and runtime metadata so the analysis can be run elsewhere.
+      metrics:
+        occurrences: Occurrences
+        matching_documents: Matching documents
+        documents: Documents in scope
+        searchable_characters: Searchable body characters
+        document_prevalence: Documents containing the query
+        occurrences_per_million: Occurrences per million characters
+      dimensions:
+        period: Period
+        nation: Nation
+        region: Region
+        author: Author
+        folder: Folder branch
+        document_role: Text or corpus layer
+      table:
+        document: Document
+        layer: Layer
+        occurrences: Occurrences
+        share: Share of all hits
+        per_million: Per million
     statuses:
       queued: Queued
       running: Running

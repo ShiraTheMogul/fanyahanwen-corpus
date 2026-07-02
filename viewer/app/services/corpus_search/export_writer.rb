@@ -8,11 +8,14 @@ require "time"
 require "zip"
 
 module CorpusSearch
-  # Writes a complete prepared result and its compact R analysis hand-off.
+  # Writes a complete prepared result plus the body-only tables consumed by the
+  # fixed R analysis profile. Metadata may label rows but never contributes to
+  # matching, snippets, occurrence counts, or searchable-character denominators.
   class ExportWriter
     RESULT_COLUMNS = %w[
-      query mode query_text terms maximum_span order punctuation character_equivalence
-      character_equivalence_version normalization_profile_version equivalence_matches
+      occurrence_id query mode query_text terms maximum_span order punctuation
+      character_equivalence character_equivalence_version normalization_profile_version
+      proximity_span matched_term_order matched_alternatives equivalence_matches
       snippet matched_text left_context right_context
       title work author date_text year_start year_end nation period region path folder_path
       document_role canonical_parent_path doc_id start_offset end_offset
@@ -20,6 +23,10 @@ module CorpusSearch
     ].freeze
 
     FLASHCARD_COLUMNS = %w[front back target snippet source tags].freeze
+    ANALYSIS_OCCURRENCE_COLUMNS = %w[
+      occurrence_id doc_id path mode search_start_offset search_end_offset
+      proximity_span matched_term_order matched_alternatives
+    ].freeze
 
     def initialize(prepared_search:, cache_store: CacheStore.new)
       @prepared_search = prepared_search
@@ -32,47 +39,37 @@ module CorpusSearch
         @prepared_search.update!(status: "running", progress: { "stage" => "searching" })
 
         manifest = Manifest.load(cache_store: @cache_store)
-        runner = Runner.new(query: @query, manifest: manifest, cache_store: @cache_store)
 
         output_dir = @prepared_search.output_dir
         result_csv = output_dir.join("results.csv")
         flashcard_csv = output_dir.join("flashcards.csv")
         document_counts_csv = output_dir.join("document_counts.csv")
+        analysis_occurrences_csv = output_dir.join("analysis_occurrences.csv")
         analysis_dataset_json = output_dir.join("analysis_dataset.json")
         metadata_json = output_dir.join("metadata.json")
         readme_txt = output_dir.join("README.txt")
-        analysis_dir = output_dir.join("analysis", "dataset_summary")
+        analysis_dir = output_dir.join("analysis", "standard")
         zip_path = output_dir.join("corpus_search_#{@prepared_search.id}.zip")
 
-        hit_count = write_streamed_csvs(result_csv, flashcard_csv, runner)
-
-        @prepared_search.update!(progress: { "stage" => "building_analysis_dataset" })
         dataset_writer = AnalysisDatasetWriter.new(
           query: @query,
           manifest: manifest,
           cache_store: @cache_store
         )
-        dataset_writer.write!(
-          csv_path: document_counts_csv,
-          metadata_path: analysis_dataset_json,
-          progress: lambda do |files_scanned, files_total|
-            next unless (files_scanned % 25).zero? || files_scanned == files_total
-
-            @prepared_search.update!(
-              progress: {
-                "stage" => "building_analysis_dataset",
-                "files_scanned" => files_scanned,
-                "files_total" => files_total,
-                "hits_found" => hit_count
-              }
-            )
-          end
+        hit_count = write_streamed_datasets(
+          result_csv,
+          flashcard_csv,
+          document_counts_csv,
+          analysis_occurrences_csv,
+          dataset_writer
         )
+        dataset_writer.write_metadata!(analysis_dataset_json)
 
         @prepared_search.update!(progress: { "stage" => "running_r" })
         r_result = RAnalysisRunner.new.run(
-          profile: "dataset_summary",
-          input_path: document_counts_csv,
+          profile: "standard_analysis",
+          document_counts_path: document_counts_csv,
+          occurrences_path: analysis_occurrences_csv,
           output_dir: analysis_dir
         )
 
@@ -97,8 +94,13 @@ module CorpusSearch
             "zip_path" => zip_path.to_s,
             "hit_count" => hit_count,
             "analysis_status" => r_result.status,
+            "analysis_profile" => r_result.profile,
+            "analysis_report_path" => analysis_dir.join("analysis_report.json").to_s,
             "analysis_documents" => dataset_writer.document_count,
-            "searchable_characters" => dataset_writer.searchable_character_count
+            "matching_documents" => analysis_overall(analysis_dir)["matching_documents"],
+            "searchable_characters" => dataset_writer.searchable_character_count,
+            "occurrences_per_million" => analysis_overall(analysis_dir)["occurrences_per_million"],
+            "document_prevalence" => analysis_overall(analysis_dir)["document_prevalence"]
           }
         )
 
@@ -111,31 +113,39 @@ module CorpusSearch
 
     private
 
-    def write_streamed_csvs(result_path, flashcard_path, runner)
+    def write_streamed_datasets(result_path, flashcard_path, document_path, occurrence_path, dataset_writer)
       hit_count = 0
 
       CSV.open(result_path, "w", encoding: "UTF-8") do |results_csv|
         CSV.open(flashcard_path, "w", encoding: "UTF-8") do |flashcards_csv|
-          results_csv << RESULT_COLUMNS
-          flashcards_csv << FLASHCARD_COLUMNS
+          CSV.open(document_path, "w", encoding: "UTF-8", write_headers: true, headers: AnalysisDatasetWriter::COLUMNS) do |documents_csv|
+            CSV.open(occurrence_path, "w", encoding: "UTF-8", write_headers: true, headers: ANALYSIS_OCCURRENCE_COLUMNS) do |occurrences_csv|
+              results_csv << RESULT_COLUMNS
+              flashcards_csv << FLASHCARD_COLUMNS
 
-          progress = lambda do |files_scanned, files_total, hits_found|
-            next unless (files_scanned % 25).zero? || files_scanned == files_total
+              progress = lambda do |files_scanned, files_total|
+                next unless (files_scanned % 25).zero? || files_scanned == files_total
 
-            @prepared_search.update!(
-              progress: {
-                "stage" => "searching",
-                "files_scanned" => files_scanned,
-                "files_total" => files_total,
-                "hits_found" => hits_found
-              }
-            )
-          end
+                @prepared_search.update!(
+                  progress: {
+                    "stage" => "building_analysis_dataset",
+                    "files_scanned" => files_scanned,
+                    "files_total" => files_total,
+                    "hits_found" => hit_count
+                  }
+                )
+              end
 
-          runner.each_hit(progress: progress) do |hit|
-            results_csv << result_row(hit)
-            flashcards_csv << flashcard_row(hit)
-            hit_count += 1
+              dataset_writer.each_document(progress: progress) do |document_row, hits|
+                documents_csv << document_row
+                hits.each do |hit|
+                  hit_count += 1
+                  results_csv << result_row(hit, occurrence_id: hit_count)
+                  occurrences_csv << analysis_occurrence_row(hit, occurrence_id: hit_count)
+                  flashcards_csv << flashcard_row(hit)
+                end
+              end
+            end
           end
         end
       end
@@ -143,9 +153,25 @@ module CorpusSearch
       hit_count
     end
 
-    def result_row(hit)
+    def analysis_occurrence_row(hit, occurrence_id:)
+      {
+        "occurrence_id" => occurrence_id,
+        "doc_id" => hit["doc_id"],
+        "path" => hit["path"],
+        "mode" => @query.mode,
+        "search_start_offset" => hit["search_start_offset"],
+        "search_end_offset" => hit["search_end_offset"],
+        "proximity_span" => @query.proximity? ? hit["search_end_offset"].to_i - hit["search_start_offset"].to_i : nil,
+        "matched_term_order" => matched_term_order(hit),
+        "matched_alternatives" => @query.alternatives? ? matched_alternatives(hit).join(" | ") : nil
+      }
+    end
+
+    def result_row(hit, occurrence_id:)
       RESULT_COLUMNS.map do |column|
         case column
+        when "occurrence_id"
+          occurrence_id
         when "query"
           @query.display_label
         when "mode"
@@ -166,6 +192,12 @@ module CorpusSearch
           @query.character_equivalence_version
         when "normalization_profile_version"
           @query.normalization_profile_version
+        when "proximity_span"
+          @query.proximity? ? hit["search_end_offset"].to_i - hit["search_start_offset"].to_i : nil
+        when "matched_term_order"
+          matched_term_order(hit)
+        when "matched_alternatives"
+          @query.alternatives? ? matched_alternatives(hit).join(" | ") : nil
         when "equivalence_matches"
           JSON.generate(hit["equivalence_matches"])
         when "term_matches"
@@ -174,6 +206,24 @@ module CorpusSearch
           hit[column]
         end
       end
+    end
+
+    def matched_term_order(hit)
+      return nil unless @query.multi_term?
+
+      Array(hit["term_matches"])
+        .sort_by { |match| [match["search_start_offset"].to_i, match["term_index"].to_i] }
+        .map { |match| match["term"].to_s }
+        .reject(&:blank?)
+        .join(" > ")
+    end
+
+    def matched_alternatives(hit)
+      Array(hit["term_matches"])
+        .sort_by { |match| match["term_index"].to_i }
+        .map { |match| match["term"].to_s }
+        .reject(&:blank?)
+        .uniq
     end
 
     def flashcard_row(hit)
@@ -204,8 +254,14 @@ module CorpusSearch
       "#{prefix}::#{clean}"
     end
 
+    def analysis_overall(directory)
+      report = AnalysisReport.load(directory)
+      report ? report.overall : {}
+    end
+
     def write_metadata(path, hit_count, manifest:, dataset_writer:, r_result:)
       metadata = {
+        "version" => 7,
         "generated_at" => Time.now.utc.iso8601,
         "query" => @query.to_h,
         "live_query_path" => @query.relative_url(include_presentation: false),
@@ -216,19 +272,22 @@ module CorpusSearch
           "documents" => dataset_writer.document_count,
           "searchable_characters" => dataset_writer.searchable_character_count,
           "occurrences" => dataset_writer.occurrence_count,
-          "file" => "document_counts.csv"
+          "file" => "document_counts.csv",
+          "occurrence_file" => "analysis_occurrences.csv"
         },
         "r_analysis" => {
           "profile" => r_result.profile,
           "status" => r_result.status,
           "r_version" => r_result.r_version,
           "duration_seconds" => r_result.duration_seconds,
-          "directory" => "analysis/dataset_summary"
+          "directory" => "analysis/standard",
+          "report" => "analysis/standard/analysis_report.json"
         },
         "columns" => {
           "results_csv" => RESULT_COLUMNS,
           "flashcards_csv" => FLASHCARD_COLUMNS,
-          "document_counts_csv" => AnalysisDatasetWriter::COLUMNS
+          "document_counts_csv" => AnalysisDatasetWriter::COLUMNS,
+          "analysis_occurrences_csv" => ANALYSIS_OCCURRENCE_COLUMNS
         },
         "equivalence_sources" => CharacterEquivalenceRegistry::OPENCC_DICTIONARIES.values
           .push("taiwan_moe", "zetian_script")
@@ -248,8 +307,8 @@ module CorpusSearch
 
     def write_research_readme(path, r_result)
       path.write(<<~TEXT)
-        Fanya Hanwen Corpus search export
-        =================================
+        Fanya Hanwen Corpus search and analysis export
+        ===============================================
 
         Query: #{@query.display_label}
         Search mode: #{@query.mode}
@@ -259,26 +318,44 @@ module CorpusSearch
         R status: #{r_result.status}
         R runtime: #{r_result.r_version || "unavailable"}
 
-        Files
-        -----
-        results.csv              Occurrence-level concordance results.
+        Core files
+        ----------
+        results.csv              One row per matched occurrence.
         flashcards.csv           Compact flashcard export.
-        document_counts.csv      Body-only document counts and denominators for R.
+        document_counts.csv      One body-only row per document in scope,
+                                 including documents with zero matches.
+        analysis_occurrences.csv Compact occurrence offsets used by R. It omits
+                                 snippets and repeated descriptive metadata.
         analysis_dataset.json    Dataset provenance and query definition.
         metadata.json            Export-wide provenance.
-        analysis/dataset_summary/analysis.R
-                                 Exact application-owned R script used for this run.
-        analysis/dataset_summary/summary.csv
-                                 Overall R summary when R completed.
-        analysis/dataset_summary/role_summary.csv
-                                 R summary by corpus layer when R completed.
-        analysis/dataset_summary/sessionInfo.txt
-                                 Exact R runtime and loaded base packages.
-        analysis/dataset_summary/run_metadata.json
-                                 Timing, limits, command, and status.
 
-        Metadata headers were not searched and are not included in searchable-character
-        denominators. Descriptive metadata columns are labels attached to the corpus files.
+        Standard R analysis
+        -------------------
+        analysis/standard/analysis.R
+                                 Exact application-owned R script used.
+        analysis/standard/analysis_report.json
+                                 Machine-readable summary and chart manifest.
+        analysis/standard/*_summary.csv
+                                 Complete grouped tables for period, nation,
+                                 region, author, folder branch, and corpus layer.
+        analysis/standard/top_documents.csv
+                                 Documents contributing the largest hit counts.
+        analysis/standard/matches_per_document.csv
+                                 Distribution of occurrences across documents.
+        analysis/standard/proximity_spans.csv
+                                 Occurrence-level spans for proximity searches.
+        analysis/standard/figures/*.svg
+                                 Scalable browser and publication figures.
+        analysis/standard/figures/*.png
+                                 Raster copies suitable for slides.
+        analysis/standard/sessionInfo.txt
+                                 Exact R runtime and loaded base packages.
+        analysis/standard/run_metadata.json
+                                 Timing, limits, command, inputs, and status.
+
+        Metadata headers were not searched and are not included in searchable-
+        character denominators. Descriptive metadata columns only label corpus
+        documents and analytical groups.
       TEXT
     end
 
