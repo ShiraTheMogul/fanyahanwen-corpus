@@ -39,6 +39,36 @@ module CorpusSearch
       payload.fetch("overall", {}).to_h
     end
 
+    def comparison
+      payload["comparison"].is_a?(Hash) ? payload["comparison"].to_h : nil
+    end
+
+    def comparison?
+      comparison.present?
+    end
+
+    def comparison_options(dimension)
+      return [] unless ComparisonDefinition::DIMENSIONS.include?(dimension.to_s)
+
+      table(dimension.to_s).map { |row| row["group"].to_s }.reject(&:blank?).uniq
+    end
+
+    def comparison_summary
+      table("comparison_summary")
+    end
+
+    def comparison_effects
+      table("comparison_effects")
+    end
+
+    def methods_text
+      read_relative("../../METHODS.txt")
+    end
+
+    def citation_text
+      read_relative("../../CITATION.txt")
+    end
+
     def charts
       Array(payload["charts"]).map(&:to_h)
     end

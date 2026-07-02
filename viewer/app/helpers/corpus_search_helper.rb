@@ -94,6 +94,52 @@ module CorpusSearchHelper
     t("corpus_search.roles.#{role}", default: role.to_s.humanize)
   end
 
+  def corpus_search_comparison_group_options(report, selected_dimension:, selected_group:)
+    groups = CorpusSearch::ComparisonDefinition::DIMENSIONS.filter_map do |dimension|
+      options = report.comparison_options(dimension)
+      next if options.length < 2
+
+      tag.optgroup(
+        safe_join(options.map do |group|
+          tag.option(
+            group,
+            value: group,
+            selected: dimension.to_s == selected_dimension.to_s && group.to_s == selected_group.to_s,
+            data: { dimension: dimension }
+          )
+        end),
+        label: corpus_search_analysis_dimension_label(dimension),
+        data: { dimension: dimension }
+      )
+    end
+
+    safe_join(groups)
+  end
+
+  def corpus_search_comparison_effect_label(measure)
+    t("corpus_search.comparison.effects.#{measure}", default: measure.to_s.humanize)
+  end
+
+  def corpus_search_comparison_effect_value(measure, value)
+    return "—" if value.blank?
+
+    number = Float(value)
+    return "—" unless number.finite?
+
+    case measure.to_s
+    when "document_prevalence_difference_percentage_points"
+      number_to_percentage(number, precision: 2)
+    when "poisson_log_likelihood_p_value"
+      number < 0.0001 ? format("%.3e", number) : number_with_precision(number, precision: 4, strip_insignificant_zeros: true)
+    when "poisson_log_likelihood_g2"
+      number_with_precision(number, precision: 3, strip_insignificant_zeros: true)
+    else
+      number_with_precision(number, precision: 4, strip_insignificant_zeros: true)
+    end
+  rescue ArgumentError, TypeError
+    "—"
+  end
+
   def corpus_search_folder_checkbox_id(path, scope)
     digest = Digest::SHA256.hexdigest(path.to_s).first(12)
     "corpus-search-folder-#{scope}-#{digest}"

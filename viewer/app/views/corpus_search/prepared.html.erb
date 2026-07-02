@@ -35,6 +35,7 @@
   <nav class="corpus-search-workspace-tabs" aria-label="<%= t("corpus_search.analysis.workspace", default: "Search workspace") %>">
     <%= link_to t("corpus_search.analysis.tabs.results", default: "Results"), @live_query_url, class: "corpus-search-workspace-tab" %>
     <a href="#analysis" class="corpus-search-workspace-tab" aria-current="page"><%= t("corpus_search.analysis.tabs.analysis", default: "Analysis") %></a>
+    <a href="#comparison" class="corpus-search-workspace-tab"><%= t("corpus_search.analysis.tabs.comparison", default: "Compare scopes") %></a>
     <a href="#query-details" class="corpus-search-workspace-tab"><%= t("corpus_search.analysis.tabs.query_details", default: "Query details") %></a>
   </nav>
 
@@ -122,6 +123,130 @@
           <% end %>
         </section>
 
+        <section id="comparison" class="corpus-search-comparison">
+          <header>
+            <h3><%= t("corpus_search.comparison.heading", default: "Compare two scopes") %></h3>
+            <p><%= t("corpus_search.comparison.introduction", default: "Apply the same text query to two groups already present in this frozen analysis. The comparison reuses its body-only dataset and runs a new, reproducible R analysis without rescanning the corpus.") %></p>
+          </header>
+
+          <% if @analysis_report.comparison? %>
+            <% comparison = @analysis_report.comparison %>
+            <% comparison_chart = @analysis_report.special_chart(comparison["chart_key"] || "scope_comparison") %>
+            <% comparison_svg = corpus_search_analysis_svg(@analysis_report, comparison_chart) %>
+            <article class="corpus-search-comparison-result">
+              <h4><%= comparison["left_group"] %> <span aria-hidden="true">↔</span> <%= comparison["right_group"] %></h4>
+              <p><%= t("corpus_search.comparison.dimension_note", default: "Compared by %{dimension}.", dimension: corpus_search_analysis_dimension_label(comparison["dimension"])) %></p>
+              <% if comparison_svg.present? %>
+                <div class="corpus-search-analysis-figure"><%= comparison_svg %></div>
+              <% end %>
+
+              <% comparison_rows = @analysis_report.comparison_summary %>
+              <% if comparison_rows.any? %>
+                <div class="corpus-search-analysis-table-wrap">
+                  <table class="corpus-search-analysis-table corpus-search-comparison-table">
+                    <thead>
+                      <tr>
+                        <th><%= t("corpus_search.comparison.table.scope", default: "Scope") %></th>
+                        <th><%= t("corpus_search.analysis.metrics.occurrences", default: "Occurrences") %></th>
+                        <th><%= t("corpus_search.analysis.metrics.searchable_characters", default: "Searchable characters") %></th>
+                        <th><%= t("corpus_search.analysis.metrics.occurrences_per_million", default: "Per million") %></th>
+                        <th><%= t("corpus_search.analysis.metrics.document_prevalence", default: "Document prevalence") %></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% comparison_rows.each do |row| %>
+                        <tr>
+                          <td><strong><%= row["scope_label"] %></strong></td>
+                          <td><%= number_with_delimiter(row["occurrences"].to_i) %></td>
+                          <td><%= number_with_delimiter(row["searchable_characters"].to_i) %></td>
+                          <td><%= number_with_precision(row["occurrences_per_million"].to_f, precision: 3, strip_insignificant_zeros: true) %></td>
+                          <td><%= number_to_percentage(row["document_prevalence"].to_f * 100, precision: 2) %></td>
+                        </tr>
+                      <% end %>
+                    </tbody>
+                  </table>
+                </div>
+              <% end %>
+
+              <% effects = @analysis_report.comparison_effects %>
+              <% if effects.any? %>
+                <details class="corpus-search-comparison-effects" open>
+                  <summary><%= t("corpus_search.comparison.effect_sizes", default: "Comparison statistics and effect sizes") %></summary>
+                  <dl>
+                    <% effects.each do |row| %>
+                      <div>
+                        <dt><%= corpus_search_comparison_effect_label(row["measure"]) %></dt>
+                        <dd><%= corpus_search_comparison_effect_value(row["measure"], row["value"]) %></dd>
+                      </div>
+                    <% end %>
+                  </dl>
+                  <p class="corpus-search-hint"><%= t("corpus_search.comparison.statistics_note", default: "The left/right rate ratio uses searchable body characters as exposure. The likelihood statistic tests equality of the two occurrence rates; it does not establish historical causation.") %></p>
+                </details>
+              <% end %>
+            </article>
+          <% end %>
+
+          <% comparison_dimensions = CorpusSearch::ComparisonDefinition::DIMENSIONS.select { |dimension| @analysis_report.comparison_options(dimension).length >= 2 } %>
+          <% if comparison_dimensions.any? %>
+            <%= form_with url: prepare_corpus_search_path,
+                          method: :post,
+                          local: true,
+                          class: "corpus-search-comparison-form",
+                          data: { controller: "corpus-search-comparison" } do %>
+              <%= hidden_field_tag :source_prepared_id, @prepared_search.id %>
+              <%= hidden_field_tag :source_prepared_key, @prepared_search.key %>
+
+              <label>
+                <span><%= t("corpus_search.comparison.dimension", default: "Compare by") %></span>
+                <%= select_tag "comparison[dimension]",
+                               options_for_select(comparison_dimensions.map { |dimension| [corpus_search_analysis_dimension_label(dimension), dimension] }, @comparison&.dimension),
+                               class: "corpus-search-input",
+                               data: {
+                                 corpus_search_comparison_target: "dimension",
+                                 action: "change->corpus-search-comparison#updateDimension"
+                               } %>
+              </label>
+
+              <label>
+                <span><%= t("corpus_search.comparison.left_scope", default: "Scope A") %></span>
+                <%= select_tag "comparison[left_group]",
+                               safe_join([
+                                 tag.option(t("corpus_search.comparison.choose_group", default: "Choose a group"), value: ""),
+                                 corpus_search_comparison_group_options(
+                                   @analysis_report,
+                                   selected_dimension: @comparison&.dimension,
+                                   selected_group: @comparison&.left_group
+                                 )
+                               ]),
+                               class: "corpus-search-input",
+                               data: {
+                                 corpus_search_comparison_target: "left",
+                                 action: "change->corpus-search-comparison#keepDistinct"
+                               } %>
+              </label>
+
+              <label>
+                <span><%= t("corpus_search.comparison.right_scope", default: "Scope B") %></span>
+                <%= select_tag "comparison[right_group]",
+                               safe_join([
+                                 tag.option(t("corpus_search.comparison.choose_group", default: "Choose a group"), value: ""),
+                                 corpus_search_comparison_group_options(
+                                   @analysis_report,
+                                   selected_dimension: @comparison&.dimension,
+                                   selected_group: @comparison&.right_group
+                                 )
+                               ]),
+                               class: "corpus-search-input",
+                               data: { corpus_search_comparison_target: "right" } %>
+              </label>
+
+              <%= submit_tag t("corpus_search.comparison.prepare", default: "Prepare comparison"), class: "corpus-search-button" %>
+            <% end %>
+          <% else %>
+            <p class="corpus-search-hint"><%= t("corpus_search.comparison.not_enough_groups", default: "This analysis does not contain two groups in any supported comparison dimension.") %></p>
+          <% end %>
+        </section>
+
         <% top_documents = @analysis_report.table("top_documents", limit: 25) %>
         <% if top_documents.any? %>
           <section class="corpus-search-analysis-table-section">
@@ -187,8 +312,31 @@
 
         <section class="corpus-search-analysis-download-note">
           <h3><%= t("corpus_search.analysis.reproducibility", default: "Reproducibility files") %></h3>
-          <p><%= t("corpus_search.analysis.reproducibility_note", default: "The ZIP includes the exact R script, body-only input tables, every grouped CSV, SVG and PNG figures, warnings, timing, and sessionInfo().") %></p>
-          <%= link_to t("corpus_search.actions.download_zip"), "/corpus/search/prepared/#{@prepared_search.id}/download?key=#{ERB::Util.url_encode(@prepared_search.key)}", class: "corpus-search-button" %>
+          <p><%= t("corpus_search.analysis.reproducibility_note_phase8", default: "The frozen bundle includes the exact R script, body-only input tables, aggregate CSV files, figures, method text, citation text, a corpus snapshot identifier, SHA-256 checksums, warnings, timing, and sessionInfo().") %></p>
+          <% if @frozen_record %>
+            <dl class="corpus-search-reproducibility-record">
+              <div><dt><%= t("corpus_search.analysis.snapshot_id", default: "Corpus snapshot") %></dt><dd><code><%= @frozen_record.dig("corpus_snapshot", "snapshot_id") %></code></dd></div>
+              <div><dt><%= t("corpus_search.analysis.record_id", default: "Prepared record") %></dt><dd><code><%= @prepared_search.id %></code></dd></div>
+              <div><dt><%= t("corpus_search.analysis.completed_at", default: "Completed") %></dt><dd><%= @frozen_record["completed_at"] %></dd></div>
+              <div><dt><%= t("corpus_search.analysis.artifact_count", default: "Verified artifacts") %></dt><dd><%= Array(@frozen_record["artifacts"]).length %></dd></div>
+            </dl>
+          <% end %>
+          <div class="corpus-search-summary-actions">
+            <%= link_to t("corpus_search.actions.download_zip"), "/corpus/search/prepared/#{@prepared_search.id}/download?key=#{ERB::Util.url_encode(@prepared_search.key)}", class: "corpus-search-button" %>
+          </div>
+
+          <% if @methods_text.present? %>
+            <details>
+              <summary><%= t("corpus_search.analysis.methods_summary", default: "Citation-ready methods summary") %></summary>
+              <pre class="corpus-search-research-text"><%= @methods_text %></pre>
+            </details>
+          <% end %>
+          <% if @citation_text.present? %>
+            <details>
+              <summary><%= t("corpus_search.analysis.suggested_citation", default: "Suggested citation") %></summary>
+              <pre class="corpus-search-research-text"><%= @citation_text %></pre>
+            </details>
+          <% end %>
         </section>
       <% else %>
         <div class="corpus-search-analysis-unavailable">

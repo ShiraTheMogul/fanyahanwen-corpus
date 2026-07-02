@@ -58,13 +58,14 @@ module CorpusSearch
       @memory_mb = [memory_mb.to_i, 0].max
     end
 
-    def run(profile:, document_counts_path:, occurrences_path:, output_dir:)
+    def run(profile:, document_counts_path:, occurrences_path:, output_dir:, comparison_path: nil)
       profile_name = profile.to_s
       script_path = PROFILE_PATHS.fetch(profile_name) { raise ArgumentError, "Unknown R analysis profile: #{profile_name}" }
       raise Errno::ENOENT, script_path.to_s unless script_path.file?
 
       document_counts = checked_input(document_counts_path)
       occurrences = checked_input(occurrences_path)
+      comparison = comparison_path ? checked_input(comparison_path) : nil
       output = Pathname(output_dir).expand_path
       FileUtils.mkdir_p(output)
       copied_script = output.join("analysis.R")
@@ -86,6 +87,7 @@ module CorpusSearch
         occurrences.to_s,
         output.to_s
       ]
+      command << comparison.to_s if comparison
 
       unless version
         warning_path.write("Rscript was not available. Set CORPUS_SEARCH_RSCRIPT to the executable path.\n")
@@ -97,7 +99,7 @@ module CorpusSearch
           exit_status: nil,
           r_version: nil,
           command: command,
-          inputs: [document_counts, occurrences]
+          inputs: [document_counts, occurrences, comparison].compact
         )
         metadata_path.write(JSON.pretty_generate(metadata))
         return result_from(metadata, output, stdout_path, stderr_path, metadata_path)
@@ -124,7 +126,7 @@ module CorpusSearch
         exit_status: exit_status&.exitstatus,
         r_version: version,
         command: command,
-        inputs: [document_counts, occurrences]
+        inputs: [document_counts, occurrences, comparison].compact
       )
       metadata_path.write(JSON.pretty_generate(metadata))
       result_from(metadata, output, stdout_path, stderr_path, metadata_path)
@@ -218,7 +220,7 @@ module CorpusSearch
 
     def metadata_payload(status:, profile:, started_at:, duration_seconds:, exit_status:, r_version:, command:, inputs:)
       {
-        "version" => 2,
+        "version" => 3,
         "status" => status,
         "profile" => profile,
         "started_at" => started_at.iso8601,

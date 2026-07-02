@@ -6,18 +6,20 @@
 #   1. document_counts.csv — one body-only row per document in scope
 #   2. analysis_occurrences.csv — compact row per matched occurrence
 #   3. output directory
+#   4. optional comparison.csv with one dimension/left_group/right_group row
 #
 # The script deliberately uses base R only. This keeps the server footprint
 # small and leaves an ordinary, readable script that can be cited and rerun.
 
 args <- commandArgs(trailingOnly = TRUE)
-if (length(args) != 3) {
-  stop("Usage: Rscript --vanilla analysis.R document_counts.csv analysis_occurrences.csv output_directory")
+if (!(length(args) %in% c(3, 4))) {
+  stop("Usage: Rscript --vanilla analysis.R document_counts.csv analysis_occurrences.csv output_directory [comparison.csv]")
 }
 
 document_path <- normalizePath(args[[1]], mustWork = TRUE)
 occurrence_path <- normalizePath(args[[2]], mustWork = TRUE)
 output_dir <- normalizePath(args[[3]], mustWork = TRUE)
+comparison_path <- if (length(args) == 4) normalizePath(args[[4]], mustWork = TRUE) else NULL
 figure_dir <- file.path(output_dir, "figures")
 dir.create(figure_dir, recursive = TRUE, showWarnings = FALSE)
 
@@ -215,6 +217,107 @@ render_histogram <- function(values, title, x_label, svg_path, png_path) {
   dev.off()
 }
 
+render_comparison_chart <- function(summary, svg_path, png_path) {
+  labels <- summary$scope_label
+  rates <- summary$occurrences_per_million
+  prevalence <- summary$document_prevalence * 100
+
+  draw <- function() {
+    old <- par(no.readonly = TRUE)
+    on.exit(par(old), add = TRUE)
+    par(mfrow = c(1, 2), mar = c(7.2, 5.2, 3.5, 1.2) + 0.1)
+    barplot(rates, names.arg = labels, las = 2, border = NA,
+            main = "Normalized occurrence rate",
+            ylab = "Occurrences per million searchable characters")
+    barplot(prevalence, names.arg = labels, las = 2, border = NA,
+            main = "Document prevalence",
+            ylab = "Documents containing query (%)")
+  }
+
+  svg(svg_path, width = 11.5, height = 6.8, pointsize = 10, onefile = TRUE)
+  draw()
+  dev.off()
+  png(png_path, width = 1840, height = 1088, res = 160)
+  draw()
+  dev.off()
+}
+
+poisson_log_likelihood <- function(left_count, left_exposure, right_count, right_exposure) {
+  total_count <- left_count + right_count
+  total_exposure <- left_exposure + right_exposure
+  if (total_count <= 0 || total_exposure <= 0 || left_exposure <= 0 || right_exposure <= 0) {
+    return(c(statistic = 0, p_value = 1))
+  }
+  expected <- c(
+    total_count * left_exposure / total_exposure,
+    total_count * right_exposure / total_exposure
+  )
+  observed <- c(left_count, right_count)
+  terms <- ifelse(observed > 0 & expected > 0, observed * log(observed / expected), 0)
+  statistic <- 2 * sum(terms)
+  c(statistic = statistic, p_value = pchisq(statistic, df = 1, lower.tail = FALSE))
+}
+
+comparison_effects <- function(summary) {
+  left <- summary[1, , drop = FALSE]
+  right <- summary[2, , drop = FALSE]
+  left_count <- left$occurrences
+  right_count <- right$occurrences
+  left_exposure <- left$searchable_characters
+  right_exposure <- right$searchable_characters
+  valid_exposure <- is.finite(left_exposure) && is.finite(right_exposure) &&
+    left_exposure > 0 && right_exposure > 0
+
+  if (valid_exposure) {
+    corrected_left <- if (left_count > 0) left_count else 0.5
+    corrected_right <- if (right_count > 0) right_count else 0.5
+    left_rate <- corrected_left / left_exposure
+    right_rate <- corrected_right / right_exposure
+    rate_ratio <- left_rate / right_rate
+    standard_error <- sqrt(1 / corrected_left + 1 / corrected_right)
+    interval <- exp(log(rate_ratio) + c(-1, 1) * 1.96 * standard_error)
+    likelihood <- poisson_log_likelihood(left_count, left_exposure, right_count, right_exposure)
+    rate_difference <- left$occurrences_per_million - right$occurrences_per_million
+  } else {
+    rate_ratio <- NA_real_
+    interval <- c(NA_real_, NA_real_)
+    likelihood <- c(statistic = NA_real_, p_value = NA_real_)
+    rate_difference <- NA_real_
+  }
+
+  prevalence_ratio <- if (right$document_prevalence > 0) {
+    left$document_prevalence / right$document_prevalence
+  } else {
+    NA_real_
+  }
+
+  data.frame(
+    measure = c(
+      "rate_ratio_left_over_right",
+      "rate_ratio_ci_low_95",
+      "rate_ratio_ci_high_95",
+      "log2_rate_ratio",
+      "rate_difference_per_million",
+      "document_prevalence_difference_percentage_points",
+      "document_prevalence_ratio",
+      "poisson_log_likelihood_g2",
+      "poisson_log_likelihood_p_value"
+    ),
+    value = c(
+      rate_ratio,
+      interval[[1]],
+      interval[[2]],
+      if (is.finite(rate_ratio)) log(rate_ratio, base = 2) else NA_real_,
+      rate_difference,
+      (left$document_prevalence - right$document_prevalence) * 100,
+      prevalence_ratio,
+      likelihood[["statistic"]],
+      likelihood[["p_value"]]
+    ),
+    stringsAsFactors = FALSE
+  )
+}
+
 json_escape_one <- function(value) {
   backslash <- intToUtf8(92)
   characters <- strsplit(enc2utf8(as.character(value)), "", fixed = TRUE)[[1]]
@@ -337,6 +440,50 @@ withCallingHandlers({
 
   for (dimension in names(dimension_tables)) {
     write_utf8_csv(dimension_tables[[dimension]], file.path(output_dir, paste0(dimension, "_summary.csv")))
+  }
+
+  comparison_payload <- NULL
+  comparison_summary <- NULL
+  comparison_effect_table <- NULL
+  if (!is.null(comparison_path)) {
+    comparison_config <- read.csv(comparison_path, stringsAsFactors = FALSE, check.names = FALSE, fileEncoding = "UTF-8")
+    required_comparison <- c("dimension", "left_group", "right_group")
+    missing_comparison <- setdiff(required_comparison, names(comparison_config))
+    if (length(missing_comparison) > 0 || nrow(comparison_config) != 1) {
+      stop("Comparison file must contain exactly one row with dimension, left_group, and right_group")
+    }
+
+    comparison_dimension <- trimws(as.character(comparison_config$dimension[[1]]))
+    left_group <- trimws(as.character(comparison_config$left_group[[1]]))
+    right_group <- trimws(as.character(comparison_config$right_group[[1]]))
+    if (!(comparison_dimension %in% names(dimension_tables))) {
+      stop(paste("Unsupported comparison dimension:", comparison_dimension))
+    }
+    comparison_table <- dimension_tables[[comparison_dimension]]
+    left_row <- comparison_table[comparison_table$group == left_group, , drop = FALSE]
+    right_row <- comparison_table[comparison_table$group == right_group, , drop = FALSE]
+    if (nrow(left_row) != 1 || nrow(right_row) != 1) {
+      stop("One or both selected comparison groups are absent from the analysis dataset")
+    }
+
+    comparison_summary <- rbind(left_row, right_row)
+    comparison_summary$scope <- c("left", "right")
+    comparison_summary$scope_label <- c(left_group, right_group)
+    comparison_summary <- comparison_summary[, c(
+      "scope", "scope_label", "dimension", "group", "documents", "matching_documents",
+      "occurrences", "searchable_characters", "document_prevalence",
+      "occurrences_per_million", "mean_occurrences_per_matching_document",
+      "median_occurrences_per_matching_document", "occurrence_share", "sort_year"
+    ), drop = FALSE]
+    comparison_effect_table <- comparison_effects(comparison_summary)
+    write_utf8_csv(comparison_summary, file.path(output_dir, "comparison_summary.csv"))
+    write_utf8_csv(comparison_effect_table, file.path(output_dir, "comparison_effects.csv"))
+
+    comparison_payload <- list(
+      dimension = comparison_dimension,
+      left_group = left_group,
+      right_group = right_group
+    )
   }
 
   chart_rows <- list()
@@ -491,6 +638,30 @@ withCallingHandlers({
     }
   }
 
+  if (!is.null(comparison_summary)) {
+    svg_relative <- file.path("figures", "scope_comparison.svg")
+    png_relative <- file.path("figures", "scope_comparison.png")
+    render_comparison_chart(
+      comparison_summary,
+      file.path(output_dir, svg_relative),
+      file.path(output_dir, png_relative)
+    )
+    chart_index <- chart_index + 1
+    chart_rows[[chart_index]] <- data.frame(
+      key = "scope_comparison",
+      kind = "comparison",
+      dimension = comparison_payload$dimension,
+      metric = "scope_comparison",
+      title = paste(comparison_payload$left_group, "compared with", comparison_payload$right_group),
+      svg = svg_relative,
+      png = png_relative,
+      table = "comparison_summary.csv",
+      shown_groups = 2,
+      omitted_groups = 0,
+      stringsAsFactors = FALSE
+    )
+  }
+
   charts <- if (length(chart_rows) > 0) do.call(rbind, chart_rows) else data.frame()
   write_utf8_csv(charts, file.path(output_dir, "chart_manifest.csv"))
 
@@ -499,7 +670,9 @@ withCallingHandlers({
     warnings_seen,
     if (undated_documents > 0) paste(undated_documents, "document(s) lack a parseable start year; period charts retain their named period but date ordering may be incomplete.") else character(),
     if (sum(documents$searchable_characters <= 0) > 0) paste(sum(documents$searchable_characters <= 0), "document(s) contain no searchable body characters under this punctuation policy.") else character(),
-    if (nrow(charts) > 0 && any(charts$omitted_groups > 0)) "Some figures show only the highest-valued groups; the complete groups remain in the corresponding CSV table." else character()
+    if (nrow(charts) > 0 && any(charts$omitted_groups > 0)) "Some figures show only the highest-valued groups; the complete groups remain in the corresponding CSV table." else character(),
+    if (!is.null(comparison_summary) && any(comparison_summary$occurrences == 0)) "The comparison rate-ratio confidence interval uses a 0.5 continuity correction because one selected scope has zero occurrences." else character(),
+    if (!is.null(comparison_summary) && any(comparison_summary$searchable_characters <= 0)) "At least one comparison scope has no searchable body characters; exposure-based comparison statistics are unavailable." else character()
   )
 
   tables <- c(
@@ -517,13 +690,32 @@ withCallingHandlers({
   if (file.exists(file.path(output_dir, "proximity_spans.csv"))) {
     tables <- c(tables, proximity_spans = "proximity_spans.csv", proximity_summary = "proximity_summary.csv")
   }
+  if (!is.null(comparison_summary)) {
+    tables <- c(tables, comparison_summary = "comparison_summary.csv", comparison_effects = "comparison_effects.csv")
+  }
+
+  comparison_json <- if (is.null(comparison_payload)) {
+    "null"
+  } else {
+    paste0(
+      "{",
+      '"dimension":', json_scalar(comparison_payload$dimension), ",",
+      '"left_group":', json_scalar(comparison_payload$left_group), ",",
+      '"right_group":', json_scalar(comparison_payload$right_group), ",",
+      '"summary_table":"comparison_summary.csv",',
+      '"effects_table":"comparison_effects.csv",',
+      '"chart_key":"scope_comparison"',
+      "}"
+    )
+  }
 
   report <- paste0(
     "{",
-    '"version":1,',
+    '"version":2,',
     '"profile":"standard_analysis",',
     '"generated_at":', json_scalar(format(Sys.time(), tz = "UTC", usetz = TRUE)), ",",
     '"overall":', json_object(as.list(overall_values)), ",",
+    '"comparison":', comparison_json, ",",
     '"charts":', json_rows(charts), ",",
     '"tables":', json_object(as.list(tables)),
     "}"

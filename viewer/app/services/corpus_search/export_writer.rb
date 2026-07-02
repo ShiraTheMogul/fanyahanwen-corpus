@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require "csv"
+require "digest"
+require "erb"
 require "fileutils"
 require "json"
 require "pathname"
@@ -35,73 +37,132 @@ module CorpusSearch
     end
 
     def write!
-      I18n.with_locale(@prepared_search.locale) do
-        @prepared_search.update!(status: "running", progress: { "stage" => "searching" })
+      @prepared_search.load!
+      existing_zip = @prepared_search.zip_path
+      if @prepared_search.complete?
+        return existing_zip if existing_zip&.file?
 
-        manifest = Manifest.load(cache_store: @cache_store)
+        raise ArgumentError, "Frozen prepared analysis is complete but its ZIP is missing"
+      end
+
+      I18n.with_locale(@prepared_search.locale) do
+        source_prepared = @prepared_search.source_prepared
+        @prepared_search.update!(
+          status: "running",
+          progress: { "stage" => source_prepared ? "copying_source_dataset" : "searching" }
+        )
 
         output_dir = @prepared_search.output_dir
+        FileUtils.rm_rf(output_dir)
+        FileUtils.mkdir_p(output_dir)
+
         result_csv = output_dir.join("results.csv")
         flashcard_csv = output_dir.join("flashcards.csv")
         document_counts_csv = output_dir.join("document_counts.csv")
         analysis_occurrences_csv = output_dir.join("analysis_occurrences.csv")
         analysis_dataset_json = output_dir.join("analysis_dataset.json")
+        query_json = output_dir.join("query.json")
+        query_urls_txt = output_dir.join("query_urls.txt")
+        corpus_snapshot_json = output_dir.join("corpus_snapshot.json")
+        rerun_txt = output_dir.join("RERUN_ANALYSIS.txt")
         metadata_json = output_dir.join("metadata.json")
         readme_txt = output_dir.join("README.txt")
+        methods_md = output_dir.join("METHODS.md")
+        methods_txt = output_dir.join("METHODS.txt")
+        citation_txt = output_dir.join("CITATION.txt")
         analysis_dir = output_dir.join("analysis", "standard")
+        comparison_csv = output_dir.join("comparison.csv")
+        research_manifest_json = output_dir.join("research_manifest.json")
+        checksums_path = output_dir.join("checksums.sha256")
         zip_path = output_dir.join("corpus_search_#{@prepared_search.id}.zip")
 
-        dataset_writer = AnalysisDatasetWriter.new(
-          query: @query,
-          manifest: manifest,
-          cache_store: @cache_store
-        )
-        hit_count = write_streamed_datasets(
-          result_csv,
-          flashcard_csv,
-          document_counts_csv,
-          analysis_occurrences_csv,
-          dataset_writer
-        )
-        dataset_writer.write_metadata!(analysis_dataset_json)
+        if source_prepared
+          copy_source_datasets!(source_prepared, output_dir)
+          dataset_stats = dataset_stats_from(document_counts_csv)
+          corpus_snapshot = source_corpus_snapshot(source_prepared)
+        else
+          manifest = Manifest.load(cache_store: @cache_store)
+          dataset_writer = AnalysisDatasetWriter.new(
+            query: @query,
+            manifest: manifest,
+            cache_store: @cache_store
+          )
+          hit_count = write_streamed_datasets(
+            result_csv,
+            flashcard_csv,
+            document_counts_csv,
+            analysis_occurrences_csv,
+            dataset_writer
+          )
+          dataset_writer.write_metadata!(analysis_dataset_json)
+          dataset_stats = {
+            "documents" => dataset_writer.document_count,
+            "occurrences" => hit_count,
+            "searchable_characters" => dataset_writer.searchable_character_count
+          }
+          corpus_snapshot = corpus_snapshot_for(manifest)
+        end
 
-        @prepared_search.update!(progress: { "stage" => "running_r" })
+        corpus_snapshot = corpus_snapshot.merge(
+          "selected_scope" => scope_totals_by_role(document_counts_csv),
+          "search_definition_schema" => SearchDefinition::SCHEMA_VERSION,
+          "query_cache_version" => QueryCache::VERSION,
+          "normalization_profile_version" => @query.normalization_profile_version,
+          "character_equivalence_version" => @query.character_equivalence_version
+        )
+        write_query_json(query_json)
+        write_query_urls(query_urls_txt)
+        corpus_snapshot_json.write(JSON.pretty_generate(corpus_snapshot))
+
+        comparison_path = write_comparison_csv(comparison_csv)
+        write_rerun_instructions(rerun_txt, comparison: comparison_path.present?)
+        @prepared_search.update!(progress: { "stage" => "running_r", "hits_found" => dataset_stats["occurrences"] })
         r_result = RAnalysisRunner.new.run(
           profile: "standard_analysis",
           document_counts_path: document_counts_csv,
           occurrences_path: analysis_occurrences_csv,
-          output_dir: analysis_dir
+          output_dir: analysis_dir,
+          comparison_path: comparison_path
         )
 
         copy_r_readme(output_dir.join("analysis"))
-        write_research_readme(readme_txt, r_result)
+        write_research_readme(readme_txt, r_result, corpus_snapshot: corpus_snapshot)
         write_metadata(
           metadata_json,
-          hit_count,
-          manifest: manifest,
-          dataset_writer: dataset_writer,
+          dataset_stats["occurrences"],
+          corpus_snapshot: corpus_snapshot,
+          dataset_stats: dataset_stats,
           r_result: r_result
         )
+        write_methods(methods_md, methods_txt, r_result, corpus_snapshot: corpus_snapshot, analysis_dir: analysis_dir)
+        write_citation(citation_txt, corpus_snapshot: corpus_snapshot)
+        write_research_manifest(research_manifest_json, output_dir, corpus_snapshot: corpus_snapshot)
+        write_checksums(checksums_path, output_dir)
         write_zip(zip_path, output_dir)
 
-        @prepared_search.update!(
-          status: "complete",
-          progress: {
-            "stage" => "complete",
-            "hits_found" => hit_count
-          },
-          outputs: {
-            "zip_path" => zip_path.to_s,
-            "hit_count" => hit_count,
-            "analysis_status" => r_result.status,
-            "analysis_profile" => r_result.profile,
-            "analysis_report_path" => analysis_dir.join("analysis_report.json").to_s,
-            "analysis_documents" => dataset_writer.document_count,
-            "matching_documents" => analysis_overall(analysis_dir)["matching_documents"],
-            "searchable_characters" => dataset_writer.searchable_character_count,
-            "occurrences_per_million" => analysis_overall(analysis_dir)["occurrences_per_million"],
-            "document_prevalence" => analysis_overall(analysis_dir)["document_prevalence"]
-          }
+        overall = analysis_overall(analysis_dir)
+        outputs = {
+          "zip_path" => zip_path.to_s,
+          "hit_count" => dataset_stats["occurrences"],
+          "analysis_status" => r_result.status,
+          "analysis_profile" => r_result.profile,
+          "analysis_report_path" => analysis_dir.join("analysis_report.json").to_s,
+          "analysis_documents" => dataset_stats["documents"],
+          "matching_documents" => overall["matching_documents"],
+          "searchable_characters" => dataset_stats["searchable_characters"],
+          "occurrences_per_million" => overall["occurrences_per_million"],
+          "document_prevalence" => overall["document_prevalence"],
+          "comparison" => @prepared_search.comparison&.to_h,
+          "source_prepared_id" => source_prepared&.id,
+          "snapshot_id" => corpus_snapshot["snapshot_id"]
+        }
+        artifacts = artifact_rows(output_dir, include_zip: true)
+
+        @prepared_search.complete!(
+          progress: { "hits_found" => dataset_stats["occurrences"] },
+          outputs: outputs,
+          corpus_snapshot: corpus_snapshot,
+          artifact_manifest: artifacts
         )
 
         zip_path
@@ -112,6 +173,312 @@ module CorpusSearch
     end
 
     private
+
+    SOURCE_DATASET_FILES = %w[
+      results.csv
+      flashcards.csv
+      document_counts.csv
+      analysis_occurrences.csv
+      analysis_dataset.json
+    ].freeze
+
+    def write_query_json(path)
+      payload = {
+        "version" => 1,
+        "prepared_record_id" => @prepared_search.id,
+        "source_prepared_id" => @prepared_search.source_prepared_id,
+        "query" => @query.to_h,
+        "comparison" => @prepared_search.comparison&.to_h,
+        "live_query_url" => public_url(@query.relative_url(include_presentation: false)),
+        "frozen_result_url" => public_url(frozen_result_path)
+      }
+      path.write(JSON.pretty_generate(payload))
+    end
+
+    def write_query_urls(path)
+      path.write(<<~TEXT)
+        Source site base URL: #{public_base_url.presence || "(not configured; paths below are relative)"}
+        Live query URL: #{public_url(@query.relative_url(include_presentation: false))}
+        Frozen result URL: #{public_url(frozen_result_path)}
+      TEXT
+    end
+
+    def write_rerun_instructions(path, comparison:)
+      comparison_argument = comparison ? " comparison.csv" : ""
+      path.write(<<~TEXT)
+        Re-run the bundled standard analysis from the root of this extracted bundle:
+
+        Rscript --vanilla analysis/standard/analysis.R document_counts.csv analysis_occurrences.csv analysis/standard#{comparison_argument}
+
+        The command overwrites the generated files inside analysis/standard. It does not
+        read corpus files or metadata headers; it uses only the bundled body-only tables.
+      TEXT
+    end
+
+    def scope_totals_by_role(document_counts_path)
+      totals = Hash.new do |hash, role|
+        hash[role] = {
+          "documents" => 0,
+          "matching_documents" => 0,
+          "occurrences" => 0,
+          "searchable_characters" => 0
+        }
+      end
+
+      CSV.foreach(document_counts_path, headers: true, encoding: "bom|utf-8") do |row|
+        role = row["document_role"].to_s.presence || "unknown"
+        totals[role]["documents"] += 1
+        totals[role]["matching_documents"] += 1 if row["matching_document"].to_i.positive?
+        totals[role]["occurrences"] += row["occurrences"].to_i
+        totals[role]["searchable_characters"] += row["searchable_characters"].to_i
+      end
+
+      {
+        "documents" => totals.values.sum { |row| row["documents"] },
+        "matching_documents" => totals.values.sum { |row| row["matching_documents"] },
+        "occurrences" => totals.values.sum { |row| row["occurrences"] },
+        "searchable_characters" => totals.values.sum { |row| row["searchable_characters"] },
+        "by_document_role" => totals.sort.to_h
+      }
+    end
+
+    def public_base_url
+      configured = ENV.fetch("CORPUS_SEARCH_PUBLIC_BASE_URL", "").to_s.strip.sub(%r{/+\z}, "")
+      return configured if configured.present?
+
+      options = Rails.application.config.action_mailer.default_url_options.to_h.symbolize_keys
+      host = options[:host].to_s.strip
+      return "" if host.blank?
+
+      protocol = options[:protocol].presence || (Rails.env.production? ? "https" : "http")
+      port = options[:port].to_i
+      default_port = (protocol == "https" ? 443 : 80)
+      authority = port.positive? && port != default_port ? "#{host}:#{port}" : host
+      "#{protocol}://#{authority}"
+    end
+
+    def public_url(path)
+      base = public_base_url
+      base.present? ? "#{base}#{path}" : path
+    end
+
+    def frozen_result_path
+      key = ERB::Util.url_encode(@prepared_search.key)
+      "/corpus/search/prepared/#{@prepared_search.id}?key=#{key}"
+    end
+
+    def copy_source_datasets!(source_prepared, output_dir)
+      unless source_prepared.frozen?
+        raise ArgumentError, "Source prepared analysis is not complete and frozen"
+      end
+
+      source_dir = source_prepared.output_dir
+      SOURCE_DATASET_FILES.each do |filename|
+        source = source_dir.join(filename)
+        raise Errno::ENOENT, source.to_s unless source.file?
+
+        FileUtils.cp(source, output_dir.join(filename))
+      end
+    end
+
+    def dataset_stats_from(document_counts_path)
+      documents = 0
+      occurrences = 0
+      searchable_characters = 0
+
+      CSV.foreach(document_counts_path, headers: true, encoding: "bom|utf-8") do |row|
+        documents += 1
+        occurrences += row["occurrences"].to_i
+        searchable_characters += row["searchable_characters"].to_i
+      end
+
+      {
+        "documents" => documents,
+        "occurrences" => occurrences,
+        "searchable_characters" => searchable_characters
+      }
+    end
+
+    def source_corpus_snapshot(source_prepared)
+      snapshot = source_prepared.frozen_record&.fetch("corpus_snapshot", nil)
+      raise ArgumentError, "Source prepared analysis has no frozen corpus snapshot" if snapshot.blank?
+
+      snapshot.deep_dup
+    end
+
+    def corpus_snapshot_for(manifest)
+      digest = Digest::SHA256.new
+      digest.update("manifest-v#{Manifest::VERSION}\n")
+      digest.update("generated-at:#{manifest.generated_at}\n")
+      role_totals = Hash.new { |hash, role| hash[role] = { "documents" => 0, "source_bytes" => 0 } }
+
+      manifest.documents.each do |document|
+        digest.update(document["path"].to_s)
+        digest.update("\0")
+        digest.update(document["fingerprint"].to_s)
+        digest.update("\n")
+
+        role = document["document_role"].to_s.presence || DocumentRole.classify(document["path"])
+        role_totals[role]["documents"] += 1
+        role_totals[role]["source_bytes"] += document["size"].to_i
+      end
+      manifest_digest = digest.hexdigest
+
+      {
+        "version" => 2,
+        "snapshot_id" => manifest_digest.first(16),
+        "manifest_version" => Manifest::VERSION,
+        "manifest_generated_at" => manifest.generated_at.to_s,
+        "document_count" => manifest.documents.length,
+        "manifest_digest" => manifest_digest,
+        "manifest_by_document_role" => role_totals.sort.to_h
+      }
+    end
+
+    def write_comparison_csv(path)
+      comparison = @prepared_search.comparison
+      return nil unless comparison&.requested?
+      raise ArgumentError, comparison.errors.join(" ") unless comparison.valid?
+
+      CSV.open(path, "w", encoding: "UTF-8", write_headers: true, headers: %w[dimension left_group right_group]) do |csv|
+        csv << {
+          "dimension" => comparison.dimension,
+          "left_group" => comparison.left_group,
+          "right_group" => comparison.right_group
+        }
+      end
+      path
+    end
+
+    def write_methods(markdown_path, text_path, r_result, corpus_snapshot:, analysis_dir:)
+      report = AnalysisReport.load(analysis_dir)
+      overall = report&.overall.to_h
+      comparison = @prepared_search.comparison
+      roles = @query.document_roles.map { |role| I18n.t("corpus_search.roles.#{role}") }.join(", ")
+      included_folders = @query.include_folders.presence&.join("; ") || "all folders in the selected text layers"
+      excluded_folders = @query.exclude_folders.presence&.join("; ") || "none"
+      filters = @query.metadata_filters.select { |_key, value| value.present? }
+      filter_text = filters.any? ? filters.map { |key, value| "#{key}=#{value}" }.join("; ") : "none"
+
+      comparison_section = if comparison
+        effects = report&.comparison_effects.to_a.to_h { |row| [row["measure"], row["value"]] }
+        observed_ratio = effects["rate_ratio_left_over_right"].to_s.presence
+        <<~TEXT
+          ## Scope comparison
+
+          The same text query was compared across the **#{comparison.dimension}** groups
+          **#{comparison.left_group}** and **#{comparison.right_group}**. Rates use searchable
+          body characters as exposure. The exported effect table reports the left/right rate
+          ratio, its approximate 95% Poisson interval, the absolute rate difference per million
+          characters, the document-prevalence difference, and a one-degree-of-freedom Poisson
+          log-likelihood statistic.#{observed_ratio ? " The observed left/right rate ratio was #{observed_ratio}." : " Exposure-based effect estimates were unavailable because at least one scope had no searchable body characters."}
+        TEXT
+      else
+        ""
+      end
+
+      markdown = <<~MARKDOWN
+        # Methods
+
+        A search for **#{@query.display_label}** was run against the Fanya Hanwen Corpus
+        snapshot `#{corpus_snapshot["snapshot_id"]}` (manifest generated
+        #{corpus_snapshot["manifest_generated_at"]}). The search mode was
+        `#{@query.mode}`. Punctuation handling was `#{@query.punctuation}`, and character
+        matching was `#{@query.character_equivalence}` using registry version
+        `#{@query.character_equivalence_version}`.
+
+        Metadata headers were excluded before matching and never contributed to snippets,
+        occurrence counts, or denominators. The selected text layers were: #{roles}.
+        Included folders: #{included_folders}. Excluded folders: #{excluded_folders}.
+        Additional metadata filters: #{filter_text}.
+
+        The analysis contained #{overall["documents"] || 0} documents,
+        #{overall["searchable_characters"] || 0} searchable body characters, and
+        #{overall["occurrences"] || 0} matched occurrences. Normalized frequency was
+        calculated as occurrences divided by searchable body characters, multiplied by
+        1,000,000. Document prevalence was calculated as matching documents divided by
+        all documents in scope.
+
+        R was invoked through the application-owned `standard_analysis` profile with
+        `Rscript --vanilla`. Runtime: #{r_result.r_version || "unavailable"}. The exact
+        script, input tables, output tables, figures, warnings, timing, and `sessionInfo()`
+        are included in this bundle.
+
+        #{comparison_section}
+      MARKDOWN
+
+      markdown_path.write(markdown)
+      text_path.write(markdown.gsub(/^#+\s*/, "").gsub(/\*\*/, "").gsub(/`/, ""))
+    end
+
+    def write_citation(path, corpus_snapshot:)
+      comparison = @prepared_search.comparison
+      description = comparison ? "#{@query.display_label}; #{comparison.display_label}" : @query.display_label
+      path.write(<<~TEXT)
+        Suggested citation
+        ==================
+
+        Fanya Hanwen Corpus. "Corpus search analysis: #{description}."
+        Prepared record #{@prepared_search.id}, corpus snapshot #{corpus_snapshot["snapshot_id"]}
+        (manifest generated #{corpus_snapshot["manifest_generated_at"]}), accessed and exported
+        #{Time.now.utc.iso8601}.
+
+        Live query URL:
+        #{public_url(@query.relative_url(include_presentation: false))}
+
+        Frozen result URL:
+        #{public_url(frozen_result_path)}
+      TEXT
+    end
+
+    def write_research_manifest(path, output_dir, corpus_snapshot:)
+      files = artifact_rows(
+        output_dir,
+        include_zip: false,
+        exclude: [path.basename.to_s, "checksums.sha256"]
+      )
+      payload = {
+        "version" => 1,
+        "generated_at" => Time.now.utc.iso8601,
+        "prepared_record_id" => @prepared_search.id,
+        "query" => @query.to_h,
+        "comparison" => @prepared_search.comparison&.to_h,
+        "live_query_url" => public_url(@query.relative_url(include_presentation: false)),
+        "frozen_result_url" => public_url(frozen_result_path),
+        "corpus_snapshot" => corpus_snapshot,
+        "files" => files
+      }
+      path.write(JSON.pretty_generate(payload))
+    end
+
+    def write_checksums(path, output_dir)
+      rows = artifact_rows(
+        output_dir,
+        include_zip: false,
+        exclude: [path.basename.to_s]
+      )
+      path.write(rows.map { |row| "#{row.fetch("sha256")}  #{row.fetch("path")}" }.join("
+") + "
+")
+    end
+
+    def artifact_rows(output_dir, include_zip:, exclude: [])
+      root = Pathname(output_dir)
+      excluded = Array(exclude)
+      Dir.glob(root.join("**", "*"), File::FNM_DOTMATCH).sort.filter_map do |entry|
+        file = Pathname(entry)
+        next unless file.file?
+        relative = file.relative_path_from(root).to_s
+        next if excluded.include?(relative)
+        next if !include_zip && file.extname == ".zip"
+
+        {
+          "path" => relative,
+          "bytes" => file.size,
+          "sha256" => Digest::SHA256.file(file).hexdigest
+        }
+      end
+    end
 
     def write_streamed_datasets(result_path, flashcard_path, document_path, occurrence_path, dataset_writer)
       hit_count = 0
@@ -259,19 +626,23 @@ module CorpusSearch
       report ? report.overall : {}
     end
 
-    def write_metadata(path, hit_count, manifest:, dataset_writer:, r_result:)
+    def write_metadata(path, hit_count, corpus_snapshot:, dataset_stats:, r_result:)
       metadata = {
-        "version" => 7,
+        "version" => 8,
         "generated_at" => Time.now.utc.iso8601,
+        "prepared_record_id" => @prepared_search.id,
+        "source_prepared_id" => @prepared_search.source_prepared_id,
         "query" => @query.to_h,
+        "comparison" => @prepared_search.comparison&.to_h,
         "live_query_path" => @query.relative_url(include_presentation: false),
-        "manifest_generated_at" => manifest.generated_at.to_s,
+        "corpus_snapshot" => corpus_snapshot,
+        "manifest_generated_at" => corpus_snapshot["manifest_generated_at"],
         "hit_count" => hit_count,
         "analysis_dataset" => {
           "body_only" => true,
-          "documents" => dataset_writer.document_count,
-          "searchable_characters" => dataset_writer.searchable_character_count,
-          "occurrences" => dataset_writer.occurrence_count,
+          "documents" => dataset_stats["documents"],
+          "searchable_characters" => dataset_stats["searchable_characters"],
+          "occurrences" => dataset_stats["occurrences"],
           "file" => "document_counts.csv",
           "occurrence_file" => "analysis_occurrences.csv"
         },
@@ -282,6 +653,17 @@ module CorpusSearch
           "duration_seconds" => r_result.duration_seconds,
           "directory" => "analysis/standard",
           "report" => "analysis/standard/analysis_report.json"
+        },
+        "reproducibility" => {
+          "query" => "query.json",
+          "query_urls" => "query_urls.txt",
+          "corpus_snapshot" => "corpus_snapshot.json",
+          "rerun_instructions" => "RERUN_ANALYSIS.txt",
+          "methods_markdown" => "METHODS.md",
+          "methods_text" => "METHODS.txt",
+          "citation" => "CITATION.txt",
+          "research_manifest" => "research_manifest.json",
+          "checksums" => "checksums.sha256"
         },
         "columns" => {
           "results_csv" => RESULT_COLUMNS,
@@ -305,11 +687,20 @@ module CorpusSearch
       path.write(JSON.pretty_generate(metadata))
     end
 
-    def write_research_readme(path, r_result)
+    def write_research_readme(path, r_result, corpus_snapshot:)
+      comparison_note = if @prepared_search.comparison
+        "comparison.csv          Reproducible two-scope comparison definition.
+"
+      else
+        ""
+      end
+
       path.write(<<~TEXT)
         Fanya Hanwen Corpus search and analysis export
         ===============================================
 
+        Prepared record: #{@prepared_search.id}
+        Corpus snapshot: #{corpus_snapshot["snapshot_id"]}
         Query: #{@query.display_label}
         Search mode: #{@query.mode}
         Character matching: #{@query.character_equivalence}
@@ -327,7 +718,16 @@ module CorpusSearch
         analysis_occurrences.csv Compact occurrence offsets used by R. It omits
                                  snippets and repeated descriptive metadata.
         analysis_dataset.json    Dataset provenance and query definition.
+        query.json               Normalized query and comparison definition.
+        query_urls.txt           Live and frozen URLs for this record.
+        corpus_snapshot.json     Immutable corpus and selected-scope fingerprint.
+        RERUN_ANALYSIS.txt       Exact command for reproducing the R outputs.
         metadata.json            Export-wide provenance.
+        #{comparison_note}METHODS.md               Citation-ready methods description.
+        METHODS.txt              Plain-text copy of the methods description.
+        CITATION.txt             Suggested citation and record identifiers.
+        research_manifest.json   Query, corpus snapshot, and artifact hashes.
+        checksums.sha256         SHA-256 checksums for bundle verification.
 
         Standard R analysis
         -------------------
@@ -338,12 +738,10 @@ module CorpusSearch
         analysis/standard/*_summary.csv
                                  Complete grouped tables for period, nation,
                                  region, author, folder branch, and corpus layer.
-        analysis/standard/top_documents.csv
-                                 Documents contributing the largest hit counts.
-        analysis/standard/matches_per_document.csv
-                                 Distribution of occurrences across documents.
-        analysis/standard/proximity_spans.csv
-                                 Occurrence-level spans for proximity searches.
+        analysis/standard/comparison_summary.csv
+                                 The two selected scopes, when comparison was requested.
+        analysis/standard/comparison_effects.csv
+                                 Rate ratios, differences, interval, and likelihood statistic.
         analysis/standard/figures/*.svg
                                  Scalable browser and publication figures.
         analysis/standard/figures/*.png
@@ -352,6 +750,12 @@ module CorpusSearch
                                  Exact R runtime and loaded base packages.
         analysis/standard/run_metadata.json
                                  Timing, limits, command, inputs, and status.
+
+        Re-running the analysis
+        -------------------------
+        See RERUN_ANALYSIS.txt. The command uses only the body-only tables in this
+        bundle and the copied analysis.R script. No access to the live corpus is
+        required.
 
         Metadata headers were not searched and are not included in searchable-
         character denominators. Descriptive metadata columns only label corpus

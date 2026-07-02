@@ -122,6 +122,7 @@ en:
         results: Results
         analysis: Analysis
         query_details: Query details
+        comparison: Compare scopes
       overview: Analysis overview
       body_only_note: All rates use searchable body characters. Metadata headers never contribute to matches or denominators.
       r_runtime: R analysis
@@ -137,6 +138,13 @@ en:
       warnings: Analysis notes and warnings
       reproducibility: Reproducibility files
       reproducibility_note: The ZIP includes the exact R script, body-only input tables, every grouped CSV, SVG and PNG figures, warnings, timing, and sessionInfo().
+      reproducibility_note_phase8: The frozen bundle includes the exact R script, body-only input tables, aggregate CSV files, figures, method text, citation text, a corpus snapshot identifier, SHA-256 checksums, warnings, timing, and sessionInfo().
+      snapshot_id: Corpus snapshot
+      record_id: Prepared record
+      completed_at: Completed
+      artifact_count: Verified artifacts
+      methods_summary: Citation-ready methods summary
+      suggested_citation: Suggested citation
       unavailable: R analysis is unavailable
       unavailable_note: The search export completed, but no analysis report was produced. The ZIP still contains the input data, exact R script, warnings, and runtime metadata so the analysis can be run elsewhere.
       metrics:
@@ -159,6 +167,38 @@ en:
         occurrences: Occurrences
         share: Share of all hits
         per_million: Per million
+    comparison:
+      heading: Compare two scopes
+      introduction: Apply the same text query to two groups already present in this frozen analysis. The comparison reuses its body-only dataset and runs a new, reproducible R analysis without rescanning the corpus.
+      dimension_note: Compared by %{dimension}.
+      dimension: Compare by
+      left_scope: Scope A
+      right_scope: Scope B
+      choose_group: Choose a group
+      prepare: Prepare comparison
+      not_enough_groups: This analysis does not contain two groups in any supported comparison dimension.
+      effect_sizes: Comparison statistics and effect sizes
+      statistics_note: The left/right rate ratio uses searchable body characters as exposure. The likelihood statistic tests equality of the two occurrence rates; it does not establish historical causation.
+      table:
+        scope: Scope
+      effects:
+        rate_ratio_left_over_right: Rate ratio (A / B)
+        rate_ratio_ci_low_95: Rate-ratio 95% interval, lower
+        rate_ratio_ci_high_95: Rate-ratio 95% interval, upper
+        log2_rate_ratio: Log2 rate ratio
+        rate_difference_per_million: Rate difference per million characters
+        document_prevalence_difference_percentage_points: Document-prevalence difference
+        document_prevalence_ratio: Document-prevalence ratio
+        poisson_log_likelihood_g2: Poisson log-likelihood G²
+        poisson_log_likelihood_p_value: Poisson log-likelihood p-value
+      errors:
+        dimension: Choose a supported comparison dimension.
+        left_group: Choose Scope A.
+        right_group: Choose Scope B.
+        distinct: Scope A and Scope B must be different.
+        source_incomplete: The source analysis must be complete and frozen before it can be compared.
+        analysis_unavailable: The source analysis does not contain a readable R report.
+        group_missing: '%{group} is not present in the selected comparison dimension.'
     statuses:
       queued: Queued
       running: Running
@@ -167,6 +207,7 @@ en:
     stages:
       queued: Queued
       searching: Searching
+      copying_source_dataset: Copying frozen analysis dataset
       building_analysis_dataset: Building analysis dataset
       running_r: Running R analysis
       complete: Complete
