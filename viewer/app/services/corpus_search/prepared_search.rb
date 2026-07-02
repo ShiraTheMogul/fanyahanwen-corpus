@@ -56,12 +56,14 @@ module CorpusSearch
     def write_initial!(query:, locale:)
       FileUtils.mkdir_p(@dir)
       @payload = {
-        "version" => 1,
+        "version" => 2,
         "id" => safe_id,
         "key_digest" => digest(@key),
         "status" => "queued",
         "locale" => locale.to_s,
         "query" => query.to_h,
+        "live_query_path" => query.relative_url(include_presentation: false),
+        "normalization_profile_version" => query.normalization_profile_version,
         "created_at" => Time.now.utc.iso8601,
         "updated_at" => Time.now.utc.iso8601,
         "progress" => {
@@ -88,20 +90,7 @@ module CorpusSearch
     end
 
     def query
-      hash = @payload.fetch("query")
-      Query.new(
-        mode: hash["mode"],
-        term_a: hash["term_a"],
-        term_b: hash["term_b"],
-        distance: hash["distance"],
-        context: hash["context"],
-        order: hash["order"],
-        locale: locale,
-        filters: hash["filters"] || {},
-        document_roles: hash["document_roles"],
-        include_folders: hash["include_folders"],
-        exclude_folders: hash["exclude_folders"]
-      )
+      Query.from_h(@payload.fetch("query"), locale: locale)
     end
 
     def locale

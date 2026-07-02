@@ -1,20 +1,17 @@
 # frozen_string_literal: true
 
 module CorpusSearch
-  # Character-aware string operations.
-  #
-  # Ruby strings are UTF-8 here, but offsets can still be confusing. These helpers
-  # intentionally work in character indexes, not byte indexes.
+  # Character-aware string operations. Offsets are character indexes, not bytes.
   module SearchText
     module_function
 
-    def chars_for(text)
-      text.to_s.each_char.to_a
+    def chars_for(text_or_chars)
+      text_or_chars.is_a?(Array) ? text_or_chars : text_or_chars.to_s.each_char.to_a
     end
 
-    def positions_of(text_or_chars, term)
-      chars = text_or_chars.is_a?(Array) ? text_or_chars : chars_for(text_or_chars)
-      term_chars = chars_for(term)
+    def positions_of(text_or_chars, term_or_chars)
+      chars = chars_for(text_or_chars)
+      term_chars = chars_for(term_or_chars)
       return [] if term_chars.empty? || chars.empty? || term_chars.length > chars.length
 
       positions = []

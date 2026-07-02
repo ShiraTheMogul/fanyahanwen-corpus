@@ -7,12 +7,14 @@ require "zip"
 require "time"
 
 module CorpusSearch
-  # Writes a complete prepared search result as a mobile-friendly .zip.
+  # Writes a complete prepared result as a mobile-friendly research ZIP.
   class ExportWriter
     RESULT_COLUMNS = %w[
-      query mode term_a term_b distance order snippet matched_text left_context right_context
+      query mode query_text terms maximum_span order punctuation character_equivalence
+      normalization_profile_version snippet matched_text left_context right_context
       title work author date_text year_start year_end nation period region path folder_path
-      document_role canonical_parent_path doc_id start_offset end_offset term_a_offset term_b_offset
+      document_role canonical_parent_path doc_id start_offset end_offset
+      search_start_offset search_end_offset term_a_offset term_b_offset
     ].freeze
 
     FLASHCARD_COLUMNS = %w[front back target snippet source tags].freeze
@@ -100,14 +102,20 @@ module CorpusSearch
           @query.display_label
         when "mode"
           @query.mode
-        when "term_a"
-          @query.term_a
-        when "term_b"
-          @query.term_b
-        when "distance"
-          @query.proximity? ? @query.distance : nil
+        when "query_text"
+          @query.exact? ? @query.query_text : nil
+        when "terms"
+          @query.proximity? ? JSON.generate(@query.terms) : nil
+        when "maximum_span"
+          @query.proximity? ? @query.maximum_span : nil
         when "order"
           @query.proximity? ? @query.order : nil
+        when "punctuation"
+          @query.punctuation
+        when "character_equivalence"
+          @query.character_equivalence
+        when "normalization_profile_version"
+          @query.normalization_profile_version
         else
           hit[column]
         end
@@ -115,7 +123,7 @@ module CorpusSearch
     end
 
     def flashcard_row(hit)
-      target = @query.term_a
+      target = @query.exact? ? @query.query_text : @query.terms.join(" · ")
       source = [hit["title"], hit["author"], hit["period"], hit["nation"], hit["path"]].reject(&:blank?).join(" | ")
       tags = ["corpus", tag_value("target", target), tag_value("period", hit["period"]), tag_value("nation", hit["nation"])].compact.join(" ")
 
@@ -140,6 +148,7 @@ module CorpusSearch
       metadata = {
         "generated_at" => Time.now.utc.iso8601,
         "query" => @query.to_h,
+        "live_query_path" => @query.relative_url(include_presentation: false),
         "hit_count" => hit_count,
         "columns" => {
           "results_csv" => RESULT_COLUMNS,

@@ -1,52 +1,80 @@
-# PLACEHOLDER CATALOGUE: translate values only; do not rename keys.
 csp:
   corpus_search:
     title: Corpus Search
-    introduction: File-native search over the canonical corpus files. Exact and proximity
-      searches are supported first; public regex is deliberately avoided.
+    introduction: Search corpus body text directly. Metadata headers never produce hits or counts.
     form:
-      mode: Mode
-      term_a: Term A
-      term_b: Term B
-      distance: Distance
+      mode: Search mode
+      search_text: Search text
+      find_all_terms: Find both terms within one passage
+      maximum_span: Maximum span
       order: Order
+      ignore_punctuation: Ignore punctuation and spacing
+      body_only_rule: Metadata headers are never searched.
+      additional_filters: Scope and additional filters
+      include_folders: Search within folders
+      exclude_folders: Exclude folders
+      folder_hint: Enter one corpus-relative folder path per line. Descendant folders are included.
       context_characters: Context characters
       results_per_page: Results per page
-      metadata_filters: Metadata filters
       nation: Nation
       period: Period
       region: Region
       author: Author
       year_from: Year from
       year_to: Year to
+      text_witnesses: Text witnesses and corpus layers
+      text_witnesses_hint: Canonical texts are searched by default. Other layers are included only when selected here.
     modes:
-      exact: Exact
+      exact: Exact sequence
       proximity: Proximity
     orders:
-      either: Either order
-      a_before_b: A before B
-      b_before_a: B before A
+      any: Any order
+      entered: Entered order
+    punctuation:
+      ignore: Ignored for matching
+      respect: Matched exactly
+    characters:
+      exact: Exact character forms
+      common: Common character variants
+      broad: Broad script-equivalent matching
     placeholders:
-      term_a: 舜
-      term_b: 孝
+      sequence: 關關雎鳩在河之洲
+      term: Term %{number}
+      folder: 中國漢文/clean/周朝
       nation: 日本 / 越南 / 中國...
       period: 江戶時代 / 大越...
     actions:
       search: Search
       prepare_export: Prepare full ZIP export in background
-      open_source_text: Open source text
+      open_source_text: Open source text at this match
       download_zip: Download ZIP
+      copy_live_url: Copy live query URL
+      copy_frozen_url: Copy frozen result URL
+      open_live_query: Open live query
+      copied: Copied
     results:
-      summary: 'Showing %{visible} result(s) on this page. Cached/checked candidate
-        files: %{candidates}. Files newly scanned for this request: %{scanned}.'
-      truncated: This interactive search stopped at %{limit} hits. Prepare a background
-        export for the complete result set.
+      summary: 'Showing %{visible} result(s) on this page. Cached/checked candidate files: %{candidates}. Files newly scanned for this request: %{scanned}.'
+      truncated: This interactive search stopped at %{limit} hits. Prepare a background export for the complete result set.
       complete_count: 'Complete interactive result count: %{count}.'
-      offset: offset %{start}–%{finish}
+      offset: body offset %{start}–%{finish}
       none: No results found.
       chars_omitted:
-        one: "%{count} character omitted"
-        other: "%{count} characters omitted"
+        one: '%{count} character omitted'
+        other: '%{count} characters omitted'
+    query_details:
+      heading: Query details
+      mode: Mode
+      query: Query
+      punctuation: Punctuation
+      character_matching: Character matching
+      text_witnesses: Text witnesses
+      folders: Folder scope
+      metadata: Metadata headers
+      profile: Normalization profile version
+      live_url: Live query URL
+      never_searched: Never searched or counted
+      all_selected_folders: All folders in the selected corpus layers
+      excluded_folders: Excluded folders
     pagination:
       aria_label: Search result pages
       previous: Previous
@@ -58,8 +86,7 @@ csp:
       query: Query
       progress: 'Stage: %{stage}. Files: %{scanned} / %{total}. Hits found: %{hits}.'
       zip_contents: The ZIP contains results.csv, flashcards.csv, and metadata.json.
-      refresh_notice: This page will refresh every %{seconds} seconds while the job
-        is running.
+      refresh_notice: This page will refresh every %{seconds} seconds while the job is running.
     statuses:
       queued: Queued
       running: Running
@@ -71,29 +98,33 @@ csp:
       complete: Complete
       failed: Failed
     notices:
-      queued: The large search has been queued. You can keep using the site while
-        it runs.
+      queued: The large search has been queued. You can keep using the site while it runs.
     errors:
-      enter_term: Enter a search term.
-      enter_second_term: Enter a second term for proximity search.
+      enter_sequence: Enter an exact sequence to search for.
+      enter_two_terms: Enter two terms for a proximity search.
       term_too_long: Search terms cannot be longer than %{max} characters.
       search_failed: 'Search failed: %{message}'
       prepared_not_found: Prepared search not found
       download_not_ready: Download is not ready yet
+      only_two_terms_phase_two: This phase supports two proximity terms; arbitrary term lists arrive in the next search phase.
     query:
-      proximity_label: "%{term_a} near %{term_b} within %{distance} characters"
+      proximity_label: '%{terms} within %{distance} searchable characters'
     export:
       flashcards:
-        front: |-
-          Translate or explain %{target} in context:
-          %{snippet}
-        back: |-
-          Target: %{target}
-          Source: %{source}
+        front: 'Translate or explain %{target} in context:
+
+          %{snippet}'
+        back: 'Target: %{target}
+
+          Source: %{source}'
       metadata_notes:
-        blank_years: Blank year_start/year_end cells mean that the corpus metadata
-          did not contain parseable year data.
-        offsets: Offsets are character offsets into the body text after front matter
-          is removed.
-        canonical_source: The source .txt files remain the canonical corpus; this
-          export is derived search output.
+        blank_years: Blank year_start/year_end cells mean that the corpus metadata did not contain parseable year data.
+        offsets: Offsets are character offsets into the body text after metadata and separator lines are removed.
+        canonical_source: The source .txt files remain the canonical corpus; this export is derived search output.
+    roles:
+      canonical: Canonical text
+      textual_variant: Textual variant witness
+      raw: Raw source scrape
+      derived_reading: Derived reading (kanbun/hanmun/hanvan)
+      translation: Translation
+      annotation: Annotation

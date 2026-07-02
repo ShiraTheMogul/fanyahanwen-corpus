@@ -35,6 +35,8 @@ export default class extends Controller {
 
     this._originalHTML = this.contentTarget.innerHTML
     this._strippedHTML = null
+    this._searchRange = this._readSearchRange()
+    this._searchRangeScrolled = false
     this._state = this._loadState()
     this._punct = this._loadPunct()
     this._justToggledOrientation = false
@@ -726,9 +728,43 @@ export default class extends Controller {
         this.viewboxTarget.scrollLeft = wantRight ? this.viewboxTarget.scrollWidth : 0
       }
       this._justToggledOrientation = false
+      this._applySearchHighlight(!this._searchRangeScrolled)
       window.dispatchEvent(new CustomEvent("corpus-reader-applied"))
     })
 
+  }
+
+
+  _readSearchRange() {
+    const params = new URLSearchParams(window.location.search)
+    const start = Number.parseInt(params.get("start") || "", 10)
+    const end = Number.parseInt(params.get("end") || "", 10)
+
+    if (!Number.isFinite(start) || !Number.isFinite(end) || start < 0 || end <= start) return null
+    return { start, end }
+  }
+
+  _applySearchHighlight(shouldScroll) {
+    this.contentTarget.querySelectorAll(".cch.corpus-search-hit").forEach((element) => {
+      element.classList.remove("corpus-search-hit")
+    })
+
+    if (!this._searchRange) return
+
+    let first = null
+    this.contentTarget.querySelectorAll(".cch[data-corpus-idx]").forEach((element) => {
+      const index = Number.parseInt(element.dataset.corpusIdx || "", 10)
+      if (!Number.isFinite(index)) return
+      if (index < this._searchRange.start || index >= this._searchRange.end) return
+
+      element.classList.add("corpus-search-hit")
+      first ||= element
+    })
+
+    if (shouldScroll && first) {
+      first.scrollIntoView({ block: "center", inline: "center", behavior: "auto" })
+      this._searchRangeScrolled = true
+    }
   }
 
 

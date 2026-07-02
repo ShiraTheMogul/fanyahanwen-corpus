@@ -3,28 +3,40 @@
 <% if @prepared_search %>
   <% payload = @prepared_search.payload %>
   <section class="corpus-search-summary">
-    <p><%= t("corpus_search.prepared.status") %>: <strong><%= t("corpus_search.statuses.#{payload["status"]}", default: payload["status"].to_s.humanize) %></strong></p>
-    <p><%= t("corpus_search.prepared.query") %>: <strong><%= @prepared_search.query.display_label %></strong></p>
+    <div>
+      <p><%= t("corpus_search.prepared.status") %>: <strong><%= t("corpus_search.statuses.#{payload["status"]}", default: payload["status"].to_s.humanize) %></strong></p>
+      <p><%= t("corpus_search.prepared.query") %>: <strong><%= @prepared_search.query.display_label %></strong></p>
 
-    <% progress = payload["progress"] || {} %>
-    <p>
-      <%= t("corpus_search.prepared.progress",
-            stage: t("corpus_search.stages.#{progress["stage"]}", default: progress["stage"].to_s.humanize),
-            scanned: progress["files_scanned"] || 0,
-            total: progress["files_total"] || 0,
-            hits: progress["hits_found"] || 0) %>
-    </p>
-
-    <% if @prepared_search.complete? %>
+      <% progress = payload["progress"] || {} %>
       <p>
-        <%= link_to t("corpus_search.actions.download_zip"), "/corpus/search/prepared/#{@prepared_search.id}/download?key=#{ERB::Util.url_encode(@prepared_search.key)}", class: "corpus-search-button" %>
+        <%= t("corpus_search.prepared.progress",
+              stage: t("corpus_search.stages.#{progress["stage"]}", default: progress["stage"].to_s.humanize),
+              scanned: progress["files_scanned"] || 0,
+              total: progress["files_total"] || 0,
+              hits: progress["hits_found"] || 0) %>
       </p>
-      <p><%= t("corpus_search.prepared.zip_contents") %></p>
-    <% elsif @prepared_search.failed? %>
-      <p class="corpus-search-error"><%= payload["error_message"] %></p>
-    <% else %>
-      <p><%= t("corpus_search.prepared.refresh_notice", seconds: 10) %></p>
-      <meta http-equiv="refresh" content="10">
-    <% end %>
+    </div>
+
+    <div class="corpus-search-summary-actions">
+      <%= link_to t("corpus_search.actions.open_live_query"), @live_query_url, class: "corpus-search-button corpus-search-button-secondary" %>
+
+      <span data-controller="copy-url" data-copy-url-url-value="<%= @frozen_result_url %>" data-copy-url-success-label-value="<%= t("corpus_search.actions.copied") %>">
+        <button type="button" class="corpus-search-button corpus-search-button-secondary" data-copy-url-target="button" data-action="copy-url#copy">
+          <%= t("corpus_search.actions.copy_frozen_url") %>
+        </button>
+      </span>
+    </div>
   </section>
+
+  <% if @prepared_search.complete? %>
+    <p>
+      <%= link_to t("corpus_search.actions.download_zip"), "/corpus/search/prepared/#{@prepared_search.id}/download?key=#{ERB::Util.url_encode(@prepared_search.key)}", class: "corpus-search-button" %>
+    </p>
+    <p><%= t("corpus_search.prepared.zip_contents") %></p>
+  <% elsif @prepared_search.failed? %>
+    <p class="corpus-search-error"><%= payload["error_message"] %></p>
+  <% else %>
+    <p><%= t("corpus_search.prepared.refresh_notice", seconds: 10) %></p>
+    <meta http-equiv="refresh" content="10">
+  <% end %>
 <% end %>

@@ -66,12 +66,30 @@ module GrammarHelper
 
   def grammar_search_url(search)
     values = Grammar::MarkdownDocument.stringify_keys(search.to_h)
+    mode = values["mode"].presence || "exact"
+    first_term = values["term_a"].to_s
+    second_term = values["term_b"].to_s
+    order = values["order"].to_s
+
+    # Grammar articles retain their compact term_a/term_b authoring schema, but
+    # links must use the public corpus-search URL schema. For b_before_a, reverse
+    # the terms and then ask for entered order; the search meaning is unchanged.
+    if mode == "proximity" && order == "b_before_a"
+      first_term, second_term = second_term, first_term
+      order = "entered"
+    elsif mode == "proximity"
+      order = order == "a_before_b" ? "entered" : "any"
+    end
+
     params = {
-      mode: values["mode"].presence || "exact",
-      term_a: values["term_a"],
-      term_b: values["term_b"],
-      order: values["order"],
-      distance: values["distance"],
+      mode: mode,
+      q: (first_term if mode == "exact"),
+      terms: ([first_term, second_term] if mode == "proximity"),
+      span: (values["distance"] if mode == "proximity"),
+      order: (order if mode == "proximity"),
+      punctuation: "ignore",
+      characters: "exact",
+      roles: ["canonical"],
       context: values["context"],
       nation: values["nation"],
       period: values["period"],

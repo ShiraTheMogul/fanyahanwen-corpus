@@ -1459,3 +1459,15 @@ html.cv-annotations-off .corpus-textflow .ne-ambiguous-character {
     max-width: none;
   }
 }
+
+/* Search-result deep links mark the original body-offset range. */
+.corpus-textflow .cch.corpus-search-hit {
+  background: #ffe59a;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(116, 82, 0, 0.18);
+}
+
+.corpus-viewbox.theme-dark .corpus-textflow .cch.corpus-search-hit {
+  background: #705b12;
+  color: #fff8d6;
+}

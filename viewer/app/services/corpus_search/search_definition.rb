@@ -1,24 +1,31 @@
 # frozen_string_literal: true
 
 module CorpusSearch
-  # Immutable search meaning. Pagination and snippet presentation deliberately
-  # live elsewhere so later UI changes do not redefine what counts as a match.
+  # Immutable search meaning. Pagination and snippet presentation live in
+  # PresentationOptions so display changes do not redefine a match.
   class SearchDefinition
-    SCHEMA_VERSION = 2
+    SCHEMA_VERSION = 3
     MODES = %w[exact proximity].freeze
-    ORDERS = %w[either a_before_b b_before_a].freeze
+    ORDERS = %w[any entered].freeze
+    PUNCTUATION_MODES = NormalizedText::PUNCTUATION_MODES
+    CHARACTER_EQUIVALENCE_LEVELS = %w[exact common broad].freeze
+    IMPLEMENTED_CHARACTER_EQUIVALENCE_LEVELS = %w[exact].freeze
 
-    attr_reader :mode, :term_a, :term_b, :distance, :order, :metadata_filters,
+    attr_reader :mode, :query_text, :terms, :maximum_span, :order,
+                :punctuation, :character_equivalence, :metadata_filters,
                 :document_roles, :include_folders, :exclude_folders
 
-    def initialize(mode: "exact", term_a: nil, term_b: nil, distance: 200,
-                   order: "either", metadata_filters: {}, document_roles: nil,
+    def initialize(mode: "exact", query_text: nil, terms: nil, maximum_span: 200,
+                   order: "any", punctuation: "ignore", character_equivalence: "exact",
+                   metadata_filters: {}, document_roles: nil,
                    include_folders: nil, exclude_folders: nil)
       @mode = MODES.include?(mode.to_s) ? mode.to_s : "exact"
-      @term_a = term_a.to_s.strip
-      @term_b = term_b.to_s.strip
-      @distance = clamp_integer(distance, default: 200, min: 1, max: 5_000)
-      @order = ORDERS.include?(order.to_s) ? order.to_s : "either"
+      @query_text = query_text.to_s.strip
+      @terms = normalize_terms(terms).freeze
+      @maximum_span = clamp_integer(maximum_span, default: 200, min: 1, max: 5_000)
+      @order = ORDERS.include?(order.to_s) ? order.to_s : "any"
+      @punctuation = PUNCTUATION_MODES.include?(punctuation.to_s) ? punctuation.to_s : "ignore"
+      @character_equivalence = IMPLEMENTED_CHARACTER_EQUIVALENCE_LEVELS.include?(character_equivalence.to_s) ? character_equivalence.to_s : "exact"
       @metadata_filters = normalize_metadata_filters(metadata_filters).freeze
       @document_roles = normalize_roles(document_roles).freeze
       @include_folders = normalize_paths(include_folders).freeze
@@ -26,12 +33,12 @@ module CorpusSearch
       freeze
     end
 
-    def proximity?
-      @mode == "proximity"
-    end
+    def exact? = @mode == "exact"
+    def proximity? = @mode == "proximity"
+    def ignore_punctuation? = @punctuation == "ignore"
 
-    def exact?
-      @mode == "exact"
+    def effective_terms
+      exact? ? [@query_text] : @terms
     end
 
     def manifest_filters
@@ -46,11 +53,17 @@ module CorpusSearch
       {
         "schema_version" => SCHEMA_VERSION,
         "mode" => @mode,
-        "terms" => [@term_a, (@term_b if proximity?)].compact,
+        "query_text" => exact? ? @query_text : nil,
+        "terms" => proximity? ? @terms : nil,
         "proximity" => proximity? ? {
-          "maximum_span" => @distance,
+          "maximum_span" => @maximum_span,
           "order" => @order
         } : nil,
+        "matching" => {
+          "punctuation" => @punctuation,
+          "character_equivalence" => @character_equivalence,
+          "normalization_profile_version" => NormalizationProfile.current.version
+        },
         "scope" => {
           "document_roles" => @document_roles,
           "include_folders" => @include_folders,
@@ -62,6 +75,10 @@ module CorpusSearch
 
     private
 
+    def normalize_terms(values)
+      Array(values).map { |value| value.to_s.strip }.reject(&:empty?).first(10)
+    end
+
     def normalize_metadata_filters(filters)
       filters.to_h.transform_keys(&:to_s).transform_values { |value| value.to_s.strip }
     end
@@ -72,7 +89,9 @@ module CorpusSearch
         .select { |role| DocumentRole::SEARCHABLE_ROLES.include?(role) }
         .uniq
 
-      selected.presence || DocumentRole::DEFAULT_ROLES.dup
+      return DocumentRole::DEFAULT_ROLES.dup if selected.empty?
+
+      DocumentRole::SEARCHABLE_ROLES.select { |role| selected.include?(role) }
     end
 
     def normalize_paths(values)
@@ -80,6 +99,7 @@ module CorpusSearch
         .map { |path| path.strip.tr("\\", "/").sub(%r{\A/+}, "").sub(%r{/+\z}, "") }
         .reject(&:empty?)
         .uniq
+        .sort
     end
 
     def clamp_integer(value, default:, min:, max:)

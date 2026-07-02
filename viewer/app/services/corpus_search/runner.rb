@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
 require "set"
+
 module CorpusSearch
-  # Performs literal exact/proximity searches over canonical corpus files.
-  #
-  # It searches files, but it does not make the database the source of truth.
+  # Performs exact-sequence and two-term proximity searches over corpus bodies.
+  # Every body comes from DocumentReader, so metadata can never produce a hit.
   class Runner
     DEFAULT_INTERACTIVE_LIMIT = 1_000
+    MAX_CACHED_CONTEXT = 200
 
     def initialize(query:, manifest: nil, cache_store: CacheStore.new)
       @query = query
@@ -48,7 +49,7 @@ module CorpusSearch
       hits = sort_hits(hits)
       total = hits.length
       start_index = (@query.page - 1) * @query.per_page
-      paginated = hits[start_index, @query.per_page].to_a
+      paginated = hits[start_index, @query.per_page].to_a.map { |hit| present_hit(hit) }
 
       ResultPage.new(
         query: @query,
@@ -86,7 +87,7 @@ module CorpusSearch
 
         sort_hits(per_file_hits).each do |hit|
           hit_count += 1
-          yield hit if block_given?
+          yield present_hit(hit) if block_given?
         end
 
         progress&.call(index + 1, docs.length, hit_count)
@@ -115,77 +116,114 @@ module CorpusSearch
 
     def candidate_documents
       docs = @manifest.filtered(@query.filters)
+      canonical_docs = docs.select { |doc| DocumentRole.default?(doc["document_role"].presence || "canonical") }
+      return docs if canonical_docs.empty?
 
-      # Phase 1 indexes the canonical corpus only. When a caller deliberately
-      # selects other witness roles, scan that already-filtered set directly
-      # rather than returning false negatives from the canonical term index.
-      return docs unless canonical_index_scope?
-
-      ids_for_a = TermIndex.new(term: @query.term_a, manifest: @manifest, cache_store: @cache_store).doc_ids_with_hits.to_set
-      docs = docs.select { |doc| ids_for_a.include?(doc["id"]) }
-
-      if @query.proximity?
-        ids_for_b = TermIndex.new(term: @query.term_b, manifest: @manifest, cache_store: @cache_store).doc_ids_with_hits.to_set
-        docs = docs.select { |doc| ids_for_b.include?(doc["id"]) }
+      indexed_ids = canonical_docs.map { |doc| doc["id"] }.to_set
+      index_anchors.each do |anchor|
+        anchor_ids = TermIndex.new(term: anchor, manifest: @manifest, cache_store: @cache_store).doc_ids_with_hits.to_set
+        indexed_ids &= anchor_ids
+        break if indexed_ids.empty?
       end
 
-      docs
+      # The term index deliberately covers canonical texts only. When a user also
+      # selects variants, raw scrapes, translations, or annotations, retain those
+      # documents for direct scanning while still narrowing the much larger
+      # canonical layer through the index.
+      docs.select do |doc|
+        role = doc["document_role"].presence || "canonical"
+        !DocumentRole.default?(role) || indexed_ids.include?(doc["id"])
+      end
     end
 
-    def canonical_index_scope?
-      @query.document_roles == DocumentRole::DEFAULT_ROLES
+    # Arbitrary phrases should not create a permanent whole-corpus term index for
+    # every wording a visitor tries. Use one necessary character from each term as
+    # a broad candidate anchor, then verify the complete phrase in the document.
+    # Prefer a substantive character when punctuation is being respected.
+    def index_anchors
+      profile = NormalizationProfile.current
+
+      @query.effective_terms.filter_map do |term|
+        normalized = NormalizedText.build(term, punctuation: @query.punctuation, profile: profile)
+        next if normalized.empty?
+
+        normalized.units.find { |character| !profile.ignored?(character) } || normalized.units.first
+      end.uniq
     end
 
     def search_document(doc)
       document = DocumentReader.read(fs: @fs, path: doc["path"])
       body = document.body
-      chars = SearchText.chars_for(body)
+      searchable = NormalizedText.build(body, punctuation: @query.punctuation)
 
       if @query.proximity?
-        proximity_hits(doc, body, chars)
+        proximity_hits(doc, body, searchable)
       else
-        exact_hits(doc, body, chars)
+        exact_hits(doc, body, searchable)
       end
     rescue Errno::ENOENT, SecurityError
       []
     end
 
-    def exact_hits(doc, body, chars)
-      term_length = @query.term_a.each_char.count
+    def exact_hits(doc, body, searchable)
+      query_stream = NormalizedText.build(@query.query_text, punctuation: @query.punctuation)
+      term_length = query_stream.units.length
+      return [] if term_length.zero?
 
-      SearchText.positions_of(chars, @query.term_a).map do |position|
-        build_hit(doc, body, start_offset: position, end_offset: position + term_length)
+      SearchText.positions_of(searchable.units, query_stream.units).filter_map do |search_position|
+        original_range = searchable.original_range(search_position, search_position + term_length)
+        next unless original_range
+
+        build_hit(
+          doc,
+          body,
+          start_offset: original_range[0],
+          end_offset: original_range[1],
+          search_start_offset: search_position,
+          search_end_offset: search_position + term_length
+        )
       end
     end
 
-    def proximity_hits(doc, body, chars)
-      a_positions = SearchText.positions_of(chars, @query.term_a)
-      b_positions = SearchText.positions_of(chars, @query.term_b)
-      return [] if a_positions.empty? || b_positions.empty?
+    def proximity_hits(doc, body, searchable)
+      first_stream = NormalizedText.build(@query.terms[0], punctuation: @query.punctuation)
+      second_stream = NormalizedText.build(@query.terms[1], punctuation: @query.punctuation)
+      return [] if first_stream.empty? || second_stream.empty?
 
-      a_length = @query.term_a.each_char.count
-      b_length = @query.term_b.each_char.count
+      first_positions = SearchText.positions_of(searchable.units, first_stream.units)
+      second_positions = SearchText.positions_of(searchable.units, second_stream.units)
+      return [] if first_positions.empty? || second_positions.empty?
+
       hits = []
       seen = Set.new
 
-      a_positions.each do |a_pos|
-        b_positions.each do |b_pos|
-          next unless allowed_order?(a_pos, b_pos)
-          next if (a_pos - b_pos).abs > @query.distance
+      first_positions.each do |first_position|
+        second_positions.each do |second_position|
+          next if repeated_term_same_occurrence?(first_stream, second_stream, first_position, second_position)
+          next unless allowed_order?(first_position, second_position)
 
-          start_offset = [a_pos, b_pos].min
-          end_offset = [a_pos + a_length, b_pos + b_length].max
-          key = [start_offset, end_offset]
+          search_start = [first_position, second_position].min
+          search_end = [first_position + first_stream.units.length, second_position + second_stream.units.length].max
+          next if search_end - search_start > @query.maximum_span
+
+          original_range = searchable.original_range(search_start, search_end)
+          first_original = searchable.original_range(first_position, first_position + first_stream.units.length)
+          second_original = searchable.original_range(second_position, second_position + second_stream.units.length)
+          next unless original_range && first_original && second_original
+
+          key = [original_range[0], original_range[1], first_original[0], second_original[0]]
           next if seen.include?(key)
 
           seen << key
           hits << build_hit(
             doc,
             body,
-            start_offset: start_offset,
-            end_offset: end_offset,
-            term_a_offset: a_pos,
-            term_b_offset: b_pos
+            start_offset: original_range[0],
+            end_offset: original_range[1],
+            search_start_offset: search_start,
+            search_end_offset: search_end,
+            term_a_offset: first_original[0],
+            term_b_offset: second_original[0]
           )
         end
       end
@@ -193,23 +231,21 @@ module CorpusSearch
       hits
     end
 
-    def allowed_order?(a_pos, b_pos)
-      case @query.order
-      when "a_before_b"
-        a_pos <= b_pos
-      when "b_before_a"
-        b_pos <= a_pos
-      else
-        true
-      end
+    def repeated_term_same_occurrence?(first_stream, second_stream, first_position, second_position)
+      first_stream.units == second_stream.units && first_position == second_position
     end
 
-    def build_hit(doc, body, start_offset:, end_offset:, term_a_offset: nil, term_b_offset: nil)
+    def allowed_order?(first_position, second_position)
+      @query.order == "any" || first_position <= second_position
+    end
+
+    def build_hit(doc, body, start_offset:, end_offset:, search_start_offset:, search_end_offset:,
+                  term_a_offset: nil, term_b_offset: nil)
       snippet = Snippet.build(
         body,
         start_offset: start_offset,
         end_offset: end_offset,
-        context: @query.context
+        context: MAX_CACHED_CONTEXT
       )
 
       {
@@ -229,13 +265,31 @@ module CorpusSearch
         "region" => doc["region"].to_s,
         "start_offset" => start_offset,
         "end_offset" => end_offset,
+        "search_start_offset" => search_start_offset,
+        "search_end_offset" => search_end_offset,
         "term_a_offset" => term_a_offset,
         "term_b_offset" => term_b_offset,
+        "punctuation" => @query.punctuation,
+        "normalization_profile_version" => @query.normalization_profile_version,
         "left_context" => snippet["left_context"],
         "matched_text" => snippet["matched_text"],
         "right_context" => snippet["right_context"],
         "snippet" => snippet["snippet"]
       }
+    end
+
+    def present_hit(hit)
+      context = @query.context
+      left_chars = hit["left_context"].to_s.each_char.to_a
+      right_chars = hit["right_context"].to_s.each_char.to_a
+      left = context.zero? ? "" : left_chars.last(context).to_a.join
+      right = context.zero? ? "" : right_chars.first(context).to_a.join
+
+      hit.merge(
+        "left_context" => left,
+        "right_context" => right,
+        "snippet" => [left, hit["matched_text"].to_s, right].join
+      )
     end
 
     def sort_hits(hits)

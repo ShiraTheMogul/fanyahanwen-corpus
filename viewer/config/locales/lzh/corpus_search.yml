@@ -1,48 +1,80 @@
 lzh:
   corpus_search:
     title: 語料庫尋文
-    introduction: 直接尋於語料庫正本諸檔。今先備精確與鄰近二法；正則表達式不開放於眾。
+    introduction: 直接尋正文。卷首著錄永不入所得，亦不入字數統計。
     form:
       mode: 尋法
-      term_a: 詞甲
-      term_b: 詞乙
-      distance: 相距字數
+      search_text: 所尋文句
+      find_all_terms: 求二詞同見於一段
+      maximum_span: 所跨字數上限
       order: 先後
+      ignore_punctuation: 略標點與空白
+      body_only_rule: 卷首著錄永不搜尋。
+      additional_filters: 範圍及別項濾器
+      include_folders: 限於諸目錄
+      exclude_folders: 排除諸目錄
+      folder_hint: 每行一語料庫相對路徑；其下諸目錄並入。
       context_characters: 前後文字數
       results_per_page: 每頁項數
-      metadata_filters: 著錄濾器
       nation: 國別
       period: 時期
       region: 地域
       author: 作者
       year_from: 始年
       year_to: 終年
+      text_witnesses: 文本見證與語料層
+      text_witnesses_hint: 常例只尋正本文本；其餘各層惟勾選乃入。
     modes:
-      exact: 精確
+      exact: 連文
       proximity: 鄰近
     orders:
-      either: 先後皆可
-      a_before_b: 甲先乙後
-      b_before_a: 乙先甲後
+      any: 先後皆可
+      entered: 依輸入次序
+    punctuation:
+      ignore: 尋時略之
+      respect: 逐字相合
+    characters:
+      exact: 字形須同
+      common: 兼常見異體
+      broad: 兼廣義字形對應
     placeholders:
-      term_a: 舜
-      term_b: 孝
-      nation: 日本／越南／中國……
-      period: 江戶時代／大越……
+      sequence: 關關雎鳩在河之洲
+      term: Term %{number}
+      folder: 中國漢文/clean/周朝
+      nation: 日本 / 越南 / 中國...
+      period: 江戶時代 / 大越...
     actions:
       search: 尋
       prepare_export: 另行備製全數ZIP匯出檔
-      open_source_text: 閱原文
+      open_source_text: 至原文此處
       download_zip: 載下ZIP檔
+      copy_live_url: 錄活查網址
+      copy_frozen_url: 錄定本網址
+      open_live_query: 開活查
+      copied: 已錄
     results:
-      summary: 此頁示%{visible}項。候選檔（已快取或已查）凡%{candidates}；此次新查%{scanned}檔。
+      summary: 此頁示%{visible}項。候選檔凡%{candidates}；此次新查%{scanned}檔。
       truncated: 互動尋文至%{limit}項而止；欲得全數，請另行備製匯出檔。
       complete_count: 互動尋文所得凡%{count}項。
-      offset: 字位%{start}–%{finish}
+      offset: 正文字位%{start}–%{finish}
       none: 無所得。
       chars_omitted:
         one: 略%{count}字
         other: 略%{count}字
+    query_details:
+      heading: 所尋詳情
+      mode: 尋法
+      query: 所尋
+      punctuation: 標點
+      character_matching: 字形對應
+      text_witnesses: 文本見證
+      folders: 目錄範圍
+      metadata: 卷首著錄
+      profile: 正規化規則版本
+      live_url: 活查網址
+      never_searched: 永不搜尋，亦不計數
+      all_selected_folders: 所選語料層內全部目錄
+      excluded_folders: 所排除目錄
     pagination:
       aria_label: 尋文結果分頁
       previous: 前頁
@@ -68,23 +100,31 @@ lzh:
     notices:
       queued: 大規模尋文已入列；其行時仍可照常用本站。
     errors:
-      enter_term: 請輸入所尋之詞。
-      enter_second_term: 鄰近尋文須輸入第二詞。
+      enter_sequence: 請輸入所尋文句。
+      enter_two_terms: 鄰近尋文須輸入二詞。
       term_too_long: 所尋各詞不得逾%{max}字。
       search_failed: 尋文失敗：%{message}
       prepared_not_found: 未見所備尋文。
       download_not_ready: 匯出檔尚未備妥。
+      only_two_terms_phase_two: 此階段鄰近尋文限二詞；多詞尋文將於下一階段加入。
     query:
-      proximity_label: '%{term_a}與%{term_b}相距不逾%{distance}字'
+      proximity_label: '%{terms}同見於不逾%{distance}搜尋字'
     export:
       flashcards:
-        front: |-
-          於此文脈譯釋%{target}：
-          %{snippet}
-        back: |-
-          所問：%{target}
-          所自：%{source}
+        front: '於此文脈譯釋%{target}：
+
+          %{snippet}'
+        back: '所問：%{target}
+
+          所自：%{source}'
       metadata_notes:
         blank_years: year_start／year_end若空，則語料著錄無可解析之年份。
-        offsets: 字位自去除卷首著錄後之正文起算。
+        offsets: 字位自去除卷首著錄及其分隔空行後之正文起算。
         canonical_source: 原始.txt檔仍為語料庫正本；此匯出檔乃尋文所得之衍生物。
+    roles:
+      canonical: 正本文本
+      textual_variant: 異文見證
+      raw: 原始抓取檔
+      derived_reading: 衍生讀法（訓讀／漢文讀法）
+      translation: 譯文
+      annotation: 注釋

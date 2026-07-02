@@ -1,95 +1,182 @@
 <h1><%= t("corpus_search.title") %></h1>
 
-<p class="corpus-search-note">
-  <%= t("corpus_search.introduction") %>
-</p>
+<p class="corpus-search-note"><%= t("corpus_search.introduction") %></p>
 
-<%= form_with url: "/corpus/search", method: :get, local: true, class: "corpus-search-form" do %>
-  <div class="corpus-search-grid">
-    <label>
-      <%= t("corpus_search.form.mode") %>
-      <%= select_tag :mode,
-        options_for_select([
-          [t("corpus_search.modes.exact"), "exact"],
-          [t("corpus_search.modes.proximity"), "proximity"]
-        ], @query&.mode || "exact"),
-        class: "corpus-search-input" %>
-    </label>
+<%= form_with url: corpus_search_path,
+              method: :get,
+              local: true,
+              class: "corpus-search-form",
+              data: { controller: "corpus-search-form" } do %>
+  <%= hidden_field_tag :mode, @query.mode, data: { corpus_search_form_target: "mode" } %>
+  <%= hidden_field_tag :characters, @query.character_equivalence %>
 
-    <label>
-      <%= t("corpus_search.form.term_a") %>
-      <%= text_field_tag :term_a, @query&.term_a, class: "corpus-search-input", maxlength: 80, placeholder: t("corpus_search.placeholders.term_a") %>
-    </label>
-
-    <label>
-      <%= t("corpus_search.form.term_b") %>
-      <%= text_field_tag :term_b, @query&.term_b, class: "corpus-search-input", maxlength: 80, placeholder: t("corpus_search.placeholders.term_b") %>
-    </label>
-
-    <label>
-      <%= t("corpus_search.form.distance") %>
-      <%= number_field_tag :distance, @query&.distance || 200, min: 1, max: 5000, class: "corpus-search-input" %>
-    </label>
-
-    <label>
-      <%= t("corpus_search.form.order") %>
-      <%= select_tag :order,
-        options_for_select([
-          [t("corpus_search.orders.either"), "either"],
-          [t("corpus_search.orders.a_before_b"), "a_before_b"],
-          [t("corpus_search.orders.b_before_a"), "b_before_a"]
-        ], @query&.order || "either"),
-        class: "corpus-search-input" %>
-    </label>
-
-    <label>
-      <%= t("corpus_search.form.context_characters") %>
-      <%= number_field_tag :context, @query&.context || 20, min: 0, max: 200, class: "corpus-search-input" %>
-    </label>
-
-    <label>
-      <%= t("corpus_search.form.results_per_page") %>
-      <%= number_field_tag :per_page, @query&.per_page || 20, min: 1, max: 50, class: "corpus-search-input" %>
-    </label>
+  <div class="corpus-search-mode-switch" role="group" aria-label="<%= t("corpus_search.form.mode") %>">
+    <button type="button"
+            class="corpus-search-mode-button"
+            data-corpus-search-form-target="modeButton"
+            data-mode="exact"
+            data-action="corpus-search-form#selectMode"
+            aria-pressed="<%= @query.exact? %>">
+      <%= t("corpus_search.modes.exact") %>
+    </button>
+    <button type="button"
+            class="corpus-search-mode-button"
+            data-corpus-search-form-target="modeButton"
+            data-mode="proximity"
+            data-action="corpus-search-form#selectMode"
+            aria-pressed="<%= @query.proximity? %>">
+      <%= t("corpus_search.modes.proximity") %>
+    </button>
   </div>
 
-  <details class="corpus-search-filters">
-    <summary><%= t("corpus_search.form.metadata_filters") %></summary>
+  <section class="corpus-search-primary-panel"
+           data-corpus-search-form-target="exactPanel"
+           <%= "hidden" unless @query.exact? %>>
+    <label class="corpus-search-wide-label">
+      <span><%= t("corpus_search.form.search_text") %></span>
+      <%= text_field_tag :q,
+                         @query.query_text,
+                         class: "corpus-search-input corpus-search-query-input",
+                         maxlength: 80,
+                         placeholder: t("corpus_search.placeholders.sequence"),
+                         disabled: !@query.exact?,
+                         data: { corpus_search_form_target: "exactInput" } %>
+    </label>
+  </section>
+
+  <section class="corpus-search-primary-panel"
+           data-corpus-search-form-target="proximityPanel"
+           <%= "hidden" unless @query.proximity? %>>
+    <p class="corpus-search-field-heading"><%= t("corpus_search.form.find_all_terms") %></p>
+    <div class="corpus-search-term-list">
+      <% [@query.terms[0], @query.terms[1]].each_with_index do |term, index| %>
+        <label class="corpus-search-term-row">
+          <span><%= index + 1 %></span>
+          <%= text_field_tag "terms[]",
+                             term,
+                             class: "corpus-search-input",
+                             maxlength: 80,
+                             placeholder: t("corpus_search.placeholders.term", number: index + 1),
+                             disabled: !@query.proximity?,
+                             data: { corpus_search_form_target: "proximityInput" } %>
+        </label>
+      <% end %>
+    </div>
+
+    <div class="corpus-search-grid corpus-search-grid-compact">
+      <label>
+        <%= t("corpus_search.form.maximum_span") %>
+        <%= number_field_tag :span,
+                             @query.maximum_span,
+                             min: 1,
+                             max: 5000,
+                             class: "corpus-search-input",
+                             disabled: !@query.proximity?,
+                             data: { corpus_search_form_target: "proximityInput" } %>
+      </label>
+
+      <label>
+        <%= t("corpus_search.form.order") %>
+        <%= select_tag :order,
+                       options_for_select([
+                         [t("corpus_search.orders.any"), "any"],
+                         [t("corpus_search.orders.entered"), "entered"]
+                       ], @query.order),
+                       class: "corpus-search-input",
+                       disabled: !@query.proximity?,
+                       data: { corpus_search_form_target: "proximityInput" } %>
+      </label>
+    </div>
+  </section>
+
+  <div class="corpus-search-core-options">
+    <%= hidden_field_tag :punctuation, "respect" %>
+    <label class="corpus-search-check">
+      <%= check_box_tag :punctuation, "ignore", @query.ignore_punctuation? %>
+      <span><%= t("corpus_search.form.ignore_punctuation") %></span>
+    </label>
+    <span class="corpus-search-rule"><%= t("corpus_search.form.body_only_rule") %></span>
+  </div>
+
+  <details class="corpus-search-filters" <%= "open" if @query.include_folders.any? || @query.exclude_folders.any? || @query.metadata_filters.values.any?(&:present?) || @query.document_roles != CorpusSearch::DocumentRole::DEFAULT_ROLES %>>
+    <summary><%= t("corpus_search.form.additional_filters") %></summary>
+
     <div class="corpus-search-grid">
+      <fieldset class="corpus-search-role-fieldset corpus-search-wide-label">
+        <legend><%= t("corpus_search.form.text_witnesses") %></legend>
+        <p class="corpus-search-hint"><%= t("corpus_search.form.text_witnesses_hint") %></p>
+        <div class="corpus-search-role-options">
+          <% CorpusSearch::DocumentRole::SEARCHABLE_ROLES.each do |role| %>
+            <label class="corpus-search-check">
+              <%= check_box_tag "roles[]", role, @query.document_roles.include?(role) %>
+              <span><%= t("corpus_search.roles.#{role}") %></span>
+            </label>
+          <% end %>
+        </div>
+      </fieldset>
+
+      <label class="corpus-search-wide-label">
+        <%= t("corpus_search.form.include_folders") %>
+        <%= text_area_tag :folders,
+                          @query.include_folders.join("\n"),
+                          rows: 3,
+                          class: "corpus-search-input corpus-search-textarea",
+                          placeholder: t("corpus_search.placeholders.folder") %>
+        <span class="corpus-search-hint"><%= t("corpus_search.form.folder_hint") %></span>
+      </label>
+
+      <label class="corpus-search-wide-label">
+        <%= t("corpus_search.form.exclude_folders") %>
+        <%= text_area_tag :exclude_folders,
+                          @query.exclude_folders.join("\n"),
+                          rows: 3,
+                          class: "corpus-search-input corpus-search-textarea" %>
+      </label>
+
       <label>
         <%= t("corpus_search.form.nation") %>
-        <%= text_field_tag :nation, @query&.filters&.dig("nation"), class: "corpus-search-input", placeholder: t("corpus_search.placeholders.nation") %>
+        <%= text_field_tag :nation, @query.metadata_filters["nation"], class: "corpus-search-input", placeholder: t("corpus_search.placeholders.nation") %>
       </label>
 
       <label>
         <%= t("corpus_search.form.period") %>
-        <%= text_field_tag :period, @query&.filters&.dig("period"), class: "corpus-search-input", placeholder: t("corpus_search.placeholders.period") %>
+        <%= text_field_tag :period, @query.metadata_filters["period"], class: "corpus-search-input", placeholder: t("corpus_search.placeholders.period") %>
       </label>
 
       <label>
         <%= t("corpus_search.form.region") %>
-        <%= text_field_tag :region, @query&.filters&.dig("region"), class: "corpus-search-input" %>
+        <%= text_field_tag :region, @query.metadata_filters["region"], class: "corpus-search-input" %>
       </label>
 
       <label>
         <%= t("corpus_search.form.author") %>
-        <%= text_field_tag :author, @query&.filters&.dig("author"), class: "corpus-search-input" %>
+        <%= text_field_tag :author, @query.metadata_filters["author"], class: "corpus-search-input" %>
       </label>
 
       <label>
         <%= t("corpus_search.form.year_from") %>
-        <%= number_field_tag :year_start, @query&.filters&.dig("year_start"), class: "corpus-search-input" %>
+        <%= number_field_tag :year_start, @query.metadata_filters["year_start"], class: "corpus-search-input" %>
       </label>
 
       <label>
         <%= t("corpus_search.form.year_to") %>
-        <%= number_field_tag :year_end, @query&.filters&.dig("year_end"), class: "corpus-search-input" %>
+        <%= number_field_tag :year_end, @query.metadata_filters["year_end"], class: "corpus-search-input" %>
+      </label>
+
+      <label>
+        <%= t("corpus_search.form.context_characters") %>
+        <%= number_field_tag :context, @query.context, min: 0, max: 200, class: "corpus-search-input" %>
+      </label>
+
+      <label>
+        <%= t("corpus_search.form.results_per_page") %>
+        <%= number_field_tag :per_page, @query.per_page, min: 1, max: 50, class: "corpus-search-input" %>
       </label>
     </div>
   </details>
 
   <div class="corpus-search-actions">
-    <%= submit_tag t("corpus_search.actions.search"), class: "corpus-search-button" %>
+    <%= button_tag t("corpus_search.actions.search"), type: "submit", class: "corpus-search-button", name: "search", value: "1" %>
   </div>
 <% end %>
 
@@ -107,46 +194,64 @@
 
 <% if @result_page %>
   <section class="corpus-search-summary">
-    <p>
-      <%= t("corpus_search.results.summary",
-            visible: @result_page.hits.length,
-            candidates: @result_page.candidate_files,
-            scanned: @result_page.scanned_files) %>
-    </p>
+    <div>
+      <p><%= t("corpus_search.results.summary", visible: @result_page.hits.length, candidates: @result_page.candidate_files, scanned: @result_page.scanned_files) %></p>
 
-    <% if @result_page.truncated %>
-      <p>
-        <%= t("corpus_search.results.truncated", limit: CorpusSearchController::INTERACTIVE_LIMIT) %>
-      </p>
-    <% elsif @result_page.complete %>
-      <p><%= t("corpus_search.results.complete_count", count: @result_page.total) %></p>
-    <% end %>
+      <% if @result_page.truncated %>
+        <p><%= t("corpus_search.results.truncated", limit: CorpusSearchController::INTERACTIVE_LIMIT) %></p>
+      <% elsif @result_page.complete %>
+        <p><%= t("corpus_search.results.complete_count", count: @result_page.total) %></p>
+      <% end %>
+    </div>
 
     <% if @query.valid? %>
-      <%= form_with url: "/corpus/search/prepare", method: :post, local: true do %>
-        <% @query.to_h.each do |key, value| %>
-          <% if key == "filters" %>
-            <% value.each do |filter_key, filter_value| %>
-              <%= hidden_field_tag filter_key, filter_value %>
-            <% end %>
-          <% elsif value.is_a?(Array) %>
-            <% value.each do |item| %>
-              <%= hidden_field_tag "#{key}[]", item %>
-            <% end %>
-          <% else %>
+      <div class="corpus-search-summary-actions" data-controller="copy-url" data-copy-url-url-value="<%= @live_query_url %>" data-copy-url-success-label-value="<%= t("corpus_search.actions.copied") %>">
+        <button type="button" class="corpus-search-button corpus-search-button-secondary" data-copy-url-target="button" data-action="copy-url#copy">
+          <%= t("corpus_search.actions.copy_live_url") %>
+        </button>
+
+        <%= form_with url: prepare_corpus_search_path, method: :post, local: true do %>
+          <% @query.canonical_params(include_presentation: true).each do |key, value| %>
             <%= hidden_field_tag key, value %>
           <% end %>
+          <%= submit_tag t("corpus_search.actions.prepare_export"), class: "corpus-search-button corpus-search-button-secondary" %>
         <% end %>
-        <%= submit_tag t("corpus_search.actions.prepare_export"), class: "corpus-search-button corpus-search-button-secondary" %>
-      <% end %>
+      </div>
     <% end %>
   </section>
+
+  <% if @query.valid? %>
+    <details class="corpus-search-query-details">
+      <summary><%= t("corpus_search.query_details.heading") %></summary>
+      <dl>
+        <div><dt><%= t("corpus_search.query_details.mode") %></dt><dd><%= t("corpus_search.modes.#{@query.mode}") %></dd></div>
+        <div><dt><%= t("corpus_search.query_details.query") %></dt><dd><code><%= @query.display_label %></code></dd></div>
+        <div><dt><%= t("corpus_search.query_details.punctuation") %></dt><dd><%= t("corpus_search.punctuation.#{@query.punctuation}") %></dd></div>
+        <div><dt><%= t("corpus_search.query_details.character_matching") %></dt><dd><%= t("corpus_search.characters.#{@query.character_equivalence}") %></dd></div>
+        <div><dt><%= t("corpus_search.query_details.text_witnesses") %></dt><dd><%= @query.document_roles.map { |role| t("corpus_search.roles.#{role}") }.join(", ") %></dd></div>
+        <div><dt><%= t("corpus_search.query_details.folders") %></dt><dd><%= @query.include_folders.presence&.join("; ") || t("corpus_search.query_details.all_selected_folders") %></dd></div>
+        <% if @query.exclude_folders.any? %>
+          <div><dt><%= t("corpus_search.query_details.excluded_folders") %></dt><dd><%= @query.exclude_folders.join("; ") %></dd></div>
+        <% end %>
+        <div><dt><%= t("corpus_search.query_details.metadata") %></dt><dd><%= t("corpus_search.query_details.never_searched") %></dd></div>
+        <div><dt><%= t("corpus_search.query_details.profile") %></dt><dd><%= @query.normalization_profile_version %></dd></div>
+        <div class="corpus-search-query-url"><dt><%= t("corpus_search.query_details.live_url") %></dt><dd><code><%= @live_query_url %></code></dd></div>
+      </dl>
+    </details>
+  <% end %>
 
   <% if @result_page.hits.any? %>
     <ol class="corpus-search-results" start="<%= ((@result_page.page - 1) * @result_page.per_page) + 1 %>">
       <% @result_page.hits.each do |hit| %>
+        <% source_path = corpus_viewer_path(hit["path"].to_s.split("/"), format: nil) %>
+        <% source_url = "#{source_path}?#{ { start: hit["start_offset"], end: hit["end_offset"], source: "corpus_search" }.to_query }" %>
         <li class="corpus-search-result">
-          <h2><%= hit["title"].presence || File.basename(hit["path"].to_s, ".txt") %></h2>
+          <h2>
+            <%= hit["title"].presence || File.basename(hit["path"].to_s, ".txt") %>
+            <% unless hit["document_role"] == "canonical" %>
+              <span class="corpus-search-role-badge"><%= t("corpus_search.roles.#{hit["document_role"]}") %></span>
+            <% end %>
+          </h2>
           <p class="corpus-search-meta">
             <% [hit["author"], hit["date_text"], hit["nation"], hit["period"], hit["region"]].reject(&:blank?).each do |item| %>
               <span><%= item %></span>
@@ -158,7 +263,7 @@
           </p>
 
           <p class="corpus-search-path">
-            <%= link_to t("corpus_search.actions.open_source_text"), corpus_viewer_path(hit["path"].to_s.split("/"), format: nil) %>
+            <%= link_to t("corpus_search.actions.open_source_text"), source_url %>
             <span><%= t("corpus_search.results.offset", start: hit["start_offset"], finish: hit["end_offset"]) %></span>
           </p>
         </li>
@@ -166,13 +271,12 @@
     </ol>
 
     <nav class="corpus-search-pagination" aria-label="<%= t("corpus_search.pagination.aria_label") %>">
-      <% base_params = request.query_parameters.except("page") %>
       <% if @result_page.previous_page %>
-        <%= link_to t("corpus_search.pagination.previous"), "/corpus/search?#{base_params.merge(page: @result_page.previous_page).to_query}" %>
+        <%= link_to t("corpus_search.pagination.previous"), @query.relative_url(page: @result_page.previous_page) %>
       <% end %>
       <span><%= t("corpus_search.pagination.page_of", page: @result_page.page, pages: @result_page.total_pages) %></span>
       <% if @result_page.next_page %>
-        <%= link_to t("corpus_search.pagination.next"), "/corpus/search?#{base_params.merge(page: @result_page.next_page).to_query}" %>
+        <%= link_to t("corpus_search.pagination.next"), @query.relative_url(page: @result_page.next_page) %>
       <% end %>
     </nav>
   <% elsif @searched && @query.valid? %>

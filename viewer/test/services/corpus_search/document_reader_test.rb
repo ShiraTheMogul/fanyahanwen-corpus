@@ -47,4 +47,12 @@ class CorpusSearchDocumentReaderTest < ActiveSupport::TestCase
 
     assert_equal first.body_fingerprint, second.body_fingerprint
   end
+  test "preserves original metadata labels for the corpus viewer" do
+    result = CorpusSearch::DocumentReader.parse("# PAGE_TITLE: 詩經/關雎\n# TIMES: 西周\n\n正文\n")
+
+    assert_equal [["PAGE_TITLE", "詩經/關雎"], ["TIMES", "西周"]], result.metadata_entries
+    assert_equal "詩經/關雎", result.metadata["title"]
+    assert_equal "正文\n", result.body
+  end
+
 end

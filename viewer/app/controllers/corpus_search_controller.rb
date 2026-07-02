@@ -7,8 +7,9 @@ class CorpusSearchController < ApplicationController
 
   def index
     @query = CorpusSearch::Query.from_params(params)
-    @searched = params[:term_a].present?
+    @searched = @query.requested?
     @result_page = nil
+    @live_query_url = live_query_url(@query) if @query.valid?
 
     return unless @searched
 
@@ -35,7 +36,7 @@ class CorpusSearchController < ApplicationController
     query = CorpusSearch::Query.from_params(params)
 
     unless query.valid?
-      redirect_to "/corpus/search?#{request.query_parameters.merge(term_a: query.term_a, mode: query.mode).to_query}", alert: query.errors.join(" ")
+      redirect_to query.relative_url, alert: query.errors.join(" ")
       return
     end
 
@@ -47,7 +48,13 @@ class CorpusSearchController < ApplicationController
 
   def prepared
     @prepared_search = find_prepared_search
-    render plain: I18n.t("corpus_search.errors.prepared_not_found"), status: :not_found unless @prepared_search
+    unless @prepared_search
+      render plain: I18n.t("corpus_search.errors.prepared_not_found"), status: :not_found
+      return
+    end
+
+    @live_query_url = "#{request.base_url}#{@prepared_search.query.relative_url(include_presentation: false)}"
+    @frozen_result_url = request.original_url
   end
 
   def download
@@ -68,5 +75,9 @@ class CorpusSearchController < ApplicationController
 
   def prepared_search_url(prepared)
     "/corpus/search/prepared/#{prepared.id}?key=#{ERB::Util.url_encode(prepared.key)}"
+  end
+
+  def live_query_url(query)
+    "#{request.base_url}#{query.relative_url(include_presentation: false)}"
   end
 end

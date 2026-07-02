@@ -1,0 +1,13 @@
+version: 1
+ignore_when_punctuation_is_ignored:
+  unicode_categories:
+    - punctuation
+    - separators
+  character_classes:
+    - whitespace
+  codepoints:
+    - "200B" # ZERO WIDTH SPACE
+    - "200C" # ZERO WIDTH NON-JOINER
+    - "200D" # ZERO WIDTH JOINER
+    - "2060" # WORD JOINER
+    - "FEFF" # ZERO WIDTH NO-BREAK SPACE / BOM

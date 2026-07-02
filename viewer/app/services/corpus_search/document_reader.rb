@@ -21,10 +21,11 @@ module CorpusSearch
       "CATEGORY" => "category"
     }.freeze
 
-    Result = Struct.new(:metadata, :body, :body_fingerprint, keyword_init: true) do
+    Result = Struct.new(:metadata, :metadata_entries, :body, :body_fingerprint, keyword_init: true) do
       def to_h
         {
           "metadata" => metadata,
+          "metadata_entries" => metadata_entries,
           "body" => body,
           "body_fingerprint" => body_fingerprint
         }
@@ -39,10 +40,11 @@ module CorpusSearch
 
       def parse(raw)
         text = raw.to_s.delete_prefix("\uFEFF")
-        metadata, body = split_text(text)
+        metadata, metadata_entries, body = split_text(text)
 
         Result.new(
           metadata: metadata,
+          metadata_entries: metadata_entries,
           body: body,
           body_fingerprint: Digest::SHA256.hexdigest(body)
         )
@@ -60,7 +62,7 @@ module CorpusSearch
         first_content = first_nonblank_line_index(lines)
 
         # A file with no initial metadata block is entirely searchable body text.
-        return [{}, text] unless first_content && metadata_line?(lines[first_content])
+        return [{}, [], text] unless first_content && metadata_line?(lines[first_content])
 
         metadata_lines = []
         index = first_content
@@ -74,7 +76,8 @@ module CorpusSearch
         # they are not part of either one.
         index += 1 while index < lines.length && blank_line?(lines[index])
 
-        [parse_metadata(metadata_lines), lines[index..].to_a.join]
+        entries = parse_metadata_entries(metadata_lines)
+        [normalized_metadata(entries), entries, lines[index..].to_a.join]
       end
 
       def first_nonblank_line_index(lines)
@@ -89,8 +92,8 @@ module CorpusSearch
         line.to_s.match?(/\A[[:space:]]*\z/)
       end
 
-      def parse_metadata(lines)
-        lines.each_with_object({}) do |line, metadata|
+      def parse_metadata_entries(lines)
+        lines.filter_map do |line|
           clean = line.sub(/\A#\s*/, "").strip
           next if clean.empty?
 
@@ -100,10 +103,18 @@ module CorpusSearch
             [clean, ""]
           end
 
+          next if key.to_s.strip.empty?
+
+          [key.to_s.strip, value.to_s]
+        end
+      end
+
+      def normalized_metadata(entries)
+        entries.each_with_object({}) do |(key, value), metadata|
           normalized = normalize_key(key)
           next if normalized.empty?
 
-          metadata[normalized] = value.to_s
+          metadata[normalized] = value
         end
       end
 

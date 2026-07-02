@@ -1,76 +1,81 @@
 # frozen_string_literal: true
 
 require "json"
+require "uri"
 
 module CorpusSearch
-  # Compatibility facade used by the current controller and views. Search
-  # semantics and presentation settings are held by separate value objects.
+  # Complete request state: immutable match semantics plus display options.
   class Query
     attr_reader :search_definition, :presentation_options, :locale
 
-    def self.from_params(params)
-      filters = {
-        nation: params[:nation],
-        period: params[:period],
-        region: params[:region],
-        author: params[:author],
-        year_start: params[:year_start],
-        year_end: params[:year_end]
-      }
-
-      new(
-        mode: params[:mode],
-        term_a: params[:term_a],
-        term_b: params[:term_b],
-        distance: params[:distance],
-        context: params[:context],
-        order: params[:order],
-        page: params[:page],
-        per_page: params[:per_page],
-        locale: I18n.locale,
-        filters: filters,
-        document_roles: params[:document_roles] || params[:roles],
-        include_folders: params[:include_folders] || params[:folders],
-        exclude_folders: params[:exclude_folders]
-      )
+    def self.from_params(params, locale: I18n.locale)
+      QueryParams.parse(params, locale: locale)
     end
 
-    def initialize(mode: "exact", term_a: nil, term_b: nil, distance: 200, context: 20,
-                   order: "either", page: 1, per_page: 20, locale: I18n.locale, filters: {},
-                   document_roles: nil, include_folders: nil, exclude_folders: nil,
-                   search_definition: nil, presentation_options: nil)
-      @search_definition = search_definition || SearchDefinition.new(
-        mode: mode,
-        term_a: term_a,
-        term_b: term_b,
-        distance: distance,
-        order: order,
-        metadata_filters: filters,
-        document_roles: document_roles,
-        include_folders: include_folders,
-        exclude_folders: exclude_folders
+    def self.from_h(hash, locale: I18n.locale)
+      payload = hash.to_h.stringify_keys
+      definition_hash = payload.fetch("definition", payload)
+      presentation_hash = payload.fetch("presentation", {})
+      matching = definition_hash.fetch("matching", {})
+      scope = definition_hash.fetch("scope", {})
+      proximity = definition_hash.fetch("proximity", {})
+
+      definition = SearchDefinition.new(
+        mode: definition_hash["mode"],
+        query_text: definition_hash["query_text"],
+        terms: definition_hash["terms"],
+        maximum_span: proximity["maximum_span"],
+        order: proximity["order"],
+        punctuation: matching["punctuation"],
+        character_equivalence: matching["character_equivalence"],
+        metadata_filters: definition_hash["metadata_filters"] || {},
+        document_roles: scope["document_roles"],
+        include_folders: scope["include_folders"],
+        exclude_folders: scope["exclude_folders"]
       )
-      @presentation_options = presentation_options || PresentationOptions.new(
-        context: context,
-        page: page,
-        per_page: per_page
+
+      presentation = PresentationOptions.new(
+        context: presentation_hash["context"],
+        page: presentation_hash["page"],
+        per_page: presentation_hash["per_page"]
       )
+
+      new(search_definition: definition, presentation_options: presentation, locale: locale, requested: true)
+    end
+
+    def initialize(search_definition:, presentation_options:, locale: I18n.locale, requested: false)
+      @search_definition = search_definition
+      @presentation_options = presentation_options
       @locale = normalise_locale(locale)
+      @requested = !!requested
+      freeze
     end
 
     def mode = @search_definition.mode
-    def term_a = @search_definition.term_a
-    def term_b = @search_definition.term_b
-    def distance = @search_definition.distance
+    def query_text = @search_definition.query_text
+    def terms = @search_definition.terms
+    def maximum_span = @search_definition.maximum_span
     def order = @search_definition.order
-    def filters = @search_definition.manifest_filters
+    def punctuation = @search_definition.punctuation
+    def character_equivalence = @search_definition.character_equivalence
     def metadata_filters = @search_definition.metadata_filters
     def document_roles = @search_definition.document_roles
     def include_folders = @search_definition.include_folders
     def exclude_folders = @search_definition.exclude_folders
+    def filters = @search_definition.manifest_filters
     def context = @presentation_options.context
     def page = @presentation_options.page
     def per_page = @presentation_options.per_page
+    def requested? = @requested
+    def exact? = @search_definition.exact?
+    def proximity? = @search_definition.proximity?
+    def ignore_punctuation? = @search_definition.ignore_punctuation?
+
+    # Temporary conveniences until the arbitrary-term proximity patch changes
+    # export columns. They no longer define the public URL shape.
+    def term_a = exact? ? query_text : terms[0].to_s
+    def term_b = proximity? ? terms[1].to_s : ""
+    def distance = maximum_span
 
     def valid?
       errors.empty?
@@ -78,59 +83,96 @@ module CorpusSearch
 
     def errors
       list = []
-      list << I18n.t("corpus_search.errors.enter_term") if term_a.blank?
-      list << I18n.t("corpus_search.errors.enter_second_term") if proximity? && term_b.blank?
-      list << I18n.t("corpus_search.errors.term_too_long", max: 80) if [term_a, term_b].any? { |term| term.each_char.count > 80 }
+      if exact?
+        list << I18n.t("corpus_search.errors.enter_sequence") if normalized_units(query_text).empty?
+      else
+        list << I18n.t("corpus_search.errors.enter_two_terms") if terms.length < 2
+        list << I18n.t("corpus_search.errors.only_two_terms_phase_two") if terms.length > 2
+      end
+
+      list << I18n.t("corpus_search.errors.term_too_long", max: 80) if effective_terms.any? { |term| term.each_char.count > 80 }
       list
     end
 
-    def proximity?
-      @search_definition.proximity?
+    def effective_terms
+      @search_definition.effective_terms
     end
 
-    def exact?
-      @search_definition.exact?
-    end
-
-    # Keep the current flat representation so prepared-search records and the
-    # existing form continue to work during the staged refactor.
     def to_h
       {
-        "schema_version" => SearchDefinition::SCHEMA_VERSION,
-        "mode" => mode,
-        "term_a" => term_a,
-        "term_b" => term_b,
-        "distance" => distance,
-        "context" => context,
-        "order" => order,
-        "filters" => metadata_filters.reject { |_key, value| value.blank? },
-        "document_roles" => document_roles,
-        "include_folders" => include_folders,
-        "exclude_folders" => exclude_folders
+        "version" => 3,
+        "definition" => @search_definition.to_h,
+        "presentation" => @presentation_options.to_h.except("page")
       }
     end
 
     def cache_key
-      # Context still participates because the current hit cache stores rendered
-      # snippets. Page and per-page do not change the match set.
       payload = {
-        "version" => 2,
-        "definition" => @search_definition.to_h,
-        "context" => context,
-        "locale" => @locale
+        "version" => 3,
+        "definition" => @search_definition.to_h
       }
       CacheStore.hash_key(JSON.generate(payload))
     end
 
     def display_label
       if proximity?
-        I18n.t("corpus_search.query.proximity_label", term_a: term_a, term_b: term_b, distance: distance)
+        I18n.t(
+          "corpus_search.query.proximity_label",
+          terms: terms.join(" · "),
+          distance: maximum_span
+        )
       else
-        term_a
+        query_text
       end
     end
 
+    def canonical_params(include_presentation: true, page: nil)
+      pairs = []
+      pairs << ["mode", mode]
+
+      if exact?
+        pairs << ["q", query_text]
+      else
+        terms.each { |term| pairs << ["terms[]", term] }
+        pairs << ["span", maximum_span.to_s]
+        pairs << ["order", order]
+      end
+
+      pairs << ["punctuation", punctuation]
+      pairs << ["characters", character_equivalence]
+      document_roles.each { |role| pairs << ["roles[]", role] }
+      include_folders.each { |folder| pairs << ["folders[]", folder] }
+      exclude_folders.each { |folder| pairs << ["exclude_folders[]", folder] }
+      metadata_filters.each { |key, value| pairs << [key, value] if value.present? }
+
+      if include_presentation
+        pairs << ["context", context.to_s] unless context == 20
+        pairs << ["per_page", per_page.to_s] unless per_page == 20
+        selected_page = page || self.page
+        pairs << ["page", selected_page.to_s] if selected_page.to_i > 1
+      end
+
+      pairs
+    end
+
+    def query_string(include_presentation: true, page: nil)
+      URI.encode_www_form(canonical_params(include_presentation: include_presentation, page: page))
+        .gsub("%5B%5D", "[]")
+    end
+
+    def relative_url(include_presentation: true, page: nil)
+      "/corpus/search?#{query_string(include_presentation: include_presentation, page: page)}"
+    end
+
+    def normalization_profile_version
+      NormalizationProfile.current.version
+    end
+
     private
+
+    def normalized_units(text)
+      NormalizedText.build(text, punctuation: punctuation).units
+    end
 
     def normalise_locale(value)
       candidate = value.to_s

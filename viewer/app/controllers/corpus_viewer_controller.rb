@@ -94,30 +94,15 @@ class CorpusViewerController < ApplicationController
 
   private
 
-  # Minimal: treat initial # lines as metadata; everything else is body.
+  # Use the same body boundary as corpus search so body-offset deep links are
+  # exact even with BOMs, leading blank lines, and metadata separators.
   def split_corpus_front_matter(raw)
-    lines = raw.lines
-    meta = []
-    i = 0
-
-    while i < lines.length && lines[i].start_with?("#")
-      meta << lines[i]
-      i += 1
+    document = CorpusSearch::DocumentReader.parse(raw)
+    parsed = document.metadata_entries.map do |key, value|
+      [normalize_label(key), value]
     end
 
-    # parse "# KEY: VALUE" and "# KEY" lines
-    parsed = meta.filter_map do |line|
-      s = line.sub(/\A#\s*/, "").strip
-      next if s.empty?
-      if s.include?(":")
-        k, v = s.split(":", 2).map(&:strip)
-        [normalize_label(k), v]
-      else
-        [normalize_label(s), nil]
-      end
-    end
-
-    [parsed, lines[i..].join]
+    [parsed, document.body]
   end
 
   LABEL_MAP = {
@@ -130,11 +115,11 @@ class CorpusViewerController < ApplicationController
     "AUTHOR" => "Author"
   }.freeze
 
-
   def normalize_label(key)
-    key = key.to_s.strip.upcase
-    return LABEL_MAP[key] if LABEL_MAP.key?(key)
-    key.downcase.split("_").map(&:capitalize).join(" ")
+    normalized = key.to_s.strip.upcase
+    return LABEL_MAP[normalized] if LABEL_MAP.key?(normalized)
+
+    normalized.downcase.split("_").map(&:capitalize).join(" ")
   end
 
   def normalized_annotation_system_param(value)
