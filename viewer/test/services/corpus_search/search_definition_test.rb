@@ -43,6 +43,24 @@ class CorpusSearchSearchDefinitionTest < ActiveSupport::TestCase
   end
 
 
+
+  test "alternative mode preserves terms and requires at least two" do
+    valid = CorpusSearch::Query.new(
+      search_definition: CorpusSearch::SearchDefinition.new(mode: "alternatives", terms: ["仁", "義"]),
+      presentation_options: CorpusSearch::PresentationOptions.new,
+      requested: true
+    )
+    invalid = CorpusSearch::Query.new(
+      search_definition: CorpusSearch::SearchDefinition.new(mode: "alternatives", terms: ["仁"]),
+      presentation_options: CorpusSearch::PresentationOptions.new,
+      requested: true
+    )
+
+    assert valid.alternatives?
+    assert valid.valid?
+    assert_not invalid.valid?
+  end
+
   test "accepts all three character-equivalence levels" do
     assert_equal "exact", CorpusSearch::SearchDefinition.new(query_text: "驗", character_equivalence: "exact").character_equivalence
     assert_equal "common", CorpusSearch::SearchDefinition.new(query_text: "驗", character_equivalence: "common").character_equivalence

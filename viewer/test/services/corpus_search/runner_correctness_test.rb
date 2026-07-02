@@ -13,6 +13,7 @@ class CorpusSearchRunnerCorrectnessTest < ActiveSupport::TestCase
     write("中國漢文/clean/周朝/body.txt", "# TITLE: Body\n\n關關雎鳩，在河之洲。\n")
     write("中國漢文/clean/周朝/proximity.txt", "# TITLE: Proximity\n\n舜，克孝，聞於天下。\n")
     write("中國漢文/clean/周朝/repeated.txt", "# TITLE: Repeated\n\n民與民共事君。\n")
+    write("中國漢文/clean/周朝/alternatives.txt", "# TITLE: 仁義不入正文搜尋\n\n君子仁而有義。\n")
     write("日本漢文/clean/江戶時代/broad.txt", "# TITLE: Broad\n\n試験之法。\n")
     write("中國漢文/clean/周朝/variants/variant.txt", "關關雎鳩在河之洲\n")
     write("中國漢文/raw/周朝/raw.txt", "關關雎鳩在河之洲\n")
@@ -117,6 +118,46 @@ class CorpusSearchRunnerCorrectnessTest < ActiveSupport::TestCase
     )
 
     assert_equal 0, page.total
+  end
+
+
+  test "alternative search returns occurrences of any entered term" do
+    page = run_query(
+      CorpusSearch::SearchDefinition.new(
+        mode: "alternatives",
+        terms: ["仁", "義"],
+        punctuation: "ignore"
+      )
+    )
+
+    assert_equal 2, page.total
+    assert_equal ["仁", "義"], page.hits.map { |hit| hit.fetch("term_matches").fetch(0).fetch("term") }
+    assert_equal ["仁", "義"], page.hits.map { |hit| hit["matched_text"] }
+  end
+
+  test "alternative search does not match metadata headers" do
+    page = run_query(
+      CorpusSearch::SearchDefinition.new(
+        mode: "alternatives",
+        terms: ["不入正文搜尋", "不存在"],
+        punctuation: "ignore"
+      )
+    )
+
+    assert_equal 0, page.total
+  end
+
+  test "duplicate alternatives do not duplicate the same source occurrence" do
+    page = run_query(
+      CorpusSearch::SearchDefinition.new(
+        mode: "alternatives",
+        terms: ["仁", "仁"],
+        punctuation: "ignore"
+      )
+    )
+
+    assert_equal 1, page.total
+    assert_equal 2, page.hits.fetch(0).fetch("term_matches").length
   end
 
   test "proximity span is measured on the punctuation-normalized stream" do

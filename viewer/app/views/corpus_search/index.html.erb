@@ -8,28 +8,22 @@
               class: "corpus-search-form",
               data: {
                 controller: "corpus-search-form",
-                corpus_search_form_max_terms_value: CorpusSearch::SearchDefinition::MAX_PROXIMITY_TERMS,
+                corpus_search_form_max_terms_value: CorpusSearch::SearchDefinition::MAX_MULTI_TERMS,
                 corpus_search_form_term_placeholder_value: t("corpus_search.placeholders.term", number: "__NUMBER__")
               } do %>
   <%= hidden_field_tag :mode, @query.mode, data: { corpus_search_form_target: "mode" } %>
 
   <div class="corpus-search-mode-switch" role="group" aria-label="<%= t("corpus_search.form.mode") %>">
-    <button type="button"
-            class="corpus-search-mode-button"
-            data-corpus-search-form-target="modeButton"
-            data-mode="exact"
-            data-action="corpus-search-form#selectMode"
-            aria-pressed="<%= @query.exact? %>">
-      <%= t("corpus_search.modes.exact") %>
-    </button>
-    <button type="button"
-            class="corpus-search-mode-button"
-            data-corpus-search-form-target="modeButton"
-            data-mode="proximity"
-            data-action="corpus-search-form#selectMode"
-            aria-pressed="<%= @query.proximity? %>">
-      <%= t("corpus_search.modes.proximity") %>
-    </button>
+    <% ["exact", "proximity", "alternatives"].each do |mode| %>
+      <button type="button"
+              class="corpus-search-mode-button"
+              data-corpus-search-form-target="modeButton"
+              data-mode="<%= mode %>"
+              data-action="corpus-search-form#selectMode"
+              aria-pressed="<%= @query.mode == mode %>">
+        <%= t("corpus_search.modes.#{mode}") %>
+      </button>
+    <% end %>
   </div>
 
   <section class="corpus-search-primary-panel"
@@ -48,14 +42,22 @@
   </section>
 
   <section class="corpus-search-primary-panel"
-           data-corpus-search-form-target="proximityPanel"
-           <%= "hidden" unless @query.proximity? %>>
-    <p class="corpus-search-field-heading"><%= t("corpus_search.form.find_all_terms") %></p>
+           data-corpus-search-form-target="termsPanel"
+           <%= "hidden" if @query.exact? %>>
+    <p class="corpus-search-field-heading"
+       data-corpus-search-form-target="proximityHeading"
+       <%= "hidden" unless @query.proximity? %>><%= t("corpus_search.form.find_all_terms") %></p>
+    <p class="corpus-search-field-heading"
+       data-corpus-search-form-target="alternativesHeading"
+       <%= "hidden" unless @query.alternatives? %>><%= t("corpus_search.form.find_any_term") %></p>
+    <p class="corpus-search-hint"
+       data-corpus-search-form-target="alternativesHint"
+       <%= "hidden" unless @query.alternatives? %>><%= t("corpus_search.form.alternatives_hint") %></p>
 
-    <% proximity_terms = @query.terms.dup %>
-    <% proximity_terms << "" while proximity_terms.length < 2 %>
+    <% multi_terms = @query.terms.dup %>
+    <% multi_terms << "" while multi_terms.length < 2 %>
     <div class="corpus-search-term-list" data-corpus-search-form-target="termList">
-      <% proximity_terms.each_with_index do |term, index| %>
+      <% multi_terms.each_with_index do |term, index| %>
         <div class="corpus-search-term-row" data-corpus-search-term-row>
           <span class="corpus-search-term-number"><%= index + 1 %></span>
           <%= text_field_tag "terms[]",
@@ -63,12 +65,12 @@
                              class: "corpus-search-input",
                              maxlength: 80,
                              placeholder: t("corpus_search.placeholders.term", number: index + 1),
-                             disabled: !@query.proximity?,
-                             data: { corpus_search_form_target: "proximityInput", corpus_search_term_input: true } %>
+                             disabled: @query.exact?,
+                             data: { corpus_search_form_target: "multiTermInput", corpus_search_term_input: true } %>
           <button type="button"
                   class="corpus-search-icon-button"
                   data-action="corpus-search-form#removeTerm"
-                  <%= "hidden" if proximity_terms.length <= 2 %>
+                  <%= "hidden" if multi_terms.length <= 2 %>
                   aria-label="<%= t("corpus_search.actions.remove_term", number: index + 1) %>">
             <%= t("corpus_search.actions.remove") %>
           </button>
@@ -83,7 +85,7 @@
                name="terms[]"
                maxlength="80"
                class="corpus-search-input"
-               data-corpus-search-form-target="proximityInput"
+               data-corpus-search-form-target="multiTermInput"
                data-corpus-search-term-input="true">
         <button type="button"
                 class="corpus-search-icon-button"
@@ -100,10 +102,12 @@
               data-action="corpus-search-form#addTerm">
         <%= t("corpus_search.actions.add_term") %>
       </button>
-      <span class="corpus-search-hint"><%= t("corpus_search.form.term_limit", max: CorpusSearch::SearchDefinition::MAX_PROXIMITY_TERMS) %></span>
+      <span class="corpus-search-hint"><%= t("corpus_search.form.term_limit", max: CorpusSearch::SearchDefinition::MAX_MULTI_TERMS) %></span>
     </div>
 
-    <div class="corpus-search-grid corpus-search-grid-compact">
+    <div class="corpus-search-grid corpus-search-grid-compact"
+         data-corpus-search-form-target="proximityOptions"
+         <%= "hidden" unless @query.proximity? %>>
       <label>
         <%= t("corpus_search.form.maximum_span") %>
         <%= number_field_tag :span,
@@ -137,9 +141,7 @@
       <p class="corpus-search-folder-unavailable"><%= t("corpus_search.errors.folder_tree_unavailable") %></p>
     <% else %>
       <div class="corpus-search-folder-tree" role="tree">
-        <% Array(@folder_tree&.roots).each do |root_node| %>
-          <%= render "corpus_search/folder_node", node: root_node, query: @query, level: 0 %>
-        <% end %>
+        <%= corpus_search_folder_tree(@folder_tree, @query) %>
       </div>
     <% end %>
   </fieldset>
@@ -315,6 +317,11 @@
               <span><%= item %></span>
             <% end %>
           </p>
+
+          <% if @query.alternatives? %>
+            <% matched_alternatives = Array(hit["term_matches"]).map { |match| match["term"].to_s }.reject(&:blank?).uniq %>
+            <p class="corpus-search-matched-alternatives"><%= t("corpus_search.results.matched_alternatives", terms: matched_alternatives.join(" OR ")) %></p>
+          <% end %>
 
           <p class="corpus-search-snippet"><%= corpus_search_snippet(hit) %></p>
 

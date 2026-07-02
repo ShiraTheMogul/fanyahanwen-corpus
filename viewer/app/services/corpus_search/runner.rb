@@ -3,12 +3,16 @@
 require "set"
 
 module CorpusSearch
-  # Performs exact-sequence and multi-term proximity searches over corpus bodies.
-  # Every body comes from DocumentReader, so metadata can never produce a hit.
+  # Performs exact-sequence, alternative (OR), and multi-term proximity searches
+  # over corpus bodies. Every body comes from DocumentReader, so metadata can
+  # never produce a hit or enter a statistical denominator.
   class Runner
     DEFAULT_INTERACTIVE_LIMIT = 1_000
     MAX_CACHED_CONTEXT = 200
     MAX_INDEX_EQUIVALENTS = 12
+
+    ScanResult = Data.define(:hits, :searchable_characters)
+    AnalysisDocument = Data.define(:document, :hits, :searchable_characters)
 
     def initialize(query:, manifest: nil, cache_store: CacheStore.new)
       @query = query
@@ -23,7 +27,7 @@ module CorpusSearch
 
       docs = candidate_documents
       cache = QueryCache.new(query: @query, cache_store: @cache_store)
-      cache.prune_to!(docs.map { |doc| doc["id"] })
+      cache.prune_to!(scoped_document_ids)
 
       hits = []
       scanned_files = 0
@@ -33,8 +37,9 @@ module CorpusSearch
         per_file_hits = cache.current_hits_for(doc)
 
         unless per_file_hits
-          per_file_hits = search_document(doc)
-          cache.write_hits_for(doc, per_file_hits)
+          scan = scan_document(doc)
+          per_file_hits = scan.hits
+          cache.write_hits_for(doc, per_file_hits, searchable_characters: scan.searchable_characters)
           scanned_files += 1
         end
 
@@ -77,14 +82,15 @@ module CorpusSearch
 
       docs = candidate_documents
       cache = QueryCache.new(query: @query, cache_store: @cache_store)
-      cache.prune_to!(docs.map { |doc| doc["id"] })
+      cache.prune_to!(scoped_document_ids)
 
       hit_count = 0
       docs.each_with_index do |doc, index|
         per_file_hits = cache.current_hits_for(doc)
         unless per_file_hits
-          per_file_hits = search_document(doc)
-          cache.write_hits_for(doc, per_file_hits)
+          scan = scan_document(doc)
+          per_file_hits = scan.hits
+          cache.write_hits_for(doc, per_file_hits, searchable_characters: scan.searchable_characters)
         end
 
         sort_hits(per_file_hits).each do |hit|
@@ -98,6 +104,54 @@ module CorpusSearch
 
       cache.save!
       hit_count
+    end
+
+    # Yields one compact, body-only statistical record per document in the
+    # selected scope. Candidate indexes may prove that a document has zero hits,
+    # but they must never remove that document from statistical denominators.
+    # Cached hit lists and searchable-character counts are reused when present.
+    def each_analysis_document(progress: nil)
+      return 0 unless @query.valid?
+
+      docs = scoped_documents
+      candidate_ids = candidate_documents.map { |doc| doc["id"] }.to_set
+      cache = QueryCache.new(query: @query, cache_store: @cache_store)
+      cache.prune_to!(scoped_document_ids)
+
+      docs.each_with_index do |doc, index|
+        hits = cache.current_hits_for(doc)
+        searchable_characters = cache.current_searchable_characters_for(doc)
+
+        if candidate_ids.include?(doc["id"])
+          if hits.nil?
+            scan = scan_document(doc)
+            hits = scan.hits
+            searchable_characters = scan.searchable_characters
+            cache.write_hits_for(doc, hits, searchable_characters: searchable_characters)
+          elsif searchable_characters.nil?
+            searchable_characters = searchable_character_count(doc)
+            cache.write_searchable_characters_for(doc, searchable_characters)
+          end
+        else
+          # A received-text term index is only used when it supplies a safe
+          # necessary condition. Missing the anchor therefore proves zero hits,
+          # while the body length is still required for rates and prevalence.
+          hits = []
+          searchable_characters = searchable_character_count(doc) if searchable_characters.nil?
+        end
+
+        yield AnalysisDocument.new(
+          document: doc,
+          hits: sort_hits(hits),
+          searchable_characters: searchable_characters.to_i
+        ) if block_given?
+
+        progress&.call(index + 1, docs.length)
+        cache.save! if (index + 1) % 25 == 0
+      end
+
+      cache.save!
+      docs.length
     end
 
     private
@@ -116,17 +170,26 @@ module CorpusSearch
       )
     end
 
+    def scoped_documents
+      @scoped_documents ||= @manifest.filtered(@query.filters)
+    end
+
+    def scoped_document_ids
+      @scoped_document_ids ||= scoped_documents.map { |doc| doc["id"] }
+    end
+
     def candidate_documents
-      docs = @manifest.filtered(@query.filters)
+      docs = scoped_documents
       canonical_docs = docs.select { |doc| DocumentRole.default?(doc["document_role"].presence || "canonical") }
       return docs if canonical_docs.empty?
 
       anchor_classes = index_anchor_classes
       return docs if anchor_classes.empty?
+      return docs if @query.alternatives? && anchor_classes.length < query_patterns.length
 
       # Broad/common matching may require several literal indexes for one query
       # character. Warm all selected forms in one corpus pass, then union forms
-      # within a term and intersect the necessary anchors across terms.
+      # within a term. Required terms are intersected; OR alternatives are unioned.
       literal_terms = anchor_classes.flat_map(&:to_a).uniq
       TermIndex.refresh_single_character_terms!(
         terms: literal_terms,
@@ -134,21 +197,28 @@ module CorpusSearch
         cache_store: @cache_store
       )
 
-      indexed_ids = canonical_docs.map { |doc| doc["id"] }.to_set
-      anchor_classes.each do |forms|
-        ids_for_anchor = forms.each_with_object(Set.new) do |form, union|
+      anchor_id_sets = anchor_classes.map do |forms|
+        forms.each_with_object(Set.new) do |form, union|
           union.merge(
             TermIndex.new(term: form, manifest: @manifest, cache_store: @cache_store).doc_ids_with_hits
           )
         end
-        indexed_ids &= ids_for_anchor
-        break if indexed_ids.empty?
+      end
+
+      indexed_ids = if @query.alternatives?
+        anchor_id_sets.each_with_object(Set.new) { |ids, union| union.merge(ids) }
+      else
+        canonical_docs.map { |doc| doc["id"] }.to_set.tap do |intersection|
+          anchor_id_sets.each do |ids|
+            intersection &= ids
+            break if intersection.empty?
+          end
+        end
       end
 
       # The term index deliberately covers received texts only. When a user also
       # selects variants, raw scrapes, translations, or annotations, retain those
-      # documents for direct scanning while narrowing the much larger received
-      # text layer through the index.
+      # documents for direct scanning while narrowing the larger received layer.
       docs.select do |doc|
         role = doc["document_role"].presence || "canonical"
         !DocumentRole.default?(role) || indexed_ids.include?(doc["id"])
@@ -189,18 +259,31 @@ module CorpusSearch
       end
     end
 
-    def search_document(doc)
+    def scan_document(doc)
       document = DocumentReader.read(fs: @fs, path: doc["path"])
       body = document.body
       searchable = NormalizedText.build(body, punctuation: @query.punctuation)
+      hits = search_loaded_document(doc, body, searchable)
+      ScanResult.new(hits: hits, searchable_characters: searchable.units.length)
+    rescue Errno::ENOENT, SecurityError
+      ScanResult.new(hits: [], searchable_characters: 0)
+    end
 
+    def searchable_character_count(doc)
+      document = DocumentReader.read(fs: @fs, path: doc["path"])
+      NormalizedText.build(document.body, punctuation: @query.punctuation).units.length
+    rescue Errno::ENOENT, SecurityError
+      0
+    end
+
+    def search_loaded_document(doc, body, searchable)
       if @query.proximity?
         proximity_hits(doc, body, searchable)
+      elsif @query.alternatives?
+        alternative_hits(doc, body, searchable)
       else
         exact_hits(doc, body, searchable)
       end
-    rescue Errno::ENOENT, SecurityError
-      []
     end
 
     def exact_hits(doc, body, searchable)
@@ -224,6 +307,59 @@ module CorpusSearch
           search_start_offset: search_position,
           search_end_offset: search_position + pattern.length,
           equivalence_matches: equivalence_matches
+        )
+      end
+    end
+
+    def alternative_hits(doc, body, searchable)
+      matches_by_range = {}
+
+      query_patterns.each_with_index do |pattern, term_index|
+        next if pattern.empty?
+
+        pattern.positions_in(searchable.units).each do |search_position|
+          search_end = search_position + pattern.length
+          original_range = searchable.original_range(search_position, search_end)
+          next unless original_range
+
+          equivalence_matches = pattern.equivalence_matches_at(
+            searchable: searchable,
+            search_start: search_position,
+            term_index: term_index
+          )
+          term_match = {
+            "term_index" => term_index,
+            "term" => @query.terms.fetch(term_index),
+            "start_offset" => original_range[0],
+            "end_offset" => original_range[1],
+            "search_start_offset" => search_position,
+            "search_end_offset" => search_end,
+            "equivalence_matches" => equivalence_matches
+          }
+
+          key = [original_range[0], original_range[1], search_position, search_end]
+          entry = matches_by_range[key] ||= {
+            original_range: original_range,
+            search_start: search_position,
+            search_end: search_end,
+            term_matches: [],
+            equivalence_matches: []
+          }
+          entry[:term_matches] << term_match unless entry[:term_matches].any? { |existing| existing["term_index"] == term_index }
+          entry[:equivalence_matches].concat(equivalence_matches)
+        end
+      end
+
+      matches_by_range.values.map do |entry|
+        build_hit(
+          doc,
+          body,
+          start_offset: entry[:original_range][0],
+          end_offset: entry[:original_range][1],
+          search_start_offset: entry[:search_start],
+          search_end_offset: entry[:search_end],
+          term_matches: entry[:term_matches].sort_by { |match| match["term_index"] },
+          equivalence_matches: entry[:equivalence_matches]
         )
       end
     end

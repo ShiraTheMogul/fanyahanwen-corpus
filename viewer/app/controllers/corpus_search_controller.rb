@@ -8,16 +8,15 @@ class CorpusSearchController < ApplicationController
 
   def index
     @query = CorpusSearch::Query.from_params(params)
-    @folder_tree = CorpusSearch::FolderTree.load
     @searched = @query.requested?
     @result_page = nil
     @live_query_url = live_query_url(@query) if @query.valid?
+    @manifest = CorpusSearch::Manifest.load if @searched && @query.valid?
+    @folder_tree = CorpusSearch::FolderTree.load(manifest: @manifest)
 
     return unless @searched
 
     if @query.valid?
-      @manifest = CorpusSearch::Manifest.load
-      @folder_tree = CorpusSearch::FolderTree.load(manifest: @manifest)
       @result_page = CorpusSearch::Runner.new(query: @query, manifest: @manifest).page(max_hits: INTERACTIVE_LIMIT)
     else
       @result_page = CorpusSearch::ResultPage.new(

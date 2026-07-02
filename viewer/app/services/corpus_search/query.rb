@@ -69,6 +69,8 @@ module CorpusSearch
     def requested? = @requested
     def exact? = @search_definition.exact?
     def proximity? = @search_definition.proximity?
+    def alternatives? = @search_definition.alternatives?
+    def multi_term? = @search_definition.multi_term?
     def ignore_punctuation? = @search_definition.ignore_punctuation?
 
     def term_a = exact? ? query_text : terms[0].to_s
@@ -83,9 +85,12 @@ module CorpusSearch
       list = []
       if exact?
         list << I18n.t("corpus_search.errors.enter_sequence") if normalized_units(query_text).empty?
-      else
+      elsif proximity?
         list << I18n.t("corpus_search.errors.enter_two_terms") if terms.length < 2
         list << I18n.t("corpus_search.errors.too_many_terms", max: SearchDefinition::MAX_PROXIMITY_TERMS) if terms.length > SearchDefinition::MAX_PROXIMITY_TERMS
+      else
+        list << I18n.t("corpus_search.errors.enter_two_alternatives") if terms.length < 2
+        list << I18n.t("corpus_search.errors.too_many_alternatives", max: SearchDefinition::MAX_ALTERNATIVE_TERMS) if terms.length > SearchDefinition::MAX_ALTERNATIVE_TERMS
       end
 
       list << I18n.t("corpus_search.errors.term_too_long", max: 80) if effective_terms.any? { |term| term.each_char.count > 80 }
@@ -98,7 +103,7 @@ module CorpusSearch
 
     def to_h
       {
-        "version" => 5,
+        "version" => 6,
         "definition" => @search_definition.to_h,
         "presentation" => @presentation_options.to_h.except("page")
       }
@@ -106,7 +111,7 @@ module CorpusSearch
 
     def cache_key
       payload = {
-        "version" => 5,
+        "version" => 6,
         "definition" => @search_definition.to_h
       }
       CacheStore.hash_key(JSON.generate(payload))
@@ -119,6 +124,8 @@ module CorpusSearch
           terms: terms.join(" · "),
           distance: maximum_span
         )
+      elsif alternatives?
+        I18n.t("corpus_search.query.alternatives_label", terms: terms.join(" OR "))
       else
         query_text
       end
@@ -132,8 +139,10 @@ module CorpusSearch
         pairs << ["q", query_text]
       else
         terms.each { |term| pairs << ["terms[]", term] }
-        pairs << ["span", maximum_span.to_s]
-        pairs << ["order", order]
+        if proximity?
+          pairs << ["span", maximum_span.to_s]
+          pairs << ["order", order]
+        end
       end
 
       pairs << ["punctuation", punctuation]

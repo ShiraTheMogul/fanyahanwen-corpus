@@ -3,8 +3,8 @@
 require "digest"
 
 module CorpusSearchHelper
-  # Renders the visible snippet while highlighting each matched proximity term.
-  # Exact-sequence searches still receive one mark around the whole match.
+  # Renders the visible snippet while highlighting each matched term. Exact
+  # searches receive one mark; proximity and OR searches use term_matches.
   def corpus_search_snippet(hit)
     left = hit["left_context"].to_s
     matched = hit["matched_text"].to_s
@@ -23,7 +23,11 @@ module CorpusSearchHelper
     render_highlighted_text(visible, merge_ranges(ranges))
   end
 
-
+  # Building the small folder tree in one helper avoids one recursive partial
+  # render (and one development-log line) per node while keeping the same HTML.
+  def corpus_search_folder_tree(folder_tree, query)
+    safe_join(Array(folder_tree&.roots).map { |node| corpus_search_folder_node(node, query, 0) })
+  end
 
   def corpus_search_unique_equivalence_matches(hit)
     Array(hit["equivalence_matches"]).uniq do |match|
@@ -75,6 +79,108 @@ module CorpusSearchHelper
   end
 
   private
+
+  def corpus_search_folder_node(node, query, level)
+    path = node.fetch("path")
+    children = Array(node["children"])
+    branch_open = corpus_search_folder_branch_open?(node, query)
+    include_id = corpus_search_folder_checkbox_id(path, "include")
+    exclude_id = corpus_search_folder_checkbox_id(path, "exclude")
+
+    row = tag.div(class: "corpus-search-folder-node-row") do
+      safe_join([
+        corpus_search_folder_toggle(node, children, branch_open),
+        corpus_search_folder_include_choice(node, query, path, include_id),
+        corpus_search_folder_exclude_choice(node, query, path, exclude_id)
+      ])
+    end
+
+    branch = if children.any?
+      tag.div(
+        safe_join(children.map { |child| corpus_search_folder_node(child, query, level + 1) }),
+        class: "corpus-search-folder-children",
+        role: "group",
+        hidden: !branch_open,
+        data: { corpus_search_folder_children: true }
+      )
+    end
+
+    tag.div(
+      safe_join([row, branch].compact),
+      class: "corpus-search-folder-node",
+      role: "treeitem",
+      aria: { expanded: branch_open },
+      style: "--corpus-folder-depth: #{level}",
+      data: {
+        corpus_search_folder_node: true,
+        folder_search_text: [node["name"], path].join(" ").downcase
+      }
+    )
+  end
+
+  def corpus_search_folder_toggle(node, children, branch_open)
+    return tag.span("", class: "corpus-search-folder-toggle-spacer", aria: { hidden: true }) if children.empty?
+
+    tag.button(
+      tag.span("▸", aria: { hidden: true }),
+      type: "button",
+      class: "corpus-search-folder-toggle",
+      aria: {
+        expanded: branch_open,
+        label: t("corpus_search.actions.toggle_folder", folder: node["name"])
+      },
+      data: { action: "corpus-search-form#toggleFolderBranch" }
+    )
+  end
+
+  def corpus_search_folder_include_choice(node, query, path, input_id)
+    tag.label(class: "corpus-search-folder-choice", for: input_id, title: path) do
+      safe_join([
+        check_box_tag(
+          "folders[]",
+          path,
+          query.include_folders.include?(path),
+          id: input_id,
+          data: {
+            corpus_search_form_target: "folderChoice",
+            corpus_folder_path: path,
+            corpus_folder_scope: "include",
+            action: "corpus-search-form#selectFolder"
+          }
+        ),
+        tag.span(node["name"], class: "corpus-search-folder-name"),
+        tag.span(
+          number_with_delimiter(node["document_count"].to_i),
+          class: "corpus-search-folder-count",
+          title: corpus_search_folder_role_summary(node)
+        )
+      ])
+    end
+  end
+
+  def corpus_search_folder_exclude_choice(node, query, path, input_id)
+    tag.label(
+      class: "corpus-search-folder-exclude-choice",
+      for: input_id,
+      title: t("corpus_search.form.exclude_named_folder", folder: node["name"])
+    ) do
+      safe_join([
+        check_box_tag(
+          "exclude_folders[]",
+          path,
+          query.exclude_folders.include?(path),
+          id: input_id,
+          data: {
+            corpus_search_form_target: "folderChoice",
+            corpus_folder_path: path,
+            corpus_folder_scope: "exclude",
+            action: "corpus-search-form#selectFolder"
+          }
+        ),
+        tag.span(t("corpus_search.form.exclude_folder"))
+      ])
+    end
+  end
 
   def highlighted_ranges(hit)
     term_matches = Array(hit["term_matches"])

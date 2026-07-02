@@ -6,6 +6,8 @@ dng:
       mode: Search mode
       search_text: Search text
       find_all_terms: Find all terms within one passage
+      find_any_term: Find any of these terms
+      alternatives_hint: Terms are joined with OR. A result is returned when any entered term occurs.
       maximum_span: Maximum span
       order: Order
       ignore_punctuation: Ignore punctuation and spacing
@@ -34,6 +36,7 @@ dng:
     modes:
       exact: Exact sequence
       proximity: Proximity
+      alternatives: Alternatives (OR)
     orders:
       any: Any order
       entered: Entered order
@@ -78,6 +81,7 @@ dng:
       complete_count: 'Complete interactive result count: %{count}.'
       offset: body offset %{start}–%{finish}
       none: No results found.
+      matched_alternatives: 'Matched alternative(s): %{terms}'
       equivalent_forms_used: '%{count} equivalent-form match(es) explained'
       equivalence_via: 'via %{sources}; mapping path %{path}'
       chars_omitted:
@@ -118,6 +122,8 @@ dng:
     stages:
       queued: Queued
       searching: Searching
+      building_analysis_dataset: Building analysis dataset
+      running_r: Running R analysis
       complete: Complete
       failed: Failed
     notices:
@@ -125,14 +131,17 @@ dng:
     errors:
       enter_sequence: Enter an exact sequence to search for.
       enter_two_terms: Enter at least two terms for a proximity search.
+      enter_two_alternatives: Enter at least two alternatives for an OR search.
       term_too_long: Search terms cannot be longer than %{max} characters.
       search_failed: 'Search failed: %{message}'
       prepared_not_found: Prepared search not found
       download_not_ready: Download is not ready yet
       too_many_terms: A proximity search can contain at most %{max} terms.
+      too_many_alternatives: 'An OR search can contain at most %{max} alternatives.'
       folder_tree_unavailable: The folder list is not ready yet. Searches still cover every folder in the selected text layers.
     query:
       proximity_label: '%{terms} within %{distance} searchable characters'
+      alternatives_label: '%{terms}'
     export:
       flashcards:
         front: 'Translate or explain %{target} in context:
@@ -146,6 +155,7 @@ dng:
         offsets: Offsets are character offsets into the body text after metadata and separator lines are removed.
         equivalence: Non-literal matches retain the entered character, source character, mapping path, and mapping source.
         canonical_source: The source .txt files remain the authoritative corpus; this export is derived search output.
+        analysis_dataset: document_counts.csv contains body-only document counts and searchable-character denominators used by the included R script.
     roles:
       canonical: Received text
       textual_variant: Variants

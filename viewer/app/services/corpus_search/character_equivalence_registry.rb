@@ -22,7 +22,10 @@ module CorpusSearch
 
     Edge = Data.define(:from, :to, :source, :detail)
 
+    VERSION_CACHE_TTL = [ENV.fetch("CORPUS_SEARCH_EQUIVALENCE_VERSION_TTL", "300").to_i, 0].max
+
     @graph_cache = {}
+    @version_cache = {}
     @graph_cache_mutex = Mutex.new
 
     class << self
@@ -30,15 +33,22 @@ module CorpusSearch
         chosen = normalize_level(level)
         return "exact-v1" if chosen == "exact"
 
+        cached = cached_version(chosen)
+        return cached if cached
+
         common_version = Digest::SHA256.hexdigest(
           ["common-v1", variant_mapping_version].join(":"),
         )[0, 16]
-        return "common-#{common_version}" if chosen == "common"
+        value = if chosen == "common"
+          "common-#{common_version}"
+        else
+          broad_version = Digest::SHA256.hexdigest(
+            ["broad-v1", common_version, opencc_digest].join(":"),
+          )[0, 16]
+          "broad-#{broad_version}"
+        end
 
-        broad_version = Digest::SHA256.hexdigest(
-          ["broad-v1", common_version, opencc_digest].join(":"),
-        )[0, 16]
-        "broad-#{broad_version}"
+        store_cached_version(chosen, value)
       end
 
       def graph_for(level)
@@ -59,10 +69,35 @@ module CorpusSearch
       end
 
       def reset_cache!
-        @graph_cache_mutex.synchronize { @graph_cache.clear }
+        @graph_cache_mutex.synchronize do
+          @graph_cache.clear
+          @version_cache.clear
+        end
       end
 
       private
+
+
+      def cached_version(level)
+        now = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+        @graph_cache_mutex.synchronize do
+          entry = @version_cache[level]
+          return nil unless entry
+          return nil if VERSION_CACHE_TTL.positive? && (now - entry.fetch(:stored_at)) >= VERSION_CACHE_TTL
+
+          entry.fetch(:value)
+        end
+      end
+
+      def store_cached_version(level, value)
+        @graph_cache_mutex.synchronize do
+          @version_cache[level] = {
+            value: value,
+            stored_at: Process.clock_gettime(Process::CLOCK_MONOTONIC)
+          }
+        end
+        value
+      end
 
       def build_graph(level)
         graph = Hash.new { |hash, character| hash[character] = [] }
@@ -138,12 +173,18 @@ module CorpusSearch
       end
 
       def variant_mapping_version
-        return "unavailable" unless variant_mapping_available?
+        return "unavailable" unless defined?(VariantMapping)
 
-        relation = VariantMapping.unscoped
-        count = relation.count
-        maximum_updated_at = relation.maximum(:updated_at)&.utc&.iso8601(6)
-        maximum_id = relation.maximum(:id)
+        connection = VariantMapping.connection
+        table = connection.quote_table_name(VariantMapping.table_name)
+        row = connection.select_one(<<~SQL.squish)
+          SELECT COUNT(*) AS mapping_count, MAX(id) AS maximum_id, MAX(updated_at) AS maximum_updated_at
+          FROM #{table}
+        SQL
+
+        count = row.fetch("mapping_count", 0).to_i
+        maximum_id = row["maximum_id"]
+        maximum_updated_at = row["maximum_updated_at"].to_s
         "#{count}:#{maximum_id}:#{maximum_updated_at}"
       rescue ActiveRecord::StatementInvalid, ActiveRecord::NoDatabaseError
         "unavailable"

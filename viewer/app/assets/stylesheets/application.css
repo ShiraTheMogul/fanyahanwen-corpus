@@ -1840,3 +1840,11 @@ body.rightbar-collapsed .rightbar {
     max-width: none;
   }
 }
+
+/* --- Corpus search phase 6 additions ---------------------------------- */
+.corpus-search-matched-alternatives {
+  margin: 9px 0 -3px;
+  color: #596473;
+  font-size: 0.9rem;
+  font-weight: 600;
+}

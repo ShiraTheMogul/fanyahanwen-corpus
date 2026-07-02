@@ -6,16 +6,20 @@ lzh:
       mode: 尋法
       search_text: 所尋文句
       find_all_terms: 求諸詞同見於一段
+      find_any_term: 求諸詞任一見於文
+      alternatives_hint: 諸詞以「或」相連；任一詞見，皆列所得。
       maximum_span: 所跨字數上限
       order: 先後
       ignore_punctuation: 略標點與空白
       body_only_rule: 卷首著錄永不搜尋。
+      character_matching: 字形對應
       additional_filters: 範圍及別項濾器
       include_folders: 所納目錄
       exclude_folders: 所排目錄
       folder_hint: 勾選目錄以限縮搜尋範圍；不勾則尋所選文本層內全部目錄。所勾目錄均連同其下諸目錄。
       search_within_folder: 尋此目錄
       exclude_folder: 排除
+      exclude_named_folder: 排除%{folder}
       folder_document_count: '%{count}檔'
       context_characters: 前後文字數
       results_per_page: 每頁項數
@@ -32,6 +36,7 @@ lzh:
     modes:
       exact: 連文
       proximity: 鄰近
+      alternatives: 任一（或）
     orders:
       any: 先後皆可
       entered: 依輸入次序
@@ -42,6 +47,15 @@ lzh:
       exact: 字形須同
       common: 兼常見異體
       broad: 兼廣義字形對應
+    character_hints:
+      exact: 惟字形與所輸入者全同乃中。
+      common: 並納臺灣教育部所收經審異體。
+      broad: 並納OpenCC所列繁簡及日本新字體之受控對應。
+    equivalence_sources:
+      taiwan_moe: 臺灣教育部異體字對應
+      zetian_script: 則天文字對應
+      opencc_simplified_traditional: OpenCC繁簡字對應
+      opencc_japanese_shinjitai: OpenCC日本新字體對應
     placeholders:
       sequence: 關關雎鳩在河之洲
       term: Term %{number}
@@ -67,6 +81,9 @@ lzh:
       complete_count: 互動尋文所得凡%{count}項。
       offset: 正文字位%{start}–%{finish}
       none: 無所得。
+      equivalent_forms_used: 所中等價字形凡%{count}處
+      equivalence_via: 由%{sources}；對應路徑%{path}
+      matched_alternatives: '所中任一詞：%{terms}'
       chars_omitted:
         one: 略%{count}字
         other: 略%{count}字
@@ -76,6 +93,7 @@ lzh:
       query: 所尋
       punctuation: 標點
       character_matching: 字形對應
+      equivalence_registry: 字形對應表版本
       text_witnesses: 文本與語料層
       folders: 目錄範圍
       metadata: 卷首著錄
@@ -94,7 +112,7 @@ lzh:
       status: 狀態
       query: 所尋
       progress: 階段：%{stage}。諸檔：%{scanned}／%{total}。所得：%{hits}項。
-      zip_contents: ZIP檔內有results.csv、flashcards.csv及metadata.json。
+      zip_contents: ZIP檔內有尋文結果、正文分析資料、所用R程式、R所得及運行著錄。
       refresh_notice: 作業未畢時，此頁每%{seconds}秒自新。
     statuses:
       queued: 候行
@@ -104,6 +122,8 @@ lzh:
     stages:
       queued: 候行
       searching: 尋文中
+      building_analysis_dataset: 製分析資料表
+      running_r: 以R分析
       complete: 已畢
       failed: 失敗
     notices:
@@ -111,14 +131,17 @@ lzh:
     errors:
       enter_sequence: 請輸入所尋文句。
       enter_two_terms: 鄰近尋文須輸入至少二詞。
+      enter_two_alternatives: 任一尋文須至少置二詞。
       term_too_long: 所尋各詞不得逾%{max}字。
       search_failed: 尋文失敗：%{message}
       prepared_not_found: 未見所備尋文。
       download_not_ready: 匯出檔尚未備妥。
       too_many_terms: 鄰近尋文至多容%{max}詞。
+      too_many_alternatives: '任一尋文至多置%{max}詞。'
       folder_tree_unavailable: 目錄清單尚未備妥；此時仍可搜尋全部目錄。
     query:
       proximity_label: '%{terms}同見於不逾%{distance}搜尋字'
+      alternatives_label: '%{terms}'
     export:
       flashcards:
         front: '於此文脈譯釋%{target}：
@@ -130,7 +153,9 @@ lzh:
       metadata_notes:
         blank_years: year_start／year_end若空，則語料著錄無可解析之年份。
         offsets: 字位自去除卷首著錄及其分隔空行後之正文起算。
+        equivalence: 非字面相合者，仍記所輸入字、原文所見字、對應路徑及來源。
         canonical_source: 原始.txt檔仍為語料庫權威文本；此匯出檔乃尋文所得之衍生物。
+        analysis_dataset: document_counts.csv所載皆正文之檔案計數與可尋字數，供所附R程式使用。
     roles:
       canonical: 傳本文本
       textual_variant: 異文

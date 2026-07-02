@@ -82,6 +82,22 @@ class CorpusSearchQueryParamsTest < ActiveSupport::TestCase
     assert_equal %w[舜 孝 天下], query.terms
   end
 
+
+  test "alternative parameters serialize as a deterministic OR query" do
+    query = CorpusSearch::QueryParams.parse(
+      mode: "alternatives",
+      terms: ["仁", "義", "德"],
+      punctuation: "ignore"
+    )
+
+    assert query.valid?
+    assert query.alternatives?
+    assert_equal %w[仁 義 德], query.terms
+    assert_equal 3, query.canonical_params.count { |key, _value| key == "terms[]" }
+    assert_not_includes query.relative_url, "span="
+    assert_not_includes query.relative_url, "order="
+  end
+
   test "matching cache identity is shared across interface locales" do
     english = CorpusSearch::QueryParams.parse({ mode: "exact", q: "孝" }, locale: :en)
     literary_chinese = CorpusSearch::QueryParams.parse({ mode: "exact", q: "孝" }, locale: :lzh)

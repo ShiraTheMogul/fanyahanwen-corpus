@@ -5,9 +5,14 @@ export default class extends Controller {
     "mode",
     "modeButton",
     "exactPanel",
-    "proximityPanel",
+    "termsPanel",
     "exactInput",
+    "multiTermInput",
     "proximityInput",
+    "proximityHeading",
+    "alternativesHeading",
+    "alternativesHint",
+    "proximityOptions",
     "termList",
     "termTemplate",
     "addTermButton",
@@ -79,7 +84,6 @@ export default class extends Controller {
     branch.hidden = expanded
   }
 
-
   updateCharacterHint() {
     if (!this.hasCharacterMatchingTarget || !this.hasCharacterHintTarget) return
 
@@ -88,14 +92,22 @@ export default class extends Controller {
   }
 
   applyMode(mode) {
-    const selected = mode === "proximity" ? "proximity" : "exact"
+    const selected = ["proximity", "alternatives"].includes(mode) ? mode : "exact"
+    const exact = selected === "exact"
+    const proximity = selected === "proximity"
+    const alternatives = selected === "alternatives"
+
     this.modeTarget.value = selected
+    this.exactPanelTarget.hidden = !exact
+    this.termsPanelTarget.hidden = exact
+    this.proximityHeadingTarget.hidden = !proximity
+    this.alternativesHeadingTarget.hidden = !alternatives
+    this.alternativesHintTarget.hidden = !alternatives
+    this.proximityOptionsTarget.hidden = !proximity
 
-    this.exactPanelTarget.hidden = selected !== "exact"
-    this.proximityPanelTarget.hidden = selected !== "proximity"
-
-    this.exactInputTargets.forEach((input) => { input.disabled = selected !== "exact" })
-    this.proximityInputTargets.forEach((input) => { input.disabled = selected !== "proximity" })
+    this.exactInputTargets.forEach((input) => { input.disabled = !exact })
+    this.multiTermInputTargets.forEach((input) => { input.disabled = exact })
+    this.proximityInputTargets.forEach((input) => { input.disabled = !proximity })
 
     this.modeButtonTargets.forEach((button) => {
       const active = button.dataset.mode === selected
