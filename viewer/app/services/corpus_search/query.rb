@@ -1,16 +1,23 @@
 # frozen_string_literal: true
 
 require "json"
-module CorpusSearch
-  # Sanitised representation of a search form submission.
-  class Query
-    MODES = %w[exact proximity].freeze
-    ORDERS = %w[either a_before_b b_before_a].freeze
 
-    attr_reader :mode, :term_a, :term_b, :distance, :context, :order, :filters,
-                :page, :per_page, :locale
+module CorpusSearch
+  # Compatibility facade used by the current controller and views. Search
+  # semantics and presentation settings are held by separate value objects.
+  class Query
+    attr_reader :search_definition, :presentation_options, :locale
 
     def self.from_params(params)
+      filters = {
+        nation: params[:nation],
+        period: params[:period],
+        region: params[:region],
+        author: params[:author],
+        year_start: params[:year_start],
+        year_end: params[:year_end]
+      }
+
       new(
         mode: params[:mode],
         term_a: params[:term_a],
@@ -21,30 +28,49 @@ module CorpusSearch
         page: params[:page],
         per_page: params[:per_page],
         locale: I18n.locale,
-        filters: {
-          nation: params[:nation],
-          period: params[:period],
-          region: params[:region],
-          author: params[:author],
-          year_start: params[:year_start],
-          year_end: params[:year_end]
-        }
+        filters: filters,
+        document_roles: params[:document_roles] || params[:roles],
+        include_folders: params[:include_folders] || params[:folders],
+        exclude_folders: params[:exclude_folders]
       )
     end
 
     def initialize(mode: "exact", term_a: nil, term_b: nil, distance: 200, context: 20,
-                   order: "either", page: 1, per_page: 20, locale: I18n.locale, filters: {})
-      @mode = MODES.include?(mode.to_s) ? mode.to_s : "exact"
-      @term_a = term_a.to_s.strip
-      @term_b = term_b.to_s.strip
-      @distance = clamp_integer(distance, default: 200, min: 1, max: 5_000)
-      @context = clamp_integer(context, default: 20, min: 0, max: 200)
-      @order = ORDERS.include?(order.to_s) ? order.to_s : "either"
-      @page = clamp_integer(page, default: 1, min: 1, max: 100_000)
-      @per_page = clamp_integer(per_page, default: 20, min: 1, max: 50)
+                   order: "either", page: 1, per_page: 20, locale: I18n.locale, filters: {},
+                   document_roles: nil, include_folders: nil, exclude_folders: nil,
+                   search_definition: nil, presentation_options: nil)
+      @search_definition = search_definition || SearchDefinition.new(
+        mode: mode,
+        term_a: term_a,
+        term_b: term_b,
+        distance: distance,
+        order: order,
+        metadata_filters: filters,
+        document_roles: document_roles,
+        include_folders: include_folders,
+        exclude_folders: exclude_folders
+      )
+      @presentation_options = presentation_options || PresentationOptions.new(
+        context: context,
+        page: page,
+        per_page: per_page
+      )
       @locale = normalise_locale(locale)
-      @filters = filters.to_h.transform_keys(&:to_s).transform_values { |value| value.to_s.strip }
     end
+
+    def mode = @search_definition.mode
+    def term_a = @search_definition.term_a
+    def term_b = @search_definition.term_b
+    def distance = @search_definition.distance
+    def order = @search_definition.order
+    def filters = @search_definition.manifest_filters
+    def metadata_filters = @search_definition.metadata_filters
+    def document_roles = @search_definition.document_roles
+    def include_folders = @search_definition.include_folders
+    def exclude_folders = @search_definition.exclude_folders
+    def context = @presentation_options.context
+    def page = @presentation_options.page
+    def per_page = @presentation_options.per_page
 
     def valid?
       errors.empty?
@@ -52,41 +78,55 @@ module CorpusSearch
 
     def errors
       list = []
-      list << I18n.t("corpus_search.errors.enter_term") if @term_a.blank?
-      list << I18n.t("corpus_search.errors.enter_second_term") if proximity? && @term_b.blank?
-      list << I18n.t("corpus_search.errors.term_too_long", max: 80) if [@term_a, @term_b].any? { |term| term.each_char.count > 80 }
+      list << I18n.t("corpus_search.errors.enter_term") if term_a.blank?
+      list << I18n.t("corpus_search.errors.enter_second_term") if proximity? && term_b.blank?
+      list << I18n.t("corpus_search.errors.term_too_long", max: 80) if [term_a, term_b].any? { |term| term.each_char.count > 80 }
       list
     end
 
     def proximity?
-      @mode == "proximity"
+      @search_definition.proximity?
     end
 
     def exact?
-      @mode == "exact"
+      @search_definition.exact?
     end
 
+    # Keep the current flat representation so prepared-search records and the
+    # existing form continue to work during the staged refactor.
     def to_h
       {
-        "mode" => @mode,
-        "term_a" => @term_a,
-        "term_b" => @term_b,
-        "distance" => @distance,
-        "context" => @context,
-        "order" => @order,
-        "filters" => @filters.reject { |_key, value| value.blank? }
+        "schema_version" => SearchDefinition::SCHEMA_VERSION,
+        "mode" => mode,
+        "term_a" => term_a,
+        "term_b" => term_b,
+        "distance" => distance,
+        "context" => context,
+        "order" => order,
+        "filters" => metadata_filters.reject { |_key, value| value.blank? },
+        "document_roles" => document_roles,
+        "include_folders" => include_folders,
+        "exclude_folders" => exclude_folders
       }
     end
 
     def cache_key
-      CacheStore.hash_key(JSON.generate(to_h.merge("_locale" => @locale)))
+      # Context still participates because the current hit cache stores rendered
+      # snippets. Page and per-page do not change the match set.
+      payload = {
+        "version" => 2,
+        "definition" => @search_definition.to_h,
+        "context" => context,
+        "locale" => @locale
+      }
+      CacheStore.hash_key(JSON.generate(payload))
     end
 
     def display_label
       if proximity?
-        I18n.t("corpus_search.query.proximity_label", term_a: @term_a, term_b: @term_b, distance: @distance)
+        I18n.t("corpus_search.query.proximity_label", term_a: term_a, term_b: term_b, distance: distance)
       else
-        @term_a
+        term_a
       end
     end
 
@@ -95,13 +135,6 @@ module CorpusSearch
     def normalise_locale(value)
       candidate = value.to_s
       I18n.available_locales.map(&:to_s).include?(candidate) ? candidate : I18n.default_locale.to_s
-    end
-
-    def clamp_integer(value, default:, min:, max:)
-      integer = Integer(value)
-      [[integer, min].max, max].min
-    rescue ArgumentError, TypeError
-      default
     end
   end
 end

@@ -97,7 +97,10 @@ module CorpusSearch
         context: hash["context"],
         order: hash["order"],
         locale: locale,
-        filters: hash["filters"] || {}
+        filters: hash["filters"] || {},
+        document_roles: hash["document_roles"],
+        include_folders: hash["include_folders"],
+        exclude_folders: hash["exclude_folders"]
       )
     end
 

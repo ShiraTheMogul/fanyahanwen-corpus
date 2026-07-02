@@ -129,6 +129,10 @@
             <% value.each do |filter_key, filter_value| %>
               <%= hidden_field_tag filter_key, filter_value %>
             <% end %>
+          <% elsif value.is_a?(Array) %>
+            <% value.each do |item| %>
+              <%= hidden_field_tag "#{key}[]", item %>
+            <% end %>
           <% else %>
             <%= hidden_field_tag key, value %>
           <% end %>

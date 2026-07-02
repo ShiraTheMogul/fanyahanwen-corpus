@@ -11,8 +11,8 @@ module CorpusSearch
   class ExportWriter
     RESULT_COLUMNS = %w[
       query mode term_a term_b distance order snippet matched_text left_context right_context
-      title work author date_text year_start year_end nation period region path doc_id
-      start_offset end_offset term_a_offset term_b_offset
+      title work author date_text year_start year_end nation period region path folder_path
+      document_role canonical_parent_path doc_id start_offset end_offset term_a_offset term_b_offset
     ].freeze
 
     FLASHCARD_COLUMNS = %w[front back target snippet source tags].freeze

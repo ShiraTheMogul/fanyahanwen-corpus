@@ -116,6 +116,11 @@ module CorpusSearch
     def candidate_documents
       docs = @manifest.filtered(@query.filters)
 
+      # Phase 1 indexes the canonical corpus only. When a caller deliberately
+      # selects other witness roles, scan that already-filtered set directly
+      # rather than returning false negatives from the canonical term index.
+      return docs unless canonical_index_scope?
+
       ids_for_a = TermIndex.new(term: @query.term_a, manifest: @manifest, cache_store: @cache_store).doc_ids_with_hits.to_set
       docs = docs.select { |doc| ids_for_a.include?(doc["id"]) }
 
@@ -127,9 +132,13 @@ module CorpusSearch
       docs
     end
 
+    def canonical_index_scope?
+      @query.document_roles == DocumentRole::DEFAULT_ROLES
+    end
+
     def search_document(doc)
-      raw = @fs.read_text(@fs.resolve(doc["path"]))
-      _metadata, body = FrontMatter.split(raw)
+      document = DocumentReader.read(fs: @fs, path: doc["path"])
+      body = document.body
       chars = SearchText.chars_for(body)
 
       if @query.proximity?
@@ -206,6 +215,9 @@ module CorpusSearch
       {
         "doc_id" => doc["id"],
         "path" => doc["path"],
+        "folder_path" => doc["folder_path"].to_s,
+        "document_role" => doc["document_role"].presence || "canonical",
+        "canonical_parent_path" => doc["canonical_parent_path"],
         "title" => doc["title"].to_s,
         "work" => doc["work"].to_s,
         "author" => doc["author"].to_s,

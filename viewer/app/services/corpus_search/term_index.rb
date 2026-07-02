@@ -32,8 +32,9 @@ module CorpusSearch
       # Retain the keyword for compatibility with older task invocations. The
       # one-pass spooler no longer needs a corpus-reading batch size.
 
+      documents = documents_for_index(manifest)
       manifest_key = manifest_fingerprint(manifest)
-      total_documents = manifest.documents.length
+      total_documents = documents.length
       terms_to_refresh = terms.reject do |term|
         next false if force
 
@@ -53,7 +54,7 @@ module CorpusSearch
         buffers = terms_to_refresh.to_h { |term| [term, +""] }
         buffer_limit = [[16_777_216 / terms_to_refresh.length, 1_024].max, 65_536].min
 
-        manifest.documents.each_with_index do |doc, index|
+        documents.each_with_index do |doc, index|
           body = body_for_doc(fs, doc)
           counts = Hash.new(0)
           body.each_char { |character| counts[character] += 1 if target_terms.include?(character) }
@@ -125,7 +126,9 @@ module CorpusSearch
       entries = {}
       fs = CorpusFs.new(root: Rails.configuration.x.corpus_root)
 
-      @manifest.documents.each do |doc|
+      documents = self.class.documents_for_index(@manifest)
+
+      documents.each do |doc|
         text = body_for(doc, fs)
         count = SearchText.count(text, @term)
         next unless count.positive?
@@ -141,7 +144,7 @@ module CorpusSearch
       @payload = self.class.fresh_payload_for(
         @term,
         manifest_fingerprint: manifest_key,
-        total_documents: @manifest.documents.length
+        total_documents: documents.length
       )
       @payload["generated_at"] = Time.now.utc.iso8601
       @payload["entries"] = entries
@@ -178,19 +181,31 @@ module CorpusSearch
 
     def self.manifest_fingerprint(manifest)
       digest = Digest::SHA256.new
-      manifest.documents.each do |doc|
+      digest << "manifest-role-profile:canonical-v1\n"
+      documents_for_index(manifest).each do |doc|
         digest << doc["id"].to_s
         digest << "\0"
         digest << doc["fingerprint"].to_s
+        digest << "\0"
+        digest << (doc["document_role"].presence || "canonical").to_s
         digest << "\n"
       end
       digest.hexdigest
     end
 
+    def self.documents_for_index(manifest)
+      if manifest.respond_to?(:default_search_documents)
+        manifest.default_search_documents
+      else
+        Array(manifest.documents).select do |doc|
+          role = doc["document_role"].presence || "canonical"
+          DocumentRole.default?(role)
+        end
+      end
+    end
+
     def self.body_for_doc(fs, doc)
-      raw = fs.read_text(fs.resolve(doc["path"]))
-      _metadata, body = FrontMatter.split(raw)
-      body
+      DocumentReader.read(fs: fs, path: doc["path"]).body
     end
     private_class_method :body_for_doc
 

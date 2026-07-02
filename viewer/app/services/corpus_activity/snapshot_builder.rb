@@ -12,7 +12,7 @@ module CorpusActivity
     PAGE_SIZE = 50
     SHARD_SIZE = 1_000
     CACHE_ROOT = "activity"
-    DERIVED_DIRECTORIES = %w[kanbun hanmun hanvan translation].freeze
+    DERIVED_DIRECTORIES = %w[kanbun hanmun hanvan translation translations variants annotation annotations].freeze
 
     def initialize(manifest:, cache_store: CorpusSearch::CacheStore.new)
       @manifest = manifest
