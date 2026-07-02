@@ -7,7 +7,7 @@ class CorpusSearchSearchDefinitionTest < ActiveSupport::TestCase
     assert_equal ["canonical"], definition.document_roles
     assert_equal ["canonical"], definition.manifest_filters["document_roles"]
     assert_equal "ignore", definition.punctuation
-    assert_equal "exact", definition.character_equivalence
+    assert_equal "common", definition.character_equivalence
   end
 
   test "normalizes folders and rejects support as a searchable role" do
@@ -40,6 +40,13 @@ class CorpusSearchSearchDefinitionTest < ActiveSupport::TestCase
     assert valid.valid?
     assert_not invalid.valid?
     assert_includes invalid.errors.join(" "), "10"
+  end
+
+
+  test "accepts all three character-equivalence levels" do
+    assert_equal "exact", CorpusSearch::SearchDefinition.new(query_text: "驗", character_equivalence: "exact").character_equivalence
+    assert_equal "common", CorpusSearch::SearchDefinition.new(query_text: "驗", character_equivalence: "common").character_equivalence
+    assert_equal "broad", CorpusSearch::SearchDefinition.new(query_text: "驗", character_equivalence: "broad").character_equivalence
   end
 
   test "presentation options clamp display-only values" do

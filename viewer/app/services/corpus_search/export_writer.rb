@@ -11,7 +11,8 @@ module CorpusSearch
   class ExportWriter
     RESULT_COLUMNS = %w[
       query mode query_text terms maximum_span order punctuation character_equivalence
-      normalization_profile_version snippet matched_text left_context right_context
+      character_equivalence_version normalization_profile_version equivalence_matches
+      snippet matched_text left_context right_context
       title work author date_text year_start year_end nation period region path folder_path
       document_role canonical_parent_path doc_id start_offset end_offset
       search_start_offset search_end_offset term_matches
@@ -114,8 +115,12 @@ module CorpusSearch
           @query.punctuation
         when "character_equivalence"
           @query.character_equivalence
+        when "character_equivalence_version"
+          @query.character_equivalence_version
         when "normalization_profile_version"
           @query.normalization_profile_version
+        when "equivalence_matches"
+          JSON.generate(hit["equivalence_matches"])
         when "term_matches"
           @query.proximity? ? JSON.generate(hit["term_matches"]) : nil
         else
@@ -156,9 +161,14 @@ module CorpusSearch
           "results_csv" => RESULT_COLUMNS,
           "flashcards_csv" => FLASHCARD_COLUMNS
         },
+        "equivalence_sources" => CharacterEquivalenceRegistry::OPENCC_DICTIONARIES.values
+          .push("taiwan_moe", "zetian_script")
+          .uniq
+          .to_h { |source| [source, I18n.t("corpus_search.equivalence_sources.#{source}")] },
         "notes" => [
           I18n.t("corpus_search.export.metadata_notes.blank_years"),
           I18n.t("corpus_search.export.metadata_notes.offsets"),
+          I18n.t("corpus_search.export.metadata_notes.equivalence"),
           I18n.t("corpus_search.export.metadata_notes.canonical_source")
         ]
       }

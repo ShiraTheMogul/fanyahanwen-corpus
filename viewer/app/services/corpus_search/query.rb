@@ -98,7 +98,7 @@ module CorpusSearch
 
     def to_h
       {
-        "version" => 4,
+        "version" => 5,
         "definition" => @search_definition.to_h,
         "presentation" => @presentation_options.to_h.except("page")
       }
@@ -106,7 +106,7 @@ module CorpusSearch
 
     def cache_key
       payload = {
-        "version" => 4,
+        "version" => 5,
         "definition" => @search_definition.to_h
       }
       CacheStore.hash_key(JSON.generate(payload))
@@ -164,6 +164,10 @@ module CorpusSearch
 
     def normalization_profile_version
       NormalizationProfile.current.version
+    end
+
+    def character_equivalence_version
+      CharacterEquivalenceRegistry.version_for(character_equivalence)
     end
 
     private

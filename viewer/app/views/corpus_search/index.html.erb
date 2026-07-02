@@ -12,7 +12,6 @@
                 corpus_search_form_term_placeholder_value: t("corpus_search.placeholders.term", number: "__NUMBER__")
               } do %>
   <%= hidden_field_tag :mode, @query.mode, data: { corpus_search_form_target: "mode" } %>
-  <%= hidden_field_tag :characters, @query.character_equivalence %>
 
   <div class="corpus-search-mode-switch" role="group" aria-label="<%= t("corpus_search.form.mode") %>">
     <button type="button"
@@ -137,16 +136,11 @@
     <% if @folder_tree&.empty? %>
       <p class="corpus-search-folder-unavailable"><%= t("corpus_search.errors.folder_tree_unavailable") %></p>
     <% else %>
-      <div class="corpus-search-folder-column-headings" aria-hidden="true">
-        <span><%= t("corpus_search.form.search_within_folder") %></span>
-        <span><%= t("corpus_search.form.exclude_folder") %></span>
-      </div>
-
-      <ul class="corpus-search-folder-tree">
+      <div class="corpus-search-folder-tree" role="tree">
         <% Array(@folder_tree&.roots).each do |root_node| %>
           <%= render "corpus_search/folder_node", node: root_node, query: @query, level: 0 %>
         <% end %>
-      </ul>
+      </div>
     <% end %>
   </fieldset>
 
@@ -156,6 +150,26 @@
       <%= check_box_tag :punctuation, "ignore", @query.ignore_punctuation? %>
       <span><%= t("corpus_search.form.ignore_punctuation") %></span>
     </label>
+
+    <% character_options = CorpusSearch::SearchDefinition::CHARACTER_EQUIVALENCE_LEVELS.map do |level|
+         [
+           t("corpus_search.characters.#{level}"),
+           level,
+           { "data-hint" => t("corpus_search.character_hints.#{level}") }
+         ]
+       end %>
+    <label class="corpus-search-character-control">
+      <span><%= t("corpus_search.form.character_matching") %></span>
+      <%= select_tag :characters,
+                     options_for_select(character_options, @query.character_equivalence),
+                     class: "corpus-search-input corpus-search-character-select",
+                     data: {
+                       corpus_search_form_target: "characterMatching",
+                       action: "change->corpus-search-form#updateCharacterHint"
+                     } %>
+    </label>
+    <span class="corpus-search-hint corpus-search-character-hint"
+          data-corpus-search-form-target="characterHint"><%= t("corpus_search.character_hints.#{@query.character_equivalence}") %></span>
     <span class="corpus-search-rule"><%= t("corpus_search.form.body_only_rule") %></span>
   </div>
 
@@ -271,6 +285,7 @@
         <div><dt><%= t("corpus_search.query_details.query") %></dt><dd><code><%= @query.display_label %></code></dd></div>
         <div><dt><%= t("corpus_search.query_details.punctuation") %></dt><dd><%= t("corpus_search.punctuation.#{@query.punctuation}") %></dd></div>
         <div><dt><%= t("corpus_search.query_details.character_matching") %></dt><dd><%= t("corpus_search.characters.#{@query.character_equivalence}") %></dd></div>
+        <div><dt><%= t("corpus_search.query_details.equivalence_registry") %></dt><dd><code><%= @query.character_equivalence_version %></code></dd></div>
         <div><dt><%= t("corpus_search.query_details.text_witnesses") %></dt><dd><%= @query.document_roles.map { |role| t("corpus_search.roles.#{role}") }.join(", ") %></dd></div>
         <div><dt><%= t("corpus_search.query_details.folders") %></dt><dd><%= @query.include_folders.presence&.join("; ") || t("corpus_search.query_details.all_selected_folders") %></dd></div>
         <% if @query.exclude_folders.any? %>
@@ -302,6 +317,17 @@
           </p>
 
           <p class="corpus-search-snippet"><%= corpus_search_snippet(hit) %></p>
+
+          <% if Array(hit["equivalence_matches"]).any? %>
+            <details class="corpus-search-equivalence-details">
+              <summary><%= t("corpus_search.results.equivalent_forms_used", count: hit["equivalence_matches"].length) %></summary>
+              <ul>
+                <% corpus_search_unique_equivalence_matches(hit).each do |match| %>
+                  <li><%= corpus_search_equivalence_explanation(match) %></li>
+                <% end %>
+              </ul>
+            </details>
+          <% end %>
 
           <p class="corpus-search-path">
             <%= link_to t("corpus_search.actions.open_source_text"), source_url %>

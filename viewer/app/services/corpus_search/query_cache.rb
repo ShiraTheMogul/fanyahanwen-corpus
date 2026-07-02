@@ -48,7 +48,7 @@ module CorpusSearch
 
     def fresh_payload
       {
-        "version" => 2,
+        "version" => 3,
         "query" => @query.to_h,
         "created_at" => Time.now.utc.iso8601,
         "updated_at" => nil,

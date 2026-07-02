@@ -1611,10 +1611,10 @@ body.rightbar-collapsed .rightbar {
 
 .corpus-search-folder-fieldset {
   display: grid;
-  gap: 10px;
+  gap: 8px;
   min-width: 0;
   margin: 0;
-  padding: 14px;
+  padding: 12px;
   border: 1px solid #d8dce2;
   border-radius: 10px;
   background: #fff;
@@ -1629,57 +1629,49 @@ body.rightbar-collapsed .rightbar {
   margin: 0;
 }
 
-.corpus-search-folder-column-headings {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 16px;
-  padding: 0 10px 0 40px;
-  color: #596473;
-  font-size: 0.82rem;
-  font-weight: 700;
-}
-
+/* Folder choices use the same compact visual language as the corpus-layer
+   checkboxes. Expanded descendants occupy a full grid row beneath their
+   parent, so the roots remain immediately scannable without a tall table. */
 .corpus-search-folder-tree,
 .corpus-search-folder-children {
-  margin: 0;
-  padding: 0;
-  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 3px 14px;
+  min-width: 0;
 }
 
 .corpus-search-folder-tree {
-  max-height: 31rem;
+  max-height: 22rem;
   overflow: auto;
+  padding: 8px;
   border: 1px solid #d8dce2;
   border-radius: 9px;
   background: #fbfcfd;
 }
 
-.corpus-search-folder-node + .corpus-search-folder-node {
-  border-top: 1px solid #e4e7eb;
-}
-
-.corpus-search-folder-children {
-  border-top: 1px solid #e4e7eb;
-  background: #fff;
+.corpus-search-folder-node {
+  display: contents;
 }
 
 .corpus-search-folder-node-row {
   display: grid;
-  grid-template-columns: 1.7rem minmax(0, 1fr) auto;
+  grid-template-columns: 1.35rem minmax(0, 1fr) auto;
   align-items: center;
-  gap: 8px;
-  min-height: 42px;
-  padding: 5px 10px 5px calc(8px + (var(--corpus-folder-depth) * 18px));
+  gap: 5px;
+  min-width: 0;
+  min-height: 30px;
+  padding: 2px 4px;
+  border-radius: 6px;
 }
 
 .corpus-search-folder-node-row:hover {
-  background: #f3f6f9;
+  background: #eef2f6;
 }
 
 .corpus-search-folder-toggle,
 .corpus-search-folder-toggle-spacer {
-  width: 1.7rem;
-  height: 1.7rem;
+  width: 1.35rem;
+  height: 1.35rem;
 }
 
 .corpus-search-folder-toggle {
@@ -1688,7 +1680,7 @@ body.rightbar-collapsed .rightbar {
   justify-content: center;
   padding: 0;
   border: 0;
-  border-radius: 5px;
+  border-radius: 4px;
   background: transparent;
   color: #364254;
   font: inherit;
@@ -1696,10 +1688,11 @@ body.rightbar-collapsed .rightbar {
 }
 
 .corpus-search-folder-toggle:hover {
-  background: #e7ebf0;
+  background: #dfe5ec;
 }
 
 .corpus-search-folder-toggle span {
+  font-size: 0.78rem;
   transition: transform 120ms ease;
 }
 
@@ -1709,9 +1702,9 @@ body.rightbar-collapsed .rightbar {
 
 .corpus-search-folder-choice,
 .corpus-search-folder-exclude-choice {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   min-width: 0;
   cursor: pointer;
 }
@@ -1719,24 +1712,41 @@ body.rightbar-collapsed .rightbar {
 .corpus-search-folder-choice input,
 .corpus-search-folder-exclude-choice input {
   flex: 0 0 auto;
+  margin: 0;
 }
 
 .corpus-search-folder-name {
   min-width: 0;
-  overflow-wrap: anywhere;
+  overflow: hidden;
   font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .corpus-search-folder-count {
   flex: 0 0 auto;
   color: #697586;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: 400;
 }
 
 .corpus-search-folder-exclude-choice {
+  color: #596473;
+  font-size: 0.78rem;
+  font-weight: 500;
   white-space: nowrap;
-  font-size: 0.9rem;
+}
+
+.corpus-search-folder-children {
+  grid-column: 1 / -1;
+  margin: 1px 0 5px calc(8px + (var(--corpus-folder-depth, 0) * 8px));
+  padding: 5px 7px 5px 10px;
+  border-left: 2px solid #dce2e9;
+  background: #fff;
+}
+
+.corpus-search-folder-children[hidden] {
+  display: none;
 }
 
 .corpus-search-folder-unavailable {
@@ -1744,6 +1754,47 @@ body.rightbar-collapsed .rightbar {
   padding: 9px 11px;
   border-left: 3px solid #8b6d1f;
   background: #fff8df;
+}
+
+.corpus-search-character-control {
+  display: inline-grid;
+  grid-template-columns: auto minmax(12rem, 18rem);
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.corpus-search-character-select {
+  min-height: 34px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.corpus-search-character-hint {
+  max-width: 34rem;
+}
+
+.corpus-search-equivalence-details {
+  margin: 9px 0 12px;
+  padding: 7px 9px;
+  border: 1px solid #dce2e9;
+  border-radius: 8px;
+  background: #f8fafc;
+  font-size: 0.9rem;
+}
+
+.corpus-search-equivalence-details summary {
+  cursor: pointer;
+  font-weight: 650;
+}
+
+.corpus-search-equivalence-details ul {
+  margin: 7px 0 0;
+  padding-left: 1.35rem;
+}
+
+.corpus-search-equivalence-details li + li {
+  margin-top: 4px;
 }
 
 .corpus-search-button:disabled,
@@ -1762,20 +1813,30 @@ body.rightbar-collapsed .rightbar {
     justify-self: start;
   }
 
-  .corpus-search-folder-column-headings {
-    display: none;
+  .corpus-search-folder-tree,
+  .corpus-search-folder-children {
+    grid-template-columns: 1fr;
+  }
+
+  .corpus-search-folder-tree {
+    max-height: 19rem;
   }
 
   .corpus-search-folder-node-row {
-    grid-template-columns: 1.7rem minmax(0, 1fr);
-  }
-
-  .corpus-search-folder-exclude-choice {
-    grid-column: 2;
-    padding: 2px 0 5px;
+    grid-template-columns: 1.35rem minmax(0, 1fr) auto;
   }
 
   .corpus-search-folder-count {
     display: none;
+  }
+
+  .corpus-search-character-control {
+    width: 100%;
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .corpus-search-character-select {
+    max-width: none;
   }
 }

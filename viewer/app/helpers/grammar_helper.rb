@@ -88,7 +88,7 @@ module GrammarHelper
       span: (values["distance"] if mode == "proximity"),
       order: (order if mode == "proximity"),
       punctuation: "ignore",
-      characters: "exact",
+      characters: "common",
       roles: ["canonical"],
       context: values["context"],
       nation: values["nation"],

@@ -24,6 +24,35 @@ module CorpusSearchHelper
   end
 
 
+
+  def corpus_search_unique_equivalence_matches(hit)
+    Array(hit["equivalence_matches"]).uniq do |match|
+      [
+        match["query_character"],
+        match["source_character"],
+        Array(match["mapping_path"]),
+        Array(match["mapping_sources"])
+      ]
+    end
+  end
+
+  def corpus_search_equivalence_explanation(match)
+    query_character = match["query_character"].to_s
+    source_character = match["source_character"].to_s
+    path = Array(match["mapping_path"]).join(" → ")
+    sources = Array(match["mapping_sources"]).map do |source|
+      t("corpus_search.equivalence_sources.#{source}", default: source.to_s.tr("_", " "))
+    end.join(", ")
+
+    safe_join([
+      content_tag(:code, query_character),
+      " → ",
+      content_tag(:code, source_character),
+      " — ",
+      t("corpus_search.results.equivalence_via", sources: sources, path: path)
+    ])
+  end
+
   def corpus_search_folder_checkbox_id(path, scope)
     digest = Digest::SHA256.hexdigest(path.to_s).first(12)
     "corpus-search-folder-#{scope}-#{digest}"

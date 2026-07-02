@@ -4,20 +4,19 @@ module CorpusSearch
   # Immutable search meaning. Pagination and snippet presentation live in
   # PresentationOptions so display changes do not redefine a match.
   class SearchDefinition
-    SCHEMA_VERSION = 4
+    SCHEMA_VERSION = 5
     MODES = %w[exact proximity].freeze
     ORDERS = %w[any entered].freeze
     PUNCTUATION_MODES = NormalizedText::PUNCTUATION_MODES
-    CHARACTER_EQUIVALENCE_LEVELS = %w[exact common broad].freeze
+    CHARACTER_EQUIVALENCE_LEVELS = CharacterEquivalenceRegistry::LEVELS
     MAX_PROXIMITY_TERMS = 10
-    IMPLEMENTED_CHARACTER_EQUIVALENCE_LEVELS = %w[exact].freeze
 
     attr_reader :mode, :query_text, :terms, :maximum_span, :order,
                 :punctuation, :character_equivalence, :metadata_filters,
                 :document_roles, :include_folders, :exclude_folders
 
     def initialize(mode: "exact", query_text: nil, terms: nil, maximum_span: 200,
-                   order: "any", punctuation: "ignore", character_equivalence: "exact",
+                   order: "any", punctuation: "ignore", character_equivalence: "common",
                    metadata_filters: {}, document_roles: nil,
                    include_folders: nil, exclude_folders: nil)
       @mode = MODES.include?(mode.to_s) ? mode.to_s : "exact"
@@ -26,7 +25,7 @@ module CorpusSearch
       @maximum_span = clamp_integer(maximum_span, default: 200, min: 1, max: 5_000)
       @order = ORDERS.include?(order.to_s) ? order.to_s : "any"
       @punctuation = PUNCTUATION_MODES.include?(punctuation.to_s) ? punctuation.to_s : "ignore"
-      @character_equivalence = IMPLEMENTED_CHARACTER_EQUIVALENCE_LEVELS.include?(character_equivalence.to_s) ? character_equivalence.to_s : "exact"
+      @character_equivalence = CHARACTER_EQUIVALENCE_LEVELS.include?(character_equivalence.to_s) ? character_equivalence.to_s : "common"
       @metadata_filters = normalize_metadata_filters(metadata_filters).freeze
       @document_roles = normalize_roles(document_roles).freeze
       @include_folders = normalize_paths(include_folders).freeze
@@ -63,6 +62,7 @@ module CorpusSearch
         "matching" => {
           "punctuation" => @punctuation,
           "character_equivalence" => @character_equivalence,
+          "character_equivalence_version" => CharacterEquivalenceRegistry.version_for(@character_equivalence),
           "normalization_profile_version" => NormalizationProfile.current.version
         },
         "scope" => {

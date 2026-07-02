@@ -13,6 +13,7 @@ class CorpusSearchRunnerCorrectnessTest < ActiveSupport::TestCase
     write("中國漢文/clean/周朝/body.txt", "# TITLE: Body\n\n關關雎鳩，在河之洲。\n")
     write("中國漢文/clean/周朝/proximity.txt", "# TITLE: Proximity\n\n舜，克孝，聞於天下。\n")
     write("中國漢文/clean/周朝/repeated.txt", "# TITLE: Repeated\n\n民與民共事君。\n")
+    write("日本漢文/clean/江戶時代/broad.txt", "# TITLE: Broad\n\n試験之法。\n")
     write("中國漢文/clean/周朝/variants/variant.txt", "關關雎鳩在河之洲\n")
     write("中國漢文/raw/周朝/raw.txt", "關關雎鳩在河之洲\n")
   end
@@ -87,6 +88,35 @@ class CorpusSearchRunnerCorrectnessTest < ActiveSupport::TestCase
     assert_equal 1, page.total
     assert_equal "textual_variant", page.hits.fetch(0)["document_role"]
     assert_equal "中國漢文/clean/周朝", page.hits.fetch(0)["canonical_parent_path"]
+  end
+
+
+  test "broad character matching finds Japanese shinjitai and explains the mapping" do
+    page = run_query(
+      CorpusSearch::SearchDefinition.new(
+        query_text: "試驗",
+        character_equivalence: "broad"
+      )
+    )
+
+    assert_equal 1, page.total
+    hit = page.hits.fetch(0)
+    assert_equal "試験", hit["matched_text"]
+    explanation = hit.fetch("equivalence_matches").fetch(0)
+    assert_equal "驗", explanation["query_character"]
+    assert_equal "験", explanation["source_character"]
+    assert_includes explanation["mapping_sources"], "opencc_japanese_shinjitai"
+  end
+
+  test "exact character matching does not include script equivalents" do
+    page = run_query(
+      CorpusSearch::SearchDefinition.new(
+        query_text: "試驗",
+        character_equivalence: "exact"
+      )
+    )
+
+    assert_equal 0, page.total
   end
 
   test "proximity span is measured on the punctuation-normalized stream" do

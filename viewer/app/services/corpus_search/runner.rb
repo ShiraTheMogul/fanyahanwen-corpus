@@ -8,12 +8,14 @@ module CorpusSearch
   class Runner
     DEFAULT_INTERACTIVE_LIMIT = 1_000
     MAX_CACHED_CONTEXT = 200
+    MAX_INDEX_EQUIVALENTS = 12
 
     def initialize(query:, manifest: nil, cache_store: CacheStore.new)
       @query = query
       @cache_store = cache_store
       @manifest = manifest || Manifest.load(cache_store: @cache_store)
       @fs = CorpusFs.new(root: Rails.configuration.x.corpus_root)
+      @equivalence_registry = CharacterEquivalenceRegistry.new(level: @query.character_equivalence)
     end
 
     def page(max_hits: DEFAULT_INTERACTIVE_LIMIT)
@@ -119,36 +121,72 @@ module CorpusSearch
       canonical_docs = docs.select { |doc| DocumentRole.default?(doc["document_role"].presence || "canonical") }
       return docs if canonical_docs.empty?
 
+      anchor_classes = index_anchor_classes
+      return docs if anchor_classes.empty?
+
+      # Broad/common matching may require several literal indexes for one query
+      # character. Warm all selected forms in one corpus pass, then union forms
+      # within a term and intersect the necessary anchors across terms.
+      literal_terms = anchor_classes.flat_map(&:to_a).uniq
+      TermIndex.refresh_single_character_terms!(
+        terms: literal_terms,
+        manifest: @manifest,
+        cache_store: @cache_store
+      )
+
       indexed_ids = canonical_docs.map { |doc| doc["id"] }.to_set
-      index_anchors.each do |anchor|
-        anchor_ids = TermIndex.new(term: anchor, manifest: @manifest, cache_store: @cache_store).doc_ids_with_hits.to_set
-        indexed_ids &= anchor_ids
+      anchor_classes.each do |forms|
+        ids_for_anchor = forms.each_with_object(Set.new) do |form, union|
+          union.merge(
+            TermIndex.new(term: form, manifest: @manifest, cache_store: @cache_store).doc_ids_with_hits
+          )
+        end
+        indexed_ids &= ids_for_anchor
         break if indexed_ids.empty?
       end
 
-      # The term index deliberately covers canonical texts only. When a user also
+      # The term index deliberately covers received texts only. When a user also
       # selects variants, raw scrapes, translations, or annotations, retain those
-      # documents for direct scanning while still narrowing the much larger
-      # canonical layer through the index.
+      # documents for direct scanning while narrowing the much larger received
+      # text layer through the index.
       docs.select do |doc|
         role = doc["document_role"].presence || "canonical"
         !DocumentRole.default?(role) || indexed_ids.include?(doc["id"])
       end
     end
 
-    # Arbitrary phrases should not create a permanent whole-corpus term index for
-    # every wording a visitor tries. Use one necessary character from each term as
-    # a broad candidate anchor, then verify the complete phrase in the document.
-    # Prefer a substantive character when punctuation is being respected.
-    def index_anchors
+    # Select one necessary character class from each query term. Prefer a
+    # substantive character with the smallest controlled equivalence class.
+    # Very large classes are intentionally not indexed: direct scanning is safer
+    # than creating dozens of whole-corpus indexes for one ambiguous character.
+    def index_anchor_classes
       profile = NormalizationProfile.current
 
-      @query.effective_terms.filter_map do |term|
-        normalized = NormalizedText.build(term, punctuation: @query.punctuation, profile: profile)
-        next if normalized.empty?
+      query_patterns.filter_map do |pattern|
+        candidates = pattern.query_units.each_with_index.reject do |character, _index|
+          profile.ignored?(character)
+        end
+        candidates = pattern.query_units.each_with_index.to_a if candidates.empty?
 
-        normalized.units.find { |character| !profile.ignored?(character) } || normalized.units.first
-      end.uniq
+        eligible = candidates.filter_map do |_character, index|
+          forms = pattern.allowed_units.fetch(index)
+          next if forms.empty? || forms.length > MAX_INDEX_EQUIVALENTS
+
+          forms
+        end
+
+        eligible.min_by(&:length)
+      end
+    end
+
+    def query_patterns
+      @query_patterns ||= @query.effective_terms.map do |term|
+        CharacterPattern.build(
+          term,
+          punctuation: @query.punctuation,
+          registry: @equivalence_registry
+        )
+      end
     end
 
     def search_document(doc)
@@ -166,13 +204,17 @@ module CorpusSearch
     end
 
     def exact_hits(doc, body, searchable)
-      query_stream = NormalizedText.build(@query.query_text, punctuation: @query.punctuation)
-      term_length = query_stream.units.length
-      return [] if term_length.zero?
+      pattern = query_patterns.first
+      return [] if pattern.nil? || pattern.empty?
 
-      SearchText.positions_of(searchable.units, query_stream.units).filter_map do |search_position|
-        original_range = searchable.original_range(search_position, search_position + term_length)
+      pattern.positions_in(searchable.units).filter_map do |search_position|
+        original_range = searchable.original_range(search_position, search_position + pattern.length)
         next unless original_range
+
+        equivalence_matches = pattern.equivalence_matches_at(
+          searchable: searchable,
+          search_start: search_position
+        )
 
         build_hit(
           doc,
@@ -180,20 +222,19 @@ module CorpusSearch
           start_offset: original_range[0],
           end_offset: original_range[1],
           search_start_offset: search_position,
-          search_end_offset: search_position + term_length
+          search_end_offset: search_position + pattern.length,
+          equivalence_matches: equivalence_matches
         )
       end
     end
 
     def proximity_hits(doc, body, searchable)
-      term_streams = @query.terms.map do |term|
-        NormalizedText.build(term, punctuation: @query.punctuation)
-      end
-      return [] if term_streams.any?(&:empty?)
+      patterns = query_patterns
+      return [] if patterns.any?(&:empty?)
 
       matches = ProximityMatcher.new(
         searchable_units: searchable.units,
-        term_units: term_streams.map(&:units),
+        term_patterns: patterns.map(&:allowed_units),
         maximum_span: @query.maximum_span,
         order: @query.order
       ).matches
@@ -202,9 +243,17 @@ module CorpusSearch
         original_range = searchable.original_range(match.search_start, match.search_end)
         next unless original_range
 
+        equivalence_matches = []
         term_matches = match.term_matches.filter_map do |term_match|
           term_original_range = searchable.original_range(term_match.search_start, term_match.search_end)
           next unless term_original_range
+
+          term_equivalence_matches = patterns.fetch(term_match.term_index).equivalence_matches_at(
+            searchable: searchable,
+            search_start: term_match.search_start,
+            term_index: term_match.term_index
+          )
+          equivalence_matches.concat(term_equivalence_matches)
 
           {
             "term_index" => term_match.term_index,
@@ -212,7 +261,8 @@ module CorpusSearch
             "start_offset" => term_original_range[0],
             "end_offset" => term_original_range[1],
             "search_start_offset" => term_match.search_start,
-            "search_end_offset" => term_match.search_end
+            "search_end_offset" => term_match.search_end,
+            "equivalence_matches" => term_equivalence_matches
           }
         end
         next unless term_matches.length == @query.terms.length
@@ -224,13 +274,14 @@ module CorpusSearch
           end_offset: original_range[1],
           search_start_offset: match.search_start,
           search_end_offset: match.search_end,
-          term_matches: term_matches
+          term_matches: term_matches,
+          equivalence_matches: equivalence_matches
         )
       end
     end
 
     def build_hit(doc, body, start_offset:, end_offset:, search_start_offset:, search_end_offset:,
-                  term_matches: nil)
+                  term_matches: nil, equivalence_matches: nil)
       snippet = Snippet.build(
         body,
         start_offset: start_offset,
@@ -258,6 +309,9 @@ module CorpusSearch
         "search_start_offset" => search_start_offset,
         "search_end_offset" => search_end_offset,
         "term_matches" => Array(term_matches),
+        "character_equivalence" => @query.character_equivalence,
+        "character_equivalence_version" => @query.character_equivalence_version,
+        "equivalence_matches" => Array(equivalence_matches),
         "punctuation" => @query.punctuation,
         "normalization_profile_version" => @query.normalization_profile_version,
         "left_context" => snippet["left_context"],

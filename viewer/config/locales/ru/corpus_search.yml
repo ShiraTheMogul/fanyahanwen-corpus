@@ -10,12 +10,14 @@ ru:
       order: Order
       ignore_punctuation: Ignore punctuation and spacing
       body_only_rule: Metadata headers are never searched.
+      character_matching: Character matching
       additional_filters: Scope and additional filters
       include_folders: Included folders
       exclude_folders: Excluded folders
       folder_hint: Tick one or more folders to limit the search. Leave every folder unticked to search all folders in the selected text layers. A selected folder always includes its descendants.
       search_within_folder: Search within
       exclude_folder: Exclude
+      exclude_named_folder: 'Exclude %{folder}'
       folder_document_count: '%{count} file(s)'
       context_characters: Context characters
       results_per_page: Results per page
@@ -39,9 +41,18 @@ ru:
       ignore: Ignored for matching
       respect: Matched exactly
     characters:
-      exact: Exact character forms
-      common: Common character variants
-      broad: Broad script-equivalent matching
+      exact: Exact forms only
+      common: Common variants
+      broad: Broad script equivalents
+    character_hints:
+      exact: Only the entered character forms match.
+      common: Also match reviewed character variants from the Taiwan Ministry of Education registry.
+      broad: Also match controlled simplified, traditional, and Japanese shinjitai correspondences from OpenCC.
+    equivalence_sources:
+      taiwan_moe: Taiwan Ministry of Education variant mapping
+      zetian_script: Zetian-script mapping
+      opencc_simplified_traditional: OpenCC simplified/traditional character mapping
+      opencc_japanese_shinjitai: OpenCC Japanese shinjitai mapping
     placeholders:
       sequence: 關關雎鳩在河之洲
       term: Term %{number}
@@ -67,6 +78,8 @@ ru:
       complete_count: 'Complete interactive result count: %{count}.'
       offset: body offset %{start}–%{finish}
       none: No results found.
+      equivalent_forms_used: '%{count} equivalent-form match(es) explained'
+      equivalence_via: 'via %{sources}; mapping path %{path}'
       chars_omitted:
         one: '%{count} character omitted'
         other: '%{count} characters omitted'
@@ -76,6 +89,7 @@ ru:
       query: Query
       punctuation: Punctuation
       character_matching: Character matching
+      equivalence_registry: Character-equivalence registry version
       text_witnesses: Texts and corpus layers
       folders: Folder scope
       metadata: Metadata headers
@@ -130,6 +144,7 @@ ru:
       metadata_notes:
         blank_years: Blank year_start/year_end cells mean that the corpus metadata did not contain parseable year data.
         offsets: Offsets are character offsets into the body text after metadata and separator lines are removed.
+        equivalence: Non-literal matches retain the entered character, source character, mapping path, and mapping source.
         canonical_source: The source .txt files remain the authoritative corpus; this export is derived search output.
     roles:
       canonical: Received text

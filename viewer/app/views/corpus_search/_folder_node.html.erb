@@ -4,10 +4,13 @@
 <% include_id = corpus_search_folder_checkbox_id(path, "include") %>
 <% exclude_id = corpus_search_folder_checkbox_id(path, "exclude") %>
 
-<li class="corpus-search-folder-node"
-    data-corpus-search-folder-node
-    data-folder-search-text="<%= [node["name"], path].join(" ").downcase %>">
-  <div class="corpus-search-folder-node-row" style="--corpus-folder-depth: <%= level %>">
+<div class="corpus-search-folder-node"
+     role="treeitem"
+     aria-expanded="<%= branch_open %>"
+     style="--corpus-folder-depth: <%= level %>"
+     data-corpus-search-folder-node
+     data-folder-search-text="<%= [node["name"], path].join(" ").downcase %>">
+  <div class="corpus-search-folder-node-row">
     <% if children.any? %>
       <button type="button"
               class="corpus-search-folder-toggle"
@@ -34,11 +37,11 @@
       <span class="corpus-search-folder-name"><%= node["name"] %></span>
       <span class="corpus-search-folder-count"
             title="<%= corpus_search_folder_role_summary(node) %>">
-        <%= t("corpus_search.form.folder_document_count", count: number_with_delimiter(node["document_count"].to_i)) %>
+        <%= number_with_delimiter(node["document_count"].to_i) %>
       </span>
     </label>
 
-    <label class="corpus-search-folder-exclude-choice" for="<%= exclude_id %>">
+    <label class="corpus-search-folder-exclude-choice" for="<%= exclude_id %>" title="<%= t("corpus_search.form.exclude_named_folder", folder: node["name"]) %>">
       <%= check_box_tag "exclude_folders[]",
                         path,
                         query.exclude_folders.include?(path),
@@ -54,12 +57,13 @@
   </div>
 
   <% if children.any? %>
-    <ul class="corpus-search-folder-children"
-        data-corpus-search-folder-children
-        <%= "hidden" unless branch_open %>>
+    <div class="corpus-search-folder-children"
+         role="group"
+         data-corpus-search-folder-children
+         <%= "hidden" unless branch_open %>>
       <% children.each do |child| %>
         <%= render "corpus_search/folder_node", node: child, query: query, level: level + 1 %>
       <% end %>
-    </ul>
+    </div>
   <% end %>
-</li>
+</div>

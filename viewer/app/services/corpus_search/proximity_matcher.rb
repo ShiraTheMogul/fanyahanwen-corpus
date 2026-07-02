@@ -13,16 +13,16 @@ module CorpusSearch
     Match = Data.define(:search_start, :search_end, :term_matches)
     TermMatch = Data.define(:term_index, :search_start, :search_end)
 
-    def initialize(searchable_units:, term_units:, maximum_span:, order: "any")
+    def initialize(searchable_units:, term_patterns: nil, term_units: nil, maximum_span:, order: "any")
       @searchable_units = searchable_units
-      @term_units = term_units
+      @term_patterns = normalize_patterns(term_patterns || term_units)
       @maximum_span = maximum_span.to_i
       @order = order.to_s == "entered" ? "entered" : "any"
     end
 
     def matches
-      return [] if @term_units.length < 2
-      return [] if @term_units.any?(&:empty?)
+      return [] if @term_patterns.length < 2
+      return [] if @term_patterns.any?(&:empty?)
 
       @order == "entered" ? entered_order_matches : any_order_matches
     end
@@ -38,7 +38,7 @@ module CorpusSearch
           {
             group_id: group[:id],
             search_start: position,
-            search_end: position + group[:units].length
+            search_end: position + group[:pattern].length
           }
         end
       end.sort_by { |event| [event[:search_start], event[:search_end], event[:group_id]] }
@@ -77,21 +77,21 @@ module CorpusSearch
     end
 
     def entered_order_matches
-      positions_by_term = @term_units.map { |units| SearchText.positions_of(@searchable_units, units) }
+      positions_by_term = @term_patterns.map { |pattern| SearchText.positions_of_pattern(@searchable_units, pattern) }
       return [] if positions_by_term.any?(&:empty?)
 
       results = []
       seen = Set.new
 
       positions_by_term.first.each do |first_position|
-        selected = [TermMatch.new(term_index: 0, search_start: first_position, search_end: first_position + @term_units.first.length)]
-        used_occurrences = Set.new([[term_signature(@term_units.first), first_position]])
+        selected = [TermMatch.new(term_index: 0, search_start: first_position, search_end: first_position + @term_patterns.first.length)]
+        used_occurrences = Set.new([[term_signature(@term_patterns.first), first_position]])
         previous_position = first_position
         failed = false
 
-        (1...@term_units.length).each do |term_index|
-          units = @term_units[term_index]
-          signature = term_signature(units)
+        (1...@term_patterns.length).each do |term_index|
+          pattern = @term_patterns[term_index]
+          signature = term_signature(pattern)
           candidate = next_position(
             positions_by_term[term_index],
             minimum: previous_position,
@@ -107,7 +107,7 @@ module CorpusSearch
           selected << TermMatch.new(
             term_index: term_index,
             search_start: candidate,
-            search_end: candidate + units.length
+            search_end: candidate + pattern.length
           )
           used_occurrences << [signature, candidate]
           previous_position = candidate
@@ -122,11 +122,11 @@ module CorpusSearch
     def grouped_terms
       grouped = {}
 
-      @term_units.each_with_index do |units, term_index|
-        signature = term_signature(units)
+      @term_patterns.each_with_index do |pattern, term_index|
+        signature = term_signature(pattern)
         grouped[signature] ||= {
           id: grouped.length,
-          units: units,
+          pattern: pattern,
           required: 0,
           term_indices: []
         }
@@ -135,7 +135,7 @@ module CorpusSearch
       end
 
       grouped.values.each do |group|
-        group[:positions] = SearchText.positions_of(@searchable_units, group[:units])
+        group[:positions] = SearchText.positions_of_pattern(@searchable_units, group[:pattern])
       end
     end
 
@@ -210,8 +210,16 @@ module CorpusSearch
       )
     end
 
-    def term_signature(units)
-      units.join("\u0000")
+    def term_signature(pattern)
+      pattern.map { |forms| forms.to_a.sort.join("\u0001") }.join("\u0000")
+    end
+
+    def normalize_patterns(values)
+      Array(values).map do |pattern|
+        Array(pattern).map do |forms|
+          forms.respond_to?(:include?) && !forms.is_a?(String) ? forms : Set[forms.to_s]
+        end
+      end
     end
   end
 end

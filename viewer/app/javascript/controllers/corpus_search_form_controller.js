@@ -11,7 +11,9 @@ export default class extends Controller {
     "termList",
     "termTemplate",
     "addTermButton",
-    "folderChoice"
+    "folderChoice",
+    "characterMatching",
+    "characterHint"
   ]
 
   static values = {
@@ -22,6 +24,7 @@ export default class extends Controller {
   connect() {
     this.applyMode(this.modeTarget.value || "exact")
     this.renumberTerms()
+    this.updateCharacterHint()
   }
 
   selectMode(event) {
@@ -72,7 +75,16 @@ export default class extends Controller {
 
     const expanded = button.getAttribute("aria-expanded") === "true"
     button.setAttribute("aria-expanded", expanded ? "false" : "true")
+    node?.setAttribute("aria-expanded", expanded ? "false" : "true")
     branch.hidden = expanded
+  }
+
+
+  updateCharacterHint() {
+    if (!this.hasCharacterMatchingTarget || !this.hasCharacterHintTarget) return
+
+    const selected = this.characterMatchingTarget.selectedOptions[0]
+    this.characterHintTarget.textContent = selected?.dataset.hint || ""
   }
 
   applyMode(mode) {

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "set"
+
 module CorpusSearch
   # Character-aware string operations. Offsets are character indexes, not bytes.
   module SearchText
@@ -10,16 +12,30 @@ module CorpusSearch
     end
 
     def positions_of(text_or_chars, term_or_chars)
-      chars = chars_for(text_or_chars)
       term_chars = chars_for(term_or_chars)
-      return [] if term_chars.empty? || chars.empty? || term_chars.length > chars.length
+      positions_of_pattern(
+        text_or_chars,
+        term_chars.map { |character| Set[character] }
+      )
+    end
+
+    # Find positions for a pattern where each query unit is a set of accepted
+    # source characters. This is the core used by common-variant and broad
+    # script-equivalent matching.
+    def positions_of_pattern(text_or_chars, pattern)
+      chars = chars_for(text_or_chars)
+      accepted = Array(pattern)
+      return [] if accepted.empty? || chars.empty? || accepted.length > chars.length
 
       positions = []
-      last_start = chars.length - term_chars.length
+      last_start = chars.length - accepted.length
       index = 0
 
       while index <= last_start
-        positions << index if chars[index, term_chars.length] == term_chars
+        matched = accepted.each_with_index.all? do |forms, offset|
+          forms.include?(chars[index + offset])
+        end
+        positions << index if matched
         index += 1
       end
 
