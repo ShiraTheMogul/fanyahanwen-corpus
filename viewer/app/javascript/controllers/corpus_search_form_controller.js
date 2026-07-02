@@ -11,20 +11,17 @@ export default class extends Controller {
     "termList",
     "termTemplate",
     "addTermButton",
-    "folderList",
-    "folderTemplate"
+    "folderChoice"
   ]
 
   static values = {
     maxTerms: { type: Number, default: 10 },
-    termPlaceholder: String,
-    folderPathLabel: String
+    termPlaceholder: String
   }
 
   connect() {
     this.applyMode(this.modeTarget.value || "exact")
     this.renumberTerms()
-    this.renumberFolders()
   }
 
   selectMode(event) {
@@ -49,23 +46,33 @@ export default class extends Controller {
     this.renumberTerms()
   }
 
-  addFolder() {
-    this.folderListTarget.append(this.folderTemplateTarget.content.cloneNode(true))
-    this.renumberFolders()
+  selectFolder(event) {
+    const selected = event.currentTarget
+    if (!selected.checked) return
 
-    const lastInput = this.folderRows.at(-1)?.querySelector("[data-corpus-search-folder-path]")
-    lastInput?.focus()
+    const path = selected.dataset.corpusFolderPath
+    const scope = selected.dataset.corpusFolderScope
+
+    this.folderChoiceTargets.forEach((choice) => {
+      if (choice === selected) return
+      if (choice.dataset.corpusFolderPath !== path) return
+      if (choice.dataset.corpusFolderScope === scope) return
+
+      choice.checked = false
+    })
   }
 
-  removeFolder(event) {
-    const row = event.currentTarget.closest("[data-corpus-search-folder-row]")
-    row?.remove()
+  toggleFolderBranch(event) {
+    const button = event.currentTarget
+    const node = button.closest("[data-corpus-search-folder-node]")
+    const branch = Array.from(node?.children || []).find((child) => {
+      return child.hasAttribute("data-corpus-search-folder-children")
+    })
+    if (!branch) return
 
-    if (this.folderRows.length === 0) {
-      this.folderListTarget.append(this.folderTemplateTarget.content.cloneNode(true))
-    }
-
-    this.renumberFolders()
+    const expanded = button.getAttribute("aria-expanded") === "true"
+    button.setAttribute("aria-expanded", expanded ? "false" : "true")
+    branch.hidden = expanded
   }
 
   applyMode(mode) {
@@ -103,28 +110,11 @@ export default class extends Controller {
     }
   }
 
-  renumberFolders() {
-    this.folderRows.forEach((row, index) => {
-      const pathInput = row.querySelector("[data-corpus-search-folder-path]")
-      const excludeInput = row.querySelector("[data-corpus-search-folder-exclude]")
-      const hiddenLabel = row.querySelector(".corpus-search-visually-hidden")
-      const number = index + 1
-
-      if (pathInput) pathInput.name = `folder_rules[${index}][path]`
-      if (excludeInput) excludeInput.name = `folder_rules[${index}][exclude]`
-      if (hiddenLabel) hiddenLabel.textContent = this.numberedText(this.folderPathLabelValue, number)
-    })
-  }
-
   numberedText(template, number) {
     return (template || "").replace("__NUMBER__", number)
   }
 
   get termRows() {
     return Array.from(this.termListTarget.querySelectorAll("[data-corpus-search-term-row]"))
-  }
-
-  get folderRows() {
-    return Array.from(this.folderListTarget.querySelectorAll("[data-corpus-search-folder-row]"))
   }
 }

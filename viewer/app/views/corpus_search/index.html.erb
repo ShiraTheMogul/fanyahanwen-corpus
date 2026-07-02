@@ -9,8 +9,7 @@
               data: {
                 controller: "corpus-search-form",
                 corpus_search_form_max_terms_value: CorpusSearch::SearchDefinition::MAX_PROXIMITY_TERMS,
-                corpus_search_form_term_placeholder_value: t("corpus_search.placeholders.term", number: "__NUMBER__"),
-                corpus_search_form_folder_path_label_value: t("corpus_search.form.folder_path", number: "__NUMBER__")
+                corpus_search_form_term_placeholder_value: t("corpus_search.placeholders.term", number: "__NUMBER__")
               } do %>
   <%= hidden_field_tag :mode, @query.mode, data: { corpus_search_form_target: "mode" } %>
   <%= hidden_field_tag :characters, @query.character_equivalence %>
@@ -131,59 +130,24 @@
     </div>
   </section>
 
-  <% folder_rules = @query.folder_rules.presence || [{ "path" => "", "exclude" => false }] %>
   <fieldset class="corpus-search-folder-fieldset">
     <legend><%= t("corpus_search.form.folder_scope") %></legend>
     <p class="corpus-search-hint"><%= t("corpus_search.form.folder_hint") %></p>
 
-    <div class="corpus-search-folder-list" data-corpus-search-form-target="folderList">
-      <% folder_rules.each_with_index do |rule, index| %>
-        <div class="corpus-search-folder-row" data-corpus-search-folder-row>
-          <label>
-            <span class="corpus-search-visually-hidden"><%= t("corpus_search.form.folder_path", number: index + 1) %></span>
-            <%= text_field_tag "folder_rules[#{index}][path]",
-                               rule["path"],
-                               class: "corpus-search-input",
-                               placeholder: t("corpus_search.placeholders.folder"),
-                               data: { corpus_search_folder_path: true } %>
-          </label>
-          <label class="corpus-search-check corpus-search-folder-exclusion">
-            <%= check_box_tag "folder_rules[#{index}][exclude]", "1", rule["exclude"], data: { corpus_search_folder_exclude: true } %>
-            <span><%= t("corpus_search.form.exclude_this_folder") %></span>
-          </label>
-          <button type="button"
-                  class="corpus-search-icon-button"
-                  data-action="corpus-search-form#removeFolder"
-                  aria-label="<%= t("corpus_search.actions.remove_folder", number: index + 1) %>">
-            <%= t("corpus_search.actions.remove") %>
-          </button>
-        </div>
-      <% end %>
-    </div>
-
-    <template data-corpus-search-form-target="folderTemplate">
-      <div class="corpus-search-folder-row" data-corpus-search-folder-row>
-        <label>
-          <span class="corpus-search-visually-hidden"></span>
-          <input type="text" class="corpus-search-input" data-corpus-search-folder-path="true">
-        </label>
-        <label class="corpus-search-check corpus-search-folder-exclusion">
-          <input type="checkbox" value="1" data-corpus-search-folder-exclude="true">
-          <span><%= t("corpus_search.form.exclude_this_folder") %></span>
-        </label>
-        <button type="button"
-                class="corpus-search-icon-button"
-                data-action="corpus-search-form#removeFolder">
-          <%= t("corpus_search.actions.remove") %>
-        </button>
+    <% if @folder_tree&.empty? %>
+      <p class="corpus-search-folder-unavailable"><%= t("corpus_search.errors.folder_tree_unavailable") %></p>
+    <% else %>
+      <div class="corpus-search-folder-column-headings" aria-hidden="true">
+        <span><%= t("corpus_search.form.search_within_folder") %></span>
+        <span><%= t("corpus_search.form.exclude_folder") %></span>
       </div>
-    </template>
 
-    <button type="button"
-            class="corpus-search-button corpus-search-button-secondary"
-            data-action="corpus-search-form#addFolder">
-      <%= t("corpus_search.actions.add_folder") %>
-    </button>
+      <ul class="corpus-search-folder-tree">
+        <% Array(@folder_tree&.roots).each do |root_node| %>
+          <%= render "corpus_search/folder_node", node: root_node, query: @query, level: 0 %>
+        <% end %>
+      </ul>
+    <% end %>
   </fieldset>
 
   <div class="corpus-search-core-options">
@@ -341,6 +305,9 @@
 
           <p class="corpus-search-path">
             <%= link_to t("corpus_search.actions.open_source_text"), source_url %>
+            <% if hit["document_role"] == "textual_variant" && hit["canonical_parent_path"].present? %>
+              <%= link_to t("corpus_search.actions.open_received_text_folder"), corpus_viewer_path(hit["canonical_parent_path"].to_s.split("/"), format: nil) %>
+            <% end %>
             <span><%= t("corpus_search.results.offset", start: hit["start_offset"], finish: hit["end_offset"]) %></span>
           </p>
         </li>

@@ -13,7 +13,10 @@ lzh:
       additional_filters: 範圍及別項濾器
       include_folders: 所納目錄
       exclude_folders: 所排目錄
-      folder_hint: 增入語料庫相對路徑；若皆空，則尋所選文本層內全部目錄。欲略某路徑，勾「排除此目錄」。
+      folder_hint: 勾選目錄以限縮搜尋範圍；不勾則尋所選文本層內全部目錄。所勾目錄均連同其下諸目錄。
+      search_within_folder: 尋此目錄
+      exclude_folder: 排除
+      folder_document_count: '%{count}檔'
       context_characters: 前後文字數
       results_per_page: 每頁項數
       nation: 國別
@@ -26,8 +29,6 @@ lzh:
       text_witnesses_hint: 常例只尋傳本文本；其餘各層惟勾選乃入。
       term_limit: 可置二詞至%{max}詞。
       folder_scope: 目錄範圍
-      folder_path: 目錄路徑%{number}
-      exclude_this_folder: 排除此目錄
     modes:
       exact: 連文
       proximity: 鄰近
@@ -44,7 +45,6 @@ lzh:
     placeholders:
       sequence: 關關雎鳩在河之洲
       term: Term %{number}
-      folder: 中國漢文/clean/周朝
       nation: 日本 / 越南 / 中國...
       period: 江戶時代 / 大越...
     actions:
@@ -59,8 +59,8 @@ lzh:
       add_term: 增一詞
       remove: 移除
       remove_term: 移除第%{number}詞
-      add_folder: 增一目錄
-      remove_folder: 移除第%{number}目錄
+      toggle_folder: 展合%{folder}
+      open_received_text_folder: 至傳本文本目錄
     results:
       summary: 此頁示%{visible}項。候選檔凡%{candidates}；此次新查%{scanned}檔。
       truncated: 互動尋文至%{limit}項而止；欲得全數，請另行備製匯出檔。
@@ -116,6 +116,7 @@ lzh:
       prepared_not_found: 未見所備尋文。
       download_not_ready: 匯出檔尚未備妥。
       too_many_terms: 鄰近尋文至多容%{max}詞。
+      folder_tree_unavailable: 目錄清單尚未備妥；此時仍可搜尋全部目錄。
     query:
       proximity_label: '%{terms}同見於不逾%{distance}搜尋字'
     export:

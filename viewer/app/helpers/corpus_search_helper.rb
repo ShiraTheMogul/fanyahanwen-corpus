@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "digest"
+
 module CorpusSearchHelper
   # Renders the visible snippet while highlighting each matched proximity term.
   # Exact-sequence searches still receive one mark around the whole match.
@@ -19,6 +21,28 @@ module CorpusSearchHelper
     end
 
     render_highlighted_text(visible, merge_ranges(ranges))
+  end
+
+
+  def corpus_search_folder_checkbox_id(path, scope)
+    digest = Digest::SHA256.hexdigest(path.to_s).first(12)
+    "corpus-search-folder-#{scope}-#{digest}"
+  end
+
+  def corpus_search_folder_branch_open?(node, query)
+    selected = query.include_folders + query.exclude_folders
+    path = node["path"].to_s
+    selected.any? { |candidate| candidate == path || candidate.start_with?("#{path}/") }
+  end
+
+  def corpus_search_folder_role_summary(node)
+    counts = node.fetch("role_counts", {})
+    CorpusSearch::DocumentRole::SEARCHABLE_ROLES.filter_map do |role|
+      count = counts[role].to_i
+      next if count.zero?
+
+      "#{t("corpus_search.roles.#{role}")}: #{number_with_delimiter(count)}"
+    end.join("; ")
   end
 
   private

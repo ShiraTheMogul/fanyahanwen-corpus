@@ -75,11 +75,6 @@ module CorpusSearch
     def term_b = proximity? ? terms[1].to_s : ""
     def distance = maximum_span
 
-    def folder_rules
-      include_folders.map { |path| { "path" => path, "exclude" => false } } +
-        exclude_folders.map { |path| { "path" => path, "exclude" => true } }
-    end
-
     def valid?
       errors.empty?
     end

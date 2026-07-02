@@ -13,7 +13,10 @@ ko:
       additional_filters: Scope and additional filters
       include_folders: Included folders
       exclude_folders: Excluded folders
-      folder_hint: Add corpus-relative folder paths. Leave the list blank to search every folder in the selected text layers. Tick “Exclude this folder” for paths that should be omitted.
+      folder_hint: Tick one or more folders to limit the search. Leave every folder unticked to search all folders in the selected text layers. A selected folder always includes its descendants.
+      search_within_folder: Search within
+      exclude_folder: Exclude
+      folder_document_count: '%{count} file(s)'
       context_characters: Context characters
       results_per_page: Results per page
       nation: Nation
@@ -26,8 +29,6 @@ ko:
       text_witnesses_hint: Received texts are searched by default. Other layers are included only when selected here.
       term_limit: Add between 2 and %{max} terms.
       folder_scope: Folder scope
-      folder_path: Folder path %{number}
-      exclude_this_folder: Exclude this folder
     modes:
       exact: Exact sequence
       proximity: Proximity
@@ -44,7 +45,6 @@ ko:
     placeholders:
       sequence: 關關雎鳩在河之洲
       term: Term %{number}
-      folder: 中國漢文/clean/周朝
       nation: 日本 / 越南 / 中國...
       period: 江戶時代 / 大越...
     actions:
@@ -59,8 +59,8 @@ ko:
       add_term: Add another term
       remove: Remove
       remove_term: Remove term %{number}
-      add_folder: Add folder
-      remove_folder: Remove folder %{number}
+      toggle_folder: Expand or collapse %{folder}
+      open_received_text_folder: Open received-text folder
     results:
       summary: 'Showing %{visible} result(s) on this page. Cached/checked candidate files: %{candidates}. Files newly scanned for this request: %{scanned}.'
       truncated: This interactive search stopped at %{limit} hits. Prepare a background export for the complete result set.
@@ -116,6 +116,7 @@ ko:
       prepared_not_found: Prepared search not found
       download_not_ready: Download is not ready yet
       too_many_terms: A proximity search can contain at most %{max} terms.
+      folder_tree_unavailable: The folder list is not ready yet. Searches still cover every folder in the selected text layers.
     query:
       proximity_label: '%{terms} within %{distance} searchable characters'
     export:

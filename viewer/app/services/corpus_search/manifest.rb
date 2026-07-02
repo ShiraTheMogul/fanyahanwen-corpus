@@ -15,7 +15,7 @@ module CorpusSearch
     CACHE_PATH = "manifest.json.gz"
     FRONT_MATTER_READ_BYTES = 65_536
 
-    attr_reader :documents
+    attr_reader :documents, :generated_at
 
     def self.load(root: Rails.configuration.x.corpus_root, cache_store: CacheStore.new, refresh: false, force: false)
       manifest = new(root: root, cache_store: cache_store)
@@ -262,6 +262,7 @@ module CorpusSearch
     end
 
     def load_from_payload(payload)
+      @generated_at = payload["generated_at"].to_s
       @documents = Array(payload["documents"])
       @documents_by_id = @documents.index_by { |doc| doc["id"].to_s }
     end
