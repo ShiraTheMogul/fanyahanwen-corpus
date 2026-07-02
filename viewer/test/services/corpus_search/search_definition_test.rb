@@ -19,8 +19,27 @@ class CorpusSearchSearchDefinitionTest < ActiveSupport::TestCase
     )
 
     assert_equal %w[canonical textual_variant], definition.document_roles
-    assert_equal ["中國漢文/clean/周朝", "日本漢文/clean/江戶時代"], definition.include_folders
+    assert_equal ["中國漢文/clean/周朝"], definition.include_folders
     assert_equal ["中國漢文/clean/周朝/不詳"], definition.exclude_folders
+  end
+
+  test "preserves repeated proximity terms and validates the ten term limit" do
+    valid_terms = Array.new(10, "民")
+    valid = CorpusSearch::Query.new(
+      search_definition: CorpusSearch::SearchDefinition.new(mode: "proximity", terms: valid_terms),
+      presentation_options: CorpusSearch::PresentationOptions.new,
+      requested: true
+    )
+    invalid = CorpusSearch::Query.new(
+      search_definition: CorpusSearch::SearchDefinition.new(mode: "proximity", terms: valid_terms + ["君"]),
+      presentation_options: CorpusSearch::PresentationOptions.new,
+      requested: true
+    )
+
+    assert_equal 10, valid.terms.length
+    assert valid.valid?
+    assert_not invalid.valid?
+    assert_includes invalid.errors.join(" "), "10"
   end
 
   test "presentation options clamp display-only values" do

@@ -5,15 +5,15 @@ cmn:
     form:
       mode: Search mode
       search_text: Search text
-      find_all_terms: Find both terms within one passage
+      find_all_terms: Find all terms within one passage
       maximum_span: Maximum span
       order: Order
       ignore_punctuation: Ignore punctuation and spacing
       body_only_rule: Metadata headers are never searched.
       additional_filters: Scope and additional filters
-      include_folders: Search within folders
-      exclude_folders: Exclude folders
-      folder_hint: Enter one corpus-relative folder path per line. Descendant folders are included.
+      include_folders: Included folders
+      exclude_folders: Excluded folders
+      folder_hint: Add corpus-relative folder paths. Leave the list blank to search every folder in the selected text layers. Tick “Exclude this folder” for paths that should be omitted.
       context_characters: Context characters
       results_per_page: Results per page
       nation: Nation
@@ -22,8 +22,12 @@ cmn:
       author: Author
       year_from: Year from
       year_to: Year to
-      text_witnesses: Text witnesses and corpus layers
-      text_witnesses_hint: Canonical texts are searched by default. Other layers are included only when selected here.
+      text_witnesses: Texts and corpus layers
+      text_witnesses_hint: Received texts are searched by default. Other layers are included only when selected here.
+      term_limit: Add between 2 and %{max} terms.
+      folder_scope: Folder scope
+      folder_path: Folder path %{number}
+      exclude_this_folder: Exclude this folder
     modes:
       exact: Exact sequence
       proximity: Proximity
@@ -52,6 +56,11 @@ cmn:
       copy_frozen_url: Copy frozen result URL
       open_live_query: Open live query
       copied: Copied
+      add_term: Add another term
+      remove: Remove
+      remove_term: Remove term %{number}
+      add_folder: Add folder
+      remove_folder: Remove folder %{number}
     results:
       summary: 'Showing %{visible} result(s) on this page. Cached/checked candidate files: %{candidates}. Files newly scanned for this request: %{scanned}.'
       truncated: This interactive search stopped at %{limit} hits. Prepare a background export for the complete result set.
@@ -67,7 +76,7 @@ cmn:
       query: Query
       punctuation: Punctuation
       character_matching: Character matching
-      text_witnesses: Text witnesses
+      text_witnesses: Texts and corpus layers
       folders: Folder scope
       metadata: Metadata headers
       profile: Normalization profile version
@@ -101,12 +110,12 @@ cmn:
       queued: The large search has been queued. You can keep using the site while it runs.
     errors:
       enter_sequence: Enter an exact sequence to search for.
-      enter_two_terms: Enter two terms for a proximity search.
+      enter_two_terms: Enter at least two terms for a proximity search.
       term_too_long: Search terms cannot be longer than %{max} characters.
       search_failed: 'Search failed: %{message}'
       prepared_not_found: Prepared search not found
       download_not_ready: Download is not ready yet
-      only_two_terms_phase_two: This phase supports two proximity terms; arbitrary term lists arrive in the next search phase.
+      too_many_terms: A proximity search can contain at most %{max} terms.
     query:
       proximity_label: '%{terms} within %{distance} searchable characters'
     export:
@@ -120,11 +129,11 @@ cmn:
       metadata_notes:
         blank_years: Blank year_start/year_end cells mean that the corpus metadata did not contain parseable year data.
         offsets: Offsets are character offsets into the body text after metadata and separator lines are removed.
-        canonical_source: The source .txt files remain the canonical corpus; this export is derived search output.
+        canonical_source: The source .txt files remain the authoritative corpus; this export is derived search output.
     roles:
-      canonical: Canonical text
-      textual_variant: Textual variant witness
-      raw: Raw source scrape
-      derived_reading: Derived reading (kanbun/hanmun/hanvan)
+      canonical: Received text
+      textual_variant: Variants
+      raw: Raw scrapes
+      derived_reading: Kanbun / Hanmun / Hanvan
       translation: Translation
       annotation: Annotation

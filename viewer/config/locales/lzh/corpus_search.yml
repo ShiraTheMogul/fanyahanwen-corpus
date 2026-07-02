@@ -5,15 +5,15 @@ lzh:
     form:
       mode: 尋法
       search_text: 所尋文句
-      find_all_terms: 求二詞同見於一段
+      find_all_terms: 求諸詞同見於一段
       maximum_span: 所跨字數上限
       order: 先後
       ignore_punctuation: 略標點與空白
       body_only_rule: 卷首著錄永不搜尋。
       additional_filters: 範圍及別項濾器
-      include_folders: 限於諸目錄
-      exclude_folders: 排除諸目錄
-      folder_hint: 每行一語料庫相對路徑；其下諸目錄並入。
+      include_folders: 所納目錄
+      exclude_folders: 所排目錄
+      folder_hint: 增入語料庫相對路徑；若皆空，則尋所選文本層內全部目錄。欲略某路徑，勾「排除此目錄」。
       context_characters: 前後文字數
       results_per_page: 每頁項數
       nation: 國別
@@ -22,8 +22,12 @@ lzh:
       author: 作者
       year_from: 始年
       year_to: 終年
-      text_witnesses: 文本見證與語料層
-      text_witnesses_hint: 常例只尋正本文本；其餘各層惟勾選乃入。
+      text_witnesses: 文本與語料層
+      text_witnesses_hint: 常例只尋傳本文本；其餘各層惟勾選乃入。
+      term_limit: 可置二詞至%{max}詞。
+      folder_scope: 目錄範圍
+      folder_path: 目錄路徑%{number}
+      exclude_this_folder: 排除此目錄
     modes:
       exact: 連文
       proximity: 鄰近
@@ -52,6 +56,11 @@ lzh:
       copy_frozen_url: 錄定本網址
       open_live_query: 開活查
       copied: 已錄
+      add_term: 增一詞
+      remove: 移除
+      remove_term: 移除第%{number}詞
+      add_folder: 增一目錄
+      remove_folder: 移除第%{number}目錄
     results:
       summary: 此頁示%{visible}項。候選檔凡%{candidates}；此次新查%{scanned}檔。
       truncated: 互動尋文至%{limit}項而止；欲得全數，請另行備製匯出檔。
@@ -67,7 +76,7 @@ lzh:
       query: 所尋
       punctuation: 標點
       character_matching: 字形對應
-      text_witnesses: 文本見證
+      text_witnesses: 文本與語料層
       folders: 目錄範圍
       metadata: 卷首著錄
       profile: 正規化規則版本
@@ -101,12 +110,12 @@ lzh:
       queued: 大規模尋文已入列；其行時仍可照常用本站。
     errors:
       enter_sequence: 請輸入所尋文句。
-      enter_two_terms: 鄰近尋文須輸入二詞。
+      enter_two_terms: 鄰近尋文須輸入至少二詞。
       term_too_long: 所尋各詞不得逾%{max}字。
       search_failed: 尋文失敗：%{message}
       prepared_not_found: 未見所備尋文。
       download_not_ready: 匯出檔尚未備妥。
-      only_two_terms_phase_two: 此階段鄰近尋文限二詞；多詞尋文將於下一階段加入。
+      too_many_terms: 鄰近尋文至多容%{max}詞。
     query:
       proximity_label: '%{terms}同見於不逾%{distance}搜尋字'
     export:
@@ -120,11 +129,11 @@ lzh:
       metadata_notes:
         blank_years: year_start／year_end若空，則語料著錄無可解析之年份。
         offsets: 字位自去除卷首著錄及其分隔空行後之正文起算。
-        canonical_source: 原始.txt檔仍為語料庫正本；此匯出檔乃尋文所得之衍生物。
+        canonical_source: 原始.txt檔仍為語料庫權威文本；此匯出檔乃尋文所得之衍生物。
     roles:
-      canonical: 正本文本
-      textual_variant: 異文見證
+      canonical: 傳本文本
+      textual_variant: 異文
       raw: 原始抓取檔
-      derived_reading: 衍生讀法（訓讀／漢文讀法）
+      derived_reading: 訓讀／韓文讀法／漢文讀法
       translation: 譯文
       annotation: 注釋

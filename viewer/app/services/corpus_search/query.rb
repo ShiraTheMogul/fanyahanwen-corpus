@@ -71,11 +71,14 @@ module CorpusSearch
     def proximity? = @search_definition.proximity?
     def ignore_punctuation? = @search_definition.ignore_punctuation?
 
-    # Temporary conveniences until the arbitrary-term proximity patch changes
-    # export columns. They no longer define the public URL shape.
     def term_a = exact? ? query_text : terms[0].to_s
     def term_b = proximity? ? terms[1].to_s : ""
     def distance = maximum_span
+
+    def folder_rules
+      include_folders.map { |path| { "path" => path, "exclude" => false } } +
+        exclude_folders.map { |path| { "path" => path, "exclude" => true } }
+    end
 
     def valid?
       errors.empty?
@@ -87,7 +90,7 @@ module CorpusSearch
         list << I18n.t("corpus_search.errors.enter_sequence") if normalized_units(query_text).empty?
       else
         list << I18n.t("corpus_search.errors.enter_two_terms") if terms.length < 2
-        list << I18n.t("corpus_search.errors.only_two_terms_phase_two") if terms.length > 2
+        list << I18n.t("corpus_search.errors.too_many_terms", max: SearchDefinition::MAX_PROXIMITY_TERMS) if terms.length > SearchDefinition::MAX_PROXIMITY_TERMS
       end
 
       list << I18n.t("corpus_search.errors.term_too_long", max: 80) if effective_terms.any? { |term| term.each_char.count > 80 }
@@ -100,7 +103,7 @@ module CorpusSearch
 
     def to_h
       {
-        "version" => 3,
+        "version" => 4,
         "definition" => @search_definition.to_h,
         "presentation" => @presentation_options.to_h.except("page")
       }
@@ -108,7 +111,7 @@ module CorpusSearch
 
     def cache_key
       payload = {
-        "version" => 3,
+        "version" => 4,
         "definition" => @search_definition.to_h
       }
       CacheStore.hash_key(JSON.generate(payload))

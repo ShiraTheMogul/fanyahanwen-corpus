@@ -12,6 +12,7 @@ class CorpusSearchRunnerCorrectnessTest < ActiveSupport::TestCase
     write("中國漢文/clean/周朝/metadata_only.txt", "# TITLE: 關關雎鳩在河之洲\n\n無匹配正文\n")
     write("中國漢文/clean/周朝/body.txt", "# TITLE: Body\n\n關關雎鳩，在河之洲。\n")
     write("中國漢文/clean/周朝/proximity.txt", "# TITLE: Proximity\n\n舜，克孝，聞於天下。\n")
+    write("中國漢文/clean/周朝/repeated.txt", "# TITLE: Repeated\n\n民與民共事君。\n")
     write("中國漢文/clean/周朝/variants/variant.txt", "關關雎鳩在河之洲\n")
     write("中國漢文/raw/周朝/raw.txt", "關關雎鳩在河之洲\n")
   end
@@ -101,6 +102,40 @@ class CorpusSearchRunnerCorrectnessTest < ActiveSupport::TestCase
 
     assert_equal 1, page.total
     assert_equal "舜，克孝", page.hits.fetch(0)["matched_text"]
+  end
+
+
+  test "proximity supports three or more terms" do
+    page = run_query(
+      CorpusSearch::SearchDefinition.new(
+        mode: "proximity",
+        terms: ["舜", "孝", "天下"],
+        maximum_span: 8,
+        order: "entered",
+        punctuation: "ignore"
+      )
+    )
+
+    assert_equal 1, page.total
+    hit = page.hits.fetch(0)
+    assert_equal "舜，克孝，聞於天下", hit["matched_text"]
+    assert_equal 3, hit["term_matches"].length
+    assert_equal ["舜", "孝", "天下"], hit["term_matches"].map { |match| match["term"] }
+  end
+
+  test "repeated proximity terms need separate source occurrences" do
+    page = run_query(
+      CorpusSearch::SearchDefinition.new(
+        mode: "proximity",
+        terms: ["民", "民", "君"],
+        maximum_span: 8,
+        order: "entered",
+        punctuation: "ignore"
+      )
+    )
+
+    assert_equal 1, page.total
+    assert_equal [0, 2, 5], page.hits.fetch(0)["term_matches"].map { |match| match["start_offset"] }
   end
 
   test "entered proximity order rejects reversed terms" do

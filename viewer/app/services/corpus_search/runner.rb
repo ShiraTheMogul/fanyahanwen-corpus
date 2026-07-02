@@ -3,7 +3,7 @@
 require "set"
 
 module CorpusSearch
-  # Performs exact-sequence and two-term proximity searches over corpus bodies.
+  # Performs exact-sequence and multi-term proximity searches over corpus bodies.
   # Every body comes from DocumentReader, so metadata can never produce a hit.
   class Runner
     DEFAULT_INTERACTIVE_LIMIT = 1_000
@@ -186,61 +186,51 @@ module CorpusSearch
     end
 
     def proximity_hits(doc, body, searchable)
-      first_stream = NormalizedText.build(@query.terms[0], punctuation: @query.punctuation)
-      second_stream = NormalizedText.build(@query.terms[1], punctuation: @query.punctuation)
-      return [] if first_stream.empty? || second_stream.empty?
-
-      first_positions = SearchText.positions_of(searchable.units, first_stream.units)
-      second_positions = SearchText.positions_of(searchable.units, second_stream.units)
-      return [] if first_positions.empty? || second_positions.empty?
-
-      hits = []
-      seen = Set.new
-
-      first_positions.each do |first_position|
-        second_positions.each do |second_position|
-          next if repeated_term_same_occurrence?(first_stream, second_stream, first_position, second_position)
-          next unless allowed_order?(first_position, second_position)
-
-          search_start = [first_position, second_position].min
-          search_end = [first_position + first_stream.units.length, second_position + second_stream.units.length].max
-          next if search_end - search_start > @query.maximum_span
-
-          original_range = searchable.original_range(search_start, search_end)
-          first_original = searchable.original_range(first_position, first_position + first_stream.units.length)
-          second_original = searchable.original_range(second_position, second_position + second_stream.units.length)
-          next unless original_range && first_original && second_original
-
-          key = [original_range[0], original_range[1], first_original[0], second_original[0]]
-          next if seen.include?(key)
-
-          seen << key
-          hits << build_hit(
-            doc,
-            body,
-            start_offset: original_range[0],
-            end_offset: original_range[1],
-            search_start_offset: search_start,
-            search_end_offset: search_end,
-            term_a_offset: first_original[0],
-            term_b_offset: second_original[0]
-          )
-        end
+      term_streams = @query.terms.map do |term|
+        NormalizedText.build(term, punctuation: @query.punctuation)
       end
+      return [] if term_streams.any?(&:empty?)
 
-      hits
-    end
+      matches = ProximityMatcher.new(
+        searchable_units: searchable.units,
+        term_units: term_streams.map(&:units),
+        maximum_span: @query.maximum_span,
+        order: @query.order
+      ).matches
 
-    def repeated_term_same_occurrence?(first_stream, second_stream, first_position, second_position)
-      first_stream.units == second_stream.units && first_position == second_position
-    end
+      matches.filter_map do |match|
+        original_range = searchable.original_range(match.search_start, match.search_end)
+        next unless original_range
 
-    def allowed_order?(first_position, second_position)
-      @query.order == "any" || first_position <= second_position
+        term_matches = match.term_matches.filter_map do |term_match|
+          term_original_range = searchable.original_range(term_match.search_start, term_match.search_end)
+          next unless term_original_range
+
+          {
+            "term_index" => term_match.term_index,
+            "term" => @query.terms.fetch(term_match.term_index),
+            "start_offset" => term_original_range[0],
+            "end_offset" => term_original_range[1],
+            "search_start_offset" => term_match.search_start,
+            "search_end_offset" => term_match.search_end
+          }
+        end
+        next unless term_matches.length == @query.terms.length
+
+        build_hit(
+          doc,
+          body,
+          start_offset: original_range[0],
+          end_offset: original_range[1],
+          search_start_offset: match.search_start,
+          search_end_offset: match.search_end,
+          term_matches: term_matches
+        )
+      end
     end
 
     def build_hit(doc, body, start_offset:, end_offset:, search_start_offset:, search_end_offset:,
-                  term_a_offset: nil, term_b_offset: nil)
+                  term_matches: nil)
       snippet = Snippet.build(
         body,
         start_offset: start_offset,
@@ -267,8 +257,7 @@ module CorpusSearch
         "end_offset" => end_offset,
         "search_start_offset" => search_start_offset,
         "search_end_offset" => search_end_offset,
-        "term_a_offset" => term_a_offset,
-        "term_b_offset" => term_b_offset,
+        "term_matches" => Array(term_matches),
         "punctuation" => @query.punctuation,
         "normalization_profile_version" => @query.normalization_profile_version,
         "left_context" => snippet["left_context"],

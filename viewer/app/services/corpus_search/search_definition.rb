@@ -4,11 +4,12 @@ module CorpusSearch
   # Immutable search meaning. Pagination and snippet presentation live in
   # PresentationOptions so display changes do not redefine a match.
   class SearchDefinition
-    SCHEMA_VERSION = 3
+    SCHEMA_VERSION = 4
     MODES = %w[exact proximity].freeze
     ORDERS = %w[any entered].freeze
     PUNCTUATION_MODES = NormalizedText::PUNCTUATION_MODES
     CHARACTER_EQUIVALENCE_LEVELS = %w[exact common broad].freeze
+    MAX_PROXIMITY_TERMS = 10
     IMPLEMENTED_CHARACTER_EQUIVALENCE_LEVELS = %w[exact].freeze
 
     attr_reader :mode, :query_text, :terms, :maximum_span, :order,
@@ -76,7 +77,7 @@ module CorpusSearch
     private
 
     def normalize_terms(values)
-      Array(values).map { |value| value.to_s.strip }.reject(&:empty?).first(10)
+      Array(values).map { |value| value.to_s.strip }.reject(&:empty?)
     end
 
     def normalize_metadata_filters(filters)

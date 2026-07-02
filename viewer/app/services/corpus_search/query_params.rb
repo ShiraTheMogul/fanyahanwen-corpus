@@ -11,6 +11,8 @@ module CorpusSearch
         source = params.respond_to?(:to_unsafe_h) ? params.to_unsafe_h : params.to_h
         source = source.stringify_keys
 
+        folder_scope = parse_folder_scope(source)
+
         definition = SearchDefinition.new(
           mode: source["mode"],
           query_text: source["q"],
@@ -21,8 +23,8 @@ module CorpusSearch
           character_equivalence: source["characters"],
           metadata_filters: METADATA_KEYS.to_h { |key| [key, source[key]] },
           document_roles: array_value(source["roles"]),
-          include_folders: array_value(source["folders"]),
-          exclude_folders: array_value(source["exclude_folders"])
+          include_folders: folder_scope.fetch(:include),
+          exclude_folders: folder_scope.fetch(:exclude)
         )
 
         presentation = PresentationOptions.new(
@@ -46,6 +48,36 @@ module CorpusSearch
       end
 
       private
+
+      def parse_folder_scope(source)
+        rules = source["folder_rules"]
+        return {
+          include: array_value(source["folders"]),
+          exclude: array_value(source["exclude_folders"])
+        } if rules.blank?
+
+        entries = if rules.respond_to?(:to_unsafe_h)
+                    rules.to_unsafe_h.values
+                  elsif rules.is_a?(Hash)
+                    rules.values
+                  else
+                    Array(rules)
+                  end
+
+        entries.each_with_object({ include: [], exclude: [] }) do |entry, scope|
+          values = entry.respond_to?(:to_unsafe_h) ? entry.to_unsafe_h : entry.to_h
+          values = values.stringify_keys
+          path = values["path"].to_s.strip
+          next if path.empty?
+
+          destination = truthy?(values["exclude"]) ? :exclude : :include
+          scope[destination] << path
+        end
+      end
+
+      def truthy?(value)
+        %w[1 true yes on].include?(value.to_s.downcase)
+      end
 
       def array_value(value)
         case value

@@ -2,6 +2,7 @@
 
 class CorpusSearchController < ApplicationController
   helper CorpusTextHelper
+  helper CorpusSearchHelper
 
   INTERACTIVE_LIMIT = 1_000
 

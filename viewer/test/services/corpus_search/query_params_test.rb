@@ -57,6 +57,33 @@ class CorpusSearchQueryParamsTest < ActiveSupport::TestCase
     assert_equal 80, query.maximum_span
     assert_equal "entered", query.order
   end
+  test "parses human folder rows with exclusion checkboxes" do
+    query = CorpusSearch::QueryParams.parse(
+      mode: "exact",
+      q: "孝",
+      folder_rules: {
+        "0" => { path: "中國漢文/clean/周朝" },
+        "1" => { path: "中國漢文/clean/周朝/不詳", exclude: "1" }
+      }
+    )
+
+    assert_equal ["中國漢文/clean/周朝"], query.include_folders
+    assert_equal ["中國漢文/clean/周朝/不詳"], query.exclude_folders
+  end
+
+  test "serializes every proximity term into the live URL" do
+    query = CorpusSearch::QueryParams.parse(
+      mode: "proximity",
+      terms: ["舜", "孝", "天下"],
+      span: 80,
+      order: "entered"
+    )
+
+    assert query.valid?
+    assert_equal 3, query.canonical_params.count { |key, _value| key == "terms[]" }
+    assert_equal %w[舜 孝 天下], query.terms
+  end
+
   test "matching cache identity is shared across interface locales" do
     english = CorpusSearch::QueryParams.parse({ mode: "exact", q: "孝" }, locale: :en)
     literary_chinese = CorpusSearch::QueryParams.parse({ mode: "exact", q: "孝" }, locale: :lzh)

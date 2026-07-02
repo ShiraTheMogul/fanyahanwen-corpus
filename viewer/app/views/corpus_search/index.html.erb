@@ -6,7 +6,12 @@
               method: :get,
               local: true,
               class: "corpus-search-form",
-              data: { controller: "corpus-search-form" } do %>
+              data: {
+                controller: "corpus-search-form",
+                corpus_search_form_max_terms_value: CorpusSearch::SearchDefinition::MAX_PROXIMITY_TERMS,
+                corpus_search_form_term_placeholder_value: t("corpus_search.placeholders.term", number: "__NUMBER__"),
+                corpus_search_form_folder_path_label_value: t("corpus_search.form.folder_path", number: "__NUMBER__")
+              } do %>
   <%= hidden_field_tag :mode, @query.mode, data: { corpus_search_form_target: "mode" } %>
   <%= hidden_field_tag :characters, @query.character_equivalence %>
 
@@ -48,19 +53,56 @@
            data-corpus-search-form-target="proximityPanel"
            <%= "hidden" unless @query.proximity? %>>
     <p class="corpus-search-field-heading"><%= t("corpus_search.form.find_all_terms") %></p>
-    <div class="corpus-search-term-list">
-      <% [@query.terms[0], @query.terms[1]].each_with_index do |term, index| %>
-        <label class="corpus-search-term-row">
-          <span><%= index + 1 %></span>
+
+    <% proximity_terms = @query.terms.dup %>
+    <% proximity_terms << "" while proximity_terms.length < 2 %>
+    <div class="corpus-search-term-list" data-corpus-search-form-target="termList">
+      <% proximity_terms.each_with_index do |term, index| %>
+        <div class="corpus-search-term-row" data-corpus-search-term-row>
+          <span class="corpus-search-term-number"><%= index + 1 %></span>
           <%= text_field_tag "terms[]",
                              term,
                              class: "corpus-search-input",
                              maxlength: 80,
                              placeholder: t("corpus_search.placeholders.term", number: index + 1),
                              disabled: !@query.proximity?,
-                             data: { corpus_search_form_target: "proximityInput" } %>
-        </label>
+                             data: { corpus_search_form_target: "proximityInput", corpus_search_term_input: true } %>
+          <button type="button"
+                  class="corpus-search-icon-button"
+                  data-action="corpus-search-form#removeTerm"
+                  <%= "hidden" if proximity_terms.length <= 2 %>
+                  aria-label="<%= t("corpus_search.actions.remove_term", number: index + 1) %>">
+            <%= t("corpus_search.actions.remove") %>
+          </button>
+        </div>
       <% end %>
+    </div>
+
+    <template data-corpus-search-form-target="termTemplate">
+      <div class="corpus-search-term-row" data-corpus-search-term-row>
+        <span class="corpus-search-term-number"></span>
+        <input type="text"
+               name="terms[]"
+               maxlength="80"
+               class="corpus-search-input"
+               data-corpus-search-form-target="proximityInput"
+               data-corpus-search-term-input="true">
+        <button type="button"
+                class="corpus-search-icon-button"
+                data-action="corpus-search-form#removeTerm">
+          <%= t("corpus_search.actions.remove") %>
+        </button>
+      </div>
+    </template>
+
+    <div>
+      <button type="button"
+              class="corpus-search-button corpus-search-button-secondary"
+              data-corpus-search-form-target="addTermButton"
+              data-action="corpus-search-form#addTerm">
+        <%= t("corpus_search.actions.add_term") %>
+      </button>
+      <span class="corpus-search-hint"><%= t("corpus_search.form.term_limit", max: CorpusSearch::SearchDefinition::MAX_PROXIMITY_TERMS) %></span>
     </div>
 
     <div class="corpus-search-grid corpus-search-grid-compact">
@@ -89,6 +131,61 @@
     </div>
   </section>
 
+  <% folder_rules = @query.folder_rules.presence || [{ "path" => "", "exclude" => false }] %>
+  <fieldset class="corpus-search-folder-fieldset">
+    <legend><%= t("corpus_search.form.folder_scope") %></legend>
+    <p class="corpus-search-hint"><%= t("corpus_search.form.folder_hint") %></p>
+
+    <div class="corpus-search-folder-list" data-corpus-search-form-target="folderList">
+      <% folder_rules.each_with_index do |rule, index| %>
+        <div class="corpus-search-folder-row" data-corpus-search-folder-row>
+          <label>
+            <span class="corpus-search-visually-hidden"><%= t("corpus_search.form.folder_path", number: index + 1) %></span>
+            <%= text_field_tag "folder_rules[#{index}][path]",
+                               rule["path"],
+                               class: "corpus-search-input",
+                               placeholder: t("corpus_search.placeholders.folder"),
+                               data: { corpus_search_folder_path: true } %>
+          </label>
+          <label class="corpus-search-check corpus-search-folder-exclusion">
+            <%= check_box_tag "folder_rules[#{index}][exclude]", "1", rule["exclude"], data: { corpus_search_folder_exclude: true } %>
+            <span><%= t("corpus_search.form.exclude_this_folder") %></span>
+          </label>
+          <button type="button"
+                  class="corpus-search-icon-button"
+                  data-action="corpus-search-form#removeFolder"
+                  aria-label="<%= t("corpus_search.actions.remove_folder", number: index + 1) %>">
+            <%= t("corpus_search.actions.remove") %>
+          </button>
+        </div>
+      <% end %>
+    </div>
+
+    <template data-corpus-search-form-target="folderTemplate">
+      <div class="corpus-search-folder-row" data-corpus-search-folder-row>
+        <label>
+          <span class="corpus-search-visually-hidden"></span>
+          <input type="text" class="corpus-search-input" data-corpus-search-folder-path="true">
+        </label>
+        <label class="corpus-search-check corpus-search-folder-exclusion">
+          <input type="checkbox" value="1" data-corpus-search-folder-exclude="true">
+          <span><%= t("corpus_search.form.exclude_this_folder") %></span>
+        </label>
+        <button type="button"
+                class="corpus-search-icon-button"
+                data-action="corpus-search-form#removeFolder">
+          <%= t("corpus_search.actions.remove") %>
+        </button>
+      </div>
+    </template>
+
+    <button type="button"
+            class="corpus-search-button corpus-search-button-secondary"
+            data-action="corpus-search-form#addFolder">
+      <%= t("corpus_search.actions.add_folder") %>
+    </button>
+  </fieldset>
+
   <div class="corpus-search-core-options">
     <%= hidden_field_tag :punctuation, "respect" %>
     <label class="corpus-search-check">
@@ -98,7 +195,7 @@
     <span class="corpus-search-rule"><%= t("corpus_search.form.body_only_rule") %></span>
   </div>
 
-  <details class="corpus-search-filters" <%= "open" if @query.include_folders.any? || @query.exclude_folders.any? || @query.metadata_filters.values.any?(&:present?) || @query.document_roles != CorpusSearch::DocumentRole::DEFAULT_ROLES %>>
+  <details class="corpus-search-filters" <%= "open" if @query.metadata_filters.values.any?(&:present?) || @query.document_roles != CorpusSearch::DocumentRole::DEFAULT_ROLES %>>
     <summary><%= t("corpus_search.form.additional_filters") %></summary>
 
     <div class="corpus-search-grid">
@@ -114,24 +211,6 @@
           <% end %>
         </div>
       </fieldset>
-
-      <label class="corpus-search-wide-label">
-        <%= t("corpus_search.form.include_folders") %>
-        <%= text_area_tag :folders,
-                          @query.include_folders.join("\n"),
-                          rows: 3,
-                          class: "corpus-search-input corpus-search-textarea",
-                          placeholder: t("corpus_search.placeholders.folder") %>
-        <span class="corpus-search-hint"><%= t("corpus_search.form.folder_hint") %></span>
-      </label>
-
-      <label class="corpus-search-wide-label">
-        <%= t("corpus_search.form.exclude_folders") %>
-        <%= text_area_tag :exclude_folders,
-                          @query.exclude_folders.join("\n"),
-                          rows: 3,
-                          class: "corpus-search-input corpus-search-textarea" %>
-      </label>
 
       <label>
         <%= t("corpus_search.form.nation") %>
@@ -258,9 +337,7 @@
             <% end %>
           </p>
 
-          <p class="corpus-search-snippet">
-            <span class="corpus-search-context"><%= hit["left_context"] %></span><mark><%= hit["matched_text"] %></mark><span class="corpus-search-context"><%= hit["right_context"] %></span>
-          </p>
+          <p class="corpus-search-snippet"><%= corpus_search_snippet(hit) %></p>
 
           <p class="corpus-search-path">
             <%= link_to t("corpus_search.actions.open_source_text"), source_url %>

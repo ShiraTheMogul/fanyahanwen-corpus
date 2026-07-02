@@ -14,7 +14,7 @@ module CorpusSearch
       normalization_profile_version snippet matched_text left_context right_context
       title work author date_text year_start year_end nation period region path folder_path
       document_role canonical_parent_path doc_id start_offset end_offset
-      search_start_offset search_end_offset term_a_offset term_b_offset
+      search_start_offset search_end_offset term_matches
     ].freeze
 
     FLASHCARD_COLUMNS = %w[front back target snippet source tags].freeze
@@ -116,6 +116,8 @@ module CorpusSearch
           @query.character_equivalence
         when "normalization_profile_version"
           @query.normalization_profile_version
+        when "term_matches"
+          @query.proximity? ? JSON.generate(hit["term_matches"]) : nil
         else
           hit[column]
         end
