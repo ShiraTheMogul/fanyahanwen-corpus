@@ -25,7 +25,7 @@ module CorpusSearch
       def available? = status != "unavailable"
     end
 
-    DEFAULT_TIMEOUT_SECONDS = 180
+    DEFAULT_TIMEOUT_SECONDS = 600
     DEFAULT_MEMORY_MB = 1_024
 
     @runtime_mutex = Mutex.new

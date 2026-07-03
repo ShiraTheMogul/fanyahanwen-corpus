@@ -2246,3 +2246,108 @@ body.rightbar-collapsed .rightbar {
     min-width: 36rem;
   }
 }
+
+.corpus-search-advanced-analysis {
+  display: grid;
+  gap: 14px;
+  scroll-margin-top: 1rem;
+}
+
+.corpus-search-advanced-analysis > header {
+  padding: 14px 16px;
+  border: 1px solid #d8dce2;
+  border-radius: 11px;
+  background: #f8fafc;
+}
+
+.corpus-search-advanced-analysis > header h3,
+.corpus-search-advanced-analysis > header p,
+.corpus-search-advanced-analysis h4 {
+  margin-top: 0;
+}
+
+.corpus-search-analysis-advanced-grid {
+  align-items: start;
+}
+
+.corpus-search-analysis-card-wide {
+  grid-column: 1 / -1;
+}
+
+.corpus-search-analysis-scrollable-figure svg {
+  width: auto;
+  max-width: none;
+}
+
+.corpus-search-analysis-compact-table {
+  font-size: 0.84rem;
+}
+
+.corpus-search-analysis-compact-table th,
+.corpus-search-analysis-compact-table td {
+  padding: 6px 8px;
+}
+
+.corpus-search-advanced-summary-card,
+.corpus-search-duplicate-audit {
+  min-width: 0;
+  padding: 15px 16px;
+  border: 1px solid #d8dce2;
+  border-radius: 11px;
+  background: #fff;
+}
+
+.corpus-search-analysis-metrics-small {
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  margin-top: 12px;
+}
+
+.corpus-search-analysis-metrics-small .corpus-search-analysis-metric strong {
+  font-size: 1.12rem;
+}
+
+.corpus-search-advanced-stat-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 8px;
+  margin: 12px 0 0;
+}
+
+.corpus-search-advanced-stat-list > div {
+  padding: 9px 10px;
+  border: 1px solid #e1e5ea;
+  border-radius: 8px;
+  background: #f8fafc;
+}
+
+.corpus-search-advanced-stat-list dt {
+  color: #596473;
+  font-size: 0.82rem;
+  font-weight: 650;
+}
+
+.corpus-search-advanced-stat-list dd {
+  margin: 4px 0 0;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.corpus-search-duplicate-audit > details {
+  margin-top: 12px;
+}
+
+.corpus-search-duplicate-audit > details > summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+@media (max-width: 700px) {
+  .corpus-search-analysis-card-wide {
+    grid-column: auto;
+  }
+
+  .corpus-search-advanced-stat-list,
+  .corpus-search-analysis-metrics-small {
+    grid-template-columns: 1fr;
+  }
+}

@@ -10,7 +10,7 @@ module CorpusSearch
   # character counts are stored beside hits so prepared statistical datasets do
   # not need to reread files already scanned for the same query.
   class QueryCache
-    VERSION = 4
+    VERSION = 5
 
     def initialize(query:, cache_store: CacheStore.new)
       @query = query
@@ -35,26 +35,53 @@ module CorpusSearch
       nil
     end
 
-    def write_hits_for(doc, hits, searchable_characters: nil)
+    def current_body_fingerprint_for(doc)
+      entry = current_entry_for(doc)
+      value = entry && entry["body_fingerprint"].to_s
+      value.presence
+    end
+
+    def write_hits_for(doc, hits, searchable_characters: nil, body_fingerprint: nil)
       previous = @payload.dig("files", doc["id"]) || {}
       @payload["files"][doc["id"]] = {
         "path" => doc["path"],
         "fingerprint" => doc["fingerprint"],
         "scanned_at" => Time.now.utc.iso8601,
         "searchable_characters" => searchable_characters.nil? ? previous["searchable_characters"] : searchable_characters.to_i,
+        "body_fingerprint" => body_fingerprint.presence || previous["body_fingerprint"],
         "hits" => hits
       }.compact
       @dirty = true
     end
 
-    def write_searchable_characters_for(doc, value)
+    def write_document_stats_for(doc, searchable_characters:, body_fingerprint:, hits: nil)
+      normalized_count = searchable_characters.to_i
+      normalized_fingerprint = body_fingerprint.to_s.presence
       entry = current_entry_for(doc)
-      return unless entry
 
-      normalized = value.to_i
-      return if entry["searchable_characters"] == normalized
+      unless entry
+        return if hits.nil?
 
-      entry["searchable_characters"] = normalized
+        @payload["files"][doc["id"]] = {
+          "path" => doc["path"],
+          "fingerprint" => doc["fingerprint"],
+          "scanned_at" => Time.now.utc.iso8601,
+          "searchable_characters" => normalized_count,
+          "body_fingerprint" => normalized_fingerprint,
+          "hits" => Array(hits)
+        }.compact
+        @dirty = true
+        return
+      end
+
+      normalized_hits = hits.nil? ? entry["hits"] : Array(hits)
+      return if entry["searchable_characters"] == normalized_count &&
+        entry["body_fingerprint"] == normalized_fingerprint &&
+        entry["hits"] == normalized_hits
+
+      entry["searchable_characters"] = normalized_count
+      entry["body_fingerprint"] = normalized_fingerprint
+      entry["hits"] = normalized_hits
       @dirty = true
     end
 

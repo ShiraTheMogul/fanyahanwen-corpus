@@ -123,6 +123,7 @@ en:
         analysis: Analysis
         query_details: Query details
         comparison: Compare scopes
+        advanced: Advanced analysis
       overview: Analysis overview
       body_only_note: All rates use searchable body characters. Metadata headers never contribute to matches or denominators.
       r_runtime: R analysis
@@ -139,6 +140,7 @@ en:
       reproducibility: Reproducibility files
       reproducibility_note: The ZIP includes the exact R script, body-only input tables, every grouped CSV, SVG and PNG figures, warnings, timing, and sessionInfo().
       reproducibility_note_phase8: The frozen bundle includes the exact R script, body-only input tables, aggregate CSV files, figures, method text, citation text, a corpus snapshot identifier, SHA-256 checksums, warnings, timing, and sessionInfo().
+      reproducibility_note_phase9: The frozen bundle includes the exact R script, body-only input tables, grouped and advanced analysis tables, figures, exact-body sensitivity data, method text, citation text, a corpus snapshot identifier, SHA-256 checksums, warnings, timing, and sessionInfo().
       snapshot_id: Corpus snapshot
       record_id: Prepared record
       completed_at: Completed
@@ -161,12 +163,51 @@ en:
         author: Author
         folder: Folder branch
         document_role: Text or corpus layer
+      advanced:
+        heading: Advanced corpus analysis
+        introduction: These analyses use only body-text occurrences, nearby body characters, document exposure, and recorded dates. They do not search metadata headers.
+        neighbours: Neighbouring characters
+        neighbours_note: Counts characters found within five body-text characters to the left or right of each matched passage. Punctuation, spacing, and control characters are excluded.
+        character_forms: Forms actually matched
+        character_forms_note: Compares each entered term with the form actually present in the source. This makes common-variant and broad-equivalence searches auditable without converting the corpus text.
+        neighbour_keyness: Distinctive neighbouring characters between scopes
+        neighbour_keyness_note: For a two-scope comparison, this contrasts characters in the five-character windows around the matches. G² ranks contextual differences; the log-ratio shows which selected scope favours the character. It is not general corpus-wide keyness.
+        alternatives: Alternative-term contributions
+        alternatives_note: Shows which OR alternatives produced the results. One source occurrence may count for more than one alternative when their accepted character forms overlap.
+        term_orders: Observed proximity orders
+        term_orders_note: Groups proximity matches by the order in which the entered terms actually occur in the source passage.
+        time: Frequency through dated centuries
+        time_note: Documents with parseable dates are grouped into historical centuries. Points show occurrences per million searchable body characters; bars are approximate 95% Poisson intervals. Undated documents remain in the overall totals but not this chart.
+        model: Exploratory count model
+        rate_ratio_century: Rate ratio per century
+        rate_ratio_interval: Approximate 95% interval
+        p_value: Trend p-value
+        overdispersion: Poisson overdispersion ratio
+        time_model_warning: This is a descriptive document-level model with searchable body characters as exposure. It does not establish a causal historical trend.
+        dispersion: Dispersion across documents
+        dispersion_note: Deviation of Proportions compares each document's share of occurrences with its share of searchable corpus size. DPnorm near 0 means the query follows corpus exposure relatively evenly; values near 1 mean strong concentration.
+        evenness: Evenness (1 − DPnorm)
+        document_range: Document range
+        duplicates: Exact-text duplication audit
+        duplicates_note: Default statistics retain every stored document. The sensitivity check also treats documents with exactly identical body text as one unit. This detects exact copies only, not near-duplicate editions or quotations.
+        show_duplicate_groups: Show the largest exact-body groups
+        bases:
+          documents_as_stored: Documents as stored
+          unique_exact_bodies: Unique exact body texts
       table:
         document: Document
         layer: Layer
         occurrences: Occurrences
         share: Share of all hits
         per_million: Per million
+        character: Character
+        left: Left
+        right: Right
+        total: Total
+        basis: Counting basis
+        example: Example
+        favoured_scope: Favoured scope
+        log_ratio: Log₂ ratio
     comparison:
       heading: Compare two scopes
       introduction: Apply the same text query to two groups already present in this frozen analysis. The comparison reuses its body-only dataset and runs a new, reproducible R analysis without rescanning the corpus.

@@ -90,6 +90,32 @@ module CorpusSearchHelper
     embedded.html_safe
   end
 
+  def corpus_search_analysis_decimal(value, precision: 4)
+    number = Float(value)
+    return "—" unless number.finite?
+
+    number_with_precision(number, precision: precision, strip_insignificant_zeros: true)
+  rescue ArgumentError, TypeError
+    "—"
+  end
+
+  def corpus_search_analysis_interval(low, high, precision: 4)
+    low_text = corpus_search_analysis_decimal(low, precision: precision)
+    high_text = corpus_search_analysis_decimal(high, precision: precision)
+    return "—" if low_text == "—" || high_text == "—"
+
+    "#{low_text}–#{high_text}"
+  end
+
+  def corpus_search_analysis_p_value(value)
+    number = Float(value)
+    return "—" unless number.finite?
+
+    number < 0.0001 ? format("%.3e", number) : number_with_precision(number, precision: 4, strip_insignificant_zeros: true)
+  rescue ArgumentError, TypeError
+    "—"
+  end
+
   def corpus_search_analysis_role_label(role)
     t("corpus_search.roles.#{role}", default: role.to_s.humanize)
   end

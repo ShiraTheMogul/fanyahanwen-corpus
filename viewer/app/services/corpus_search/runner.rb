@@ -11,8 +11,9 @@ module CorpusSearch
     MAX_CACHED_CONTEXT = 200
     MAX_INDEX_EQUIVALENTS = 12
 
-    ScanResult = Data.define(:hits, :searchable_characters)
-    AnalysisDocument = Data.define(:document, :hits, :searchable_characters)
+    ScanResult = Data.define(:hits, :searchable_characters, :body_fingerprint)
+    DocumentStats = Data.define(:searchable_characters, :body_fingerprint)
+    AnalysisDocument = Data.define(:document, :hits, :searchable_characters, :body_fingerprint)
 
     def initialize(query:, manifest: nil, cache_store: CacheStore.new)
       @query = query
@@ -39,7 +40,12 @@ module CorpusSearch
         unless per_file_hits
           scan = scan_document(doc)
           per_file_hits = scan.hits
-          cache.write_hits_for(doc, per_file_hits, searchable_characters: scan.searchable_characters)
+          cache.write_hits_for(
+            doc,
+            per_file_hits,
+            searchable_characters: scan.searchable_characters,
+            body_fingerprint: scan.body_fingerprint
+          )
           scanned_files += 1
         end
 
@@ -90,7 +96,12 @@ module CorpusSearch
         unless per_file_hits
           scan = scan_document(doc)
           per_file_hits = scan.hits
-          cache.write_hits_for(doc, per_file_hits, searchable_characters: scan.searchable_characters)
+          cache.write_hits_for(
+            doc,
+            per_file_hits,
+            searchable_characters: scan.searchable_characters,
+            body_fingerprint: scan.body_fingerprint
+          )
         end
 
         sort_hits(per_file_hits).each do |hit|
@@ -121,29 +132,53 @@ module CorpusSearch
       docs.each_with_index do |doc, index|
         hits = cache.current_hits_for(doc)
         searchable_characters = cache.current_searchable_characters_for(doc)
+        body_fingerprint = cache.current_body_fingerprint_for(doc)
 
         if candidate_ids.include?(doc["id"])
           if hits.nil?
             scan = scan_document(doc)
             hits = scan.hits
             searchable_characters = scan.searchable_characters
-            cache.write_hits_for(doc, hits, searchable_characters: searchable_characters)
-          elsif searchable_characters.nil?
-            searchable_characters = searchable_character_count(doc)
-            cache.write_searchable_characters_for(doc, searchable_characters)
+            body_fingerprint = scan.body_fingerprint
+            cache.write_hits_for(
+              doc,
+              hits,
+              searchable_characters: searchable_characters,
+              body_fingerprint: body_fingerprint
+            )
+          elsif searchable_characters.nil? || body_fingerprint.nil?
+            stats = document_stats(doc)
+            searchable_characters = stats.searchable_characters
+            body_fingerprint = stats.body_fingerprint
+            cache.write_document_stats_for(
+              doc,
+              searchable_characters: searchable_characters,
+              body_fingerprint: body_fingerprint
+            )
           end
         else
           # A received-text term index is only used when it supplies a safe
           # necessary condition. Missing the anchor therefore proves zero hits,
           # while the body length is still required for rates and prevalence.
           hits = []
-          searchable_characters = searchable_character_count(doc) if searchable_characters.nil?
+          if searchable_characters.nil? || body_fingerprint.nil?
+            stats = document_stats(doc)
+            searchable_characters = stats.searchable_characters
+            body_fingerprint = stats.body_fingerprint
+            cache.write_document_stats_for(
+              doc,
+              searchable_characters: searchable_characters,
+              body_fingerprint: body_fingerprint,
+              hits: []
+            )
+          end
         end
 
         yield AnalysisDocument.new(
           document: doc,
           hits: sort_hits(hits),
-          searchable_characters: searchable_characters.to_i
+          searchable_characters: searchable_characters.to_i,
+          body_fingerprint: body_fingerprint.to_s
         ) if block_given?
 
         progress&.call(index + 1, docs.length)
@@ -264,16 +299,23 @@ module CorpusSearch
       body = document.body
       searchable = NormalizedText.build(body, punctuation: @query.punctuation)
       hits = search_loaded_document(doc, body, searchable)
-      ScanResult.new(hits: hits, searchable_characters: searchable.units.length)
+      ScanResult.new(
+        hits: hits,
+        searchable_characters: searchable.units.length,
+        body_fingerprint: document.body_fingerprint
+      )
     rescue Errno::ENOENT, SecurityError
-      ScanResult.new(hits: [], searchable_characters: 0)
+      ScanResult.new(hits: [], searchable_characters: 0, body_fingerprint: nil)
     end
 
-    def searchable_character_count(doc)
+    def document_stats(doc)
       document = DocumentReader.read(fs: @fs, path: doc["path"])
-      NormalizedText.build(document.body, punctuation: @query.punctuation).units.length
+      DocumentStats.new(
+        searchable_characters: NormalizedText.build(document.body, punctuation: @query.punctuation).units.length,
+        body_fingerprint: document.body_fingerprint
+      )
     rescue Errno::ENOENT, SecurityError
-      0
+      DocumentStats.new(searchable_characters: 0, body_fingerprint: nil)
     end
 
     def search_loaded_document(doc, body, searchable)

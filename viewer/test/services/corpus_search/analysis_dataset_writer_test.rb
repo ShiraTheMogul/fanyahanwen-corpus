@@ -55,14 +55,18 @@ class CorpusSearchAnalysisDatasetWriterTest < ActiveSupport::TestCase
     assert_equal "1", matching["matching_document"]
     assert_equal "2", matching["searchable_characters"] # 孝道; punctuation and metadata excluded
     assert_equal ["孝"], JSON.parse(matching["matched_terms_json"])
+    assert_equal 64, matching["body_fingerprint"].length
 
     unmatched = rows.find { |row| row["path"].end_with?("unmatched.txt") }
     assert_equal "0", unmatched["occurrences"]
     assert_equal "0", unmatched["matching_document"]
     assert_equal "2", unmatched["searchable_characters"] # 仁義 still belongs in the denominator
     assert_equal [], JSON.parse(unmatched["matched_terms_json"])
+    assert_equal 64, unmatched["body_fingerprint"].length
+    assert_not_equal matching["body_fingerprint"], unmatched["body_fingerprint"]
 
     metadata = JSON.parse(metadata_path.read)
+    assert_equal 4, metadata["version"]
     assert_equal true, metadata["body_only"]
     assert_equal 2, metadata["document_count"]
     assert_equal 4, metadata["searchable_character_count"]

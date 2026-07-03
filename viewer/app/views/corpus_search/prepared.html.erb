@@ -35,6 +35,7 @@
   <nav class="corpus-search-workspace-tabs" aria-label="<%= t("corpus_search.analysis.workspace", default: "Search workspace") %>">
     <%= link_to t("corpus_search.analysis.tabs.results", default: "Results"), @live_query_url, class: "corpus-search-workspace-tab" %>
     <a href="#analysis" class="corpus-search-workspace-tab" aria-current="page"><%= t("corpus_search.analysis.tabs.analysis", default: "Analysis") %></a>
+    <a href="#advanced-analysis" class="corpus-search-workspace-tab"><%= t("corpus_search.analysis.tabs.advanced", default: "Advanced analysis") %></a>
     <a href="#comparison" class="corpus-search-workspace-tab"><%= t("corpus_search.analysis.tabs.comparison", default: "Compare scopes") %></a>
     <a href="#query-details" class="corpus-search-workspace-tab"><%= t("corpus_search.analysis.tabs.query_details", default: "Query details") %></a>
   </nav>
@@ -119,6 +120,205 @@
               <h3><%= t("corpus_search.analysis.proximity_spans", default: "Proximity spans") %></h3>
               <p><%= t("corpus_search.analysis.proximity_note", default: "The span is the number of searchable characters from the first matched term to the end of the last matched term.") %></p>
               <div class="corpus-search-analysis-figure"><%= proximity_svg %></div>
+            </article>
+          <% end %>
+        </section>
+
+        <section id="advanced-analysis" class="corpus-search-advanced-analysis">
+          <header>
+            <h3><%= t("corpus_search.analysis.advanced.heading", default: "Advanced corpus analysis") %></h3>
+            <p><%= t("corpus_search.analysis.advanced.introduction", default: "These analyses use only body-text occurrences, nearby body characters, document exposure, and recorded dates. They do not search metadata headers.") %></p>
+          </header>
+
+          <div class="corpus-search-analysis-secondary corpus-search-analysis-advanced-grid">
+            <% neighbour_chart = @analysis_report.special_chart("neighbour_characters") %>
+            <% neighbour_svg = corpus_search_analysis_svg(@analysis_report, neighbour_chart) %>
+            <% if neighbour_svg.present? %>
+              <article class="corpus-search-analysis-card">
+                <h4><%= t("corpus_search.analysis.advanced.neighbours", default: "Neighbouring characters") %></h4>
+                <p><%= t("corpus_search.analysis.advanced.neighbours_note", default: "Counts characters found within five body-text characters to the left or right of each matched passage. Punctuation, spacing, and control characters are excluded.") %></p>
+                <div class="corpus-search-analysis-figure"><%= neighbour_svg %></div>
+                <% neighbour_rows = @analysis_report.table("neighbour_window", limit: 20) %>
+                <% if neighbour_rows.any? %>
+                  <div class="corpus-search-analysis-table-wrap">
+                    <table class="corpus-search-analysis-table corpus-search-analysis-compact-table">
+                      <thead><tr>
+                        <th><%= t("corpus_search.analysis.table.character", default: "Character") %></th>
+                        <th><%= t("corpus_search.analysis.table.left", default: "Left") %></th>
+                        <th><%= t("corpus_search.analysis.table.right", default: "Right") %></th>
+                        <th><%= t("corpus_search.analysis.table.total", default: "Total") %></th>
+                      </tr></thead>
+                      <tbody>
+                        <% neighbour_rows.each do |row| %>
+                          <tr>
+                            <td><strong><%= row["character"] %></strong></td>
+                            <td><%= number_with_delimiter(row["left_occurrences"].to_i) %></td>
+                            <td><%= number_with_delimiter(row["right_occurrences"].to_i) %></td>
+                            <td><%= number_with_delimiter(row["total_occurrences"].to_i) %></td>
+                          </tr>
+                        <% end %>
+                      </tbody>
+                    </table>
+                  </div>
+                <% end %>
+              </article>
+            <% end %>
+
+            <% forms_chart = @analysis_report.special_chart("character_forms") %>
+            <% forms_svg = corpus_search_analysis_svg(@analysis_report, forms_chart) %>
+            <% if forms_svg.present? %>
+              <article class="corpus-search-analysis-card">
+                <h4><%= t("corpus_search.analysis.advanced.character_forms", default: "Forms actually matched") %></h4>
+                <p><%= t("corpus_search.analysis.advanced.character_forms_note", default: "Compares each entered term with the form actually present in the source. This makes common-variant and broad-equivalence searches auditable without converting the corpus text.") %></p>
+                <div class="corpus-search-analysis-figure"><%= forms_svg %></div>
+              </article>
+            <% end %>
+
+            <% keyness_chart = @analysis_report.special_chart("comparison_neighbour_keyness") %>
+            <% keyness_svg = corpus_search_analysis_svg(@analysis_report, keyness_chart) %>
+            <% if keyness_svg.present? %>
+              <article class="corpus-search-analysis-card corpus-search-analysis-card-wide">
+                <h4><%= t("corpus_search.analysis.advanced.neighbour_keyness", default: "Distinctive neighbouring characters between scopes") %></h4>
+                <p><%= t("corpus_search.analysis.advanced.neighbour_keyness_note", default: "For a two-scope comparison, this contrasts characters in the five-character windows around the matches. G² ranks contextual differences; the log-ratio shows which selected scope favours the character. It is not general corpus-wide keyness.") %></p>
+                <div class="corpus-search-analysis-figure"><%= keyness_svg %></div>
+                <% keyness_rows = @analysis_report.table("comparison_neighbour_keyness", limit: 20) %>
+                <% if keyness_rows.any? %>
+                  <div class="corpus-search-analysis-table-wrap">
+                    <table class="corpus-search-analysis-table corpus-search-analysis-compact-table">
+                      <thead><tr>
+                        <th><%= t("corpus_search.analysis.table.character", default: "Character") %></th>
+                        <th><%= t("corpus_search.analysis.table.favoured_scope", default: "Favoured scope") %></th>
+                        <th><%= t("corpus_search.analysis.table.log_ratio", default: "Log₂ ratio") %></th>
+                        <th>G²</th>
+                        <th><%= t("corpus_search.analysis.advanced.p_value", default: "p-value") %></th>
+                      </tr></thead>
+                      <tbody>
+                        <% keyness_rows.each do |row| %>
+                          <tr>
+                            <td><strong><%= row["character"] %></strong></td>
+                            <td><%= row["favoured_scope"] %></td>
+                            <td><%= corpus_search_analysis_decimal(row["log2_rate_ratio"], precision: 3) %></td>
+                            <td><%= corpus_search_analysis_decimal(row["log_likelihood_g2"], precision: 3) %></td>
+                            <td><%= corpus_search_analysis_p_value(row["p_value"]) %></td>
+                          </tr>
+                        <% end %>
+                      </tbody>
+                    </table>
+                  </div>
+                <% end %>
+              </article>
+            <% end %>
+
+            <% alternative_chart = @analysis_report.special_chart("alternative_terms") %>
+            <% alternative_svg = corpus_search_analysis_svg(@analysis_report, alternative_chart) %>
+            <% if alternative_svg.present? %>
+              <article class="corpus-search-analysis-card">
+                <h4><%= t("corpus_search.analysis.advanced.alternatives", default: "Alternative-term contributions") %></h4>
+                <p><%= t("corpus_search.analysis.advanced.alternatives_note", default: "Shows which OR alternatives produced the results. One source occurrence may count for more than one alternative when their accepted character forms overlap.") %></p>
+                <div class="corpus-search-analysis-figure"><%= alternative_svg %></div>
+              </article>
+            <% end %>
+
+            <% order_chart = @analysis_report.special_chart("term_orders") %>
+            <% order_svg = corpus_search_analysis_svg(@analysis_report, order_chart) %>
+            <% if order_svg.present? %>
+              <article class="corpus-search-analysis-card">
+                <h4><%= t("corpus_search.analysis.advanced.term_orders", default: "Observed proximity orders") %></h4>
+                <p><%= t("corpus_search.analysis.advanced.term_orders_note", default: "Groups proximity matches by the order in which the entered terms actually occur in the source passage.") %></p>
+                <div class="corpus-search-analysis-figure"><%= order_svg %></div>
+              </article>
+            <% end %>
+
+            <% time_chart = @analysis_report.special_chart("time_trend") %>
+            <% time_svg = corpus_search_analysis_svg(@analysis_report, time_chart) %>
+            <% if time_svg.present? %>
+              <article class="corpus-search-analysis-card corpus-search-analysis-card-wide">
+                <h4><%= t("corpus_search.analysis.advanced.time", default: "Frequency through dated centuries") %></h4>
+                <p><%= t("corpus_search.analysis.advanced.time_note", default: "Documents with parseable dates are grouped into historical centuries. Points show occurrences per million searchable body characters; bars are approximate 95% Poisson intervals. Undated documents remain in the overall totals but not this chart.") %></p>
+                <div class="corpus-search-analysis-figure corpus-search-analysis-scrollable-figure"><%= time_svg %></div>
+
+                <% time_model = @analysis_report.table("time_trend_model").first %>
+                <% if time_model %>
+                  <dl class="corpus-search-advanced-stat-list">
+                    <div><dt><%= t("corpus_search.analysis.advanced.model", default: "Exploratory count model") %></dt><dd><%= time_model["model_family"].to_s.humanize %></dd></div>
+                    <div><dt><%= t("corpus_search.analysis.advanced.rate_ratio_century", default: "Rate ratio per century") %></dt><dd><%= corpus_search_analysis_decimal(time_model["rate_ratio_per_century"], precision: 4) %></dd></div>
+                    <div><dt><%= t("corpus_search.analysis.advanced.rate_ratio_interval", default: "Approximate 95% interval") %></dt><dd><%= corpus_search_analysis_interval(time_model["rate_ratio_ci_low_95"], time_model["rate_ratio_ci_high_95"]) %></dd></div>
+                    <div><dt><%= t("corpus_search.analysis.advanced.p_value", default: "Trend p-value") %></dt><dd><%= corpus_search_analysis_p_value(time_model["p_value"]) %></dd></div>
+                    <div><dt><%= t("corpus_search.analysis.advanced.overdispersion", default: "Poisson overdispersion ratio") %></dt><dd><%= corpus_search_analysis_decimal(time_model["poisson_overdispersion_ratio"], precision: 3) %></dd></div>
+                  </dl>
+                  <p class="corpus-search-hint"><%= t("corpus_search.analysis.advanced.time_model_warning", default: "This is a descriptive document-level model with searchable body characters as exposure. It does not establish a causal historical trend.") %></p>
+                <% end %>
+              </article>
+            <% end %>
+          </div>
+
+          <% dispersion_rows = @analysis_report.table("dispersion") %>
+          <% if dispersion_rows.any? %>
+            <% dispersion = dispersion_rows.to_h { |row| [row["measure"], row["value"]] } %>
+            <article class="corpus-search-analysis-card corpus-search-advanced-summary-card">
+              <h4><%= t("corpus_search.analysis.advanced.dispersion", default: "Dispersion across documents") %></h4>
+              <p><%= t("corpus_search.analysis.advanced.dispersion_note", default: "Deviation of Proportions compares each document's share of occurrences with its share of searchable corpus size. DPnorm near 0 means the query follows corpus exposure relatively evenly; values near 1 mean strong concentration.") %></p>
+              <div class="corpus-search-analysis-metrics corpus-search-analysis-metrics-small">
+                <article class="corpus-search-analysis-metric"><span>DP</span><strong><%= corpus_search_analysis_decimal(dispersion["dp"], precision: 4) %></strong></article>
+                <article class="corpus-search-analysis-metric"><span>DPnorm</span><strong><%= corpus_search_analysis_decimal(dispersion["dp_norm"], precision: 4) %></strong></article>
+                <article class="corpus-search-analysis-metric"><span><%= t("corpus_search.analysis.advanced.evenness", default: "Evenness (1 − DPnorm)") %></span><strong><%= corpus_search_analysis_decimal(dispersion["evenness_one_minus_dp_norm"], precision: 4) %></strong></article>
+                <article class="corpus-search-analysis-metric"><span><%= t("corpus_search.analysis.advanced.document_range", default: "Document range") %></span><strong><%= number_to_percentage(dispersion["document_range"].to_f * 100, precision: 2) %></strong></article>
+              </div>
+            </article>
+          <% end %>
+
+          <% sensitivity_rows = @analysis_report.table("exact_body_sensitivity") %>
+          <% duplicate_groups = @analysis_report.table("duplicate_body_groups", limit: 20) %>
+          <% if sensitivity_rows.any? %>
+            <article class="corpus-search-analysis-table-section corpus-search-duplicate-audit">
+              <h4><%= t("corpus_search.analysis.advanced.duplicates", default: "Exact-text duplication audit") %></h4>
+              <p><%= t("corpus_search.analysis.advanced.duplicates_note", default: "Default statistics retain every stored document. The sensitivity check also treats documents with exactly identical body text as one unit. This detects exact copies only, not near-duplicate editions or quotations.") %></p>
+              <div class="corpus-search-analysis-table-wrap">
+                <table class="corpus-search-analysis-table">
+                  <thead><tr>
+                    <th><%= t("corpus_search.analysis.table.basis", default: "Counting basis") %></th>
+                    <th><%= t("corpus_search.analysis.metrics.documents", default: "Documents") %></th>
+                    <th><%= t("corpus_search.analysis.metrics.occurrences", default: "Occurrences") %></th>
+                    <th><%= t("corpus_search.analysis.metrics.occurrences_per_million", default: "Per million") %></th>
+                    <th><%= t("corpus_search.analysis.metrics.document_prevalence", default: "Document prevalence") %></th>
+                  </tr></thead>
+                  <tbody>
+                    <% sensitivity_rows.each do |row| %>
+                      <tr>
+                        <td><%= t("corpus_search.analysis.advanced.bases.#{row["basis"]}", default: row["basis"].to_s.humanize) %></td>
+                        <td><%= number_with_delimiter(row["documents"].to_i) %></td>
+                        <td><%= number_with_delimiter(row["occurrences"].to_i) %></td>
+                        <td><%= corpus_search_analysis_decimal(row["occurrences_per_million"], precision: 2) %></td>
+                        <td><%= number_to_percentage(row["document_prevalence"].to_f * 100, precision: 2) %></td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                </table>
+              </div>
+
+              <% if duplicate_groups.any? %>
+                <details>
+                  <summary><%= t("corpus_search.analysis.advanced.show_duplicate_groups", default: "Show the largest exact-body groups") %></summary>
+                  <div class="corpus-search-analysis-table-wrap">
+                    <table class="corpus-search-analysis-table">
+                      <thead><tr>
+                        <th><%= t("corpus_search.analysis.table.example", default: "Example") %></th>
+                        <th><%= t("corpus_search.analysis.metrics.documents", default: "Documents") %></th>
+                        <th><%= t("corpus_search.analysis.metrics.occurrences", default: "Occurrences") %></th>
+                      </tr></thead>
+                      <tbody>
+                        <% duplicate_groups.each do |row| %>
+                          <tr>
+                            <td><strong><%= row["example_title"].presence || File.basename(row["example_path"].to_s, ".txt") %></strong><small><%= row["example_path"] %></small></td>
+                            <td><%= number_with_delimiter(row["documents"].to_i) %></td>
+                            <td><%= number_with_delimiter(row["occurrences"].to_i) %></td>
+                          </tr>
+                        <% end %>
+                      </tbody>
+                    </table>
+                  </div>
+                </details>
+              <% end %>
             </article>
           <% end %>
         </section>
@@ -312,7 +512,7 @@
 
         <section class="corpus-search-analysis-download-note">
           <h3><%= t("corpus_search.analysis.reproducibility", default: "Reproducibility files") %></h3>
-          <p><%= t("corpus_search.analysis.reproducibility_note_phase8", default: "The frozen bundle includes the exact R script, body-only input tables, aggregate CSV files, figures, method text, citation text, a corpus snapshot identifier, SHA-256 checksums, warnings, timing, and sessionInfo().") %></p>
+          <p><%= t("corpus_search.analysis.reproducibility_note_phase9", default: "The frozen bundle includes the exact R script, body-only input tables, grouped and advanced analysis tables, figures, exact-body sensitivity data, method text, citation text, a corpus snapshot identifier, SHA-256 checksums, warnings, timing, and sessionInfo().") %></p>
           <% if @frozen_record %>
             <dl class="corpus-search-reproducibility-record">
               <div><dt><%= t("corpus_search.analysis.snapshot_id", default: "Corpus snapshot") %></dt><dd><code><%= @frozen_record.dig("corpus_snapshot", "snapshot_id") %></code></dd></div>

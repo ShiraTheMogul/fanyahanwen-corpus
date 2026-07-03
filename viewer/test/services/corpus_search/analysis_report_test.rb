@@ -12,9 +12,10 @@ class CorpusSearchAnalysisReportTest < ActiveSupport::TestCase
     @directory.join("period_summary.csv").write("group,occurrences\n北宋,2\n南宋,1\n")
     @directory.join("comparison_summary.csv").write("scope,scope_label,occurrences\nleft,北宋,2\nright,南宋,1\n")
     @directory.join("comparison_effects.csv").write("measure,value\nrate_ratio_left_over_right,2\n")
+    @directory.join("dispersion_summary.csv").write("measure,value\ndp_norm,0.25\n")
     @directory.join("warnings.txt").write("One warning\n")
     @directory.join("analysis_report.json").write(JSON.generate(
-      "version" => 2,
+      "version" => 4,
       "overall" => { "occurrences" => 3 },
       "comparison" => {
         "dimension" => "period",
@@ -36,7 +37,8 @@ class CorpusSearchAnalysisReportTest < ActiveSupport::TestCase
         "top_documents" => "top_documents.csv",
         "period" => "period_summary.csv",
         "comparison_summary" => "comparison_summary.csv",
-        "comparison_effects" => "comparison_effects.csv"
+        "comparison_effects" => "comparison_effects.csv",
+        "dispersion" => "dispersion_summary.csv"
       }
     ))
   end
@@ -52,6 +54,7 @@ class CorpusSearchAnalysisReportTest < ActiveSupport::TestCase
     chart = report.chart(dimension: "period", metric: "occurrences")
     assert_match(/<svg>/, report.svg(chart))
     assert_equal "Text", report.table("top_documents").first["title"]
+    assert_equal "0.25", report.table("dispersion").first["value"]
     assert_equal ["One warning"], report.warnings
   end
 

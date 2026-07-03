@@ -27,7 +27,8 @@ module CorpusSearch
     FLASHCARD_COLUMNS = %w[front back target snippet source tags].freeze
     ANALYSIS_OCCURRENCE_COLUMNS = %w[
       occurrence_id doc_id path mode search_start_offset search_end_offset
-      proximity_span matched_term_order matched_alternatives
+      proximity_span matched_term_order matched_alternatives matched_forms
+      left_neighbours right_neighbours
     ].freeze
 
     def initialize(prepared_search:, cache_store: CacheStore.new)
@@ -404,6 +405,39 @@ module CorpusSearch
         script, input tables, output tables, figures, warnings, timing, and `sessionInfo()`
         are included in this bundle.
 
+        ## Advanced analyses
+
+        Character-neighbour tables use the five nearest body characters retained on each
+        side of every occurrence. Punctuation, separator, and control characters are removed
+        during export, and positions L1–L5 and R1–R5 are summarized in R separately and together. The actual
+        source form matched for each entered term is also retained, so exact/common/broad character matching
+        can be audited as a form distribution. OR searches
+        are additionally summarized by matched alternative, while proximity searches are
+        summarized by observed source order.
+
+        Dispersion is reported as Deviation of Proportions (DP), comparing each document's
+        observed share of occurrences with its expected share based on searchable body
+        characters. DPnorm divides DP by `1 - min(s)`, where `s` is the vector of document
+        exposure shares; `1 - DPnorm` is shown as an intuitive evenness transform. Exact-body
+        SHA-256 fingerprints identify byte-for-byte identical body texts after metadata
+        removal. Default counts retain all stored documents, while the exported sensitivity
+        table counts one unit per exact body fingerprint.
+
+        Dated documents are grouped into historical 100-year bins. Their normalized rates
+        receive exact Poisson count intervals. When at least 20 dated documents, five distinct
+        date midpoints, and five occurrences are available, a document-level Poisson model
+        estimates rate change per century with `log(searchable_characters)` as an offset. If
+        Pearson residual dispersion exceeds 1.5, quasi-Poisson standard errors are reported.
+        The time model is descriptive and does not establish historical causation. A fixed-seed
+        reproducible sample of matching documents and occurrences is exported for manual inspection;
+        sample rows retain their original IDs so they can be joined back to the full tables. When two
+        scopes are compared, neighbouring-character keyness is calculated from the same five-character
+        windows with log-ratios and a two-by-two log-likelihood statistic.
+
+        References for DP and corrected DPnorm: Gries (2008), International Journal of Corpus
+        Linguistics 13(4), 403–437; Lijffijt and Gries (2012), International Journal of Corpus
+        Linguistics 17(1), 147–149, doi:10.1075/ijcl.17.1.08lij.
+
         #{comparison_section}
       MARKDOWN
 
@@ -520,6 +554,8 @@ module CorpusSearch
       hit_count
     end
 
+    ANALYSIS_NEIGHBOUR_CHARACTERS = 5
+
     def analysis_occurrence_row(hit, occurrence_id:)
       {
         "occurrence_id" => occurrence_id,
@@ -530,8 +566,45 @@ module CorpusSearch
         "search_end_offset" => hit["search_end_offset"],
         "proximity_span" => @query.proximity? ? hit["search_end_offset"].to_i - hit["search_start_offset"].to_i : nil,
         "matched_term_order" => matched_term_order(hit),
-        "matched_alternatives" => @query.alternatives? ? matched_alternatives(hit).join(" | ") : nil
+        "matched_alternatives" => @query.alternatives? ? matched_alternatives(hit).join(" | ") : nil,
+        "matched_forms" => matched_forms(hit),
+        "left_neighbours" => context_tail(hit["left_context"], ANALYSIS_NEIGHBOUR_CHARACTERS),
+        "right_neighbours" => context_head(hit["right_context"], ANALYSIS_NEIGHBOUR_CHARACTERS)
       }
+    end
+
+
+    def matched_forms(hit)
+      source_characters = hit["matched_text"].to_s.each_char.to_a
+      matches = Array(hit["term_matches"])
+
+      pairs = if matches.any?
+        matches.map do |match|
+          relative_start = match["start_offset"].to_i - hit["start_offset"].to_i
+          length = match["end_offset"].to_i - match["start_offset"].to_i
+          source_form = source_characters.slice(relative_start, length).to_a.join
+          [match["term"].to_s, source_form]
+        end
+      else
+        [[@query.query_text.to_s, hit["matched_text"].to_s]]
+      end
+
+      pairs.reject { |query_form, source_form| query_form.empty? || source_form.empty? }
+        .uniq
+        .map { |query_form, source_form| "#{query_form}⇒#{source_form}" }
+        .join(" | ")
+    end
+
+    def context_head(value, length)
+      linguistic_context_characters(value).first(length).join
+    end
+
+    def context_tail(value, length)
+      linguistic_context_characters(value).last(length).to_a.join
+    end
+
+    def linguistic_context_characters(value)
+      value.to_s.each_char.reject { |character| character.match?(/[\p{P}\p{Z}\p{C}]/) }
     end
 
     def result_row(hit, occurrence_id:)
@@ -628,7 +701,7 @@ module CorpusSearch
 
     def write_metadata(path, hit_count, corpus_snapshot:, dataset_stats:, r_result:)
       metadata = {
-        "version" => 8,
+        "version" => 9,
         "generated_at" => Time.now.utc.iso8601,
         "prepared_record_id" => @prepared_search.id,
         "source_prepared_id" => @prepared_search.source_prepared_id,
@@ -680,7 +753,9 @@ module CorpusSearch
           I18n.t("corpus_search.export.metadata_notes.offsets"),
           I18n.t("corpus_search.export.metadata_notes.equivalence"),
           I18n.t("corpus_search.export.metadata_notes.canonical_source"),
-          I18n.t("corpus_search.export.metadata_notes.analysis_dataset")
+          I18n.t("corpus_search.export.metadata_notes.analysis_dataset"),
+          "analysis_occurrences.csv stores only the five nearest non-punctuation body characters on each side for neighbour analysis; metadata is never copied into those fields.",
+          "body_fingerprint is a SHA-256 digest of the body after metadata removal and is used only for exact-text sensitivity checks."
         ]
       }
 
@@ -715,8 +790,8 @@ module CorpusSearch
         flashcards.csv           Compact flashcard export.
         document_counts.csv      One body-only row per document in scope,
                                  including documents with zero matches.
-        analysis_occurrences.csv Compact occurrence offsets used by R. It omits
-                                 snippets and repeated descriptive metadata.
+        analysis_occurrences.csv Compact occurrence offsets plus short body-only
+                                 left/right contexts used by the advanced R analyses.
         analysis_dataset.json    Dataset provenance and query definition.
         query.json               Normalized query and comparison definition.
         query_urls.txt           Live and frozen URLs for this record.
@@ -742,6 +817,22 @@ module CorpusSearch
                                  The two selected scopes, when comparison was requested.
         analysis/standard/comparison_effects.csv
                                  Rate ratios, differences, interval, and likelihood statistic.
+        analysis/standard/neighbour_*.csv
+                                 Left/right character distributions around matches.
+        analysis/standard/dispersion_summary.csv
+                                 Document-level DP, corrected DPnorm, and range.
+        analysis/standard/character_form_summary.csv
+                                 Entered forms compared with the forms actually matched.
+        analysis/standard/sample_*.csv
+                                 Fixed-seed samples and their sampling manifest.
+        analysis/standard/time_bins.csv
+                                 Century rates and Poisson count intervals for dated texts.
+        analysis/standard/time_trend_model.csv
+                                 Exploratory Poisson or quasi-Poisson century trend.
+        analysis/standard/duplicate_body_*.csv
+                                 Exact-body duplicate groups and their members.
+        analysis/standard/exact_body_sensitivity.csv
+                                 Stored-document totals compared with unique exact bodies.
         analysis/standard/figures/*.svg
                                  Scalable browser and publication figures.
         analysis/standard/figures/*.png
