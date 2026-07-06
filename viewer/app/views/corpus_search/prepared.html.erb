@@ -5,6 +5,9 @@
   <% outputs = payload["outputs"] || {} %>
   <% progress = payload["progress"] || {} %>
   <% prepared_base = "/corpus/search/prepared/#{@prepared_search.id}?key=#{ERB::Util.url_encode(@prepared_search.key)}" %>
+  <% if @full_search_progress_seed.present? %>
+    <% content_for :full_search_progress_seed, @full_search_progress_seed.to_json %>
+  <% end %>
 
   <section class="corpus-search-summary">
     <div>
@@ -28,6 +31,11 @@
 
       <% if @prepared_search.complete? %>
         <%= link_to t("corpus_search.actions.download_zip"), "/corpus/search/prepared/#{@prepared_search.id}/download?key=#{ERB::Util.url_encode(@prepared_search.key)}", class: "corpus-search-button" %>
+      <% elsif @prepared_search.full_search? && !@prepared_search.cancelled? && !@prepared_search.failed? %>
+        <form action="/corpus/search/prepared/<%= @prepared_search.id %>/cancel?key=<%= ERB::Util.url_encode(@prepared_search.key) %>" method="post" class="corpus-search-inline-form">
+          <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+          <button type="submit" class="corpus-search-button corpus-search-button-secondary"><%= t("corpus_search.actions.cancel_full_search") %></button>
+        </form>
       <% end %>
     </div>
   </section>

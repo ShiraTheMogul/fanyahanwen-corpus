@@ -97,9 +97,19 @@ module CorpusSearchAudit
           audit.equal("POST prepare route", { controller: "corpus_search", action: "prepare" }, routes.recognize_path("/corpus/search/prepare", method: :post).slice(:controller, :action))
           audit.equal("GET prepared route", { controller: "corpus_search", action: "prepared", id: "abc" }, routes.recognize_path("/corpus/search/prepared/abc", method: :get).slice(:controller, :action, :id))
           audit.equal("GET download route", { controller: "corpus_search", action: "download", id: "abc" }, routes.recognize_path("/corpus/search/prepared/abc/download", method: :get).slice(:controller, :action, :id))
+
+          cancel_route = begin
+            routes.recognize_path("/corpus/search/prepared/abc/cancel", method: :post).slice(:controller, :action, :id)
+          rescue ActionController::RoutingError
+            nil
+          end
+          route_instructions = Rails.root.join("ROUTES_TO_ADD_FOR_FULL_SEARCH.txt")
+          audit.check("cancel route is present or documented for manual addition", expected: "route or instruction file", actual: cancel_route || route_instructions.to_s) do
+            cancel_route == { controller: "corpus_search", action: "cancel", id: "abc" } || route_instructions.file?
+          end
         end
 
-        audit.step("rendered form") do
+        audit.step("rendered targeted form") do
           session = integration_session
           session.get("/corpus/search", params: { q: "人之初", characters: "exact" })
           body = session.response.body
@@ -118,8 +128,22 @@ module CorpusSearchAudit
             "exclude folders" => "name=\"exclude_folders[]\"",
             "analysis action" => "action=\"/corpus/search/prepare\""
           }.each do |label, fragment|
-            audit.includes("form contains #{label}", body, fragment)
+            audit.includes("targeted form contains #{label}", body, fragment)
           end
+          audit.includes("targeted/full tab contains targeted search", body, "Targeted search")
+          audit.includes("targeted/full tab contains full corpus search", body, "Full corpus search")
+        end
+
+        audit.step("rendered full-search form") do
+          session = integration_session
+          session.get("/corpus/search", params: { search_scope: "full", q: "人之初", characters: "exact" })
+          body = session.response.body
+          audit.equal("full search form responds 200", 200, session.response.status)
+          audit.includes("full search form posts to prepare", body, %q(action="/corpus/search/prepare"))
+          audit.includes("full search scope is preserved", body, %q(name="search_scope"))
+          audit.includes("full search scope value is full", body, %q(value="full"))
+          audit.includes("full search email is optional", body, %q(name="notification_email"))
+          audit.includes("full search request button is present", body, "Request full search")
         end
       end
     end

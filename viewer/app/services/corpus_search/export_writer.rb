@@ -39,6 +39,8 @@ module CorpusSearch
 
     def write!
       @prepared_search.load!
+      raise CancelledSearch, "Search was cancelled before it started" if @prepared_search.cancel_requested?
+
       existing_zip = @prepared_search.zip_path
       if @prepared_search.complete?
         return existing_zip if existing_zip&.file?
@@ -165,15 +167,43 @@ module CorpusSearch
           corpus_snapshot: corpus_snapshot,
           artifact_manifest: artifacts
         )
+        send_completion_notification
 
         zip_path
       end
+    rescue CancelledSearch => e
+      @prepared_search.cancel!(message: e.message)
+      nil
     rescue StandardError => e
       @prepared_search.update!(status: "failed", progress: { "stage" => "failed" }, error_message: "#{e.class}: #{e.message}")
       raise
     end
 
     private
+
+    class CancelledSearch < StandardError; end
+
+    def check_cancelled!
+      @prepared_search.load!
+      raise CancelledSearch, "Search was cancelled by request" if @prepared_search.cancel_requested?
+    end
+
+    def send_completion_notification
+      return unless @prepared_search.full_search? && @prepared_search.notification_pending?
+
+      email = @prepared_search.notification_email
+      return if email.blank?
+
+      CorpusSearchMailer.full_search_complete(
+        email: email,
+        prepared_search: @prepared_search,
+        download_url: public_url("/corpus/search/prepared/#{@prepared_search.id}/download?key=#{ERB::Util.url_encode(@prepared_search.key)}"),
+        expires_at: @prepared_search.payload["expires_at"]
+      ).deliver_now
+      @prepared_search.mark_notification_sent!
+    rescue StandardError => e
+      Rails.logger.warn("Corpus search completion email failed for #{@prepared_search.id}: #{e.class}: #{e.message}")
+    end
 
     SOURCE_DATASET_FILES = %w[
       results.csv
@@ -525,6 +555,7 @@ module CorpusSearch
               flashcards_csv << FLASHCARD_COLUMNS
 
               progress = lambda do |files_scanned, files_total|
+                check_cancelled!
                 next unless (files_scanned % 25).zero? || files_scanned == files_total
 
                 @prepared_search.update!(
@@ -538,6 +569,7 @@ module CorpusSearch
               end
 
               dataset_writer.each_document(progress: progress) do |document_row, hits|
+                check_cancelled!
                 documents_csv << document_row
                 hits.each do |hit|
                   hit_count += 1

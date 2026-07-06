@@ -2,6 +2,28 @@ en:
   corpus_search:
     title: Corpus Search
     introduction: Search corpus body text directly. Metadata headers never produce hits or counts.
+    scope_tabs:
+      aria_label: Search breadth
+      targeted: Targeted search
+      full: Full corpus search
+    full_search:
+      heading: Complete background search
+      introduction: Full corpus searches run as background jobs over the selected corpus scope. They may take a long time, but you can keep using targeted search while the job runs.
+      github_html: For repeated large-scale research, you may prefer to download the open corpus from <a href="%{url}">GitHub</a> and search it locally.
+      email_label: Email me when the search is complete (optional)
+      email_placeholder: you@example.com
+      email_hint: This address is used only for this notification. The raw email is deleted after the completion email is sent.
+    progress_widget:
+      title: Full corpus search
+      details: View status
+      dismiss: Hide progress panel
+    mailer:
+      complete:
+        subject: Your Fanya Hanwen Corpus search is ready
+        heading: Your full corpus search has finished.
+        body: 'Query: %{query}'
+        expires: 'This link expires after: %{expires_at}'
+        ignore: If you did not request this email, you can ignore it.
     form:
       mode: Search mode
       search_text: Search text
@@ -63,6 +85,8 @@ en:
       period: 江戶時代 / 大越...
     actions:
       search: Search
+      request_full_search: Request full search
+      cancel_full_search: Cancel search
       prepare_export: Prepare full ZIP export in background
       prepare_analysis: Prepare analysis
       open_source_text: Open source text at this match
@@ -245,6 +269,8 @@ en:
       running: Running
       complete: Complete
       failed: Failed
+      cancel_requested: Cancelling
+      cancelled: Cancelled
     stages:
       queued: Queued
       searching: Searching
@@ -253,6 +279,8 @@ en:
       running_analysis: Running analysis
       complete: Complete
       failed: Failed
+      cancel_requested: Cancelling
+      cancelled: Cancelled
     notices:
       queued: The large search has been queued. You can keep using the site while it runs.
     errors:
@@ -263,6 +291,8 @@ en:
       search_failed: 'Search failed: %{message}'
       prepared_not_found: Prepared search not found
       download_not_ready: Download is not ready yet
+      full_search_active: You already have a full corpus search running or waiting for download. Please wait for it to finish, download it, cancel it, or let it expire.
+      full_search_busy: The full corpus search queue is currently full. Please try again later.
       too_many_terms: A proximity search can contain at most %{max} terms.
       too_many_alternatives: 'An OR search can contain at most %{max} alternatives.'
       folder_tree_unavailable: The folder list is not ready yet. Searches still cover every folder in the selected text layers.

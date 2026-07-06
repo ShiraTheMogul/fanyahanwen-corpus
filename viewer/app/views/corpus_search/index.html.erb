@@ -2,8 +2,24 @@
 
 <p class="corpus-search-note"><%= t("corpus_search.introduction") %></p>
 
-<%= form_with url: corpus_search_path,
-              method: :get,
+<nav class="corpus-search-scope-tabs" aria-label="<%= t("corpus_search.scope_tabs.aria_label") %>">
+  <%= link_to t("corpus_search.scope_tabs.targeted"), corpus_search_path, class: "corpus-search-scope-tab", aria: { current: (@search_scope == "targeted" ? "page" : nil) } %>
+  <%= link_to t("corpus_search.scope_tabs.full"), corpus_search_path(search_scope: "full"), class: "corpus-search-scope-tab", aria: { current: (@search_scope == "full" ? "page" : nil) } %>
+</nav>
+
+<% if @search_scope == "full" %>
+  <section class="corpus-search-full-intro">
+    <h2><%= t("corpus_search.full_search.heading") %></h2>
+    <p><%= t("corpus_search.full_search.introduction") %></p>
+    <p><%= t("corpus_search.full_search.github_html", url: "https://github.com/fanyahanwen") %></p>
+  </section>
+<% end %>
+
+<% form_url = @search_scope == "full" ? prepare_corpus_search_path : corpus_search_path %>
+<% form_method = @search_scope == "full" ? :post : :get %>
+
+<%= form_with url: form_url,
+              method: form_method,
               local: true,
               class: "corpus-search-form",
               data: {
@@ -11,6 +27,7 @@
                 corpus_search_form_max_terms_value: CorpusSearch::SearchDefinition::MAX_MULTI_TERMS,
                 corpus_search_form_term_placeholder_value: t("corpus_search.placeholders.term", number: "__NUMBER__")
               } do %>
+  <%= hidden_field_tag :search_scope, @search_scope %>
   <%= hidden_field_tag :mode, @query.mode, data: { corpus_search_form_target: "mode" } %>
 
   <div class="corpus-search-mode-switch" role="group" aria-label="<%= t("corpus_search.form.mode") %>">
@@ -234,8 +251,19 @@
     </div>
   </details>
 
+  <% if @search_scope == "full" %>
+    <section class="corpus-search-email-option">
+      <label class="corpus-search-wide-label">
+        <span><%= t("corpus_search.full_search.email_label") %></span>
+        <%= email_field_tag :notification_email, nil, class: "corpus-search-input", autocomplete: "email", maxlength: 254, placeholder: t("corpus_search.full_search.email_placeholder") %>
+      </label>
+      <p class="corpus-search-hint"><%= t("corpus_search.full_search.email_hint") %></p>
+    </section>
+  <% end %>
+
   <div class="corpus-search-actions">
-    <%= button_tag t("corpus_search.actions.search"), type: "submit", class: "corpus-search-button", name: "search", value: "1" %>
+    <% submit_label = @search_scope == "full" ? t("corpus_search.actions.request_full_search") : t("corpus_search.actions.search") %>
+    <%= button_tag submit_label, type: "submit", class: "corpus-search-button", name: "search", value: "1" %>
   </div>
 <% end %>
 
@@ -277,6 +305,7 @@
     <nav class="corpus-search-workspace-tabs" aria-label="<%= t("corpus_search.analysis.workspace", default: "Search workspace") %>">
       <a href="#results" class="corpus-search-workspace-tab" aria-current="page"><%= t("corpus_search.analysis.tabs.results", default: "Results") %></a>
       <%= form_with url: prepare_corpus_search_path, method: :post, local: true, class: "corpus-search-workspace-tab-form" do %>
+        <%= hidden_field_tag :full_search, "1" %>
         <% @query.canonical_params(include_presentation: true).each do |key, value| %>
           <%= hidden_field_tag key, value %>
         <% end %>

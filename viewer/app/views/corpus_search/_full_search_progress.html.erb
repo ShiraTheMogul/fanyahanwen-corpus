@@ -1,0 +1,38 @@
+<% seed = begin
+     if @full_search_progress_seed.present?
+       @full_search_progress_seed
+     elsif content_for?(:full_search_progress_seed)
+       JSON.parse(content_for(:full_search_progress_seed))
+     end
+   rescue JSON::ParserError
+     nil
+   end %>
+<div class="corpus-search-progress-widget"
+     data-controller="full-search-progress"
+     <% if seed.present? %>data-full-search-progress-current-search-value="<%= h(seed.to_json) %>"<% end %>
+     data-full-search-progress-poll-interval-value="8000"
+     hidden>
+  <button type="button"
+          class="corpus-search-progress-mini"
+          data-full-search-progress-target="minimized"
+          data-action="full-search-progress#restore"
+          hidden>
+    <span data-full-search-progress-target="miniLabel"><%= t("corpus_search.progress_widget.title") %></span>
+  </button>
+
+  <div class="corpus-search-progress-panel" data-full-search-progress-target="panel">
+    <div class="corpus-search-progress-header" data-full-search-progress-target="handle">
+      <strong data-full-search-progress-target="title"><%= t("corpus_search.progress_widget.title") %></strong>
+      <button type="button" class="corpus-search-progress-close" data-action="full-search-progress#dismiss" aria-label="<%= t("corpus_search.progress_widget.dismiss") %>">×</button>
+    </div>
+    <p class="corpus-search-progress-query" data-full-search-progress-target="query"></p>
+    <p class="corpus-search-progress-status" data-full-search-progress-target="status"></p>
+    <progress class="corpus-search-progress-bar" data-full-search-progress-target="bar" max="100" value="0"></progress>
+    <p class="corpus-search-progress-counts" data-full-search-progress-target="counts"></p>
+    <div class="corpus-search-progress-actions">
+      <a class="corpus-search-button corpus-search-button-secondary" data-full-search-progress-target="details" href="#"><%= t("corpus_search.progress_widget.details") %></a>
+      <a class="corpus-search-button" data-full-search-progress-target="download" href="#" hidden><%= t("corpus_search.actions.download_zip") %></a>
+      <button type="button" class="corpus-search-button corpus-search-button-secondary" data-full-search-progress-target="cancel" data-action="full-search-progress#cancel"><%= t("corpus_search.actions.cancel_full_search") %></button>
+    </div>
+  </div>
+</div>

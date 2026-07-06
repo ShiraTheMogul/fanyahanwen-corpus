@@ -1,0 +1,11 @@
+<%= t("corpus_search.mailer.complete.heading") %>
+
+<%= t("corpus_search.mailer.complete.body", query: @prepared_search.query.display_label) %>
+
+<%= @download_url %>
+
+<% if @expires_at.present? %>
+<%= t("corpus_search.mailer.complete.expires", expires_at: @expires_at) %>
+<% end %>
+
+<%= t("corpus_search.mailer.complete.ignore") %>
