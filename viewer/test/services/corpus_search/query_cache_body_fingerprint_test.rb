@@ -30,11 +30,14 @@ class CorpusSearchQueryCacheBodyFingerprintTest < ActiveSupport::TestCase
       searchable_characters: 12,
       body_fingerprint: "a" * 64
     )
-    cache.save!
+    cache.close
 
     reloaded = CorpusSearch::QueryCache.new(query: @query, cache_store: @cache_store)
-    assert_equal 12, reloaded.current_searchable_characters_for(@document)
-    assert_equal "a" * 64, reloaded.current_body_fingerprint_for(@document)
+    record = reloaded.current_record_for(@document)
+    assert_equal 12, record.searchable_characters
+    assert_equal "a" * 64, record.body_fingerprint
+    assert_equal [{ "start_offset" => 0, "end_offset" => 1 }], record.hits
+    reloaded.close
   end
   test "stores denominator data even when an index proves zero hits" do
     cache = CorpusSearch::QueryCache.new(query: @query, cache_store: @cache_store)
@@ -44,12 +47,40 @@ class CorpusSearchQueryCacheBodyFingerprintTest < ActiveSupport::TestCase
       body_fingerprint: "b" * 64,
       hits: []
     )
-    cache.save!
+    cache.close
 
     reloaded = CorpusSearch::QueryCache.new(query: @query, cache_store: @cache_store)
     assert_equal [], reloaded.current_hits_for(@document)
     assert_equal 24, reloaded.current_searchable_characters_for(@document)
     assert_equal "b" * 64, reloaded.current_body_fingerprint_for(@document)
+    reloaded.close
+  end
+
+  test "uses an incremental SQLite cache instead of one giant gzip object" do
+    cache = CorpusSearch::QueryCache.new(query: @query, cache_store: @cache_store)
+    100.times do |index|
+      document = @document.merge(
+        "id" => "doc-#{index}",
+        "fingerprint" => "#{index}:1.0"
+      )
+      cache.write_hits_for(
+        document,
+        [],
+        searchable_characters: index,
+        body_fingerprint: index.to_s.rjust(64, "0")
+      )
+    end
+    cache.close
+
+    sqlite_path = @cache_store.absolute(File.join("query_caches", "#{@query.cache_key}.sqlite3"))
+    legacy_path = @cache_store.absolute(File.join("query_caches", "#{@query.cache_key}.json.gz"))
+    assert sqlite_path.file?
+    refute legacy_path.exist?
+
+    database = SQLite3::Database.new(sqlite_path.to_s)
+    assert_equal 100, database.get_first_value("SELECT COUNT(*) FROM files")
+  ensure
+    database&.close
   end
 
 end

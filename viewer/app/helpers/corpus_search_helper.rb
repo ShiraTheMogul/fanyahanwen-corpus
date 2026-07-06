@@ -81,7 +81,7 @@ module CorpusSearchHelper
     svg = report&.svg(chart)
     return nil if svg.blank?
 
-    # The SVG is produced by the fixed application-owned R script. Base R's
+    # The SVG is produced by the fixed application-owned Ruby script. The profile's
     # graphics device escapes text labels before writing XML. Strip the XML
     # declaration and doctype before embedding the <svg> element in HTML.
     embedded = svg.sub(/\A.*?(?=<svg\b)/m, "")

@@ -43,6 +43,18 @@ class CorpusSearchQueryParamsTest < ActiveSupport::TestCase
     assert_not_includes query.relative_url(include_presentation: false), "page="
   end
 
+  test "Query.from_params accepts keyword parameters" do
+    query = CorpusSearch::Query.from_params(
+      mode: "alternatives",
+      terms: ["仁", "義"],
+      punctuation: "ignore"
+    )
+
+    assert query.valid?
+    assert query.requested?
+    assert_equal %w[仁 義], query.terms
+  end
+
   test "proximity parameters use term arrays" do
     query = CorpusSearch::QueryParams.parse(
       mode: "proximity",

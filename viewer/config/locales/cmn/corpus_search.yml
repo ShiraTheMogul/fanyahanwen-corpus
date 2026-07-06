@@ -77,7 +77,7 @@ cmn:
       open_received_text_folder: Open received-text folder
     results:
       summary: 'Showing %{visible} result(s) on this page. Cached/checked candidate files: %{candidates}. Files newly scanned for this request: %{scanned}.'
-      truncated: This interactive search stopped at %{limit} hits. Prepare a background export for the complete result set.
+      truncated: This interactive search is partial. It stops at %{limit} hits or after a bounded cold scan; prepare a background export for the complete result set.
       complete_count: 'Complete interactive result count: %{count}.'
       offset: body offset %{start}–%{finish}
       none: No results found.
@@ -123,7 +123,7 @@ cmn:
       queued: Queued
       searching: Searching
       building_analysis_dataset: Building analysis dataset
-      running_r: Running R analysis
+      running_analysis: Running analysis
       complete: Complete
       failed: Failed
     notices:
@@ -155,7 +155,7 @@ cmn:
         offsets: Offsets are character offsets into the body text after metadata and separator lines are removed.
         equivalence: Non-literal matches retain the entered character, source character, mapping path, and mapping source.
         canonical_source: The source .txt files remain the authoritative corpus; this export is derived search output.
-        analysis_dataset: document_counts.csv contains body-only document counts and searchable-character denominators used by the included R script.
+        analysis_dataset: document_counts.csv contains body-only document counts and searchable-character denominators used by the included Ruby script.
     roles:
       canonical: Received text
       textual_variant: Variants

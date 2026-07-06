@@ -77,7 +77,7 @@ lzh:
       open_received_text_folder: 至傳本文本目錄
     results:
       summary: 此頁示%{visible}項。候選檔凡%{candidates}；此次新查%{scanned}檔。
-      truncated: 互動尋文至%{limit}項而止；欲得全數，請另行備製匯出檔。
+      truncated: 互動尋文有定限（至多%{limit}項，冷尋亦限所閱篇數）；欲得全數，請另行備製匯出檔。
       complete_count: 互動尋文所得凡%{count}項。
       offset: 正文字位%{start}–%{finish}
       none: 無所得。
@@ -112,7 +112,7 @@ lzh:
       status: 狀態
       query: 所尋
       progress: 階段：%{stage}。諸檔：%{scanned}／%{total}。所得：%{hits}項。
-      zip_contents: ZIP檔內有尋文結果、正文分析資料、所用R程式、R所得及運行著錄。
+      zip_contents: ZIP檔內有尋文結果、正文分析資料、所用Ruby程式、分析所得及運行著錄。
       refresh_notice: 作業未畢時，此頁每%{seconds}秒自新。
     statuses:
       queued: 候行
@@ -123,7 +123,7 @@ lzh:
       queued: 候行
       searching: 尋文中
       building_analysis_dataset: 製分析資料表
-      running_r: 以R分析
+      running_analysis: 行分析
       complete: 已畢
       failed: 失敗
     notices:
@@ -155,7 +155,7 @@ lzh:
         offsets: 字位自去除卷首著錄及其分隔空行後之正文起算。
         equivalence: 非字面相合者，仍記所輸入字、原文所見字、對應路徑及來源。
         canonical_source: 原始.txt檔仍為語料庫權威文本；此匯出檔乃尋文所得之衍生物。
-        analysis_dataset: document_counts.csv所載皆正文之檔案計數與可尋字數，供所附R程式使用。
+        analysis_dataset: document_counts.csv所載皆正文之檔案計數與可尋字數，供所附Ruby程式使用。
     roles:
       canonical: 傳本文本
       textual_variant: 異文

@@ -5,7 +5,7 @@ require "json"
 require "pathname"
 
 module CorpusSearch
-  # Read-only view over the structured files created by the application-owned R
+  # Read-only view over the structured files created by the application-owned Ruby
   # profile. Paths are resolved beneath one prepared-search analysis directory;
   # no visitor-supplied path is ever opened.
   class AnalysisReport
@@ -26,7 +26,7 @@ module CorpusSearch
       return nil unless report_path.file?
 
       new(directory: root, payload: JSON.parse(report_path.read(encoding: "UTF-8")))
-    rescue JSON::ParserError, Errno::ENOENT
+    rescue JSON::ParserError, Errno::ENOENT, Encoding::InvalidByteSequenceError, Encoding::UndefinedConversionError
       nil
     end
 
@@ -107,8 +107,8 @@ module CorpusSearch
       content.to_s.lines.map(&:strip).reject(&:blank?).uniq
     end
 
-    def r_session
-      read_relative("sessionInfo.txt")
+    def runtime_info
+      read_relative("runtime_info.txt")
     end
 
     private

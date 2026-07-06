@@ -280,7 +280,7 @@
         <% @query.canonical_params(include_presentation: true).each do |key, value| %>
           <%= hidden_field_tag key, value %>
         <% end %>
-        <%= submit_tag t("corpus_search.actions.prepare_analysis", default: "Prepare R analysis"), class: "corpus-search-workspace-tab corpus-search-workspace-tab-button" %>
+        <%= submit_tag t("corpus_search.actions.prepare_analysis", default: "Prepare analysis"), class: "corpus-search-workspace-tab corpus-search-workspace-tab-button" %>
       <% end %>
       <a href="#query-details" class="corpus-search-workspace-tab"><%= t("corpus_search.analysis.tabs.query_details", default: "Query details") %></a>
     </nav>

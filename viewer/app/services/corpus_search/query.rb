@@ -8,8 +8,8 @@ module CorpusSearch
   class Query
     attr_reader :search_definition, :presentation_options, :locale
 
-    def self.from_params(params, locale: I18n.locale)
-      QueryParams.parse(params, locale: locale)
+    def self.from_params(params = nil, locale: I18n.locale, **keyword_params)
+      QueryParams.parse(params, locale: locale, **keyword_params)
     end
 
     def self.from_h(hash, locale: I18n.locale)

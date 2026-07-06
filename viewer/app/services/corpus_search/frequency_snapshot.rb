@@ -16,7 +16,7 @@ module CorpusSearch
       stale_terms = []
 
       terms.map(&:to_s).uniq.each do |term|
-        payload = cache_store.read_json(TermIndex.cache_path_for(term))
+        payload = cache_store.read_json(TermIndex.cache_path_for(term), freeze: true)
         unless TermIndex.current_for_manifest?(payload, manifest_key)
           stale_terms << term
           next

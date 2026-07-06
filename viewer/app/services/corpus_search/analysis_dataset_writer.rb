@@ -6,7 +6,7 @@ require "pathname"
 require "time"
 
 module CorpusSearch
-  # Produces the compact body-only document table consumed by R. The same
+  # Produces the compact body-only document table consumed by the Ruby analysis profile. The same
   # traversal can also stream occurrence rows, so a prepared analysis does not
   # scan the corpus once for results and then a second time for denominators.
   class AnalysisDatasetWriter

@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+# Fault-tolerant local audit for the corpus-search system.
+#
+# This wrapper deliberately does not use `set -e`: the Ruby supervisor is the
+# component responsible for recording failures and moving on to later cases.
+set -u
+
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+RAILS_ROOT="$(cd -- "${SCRIPT_DIR}/.." && pwd)"
+PROFILE="${CORPUS_SEARCH_AUDIT_PROFILE:-overnight}"
+
+cd "${RAILS_ROOT}"
+
+if [[ -z "${CORPUS_ROOT:-}" && -d "${RAILS_ROOT}/../corpus" ]]; then
+  export CORPUS_ROOT="$(cd -- "${RAILS_ROOT}/../corpus" && pwd)"
+fi
+
+if [[ -z "${CORPUS_SEARCH_RSCRIPT:-}" ]] && command -v Rscript >/dev/null 2>&1; then
+  export CORPUS_SEARCH_RSCRIPT="$(command -v Rscript)"
+fi
+
+exec ruby "${RAILS_ROOT}/script/corpus_search_audit/run.rb" --profile "${PROFILE}" "$@"

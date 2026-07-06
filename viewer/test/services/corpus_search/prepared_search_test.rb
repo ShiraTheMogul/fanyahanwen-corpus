@@ -46,6 +46,22 @@ class CorpusSearchPreparedSearchTest < ActiveSupport::TestCase
     assert_equal "snapshot-1", prepared.frozen_record.dig("corpus_snapshot", "snapshot_id")
   end
 
+  test "treats corrupt status JSON as unavailable" do
+    prepared = CorpusSearch::PreparedSearch.create!(query: @query, cache_store: @cache_store)
+    status_path = @cache_store.absolute(File.join("prepared", prepared.id, "status.json"))
+    status_path.write("{not-json")
+
+    assert_nil CorpusSearch::PreparedSearch.find(
+      id: prepared.id,
+      key: prepared.key,
+      cache_store: @cache_store
+    )
+    assert_nil CorpusSearch::PreparedSearch.find_internal(
+      id: prepared.id,
+      cache_store: @cache_store
+    )
+  end
+
   test "stores comparison and source record identifiers" do
     source = CorpusSearch::PreparedSearch.create!(query: @query, cache_store: @cache_store)
     comparison = CorpusSearch::ComparisonDefinition.new(

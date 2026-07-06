@@ -11,7 +11,7 @@ require "zip"
 
 module CorpusSearch
   # Writes a complete prepared result plus the body-only tables consumed by the
-  # fixed R analysis profile. Metadata may label rows but never contributes to
+  # fixed Ruby analysis profile. Metadata may label rows but never contributes to
   # matching, snippets, occurrence counts, or searchable-character denominators.
   class ExportWriter
     RESULT_COLUMNS = %w[
@@ -117,8 +117,8 @@ module CorpusSearch
 
         comparison_path = write_comparison_csv(comparison_csv)
         write_rerun_instructions(rerun_txt, comparison: comparison_path.present?)
-        @prepared_search.update!(progress: { "stage" => "running_r", "hits_found" => dataset_stats["occurrences"] })
-        r_result = RAnalysisRunner.new.run(
+        @prepared_search.update!(progress: { "stage" => "running_analysis", "hits_found" => dataset_stats["occurrences"] })
+        analysis_result = AnalysisRunner.new.run(
           profile: "standard_analysis",
           document_counts_path: document_counts_csv,
           occurrences_path: analysis_occurrences_csv,
@@ -126,16 +126,16 @@ module CorpusSearch
           comparison_path: comparison_path
         )
 
-        copy_r_readme(output_dir.join("analysis"))
-        write_research_readme(readme_txt, r_result, corpus_snapshot: corpus_snapshot)
+        copy_analysis_readme(output_dir.join("analysis"))
+        write_research_readme(readme_txt, analysis_result, corpus_snapshot: corpus_snapshot)
         write_metadata(
           metadata_json,
           dataset_stats["occurrences"],
           corpus_snapshot: corpus_snapshot,
           dataset_stats: dataset_stats,
-          r_result: r_result
+          analysis_result: analysis_result
         )
-        write_methods(methods_md, methods_txt, r_result, corpus_snapshot: corpus_snapshot, analysis_dir: analysis_dir)
+        write_methods(methods_md, methods_txt, analysis_result, corpus_snapshot: corpus_snapshot, analysis_dir: analysis_dir)
         write_citation(citation_txt, corpus_snapshot: corpus_snapshot)
         write_research_manifest(research_manifest_json, output_dir, corpus_snapshot: corpus_snapshot)
         write_checksums(checksums_path, output_dir)
@@ -145,8 +145,8 @@ module CorpusSearch
         outputs = {
           "zip_path" => zip_path.to_s,
           "hit_count" => dataset_stats["occurrences"],
-          "analysis_status" => r_result.status,
-          "analysis_profile" => r_result.profile,
+          "analysis_status" => analysis_result.status,
+          "analysis_profile" => analysis_result.profile,
           "analysis_report_path" => analysis_dir.join("analysis_report.json").to_s,
           "analysis_documents" => dataset_stats["documents"],
           "matching_documents" => overall["matching_documents"],
@@ -209,7 +209,7 @@ module CorpusSearch
       path.write(<<~TEXT)
         Re-run the bundled standard analysis from the root of this extracted bundle:
 
-        Rscript --vanilla analysis/standard/analysis.R document_counts.csv analysis_occurrences.csv analysis/standard#{comparison_argument}
+        ruby analysis/standard/analysis.rb document_counts.csv analysis_occurrences.csv analysis/standard#{comparison_argument}
 
         The command overwrites the generated files inside analysis/standard. It does not
         read corpus files or metadata headers; it uses only the bundled body-only tables.
@@ -351,7 +351,7 @@ module CorpusSearch
       path
     end
 
-    def write_methods(markdown_path, text_path, r_result, corpus_snapshot:, analysis_dir:)
+    def write_methods(markdown_path, text_path, analysis_result, corpus_snapshot:, analysis_dir:)
       report = AnalysisReport.load(analysis_dir)
       overall = report&.overall.to_h
       comparison = @prepared_search.comparison
@@ -400,16 +400,16 @@ module CorpusSearch
         1,000,000. Document prevalence was calculated as matching documents divided by
         all documents in scope.
 
-        R was invoked through the application-owned `standard_analysis` profile with
-        `Rscript --vanilla`. Runtime: #{r_result.r_version || "unavailable"}. The exact
-        script, input tables, output tables, figures, warnings, timing, and `sessionInfo()`
+        Ruby was invoked through the application-owned `standard_analysis` profile in a
+        separate child process. Runtime: #{analysis_result.ruby_version || "unavailable"}. The exact
+        script, input tables, output tables, figures, warnings, timing, and runtime information
         are included in this bundle.
 
         ## Advanced analyses
 
         Character-neighbour tables use the five nearest body characters retained on each
         side of every occurrence. Punctuation, separator, and control characters are removed
-        during export, and positions L1–L5 and R1–R5 are summarized in R separately and together. The actual
+        during export, and positions L1–L5 and R1–R5 are summarized separately and together. The actual
         source form matched for each entered term is also retained, so exact/common/broad character matching
         can be audited as a form distribution. OR searches
         are additionally summarized by matched alternative, while proximity searches are
@@ -699,9 +699,9 @@ module CorpusSearch
       report ? report.overall : {}
     end
 
-    def write_metadata(path, hit_count, corpus_snapshot:, dataset_stats:, r_result:)
+    def write_metadata(path, hit_count, corpus_snapshot:, dataset_stats:, analysis_result:)
       metadata = {
-        "version" => 9,
+        "version" => 10,
         "generated_at" => Time.now.utc.iso8601,
         "prepared_record_id" => @prepared_search.id,
         "source_prepared_id" => @prepared_search.source_prepared_id,
@@ -719,11 +719,11 @@ module CorpusSearch
           "file" => "document_counts.csv",
           "occurrence_file" => "analysis_occurrences.csv"
         },
-        "r_analysis" => {
-          "profile" => r_result.profile,
-          "status" => r_result.status,
-          "r_version" => r_result.r_version,
-          "duration_seconds" => r_result.duration_seconds,
+        "analysis" => {
+          "profile" => analysis_result.profile,
+          "status" => analysis_result.status,
+          "ruby_version" => analysis_result.ruby_version,
+          "duration_seconds" => analysis_result.duration_seconds,
           "directory" => "analysis/standard",
           "report" => "analysis/standard/analysis_report.json"
         },
@@ -762,7 +762,7 @@ module CorpusSearch
       path.write(JSON.pretty_generate(metadata))
     end
 
-    def write_research_readme(path, r_result, corpus_snapshot:)
+    def write_research_readme(path, analysis_result, corpus_snapshot:)
       comparison_note = if @prepared_search.comparison
         "comparison.csv          Reproducible two-scope comparison definition.
 "
@@ -780,9 +780,9 @@ module CorpusSearch
         Search mode: #{@query.mode}
         Character matching: #{@query.character_equivalence}
         Punctuation: #{@query.punctuation}
-        R profile: #{r_result.profile}
-        R status: #{r_result.status}
-        R runtime: #{r_result.r_version || "unavailable"}
+        Analysis profile: #{analysis_result.profile}
+        Analysis status: #{analysis_result.status}
+        Ruby runtime: #{analysis_result.ruby_version || "unavailable"}
 
         Core files
         ----------
@@ -791,12 +791,12 @@ module CorpusSearch
         document_counts.csv      One body-only row per document in scope,
                                  including documents with zero matches.
         analysis_occurrences.csv Compact occurrence offsets plus short body-only
-                                 left/right contexts used by the advanced R analyses.
+                                 left/right contexts used by the advanced analyses.
         analysis_dataset.json    Dataset provenance and query definition.
         query.json               Normalized query and comparison definition.
         query_urls.txt           Live and frozen URLs for this record.
         corpus_snapshot.json     Immutable corpus and selected-scope fingerprint.
-        RERUN_ANALYSIS.txt       Exact command for reproducing the R outputs.
+        RERUN_ANALYSIS.txt       Exact command for reproducing the analysis outputs.
         metadata.json            Export-wide provenance.
         #{comparison_note}METHODS.md               Citation-ready methods description.
         METHODS.txt              Plain-text copy of the methods description.
@@ -804,10 +804,10 @@ module CorpusSearch
         research_manifest.json   Query, corpus snapshot, and artifact hashes.
         checksums.sha256         SHA-256 checksums for bundle verification.
 
-        Standard R analysis
+        Standard Ruby analysis
         -------------------
-        analysis/standard/analysis.R
-                                 Exact application-owned R script used.
+        analysis/standard/analysis.rb
+                                 Exact application-owned Ruby script used.
         analysis/standard/analysis_report.json
                                  Machine-readable summary and chart manifest.
         analysis/standard/*_summary.csv
@@ -837,15 +837,15 @@ module CorpusSearch
                                  Scalable browser and publication figures.
         analysis/standard/figures/*.png
                                  Raster copies suitable for slides.
-        analysis/standard/sessionInfo.txt
-                                 Exact R runtime and loaded base packages.
+        analysis/standard/runtime_info.txt
+                                 Exact Ruby runtime and standard-library dependencies.
         analysis/standard/run_metadata.json
                                  Timing, limits, command, inputs, and status.
 
         Re-running the analysis
         -------------------------
         See RERUN_ANALYSIS.txt. The command uses only the body-only tables in this
-        bundle and the copied analysis.R script. No access to the live corpus is
+        bundle and the copied analysis.rb script. No access to the live corpus is
         required.
 
         Metadata headers were not searched and are not included in searchable-
@@ -854,8 +854,8 @@ module CorpusSearch
       TEXT
     end
 
-    def copy_r_readme(directory)
-      source = Rails.root.join("analysis", "r", "README.md")
+    def copy_analysis_readme(directory)
+      source = Rails.root.join("analysis", "ruby", "README.md")
       return unless source.file?
 
       FileUtils.mkdir_p(directory)

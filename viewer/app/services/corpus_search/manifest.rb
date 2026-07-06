@@ -31,7 +31,7 @@ module CorpusSearch
       @root = File.realpath(root.to_s)
       @cache_store = cache_store
       @documents = []
-      @documents_by_id = {}
+      @documents_by_id = nil
       @progress_every = integer_env("CORPUS_SEARCH_PROGRESS_EVERY", 500)
       @dir_progress_every = integer_env("CORPUS_SEARCH_DIR_PROGRESS_EVERY", 1_000)
       @max_files = integer_env("CORPUS_SEARCH_MAX_FILES", 0)
@@ -40,7 +40,7 @@ module CorpusSearch
     end
 
     def load_cached_or_refresh!
-      cached = @cache_store.read_json(CACHE_PATH)
+      cached = @cache_store.read_json(CACHE_PATH, freeze: true)
 
       if cache_current?(cached)
         load_from_payload(cached)
@@ -53,7 +53,7 @@ module CorpusSearch
 
     def refresh!(force: false)
       progress("manifest scan starting at #{@root}")
-      cached = force ? nil : @cache_store.read_json(CACHE_PATH)
+      cached = force ? nil : @cache_store.read_json(CACHE_PATH, freeze: true)
       cached_documents = cache_current?(cached) ? cached["documents"] : nil
       scanned = scan_documents(cached_documents: cached_documents)
 
@@ -71,6 +71,11 @@ module CorpusSearch
     end
 
     def document(id)
+      # Most search and export operations only iterate the manifest. Building a
+      # second 494,000-entry Hash eagerly wastes hundreds of megabytes in those
+      # processes. Construct the lookup table only for callers that actually ask
+      # for a document by ID.
+      @documents_by_id ||= @documents.index_by { |doc| doc["id"].to_s }
       @documents_by_id[id.to_s]
     end
 
@@ -96,7 +101,23 @@ module CorpusSearch
     end
 
     def default_search_documents
-      filtered("document_roles" => DocumentRole::DEFAULT_ROLES)
+      @default_search_documents ||= filtered("document_roles" => DocumentRole::DEFAULT_ROLES)
+    end
+
+    def term_index_fingerprint
+      @term_index_fingerprint ||= begin
+        digest = Digest::SHA256.new
+        digest << "manifest-role-profile:canonical-v1\n"
+        default_search_documents.each do |doc|
+          digest << doc["id"].to_s
+          digest << "\0"
+          digest << doc["fingerprint"].to_s
+          digest << "\0"
+          digest << (doc["document_role"].presence || "canonical").to_s
+          digest << "\n"
+        end
+        digest.hexdigest
+      end
     end
 
     private
@@ -264,7 +285,9 @@ module CorpusSearch
     def load_from_payload(payload)
       @generated_at = payload["generated_at"].to_s
       @documents = Array(payload["documents"])
-      @documents_by_id = @documents.index_by { |doc| doc["id"].to_s }
+      @documents_by_id = nil
+      @default_search_documents = nil
+      @term_index_fingerprint = nil
     end
 
     def stringify_filters(filters)

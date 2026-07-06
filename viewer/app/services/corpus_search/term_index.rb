@@ -11,8 +11,9 @@ module CorpusSearch
   #
   # It stores positive counts per file, not corpus text. A missing entry means
   # either "no hit" for a complete/current index, or "unknown" for a stale one.
-  # If the manifest fingerprint changes, the index is rebuilt before it is used
-  # interactively. Warming tasks write current indexes in batches.
+  # A current index can narrow any search. When an index is missing or stale,
+  # narrow scopes may scan directly instead of forcing a whole-corpus rebuild;
+  # broad searches and warming tasks still refresh indexes in batches.
   class TermIndex
     DEFAULT_BATCH_SIZE = 8
 
@@ -38,12 +39,13 @@ module CorpusSearch
       terms_to_refresh = terms.reject do |term|
         next false if force
 
-        current_for_manifest?(cache_store.read_json(cache_path_for(term)), manifest_key)
+        current_for_manifest?(cache_store.read_json(cache_path_for(term), freeze: true), manifest_key)
       end
       return terms.length if terms_to_refresh.empty?
 
       target_terms = terms_to_refresh.to_set
       fs = CorpusFs.new(root: Rails.configuration.x.corpus_root)
+      stats_cache = DocumentStatsCache.new(cache_store: cache_store)
       files_read = 0
       files_skipped = 0
 
@@ -55,7 +57,17 @@ module CorpusSearch
         buffer_limit = [[16_777_216 / terms_to_refresh.length, 1_024].max, 65_536].min
 
         documents.each_with_index do |doc, index|
-          body = body_for_doc(fs, doc)
+          document = document_for_doc(fs, doc)
+          body = document.body
+          searchable_characters = NormalizedText.build(body, punctuation: "ignore").units.length
+          stats_cache.write(
+            doc,
+            punctuation: "ignore",
+            searchable_characters: searchable_characters,
+            body_fingerprint: document.body_fingerprint,
+            character_bloom: CharacterBloom.build(body)
+          )
+
           counts = Hash.new(0)
           body.each_char { |character| counts[character] += 1 if target_terms.include?(character) }
 
@@ -65,6 +77,7 @@ module CorpusSearch
           end
 
           files_read += 1
+          stats_cache.save! if ((index + 1) % 10_000).zero?
           progress&.call(index + 1, total_documents, files_read, files_skipped)
         rescue Errno::ENOENT, Errno::EACCES, Errno::EIO, SecurityError, Encoding::CompatibilityError => e
           files_skipped += 1
@@ -101,6 +114,29 @@ module CorpusSearch
       end
 
       terms.length
+    ensure
+      stats_cache&.close
+    end
+
+    def self.current_doc_ids_for_terms(terms:, manifest:, cache_store: CacheStore.new)
+      terms = terms.map(&:to_s).map(&:strip).reject(&:empty?).uniq
+      return {} if terms.empty?
+
+      # Avoid calculating the whole-manifest fingerprint when even one requested
+      # index file is absent. This matters for narrow searches whose best fallback
+      # is simply to scan their already-small scope.
+      return nil unless terms.all? { |term| cache_store.exist?(cache_path_for(term)) }
+
+      manifest_key = manifest_fingerprint(manifest)
+      terms.each_with_object({}) do |term, result|
+        payload = cache_store.read_json(cache_path_for(term), freeze: true)
+        return nil unless current_for_manifest?(payload, manifest_key)
+
+        entries = payload["entries"]
+        return nil unless entries.is_a?(Hash)
+
+        result[term] = entries.keys
+      end
     end
 
     def self.flush_buffer!(path, buffer)
@@ -128,8 +164,19 @@ module CorpusSearch
 
       documents = self.class.documents_for_index(@manifest)
 
-      documents.each do |doc|
-        text = body_for(doc, fs)
+      stats_cache = DocumentStatsCache.new(cache_store: @cache_store)
+      documents.each_with_index do |doc, index|
+        document = self.class.send(:document_for_doc, fs, doc)
+        text = document.body
+        stats_cache.write(
+          doc,
+          punctuation: "ignore",
+          searchable_characters: NormalizedText.build(text, punctuation: "ignore").units.length,
+          body_fingerprint: document.body_fingerprint,
+          character_bloom: CharacterBloom.build(text)
+        )
+        stats_cache.save! if ((index + 1) % 10_000).zero?
+
         count = SearchText.count(text, @term)
         next unless count.positive?
 
@@ -150,6 +197,8 @@ module CorpusSearch
       @payload["entries"] = entries
       @cache_store.write_json(@cache_path, @payload)
       self
+    ensure
+      stats_cache&.close
     end
 
     def doc_ids_with_hits
@@ -180,6 +229,8 @@ module CorpusSearch
     end
 
     def self.manifest_fingerprint(manifest)
+      return manifest.term_index_fingerprint if manifest.respond_to?(:term_index_fingerprint)
+
       digest = Digest::SHA256.new
       digest << "manifest-role-profile:canonical-v1\n"
       documents_for_index(manifest).each do |doc|
@@ -204,8 +255,13 @@ module CorpusSearch
       end
     end
 
+    def self.document_for_doc(fs, doc)
+      DocumentReader.read(fs: fs, path: doc["path"])
+    end
+    private_class_method :document_for_doc
+
     def self.body_for_doc(fs, doc)
-      DocumentReader.read(fs: fs, path: doc["path"]).body
+      document_for_doc(fs, doc).body
     end
     private_class_method :body_for_doc
 

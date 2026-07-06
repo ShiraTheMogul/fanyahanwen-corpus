@@ -7,9 +7,8 @@ module CorpusSearch
     METADATA_KEYS = %w[nation period region author year_start year_end].freeze
 
     class << self
-      def parse(params, locale: I18n.locale)
-        source = params.respond_to?(:to_unsafe_h) ? params.to_unsafe_h : params.to_h
-        source = source.stringify_keys
+      def parse(params = nil, locale: I18n.locale, **keyword_params)
+        source = source_hash(params, keyword_params)
 
         definition = SearchDefinition.new(
           mode: source["mode"],
@@ -39,13 +38,23 @@ module CorpusSearch
         )
       end
 
-      def search_requested?(params)
-        source = params.respond_to?(:to_unsafe_h) ? params.to_unsafe_h : params.to_h
-        source = source.stringify_keys
+      def search_requested?(params = nil, **keyword_params)
+        source = source_hash(params, keyword_params)
         source["q"].present? || array_value(source["terms"]).any? || source["search"].present?
       end
 
       private
+
+      def source_hash(params, keyword_params)
+        positional = if params.nil?
+          {}
+        elsif params.respond_to?(:to_unsafe_h)
+          params.to_unsafe_h
+        else
+          params.to_h
+        end
+        positional.merge(keyword_params).stringify_keys
+      end
 
       def array_value(value)
         case value

@@ -64,7 +64,7 @@ en:
     actions:
       search: Search
       prepare_export: Prepare full ZIP export in background
-      prepare_analysis: Prepare R analysis
+      prepare_analysis: Prepare analysis
       open_source_text: Open source text at this match
       download_zip: Download ZIP
       copy_live_url: Copy live query URL
@@ -78,7 +78,7 @@ en:
       open_received_text_folder: Open received-text folder
     results:
       summary: 'Showing %{visible} result(s) on this page. Cached/checked candidate files: %{candidates}. Files newly scanned for this request: %{scanned}.'
-      truncated: This interactive search stopped at %{limit} hits. Prepare a background export for the complete result set.
+      truncated: This interactive search is partial. It stops at %{limit} hits or after a bounded cold scan; prepare a background export for the complete result set.
       complete_count: 'Complete interactive result count: %{count}.'
       offset: body offset %{start}–%{finish}
       none: No results found.
@@ -113,7 +113,7 @@ en:
       status: Status
       query: Query
       progress: 'Stage: %{stage}. Files: %{scanned} / %{total}. Hits found: %{hits}.'
-      zip_contents: The ZIP contains concordance results, body-only analysis data, grouped CSV tables, the exact R script, SVG and PNG figures, and runtime provenance.
+      zip_contents: The ZIP contains concordance results, body-only analysis data, grouped CSV tables, the exact Ruby script, SVG and PNG figures, and runtime provenance.
       refresh_notice: This page will refresh every %{seconds} seconds while the job is running.
     analysis:
       title: Corpus Search Analysis
@@ -126,7 +126,7 @@ en:
         advanced: Advanced analysis
       overview: Analysis overview
       body_only_note: All rates use searchable body characters. Metadata headers never contribute to matches or denominators.
-      r_runtime: R analysis
+      runtime: Analysis runtime
       measure: Measure shown in grouped figures
       groups_omitted: '%{count} additional groups remain in the downloadable CSV table.'
       matches_per_document: Matches per document
@@ -138,17 +138,17 @@ en:
       concentration_summary: 'Top document: %{top1}. Top five: %{top5}. Top ten: %{top10}.'
       warnings: Analysis notes and warnings
       reproducibility: Reproducibility files
-      reproducibility_note: The ZIP includes the exact R script, body-only input tables, every grouped CSV, SVG and PNG figures, warnings, timing, and sessionInfo().
-      reproducibility_note_phase8: The frozen bundle includes the exact R script, body-only input tables, aggregate CSV files, figures, method text, citation text, a corpus snapshot identifier, SHA-256 checksums, warnings, timing, and sessionInfo().
-      reproducibility_note_phase9: The frozen bundle includes the exact R script, body-only input tables, grouped and advanced analysis tables, figures, exact-body sensitivity data, method text, citation text, a corpus snapshot identifier, SHA-256 checksums, warnings, timing, and sessionInfo().
+      reproducibility_note: The ZIP includes the exact Ruby script, body-only input tables, every grouped CSV, SVG and PNG figures, warnings, timing, and runtime information.
+      reproducibility_note_phase8: The frozen bundle includes the exact Ruby script, body-only input tables, aggregate CSV files, figures, method text, citation text, a corpus snapshot identifier, SHA-256 checksums, warnings, timing, and runtime information.
+      reproducibility_note_phase9: The frozen bundle includes the exact Ruby script, body-only input tables, grouped and advanced analysis tables, figures, exact-body sensitivity data, method text, citation text, a corpus snapshot identifier, SHA-256 checksums, warnings, timing, and runtime information.
       snapshot_id: Corpus snapshot
       record_id: Prepared record
       completed_at: Completed
       artifact_count: Verified artifacts
       methods_summary: Citation-ready methods summary
       suggested_citation: Suggested citation
-      unavailable: R analysis is unavailable
-      unavailable_note: The search export completed, but no analysis report was produced. The ZIP still contains the input data, exact R script, warnings, and runtime metadata so the analysis can be run elsewhere.
+      unavailable: Analysis is unavailable
+      unavailable_note: The search export completed, but no analysis report was produced. The ZIP still contains the input data, exact Ruby script, warnings, and runtime metadata so the analysis can be run elsewhere.
       metrics:
         occurrences: Occurrences
         matching_documents: Matching documents
@@ -210,7 +210,7 @@ en:
         log_ratio: Log₂ ratio
     comparison:
       heading: Compare two scopes
-      introduction: Apply the same text query to two groups already present in this frozen analysis. The comparison reuses its body-only dataset and runs a new, reproducible R analysis without rescanning the corpus.
+      introduction: Apply the same text query to two groups already present in this frozen analysis. The comparison reuses its body-only dataset and runs a new, reproducible analysis without rescanning the corpus.
       dimension_note: Compared by %{dimension}.
       dimension: Compare by
       left_scope: Scope A
@@ -250,7 +250,7 @@ en:
       searching: Searching
       copying_source_dataset: Copying frozen analysis dataset
       building_analysis_dataset: Building analysis dataset
-      running_r: Running R analysis
+      running_analysis: Running analysis
       complete: Complete
       failed: Failed
     notices:
@@ -282,7 +282,7 @@ en:
         offsets: Offsets are character offsets into the body text after metadata and separator lines are removed.
         equivalence: Non-literal matches retain the entered character, source character, mapping path, and mapping source.
         canonical_source: The source .txt files remain the authoritative corpus; this export is derived search output.
-        analysis_dataset: document_counts.csv contains body-only document counts and searchable-character denominators used by the included R script.
+        analysis_dataset: document_counts.csv contains body-only document counts and searchable-character denominators used by the included Ruby script.
     roles:
       canonical: Received text
       textual_variant: Variants

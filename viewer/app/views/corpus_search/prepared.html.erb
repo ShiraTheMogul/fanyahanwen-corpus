@@ -50,7 +50,7 @@
             <p><%= t("corpus_search.analysis.body_only_note", default: "All rates use searchable body characters. Metadata headers never contribute to matches or denominators.") %></p>
           </div>
           <p class="corpus-search-analysis-runtime">
-            <%= t("corpus_search.analysis.r_runtime", default: "R analysis") %>:
+            <%= t("corpus_search.analysis.runtime", default: "Analysis runtime") %>:
             <strong><%= outputs["analysis_status"].to_s.humanize %></strong>
           </p>
         </header>
@@ -326,7 +326,7 @@
         <section id="comparison" class="corpus-search-comparison">
           <header>
             <h3><%= t("corpus_search.comparison.heading", default: "Compare two scopes") %></h3>
-            <p><%= t("corpus_search.comparison.introduction", default: "Apply the same text query to two groups already present in this frozen analysis. The comparison reuses its body-only dataset and runs a new, reproducible R analysis without rescanning the corpus.") %></p>
+            <p><%= t("corpus_search.comparison.introduction", default: "Apply the same text query to two groups already present in this frozen analysis. The comparison reuses its body-only dataset and runs a new, reproducible analysis without rescanning the corpus.") %></p>
           </header>
 
           <% if @analysis_report.comparison? %>
@@ -512,7 +512,7 @@
 
         <section class="corpus-search-analysis-download-note">
           <h3><%= t("corpus_search.analysis.reproducibility", default: "Reproducibility files") %></h3>
-          <p><%= t("corpus_search.analysis.reproducibility_note_phase9", default: "The frozen bundle includes the exact R script, body-only input tables, grouped and advanced analysis tables, figures, exact-body sensitivity data, method text, citation text, a corpus snapshot identifier, SHA-256 checksums, warnings, timing, and sessionInfo().") %></p>
+          <p><%= t("corpus_search.analysis.reproducibility_note_phase9", default: "The frozen bundle includes the exact Ruby script, body-only input tables, grouped and advanced analysis tables, figures, exact-body sensitivity data, method text, citation text, a corpus snapshot identifier, SHA-256 checksums, warnings, timing, and runtime information.") %></p>
           <% if @frozen_record %>
             <dl class="corpus-search-reproducibility-record">
               <div><dt><%= t("corpus_search.analysis.snapshot_id", default: "Corpus snapshot") %></dt><dd><code><%= @frozen_record.dig("corpus_snapshot", "snapshot_id") %></code></dd></div>
@@ -540,8 +540,8 @@
         </section>
       <% else %>
         <div class="corpus-search-analysis-unavailable">
-          <h2><%= t("corpus_search.analysis.unavailable", default: "R analysis is unavailable") %></h2>
-          <p><%= t("corpus_search.analysis.unavailable_note", default: "The search export completed, but no analysis report was produced. The ZIP still contains the input data, exact R script, warnings, and runtime metadata so the analysis can be run elsewhere.") %></p>
+          <h2><%= t("corpus_search.analysis.unavailable", default: "Analysis is unavailable") %></h2>
+          <p><%= t("corpus_search.analysis.unavailable_note", default: "The search export completed, but no analysis report was produced. The ZIP still contains the input data, exact Ruby script, warnings, and runtime metadata so the analysis can be run elsewhere.") %></p>
         </div>
       <% end %>
     </section>

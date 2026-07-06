@@ -1,10 +1,17 @@
 # frozen_string_literal: true
 
+require "set"
+
 class CorpusFs
-  def initialize(root:)
+  REPLACEMENT_CHARACTER = "\uFFFD"
+
+  def initialize(root:, logger: default_logger)
     root = root.to_s
     raise ArgumentError, "Corpus root is empty" if root.strip.empty?
     @root = File.realpath(root)
+    @logger = logger
+    @warned_invalid_utf8_paths = Set.new
+    @warning_mutex = Mutex.new
   end
 
   # Resolve a relative path into an absolute path under @root.
@@ -57,6 +64,27 @@ class CorpusFs
   def read_text(abs)
     raise Errno::ENOENT, "Not a file: #{abs.inspect}" unless file?(abs)
 
-    File.read(abs, mode: "r:BOM|UTF-8", invalid: :replace, undef: :replace, replace: "")
+    text = File.binread(abs).force_encoding(Encoding::UTF_8)
+    invalid_utf8 = !text.valid_encoding?
+    text = text.scrub(REPLACEMENT_CHARACTER).sub(/\A\uFEFF/, "")
+
+    warn_invalid_utf8(abs) if invalid_utf8
+    text
+  end
+
+  private
+
+  def warn_invalid_utf8(abs)
+    first_warning = @warning_mutex.synchronize { @warned_invalid_utf8_paths.add?(abs) }
+    return unless first_warning
+
+    relative_path = abs.delete_prefix("#{@root}/")
+    @logger&.warn(
+      "[corpus_fs] malformed UTF-8 replaced with U+FFFD in #{relative_path}"
+    )
+  end
+
+  def default_logger
+    Rails.logger if defined?(Rails) && Rails.respond_to?(:logger)
   end
 end

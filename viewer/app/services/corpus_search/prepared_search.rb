@@ -38,7 +38,7 @@ module CorpusSearch
       return nil unless prepared.authorized?
 
       prepared
-    rescue Errno::ENOENT
+    rescue Errno::ENOENT, JSON::ParserError, Encoding::InvalidByteSequenceError, Encoding::UndefinedConversionError
       nil
     end
 
@@ -46,7 +46,7 @@ module CorpusSearch
       prepared = new(id: id, key: "", cache_store: cache_store)
       prepared.load!
       prepared
-    rescue Errno::ENOENT
+    rescue Errno::ENOENT, JSON::ParserError, Encoding::InvalidByteSequenceError, Encoding::UndefinedConversionError
       nil
     end
 

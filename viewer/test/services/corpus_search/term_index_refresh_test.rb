@@ -48,5 +48,38 @@ class CorpusSearchTermIndexRefreshTest < ActiveSupport::TestCase
       zhi,
       CorpusSearch::TermIndex.manifest_fingerprint(@manifest)
     )
+
+    current_ids = CorpusSearch::TermIndex.current_doc_ids_for_terms(
+      terms: %w[之 不],
+      manifest: @manifest,
+      cache_store: @cache_store
+    )
+    assert_equal %w[one two], current_ids.fetch("之").sort
+    assert_equal %w[one two], current_ids.fetch("不").sort
+  end
+
+  test "reports an unavailable index without calculating a replacement" do
+    assert_nil CorpusSearch::TermIndex.current_doc_ids_for_terms(
+      terms: ["未"],
+      manifest: @manifest,
+      cache_store: @cache_store
+    )
+    refute @cache_store.exist?(CorpusSearch::TermIndex.cache_path_for("未"))
+  end
+
+  test "rejects a malformed current index payload" do
+    payload = CorpusSearch::TermIndex.fresh_payload_for(
+      "之",
+      manifest_fingerprint: CorpusSearch::TermIndex.manifest_fingerprint(@manifest),
+      total_documents: @manifest.documents.length
+    )
+    payload["entries"] = nil
+    @cache_store.write_json(CorpusSearch::TermIndex.cache_path_for("之"), payload)
+
+    assert_nil CorpusSearch::TermIndex.current_doc_ids_for_terms(
+      terms: ["之"],
+      manifest: @manifest,
+      cache_store: @cache_store
+    )
   end
 end

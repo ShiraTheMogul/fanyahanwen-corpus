@@ -8,8 +8,11 @@ module CorpusSearch
   # never produce a hit or enter a statistical denominator.
   class Runner
     DEFAULT_INTERACTIVE_LIMIT = 1_000
+    DEFAULT_INTERACTIVE_SCAN_LIMIT = 5_000
     MAX_CACHED_CONTEXT = 200
     MAX_INDEX_EQUIVALENTS = 12
+    DEFAULT_DIRECT_SCAN_SCOPE_LIMIT = 5_000
+    DEFAULT_CACHE_CHECKPOINT_EVERY = 10_000
 
     ScanResult = Data.define(:hits, :searchable_characters, :body_fingerprint)
     DocumentStats = Data.define(:searchable_characters, :body_fingerprint)
@@ -23,21 +26,24 @@ module CorpusSearch
       @equivalence_registry = CharacterEquivalenceRegistry.new(level: @query.character_equivalence)
     end
 
-    def page(max_hits: DEFAULT_INTERACTIVE_LIMIT)
+    def page(max_hits: DEFAULT_INTERACTIVE_LIMIT, max_scans: interactive_scan_limit)
       return empty_page unless @query.valid?
 
       docs = candidate_documents
       cache = QueryCache.new(query: @query, cache_store: @cache_store)
-      cache.prune_to!(scoped_document_ids)
-
       hits = []
       scanned_files = 0
       complete = true
 
-      docs.each do |doc|
+      docs.each_with_index do |doc, index|
         per_file_hits = cache.current_hits_for(doc)
 
         unless per_file_hits
+          if max_scans && max_scans.positive? && scanned_files >= max_scans
+            complete = false
+            break
+          end
+
           scan = scan_document(doc)
           per_file_hits = scan.hits
           cache.write_hits_for(
@@ -56,9 +62,9 @@ module CorpusSearch
           hits = hits.first(max_hits)
           break
         end
+
       end
 
-      cache.save!
       hits = sort_hits(hits)
       total = hits.length
       start_index = (@query.page - 1) * @query.per_page
@@ -75,6 +81,9 @@ module CorpusSearch
         scanned_files: scanned_files,
         candidate_files: docs.length
       )
+    ensure
+      cache&.close
+      close_document_stats_cache
     end
 
     def all_hits(progress: nil)
@@ -88,9 +97,8 @@ module CorpusSearch
 
       docs = candidate_documents
       cache = QueryCache.new(query: @query, cache_store: @cache_store)
-      cache.prune_to!(scoped_document_ids)
-
       hit_count = 0
+
       docs.each_with_index do |doc, index|
         per_file_hits = cache.current_hits_for(doc)
         unless per_file_hits
@@ -110,11 +118,16 @@ module CorpusSearch
         end
 
         progress&.call(index + 1, docs.length, hit_count)
-        cache.save! if (index + 1) % 25 == 0
+        if checkpoint_due?(index + 1)
+          cache.save!
+          @document_stats_cache&.save!
+        end
       end
 
-      cache.save!
       hit_count
+    ensure
+      cache&.close
+      close_document_stats_cache
     end
 
     # Yields one compact, body-only statistical record per document in the
@@ -125,16 +138,18 @@ module CorpusSearch
       return 0 unless @query.valid?
 
       docs = scoped_documents
-      candidate_ids = candidate_documents.map { |doc| doc["id"] }.to_set
+      candidates = candidate_documents
+      all_documents_are_candidates = candidates.equal?(docs)
+      candidate_ids = candidates.map { |doc| doc["id"] }.to_set unless all_documents_are_candidates
       cache = QueryCache.new(query: @query, cache_store: @cache_store)
-      cache.prune_to!(scoped_document_ids)
 
       docs.each_with_index do |doc, index|
-        hits = cache.current_hits_for(doc)
-        searchable_characters = cache.current_searchable_characters_for(doc)
-        body_fingerprint = cache.current_body_fingerprint_for(doc)
+        cached_record = cache.current_record_for(doc)
+        hits = cached_record&.hits
+        searchable_characters = cached_record&.searchable_characters
+        body_fingerprint = cached_record&.body_fingerprint
 
-        if candidate_ids.include?(doc["id"])
+        if all_documents_are_candidates || candidate_ids.include?(doc["id"])
           if hits.nil?
             scan = scan_document(doc)
             hits = scan.hits
@@ -182,11 +197,16 @@ module CorpusSearch
         ) if block_given?
 
         progress&.call(index + 1, docs.length)
-        cache.save! if (index + 1) % 25 == 0
+        if checkpoint_due?(index + 1)
+          cache.save!
+          @document_stats_cache&.save!
+        end
       end
 
-      cache.save!
       docs.length
+    ensure
+      cache&.close
+      close_document_stats_cache
     end
 
     private
@@ -209,55 +229,140 @@ module CorpusSearch
       @scoped_documents ||= @manifest.filtered(@query.filters)
     end
 
-    def scoped_document_ids
-      @scoped_document_ids ||= scoped_documents.map { |doc| doc["id"] }
-    end
-
     def candidate_documents
+      return @candidate_documents if defined?(@candidate_documents)
+
       docs = scoped_documents
-      canonical_docs = docs.select { |doc| DocumentRole.default?(doc["document_role"].presence || "canonical") }
-      return docs if canonical_docs.empty?
+
+      # A bounded scope is cheaper to read directly than a global index is to
+      # decompress and parse. The audit found a 40-document scope spending nearly
+      # forty minutes opening corpus-wide indexes under WSL/OneDrive.
+      return @candidate_documents = docs if direct_scan_scope?(docs)
 
       anchor_classes = index_anchor_classes
-      return docs if anchor_classes.empty?
-      return docs if @query.alternatives? && anchor_classes.length < query_patterns.length
+      return @candidate_documents = fallback_scan_documents(docs) if anchor_classes.empty?
+      return @candidate_documents = fallback_scan_documents(docs) if @query.alternatives? && anchor_classes.length < query_patterns.length
 
-      # Broad/common matching may require several literal indexes for one query
-      # character. Warm all selected forms in one corpus pass, then union forms
-      # within a term. Required terms are intersected; OR alternatives are unioned.
+      # Search requests never build a whole-corpus index synchronously. Existing
+      # current indexes are reused; missing or stale indexes fall back to a direct
+      # scan. Explicit rake warming remains responsible for expensive index builds.
       literal_terms = anchor_classes.flat_map(&:to_a).uniq
-      TermIndex.refresh_single_character_terms!(
+      indexed_doc_ids = TermIndex.current_doc_ids_for_terms(
         terms: literal_terms,
         manifest: @manifest,
         cache_store: @cache_store
       )
+      return @candidate_documents = fallback_scan_documents(docs) unless indexed_doc_ids
+
+      canonical_docs = docs.select { |doc| DocumentRole.default?(doc["document_role"].presence || "canonical") }
+      return @candidate_documents = fallback_scan_documents(docs) if canonical_docs.empty?
 
       anchor_id_sets = anchor_classes.map do |forms|
         forms.each_with_object(Set.new) do |form, union|
-          union.merge(
-            TermIndex.new(term: form, manifest: @manifest, cache_store: @cache_store).doc_ids_with_hits
-          )
+          union.merge(indexed_doc_ids.fetch(form, []))
         end
       end
 
       indexed_ids = if @query.alternatives?
         anchor_id_sets.each_with_object(Set.new) { |ids, union| union.merge(ids) }
       else
-        canonical_docs.map { |doc| doc["id"] }.to_set.tap do |intersection|
-          anchor_id_sets.each do |ids|
-            intersection &= ids
-            break if intersection.empty?
-          end
+        intersection = canonical_docs.map { |doc| doc["id"] }.to_set
+        anchor_id_sets.each do |ids|
+          intersection &= ids
+          break if intersection.empty?
         end
+        intersection
       end
 
       # The term index deliberately covers received texts only. When a user also
       # selects variants, raw scrapes, translations, or annotations, retain those
       # documents for direct scanning while narrowing the larger received layer.
-      docs.select do |doc|
+      @candidate_documents = docs.select do |doc|
         role = doc["document_role"].presence || "canonical"
         !DocumentRole.default?(role) || indexed_ids.include?(doc["id"])
       end
+    end
+
+    # When no current term index exists, do not present the first arbitrary
+    # filesystem slice as though it were representative. Cached body signatures
+    # and path/title hints only change ordering; every document remains eligible
+    # for eventual scanning, so correctness is unchanged.
+    def fallback_scan_documents(docs)
+      cached_ids = document_stats_cache.matching_document_ids(
+        term_patterns: query_patterns.map(&:allowed_units),
+        alternatives: @query.alternatives?
+      )
+      hints = metadata_search_hints
+      prioritised = []
+      prioritised_ids = Set.new
+
+      docs.each_with_index do |doc, index|
+        score = metadata_priority_score(doc, hints)
+        score += 10_000 if cached_ids.include?(doc["id"].to_s)
+        next unless score.positive?
+
+        prioritised << [score, index, doc]
+        prioritised_ids << doc["id"].to_s
+      end
+
+      return docs if prioritised.empty?
+
+      prioritised.sort_by! { |score, index, _doc| [-score, index] }
+      prioritised.map!(&:last)
+      prioritised.concat(docs.reject { |doc| prioritised_ids.include?(doc["id"].to_s) })
+    end
+
+    def metadata_search_hints
+      @metadata_search_hints ||= begin
+        phrases = query_patterns.map { |pattern| pattern.query_units.join }
+        if @query.proximity? && @query.order == "entered"
+          joined = phrases.join
+          phrases << joined if joined.each_char.count >= 2
+        end
+
+        phrases.flat_map do |phrase|
+          chars = phrase.each_char.to_a
+          next [] if chars.length < 2
+
+          hints = [phrase]
+          [4, 3, 2].each do |length|
+            next if chars.length < length
+
+            chars.each_cons(length) { |slice| hints << slice.join }
+          end
+          hints
+        end.uniq.sort_by { |hint| -hint.each_char.count }
+      end
+    end
+
+    def metadata_priority_score(doc, hints)
+      return 0 if hints.empty?
+
+      title = doc["title"].to_s
+      work = doc["work"].to_s
+      path = doc["path"].to_s
+      hints.sum do |hint|
+        length = hint.each_char.count
+        score = 0
+        score += 500 + (length * 20) if title.include?(hint)
+        score += 300 + (length * 15) if work.include?(hint)
+        score += 100 + (length * 10) if path.include?(hint)
+        score
+      end
+    end
+
+    def interactive_scan_limit
+      value = Integer(ENV.fetch("CORPUS_SEARCH_INTERACTIVE_SCAN_LIMIT", DEFAULT_INTERACTIVE_SCAN_LIMIT.to_s))
+      value.positive? ? value : nil
+    rescue ArgumentError, TypeError
+      DEFAULT_INTERACTIVE_SCAN_LIMIT
+    end
+
+    def direct_scan_scope?(docs)
+      limit = Integer(ENV.fetch("CORPUS_SEARCH_DIRECT_SCAN_LIMIT", DEFAULT_DIRECT_SCAN_SCOPE_LIMIT.to_s))
+      limit.positive? && docs.length <= limit
+    rescue ArgumentError, TypeError
+      docs.length <= DEFAULT_DIRECT_SCAN_SCOPE_LIMIT
     end
 
     # Select one necessary character class from each query term. Prefer a
@@ -280,8 +385,33 @@ module CorpusSearch
           forms
         end
 
-        eligible.min_by(&:length)
+        eligible.min_by do |forms|
+          indexes_present = forms.all? do |form|
+            @cache_store.exist?(TermIndex.cache_path_for(form))
+          end
+          known_frequency = forms.sum do |form|
+            frequency_counts.fetch(form, 1 << 60)
+          end
+
+          [indexes_present ? 0 : 1, known_frequency, forms.length]
+        end
       end
+    end
+
+    def frequency_counts
+      @frequency_counts ||= FrequencySnapshot.counts(cache_store: @cache_store)
+    end
+
+    def close_document_stats_cache
+      @document_stats_cache&.close
+      @document_stats_cache = nil
+    end
+
+    def checkpoint_due?(position)
+      every = Integer(ENV.fetch("CORPUS_SEARCH_CACHE_CHECKPOINT_EVERY", DEFAULT_CACHE_CHECKPOINT_EVERY.to_s))
+      every.positive? && (position % every).zero?
+    rescue ArgumentError, TypeError
+      (position % DEFAULT_CACHE_CHECKPOINT_EVERY).zero?
     end
 
     def query_patterns
@@ -298,10 +428,18 @@ module CorpusSearch
       document = DocumentReader.read(fs: @fs, path: doc["path"])
       body = document.body
       searchable = NormalizedText.build(body, punctuation: @query.punctuation)
+      searchable_characters = searchable.units.length
+      document_stats_cache.write(
+        doc,
+        punctuation: @query.punctuation,
+        searchable_characters: searchable_characters,
+        body_fingerprint: document.body_fingerprint,
+        character_bloom: CharacterBloom.build(body)
+      )
       hits = search_loaded_document(doc, body, searchable)
       ScanResult.new(
         hits: hits,
-        searchable_characters: searchable.units.length,
+        searchable_characters: searchable_characters,
         body_fingerprint: document.body_fingerprint
       )
     rescue Errno::ENOENT, SecurityError
@@ -309,13 +447,36 @@ module CorpusSearch
     end
 
     def document_stats(doc)
+      cached = document_stats_cache.fetch(doc, punctuation: @query.punctuation)
+      if cached
+        return DocumentStats.new(
+          searchable_characters: cached.searchable_characters,
+          body_fingerprint: cached.body_fingerprint
+        )
+      end
+
       document = DocumentReader.read(fs: @fs, path: doc["path"])
+      searchable_characters = NormalizedText.build(
+        document.body,
+        punctuation: @query.punctuation
+      ).units.length
+      document_stats_cache.write(
+        doc,
+        punctuation: @query.punctuation,
+        searchable_characters: searchable_characters,
+        body_fingerprint: document.body_fingerprint,
+        character_bloom: CharacterBloom.build(document.body)
+      )
       DocumentStats.new(
-        searchable_characters: NormalizedText.build(document.body, punctuation: @query.punctuation).units.length,
+        searchable_characters: searchable_characters,
         body_fingerprint: document.body_fingerprint
       )
     rescue Errno::ENOENT, SecurityError
       DocumentStats.new(searchable_characters: 0, body_fingerprint: nil)
+    end
+
+    def document_stats_cache
+      @document_stats_cache ||= DocumentStatsCache.new(cache_store: @cache_store)
     end
 
     def search_loaded_document(doc, body, searchable)

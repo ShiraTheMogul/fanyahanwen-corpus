@@ -15,11 +15,26 @@ module CorpusSearch
     attr_reader :root
 
     def initialize(root: nil)
-      @root = Pathname(root || Rails.root.join("storage", "corpus_search"))
+      configured_root = ENV["CORPUS_SEARCH_CACHE_ROOT"].to_s.strip
+      default_root = configured_root.present? ? configured_root : Rails.root.join("storage", "corpus_search")
+      @root = Pathname(root || default_root).expand_path
       FileUtils.mkdir_p(@root)
     end
 
-    def read_json(relative_path)
+    # SQLite's WAL journal is excellent on a native local filesystem, but it is
+    # a poor fit for Windows-mounted WSL paths such as /mnt/c. Those paths have
+    # different locking and metadata costs, and the audit observed long I/O
+    # stalls there. DELETE mode is slower than WAL on native Linux, but much more
+    # predictable on the mounted Windows filesystem.
+    def sqlite_journal_mode
+      windows_mounted_wsl_path? ? "DELETE" : "WAL"
+    end
+
+    def windows_mounted_wsl_path?
+      @root.to_s.match?(%r{\A/mnt/[a-z](?:/|\z)}i)
+    end
+
+    def read_json(relative_path, freeze: false)
       path = absolute(relative_path)
       return nil unless path.file?
 
@@ -29,7 +44,7 @@ module CorpusSearch
         path.read
       end
 
-      JSON.parse(payload)
+      JSON.parse(payload, freeze: freeze)
     rescue JSON::ParserError, Zlib::GzipFile::Error, Errno::ENOENT
       nil
     end
@@ -58,6 +73,10 @@ module CorpusSearch
     def delete(relative_path)
       path = absolute(relative_path)
       FileUtils.rm_f(path)
+    end
+
+    def exist?(relative_path)
+      absolute(relative_path).file?
     end
 
     def absolute(relative_path)

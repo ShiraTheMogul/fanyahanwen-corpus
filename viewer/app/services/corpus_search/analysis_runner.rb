@@ -4,25 +4,29 @@ require "fileutils"
 require "json"
 require "open3"
 require "pathname"
+require "rbconfig"
 require "timeout"
 require "time"
 require "tmpdir"
 
 module CorpusSearch
-  # Runs only application-owned R profiles. Visitors cannot provide code,
-  # command-line options, paths, or packages. Every run records its exact script,
-  # runtime version, stdout/stderr, timing, and status for reproducibility.
-  class RAnalysisRunner
+  # Runs only application-owned Ruby analysis profiles in a separate process.
+  #
+  # This is a service boundary: Rails prepares trusted CSV inputs, then a child
+  # Ruby process performs the expensive analysis. A timeout or memory failure in
+  # that child is recorded without terminating the web request process.
+  class AnalysisRunner
     PROFILE_PATHS = {
-      "standard_analysis" => Rails.root.join("analysis", "r", "profiles", "standard_analysis.R")
+      "standard_analysis" => Rails.root.join("analysis", "ruby", "profiles", "standard_analysis.rb")
     }.freeze
 
     Result = Data.define(
-      :status, :profile, :exit_status, :duration_seconds, :r_version,
+      :status, :profile, :exit_status, :duration_seconds, :ruby_version,
       :output_dir, :stdout_path, :stderr_path, :metadata_path
     ) do
       def success? = status == "complete"
       def available? = status != "unavailable"
+      def runtime_version = ruby_version
     end
 
     DEFAULT_TIMEOUT_SECONDS = 600
@@ -36,11 +40,11 @@ module CorpusSearch
         key = executable.to_s
         @runtime_mutex.synchronize { return @runtime_cache[key] if @runtime_cache.key?(key) }
 
-        stdout, stderr, status = Open3.capture3(key, "--version")
+        stdout, stderr, status = Open3.capture3(key, "-v")
         value = status.success? ? [stdout, stderr].join(" ").strip.gsub(/\s+/, " ") : nil
         @runtime_mutex.synchronize { @runtime_cache[key] = value }
         value
-      rescue Errno::ENOENT
+      rescue SystemCallError
         @runtime_mutex.synchronize { @runtime_cache[key] = nil }
         nil
       end
@@ -50,9 +54,9 @@ module CorpusSearch
       end
     end
 
-    def initialize(executable: ENV.fetch("CORPUS_SEARCH_RSCRIPT", "Rscript"),
-                   timeout_seconds: integer_env("CORPUS_SEARCH_R_TIMEOUT", DEFAULT_TIMEOUT_SECONDS),
-                   memory_mb: integer_env("CORPUS_SEARCH_R_MEMORY_MB", DEFAULT_MEMORY_MB))
+    def initialize(executable: ENV.fetch("CORPUS_SEARCH_RUBY", RbConfig.ruby),
+                   timeout_seconds: integer_env("CORPUS_SEARCH_ANALYSIS_TIMEOUT", DEFAULT_TIMEOUT_SECONDS),
+                   memory_mb: integer_env("CORPUS_SEARCH_ANALYSIS_MEMORY_MB", DEFAULT_MEMORY_MB))
       @executable = executable.to_s
       @timeout_seconds = [timeout_seconds.to_i, 1].max
       @memory_mb = [memory_mb.to_i, 0].max
@@ -60,7 +64,7 @@ module CorpusSearch
 
     def run(profile:, document_counts_path:, occurrences_path:, output_dir:, comparison_path: nil)
       profile_name = profile.to_s
-      script_path = PROFILE_PATHS.fetch(profile_name) { raise ArgumentError, "Unknown R analysis profile: #{profile_name}" }
+      script_path = PROFILE_PATHS.fetch(profile_name) { raise ArgumentError, "Unknown analysis profile: #{profile_name}" }
       raise Errno::ENOENT, script_path.to_s unless script_path.file?
 
       document_counts = checked_input(document_counts_path)
@@ -68,37 +72,26 @@ module CorpusSearch
       comparison = comparison_path ? checked_input(comparison_path) : nil
       output = Pathname(output_dir).expand_path
       FileUtils.mkdir_p(output)
-      copied_script = output.join("analysis.R")
+      copied_script = output.join("analysis.rb")
       FileUtils.cp(script_path, copied_script)
-      copy_lockfile(output)
 
       stdout_path = output.join("stdout.txt")
       stderr_path = output.join("stderr.txt")
       metadata_path = output.join("run_metadata.json")
       warning_path = output.join("warnings.txt")
+      FileUtils.touch([stdout_path, stderr_path])
       started_at = Time.now.utc
       monotonic_start = Process.clock_gettime(Process::CLOCK_MONOTONIC)
       version = self.class.runtime_version(@executable)
-      command = [
-        @executable,
-        "--vanilla",
-        copied_script.to_s,
-        document_counts.to_s,
-        occurrences.to_s,
-        output.to_s
-      ]
+      command = [@executable, copied_script.to_s, document_counts.to_s, occurrences.to_s, output.to_s]
       command << comparison.to_s if comparison
 
       unless version
-        warning_path.write("Rscript was not available. Set CORPUS_SEARCH_RSCRIPT to the executable path.\n")
+        warning_path.write("Ruby was not available at the configured path. Set CORPUS_SEARCH_RUBY to the Ruby executable.\n")
         metadata = metadata_payload(
-          status: "unavailable",
-          profile: profile_name,
-          started_at: started_at,
-          duration_seconds: elapsed(monotonic_start),
-          exit_status: nil,
-          r_version: nil,
-          command: command,
+          status: "unavailable", profile: profile_name, started_at: started_at,
+          duration_seconds: elapsed(monotonic_start), exit_status: nil,
+          ruby_version: nil, command: command,
           inputs: [document_counts, occurrences, comparison].compact
         )
         metadata_path.write(JSON.pretty_generate(metadata))
@@ -108,46 +101,26 @@ module CorpusSearch
       exit_status, timed_out = spawn_and_wait(command, output, stdout_path, stderr_path)
       status = if timed_out
         "timed_out"
-      elsif exit_status&.success? && output.join("analysis_report.json").file?
+      elsif exit_status&.success? && valid_report?(output.join("analysis_report.json"), profile_name)
         "complete"
       else
         "failed"
       end
 
-      if status != "complete" && !warning_path.file?
-        warning_path.write("R analysis #{status}. See stderr.txt and run_metadata.json.\n")
+      unless status == "complete" || warning_path.file?
+        warning_path.write("Ruby analysis #{status}. See stderr.txt and run_metadata.json.\n")
       end
 
       metadata = metadata_payload(
-        status: status,
-        profile: profile_name,
-        started_at: started_at,
-        duration_seconds: elapsed(monotonic_start),
-        exit_status: exit_status&.exitstatus,
-        r_version: version,
-        command: command,
+        status: status, profile: profile_name, started_at: started_at,
+        duration_seconds: elapsed(monotonic_start), exit_status: exit_status&.exitstatus,
+        ruby_version: version, command: command,
         inputs: [document_counts, occurrences, comparison].compact
       )
       metadata_path.write(JSON.pretty_generate(metadata))
       result_from(metadata, output, stdout_path, stderr_path, metadata_path)
-    rescue StandardError => e
-      output = Pathname(output_dir).expand_path
-      FileUtils.mkdir_p(output)
-      metadata_path = output.join("run_metadata.json")
-      warning_path = output.join("warnings.txt")
-      warning_path.write("#{e.class}: #{e.message}\n")
-      metadata = metadata_payload(
-        status: "failed",
-        profile: profile.to_s,
-        started_at: Time.now.utc,
-        duration_seconds: 0.0,
-        exit_status: nil,
-        r_version: nil,
-        command: [],
-        inputs: []
-      ).merge("error" => { "class" => e.class.name, "message" => e.message })
-      metadata_path.write(JSON.pretty_generate(metadata))
-      result_from(metadata, output, output.join("stdout.txt"), output.join("stderr.txt"), metadata_path)
+    rescue StandardError => error
+      failure_result(error, profile: profile, output_dir: output_dir)
     end
 
     private
@@ -157,6 +130,15 @@ module CorpusSearch
       raise Errno::ENOENT, input.to_s unless input.file?
 
       input
+    end
+
+    def valid_report?(path, expected_profile)
+      return false unless path.file?
+
+      payload = JSON.parse(path.read(encoding: "UTF-8"))
+      payload.is_a?(Hash) && payload["profile"].to_s == expected_profile && payload["overall"].is_a?(Hash)
+    rescue JSON::ParserError, ArgumentError, Encoding::InvalidByteSequenceError, Encoding::UndefinedConversionError
+      false
     end
 
     def spawn_and_wait(command, output_dir, stdout_path, stderr_path)
@@ -172,7 +154,6 @@ module CorpusSearch
       pid = spawn_process(command, spawn_options)
       timed_out = false
       status = nil
-
       begin
         Timeout.timeout(@timeout_seconds) do
           _waited_pid, status = Process.wait2(pid)
@@ -186,17 +167,15 @@ module CorpusSearch
           status = nil
         end
       end
-
       [status, timed_out]
     end
 
     def spawn_process(command, options)
       Process.spawn(runtime_environment, *command, options)
     rescue ArgumentError
-      # Some platforms do not support one of the rlimit spawn options. The R
-      # process remains controlled by the wall-clock timeout and process group.
-      fallback = options.except(:rlimit_cpu, :rlimit_as)
-      Process.spawn(runtime_environment, *command, fallback)
+      # Some platforms do not support one or both rlimit spawn options. The
+      # child remains bounded by the wall-clock timeout and its process group.
+      Process.spawn(runtime_environment, *command, options.reject { |key, _value| %i[rlimit_cpu rlimit_as].include?(key) })
     end
 
     def terminate_process_group(pid)
@@ -210,29 +189,23 @@ module CorpusSearch
     def runtime_environment
       {
         "HOME" => Dir.tmpdir,
-        "R_ENVIRON_USER" => "",
-        "R_PROFILE_USER" => "",
-        "R_DEFAULT_PACKAGES" => "datasets,utils,grDevices,graphics,stats,methods",
         "LANG" => ENV.fetch("LANG", "C.UTF-8"),
         "LC_ALL" => ENV.fetch("LC_ALL", ENV.fetch("LANG", "C.UTF-8"))
       }
     end
 
-    def metadata_payload(status:, profile:, started_at:, duration_seconds:, exit_status:, r_version:, command:, inputs:)
+    def metadata_payload(status:, profile:, started_at:, duration_seconds:, exit_status:, ruby_version:, command:, inputs:)
       {
-        "version" => 3,
+        "version" => 4,
         "status" => status,
         "profile" => profile,
         "started_at" => started_at.iso8601,
         "duration_seconds" => duration_seconds.round(4),
         "exit_status" => exit_status,
-        "r_version" => r_version,
+        "ruby_version" => ruby_version,
         "command" => command.map(&:to_s),
         "inputs" => inputs.map { |path| { "path" => path.to_s, "bytes" => path.file? ? path.size : nil } },
-        "limits" => {
-          "timeout_seconds" => @timeout_seconds,
-          "memory_mb" => @memory_mb
-        }
+        "limits" => { "timeout_seconds" => @timeout_seconds, "memory_mb" => @memory_mb }
       }
     end
 
@@ -242,7 +215,7 @@ module CorpusSearch
         profile: metadata.fetch("profile"),
         exit_status: metadata["exit_status"],
         duration_seconds: metadata.fetch("duration_seconds"),
-        r_version: metadata["r_version"],
+        ruby_version: metadata["ruby_version"],
         output_dir: output,
         stdout_path: stdout_path,
         stderr_path: stderr_path,
@@ -250,9 +223,19 @@ module CorpusSearch
       )
     end
 
-    def copy_lockfile(output)
-      source = Rails.root.join("analysis", "r", "renv.lock")
-      FileUtils.cp(source, output.join("renv.lock")) if source.file?
+    def failure_result(error, profile:, output_dir:)
+      output = Pathname(output_dir).expand_path
+      FileUtils.mkdir_p(output)
+      metadata_path = output.join("run_metadata.json")
+      output.join("warnings.txt").write("#{error.class}: #{error.message}\n")
+      FileUtils.touch([output.join("stdout.txt"), output.join("stderr.txt")])
+      metadata = metadata_payload(
+        status: "failed", profile: profile.to_s, started_at: Time.now.utc,
+        duration_seconds: 0.0, exit_status: nil, ruby_version: nil,
+        command: [], inputs: []
+      ).merge("error" => { "class" => error.class.name, "message" => error.message })
+      metadata_path.write(JSON.pretty_generate(metadata))
+      result_from(metadata, output, output.join("stdout.txt"), output.join("stderr.txt"), metadata_path)
     end
 
     def elapsed(start)
