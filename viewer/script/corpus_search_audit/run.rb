@@ -37,6 +37,8 @@ module CorpusSearchAudit
         base_url: ENV["CORPUS_SEARCH_AUDIT_BASE_URL"],
         ruby_path: ENV["CORPUS_SEARCH_RUBY"],
         real_cache_root: ENV["CORPUS_SEARCH_AUDIT_REAL_CACHE_ROOT"],
+        interactive_scan_limit: nil,
+        stress_search: false,
         list: false,
         supervisor_self_test: true
       }
@@ -66,6 +68,10 @@ module CorpusSearchAudit
       puts "Run directory: #{@run_root}"
       puts "Cases selected: #{cases.length}"
       puts "Slow warning: #{human_duration(default_slow_after)}; stalled-work termination: per-case; hard timeout: per-case"
+      if @options[:interactive_scan_limit]
+        limit_label = @options[:interactive_scan_limit].to_i.positive? ? @options[:interactive_scan_limit].to_s : "unlimited"
+        puts "Interactive scan limit: #{limit_label}"
+      end
       puts
 
       results = []
@@ -109,6 +115,11 @@ module CorpusSearchAudit
         opts.on("--timeout SECONDS", Integer, "Override all hard case limits") { |value| @options[:timeout] = value }
         opts.on("--rails-env ENV", "Rails environment for child cases (default: test)") { |value| @options[:rails_env] = value }
         opts.on("--base-url URL", "Also test a separately running localhost server") { |value| @options[:base_url] = value }
+        opts.on("--interactive-scan-limit LIMIT", Integer, "Set live-search scan limit for child cases; 0 disables the limit") { |value| @options[:interactive_scan_limit] = value }
+        opts.on("--stress-search", "Disable live-search scan limits for real-corpus stress testing") do
+          @options[:interactive_scan_limit] = 0
+          @options[:stress_search] = true
+        end
         opts.on("--ruby PATH", "Ruby executable used for child analysis profiles") { |value| @options[:ruby_path] = value }
         opts.on("--real-cache-root DIR", "Shared real-corpus cache directory, preferably on a native Linux filesystem") { |value| @options[:real_cache_root] = value }
         opts.on("--no-supervisor-self-test", "Skip the process-group kill self-test") { @options[:supervisor_self_test] = false }
@@ -346,6 +357,7 @@ module CorpusSearchAudit
       environment["CORPUS_SEARCH_RUBY"] = @options[:ruby_path] if @options[:ruby_path].to_s != ""
       environment["CORPUS_SEARCH_AUDIT_REAL_CACHE_ROOT"] = @options[:real_cache_root] if @options[:real_cache_root].to_s != ""
       environment["CORPUS_SEARCH_AUDIT_BASE_URL"] = @options[:base_url] if @options[:base_url].to_s != ""
+      environment["CORPUS_SEARCH_INTERACTIVE_SCAN_LIMIT"] = @options[:interactive_scan_limit].to_s if @options[:interactive_scan_limit]
       environment
     end
 
