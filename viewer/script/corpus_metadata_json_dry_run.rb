@@ -332,6 +332,8 @@ class CorpusMetadataJsonDryRun
   end
 
   def compilation_root_for_path(path)
+    return nil if source_bucket_path?(path)
+
     @compilation_root_cache[path] ||= begin
       parts = path.to_s.split("/")
       Array(@compilation_map["known_compilations"]).each do |rule|
@@ -601,12 +603,14 @@ class CorpusMetadataJsonDryRun
     "document:#{path}"
   end
 
-  def contained_work_identity_key(work, title)
-    "contained_work:#{work.folder}:#{normalise_contained_work_title(title)}"
+  def contained_work_identity_key(work, title, target_folder = nil)
+    disambiguator = target_folder.to_s.strip.empty? ? normalise_contained_work_title(title) : target_folder.to_s
+    "contained_work:#{work.folder}:#{normalise_path_title(disambiguator)}"
   end
 
-  def edition_identity_key(work, title)
-    "edition:#{work.folder}:#{normalise_contained_work_title(title)}"
+  def edition_identity_key(work, title, target_folder = nil)
+    disambiguator = target_folder.to_s.strip.empty? ? normalise_contained_work_title(title) : target_folder.to_s
+    "edition:#{work.folder}:#{normalise_path_title(disambiguator)}"
   end
 
   def write_json_files!
@@ -671,9 +675,11 @@ class CorpusMetadataJsonDryRun
   end
 
   def work_title_for_payload(work, folds, compilation_rule)
+    return compilation_rule["title"] if compilation_rule && compilation_rule["title"].to_s.strip != ""
+
     title = folds.dig(:scalars, "title")
     title = nil if source_bucket_generic_title?(work, title)
-    title || (compilation_rule && compilation_rule["title"]) || folder_title(work.folder)
+    title || folder_title(work.folder)
   end
 
   def source_bucket_generic_title?(work, title)
@@ -882,6 +888,8 @@ class CorpusMetadataJsonDryRun
 
 
   def compilation_rule_for(work)
+    return nil if source_bucket_path?(work.folder)
+
     @compilation_rule_cache[work.folder] ||= begin
       Array(@compilation_map["known_compilations"]).find { |rule| compilation_rule_matches?(rule, work.folder) }
     end
@@ -897,6 +905,8 @@ class CorpusMetadataJsonDryRun
   end
 
   def compilation_containers_for_path(path)
+    return [] if source_bucket_path?(path)
+
     @compilation_containers_cache[path] ||= begin
       parts = path.to_s.split("/")
       Array(@compilation_map["known_compilations"]).filter_map do |rule|
@@ -980,10 +990,11 @@ class CorpusMetadataJsonDryRun
       title = group.fetch(:title)
       docs = group.fetch(:documents)
       first_doc = docs.first
+      target = contained_work_target_for_group(work, title, docs)
       contained_work_id = registry_id(
         "work",
-        contained_work_identity_key(work, title),
-        path: work.folder,
+        contained_work_identity_key(work, title, target.fetch(:target_folder)),
+        path: target.fetch(:target_folder),
         title: title,
         parent_work_id: work.work_id,
         source_document_id: first_doc.document_id,
@@ -991,8 +1002,8 @@ class CorpusMetadataJsonDryRun
       )
       edition_id = registry_id(
         "edition",
-        edition_identity_key(work, title),
-        path: work.folder,
+        edition_identity_key(work, title, target.fetch(:target_folder)),
+        path: target.fetch(:target_folder),
         title: edition_label_for(rule),
         parent_work_id: contained_work_id,
         source_document_id: first_doc.document_id,
@@ -1012,19 +1023,24 @@ class CorpusMetadataJsonDryRun
         document_count: docs.length,
         source_document_ids: docs.map(&:document_id).join("|"),
         source_paths: docs.map(&:path).join("|"),
+        target_folder: target.fetch(:target_folder),
+        metadata_destination: File.join(target.fetch(:target_folder), "metadata.json"),
+        target_paths: target.fetch(:target_paths).join("|"),
+        folderisation_action: target.fetch(:action),
+        existing_work_folder: target.fetch(:existing_work_folder),
         current_corpus_root: geography["corpus_root"] || corpus_root_for_path(work.folder),
         current_macro_region: geography["macro_region"] || macro_region_for_root(corpus_root_for_path(work.folder)),
         current_period: geography["period"],
         current_polity: geography["polity"],
         current_region: geography["region"],
-        review_note: "generated_contained_work_metadata"
+        review_note: target.fetch(:review_note)
       })
       unless @contained_work_proposal_ids.include?(contained_work_id)
         @contained_work_proposal_ids << contained_work_id
         @contained_work_proposals << proposal
         @proposal_counts_by_work_id[work.work_id] += 1
         @proposal_document_counts_by_work_id[work.work_id] += docs.length
-        @contained_work_payloads_by_work_id[work.work_id] << build_contained_work_payload(work, folds, rule, group, contained_work_id, edition_id)
+        @contained_work_payloads_by_work_id[work.work_id] << build_contained_work_payload(work, folds, rule, group, contained_work_id, edition_id, target)
       end
 
       deep_compact({
@@ -1036,6 +1052,60 @@ class CorpusMetadataJsonDryRun
     end
   end
 
+  def contained_work_target_for_group(compilation_work, title, docs)
+    source_paths = docs.map(&:path)
+    source_folders = source_paths.map { |path| File.dirname(path.to_s) }.uniq
+    existing_folder = existing_work_folder_for_contained_title(title, source_folders)
+    target_folder = existing_folder || File.join(common_parent_folder(source_folders, compilation_work.folder), safe_folder_name(title))
+    target_paths = docs.map { |doc| File.join(target_folder, doc.file_name) }
+    moves_required = source_paths.zip(target_paths).any? { |source, target_path| source.to_s != target_path.to_s }
+    cross_folder = source_folders.length > 1
+
+    action = if moves_required
+               cross_folder ? "folderise_cross_folder_review" : "folderise"
+             else
+               "existing_work_folder"
+             end
+
+    {
+      target_folder: target_folder,
+      target_paths: target_paths,
+      action: action,
+      existing_work_folder: existing_folder,
+      review_note: moves_required ? "create_work_folder_and_move_txts" : "metadata_json_beside_existing_txts"
+    }
+  end
+
+  def existing_work_folder_for_contained_title(title, source_folders)
+    normalised_title = normalise_path_title(title)
+    source_folders.find do |folder|
+      normalise_path_title(folder_title(folder)) == normalised_title
+    end
+  end
+
+  def common_parent_folder(folders, fallback)
+    folders = Array(folders).map { |folder| folder.to_s.split("/") }
+    return fallback if folders.empty?
+
+    common = folders.first.dup
+    folders[1..].to_a.each do |parts|
+      common = common.zip(parts).take_while { |left, right| left == right }.map(&:first)
+    end
+    common.empty? ? fallback : common.join("/")
+  end
+
+  def safe_folder_name(title)
+    text = title.to_s.strip
+    text = text.gsub(/[\\\/:*?"<>|]/, "＿")
+    text = text.gsub(/\s+/, " ").strip
+    text = text.gsub(/\A[. ]+|[. ]+\z/, "")
+    text.empty? ? "untitled_work" : text
+  end
+
+  def normalise_path_title(value)
+    safe_folder_name(normalise_contained_work_title(value)).tr("＿", "_").downcase
+  end
+
   def edition_label_for(rule)
     label = rule["edition_label"].to_s.strip
     return label unless label.empty?
@@ -1043,7 +1113,7 @@ class CorpusMetadataJsonDryRun
     "#{rule.fetch("title")}本"
   end
 
-  def build_contained_work_payload(compilation_work, compilation_folds, rule, group, contained_work_id, edition_id)
+  def build_contained_work_payload(compilation_work, compilation_folds, rule, group, contained_work_id, edition_id, target)
     title = group.fetch(:title)
     docs = group.fetch(:documents)
     group_folds = group_folds_for_docs(compilation_work, docs)
@@ -1063,7 +1133,7 @@ class CorpusMetadataJsonDryRun
       "authors" => group_folds.dig(:lists, "authors"),
       "editors" => group_folds.dig(:lists, "editors"),
       "contributors" => group_folds.fetch(:contributors),
-      "categories" => group_folds.dig(:lists, "categories"),
+      "categories" => uniq_list(Array(group_folds.dig(:lists, "categories")) + compilation_category_tags_for_docs(docs, rule)),
       "source_categories" => group_folds.dig(:lists, "source_categories"),
       "sources" => group_folds.dig(:lists, "sources"),
       "identifiers" => group_folds.fetch(:identifiers),
@@ -1083,20 +1153,26 @@ class CorpusMetadataJsonDryRun
           "edition_label" => edition_label,
           "source_work_id" => compilation_work.work_id,
           "source_title" => rule["title"],
-          "documents" => docs.map { |doc| build_edition_document(doc, compilation_folds, group_folds) }
+          "documents" => docs.map { |doc| build_edition_document(doc, compilation_folds, group_folds, target.fetch(:target_folder), rule) }
         }
       ]
     })
   end
 
-  def build_edition_document(doc, compilation_folds, group_folds)
+  def build_edition_document(doc, compilation_folds, group_folds, target_folder, rule)
     base = build_document(doc, compilation_folds)
+    base["path"] = File.join(target_folder, doc.file_name) if target_folder
+    base["categories"] = uniq_list(Array(base["categories"]) + compilation_category_tags_for_doc(doc, rule))
+    # The contained-work record already points back to the compilation. Do not
+    # repeat migration-source containment hints on every edition document.
+    base.delete("contained_in")
     # Values lifted to the contained-work record do not need to repeat on every
     # edition document.
     base["authors"] = [] if Array(base["authors"]).sort == Array(group_folds.dig(:lists, "authors")).sort
     base["editors"] = [] if Array(base["editors"]).sort == Array(group_folds.dig(:lists, "editors")).sort
     base["contributors"] = [] if Array(base["contributors"]).sort_by(&:to_s) == Array(group_folds.fetch(:contributors)).sort_by(&:to_s)
-    base["categories"] = [] if Array(base["categories"]).sort == Array(group_folds.dig(:lists, "categories")).sort
+    group_categories = uniq_list(Array(group_folds.dig(:lists, "categories")) + compilation_category_tags_for_doc(doc, rule))
+    base["categories"] = [] if Array(base["categories"]).sort == group_categories.sort
     base["source_categories"] = [] if Array(base["source_categories"]).sort == Array(group_folds.dig(:lists, "source_categories")).sort
     base["sources"] = [] if Array(base["sources"]).sort == Array(group_folds.dig(:lists, "sources")).sort
     deep_compact(base)
@@ -1160,16 +1236,22 @@ class CorpusMetadataJsonDryRun
     skipped = Hash.new(0)
 
     work.documents.each do |doc|
+      if companion_material_path?(doc.path)
+        skipped["companion_material_folder"] += 1
+        next
+      end
+
       candidate = contained_work_candidate_for_doc(work, doc, folds, rule)
       unless candidate
         skipped["no_extractable_title"] += 1
         next
       end
 
-      key = normalise_contained_work_title(candidate.fetch(:title))
-      next if key.empty?
+      title = normalise_contained_work_title(candidate.fetch(:title))
+      next if title.empty?
 
-      groups[key] ||= { title: key, documents: [] }
+      key = candidate.fetch(:group_key) { contained_work_group_key(work, doc, title, candidate.fetch(:source)) }
+      groups[key] ||= { title: title, documents: [] }
       groups[key][:documents] << doc
     end
 
@@ -1186,11 +1268,68 @@ class CorpusMetadataJsonDryRun
       )
     end
 
+    if skipped["companion_material_folder"].positive?
+      record_fold_decision(
+        work,
+        "worklist",
+        "skipped_companion_material_documents",
+        "compilation_worklist",
+        skipped["companion_material_folder"],
+        skipped["companion_material_folder"],
+        work.documents.length,
+        ["#{skipped['companion_material_folder']} source documents were in translation/variant/annotation companion folders"]
+      )
+    end
+
     groups.sort_by { |title, _group| title }.to_h
   end
 
+  def contained_work_group_key(work, doc, title, source)
+    parent_folder = File.dirname(doc.path.to_s)
+    parent_title = folder_title(parent_folder)
+
+    # If the file is already inside a folder named after this work, keep that
+    # folder as the identity. This prevents homonymous works in the same
+    # compilation, such as 詩經/唐風/揚之水 and 詩經/王風/揚之水, being merged
+    # merely because their titles match.
+    if normalise_path_title(parent_title) == normalise_path_title(title)
+      return "existing-folder:#{normalise_path_title(parent_folder)}"
+    end
+
+    # Parent-folder derived titles are inherently local to that folder.
+    return "parent-folder:#{normalise_path_title(parent_folder)}" if source == "parent_folder"
+
+    "title:#{normalise_path_title(title)}"
+  end
+
+  COMPANION_MATERIAL_FOLDER_NAMES = %w[
+    英譯文 譯文 翻譯 英文 translation translations annotation annotations 注釋 註釋
+    variant variants 異文 校勘 kanbun 訓讀
+  ].freeze
+
+  def companion_material_path?(path)
+    parts = path.to_s.split("/")
+    parts.any? { |part| COMPANION_MATERIAL_FOLDER_NAMES.include?(part) }
+  end
+
   def contained_work_candidate_for_doc(work, doc, folds, rule)
-    work_title = folds.dig(:scalars, "title") || rule["title"] || folder_title(work.folder)
+    work_title = rule["title"] || folds.dig(:scalars, "title") || folder_title(work.folder)
+
+    # 楚辭 behaves like a chaptered received anthology here. When a txt sits
+    # under a volume folder such as 卷第十六, the filename is the safest work
+    # title. Old page/title metadata may refer to a larger section and can group
+    # unrelated pieces across volumes if used first.
+    if chuci_volume_document?(doc, rule)
+      title = normalise_contained_work_title(file_title(doc.file_name))
+      unless title.empty? || container_or_volume_title?(title, rule, work_title, "file_title")
+        return {
+          title: title,
+          source: "chuci_file_title",
+          group_key: "chuci-volume:#{normalise_path_title(File.dirname(doc.path.to_s))}:#{normalise_path_title(title)}"
+        }
+      end
+    end
+
     candidates = []
 
     Array(doc.values["display_title"]).each { |value| candidates << [value, "display_title"] }
@@ -1211,6 +1350,16 @@ class CorpusMetadataJsonDryRun
     end
 
     nil
+  end
+
+  def chuci_volume_document?(doc, rule)
+    return false unless rule && rule["title"].to_s == "楚辭"
+
+    parts = doc.path.to_s.split("/")
+    chuci_index = parts.rindex("楚辭")
+    return false unless chuci_index
+
+    parts[(chuci_index + 1)...-1].to_a.any? { |part| volume_folder_title?(part) }
   end
 
   def contained_title_from_page_title(value)
@@ -1235,8 +1384,8 @@ class CorpusMetadataJsonDryRun
     compilation_title = rule["title"].to_s.strip
     return true if title.empty?
     return true if [compilation_title, work_title.to_s.strip].include?(title)
-    return true if %w[clean raw].include?(title)
-    return true if title.match?(/\A(?:卷|第)[一二三四五六七八九十百千零〇\d]+(?:卷)?\z/)
+    return true if %w[clean raw 亂曰].include?(title)
+    return true if volume_folder_title?(title)
     return true if title.match?(/\Ajuan[_\-]?\d+\z/i)
 
     escaped = Regexp.escape(compilation_title)
@@ -1244,6 +1393,24 @@ class CorpusMetadataJsonDryRun
     return true if source == "file_title" && title.match?(/__juan[_\-]?\d+\z/i)
 
     false
+  end
+
+  def volume_folder_title?(title)
+    text = title.to_s.strip
+    return false if text.empty?
+
+    text.match?(/\A卷(?:第)?[一二三四五六七八九十百千零〇\d]+(?:卷)?\z/) ||
+      text.match?(/\A第[一二三四五六七八九十百千零〇\d]+卷\z/)
+  end
+
+  def compilation_category_tags_for_doc(doc, rule)
+    return [] unless rule && rule["volume_folders_as_categories"]
+
+    doc.path.to_s.split("/").select { |part| volume_folder_title?(part) }
+  end
+
+  def compilation_category_tags_for_docs(docs, rule)
+    uniq_list(Array(docs).flat_map { |doc| compilation_category_tags_for_doc(doc, rule) })
   end
 
   def proposal_geography_for_group(work, folds, docs)
@@ -1481,7 +1648,7 @@ class CorpusMetadataJsonDryRun
   end
 
   def write_contained_work_proposals
-    headers = %w[contained_work_id edition_id edition_label compilation_work_id compilation_title title document_count source_document_id current_path source_document_ids source_paths current_corpus_root current_macro_region current_period current_polity current_region review_note]
+    headers = %w[contained_work_id edition_id edition_label compilation_work_id compilation_title title document_count source_document_id current_path source_document_ids source_paths target_folder metadata_destination target_paths folderisation_action existing_work_folder current_corpus_root current_macro_region current_period current_polity current_region review_note]
     CSV.open(@output_root.join("contained_work_proposals.csv"), "w", write_headers: true, headers: headers) do |csv|
       @contained_work_proposals.sort_by { |row| [row[:compilation_title].to_s, row[:title].to_s] }.each do |row|
         csv << headers.map { |key| row[key.to_sym] }
@@ -1553,7 +1720,7 @@ class CorpusMetadataJsonDryRun
       - `document_manifest.csv`: one row per txt file.
       - `metadata_conflicts.csv`: genuine document-level scalar/geography conflicts to review before apply.
       - `metadata_fold_decisions.csv`: cases where heterogeneous metadata was kept at document level instead of lifted to work level.
-      - `contained_work_proposals.csv`: grouped compilation-contained works emitted as separate staged metadata records. Juan/container files are skipped, and multiple source documents for the same contained work are grouped into one edition witness.
+      - `contained_work_proposals.csv`: grouped compilation-contained works emitted as separate staged metadata records. Juan/container files are skipped, multiple source documents for the same contained work are grouped into one edition witness, and `target_folder` shows where the work folder/metadata should live.
       - `metadata_id_registry.csv`: generated/reused IDs for work, document, and edition records. Pass it back with `--id-registry` on future runs to preserve IDs.
       - `ignored_legacy_rows.csv`: known bad parse rows deliberately excluded.
       - `unknown_legacy_rows.csv`: legacy keys not yet mapped.
@@ -1564,13 +1731,14 @@ class CorpusMetadataJsonDryRun
       - Default `--source-mode clean` excludes paths under any `raw/` segment.
       - Use `--source-mode all` only when you deliberately want raw and clean source material in the same review run.
       - Use `--source-mode raw` only for inspecting deprecated raw material.
-      - Source buckets such as `維基大典` and `礦藝大典` are split into page-level work records instead of fake `clean`/`raw` bucket works.
+      - Source buckets such as `維基大典` and `礦藝大典` are split into page-level work records instead of fake `clean`/`raw` bucket works, and are never auto-promoted to compilation records by page title.
 
       Fold-up rule:
 
       - A value is lifted to work level only when every document in that folder carries the same value.
       - If values disagree, or if only some documents carry the value, they remain on individual `documents[]` entries.
       - Document geography identical to work geography is suppressed to avoid duplicate noise.
+      - Contained works inside compilations must have their own target work folder. If source txts are currently flat inside a compilation folder, the apply preflight reports a folderisation plan rather than deferring the metadata.
 
       This script is designed for review. Do not apply generated JSON to the corpus until
       conflicts and unknown legacy keys are acceptable.

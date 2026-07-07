@@ -24,7 +24,8 @@ known_compilations:
   - title: 楚辭
     kind: anthology
     extractable_items: true
-    notes: Received anthology; individual pieces should be able to appear as their own works while remaining listed under 楚辭.
+    volume_folders_as_categories: true
+    notes: Received anthology; volume folders such as 卷第十六 are structural categories, not work titles.
     match:
       folder_name:
         - 楚辭
@@ -122,3 +123,68 @@ known_compilations:
     match:
       folder_name:
         - 李過日記
+
+  - title: 欽定古今圖書集成
+    extractable_items: true
+    categories:
+      - 類書
+    match:
+      folder_name:
+        - 欽定古今圖書集成
+        - 古今圖書集成
+
+  - title: 太平御覽
+    extractable_items: true
+    categories:
+      - 類書
+    match:
+      folder_name:
+        - 太平御覽
+
+  - title: 冊府元龜
+    extractable_items: true
+    categories:
+      - 類書
+    match:
+      folder_name:
+        - 冊府元龜
+
+  - title: 全唐文
+    extractable_items: true
+    categories:
+      - 總集
+    match:
+      folder_name:
+        - 全唐文
+
+  - title: 甲骨
+    extractable_items: true
+    categories:
+      - 出土文獻
+    match:
+      folder_name:
+        - 甲骨
+        - 小屯南地甲骨
+        - 甲骨文合集
+        - 花园庄东地甲骨
+        - 花園庄東地甲骨
+
+  - title: 金文
+    extractable_items: true
+    categories:
+      - 出土文獻
+    match:
+      folder_name:
+        - 金文
+        - 周金文
+        - 春秋金文
+        - 戰國金文
+        - 倗金文
+
+  - title: 秦代簡牘
+    extractable_items: true
+    categories:
+      - 出土文獻
+    match:
+      folder_name:
+        - 秦代簡牘
