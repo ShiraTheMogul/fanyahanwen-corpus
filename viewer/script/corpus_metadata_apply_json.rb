@@ -7,6 +7,7 @@ require "fileutils"
 require "json"
 require "optparse"
 require "pathname"
+require "set"
 require "time"
 
 # Applies a reviewed JSON metadata preflight.
@@ -21,6 +22,11 @@ class CorpusMetadataApplyJson
     @corpus_root = Pathname(options.fetch(:corpus_root)).expand_path
     @apply = options.fetch(:apply)
     @allow_overwrite = options.fetch(:allow_overwrite)
+    @strip_txt_headers = options.fetch(:strip_txt_headers)
+    @strip_header_audit = options[:strip_header_audit] ? Pathname(options[:strip_header_audit]).expand_path : nil
+    @strip_report_rows = []
+    @strip_audit_line_numbers = Hash.new { |hash, key| hash[key] = Set.new }
+    @strip_path_aliases = Hash.new { |hash, key| hash[key] = Set.new }
     @progress_every = options.fetch(:progress_every).to_i
     @started_at = Time.now.utc
     @records_by_work_id = {}
@@ -45,8 +51,15 @@ class CorpusMetadataApplyJson
     apply_moves!
     progress @apply ? "writing metadata.json files" : "dry-run metadata writes"
     apply_metadata_writes!
+    if @strip_txt_headers
+      progress "loading txt header strip audit" if @strip_header_audit
+      load_strip_header_audit! if @strip_header_audit
+      progress @apply ? "stripping old txt headers" : "dry-run txt header stripping"
+      strip_txt_headers!
+      write_strip_report!
+    end
     progress "finished"
-    warn "[metadata-apply] mode=#{@apply ? 'APPLY' : 'DRY RUN'} duplicate_merges=#{@identical_text_merges.length} moves=#{@moves.length} metadata_writes=#{@writes.length}"
+    warn "[metadata-apply] mode=#{@apply ? 'APPLY' : 'DRY RUN'} duplicate_merges=#{@identical_text_merges.length} moves=#{@moves.length} metadata_writes=#{@writes.length} header_strip_candidates=#{@strip_report_rows.count { |row| row[:status] == 'would_strip' || row[:status] == 'stripped' }}"
   end
 
   private
@@ -325,6 +338,225 @@ class CorpusMetadataApplyJson
   end
 
 
+  def strip_txt_headers!
+    build_strip_path_aliases!
+    paths = metadata_document_paths
+    progress "txt header strip paths: #{paths.length}"
+    paths.each_with_index do |relative_path, index|
+      path = @corpus_root.join(relative_path)
+      row = strip_txt_header_plan(path, relative_path)
+      if @apply && row[:status] == "would_strip"
+        atomic_write_bytes(path, row.delete(:new_content))
+        row[:status] = "stripped"
+      else
+        row.delete(:new_content)
+      end
+      @strip_report_rows << row
+      maybe_progress(index + 1, "txt headers checked")
+    end
+  end
+
+  def build_strip_path_aliases!
+    metadata_document_paths.each { |path| @strip_path_aliases[path] << path }
+    @moves.each do |row|
+      target = row.fetch("target_path").to_s
+      source = row.fetch("source_path").to_s
+      @strip_path_aliases[target] << target
+      @strip_path_aliases[target] << source unless source.empty?
+    end
+    @identical_text_merges.each do |row|
+      [row["target_path"], row["keep_path"]].compact.each do |current|
+        next if current.to_s.empty?
+        @strip_path_aliases[current] << current
+        @strip_path_aliases[current] << row["source_path"].to_s unless row["source_path"].to_s.empty?
+        @strip_path_aliases[current] << row["target_path"].to_s unless row["target_path"].to_s.empty?
+        @strip_path_aliases[current] << row["remove_path"].to_s unless row["remove_path"].to_s.empty?
+      end
+    end
+  end
+
+  def load_strip_header_audit!
+    raise ArgumentError, "Header audit directory does not exist: #{@strip_header_audit}" unless @strip_header_audit.directory?
+
+    metadata_rows = @strip_header_audit.join("metadata_rows.csv")
+    malformed_rows = @strip_header_audit.join("malformed_headers.csv")
+    raise ArgumentError, "Missing metadata_rows.csv in #{@strip_header_audit}" unless metadata_rows.file?
+
+    build_strip_path_aliases! if @strip_path_aliases.empty?
+    wanted_paths = @strip_path_aliases.values.reduce(Set.new) { |memo, aliases| memo.merge(aliases) }
+    progress "txt header audit wanted paths: #{wanted_paths.length}"
+
+    rows_read = 0
+    CSV.foreach(metadata_rows, headers: true, encoding: "bom|utf-8") do |row|
+      path = row["path"].to_s
+      next unless wanted_paths.include?(path)
+
+      line_number = row["line_number"].to_i
+      @strip_audit_line_numbers[path] << line_number if line_number.positive?
+      rows_read += 1
+      maybe_progress(rows_read, "txt header audit rows matched")
+    end
+
+    if malformed_rows.file?
+      CSV.foreach(malformed_rows, headers: true, encoding: "bom|utf-8") do |row|
+        path = row["path"].to_s
+        next unless wanted_paths.include?(path)
+
+        line_number = row["line_number"].to_i
+        @strip_audit_line_numbers[path] << line_number if line_number.positive?
+      end
+    end
+
+    progress "txt header audit matched paths: #{@strip_audit_line_numbers.length}"
+  end
+
+  def metadata_document_paths
+    paths = Set.new
+    @writes.each do |row|
+      payload = @records_by_work_id[row.fetch("work_id").to_s]
+      next unless payload
+      each_document_hash(payload) do |document|
+        path = document["path"].to_s
+        paths << path unless path.empty?
+      end
+    end
+    paths.to_a.sort
+  end
+
+  def strip_txt_header_plan(path, relative_path)
+    unless path.file?
+      return {
+        status: "missing",
+        path: relative_path,
+        stripped_lines: 0,
+        stripped_bytes: 0,
+        strip_mode: strip_mode_label(relative_path),
+        message: "txt file missing"
+      }
+    end
+
+    content = path.binread
+    stripped = strip_audited_header_bytes(content, relative_path)
+    stripped ||= strip_leading_hash_header_block(content)
+    unless stripped
+      return {
+        status: "no_header",
+        path: relative_path,
+        stripped_lines: 0,
+        stripped_bytes: 0,
+        strip_mode: strip_mode_label(relative_path),
+        message: "no leading old # header block detected"
+      }
+    end
+
+    new_content, stripped_lines, stripped_bytes, mode = stripped
+    return {
+      status: "no_header",
+      path: relative_path,
+      stripped_lines: 0,
+      stripped_bytes: 0,
+      strip_mode: mode,
+      message: "header strip would not change content"
+    } if new_content == content
+
+    {
+      status: "would_strip",
+      path: relative_path,
+      stripped_lines: stripped_lines,
+      stripped_bytes: stripped_bytes,
+      strip_mode: mode,
+      message: mode == "audit" ? "leading header block matched previous metadata audit" : "leading # header block fallback",
+      new_content: new_content
+    }
+  rescue SystemCallError => error
+    {
+      status: "error",
+      path: relative_path,
+      stripped_lines: 0,
+      stripped_bytes: 0,
+      strip_mode: strip_mode_label(relative_path),
+      message: "#{error.class}: #{error.message}"
+    }
+  end
+
+  def strip_audited_header_bytes(content, relative_path)
+    audit_lines = audited_line_numbers_for(relative_path)
+    return nil if audit_lines.empty?
+
+    strip_header_bytes(content, "audit") do |line, line_number, stripped_any|
+      audit_lines.include?(line_number) || (stripped_any && line.strip.empty?)
+    end
+  end
+
+  def strip_leading_hash_header_block(content)
+    strip_header_bytes(content, "fallback_leading_hash_block") do |line, _line_number, stripped_any|
+      line.start_with?("#") || (stripped_any && line.strip.empty?)
+    end
+  end
+
+  def strip_header_bytes(content, mode)
+    bom = "\xEF\xBB\xBF".b
+    has_bom = content.start_with?(bom)
+    prefix = has_bom ? bom : "".b
+    body = has_bom ? content.byteslice(3..-1).to_s : content
+    lines = body.lines
+    return nil if lines.empty?
+
+    index = 0
+    stripped_lines = 0
+    stripped_bytes = 0
+    stripped_any = false
+    while index < lines.length && yield(lines[index], index + 1, stripped_any)
+      stripped_bytes += lines[index].bytesize
+      stripped_lines += 1
+      stripped_any = true
+      index += 1
+    end
+    return nil if stripped_lines.zero?
+
+    [prefix + (lines[index..]&.join || "".b), stripped_lines, stripped_bytes, mode]
+  end
+
+  def audited_line_numbers_for(relative_path)
+    aliases = @strip_path_aliases[relative_path]
+    aliases.each_with_object(Set.new) do |alias_path, memo|
+      memo.merge(@strip_audit_line_numbers[alias_path])
+    end
+  end
+
+  def strip_mode_label(relative_path)
+    @strip_header_audit && !audited_line_numbers_for(relative_path).empty? ? "audit" : "fallback_leading_hash_block"
+  end
+
+  def atomic_write_bytes(destination, content)
+    temp = destination.dirname.join(".#{destination.basename}.strip-tmp-#{$$}")
+    File.binwrite(temp, content)
+    File.rename(temp, destination)
+  ensure
+    FileUtils.rm_f(temp) if temp && temp.exist?
+  end
+
+  def write_strip_report!
+    report_name = @apply ? "stripped_txt_headers.csv" : "would_strip_txt_headers.csv"
+    path = @preflight_output.join(report_name)
+    CSV.open(path, "w", write_headers: true, headers: %w[status path stripped_lines stripped_bytes strip_mode message]) do |csv|
+      @strip_report_rows.each do |row|
+        csv << [row[:status], row[:path], row[:stripped_lines], row[:stripped_bytes], row[:strip_mode], row[:message]]
+      end
+    end
+
+    counts = @strip_report_rows.each_with_object(Hash.new(0)) { |row, memo| memo[row[:status]] += 1 }
+    counts.sort_by { |_, count| -count }.each do |status, count|
+      warn "[metadata-apply]   txt_header_strip #{status}=#{count}"
+    end
+    mode_counts = @strip_report_rows.each_with_object(Hash.new(0)) { |row, memo| memo[row[:strip_mode]] += 1 }
+    mode_counts.sort_by { |_, count| -count }.each do |mode, count|
+      warn "[metadata-apply]   txt_header_strip_mode #{mode}=#{count}"
+    end
+    progress "wrote #{report_name}"
+  end
+
+
   def blank?(value)
     value.nil? || (value.respond_to?(:empty?) && value.empty?)
   end
@@ -370,6 +602,8 @@ end
 options = {
   apply: false,
   allow_overwrite: false,
+  strip_txt_headers: false,
+  strip_header_audit: nil,
   progress_every: 25_000
 }
 
@@ -380,6 +614,8 @@ parser = OptionParser.new do |opts|
   opts.on("--corpus-root DIR", "Corpus root") { |value| options[:corpus_root] = value }
   opts.on("--apply", "Actually move txt files and write metadata.json files") { options[:apply] = true }
   opts.on("--allow-overwrite", "Allow overwriting existing metadata.json files after reviewing would_overwrite.csv") { options[:allow_overwrite] = true }
+  opts.on("--strip-txt-headers", "After metadata.json writes, strip old leading # metadata headers from covered txt files") { options[:strip_txt_headers] = true }
+  opts.on("--strip-header-audit DIR", "Previous corpus_metadata_audit output. Uses metadata_rows.csv/malformed_headers.csv to strip exactly the audited old header block where possible") { |value| options[:strip_header_audit] = value }
   opts.on("--progress-every N", Integer, "Print progress every N rows. Default: 25000; 0 disables") { |value| options[:progress_every] = value }
 end
 
