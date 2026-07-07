@@ -1,0 +1,285 @@
+# Fanya Hanwen Corpus legacy-header -> JSON sidecar generation map.
+# This file is deliberately conservative. It is for dry-run JSON generation,
+# not final schema law.
+version: 1
+schema_version: 1
+
+exclude_path_prefixes:
+  - scripts/
+  - tmp/
+  - storage/
+  - log/
+  - public/
+  - node_modules/
+
+exclude_file_names:
+  - staging_summary.txt
+
+exclude_path_patterns:
+  - '(^|/)metadata\.json$'
+
+defaults:
+  is_compilation: false
+  known_commentaries: []
+  contained_in: []
+
+# Keys whose values are split as lists. The migration report records separator
+# problems separately; this is only a practical first pass for JSON staging.
+list_separators: "[，、；;,|＆&]"
+
+keys:
+  # Titles and document display data.
+  TITLE:
+    target: title
+    level: auto
+    type: scalar
+  WORK_TITLE:
+    target: title
+    level: work
+    type: scalar
+  WORK_BASE_TITLE:
+    target: work_base_title
+    level: work
+    type: scalar
+  PAGE_TITLE:
+    target: page_title
+    level: document
+    type: scalar
+  PAGE TITLE:
+    target: page_title
+    level: document
+    type: scalar
+  PAGETITLE:
+    target: page_title
+    level: document
+    type: scalar
+  DISPLAY_TITLE:
+    target: display_title
+    level: document
+    type: scalar
+  CHAPTER:
+    target: chapter
+    level: document
+    type: scalar
+
+  # People.
+  AUTHOR:
+    target: authors
+    level: work
+    type: list
+  AUTHORS:
+    target: authors
+    level: work
+    type: list
+  EDITOR:
+    target: editors
+    level: work
+    type: list
+  EDITORS:
+    target: editors
+    level: work
+    type: list
+  ARTIST:
+    target: contributors
+    level: work
+    type: contributor
+    role: artist
+  CALLIGRAPHER:
+    target: contributors
+    level: work
+    type: contributor
+    role: calligrapher
+
+  # Geography/time. Values are mapped through geography_mapping_suggestions.csv
+  # or config/corpus_metadata/geography_period_map.yml.
+  NATION:
+    target: geography
+    level: auto
+    type: geography
+  TIMES:
+    target: geography
+    level: auto
+    type: geography
+  REGION:
+    target: geography
+    level: auto
+    type: geography
+
+  # Dates.
+  YEAR:
+    target: date_label
+    level: document
+    type: scalar
+  DATE:
+    target: date_label
+    level: document
+    type: scalar
+  SCRAPED_AT:
+    target: scraped_at
+    level: document
+    type: scalar
+  SCRAPED_AT_UTC:
+    target: scraped_at
+    level: document
+    type: scalar
+
+  # Categories.
+  CATEGORIES:
+    target: categories
+    level: work
+    type: list
+  CATEGORY:
+    target: categories
+    level: work
+    type: list
+  WS_CATEGORIES:
+    target: source_categories
+    level: document
+    type: list
+  WIKI_CATEGORIES:
+    target: source_categories
+    level: document
+    type: list
+
+  # Sources / rights.
+  SOURCE:
+    target: sources
+    level: work
+    type: list
+  SOURCE_URL:
+    target: sources
+    level: document
+    type: list
+  URL:
+    target: sources
+    level: document
+    type: list
+  REFERENCE:
+    target: sources
+    level: work
+    type: list
+  REFERENCES:
+    target: sources
+    level: work
+    type: list
+  LICENSE:
+    target: rights.license
+    level: work
+    type: scalar
+  LICENCE:
+    target: rights.license
+    level: work
+    type: scalar
+  RIGHTS_NOTE:
+    target: rights.note
+    level: work
+    type: scalar
+
+  # Edition/object/source extras.
+  EDITION:
+    target: edition
+    level: work
+    type: scalar
+  MEDIUM:
+    target: medium
+    level: work
+    type: scalar
+  LOCATION:
+    target: location
+    level: work
+    type: scalar
+  IMAGE:
+    target: images
+    level: work
+    type: list
+  MODE:
+    target: mode
+    level: work
+    type: scalar
+  MOTHER:
+    target: mother
+    level: work
+    type: scalar
+  NAME:
+    target: name
+    level: auto
+    type: scalar
+  AKA:
+    target: aliases
+    level: work
+    type: list
+  CONTEXT:
+    target: notes
+    level: work
+    type: list
+  NOTES:
+    target: notes
+    level: work
+    type: list
+  CREDIT:
+    target: credits
+    level: work
+    type: list
+
+  # Identifiers. These are legacy/source identifiers, never new corpus IDs.
+  ID:
+    target: identifiers
+    level: document
+    type: identifier
+    scheme: legacy_id
+  UNIQUE_ID:
+    target: identifiers
+    level: document
+    type: identifier
+    scheme: legacy_unique_id
+  ENTRY_NUMBER:
+    target: identifiers
+    level: document
+    type: identifier
+    scheme: entry_number
+  CATALOG:
+    target: identifiers
+    level: document
+    type: identifier
+    scheme: catalog
+  MAO_NO:
+    target: identifiers
+    level: document
+    type: identifier
+    scheme: mao_no
+  SOURCE_DB:
+    target: identifiers
+    level: document
+    type: identifier
+    scheme: source_db
+  NO_BRONZE_COMPONENTS:
+    target: identifiers
+    level: document
+    type: identifier
+    scheme: no_bronze_components
+
+  # Old ad hoc compilation hints. These are kept for review but should be
+  # replaced by the formal is_compilation / contained_in model.
+  WORK:
+    target: contained_in
+    level: document
+    type: containment_hint
+  SUBGROUP:
+    target: contained_in
+    level: document
+    type: containment_hint
+
+  AUTHOR_PAGE:
+    target: external_refs
+    level: work
+    type: external_ref
+    kind: author_page
+
+# Known bad parsed prose/comment fields from the audit. These are ignored and
+# counted in ignored_legacy_rows.csv.
+ignored_keys:
+  - Date
+  - "For documentation"
+  - "For terms of use and license"
+  - "This file contains data on the following fields from the Unihan database"
+  - "「本研究參考中央研究院歷史語言研究所金文工作室製作之『先秦甲骨金文簡牘詞彙資料庫』http"

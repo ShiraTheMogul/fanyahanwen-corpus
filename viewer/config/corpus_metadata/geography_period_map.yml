@@ -1,0 +1,561 @@
+# Fanya Hanwen Corpus legacy geography/period mapping seed.
+#
+# This file is intentionally reviewable. It is not the final JSON schema and it
+# does not edit corpus files. It converts old header values, especially old
+# NATION/TIMES/REGION values, into suggested JSON-sidecar fields.
+#
+# Field meanings:
+#   corpus_root  = current top-level corpus bucket/file cabinet, e.g. 中國漢文
+#   macro_region = broad cultural/geographic grouping, e.g. 中國, 日本, 朝鮮
+#   period       = chronological label, e.g. 唐朝, 北宋, 江戶時代
+#   polity       = state/government label where useful, e.g. 唐, 琉球國
+#   region       = smaller region/place/province/domain/etc.
+#
+version: 1
+rules:
+  dynastic_chao_suffix_is_period: true
+  treat_times_values_as_period_by_default: true
+  treat_region_values_as_region_by_default: true
+
+corpus_roots:
+  中國漢文:
+    macro_region: 中國
+  日本漢文:
+    macro_region: 日本
+  朝鮮漢文:
+    macro_region: 朝鮮
+  韓國漢文:
+    macro_region: 朝鮮
+  越南漢文:
+    macro_region: 越南
+  琉球漢文:
+    macro_region: 琉球
+  新加坡漢文:
+    macro_region: 新加坡
+  Tibet:
+    macro_region: Tibet
+  西藏漢文:
+    macro_region: Tibet
+
+values:
+  # Existing root/source-ish labels found in old NATION values.
+  朝鮮典籍:
+    corpus_root: 朝鮮漢文
+    macro_region: 朝鮮
+    polity: 朝鮮
+    confidence: medium
+    notes: Legacy source/corpus label; fold to 朝鮮 when used as old NATION.
+  朝鮮漢詩:
+    corpus_root: 朝鮮漢文
+    macro_region: 朝鮮
+    polity: 朝鮮
+    confidence: medium
+    notes: Legacy genre/source label; fold to 朝鮮 when used as old NATION.
+  日本漢詩:
+    corpus_root: 日本漢文
+    macro_region: 日本
+    confidence: medium
+    notes: Legacy genre/source label; do not preserve as polity.
+
+  # Chinese dynastic/period labels.
+  先秦:
+    macro_region: 中國
+    period: 先秦
+    confidence: high
+  商:
+    macro_region: 中國
+    polity: 商
+    confidence: high
+    notes: Treat plain 商 as the polity; 商朝/商殷朝 carry the period label.
+  商朝:
+    macro_region: 中國
+    period: 商朝
+    polity: 商
+    confidence: high
+  商殷朝:
+    macro_region: 中國
+    period: 商殷朝
+    polity: 商
+    confidence: high
+  周:
+    macro_region: 中國
+    period: 周
+    polity: 周
+    confidence: high
+  西周:
+    macro_region: 中國
+    period: 西周
+    polity: 周
+    confidence: high
+  東周:
+    macro_region: 中國
+    period: 東周
+    polity: 周
+    confidence: high
+  春秋:
+    macro_region: 中國
+    period: 春秋
+    confidence: high
+  戰國:
+    macro_region: 中國
+    period: 戰國
+    confidence: high
+  秦:
+    macro_region: 中國
+    period: 秦
+    polity: 秦
+    confidence: medium
+  秦朝:
+    macro_region: 中國
+    period: 秦朝
+    polity: 秦
+    confidence: high
+  西漢:
+    macro_region: 中國
+    period: 西漢
+    polity: 漢
+    confidence: high
+  東漢:
+    macro_region: 中國
+    period: 東漢
+    polity: 漢
+    confidence: high
+  漢:
+    macro_region: 中國
+    period: 漢
+    polity: 漢
+    confidence: medium
+  漢朝:
+    macro_region: 中國
+    period: 漢朝
+    polity: 漢
+    confidence: high
+  新朝:
+    macro_region: 中國
+    period: 新朝
+    polity: 新
+    confidence: high
+  三國:
+    macro_region: 中國
+    period: 三國
+    confidence: high
+  曹魏:
+    macro_region: 中國
+    period: 曹魏
+    polity: 曹魏
+    confidence: high
+  蜀漢:
+    macro_region: 中國
+    period: 蜀漢
+    polity: 蜀漢
+    confidence: high
+  蜀:
+    macro_region: 中國
+    period: 蜀漢
+    polity: 蜀漢
+    confidence: medium
+  東吳:
+    macro_region: 中國
+    period: 東吳
+    polity: 東吳
+    confidence: high
+  晉朝:
+    macro_region: 中國
+    period: 晉朝
+    polity: 晉
+    confidence: high
+  西晉:
+    macro_region: 中國
+    period: 西晉
+    polity: 晉
+    confidence: high
+  東晉:
+    macro_region: 中國
+    period: 東晉
+    polity: 晉
+    confidence: high
+  十六國:
+    macro_region: 中國
+    period: 十六國
+    confidence: high
+  南北朝:
+    macro_region: 中國
+    period: 南北朝
+    confidence: high
+  劉宋:
+    macro_region: 中國
+    period: 劉宋
+    polity: 劉宋
+    confidence: high
+  南齊:
+    macro_region: 中國
+    period: 南齊
+    polity: 南齊
+    confidence: high
+  南梁:
+    macro_region: 中國
+    period: 南梁
+    polity: 南梁
+    confidence: high
+  南陳:
+    macro_region: 中國
+    period: 南陳
+    polity: 南陳
+    confidence: high
+  北魏:
+    macro_region: 中國
+    period: 北魏
+    polity: 北魏
+    confidence: high
+  東魏:
+    macro_region: 中國
+    period: 東魏
+    polity: 東魏
+    confidence: high
+  西魏:
+    macro_region: 中國
+    period: 西魏
+    polity: 西魏
+    confidence: high
+  北齊:
+    macro_region: 中國
+    period: 北齊
+    polity: 北齊
+    confidence: high
+  北周:
+    macro_region: 中國
+    period: 北周
+    polity: 北周
+    confidence: high
+  隋:
+    macro_region: 中國
+    period: 隋
+    polity: 隋
+    confidence: high
+  隋朝:
+    macro_region: 中國
+    period: 隋朝
+    polity: 隋
+    confidence: high
+  唐:
+    macro_region: 中國
+    period: 唐
+    polity: 唐
+    confidence: high
+  唐朝:
+    macro_region: 中國
+    period: 唐朝
+    polity: 唐
+    confidence: high
+  五代十國:
+    macro_region: 中國
+    period: 五代十國
+    confidence: high
+  後唐:
+    macro_region: 中國
+    period: 後唐
+    polity: 後唐
+    confidence: high
+  北宋:
+    macro_region: 中國
+    period: 北宋
+    polity: 宋
+    confidence: high
+  南宋:
+    macro_region: 中國
+    period: 南宋
+    polity: 宋
+    confidence: high
+  宋:
+    macro_region: 中國
+    period: 宋
+    polity: 宋
+    confidence: medium
+  宋朝:
+    macro_region: 中國
+    period: 宋朝
+    polity: 宋
+    confidence: high
+  遼朝:
+    macro_region: 中國
+    period: 遼朝
+    polity: 遼
+    confidence: high
+  金朝:
+    macro_region: 中國
+    period: 金朝
+    polity: 金
+    confidence: high
+  西夏:
+    macro_region: 中國
+    period: 西夏
+    polity: 西夏
+    confidence: high
+  元朝:
+    macro_region: 中國
+    period: 元朝
+    polity: 元
+    confidence: high
+  明朝:
+    macro_region: 中國
+    period: 明朝
+    polity: 大明
+    confidence: high
+    notes: Use the formal dynastic-state label 大明.
+  大明:
+    macro_region: 中國
+    polity: 大明
+    confidence: high
+
+  西朝:
+    macro_region: 中國
+    period: 西朝
+    polity: 大西
+    confidence: high
+    notes: Qing-folder 西朝 material; explicitly map polity to 大西, not inferred 西.
+
+  清朝:
+    macro_region: 中國
+    period: 清朝
+    polity: 大清
+    confidence: high
+    notes: Use the formal dynastic-state label 大清.
+  淸朝:
+    macro_region: 中國
+    period: 清朝
+    polity: 大清
+    confidence: high
+    notes: Normalise 淸 to 清 and use formal dynastic-state label 大清.
+  大清:
+    macro_region: 中國
+    polity: 大清
+    confidence: high
+  中華民國:
+    macro_region: 中國
+    period: 中華民國
+    polity: 中華民國
+    confidence: high
+  中華人民共和國:
+    macro_region: 中國
+    period: 中華人民共和國
+    polity: 中華人民共和國
+    confidence: high
+  中華帝國:
+    macro_region: 中國
+    period: 中華帝國
+    polity: 中華帝國
+    confidence: high
+  大順:
+    macro_region: 中國
+    polity: 大順
+    confidence: high
+  大順朝:
+    macro_region: 中國
+    period: 大順朝
+    polity: 大順
+    confidence: high
+  大明順天國:
+    macro_region: 中國
+    polity: 大明順天國
+    confidence: high
+  東寧國:
+    macro_region: 中國
+    polity: 東寧國
+    confidence: high
+  太平天囯:
+    macro_region: 中國
+    polity: 太平天囯
+    confidence: high
+  大理國:
+    macro_region: 中國
+    polity: 大理國
+    confidence: high
+  前趙:
+    macro_region: 中國
+    period: 前趙
+    polity: 前趙
+    confidence: high
+  長沙國:
+    macro_region: 中國
+    polity: 長沙國
+    confidence: high
+  魯國:
+    macro_region: 中國
+    polity: 魯國
+    confidence: high
+  楚:
+    macro_region: 中國
+    polity: 楚
+    confidence: high
+  倗:
+    macro_region: 中國
+    polity: 倗
+    confidence: medium
+
+  # Korea / Chosŏn.
+  古朝鮮:
+    macro_region: 朝鮮
+    period: 古朝鮮
+    polity: 古朝鮮
+    confidence: high
+  高麗:
+    macro_region: 朝鮮
+    period: 高麗
+    polity: 高麗
+    confidence: high
+  朝鮮:
+    macro_region: 朝鮮
+    polity: 朝鮮
+    confidence: high
+  朝鮮王朝:
+    macro_region: 朝鮮
+    period: 朝鮮王朝
+    polity: 朝鮮
+    confidence: high
+  大韓帝國:
+    macro_region: 朝鮮
+    period: 大韓帝國
+    polity: 大韓帝國
+    confidence: high
+  大日本帝國，朝鮮:
+    macro_region: 朝鮮
+    period: 大日本帝國
+    polity: 大日本帝國
+    region: 朝鮮
+    confidence: high
+  滿洲國:
+    macro_region: 中國
+    period: 滿洲國
+    polity: 滿洲國
+    confidence: high
+  耽羅:
+    macro_region: 朝鮮
+    polity: 耽羅
+    confidence: high
+
+  # Japan / Ryukyu / nearby.
+  日本:
+    macro_region: 日本
+    polity: 日本
+    confidence: high
+  倭:
+    macro_region: 日本
+    period: 倭
+    polity: 倭
+    confidence: medium
+  大日本帝國:
+    macro_region: 日本
+    period: 大日本帝國
+    polity: 大日本帝國
+    confidence: high
+  大日本帝國，臺灣:
+    macro_region: 臺灣
+    period: 大日本帝國
+    polity: 大日本帝國
+    region: 臺灣
+    confidence: high
+  江戶時代:
+    macro_region: 日本
+    period: 江戶時代
+    confidence: high
+  江戸時代:
+    macro_region: 日本
+    period: 江戶時代
+    confidence: high
+    notes: Normalise Japanese shinjitai 戸 to traditional 戶.
+  明治時代:
+    macro_region: 日本
+    period: 明治時代
+    confidence: high
+  平安時代:
+    macro_region: 日本
+    period: 平安時代
+    confidence: high
+  飛鳥時代:
+    macro_region: 日本
+    period: 飛鳥時代
+    confidence: high
+  奈良時代:
+    macro_region: 日本
+    period: 奈良時代
+    confidence: high
+  安土桃山時代:
+    macro_region: 日本
+    period: 安土桃山時代
+    confidence: high
+  琉球國:
+    macro_region: 琉球
+    period: 琉球國
+    polity: 琉球國
+    confidence: high
+  琉球囯:
+    macro_region: 琉球
+    period: 琉球國
+    polity: 琉球國
+    confidence: high
+    notes: Normalise 囯 to 國.
+  第二尚氏王朝:
+    macro_region: 琉球
+    period: 第二尚氏王朝
+    polity: 琉球國
+    confidence: high
+  蝦夷島:
+    macro_region: 日本
+    region: 蝦夷島
+    confidence: high
+
+  # Vietnam and neighbouring polities.
+  大越:
+    macro_region: 越南
+    period: 大越
+    polity: 大越
+    confidence: high
+  阮朝:
+    macro_region: 越南
+    period: 阮朝
+    polity: 阮
+    confidence: high
+  西山朝:
+    macro_region: 越南
+    period: 西山朝
+    polity: 西山朝
+    confidence: high
+  陳朝:
+    macro_region: 越南
+    period: 陳朝
+    polity: 陳
+    confidence: high
+  後黎朝:
+    macro_region: 越南
+    period: 後黎朝
+    polity: 後黎
+    confidence: high
+  北屬及間歇獨立時期:
+    macro_region: 越南
+    period: 北屬及間歇獨立時期
+    confidence: high
+
+  # Other modern/miscellaneous labels seen in the audit.
+  新加坡:
+    macro_region: 新加坡
+    polity: 新加坡
+    confidence: high
+  英國:
+    macro_region: 英國
+    polity: 英國
+    confidence: high
+  中國:
+    macro_region: 中國
+    confidence: high
+  渤海國:
+    macro_region: 朝鮮
+    polity: 渤海國
+    confidence: high
+  西楚:
+    macro_region: 中國
+    period: 西楚
+    polity: 西楚
+    confidence: high
+  越南:
+    macro_region: 越南
+    confidence: high

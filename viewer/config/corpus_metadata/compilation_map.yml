@@ -1,0 +1,93 @@
+# Fanya Hanwen Corpus known compilation / collection map.
+#
+# This is deliberately explicit and reviewable. It does not move corpus files.
+# The map is used only to identify folders that should emit is_compilation: true
+# and a conservative worklist. It does not add unstable taxonomy/status metadata.
+version: 1
+
+known_compilations:
+  - title: 詩經
+    extractable_items: true
+    match:
+      folder_name:
+        - 詩經
+        - 毛詩
+
+  - title: 楚辭
+    extractable_items: true
+    match:
+      folder_name:
+        - 楚辭
+
+  - title: 尚書
+    extractable_items: true
+    match:
+      folder_name:
+        - 尚書
+        - 書經
+
+  - title: 國語
+    extractable_items: true
+    match:
+      folder_name:
+        - 國語
+
+  - title: 永樂大典
+    extractable_items: true
+    match:
+      folder_name:
+        - 永樂大典
+
+  - title: 四庫全書
+    extractable_items: true
+    match:
+      folder_name:
+        - 四庫全書
+        - 欽定四庫全書
+
+  - title: 大藏經
+    extractable_items: true
+    match:
+      folder_name:
+        - 大藏經
+        - 大正新脩大藏經
+        - 嘉興大藏經
+        - 乾隆大藏經
+
+  - title: 高麗大藏經
+    extractable_items: true
+    match:
+      folder_name:
+        - 高麗大藏經
+        - 高麗藏
+
+  - title: 二十四史
+    extractable_items: true
+    match:
+      folder_name:
+        - 二十四史
+
+  - title: 全唐詩
+    extractable_items: true
+    match:
+      folder_name:
+        - 全唐詩
+
+  - title: 全宋詩
+    extractable_items: true
+    match:
+      folder_name:
+        - 全宋詩
+
+  - title: 明自許先生島噫集
+    extractable_items: true
+    match:
+      folder_name:
+        - 明自許先生島噫集
+
+  - title: 李過日記
+    extractable_items: true
+    match:
+      folder_name:
+        - 李過日記
+
