@@ -1,52 +1,72 @@
 # Fanya Hanwen Corpus known compilation / collection map.
 #
 # This is deliberately explicit and reviewable. It does not move corpus files.
-# The map is used only to identify folders that should emit is_compilation: true
-# and a conservative worklist. It does not add unstable taxonomy/status metadata.
+# It tells the JSON dry-run generator when a folder represents a received
+# anthology, collection, canon, encyclopaedia, diary/collection, or large source
+# container whose internal items may deserve their own metadata later.
+#
+# Important distinction:
+#   is_compilation/worklist = the collection page can list contained works.
+#   contained_work_proposals.csv = candidates to move later into their true
+#                                  period/polity folders with their own metadata.
 version: 1
 
 known_compilations:
   - title: 詩經
+    kind: anthology
     extractable_items: true
+    notes: Received anthology; individual poems may require their own period/state metadata.
     match:
       folder_name:
         - 詩經
         - 毛詩
 
   - title: 楚辭
+    kind: anthology
     extractable_items: true
+    notes: Received anthology; individual pieces should be able to appear as their own works while remaining listed under 楚辭.
     match:
       folder_name:
         - 楚辭
 
   - title: 尚書
+    kind: received_text_collection
     extractable_items: true
+    notes: Received corpus with complex authenticity/period problems; individual pieces may require true-period metadata later.
     match:
       folder_name:
         - 尚書
         - 書經
 
   - title: 國語
+    kind: speech_collection
     extractable_items: true
+    notes: Contains speeches/material related to different states; item-level metadata should be reviewable.
     match:
       folder_name:
         - 國語
 
   - title: 永樂大典
+    kind: encyclopaedia
     extractable_items: true
+    notes: Large compilation/container; internal works should not be lifted to compilation-level metadata.
     match:
       folder_name:
         - 永樂大典
 
   - title: 四庫全書
+    kind: collectanea
     extractable_items: true
+    notes: Large imperial collectanea; contained works should remain individually modelled.
     match:
       folder_name:
         - 四庫全書
         - 欽定四庫全書
 
   - title: 大藏經
+    kind: canon
     extractable_items: true
+    notes: Buddhist canon container; individual texts/translations/commentaries should be individually modelled where possible.
     match:
       folder_name:
         - 大藏經
@@ -55,39 +75,50 @@ known_compilations:
         - 乾隆大藏經
 
   - title: 高麗大藏經
+    kind: canon
     extractable_items: true
+    notes: Korean Buddhist canon container; contained texts should be individually modelled where possible.
     match:
       folder_name:
         - 高麗大藏經
         - 高麗藏
 
   - title: 二十四史
+    kind: history_collection
     extractable_items: true
+    notes: Historiographical collection; member histories and sections should not be collapsed into one period/polity.
     match:
       folder_name:
         - 二十四史
 
   - title: 全唐詩
+    kind: poetry_collection
     extractable_items: true
+    notes: Poetry collection; individual poems/authors should remain item-level when present.
     match:
       folder_name:
         - 全唐詩
 
   - title: 全宋詩
+    kind: poetry_collection
     extractable_items: true
+    notes: Poetry collection; individual poems/authors should remain item-level when present.
     match:
       folder_name:
         - 全宋詩
 
   - title: 明自許先生島噫集
+    kind: collected_works
     extractable_items: true
+    notes: Current audit shows item-title/container-title conflicts; preserve contained items separately.
     match:
       folder_name:
         - 明自許先生島噫集
 
   - title: 李過日記
+    kind: diary
     extractable_items: true
+    notes: Diary entries can be listed under the diary while retaining document/item metadata.
     match:
       folder_name:
         - 李過日記
-

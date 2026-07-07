@@ -18,6 +18,13 @@ exclude_file_names:
 exclude_path_patterns:
   - '(^|/)metadata\.json$'
 
+# Source/wiki buckets are source corpora, not ordinary work folders.
+# The generator treats direct txt pages in these roots as page-level work
+# records instead of one fake work called clean/raw.
+source_buckets:
+  - 維基大典
+  - 礦藝大典
+
 defaults:
   is_compilation: false
   known_commentaries: []

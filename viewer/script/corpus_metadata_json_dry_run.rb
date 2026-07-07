@@ -46,6 +46,7 @@ class CorpusMetadataJsonDryRun
     @id_registry_path = options[:id_registry] ? Pathname(options[:id_registry]).expand_path : nil
     @id_registry_output_path = nil
     @json_output_mode = options.fetch(:json_output_mode).to_s
+    @source_mode = options.fetch(:source_mode).to_s
     @progress_every = options.fetch(:progress_every).to_i
 
     @key_map = load_yaml(@key_map_path)
@@ -82,7 +83,7 @@ class CorpusMetadataJsonDryRun
     progress "validating inputs"
     validate!
     prepare_output!
-    progress "loading file list"
+    progress "loading file list (source_mode=#{@source_mode})"
     load_files!
     progress "loaded #{@docs_by_path.length} documents in #{@works.length} work folders"
     progress "loading legacy metadata rows"
@@ -123,6 +124,9 @@ class CorpusMetadataJsonDryRun
     raise ArgumentError, "--apply requires --corpus-root" if @apply && !@corpus_root
     unless %w[jsonl files both].include?(@json_output_mode)
       raise ArgumentError, "--json-output-mode must be one of: jsonl, files, both"
+    end
+    unless %w[clean all raw].include?(@source_mode)
+      raise ArgumentError, "--source-mode must be one of: clean, all, raw"
     end
   end
 
@@ -270,6 +274,7 @@ class CorpusMetadataJsonDryRun
     file_name = File.basename(text)
     return true if Array(@key_map.dig("exclude_path_prefixes")).any? { |prefix| text.start_with?(prefix.to_s) }
     return true if Array(@key_map.dig("exclude_file_names")).any? { |name| file_name == name.to_s }
+    return true if source_mode_excluded_path?(text)
 
     Array(@key_map.dig("exclude_path_patterns")).any? do |pattern|
       begin
@@ -280,9 +285,50 @@ class CorpusMetadataJsonDryRun
     end
   end
 
+  def source_mode_excluded_path?(path)
+    parts = path.to_s.split("/")
+    has_clean = parts.include?("clean")
+    has_raw = parts.include?("raw")
+
+    case @source_mode
+    when "clean"
+      has_raw
+    when "raw"
+      has_clean
+    else
+      false
+    end
+  end
+
+  def source_bucket_roots
+    @source_bucket_roots ||= Array(@key_map.dig("source_buckets")).map(&:to_s)
+  end
+
+  def source_bucket_path?(path)
+    source_bucket_roots.include?(path.to_s.split("/").first)
+  end
+
+  def source_bucket_work_folder_for_path(path)
+    parts = path.to_s.split("/")
+    return nil unless source_bucket_roots.include?(parts[0])
+
+    mode_index = %w[clean raw].include?(parts[1]) ? 1 : nil
+    base_parts = mode_index ? parts[0..mode_index] : [parts[0]]
+    rest = parts[(mode_index ? 2 : 1)..] || []
+    return nil if rest.empty?
+
+    # Source buckets like 維基大典 can store pages as direct txt files under
+    # clean/. Treat each direct file as its own virtual work for JSON review,
+    # otherwise the whole clean folder becomes one fake work called “clean”.
+    if rest.length == 1 && File.extname(rest.first) == ".txt"
+      base_parts + [file_title(rest.first)]
+    else
+      base_parts + rest[0..-2]
+    end.join("/")
+  end
 
   def work_folder_for_path(path, fallback_parent)
-    compilation_root_for_path(path) || fallback_parent
+    compilation_root_for_path(path) || source_bucket_work_folder_for_path(path) || fallback_parent
   end
 
   def compilation_root_for_path(path)
@@ -624,6 +670,18 @@ class CorpusMetadataJsonDryRun
     end
   end
 
+  def work_title_for_payload(work, folds, compilation_rule)
+    title = folds.dig(:scalars, "title")
+    title = nil if source_bucket_generic_title?(work, title)
+    title || (compilation_rule && compilation_rule["title"]) || folder_title(work.folder)
+  end
+
+  def source_bucket_generic_title?(work, title)
+    return false unless title
+    root = work.folder.to_s.split("/").first
+    source_bucket_roots.include?(root) && title.to_s.strip == root
+  end
+
   def build_payload(work)
     folds = work_folds(work)
     geography = folds.fetch(:geography)
@@ -641,7 +699,7 @@ class CorpusMetadataJsonDryRun
       "period" => geography["period"],
       "polity" => geography["polity"],
       "region" => geography["region"],
-      "title" => folds.dig(:scalars, "title") || (compilation_rule && compilation_rule["title"]) || folder_title(work.folder),
+      "title" => work_title_for_payload(work, folds, compilation_rule),
       "work_base_title" => folds.dig(:scalars, "work_base_title"),
       "date_label" => folds.dig(:scalars, "date_label"),
       "authors" => folds.dig(:lists, "authors"),
@@ -1367,7 +1425,7 @@ class CorpusMetadataJsonDryRun
           json_destination(work).to_s,
           apply_destination(work),
           work.documents.length,
-          folds.dig(:scalars, "title") || (compilation_rule && compilation_rule["title"]) || folder_title(folder),
+          work_title_for_payload(work, folds, compilation_rule),
           compilation_rule ? true : false,
           @proposal_counts_by_work_id[work.work_id],
           @proposal_document_counts_by_work_id[work.work_id],
@@ -1452,6 +1510,7 @@ class CorpusMetadataJsonDryRun
       version: 2,
       mode: @apply ? "apply" : "dry_run",
       staged_path_mode: @apply ? "apply" : @json_output_mode,
+      source_mode: @source_mode,
       started_at: @started_at.iso8601,
       finished_at: Time.now.utc.iso8601,
       audit_output: @audit_output.to_s,
@@ -1476,6 +1535,7 @@ class CorpusMetadataJsonDryRun
 
       - Mode: `#{@apply ? "apply" : "dry_run"}`
       - Staged path mode: `#{@apply ? "apply" : @json_output_mode}`
+      - Source mode: `#{@source_mode}`
       - Works/folders: #{@works.length}
       - Documents/txt files: #{@docs_by_path.length}
       - Metadata records written: #{@metadata_records_written}
@@ -1498,6 +1558,13 @@ class CorpusMetadataJsonDryRun
       - `ignored_legacy_rows.csv`: known bad parse rows deliberately excluded.
       - `unknown_legacy_rows.csv`: legacy keys not yet mapped.
       - `json_generation_summary.json`: machine-readable run summary.
+
+      Source-mode rule:
+
+      - Default `--source-mode clean` excludes paths under any `raw/` segment.
+      - Use `--source-mode all` only when you deliberately want raw and clean source material in the same review run.
+      - Use `--source-mode raw` only for inspecting deprecated raw material.
+      - Source buckets such as `維基大典` and `礦藝大典` are split into page-level work records instead of fake `clean`/`raw` bucket works.
 
       Fold-up rule:
 
@@ -1555,6 +1622,7 @@ options = {
   apply: false,
   mirror_staged_paths: false,
   json_output_mode: "jsonl",
+  source_mode: "clean",
   progress_every: 25_000,
   work_id_start: 1,
   document_id_start: 1,
@@ -1575,6 +1643,7 @@ parser = OptionParser.new do |opts|
   opts.on("--apply", "Write metadata.json into the corpus instead of staged_metadata (dangerous; review first)") { options[:apply] = true }
   opts.on("--mirror-staged-paths", "With --json-output-mode files/both, mirror corpus paths instead of short by_work_id paths") { options[:mirror_staged_paths] = true }
   opts.on("--json-output-mode MODE", "Dry-run output mode: jsonl, files, or both. Default: jsonl") { |value| options[:json_output_mode] = value }
+  opts.on("--source-mode MODE", "Source mode: clean, all, or raw. Default: clean; clean excludes raw/ paths") { |value| options[:source_mode] = value }
   opts.on("--progress-every N", Integer, "Print progress every N loaded/written rows. Default: 25000; 0 disables") { |value| options[:progress_every] = value }
   opts.on("--max-folders N", Integer, "Smoke-test only the first N folders") { |value| options[:max_folders] = value }
   opts.on("--max-files N", Integer, "Smoke-test only the first N txt files") { |value| options[:max_files] = value }
