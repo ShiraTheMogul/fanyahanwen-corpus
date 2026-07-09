@@ -662,7 +662,7 @@
       <% end %>
     </div>
 
-    <%# Metadata is parsed from leading "#" lines in the corpus file and is display-only. %>
+    <%# Metadata is loaded from metadata.json beside the work text and is display-only. %>
     <% if (defined?(@meta) && @meta.present?) %>
       <details class="corpus-metabox"
                style="margin: 0 0 10px; border: 1px solid rgba(0,0,0,0.10); border-radius: 12px; padding: 10px; background: #fff;">

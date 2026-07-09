@@ -47,8 +47,11 @@ class CorpusViewerController < ApplicationController
       end
       @source_abs_path = fs.resolve(@source_rel_path)
 
+      metadata_store = CorpusMetadataStore.new(root: root, fs: fs)
       source_raw = fs.read_text(@source_abs_path)
-      @meta, @source_body = split_corpus_front_matter(source_raw)
+      @meta = metadata_store.display_entries_for_path(@source_rel_path)
+      @meta = metadata_store.legacy_entries_from_text(source_raw) if @meta.blank?
+      @source_body = body_from_text(source_raw)
 
       @available_annotation_systems = available_annotation_systems_for(fs, @source_rel_path)
       @annotation_system_bodies = load_annotation_system_bodies(fs, @available_annotation_systems)
@@ -76,7 +79,7 @@ class CorpusViewerController < ApplicationController
 
       @active_text_target_path = view_rel_path
       view_raw = fs.read_text(fs.resolve(view_rel_path))
-      _view_meta, body = split_corpus_front_matter(view_raw)
+      body = body_from_text(view_raw)
 
       @raw_body = body
       @text = view_text(body)
@@ -95,20 +98,20 @@ class CorpusViewerController < ApplicationController
   private
 
   # Use the same body boundary as corpus search so body-offset deep links are
-  # exact even with BOMs, leading blank lines, and metadata separators.
-  def split_corpus_front_matter(raw)
-    document = CorpusSearch::DocumentReader.parse(raw)
-    parsed = document.metadata_entries.map do |key, value|
-      [normalize_label(key), value]
-    end
-
-    [parsed, document.body]
+  # exact. New corpus files should already be body-only; DocumentReader remains
+  # as a legacy fallback for old/ticket-created files that still contain leading
+  # # metadata headers.
+  def body_from_text(raw)
+    CorpusSearch::DocumentReader.parse(raw).body
   end
 
   LABEL_MAP = {
     "TIMES" => "Time and/or Location",
     "TIME" => "Time and/or Location",
     "CATEGORY" => "Category",
+    "CATEGORIES" => "Category",
+    "SOURCE_CATEGORIES" => "Ws Categories",
+    "WS_CATEGORIES" => "Ws Categories",
     "WORK_BASE_TITLE" => "Work",
     "WORK_TITLE" => "Work",
     "PAGE_TITLE" => "Page title",
@@ -165,8 +168,7 @@ class CorpusViewerController < ApplicationController
   def load_annotation_system_bodies(fs, available_annotation_systems)
     available_annotation_systems.each_with_object({}) do |(annotation_system, rel), memo|
       raw = fs.read_text(fs.resolve(rel))
-      _meta, body = split_corpus_front_matter(raw)
-      memo[annotation_system] = body
+      memo[annotation_system] = body_from_text(raw)
     end
   end
 

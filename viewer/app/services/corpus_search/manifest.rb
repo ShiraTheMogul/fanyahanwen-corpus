@@ -7,11 +7,12 @@ require "time"
 module CorpusSearch
   # Rebuildable index of corpus files and their light metadata.
   #
-  # The corpus .txt files remain the source of truth. This manifest only records
-  # enough information to find files safely, filter them, and notice changes.
+  # Corpus .txt files are body text; per-work metadata.json files are the
+  # metadata source of truth. This manifest records enough information to find
+  # files safely, filter them, and notice changes.
   class Manifest
     DEFAULT_SKIP_DIRS = %w[.git .svn node_modules tmp log storage bak vendor].freeze
-    VERSION = 3
+    VERSION = 4
     CACHE_PATH = "manifest.json.gz"
     FRONT_MATTER_READ_BYTES = 65_536
 
@@ -37,6 +38,7 @@ module CorpusSearch
       @max_files = integer_env("CORPUS_SEARCH_MAX_FILES", 0)
       @debug_dirs = ENV["CORPUS_SEARCH_DEBUG_DIRS"].to_s == "1"
       @silent = ENV["CORPUS_SEARCH_SILENT"].to_s == "1"
+      @metadata_store = CorpusMetadataStore.new(root: @root)
     end
 
     def load_cached_or_refresh!
@@ -132,7 +134,8 @@ module CorpusSearch
         relative_path = relative_path_for(absolute_path)
 
         stat = File.stat(absolute_path)
-        fingerprint = fingerprint_for(stat)
+        metadata_path = @metadata_store.metadata_path_for(relative_path)
+        fingerprint = fingerprint_for(stat, metadata_path)
         cached = cached_by_path[relative_path]
 
         documents << if cached && cached["fingerprint"] == fingerprint
@@ -208,10 +211,9 @@ module CorpusSearch
     end
 
     def build_document(relative_path, absolute_path, stat, fingerprint)
-      raw_header = read_front_matter_sample(absolute_path)
-      metadata, = FrontMatter.split(raw_header)
+      metadata = @metadata_store.search_metadata_for_path(relative_path)
       path_metadata = metadata_from_path(relative_path)
-      merged = path_metadata.merge(metadata) { |_key, path_value, header_value| header_value.presence || path_value }
+      merged = path_metadata.merge(metadata) { |_key, path_value, json_value| json_value.presence || path_value }
 
       role = DocumentRole.classify(relative_path)
 
@@ -235,16 +237,6 @@ module CorpusSearch
         "mtime" => stat.mtime.to_f,
         "fingerprint" => fingerprint
       }
-    end
-
-    # The manifest only needs header/front-matter metadata. Reading the whole file
-    # here is expensive and can block badly under WSL + OneDrive. The actual body
-    # is read later only when a search needs that file.
-    def read_front_matter_sample(absolute_path)
-      sample = File.open(absolute_path, "rb") { |file| file.read(FRONT_MATTER_READ_BYTES).to_s }
-      sample.force_encoding("UTF-8")
-      sample = sample.encode("UTF-8", invalid: :replace, undef: :replace, replace: "")
-      sample.delete_prefix("\uFEFF")
     end
 
     def metadata_from_path(relative_path)
@@ -278,8 +270,14 @@ module CorpusSearch
       Digest::SHA256.hexdigest(relative_path).first(24)
     end
 
-    def fingerprint_for(stat)
-      "#{stat.size}:#{stat.mtime.to_f}"
+    def fingerprint_for(stat, metadata_path = nil)
+      metadata_fingerprint = if metadata_path && File.file?(metadata_path)
+        metadata_stat = File.stat(metadata_path)
+        ":metadata=#{metadata_stat.size}:#{metadata_stat.mtime.to_f}"
+      else
+        ":metadata=none"
+      end
+      "#{stat.size}:#{stat.mtime.to_f}#{metadata_fingerprint}"
     end
 
     def load_from_payload(payload)

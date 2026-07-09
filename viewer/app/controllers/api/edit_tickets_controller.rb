@@ -792,6 +792,19 @@ module Api
         preview_rows << { "path" => file_rel, "page_title" => page_title, "chars" => body.length }
       end
 
+      metadata_json = build_submission_metadata_json(
+        target_dir_rel: target_dir_rel,
+        work_folder: work_folder,
+        nation: nation,
+        work_title: work_title,
+        author: author,
+        source_citation: source_citation,
+        url: url,
+        preview_rows: preview_rows,
+        text_type: text_type
+      )
+      ticket_files << { path: "corpus/#{target_dir_rel}/metadata.json", text: metadata_json }
+
       diff_text = ticket_files.map { |row| unified_diff_via_git("", row[:text], row[:path]) }.reject(&:blank?).join("\n")
       return render(json: { ok: false, error: "No changes detected" }, status: 422) if diff_text.blank?
 
@@ -1051,19 +1064,31 @@ module Api
     end
 
     def build_submission_text(nation:, work_title:, author:, page_title:, source_citation:, url:, body:)
-      lines = []
-      lines << "# NATION: #{nation}" if nation.present?
-      lines << "# WORK_TITLE: #{work_title}" if work_title.present?
-      lines << "# AUTHOR: #{author}" if author.present?
-      lines << "# PAGE_TITLE: #{page_title}" if page_title.present?
-      lines << "# SOURCE: #{source_citation}" if source_citation.present?
-      lines << "# URL: #{url}" if url.present?
+      normalize_ticket_text(body)
+    end
 
-      metadata = lines.join("\n")
-      text = normalize_ticket_text(body)
-      return text if metadata.blank?
+    def build_submission_metadata_json(target_dir_rel:, work_folder:, nation:, work_title:, author:, source_citation:, url:, preview_rows:, text_type:)
+      title = work_title.presence || work_folder
+      payload = {
+        "schema_version" => 1,
+        "title" => title,
+        "work_base_title" => title,
+        "corpus_root" => nation.presence,
+        "authors" => author.present? ? [author] : [],
+        "sources" => [source_citation, url].map(&:presence).compact,
+        "is_compilation" => false,
+        "documents" => Array(preview_rows).map do |row|
+          {
+            "file" => File.basename(row.fetch("path")),
+            "path" => row.fetch("path"),
+            "page_title" => row["page_title"].presence
+          }.compact
+        end,
+        "known_commentaries" => []
+      }.compact
 
-      metadata + "\n\n" + text.sub(/\A\n+/, "")
+      JSON.pretty_generate(payload) + "
+"
     end
 
     def clean_submission_directory?(relative_path)
