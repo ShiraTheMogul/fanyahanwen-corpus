@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "work_id": 97501,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "period": "西周早期或中期",
+  "title": "ASDC｜金文｜西周早期或中期｜殷周金文集成｜06431",
+  "categories": [
+    "早期或中期",
+    "西周"
+  ],
+  "sources": [
+    "https://inscription.asdc.sinica.edu.tw",
+    "殷周金文集成"
+  ],
+  "identifiers": [
+    {
+      "scheme": "source_db",
+      "value": "先秦甲骨金文簡牘詞彙資料庫"
+    },
+    {
+      "scheme": "entry_number",
+      "value": "110596"
+    },
+    {
+      "scheme": "legacy_id",
+      "value": "06431"
+    },
+    {
+      "scheme": "no_bronze_components",
+      "value": "2"
+    },
+    {
+      "scheme": "legacy_unique_id",
+      "value": "c6dc528688fd"
+    },
+    {
+      "scheme": "entry_number",
+      "value": "110595"
+    },
+    {
+      "scheme": "no_bronze_components",
+      "value": "1"
+    },
+    {
+      "scheme": "legacy_unique_id",
+      "value": "dd774a6a520d"
+    }
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 5541,
+      "title": "金文",
+      "edition_id": 1388,
+      "edition_label": "金文本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 1388,
+      "edition_label": "金文本",
+      "source_work_id": 5541,
+      "source_title": "金文",
+      "documents": [
+        {
+          "document_id": 15327,
+          "file": "06431_c6dc528688fd.txt",
+          "path": "中國漢文/clean/周朝/西周/周金文/早期或中期/ASDC｜金文｜西周早期或中期｜殷周金文集成｜06431/06431_c6dc528688fd.txt",
+          "title": "ASDC｜金文｜西周早期或中期｜殷周金文集成｜06431",
+          "medium": "金文",
+          "identifiers": [
+            {
+              "scheme": "source_db",
+              "value": "先秦甲骨金文簡牘詞彙資料庫"
+            },
+            {
+              "scheme": "entry_number",
+              "value": "110596"
+            },
+            {
+              "scheme": "legacy_id",
+              "value": "06431"
+            },
+            {
+              "scheme": "no_bronze_components",
+              "value": "2"
+            },
+            {
+              "scheme": "legacy_unique_id",
+              "value": "c6dc528688fd"
+            }
+          ],
+          "geography_override": {
+            "period": "西周早期或中期"
+          },
+          "body_start_line": 14
+        },
+        {
+          "document_id": 15328,
+          "file": "06431_dd774a6a520d.txt",
+          "path": "中國漢文/clean/周朝/西周/周金文/早期或中期/ASDC｜金文｜西周早期或中期｜殷周金文集成｜06431/06431_dd774a6a520d.txt",
+          "title": "ASDC｜金文｜西周早期或中期｜殷周金文集成｜06431",
+          "medium": "金文",
+          "identifiers": [
+            {
+              "scheme": "source_db",
+              "value": "先秦甲骨金文簡牘詞彙資料庫"
+            },
+            {
+              "scheme": "entry_number",
+              "value": "110595"
+            },
+            {
+              "scheme": "legacy_id",
+              "value": "06431"
+            },
+            {
+              "scheme": "no_bronze_components",
+              "value": "1"
+            },
+            {
+              "scheme": "legacy_unique_id",
+              "value": "dd774a6a520d"
+            }
+          ],
+          "geography_override": {
+            "period": "西周早期或中期"
+          },
+          "body_start_line": 14
+        }
+      ]
+    }
+  ]
+}

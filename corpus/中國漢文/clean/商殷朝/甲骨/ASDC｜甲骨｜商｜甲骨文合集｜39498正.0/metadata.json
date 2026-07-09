@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "work_id": 117436,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "period": "商朝",
+  "polity": "商",
+  "title": "ASDC｜甲骨｜商｜甲骨文合集｜39498正.0",
+  "categories": [
+    "不詳"
+  ],
+  "sources": [
+    "https://inscription.asdc.sinica.edu.tw",
+    "甲骨文合集"
+  ],
+  "identifiers": [
+    {
+      "scheme": "source_db",
+      "value": "先秦甲骨金文簡牘詞彙資料庫"
+    },
+    {
+      "scheme": "entry_number",
+      "value": "71725"
+    },
+    {
+      "scheme": "legacy_id",
+      "value": "39498正.0"
+    },
+    {
+      "scheme": "no_bronze_components",
+      "value": "0"
+    },
+    {
+      "scheme": "legacy_unique_id",
+      "value": "e1e7770c1d9a"
+    }
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 50041,
+      "title": "甲骨",
+      "edition_id": 21323,
+      "edition_label": "甲骨本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 21323,
+      "edition_label": "甲骨本",
+      "source_work_id": 50041,
+      "source_title": "甲骨",
+      "documents": [
+        {
+          "document_id": 83262,
+          "file": "39498正.0_e1e7770c1d9a.txt",
+          "path": "中國漢文/clean/商殷朝/甲骨/ASDC｜甲骨｜商｜甲骨文合集｜39498正.0/39498正.0_e1e7770c1d9a.txt",
+          "title": "ASDC｜甲骨｜商｜甲骨文合集｜39498正.0",
+          "identifiers": [
+            {
+              "scheme": "source_db",
+              "value": "先秦甲骨金文簡牘詞彙資料庫"
+            },
+            {
+              "scheme": "entry_number",
+              "value": "71725"
+            },
+            {
+              "scheme": "legacy_id",
+              "value": "39498正.0"
+            },
+            {
+              "scheme": "no_bronze_components",
+              "value": "0"
+            },
+            {
+              "scheme": "legacy_unique_id",
+              "value": "e1e7770c1d9a"
+            }
+          ],
+          "body_start_line": 15
+        }
+      ]
+    }
+  ]
+}

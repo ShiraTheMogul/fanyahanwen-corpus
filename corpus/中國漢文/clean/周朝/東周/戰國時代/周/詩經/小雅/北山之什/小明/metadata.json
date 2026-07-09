@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "work_id": 96346,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "title": "小明",
+  "categories": [
+    "小雅",
+    "谷風之什"
+  ],
+  "sources": [
+    "https://zh.wikisource.org/wiki/%E8%A9%A9%E7%B6%93/%E5%B0%8F%E6%98%8E"
+  ],
+  "identifiers": [
+    {
+      "scheme": "mao_no",
+      "value": "213"
+    }
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 5463,
+      "title": "詩經",
+      "edition_id": 233,
+      "edition_label": "詩經本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 233,
+      "edition_label": "詩經本",
+      "source_work_id": 5463,
+      "source_title": "詩經",
+      "documents": [
+        {
+          "document_id": 12016,
+          "file": "小明.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/周/詩經/小雅/北山之什/小明/小明.txt",
+          "title": "詩經",
+          "page_title": "詩經/小明",
+          "display_title": "小明",
+          "identifiers": [
+            {
+              "scheme": "mao_no",
+              "value": "213"
+            }
+          ],
+          "body_start_line": 8
+        },
+        {
+          "document_id": 12017,
+          "file": "小明_毛詩序.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/周/詩經/小雅/北山之什/小明/小明_毛詩序.txt",
+          "title": "詩經",
+          "page_title": "詩經/小明",
+          "display_title": "小明",
+          "authors": [
+            "毛亨"
+          ],
+          "identifiers": [
+            {
+              "scheme": "mao_no",
+              "value": "213"
+            }
+          ],
+          "body_start_line": 9
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "work_id": 96395,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "title": "何草不黃",
+  "categories": [
+    "小雅",
+    "魚藻之什"
+  ],
+  "sources": [
+    "https://zh.wikisource.org/wiki/%E8%A9%A9%E7%B6%93/%E4%BD%95%E8%8D%89%E4%B8%8D%E9%BB%83"
+  ],
+  "identifiers": [
+    {
+      "scheme": "mao_no",
+      "value": "240"
+    }
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 5463,
+      "title": "詩經",
+      "edition_id": 282,
+      "edition_label": "詩經本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 282,
+      "edition_label": "詩經本",
+      "source_work_id": 5463,
+      "source_title": "詩經",
+      "documents": [
+        {
+          "document_id": 12115,
+          "file": "何草不黃.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/周/詩經/小雅/都人士之什/何草不黃/何草不黃.txt",
+          "title": "詩經",
+          "page_title": "詩經/何草不黃",
+          "display_title": "何草不黃",
+          "identifiers": [
+            {
+              "scheme": "mao_no",
+              "value": "240"
+            }
+          ],
+          "body_start_line": 8
+        },
+        {
+          "document_id": 12116,
+          "file": "何草不黃_毛詩序.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/周/詩經/小雅/都人士之什/何草不黃/何草不黃_毛詩序.txt",
+          "title": "詩經",
+          "page_title": "詩經/何草不黃",
+          "display_title": "何草不黃",
+          "authors": [
+            "毛亨"
+          ],
+          "identifiers": [
+            {
+              "scheme": "mao_no",
+              "value": "240"
+            }
+          ],
+          "body_start_line": 9
+        }
+      ]
+    }
+  ]
+}

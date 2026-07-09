@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "work_id": 126990,
+  "corpus_root": "四庫全書",
+  "title": "林間録",
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 80277,
+      "title": "四庫全書",
+      "edition_id": 30877,
+      "edition_label": "四庫全書本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 30877,
+      "edition_label": "四庫全書本",
+      "source_work_id": 80277,
+      "source_title": "四庫全書",
+      "documents": [
+        {
+          "document_id": 195320,
+          "file": "林間録__juan_01.txt",
+          "path": "四庫全書/clean/子部/釋家類/林間録/林間録__juan_01.txt",
+          "title": "林間録 (四庫全書本)",
+          "page_title": "林間録 (四庫全書本)/卷上",
+          "display_title": "林間録",
+          "source_categories": [
+            "247年 (提及)",
+            "514年 (提及)",
+            "520年 (提及)",
+            "992年 (提及)",
+            "PD-old"
+          ],
+          "body_start_line": 6
+        },
+        {
+          "document_id": 195321,
+          "file": "林間録__juan_02.txt",
+          "path": "四庫全書/clean/子部/釋家類/林間録/林間録__juan_02.txt",
+          "title": "林間録 (四庫全書本)",
+          "page_title": "林間録 (四庫全書本)/卷下",
+          "display_title": "林間録",
+          "source_categories": [
+            "1050年 (提及)",
+            "1060年 (提及)",
+            "PD-old"
+          ],
+          "body_start_line": 6
+        }
+      ]
+    }
+  ]
+}

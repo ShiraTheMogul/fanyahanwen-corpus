@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "work_id": 124645,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "period": "西漢",
+  "polity": "漢",
+  "title": "惜誓",
+  "source_categories": [
+    "西漢",
+    "賈誼"
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 79840,
+      "title": "楚辭",
+      "edition_id": 28532,
+      "edition_label": "楚辭本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 28532,
+      "edition_label": "楚辭本",
+      "source_work_id": 79840,
+      "source_title": "楚辭",
+      "documents": [
+        {
+          "document_id": 172503,
+          "file": "楚辭__juan_03.txt",
+          "path": "中國漢文/clean/漢朝/西漢/楚辭/惜誓/楚辭__juan_03.txt",
+          "page_title": "楚辭/惜誓",
+          "body_start_line": 6
+        }
+      ]
+    }
+  ]
+}

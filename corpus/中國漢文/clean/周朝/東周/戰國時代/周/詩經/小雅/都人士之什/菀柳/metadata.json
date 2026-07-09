@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "work_id": 96401,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "title": "菀柳",
+  "categories": [
+    "小雅",
+    "魚藻之什"
+  ],
+  "sources": [
+    "https://zh.wikisource.org/wiki/%E8%A9%A9%E7%B6%93/%E8%8F%80%E6%9F%B3"
+  ],
+  "identifiers": [
+    {
+      "scheme": "mao_no",
+      "value": "230"
+    }
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 5463,
+      "title": "詩經",
+      "edition_id": 288,
+      "edition_label": "詩經本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 288,
+      "edition_label": "詩經本",
+      "source_work_id": 5463,
+      "source_title": "詩經",
+      "documents": [
+        {
+          "document_id": 12127,
+          "file": "菀柳.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/周/詩經/小雅/都人士之什/菀柳/菀柳.txt",
+          "title": "詩經",
+          "page_title": "詩經/菀柳",
+          "display_title": "菀柳",
+          "identifiers": [
+            {
+              "scheme": "mao_no",
+              "value": "230"
+            }
+          ],
+          "body_start_line": 8
+        },
+        {
+          "document_id": 12128,
+          "file": "菀柳_毛詩序.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/周/詩經/小雅/都人士之什/菀柳/菀柳_毛詩序.txt",
+          "title": "詩經",
+          "page_title": "詩經/菀柳",
+          "display_title": "菀柳",
+          "authors": [
+            "毛亨"
+          ],
+          "identifiers": [
+            {
+              "scheme": "mao_no",
+              "value": "230"
+            }
+          ],
+          "body_start_line": 9
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "work_id": 122025,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "period": "商代晚期",
+  "title": "ASDC｜金文｜商代晚期｜殷周金文集成｜04742",
+  "categories": [
+    "晚期"
+  ],
+  "sources": [
+    "https://inscription.asdc.sinica.edu.tw",
+    "殷周金文集成"
+  ],
+  "identifiers": [
+    {
+      "scheme": "source_db",
+      "value": "先秦甲骨金文簡牘詞彙資料庫"
+    },
+    {
+      "scheme": "entry_number",
+      "value": "108402"
+    },
+    {
+      "scheme": "legacy_id",
+      "value": "04742"
+    },
+    {
+      "scheme": "no_bronze_components",
+      "value": "1"
+    },
+    {
+      "scheme": "legacy_unique_id",
+      "value": "484752031deb"
+    },
+    {
+      "scheme": "entry_number",
+      "value": "108401"
+    },
+    {
+      "scheme": "no_bronze_components",
+      "value": "2"
+    },
+    {
+      "scheme": "legacy_unique_id",
+      "value": "88ab852c5be7"
+    }
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 50045,
+      "title": "金文",
+      "edition_id": 25912,
+      "edition_label": "金文本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 25912,
+      "edition_label": "金文本",
+      "source_work_id": 50045,
+      "source_title": "金文",
+      "documents": [
+        {
+          "document_id": 92197,
+          "file": "04742_484752031deb.txt",
+          "path": "中國漢文/clean/商殷朝/金文/晚期/ASDC｜金文｜商代晚期｜殷周金文集成｜04742/04742_484752031deb.txt",
+          "title": "ASDC｜金文｜商代晚期｜殷周金文集成｜04742",
+          "medium": "金文",
+          "identifiers": [
+            {
+              "scheme": "source_db",
+              "value": "先秦甲骨金文簡牘詞彙資料庫"
+            },
+            {
+              "scheme": "entry_number",
+              "value": "108402"
+            },
+            {
+              "scheme": "legacy_id",
+              "value": "04742"
+            },
+            {
+              "scheme": "no_bronze_components",
+              "value": "1"
+            },
+            {
+              "scheme": "legacy_unique_id",
+              "value": "484752031deb"
+            }
+          ],
+          "geography_override": {
+            "period": "商代晚期"
+          },
+          "body_start_line": 14
+        },
+        {
+          "document_id": 92198,
+          "file": "04742_88ab852c5be7.txt",
+          "path": "中國漢文/clean/商殷朝/金文/晚期/ASDC｜金文｜商代晚期｜殷周金文集成｜04742/04742_88ab852c5be7.txt",
+          "title": "ASDC｜金文｜商代晚期｜殷周金文集成｜04742",
+          "medium": "金文",
+          "identifiers": [
+            {
+              "scheme": "source_db",
+              "value": "先秦甲骨金文簡牘詞彙資料庫"
+            },
+            {
+              "scheme": "entry_number",
+              "value": "108401"
+            },
+            {
+              "scheme": "legacy_id",
+              "value": "04742"
+            },
+            {
+              "scheme": "no_bronze_components",
+              "value": "2"
+            },
+            {
+              "scheme": "legacy_unique_id",
+              "value": "88ab852c5be7"
+            }
+          ],
+          "geography_override": {
+            "period": "商代晚期"
+          },
+          "body_start_line": 14
+        }
+      ]
+    }
+  ]
+}

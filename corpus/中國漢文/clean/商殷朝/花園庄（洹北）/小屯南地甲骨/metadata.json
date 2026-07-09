@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "work_id": 50042,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "period": "商殷朝",
+  "polity": "商",
+  "title": "甲骨",
+  "categories": [
+    "商殷朝",
+    "甲骨文",
+    "出土文獻"
+  ],
+  "sources": [
+    "A. C. (2020). The Oracle Bone Inscriptions from Huayuanzhuang East. Translated with an Introduction and Commentary. De Gruyter. ISBN: 978-1-5015-1448-7. https://doi.org/10.1515/9781501505294-001",
+    "Schwartz"
+  ],
+  "is_compilation": true,
+  "worklist": [],
+  "identifiers": [
+    {
+      "scheme": "catalog",
+      "value": "TN 2605"
+    },
+    {
+      "scheme": "catalog",
+      "value": "TN 81"
+    }
+  ],
+  "contained_in": [
+    {
+      "work_id": 50042,
+      "title": "甲骨",
+      "edition_id": 24756,
+      "edition_label": "甲骨本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 24756,
+      "edition_label": "甲骨本",
+      "source_work_id": 50042,
+      "source_title": "甲骨",
+      "documents": [
+        {
+          "document_id": 86923,
+          "file": "TN 2605.txt",
+          "path": "中國漢文/clean/商殷朝/花園庄（洹北）/小屯南地甲骨/TN 2605.txt",
+          "identifiers": [
+            {
+              "scheme": "catalog",
+              "value": "TN 2605"
+            }
+          ],
+          "body_start_line": 6
+        },
+        {
+          "document_id": 86924,
+          "file": "TN 81.txt",
+          "path": "中國漢文/clean/商殷朝/花園庄（洹北）/小屯南地甲骨/TN 81.txt",
+          "identifiers": [
+            {
+              "scheme": "catalog",
+              "value": "TN 81"
+            }
+          ],
+          "body_start_line": 6
+        }
+      ]
+    }
+  ]
+}

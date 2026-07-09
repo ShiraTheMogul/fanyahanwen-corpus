@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "work_id": 97059,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "polity": "楚",
+  "title": "抽思",
+  "authors": [
+    "宋玉",
+    "屈原"
+  ],
+  "categories": [
+    "卷第四"
+  ],
+  "sources": [
+    "https://zh.wikisource.org/wiki/%E6%A5%9A%E8%BE%AD"
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 5480,
+      "title": "楚辭",
+      "edition_id": 946,
+      "edition_label": "楚辭本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 946,
+      "edition_label": "楚辭本",
+      "source_work_id": 5480,
+      "source_title": "楚辭",
+      "documents": [
+        {
+          "document_id": 13318,
+          "file": "抽思.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/楚/楚辭/卷第四/抽思/抽思.txt",
+          "title": "抽思",
+          "geography_override": {
+            "polity": "楚"
+          },
+          "body_start_line": 7
+        }
+      ]
+    }
+  ]
+}

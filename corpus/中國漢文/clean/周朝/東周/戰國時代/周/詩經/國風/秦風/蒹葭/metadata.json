@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "work_id": 96212,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "title": "蒹葭",
+  "sources": [
+    "https://zh.wikisource.org/wiki/%E8%A9%A9%E7%B6%93/%E8%92%B9%E8%91%AD"
+  ],
+  "identifiers": [
+    {
+      "scheme": "mao_no",
+      "value": "129"
+    }
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 5463,
+      "title": "詩經",
+      "edition_id": 99,
+      "edition_label": "詩經本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 99,
+      "edition_label": "詩經本",
+      "source_work_id": 5463,
+      "source_title": "詩經",
+      "documents": [
+        {
+          "document_id": 11748,
+          "file": "蒹葭.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/周/詩經/國風/秦風/蒹葭/蒹葭.txt",
+          "title": "詩經",
+          "page_title": "詩經/蒹葭",
+          "display_title": "蒹葭",
+          "categories": [
+            "國風",
+            "秦風"
+          ],
+          "identifiers": [
+            {
+              "scheme": "mao_no",
+              "value": "129"
+            }
+          ],
+          "body_start_line": 8
+        },
+        {
+          "document_id": 11749,
+          "file": "蒹葭_安大簡本.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/周/詩經/國風/秦風/蒹葭/蒹葭_安大簡本.txt",
+          "title": "詩經",
+          "page_title": "詩經/蒹葭",
+          "display_title": "蒹葭",
+          "categories": [
+            "國風",
+            "秦風",
+            "安大簡本"
+          ],
+          "identifiers": [
+            {
+              "scheme": "mao_no",
+              "value": "129"
+            }
+          ],
+          "body_start_line": 8
+        },
+        {
+          "document_id": 11750,
+          "file": "蒹葭_毛詩序.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/周/詩經/國風/秦風/蒹葭/蒹葭_毛詩序.txt",
+          "title": "詩經",
+          "page_title": "詩經/蒹葭",
+          "display_title": "蒹葭",
+          "authors": [
+            "毛亨"
+          ],
+          "categories": [
+            "國風",
+            "秦風"
+          ],
+          "identifiers": [
+            {
+              "scheme": "mao_no",
+              "value": "129"
+            }
+          ],
+          "body_start_line": 9
+        }
+      ]
+    }
+  ]
+}

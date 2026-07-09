@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "work_id": 127214,
+  "corpus_root": "四庫全書",
+  "title": "小名録",
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 80277,
+      "title": "四庫全書",
+      "edition_id": 31101,
+      "edition_label": "四庫全書本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 31101,
+      "edition_label": "四庫全書本",
+      "source_work_id": 80277,
+      "source_title": "四庫全書",
+      "documents": [
+        {
+          "document_id": 201154,
+          "file": "小名録__juan_01.txt",
+          "path": "四庫全書/clean/子部/類書類/小名録/小名録__juan_01.txt",
+          "title": "小名録 (四庫全書本)",
+          "page_title": "小名録 (四庫全書本)/卷上",
+          "display_title": "小名録",
+          "source_categories": [
+            "1077年 (提及)",
+            "PD-old",
+            "前221年 (提及)",
+            "前30年 (提及)"
+          ],
+          "body_start_line": 6
+        },
+        {
+          "document_id": 201155,
+          "file": "小名録__juan_02.txt",
+          "path": "四庫全書/clean/子部/類書類/小名録/小名録__juan_02.txt",
+          "title": "小名録 (四庫全書本)",
+          "page_title": "小名録 (四庫全書本)/卷下",
+          "display_title": "小名録",
+          "source_categories": [
+            "558年 (提及)",
+            "PD-old"
+          ],
+          "body_start_line": 6
+        }
+      ]
+    }
+  ]
+}
