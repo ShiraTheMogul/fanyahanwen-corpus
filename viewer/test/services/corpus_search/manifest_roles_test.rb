@@ -60,6 +60,79 @@ class CorpusSearchManifestRolesTest < ActiveSupport::TestCase
     assert_equal ["中國漢文/clean/周朝/詩經/詩經.txt"], selected.map { |doc| doc["path"] }
   end
 
+  test "uses stable JSON document and work ids" do
+    write("中國漢文/clean/隋朝/三論玄義/三論玄義__juan_01.txt", "正文\n")
+    metadata = @corpus_root.join("中國漢文/clean/隋朝/三論玄義/metadata.json")
+    metadata.write(JSON.pretty_generate(
+      "work_id" => 80029,
+      "title" => "三論玄義",
+      "corpus_root" => "中國漢文",
+      "macro_region" => "中國",
+      "period" => "隋朝",
+      "polity" => "隋",
+      "documents" => [
+        {
+          "document_id" => 174261,
+          "file" => "三論玄義__juan_01.txt",
+          "path" => "中國漢文/clean/隋朝/三論玄義/三論玄義__juan_01.txt"
+        }
+      ]
+    ))
+
+    manifest = quietly do
+      CorpusSearch::Manifest.load(
+        root: @corpus_root,
+        cache_store: @cache_store,
+        refresh: true,
+        force: true
+      )
+    end
+    document = manifest.documents.find { |doc| doc["path"].end_with?("三論玄義__juan_01.txt") }
+
+    assert_equal "174261", document["id"]
+    assert_equal "80029", document["work_id"]
+    assert_equal "中國", document["macro_region"]
+    assert_equal "隋", document["polity"]
+  end
+
+  test "unbounded user query requires an existing full manifest and never scans" do
+    query = CorpusSearch::Query.from_params(q: "正文", search: "1")
+
+    assert_raises(CorpusSearch::Manifest::CacheMissing) do
+      quietly do
+        CorpusSearch::Manifest.load_for_query(
+          query: query,
+          root: @corpus_root,
+          cache_store: @cache_store
+        )
+      end
+    end
+
+    assert_not @cache_store.absolute(CorpusSearch::Manifest::CACHE_PATH).exist?
+  end
+
+  test "unbounded user query reuses administrator-built full manifest" do
+    quietly do
+      CorpusSearch::Manifest.load(
+        root: @corpus_root,
+        cache_store: @cache_store,
+        refresh: true,
+        force: true
+      )
+    end
+    query = CorpusSearch::Query.from_params(q: "正文", search: "1")
+
+    manifest = quietly do
+      CorpusSearch::Manifest.load_for_query(
+        query: query,
+        root: @corpus_root,
+        cache_store: @cache_store
+      )
+    end
+
+    assert_equal 5, manifest.documents.length
+  end
+
   private
 
   def write(relative, content)

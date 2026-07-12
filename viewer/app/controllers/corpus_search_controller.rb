@@ -34,7 +34,7 @@ class CorpusSearchController < ApplicationController
         candidate_files: 0
       )
     end
-  rescue Errno::ENOENT, ArgumentError => e
+  rescue Errno::ENOENT, ArgumentError, CorpusSearch::Manifest::CacheMissing => e
     @search_error = I18n.t("corpus_search.errors.search_failed", message: e.message)
   end
 

@@ -172,13 +172,18 @@ class CorpusMetadataStore
     path_metadata = metadata_from_path(rel_path)
 
     {
+      "work_id" => integer_or_nil(metadata["work_id"]),
+      "document_id" => integer_or_nil(metadata["document_id"]),
       "title" => first_present(metadata["title"], metadata["page_title"], File.basename(rel_path.to_s, ".txt")),
       "work" => first_present(metadata["work_base_title"], metadata["work_title"], metadata["title"], File.basename(File.dirname(rel_path.to_s))),
       "author" => names_string(metadata["authors"]),
       "date_text" => metadata["date_label"].to_s,
       "nation" => first_present(metadata["corpus_root"], path_metadata["nation"]),
+      "corpus_root" => first_present(metadata["corpus_root"], path_metadata["nation"]),
+      "macro_region" => metadata["macro_region"].to_s,
       "period" => first_present(metadata["period"], path_metadata["period"]),
-      "region" => first_present(metadata["region"], metadata["polity"], path_metadata["region"]),
+      "polity" => metadata["polity"].to_s,
+      "region" => first_present(metadata["region"], path_metadata["region"]),
       "category" => Array(metadata["categories"]).join("; "),
       "year_start" => integer_or_nil(metadata["year_start"] || metadata["year"]),
       "year_end" => integer_or_nil(metadata["year_end"] || metadata["year"])

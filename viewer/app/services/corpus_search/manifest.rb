@@ -12,10 +12,12 @@ module CorpusSearch
   # files safely, filter them, and notice changes.
   class Manifest
     DEFAULT_SKIP_DIRS = %w[.git .svn node_modules tmp log storage bak vendor].freeze
-    VERSION = 4
+    VERSION = 5
     CACHE_PATH = "manifest.json.gz"
     SCOPED_CACHE_PREFIX = "scoped_manifests"
     FRONT_MATTER_READ_BYTES = 65_536
+
+    class CacheMissing < StandardError; end
 
     attr_reader :documents, :generated_at
 
@@ -30,8 +32,16 @@ module CorpusSearch
     end
 
     def self.load_for_query(query:, root: Rails.configuration.x.corpus_root, cache_store: CacheStore.new, refresh: false)
-      new(root: root, cache_store: cache_store).load_cached_or_refresh_scoped!(
-        include_folders: query.include_folders,
+      manifest = new(root: root, cache_store: cache_store)
+      folders = manifest.send(:normalized_paths, query.include_folders)
+
+      # An unbounded end-user request must never become a synchronous corpus
+      # crawl. It may reuse the administrator-built full manifest, but only an
+      # explicit maintenance command is allowed to create that manifest.
+      return manifest.load_cached! if folders.empty?
+
+      manifest.load_cached_or_refresh_scoped!(
+        include_folders: folders,
         refresh: refresh
       )
     end
@@ -53,6 +63,18 @@ module CorpusSearch
       @debug_dirs = ENV["CORPUS_SEARCH_DEBUG_DIRS"].to_s == "1"
       @silent = ENV["CORPUS_SEARCH_SILENT"].to_s == "1"
       @metadata_store = CorpusMetadataStore.new(root: @root)
+    end
+
+
+    def load_cached!
+      cached = @cache_store.read_json(CACHE_PATH, freeze: true)
+      unless cache_current?(cached)
+        raise CacheMissing, "The corpus search manifest has not been built. Run bin/rails corpus_search:rebuild_manifest as a maintenance command."
+      end
+
+      load_from_payload(cached)
+      progress("manifest loaded from cache: #{@documents.length} documents")
+      self
     end
 
     def load_cached_or_refresh!
@@ -279,7 +301,8 @@ module CorpusSearch
       role = DocumentRole.classify(relative_path)
 
       {
-        "id" => stable_id(relative_path),
+        "id" => merged["document_id"].presence&.to_s || stable_id(relative_path),
+        "work_id" => merged["work_id"].presence&.to_s,
         "path" => relative_path,
         "folder_path" => DocumentRole.folder_path(relative_path),
         "document_role" => role,
@@ -289,7 +312,10 @@ module CorpusSearch
         "author" => merged["author"].to_s,
         "date_text" => merged["date_text"].to_s,
         "nation" => merged["nation"].to_s,
+        "corpus_root" => merged["corpus_root"].to_s,
+        "macro_region" => merged["macro_region"].to_s,
         "period" => merged["period"].to_s,
+        "polity" => merged["polity"].to_s,
         "region" => merged["region"].to_s,
         "category" => merged["category"].to_s,
         "year_start" => integer_or_nil(merged["year_start"]),

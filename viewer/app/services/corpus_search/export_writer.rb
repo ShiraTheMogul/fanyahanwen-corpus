@@ -84,7 +84,7 @@ module CorpusSearch
           dataset_stats = dataset_stats_from(document_counts_csv)
           corpus_snapshot = source_corpus_snapshot(source_prepared)
         else
-          manifest = Manifest.load(cache_store: @cache_store)
+          manifest = Manifest.new(root: Rails.configuration.x.corpus_root, cache_store: @cache_store).load_cached!
           dataset_writer = AnalysisDatasetWriter.new(
             query: @query,
             manifest: manifest,
