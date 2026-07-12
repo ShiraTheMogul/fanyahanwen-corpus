@@ -250,16 +250,8 @@ module EditTickets
     end
 
     def split_corpus_front_matter(raw)
-      lines = raw.to_s.lines
-      metadata_lines = []
-      index = 0
-
-      while index < lines.length && lines[index].start_with?("#")
-        metadata_lines << lines[index]
-        index += 1
-      end
-
-      [metadata_lines.join, lines[index..].join]
+      result = CorpusSearch::DocumentReader.parse(raw.to_s)
+      [result.metadata_entries.any? ? raw.to_s.lines.take(result.metadata_entries.length).join : "", result.body]
     end
 
     def normalize_ticket_text(text)

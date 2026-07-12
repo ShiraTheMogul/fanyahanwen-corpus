@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "pathname"
+
 module CorpusSearch
   # A small, cached browse tree for the search form.
   #
@@ -41,7 +43,9 @@ module CorpusSearch
           return tree
         end
 
-        manifest = Manifest.load(cache_store: cache_store)
+        tree = new(manifest: nil, cache_store: cache_store)
+        tree.load_filesystem_tree!
+        return tree
       end
 
       new(manifest: manifest, cache_store: cache_store).load_cached_or_build!
@@ -92,6 +96,12 @@ module CorpusSearch
       self
     end
 
+    def load_filesystem_tree!
+      @manifest_generated_at = "filesystem"
+      @roots = build_roots_from_filesystem
+      self
+    end
+
     def empty?
       @roots.empty?
     end
@@ -105,6 +115,8 @@ module CorpusSearch
     end
 
     def build_roots
+      return build_roots_from_filesystem unless @manifest
+
       nodes = {}
 
       Array(@manifest.documents).each do |document|
@@ -120,6 +132,48 @@ module CorpusSearch
           node = nodes[path] ||= new_node(path: path, name: parts.fetch(depth - 1), depth: depth)
           node["document_count"] += 1
           node["role_counts"][role] = node["role_counts"].fetch(role, 0) + 1
+        end
+      end
+
+      nodes.each_value do |node|
+        next if node["depth"] >= MAX_DEPTH
+
+        child_depth = node["depth"] + 1
+        node["children"] = nodes.values.select do |candidate|
+          candidate["depth"] == child_depth && parent_path(candidate["path"]) == node["path"]
+        end
+        node["children"] = sort_nodes(node["children"])
+      end
+
+      sort_nodes(nodes.values.select { |node| node["depth"] == 1 })
+    end
+
+
+    def build_roots_from_filesystem
+      root = Pathname(Rails.configuration.x.corpus_root.to_s).expand_path
+      return [] unless root.directory?
+
+      nodes = {}
+      queue = [[root, [], 0]]
+
+      until queue.empty?
+        directory, parts, depth = queue.shift
+        next if depth >= MAX_DEPTH
+
+        Dir.children(directory).sort.each do |entry|
+          next if entry.start_with?(".")
+          next if Manifest::DEFAULT_SKIP_DIRS.include?(entry)
+
+          path = directory.join(entry)
+          next unless path.directory?
+
+          child_parts = parts + [entry]
+          child_depth = child_parts.length
+          corpus_path = child_parts.join("/")
+          nodes[corpus_path] ||= new_node(path: corpus_path, name: entry, depth: child_depth)
+          queue << [path, child_parts, child_depth] if child_depth < MAX_DEPTH
+        rescue Errno::ENOENT, Errno::EACCES, Errno::EIO, Encoding::CompatibilityError
+          next
         end
       end
 

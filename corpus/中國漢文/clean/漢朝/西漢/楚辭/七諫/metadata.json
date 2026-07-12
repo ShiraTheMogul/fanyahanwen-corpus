@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "work_id": 124643,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "period": "西漢",
+  "polity": "漢",
+  "title": "七諫",
+  "source_categories": [
+    "東方朔",
+    "西漢"
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 79840,
+      "title": "楚辭",
+      "edition_id": 28530,
+      "edition_label": "楚辭本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 28530,
+      "edition_label": "楚辭本",
+      "source_work_id": 79840,
+      "source_title": "楚辭",
+      "documents": [
+        {
+          "document_id": 172501,
+          "file": "楚辭__juan_01.txt",
+          "path": "中國漢文/clean/漢朝/西漢/楚辭/七諫/楚辭__juan_01.txt",
+          "page_title": "楚辭/七諫",
+          "body_start_line": 6
+        }
+      ]
+    }
+  ]
+}

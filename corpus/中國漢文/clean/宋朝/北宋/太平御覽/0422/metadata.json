@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "work_id": 123929,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "period": "北宋",
+  "polity": "宋",
+  "title": "0422",
+  "authors": [
+    "李昉"
+  ],
+  "categories": [
+    "50%",
+    "宋四大書"
+  ],
+  "sources": [
+    "https://zh.wikisource.org/wiki/%E5%A4%AA%E5%B9%B3%E5%BE%A1%E8%A6%BD/0422"
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 52301,
+      "title": "太平御覽",
+      "edition_id": 27816,
+      "edition_label": "太平御覽本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 27816,
+      "edition_label": "太平御覽本",
+      "source_work_id": 52301,
+      "source_title": "太平御覽",
+      "documents": [
+        {
+          "document_id": 99476,
+          "file": "0422.txt",
+          "path": "中國漢文/clean/宋朝/北宋/太平御覽/0422/0422.txt",
+          "page_title": "太平御覽/0422",
+          "chapter": "0422",
+          "body_start_line": 10
+        }
+      ]
+    }
+  ]
+}

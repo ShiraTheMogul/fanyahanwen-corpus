@@ -73,6 +73,26 @@
             <input type="text" class="cv-input" data-corpus-submission-ticket-target="author" />
           </div>
           <div class="cv-form-row">
+            <label>Date / year label</label>
+            <input type="text" class="cv-input" data-corpus-submission-ticket-target="dateLabel" />
+          </div>
+          <div class="cv-form-row">
+            <label>Period</label>
+            <input type="text" class="cv-input" data-corpus-submission-ticket-target="period" />
+          </div>
+          <div class="cv-form-row">
+            <label>Polity</label>
+            <input type="text" class="cv-input" data-corpus-submission-ticket-target="polity" />
+          </div>
+          <div class="cv-form-row">
+            <label>Region</label>
+            <input type="text" class="cv-input" data-corpus-submission-ticket-target="region" />
+          </div>
+          <div class="cv-form-row">
+            <label>Categories</label>
+            <textarea class="cv-textarea" rows="3" placeholder="One category per line, or separate with semicolons" data-corpus-submission-ticket-target="categories"></textarea>
+          </div>
+          <div class="cv-form-row">
             <label><%= t("corpus_viewer.directory_submission.metadata_fields.source") %></label>
             <input type="text" class="cv-input" placeholder="<%= t("corpus_viewer.directory_submission.source_placeholder") %>" data-corpus-submission-ticket-target="sourceCitation" />
           </div>
@@ -598,6 +618,7 @@
           <%= t("corpus_viewer.toolbar.review_submit") %>
         </button>
 
+        <% if @text_edit_enabled %>
         <span
           data-controller="text-edit-ticket"
           data-text-edit-ticket-source-value="corpus_viewer"
@@ -658,6 +679,102 @@
             </div>
           </div>
         </span>
+        <% end %>
+
+        <% if @metadata_rel_path.present? %>
+          <% metadata_values = @metadata_edit_values || {} %>
+          <span
+            data-controller="text-edit-ticket"
+            data-text-edit-ticket-source-value="metadata_edit"
+            data-text-edit-ticket-target-path-value="<%= @metadata_rel_path %>">
+            <button type="button"
+                    class="corpus-btn corpus-btn-editing"
+                    data-action="text-edit-ticket#toggle"
+                    title="Propose a metadata edit">
+              Metadata edit
+            </button>
+
+            <div class="cv-text-edit-panel hidden" data-text-edit-ticket-target="panel">
+              <h3 style="margin-top: 0;">Propose a metadata edit</h3>
+              <p class="cv-hint">Edit the fields below. The server will turn them into valid metadata.json and create a normal review ticket.</p>
+
+              <form data-action="submit->text-edit-ticket#submit">
+                <input type="hidden" value="metadata_fields" data-text-edit-ticket-target="editMode" />
+                <div class="cv-form-row">
+                  <label><%= t("common.forms.title") %></label>
+                  <input type="text" class="cv-input" value="Metadata edit" data-text-edit-ticket-target="title" />
+                </div>
+                <div class="cv-form-row">
+                  <label><%= t("common.forms.summary") %></label>
+                  <input type="text" class="cv-input" placeholder="What metadata changed?" data-text-edit-ticket-target="summary" />
+                </div>
+                <div class="cv-form-row">
+                  <label><%= t("common.forms.reasoning") %></label>
+                  <textarea class="cv-textarea" rows="3" placeholder="Why should this metadata change be made?" data-text-edit-ticket-target="reasoning"></textarea>
+                </div>
+
+                <div class="cv-form-row">
+                  <label>Work title</label>
+                  <input type="text" class="cv-input" value="<%= metadata_values['title'] %>" data-text-edit-ticket-target="metadataTitle" />
+                </div>
+                <div class="cv-form-row">
+                  <label>Author(s)</label>
+                  <textarea class="cv-textarea" rows="2" placeholder="One author per line, or separate with semicolons" data-text-edit-ticket-target="metadataAuthors"><%= metadata_values['authors'] %></textarea>
+                </div>
+                <div class="cv-form-row">
+                  <label>Date / year label</label>
+                  <input type="text" class="cv-input" value="<%= metadata_values['date_label'] %>" data-text-edit-ticket-target="metadataDateLabel" />
+                </div>
+                <div class="cv-form-row">
+                  <label>Corpus root / nation</label>
+                  <input type="text" class="cv-input" value="<%= metadata_values['corpus_root'] %>" data-text-edit-ticket-target="metadataCorpusRoot" />
+                </div>
+                <div class="cv-form-row">
+                  <label>Period</label>
+                  <input type="text" class="cv-input" value="<%= metadata_values['period'] %>" data-text-edit-ticket-target="metadataPeriod" />
+                </div>
+                <div class="cv-form-row">
+                  <label>Polity</label>
+                  <input type="text" class="cv-input" value="<%= metadata_values['polity'] %>" data-text-edit-ticket-target="metadataPolity" />
+                </div>
+                <div class="cv-form-row">
+                  <label>Region</label>
+                  <input type="text" class="cv-input" value="<%= metadata_values['region'] %>" data-text-edit-ticket-target="metadataRegion" />
+                </div>
+                <div class="cv-form-row">
+                  <label>Categories</label>
+                  <textarea class="cv-textarea" rows="4" placeholder="One category per line, or separate with semicolons" data-text-edit-ticket-target="metadataCategories"><%= metadata_values['categories'] %></textarea>
+                </div>
+                <div class="cv-form-row">
+                  <label>Sources / references</label>
+                  <textarea class="cv-textarea" rows="4" placeholder="One source per line" data-text-edit-ticket-target="metadataSources"><%= metadata_values['sources'] %></textarea>
+                </div>
+
+                <%= render "corpus_viewer/ticket_optional_fields",
+                           stimulus_controller: "text-edit-ticket",
+                           include_uploads: true %>
+
+                <div class="cv-form-actions">
+                  <button type="submit" class="corpus-btn corpus-btn-primary"><%= t("common.actions.submit_ticket") %></button>
+                  <button type="button" class="corpus-btn" data-action="text-edit-ticket#toggle"><%= t("common.actions.close") %></button>
+                </div>
+              </form>
+
+              <div class="cv-ticket-result">
+                <div class="cv-ticket-status" data-text-edit-ticket-target="status"></div>
+                <div class="cv-ticket-kv">
+                  <div><strong><%= t("common.tickets.ticket_id") %></strong> <span data-text-edit-ticket-target="ticketId"></span></div>
+                  <div>
+                    <strong><%= t("common.tickets.ticket_key") %></strong>
+                    <code data-text-edit-ticket-target="ticketKey"></code>
+                    <button type="button" class="corpus-btn" data-text-edit-ticket-target="copyKeyBtn" data-action="text-edit-ticket#copyKey"><%= t("common.actions.copy") %></button>
+                    <button type="button" class="corpus-btn" data-text-edit-ticket-target="downloadKeyBtn" data-action="text-edit-ticket#downloadKey" hidden><%= t("common.actions.download_txt") %></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </span>
+        <% end %>
       </div>
       <% end %>
     </div>

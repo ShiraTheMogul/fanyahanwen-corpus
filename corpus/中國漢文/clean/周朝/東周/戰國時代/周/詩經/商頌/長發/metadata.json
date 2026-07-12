@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "work_id": 96150,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "title": "長發",
+  "categories": [
+    "商頌"
+  ],
+  "sources": [
+    "https://zh.wikisource.org/wiki/%E8%A9%A9%E7%B6%93/%E9%95%B7%E7%99%BC"
+  ],
+  "identifiers": [
+    {
+      "scheme": "mao_no",
+      "value": "310"
+    }
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 5463,
+      "title": "詩經",
+      "edition_id": 37,
+      "edition_label": "詩經本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 37,
+      "edition_label": "詩經本",
+      "source_work_id": 5463,
+      "source_title": "詩經",
+      "documents": [
+        {
+          "document_id": 11611,
+          "file": "長發.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/周/詩經/商頌/長發/長發.txt",
+          "title": "詩經",
+          "page_title": "詩經/長發",
+          "display_title": "長發",
+          "identifiers": [
+            {
+              "scheme": "mao_no",
+              "value": "310"
+            }
+          ],
+          "body_start_line": 8
+        },
+        {
+          "document_id": 11612,
+          "file": "長發_毛詩序.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/周/詩經/商頌/長發/長發_毛詩序.txt",
+          "title": "詩經",
+          "page_title": "詩經/長發",
+          "display_title": "長發",
+          "authors": [
+            "毛亨"
+          ],
+          "identifiers": [
+            {
+              "scheme": "mao_no",
+              "value": "310"
+            }
+          ],
+          "body_start_line": 9
+        }
+      ]
+    }
+  ]
+}

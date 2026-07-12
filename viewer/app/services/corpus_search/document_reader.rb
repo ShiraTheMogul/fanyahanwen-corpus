@@ -84,8 +84,13 @@ module CorpusSearch
         lines.index { |line| !blank_line?(line) }
       end
 
+      LEGACY_METADATA_KEY_PATTERN = /\A#\s*[A-Z][A-Z0-9_ ]{1,80}\s*[:：]/.freeze
+
       def metadata_line?(line)
-        line.to_s.start_with?("#")
+        # The JSON migration made .txt files body-only. This remains only as a
+        # narrow compatibility fallback for old ticket files or unmigrated texts.
+        # Do not treat arbitrary leading # prose as metadata.
+        line.to_s.match?(LEGACY_METADATA_KEY_PATTERN)
       end
 
       def blank_line?(line)

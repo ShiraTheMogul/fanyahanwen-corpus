@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "work_id": 124676,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "period": "先秦",
+  "title": "湯誥",
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 80000,
+      "title": "尚書",
+      "edition_id": 28563,
+      "edition_label": "尚書本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 28563,
+      "edition_label": "尚書本",
+      "source_work_id": 80000,
+      "source_title": "尚書",
+      "documents": [
+        {
+          "document_id": 172857,
+          "file": "尚書__湯誥_偽古文.txt",
+          "path": "中國漢文/clean/秦朝/尚書/商書/湯誥/尚書__湯誥_偽古文.txt",
+          "page_title": "尚書/湯誥",
+          "display_title": "湯誥",
+          "authors": [
+            "孔安國"
+          ],
+          "categories": [
+            "商書",
+            "偽古文"
+          ],
+          "geography_override": {
+            "period": "先秦"
+          },
+          "body_start_line": 8
+        },
+        {
+          "document_id": 172858,
+          "file": "尚書__湯誥_真古文.txt",
+          "path": "中國漢文/clean/秦朝/尚書/商書/湯誥/尚書__湯誥_真古文.txt",
+          "page_title": "尚書/湯誥",
+          "display_title": "湯誥",
+          "categories": [
+            "商書",
+            "真古文"
+          ],
+          "geography_override": {
+            "period": "先秦"
+          },
+          "body_start_line": 7
+        }
+      ]
+    }
+  ]
+}

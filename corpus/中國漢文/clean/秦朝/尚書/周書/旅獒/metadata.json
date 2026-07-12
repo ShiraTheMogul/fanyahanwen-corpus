@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "work_id": 124667,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "period": "東晉",
+  "polity": "晉",
+  "title": "旅獒",
+  "authors": [
+    "孔安國",
+    "梅賾"
+  ],
+  "categories": [
+    "偽古文",
+    "周書"
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 80000,
+      "title": "尚書",
+      "edition_id": 28554,
+      "edition_label": "尚書本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 28554,
+      "edition_label": "尚書本",
+      "source_work_id": 80000,
+      "source_title": "尚書",
+      "documents": [
+        {
+          "document_id": 172831,
+          "file": "尚書__旅獒.txt",
+          "path": "中國漢文/clean/秦朝/尚書/周書/旅獒/尚書__旅獒.txt",
+          "page_title": "尚書/旅獒",
+          "display_title": "旅獒",
+          "geography_override": {
+            "period": "東晉",
+            "polity": "晉"
+          },
+          "body_start_line": 8
+        }
+      ]
+    }
+  ]
+}

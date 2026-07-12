@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "work_id": 96259,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "title": "蝃蝀",
+  "categories": [
+    "國風",
+    "鄘風"
+  ],
+  "sources": [
+    "https://zh.wikisource.org/wiki/%E8%A9%A9%E7%B6%93/%E8%9D%83%E8%9D%80"
+  ],
+  "identifiers": [
+    {
+      "scheme": "mao_no",
+      "value": "051"
+    }
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 5463,
+      "title": "詩經",
+      "edition_id": 146,
+      "edition_label": "詩經本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 146,
+      "edition_label": "詩經本",
+      "source_work_id": 5463,
+      "source_title": "詩經",
+      "documents": [
+        {
+          "document_id": 11844,
+          "file": "蝃蝀.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/周/詩經/國風/鄘風/蝃蝀/蝃蝀.txt",
+          "title": "詩經",
+          "page_title": "詩經/蝃蝀",
+          "display_title": "蝃蝀",
+          "identifiers": [
+            {
+              "scheme": "mao_no",
+              "value": "051"
+            }
+          ],
+          "body_start_line": 8
+        },
+        {
+          "document_id": 11845,
+          "file": "蝃蝀_毛詩序.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/周/詩經/國風/鄘風/蝃蝀/蝃蝀_毛詩序.txt",
+          "title": "詩經",
+          "page_title": "詩經/蝃蝀",
+          "display_title": "蝃蝀",
+          "authors": [
+            "毛亨"
+          ],
+          "identifiers": [
+            {
+              "scheme": "mao_no",
+              "value": "051"
+            }
+          ],
+          "body_start_line": 9
+        }
+      ]
+    }
+  ]
+}

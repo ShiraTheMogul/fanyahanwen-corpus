@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "work_id": 124685,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "period": "先秦",
+  "title": "盤庚中",
+  "editors": [
+    "伏勝"
+  ],
+  "categories": [
+    "商書"
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 80000,
+      "title": "尚書",
+      "edition_id": 28572,
+      "edition_label": "尚書本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 28572,
+      "edition_label": "尚書本",
+      "source_work_id": 80000,
+      "source_title": "尚書",
+      "documents": [
+        {
+          "document_id": 172861,
+          "file": "尚書__盤庚中.txt",
+          "path": "中國漢文/clean/秦朝/尚書/商書/盤庚中/尚書__盤庚中.txt",
+          "page_title": "尚書/盤庚中",
+          "display_title": "盤庚中",
+          "geography_override": {
+            "period": "先秦"
+          },
+          "body_start_line": 8
+        }
+      ]
+    }
+  ]
+}

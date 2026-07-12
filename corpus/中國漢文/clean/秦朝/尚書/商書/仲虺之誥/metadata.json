@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "work_id": 124646,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "period": "東晉",
+  "polity": "晉",
+  "title": "仲虺之誥",
+  "authors": [
+    "孔安國",
+    "梅賾"
+  ],
+  "categories": [
+    "偽古文",
+    "商書"
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 80000,
+      "title": "尚書",
+      "edition_id": 28533,
+      "edition_label": "尚書本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 28533,
+      "edition_label": "尚書本",
+      "source_work_id": 80000,
+      "source_title": "尚書",
+      "documents": [
+        {
+          "document_id": 172849,
+          "file": "尚書__仲虺之誥.txt",
+          "path": "中國漢文/clean/秦朝/尚書/商書/仲虺之誥/尚書__仲虺之誥.txt",
+          "page_title": "尚書/仲虺之誥",
+          "display_title": "仲虺之誥",
+          "geography_override": {
+            "period": "東晉",
+            "polity": "晉"
+          },
+          "body_start_line": 8
+        }
+      ]
+    }
+  ]
+}

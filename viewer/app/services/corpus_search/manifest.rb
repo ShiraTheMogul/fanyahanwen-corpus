@@ -14,6 +14,7 @@ module CorpusSearch
     DEFAULT_SKIP_DIRS = %w[.git .svn node_modules tmp log storage bak vendor].freeze
     VERSION = 4
     CACHE_PATH = "manifest.json.gz"
+    SCOPED_CACHE_PREFIX = "scoped_manifests"
     FRONT_MATTER_READ_BYTES = 65_536
 
     attr_reader :documents, :generated_at
@@ -26,6 +27,19 @@ module CorpusSearch
         manifest.load_cached_or_refresh!
       end
       manifest
+    end
+
+    def self.load_for_query(query:, root: Rails.configuration.x.corpus_root, cache_store: CacheStore.new, refresh: false)
+      new(root: root, cache_store: cache_store).load_cached_or_refresh_scoped!(
+        include_folders: query.include_folders,
+        refresh: refresh
+      )
+    end
+
+    def self.scoped_cache_path_for(include_folders)
+      folders = Array(include_folders).map(&:to_s).map(&:strip).reject(&:empty?).sort
+      key = folders.empty? ? "all" : CacheStore.hash_key(folders.join("\n"))
+      File.join(SCOPED_CACHE_PREFIX, "#{key}.json.gz")
     end
 
     def initialize(root:, cache_store: CacheStore.new)
@@ -53,6 +67,20 @@ module CorpusSearch
       end
     end
 
+    def load_cached_or_refresh_scoped!(include_folders:, refresh: false)
+      folders = normalized_paths(include_folders)
+      cache_path = self.class.scoped_cache_path_for(folders)
+      cached = refresh ? nil : @cache_store.read_json(cache_path, freeze: true)
+
+      if scoped_cache_current?(cached, folders)
+        load_from_payload(cached)
+        progress("targeted manifest loaded from cache: #{@documents.length} documents; scope #{scope_label(folders)}")
+        self
+      else
+        refresh_scoped!(include_folders: folders, cache_path: cache_path)
+      end
+    end
+
     def refresh!(force: false)
       progress("manifest scan starting at #{@root}")
       cached = force ? nil : @cache_store.read_json(CACHE_PATH, freeze: true)
@@ -63,12 +91,41 @@ module CorpusSearch
         "version" => VERSION,
         "generated_at" => Time.now.utc.iso8601,
         "root" => @root,
+        "scope" => "full",
+        "term_index_fingerprint" => term_index_fingerprint_for_documents(scanned),
         "documents" => scanned
       }
 
       @cache_store.write_json(CACHE_PATH, payload)
       load_from_payload(payload)
       progress("manifest scan complete: #{@documents.length} documents")
+      self
+    end
+
+    def refresh_scoped!(include_folders:, cache_path:)
+      folders = normalized_paths(include_folders)
+      progress("targeted manifest scan starting at #{@root}; scope #{scope_label(folders)}")
+      cached = @cache_store.read_json(cache_path, freeze: true)
+      cached_documents = scoped_cache_current?(cached, folders) ? cached["documents"] : nil
+      scanned = scan_documents(cached_documents: cached_documents, include_folders: folders)
+
+      payload = {
+        "version" => VERSION,
+        "generated_at" => Time.now.utc.iso8601,
+        "root" => @root,
+        "scope" => "targeted",
+        "scope_folders" => folders,
+        # If a full manifest/index exists, scoped searches can safely reuse its
+        # warmed term indexes and then intersect the results with this scoped
+        # document list. Missing or stale term indexes still fall back to direct
+        # scoped scanning.
+        "term_index_fingerprint" => cached_full_manifest_term_index_fingerprint,
+        "documents" => scanned
+      }
+
+      @cache_store.write_json(cache_path, payload)
+      load_from_payload(payload)
+      progress("targeted manifest scan complete: #{@documents.length} documents; scope #{scope_label(folders)}")
       self
     end
 
@@ -107,30 +164,18 @@ module CorpusSearch
     end
 
     def term_index_fingerprint
-      @term_index_fingerprint ||= begin
-        digest = Digest::SHA256.new
-        digest << "manifest-role-profile:canonical-v1\n"
-        default_search_documents.each do |doc|
-          digest << doc["id"].to_s
-          digest << "\0"
-          digest << doc["fingerprint"].to_s
-          digest << "\0"
-          digest << (doc["document_role"].presence || "canonical").to_s
-          digest << "\n"
-        end
-        digest.hexdigest
-      end
+      @term_index_fingerprint ||= @stored_term_index_fingerprint.presence || term_index_fingerprint_for_documents(default_search_documents)
     end
 
     private
 
-    def scan_documents(cached_documents: nil)
+    def scan_documents(cached_documents: nil, include_folders: nil)
       cached_by_path = Array(cached_documents).index_by { |doc| doc["path"].to_s }
       documents = []
       seen_files = 0
       skipped_files = 0
 
-      each_txt_path do |absolute_path|
+      each_txt_path(include_folders: include_folders) do |absolute_path|
         relative_path = relative_path_for(absolute_path)
 
         stat = File.stat(absolute_path)
@@ -165,12 +210,12 @@ module CorpusSearch
     # On WSL + OneDrive, one bad readdir can make a single huge glob abort or sit
     # inside uninterruptible disk I/O. This walker gives progress output and makes
     # unreadable directories local damage instead of killing the whole scan.
-    def each_txt_path
-      return enum_for(:each_txt_path) unless block_given?
+    def each_txt_path(include_folders: nil)
+      return enum_for(:each_txt_path, include_folders: include_folders) unless block_given?
 
       dirs_seen = 0
       files_seen = 0
-      stack = [@root]
+      stack = scoped_scan_roots(include_folders)
 
       until stack.empty?
         directory = stack.pop
@@ -208,6 +253,22 @@ module CorpusSearch
     rescue Errno::ENOENT, Errno::EACCES, Errno::EIO, Encoding::CompatibilityError => e
       progress("manifest skipped unreadable directory #{directory}: #{e.class}: #{e.message}")
       []
+    end
+
+    def scoped_scan_roots(include_folders)
+      folders = normalized_paths(include_folders)
+      return [@root] if folders.empty?
+
+      folders.filter_map do |folder|
+        path = File.realpath(File.join(@root, folder))
+        next unless path == @root || path.start_with?("#{@root}/")
+        next unless File.directory?(path)
+
+        path
+      rescue Errno::ENOENT, Errno::EACCES, Errno::EIO, Encoding::CompatibilityError => e
+        progress("targeted manifest skipped scope #{folder}: #{e.class}: #{e.message}")
+        nil
+      end.uniq
     end
 
     def build_document(relative_path, absolute_path, stat, fingerprint)
@@ -285,6 +346,7 @@ module CorpusSearch
       @documents = Array(payload["documents"])
       @documents_by_id = nil
       @default_search_documents = nil
+      @stored_term_index_fingerprint = payload["term_index_fingerprint"].to_s
       @term_index_fingerprint = nil
     end
 
@@ -329,6 +391,41 @@ module CorpusSearch
       payload.is_a?(Hash) &&
         payload["version"].to_i == VERSION &&
         payload["root"].to_s == @root
+    end
+
+    def scoped_cache_current?(payload, folders)
+      cache_current?(payload) &&
+        payload["scope"].to_s == "targeted" &&
+        Array(payload["scope_folders"]).map(&:to_s).sort == Array(folders).map(&:to_s).sort
+    end
+
+    def cached_full_manifest_term_index_fingerprint
+      payload = @cache_store.read_json(CACHE_PATH, freeze: true)
+      return nil unless cache_current?(payload)
+
+      payload["term_index_fingerprint"].presence || term_index_fingerprint_for_documents(Array(payload["documents"]))
+    end
+
+    def term_index_fingerprint_for_documents(documents)
+      digest = Digest::SHA256.new
+      digest << "manifest-role-profile:canonical-v1\n"
+      Array(documents).each do |doc|
+        role = doc["document_role"].presence || "canonical"
+        next unless DocumentRole.default?(role)
+
+        digest << doc["id"].to_s
+        digest << "\0"
+        digest << doc["fingerprint"].to_s
+        digest << "\0"
+        digest << role.to_s
+        digest << "\n"
+      end
+      digest.hexdigest
+    end
+
+    def scope_label(folders)
+      folders = Array(folders)
+      folders.empty? ? "ALL" : folders.join(" | ")
     end
 
     def match_filter?(doc, key, value)

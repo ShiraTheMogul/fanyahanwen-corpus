@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "work_id": 124692,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "period": "東晉",
+  "polity": "晉",
+  "title": "說命上",
+  "authors": [
+    "孔安國",
+    "梅賾"
+  ],
+  "categories": [
+    "偽古文",
+    "商書"
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 80000,
+      "title": "尚書",
+      "edition_id": 28579,
+      "edition_label": "尚書本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 28579,
+      "edition_label": "尚書本",
+      "source_work_id": 80000,
+      "source_title": "尚書",
+      "documents": [
+        {
+          "document_id": 172863,
+          "file": "尚書__說命上.txt",
+          "path": "中國漢文/clean/秦朝/尚書/商書/說命上/尚書__說命上.txt",
+          "page_title": "尚書/說命上",
+          "display_title": "說命上",
+          "geography_override": {
+            "period": "東晉",
+            "polity": "晉"
+          },
+          "body_start_line": 8
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "work_id": 126403,
+  "corpus_root": "四庫全書",
+  "title": "世緯",
+  "source_categories": [
+    "PD-old"
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 80277,
+      "title": "四庫全書",
+      "edition_id": 30290,
+      "edition_label": "四庫全書本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 30290,
+      "edition_label": "四庫全書本",
+      "source_work_id": 80277,
+      "source_title": "四庫全書",
+      "documents": [
+        {
+          "document_id": 187645,
+          "file": "世緯__juan_01.txt",
+          "path": "四庫全書/clean/子部/儒家類/世緯/世緯__juan_01.txt",
+          "title": "世緯 (四庫全書本)",
+          "page_title": "世緯 (四庫全書本)/卷上",
+          "display_title": "世緯",
+          "body_start_line": 6
+        },
+        {
+          "document_id": 187646,
+          "file": "世緯__juan_02.txt",
+          "path": "四庫全書/clean/子部/儒家類/世緯/世緯__juan_02.txt",
+          "title": "世緯 (四庫全書本)",
+          "page_title": "世緯 (四庫全書本)/卷下",
+          "display_title": "世緯",
+          "body_start_line": 6
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "work_id": 120837,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "period": "商朝",
+  "polity": "商",
+  "title": "ASDC｜甲骨｜商｜英國所藏甲骨｜866.1",
+  "categories": [
+    "不詳"
+  ],
+  "sources": [
+    "https://inscription.asdc.sinica.edu.tw",
+    "英國所藏甲骨"
+  ],
+  "identifiers": [
+    {
+      "scheme": "source_db",
+      "value": "先秦甲骨金文簡牘詞彙資料庫"
+    },
+    {
+      "scheme": "entry_number",
+      "value": "97745"
+    },
+    {
+      "scheme": "legacy_id",
+      "value": "866.1"
+    },
+    {
+      "scheme": "no_bronze_components",
+      "value": "0"
+    },
+    {
+      "scheme": "legacy_unique_id",
+      "value": "4e99c8a91d7f"
+    }
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 50041,
+      "title": "甲骨",
+      "edition_id": 24724,
+      "edition_label": "甲骨本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 24724,
+      "edition_label": "甲骨本",
+      "source_work_id": 50041,
+      "source_title": "甲骨",
+      "documents": [
+        {
+          "document_id": 86282,
+          "file": "866.1_4e99c8a91d7f.txt",
+          "path": "中國漢文/clean/商殷朝/甲骨/ASDC｜甲骨｜商｜英國所藏甲骨｜866.1/866.1_4e99c8a91d7f.txt",
+          "title": "ASDC｜甲骨｜商｜英國所藏甲骨｜866.1",
+          "identifiers": [
+            {
+              "scheme": "source_db",
+              "value": "先秦甲骨金文簡牘詞彙資料庫"
+            },
+            {
+              "scheme": "entry_number",
+              "value": "97745"
+            },
+            {
+              "scheme": "legacy_id",
+              "value": "866.1"
+            },
+            {
+              "scheme": "no_bronze_components",
+              "value": "0"
+            },
+            {
+              "scheme": "legacy_unique_id",
+              "value": "4e99c8a91d7f"
+            }
+          ],
+          "body_start_line": 15
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "work_id": 96374,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "title": "采芑",
+  "categories": [
+    "南有嘉魚之什",
+    "小雅"
+  ],
+  "sources": [
+    "https://zh.wikisource.org/wiki/%E8%A9%A9%E7%B6%93/%E9%87%87%E8%8A%91"
+  ],
+  "identifiers": [
+    {
+      "scheme": "mao_no",
+      "value": "184"
+    }
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 5463,
+      "title": "詩經",
+      "edition_id": 261,
+      "edition_label": "詩經本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 261,
+      "edition_label": "詩經本",
+      "source_work_id": 5463,
+      "source_title": "詩經",
+      "documents": [
+        {
+          "document_id": 12073,
+          "file": "采芑.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/周/詩經/小雅/彤弓之什/采芑/采芑.txt",
+          "title": "詩經",
+          "page_title": "詩經/采芑",
+          "display_title": "采芑",
+          "identifiers": [
+            {
+              "scheme": "mao_no",
+              "value": "184"
+            }
+          ],
+          "body_start_line": 8
+        },
+        {
+          "document_id": 12074,
+          "file": "采芑_毛詩序.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/周/詩經/小雅/彤弓之什/采芑/采芑_毛詩序.txt",
+          "title": "詩經",
+          "page_title": "詩經/采芑",
+          "display_title": "采芑",
+          "authors": [
+            "毛亨"
+          ],
+          "identifiers": [
+            {
+              "scheme": "mao_no",
+              "value": "184"
+            }
+          ],
+          "body_start_line": 9
+        }
+      ]
+    }
+  ]
+}

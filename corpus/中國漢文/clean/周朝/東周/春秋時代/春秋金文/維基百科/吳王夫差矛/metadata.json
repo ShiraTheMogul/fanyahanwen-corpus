@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "work_id": 97303,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "period": "春秋",
+  "title": "吳王夫差矛",
+  "categories": [
+    "春秋",
+    "鳥蟲篆"
+  ],
+  "sources": [
+    "https://commons.wikimedia.org/wiki/File:Deciphering_the_sword.jpg"
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 5511,
+      "title": "金文",
+      "edition_id": 1190,
+      "edition_label": "金文本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 1190,
+      "edition_label": "金文本",
+      "source_work_id": 5511,
+      "source_title": "金文",
+      "documents": [
+        {
+          "document_id": 13798,
+          "file": "吳王夫差矛.txt",
+          "path": "中國漢文/clean/周朝/東周/春秋時代/春秋金文/維基百科/吳王夫差矛/吳王夫差矛.txt",
+          "title": "吳王夫差矛",
+          "medium": "金文",
+          "images": [
+            "https://upload.wikimedia.org/wikipedia/commons/9/98/Ancient_Chinese_Writing_on_Spring_%26_Autumn_Bronze_Jian_%28Sword%29_of_Goujian_%28Copy%29.jpg",
+            "https://commons.wikimedia.org/wiki/File:Niaochongshu.jpg"
+          ],
+          "geography_override": {
+            "macro_region": "中國",
+            "period": "春秋"
+          },
+          "body_start_line": 8
+        }
+      ]
+    }
+  ]
+}

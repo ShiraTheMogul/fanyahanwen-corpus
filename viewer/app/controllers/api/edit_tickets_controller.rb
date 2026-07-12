@@ -91,6 +91,8 @@ module Api
       target_path = params[:target_path].to_s
       new_text = params[:new_text].to_s
 
+      return create_metadata_fields_edit(source: source, target_path: target_path) if params[:edit_mode].to_s == "metadata_fields"
+
       return render(json: { ok: false, error: "target_path is required" }, status: 422) if target_path.blank?
       return render(json: { ok: false, error: "new_text is required" }, status: 422) if new_text.blank?
 
@@ -101,12 +103,12 @@ module Api
       return render(json: { ok: false, error: "Not a file" }, status: 422) unless File.file?(fs_path)
 
       old_text = File.binread(fs_path).force_encoding("UTF-8").scrub
-      _front_matter, old_body = split_corpus_front_matter(old_text)
+      old_body = CorpusSearch::DocumentReader.parse(old_text).body
       normalized_new_text = normalize_ticket_text(new_text)
       normalized_old_body = normalize_ticket_text(old_body)
 
-      # IMPORTANT: corpus-viewer text edits only edit the body, not the leading metadata block.
-      # We therefore diff body-to-body for display/review, and preserve the existing metadata when applying.
+      # JSON metadata is the source of truth now. Text edits edit the whole .txt
+      # body file; metadata edits target metadata.json directly.
       patch_path = "corpus/#{target_path}"
 
       diff_text = unified_diff_via_git(normalized_old_body, normalized_new_text, patch_path)
@@ -136,9 +138,9 @@ module Api
         key_digest: digest,
         key_generated_at: Time.current,
         diff_metadata: metadata.merge(
-          "edit_mode" => "body_only",
+          "edit_mode" => target_path.end_with?("metadata.json") ? "metadata_json" : "body_only",
           "target_path" => target_path,
-          "preserve_front_matter" => true
+          "preserve_front_matter" => false
         )
       )
 
@@ -509,6 +511,104 @@ module Api
       render json: { ok: false, error: "internal error" }, status: 500
     end
 
+    def create_metadata_fields_edit(source:, target_path:)
+      return render(json: { ok: false, error: "target_path is required" }, status: 422) if target_path.blank?
+      return render(json: { ok: false, error: "Metadata edits must target metadata.json" }, status: 422) unless File.basename(target_path) == "metadata.json"
+
+      corpus_root = ticket_corpus_root
+      fs_path = safe_join_under_root(corpus_root, target_path)
+      return render(json: { ok: false, error: "metadata.json not found" }, status: 422) unless File.file?(fs_path)
+
+      old_text = File.binread(fs_path).force_encoding("UTF-8").scrub
+      old_payload = JSON.parse(old_text)
+      new_payload = update_metadata_payload_from_fields(old_payload, params)
+      normalized_old = normalize_ticket_text(JSON.pretty_generate(old_payload))
+      normalized_new = normalize_ticket_text(JSON.pretty_generate(new_payload))
+
+      diff_text = unified_diff_via_git(normalized_old, normalized_new, "corpus/#{target_path}")
+      return render(json: { ok: false, error: "No changes detected" }, status: 422) if diff_text.blank?
+
+      metadata = EditTickets::UnifiedDiffValidator.validate!(diff_text, allowed_roots: ["corpus/"])
+      links = EditTickets::SubmissionExtras.evidence_links(params[:evidence_links])
+      uploads = EditTickets::SubmissionExtras.validate_uploads!(params[:evidence_files])
+
+      ticket_key = EditTickets::KeyManager.generate_plaintext
+      salt = EditTickets::KeyManager.generate_salt
+      digest = EditTickets::KeyManager.digest(ticket_key, salt)
+
+      ticket = EditTicket.new(
+        public_id: SecureRandom.hex(12),
+        title: params[:title].to_s.presence || "Metadata edit",
+        summary: params[:summary].to_s,
+        reasoning: params[:reasoning].to_s,
+        source: source,
+        target_ref: "#{source}/#{target_path}#metadata",
+        status: "open",
+        evidence_links: links,
+        key_salt: salt,
+        key_digest: digest,
+        key_generated_at: Time.current,
+        diff_metadata: metadata.merge(
+          "edit_mode" => "metadata_fields",
+          "target_path" => target_path,
+          "preserve_front_matter" => false
+        )
+      )
+
+      ticket.tags = EditTickets::Tagger.tags_for(
+        source: ticket.source,
+        target_ref: ticket.target_ref,
+        has_diff: true,
+        has_uploads: true,
+        link_count: links.size
+      )
+
+      ticket.transaction do
+        ticket.save!
+        ticket.evidence_files.attach([
+          {
+            io: StringIO.new(diff_text),
+            filename: "metadata_edit_#{File.basename(File.dirname(target_path))}.diff",
+            content_type: "text/x-diff"
+          },
+          {
+            io: StringIO.new(normalized_new),
+            filename: "metadata_edit_#{File.basename(File.dirname(target_path))}.proposed.json",
+            content_type: "application/json"
+          }
+        ])
+        EditTickets::SubmissionExtras.attach_uploads!(ticket, uploads)
+        EditTickets::SubmissionExtras.create_contact!(ticket, params[:contact])
+        EditTickets::AuditLogger.log!(
+          ticket: ticket,
+          action: "ticket_created",
+          actor_type: "submitter",
+          metadata: { source: ticket.source, target_ref: ticket.target_ref, tags: ticket.tags, kind: "metadata_fields_edit" }
+        )
+      end
+
+      render json: {
+        ok: true,
+        ticket_id: ticket.public_id,
+        ticket: ticket_json(ticket),
+        ticket_key: ticket_key,
+        warning: "This key is shown once. Save it now (copy it, download a txt, or explicitly store it on this device)."
+      }, status: 201
+    rescue EditTickets::SubmissionExtras::ValidationError,
+           EditTickets::UnifiedDiffValidator::ValidationError => e
+      render json: { ok: false, error: e.message }, status: 422
+    rescue JSON::ParserError => e
+      render json: { ok: false, error: "Invalid metadata.json: #{e.message}" }, status: 422
+    rescue ActiveRecord::RecordInvalid => e
+      render json: { ok: false, error: e.record.errors.full_messages.join(", ") }, status: 422
+    rescue SecurityError
+      render json: { ok: false, error: "Bad path" }, status: 400
+    rescue => e
+      Rails.logger.error("[create_metadata_fields_edit] #{e.class}: #{e.message}")
+      Rails.logger.error(e.backtrace.join("\n"))
+      render json: { ok: false, error: "internal error" }, status: 500
+    end
+
     def create_companion_material_submission
       source = params[:source].presence || "corpus_viewer"
       base_path = params[:base_path].to_s.strip.sub(%r{\A/+}, "")
@@ -716,6 +816,11 @@ module Api
       author = params[:author].to_s.strip
       source_citation = params[:source_citation].to_s.strip
       url = params[:url].to_s.strip
+      date_label = params[:date_label].to_s.strip
+      period = params[:period].to_s.strip
+      polity = params[:polity].to_s.strip
+      region = params[:region].to_s.strip
+      categories = split_metadata_list(params[:categories])
       text_type = permitted_text_type(params[:text_type]) || "source"
       context_details = params[:context_details].to_s
       title = params[:title].to_s.presence || "Corpus text submission"
@@ -800,6 +905,11 @@ module Api
         author: author,
         source_citation: source_citation,
         url: url,
+        date_label: date_label,
+        period: period,
+        polity: polity,
+        region: region,
+        categories: categories,
         preview_rows: preview_rows,
         text_type: text_type
       )
@@ -842,7 +952,12 @@ module Api
             "work_title" => work_title,
             "author" => author,
             "source" => source_citation,
-            "url" => url
+            "url" => url,
+            "date_label" => date_label,
+            "period" => period,
+            "polity" => polity,
+            "region" => region,
+            "categories" => categories
           }
         )
       )
@@ -868,6 +983,11 @@ module Api
         "AUTHOR: #{author}",
         "SOURCE: #{source_citation}",
         "URL: #{url}",
+        "DATE: #{date_label}",
+        "PERIOD: #{period}",
+        "POLITY: #{polity}",
+        "REGION: #{region}",
+        "CATEGORIES: #{categories.join('; ')}",
         "TEXT TYPE: #{text_type}",
         "",
         "Files:",
@@ -1046,16 +1166,8 @@ module Api
     end
 
     def split_corpus_front_matter(raw)
-      lines = raw.to_s.lines
-      meta = []
-      i = 0
-
-      while i < lines.length && lines[i].start_with?("#")
-        meta << lines[i]
-        i += 1
-      end
-
-      [meta.join, lines[i..].join]
+      result = CorpusSearch::DocumentReader.parse(raw.to_s)
+      [result.metadata_entries.any? ? raw.to_s.lines.take(result.metadata_entries.length).join : "", result.body]
     end
 
     def normalize_ticket_text(text)
@@ -1067,14 +1179,19 @@ module Api
       normalize_ticket_text(body)
     end
 
-    def build_submission_metadata_json(target_dir_rel:, work_folder:, nation:, work_title:, author:, source_citation:, url:, preview_rows:, text_type:)
+    def build_submission_metadata_json(target_dir_rel:, work_folder:, nation:, work_title:, author:, source_citation:, url:, date_label:, period:, polity:, region:, categories:, preview_rows:, text_type:)
       title = work_title.presence || work_folder
       payload = {
         "schema_version" => 1,
         "title" => title,
         "work_base_title" => title,
         "corpus_root" => nation.presence,
-        "authors" => author.present? ? [author] : [],
+        "period" => period.presence,
+        "polity" => polity.presence,
+        "region" => region.presence,
+        "date_label" => date_label.presence,
+        "authors" => split_metadata_list(author),
+        "categories" => Array(categories).presence || [],
         "sources" => [source_citation, url].map(&:presence).compact,
         "is_compilation" => false,
         "documents" => Array(preview_rows).map do |row|
@@ -1089,6 +1206,36 @@ module Api
 
       JSON.pretty_generate(payload) + "
 "
+    end
+
+    def update_metadata_payload_from_fields(payload, params)
+      updated = payload.deep_dup
+      updated["title"] = params[:metadata_title].to_s.strip
+      updated["work_base_title"] = params[:metadata_title].to_s.strip if updated.key?("work_base_title")
+      updated["authors"] = split_metadata_list(params[:metadata_authors])
+      updated["date_label"] = params[:metadata_date_label].to_s.strip
+      updated["corpus_root"] = params[:metadata_corpus_root].to_s.strip
+      updated["period"] = params[:metadata_period].to_s.strip
+      updated["polity"] = params[:metadata_polity].to_s.strip
+      updated["region"] = params[:metadata_region].to_s.strip
+      updated["categories"] = split_metadata_list(params[:metadata_categories])
+      updated["sources"] = split_metadata_list(params[:metadata_sources])
+      deep_blank_to_nil(updated).compact
+    end
+
+    def split_metadata_list(value)
+      value.to_s.split(/[\n;；]+/).map(&:strip).reject(&:blank?).uniq
+    end
+
+    def deep_blank_to_nil(value)
+      case value
+      when Hash
+        value.transform_values { |item| deep_blank_to_nil(item) }
+      when Array
+        value.map { |item| deep_blank_to_nil(item) }.reject { |item| item.respond_to?(:blank?) ? item.blank? : item.nil? }
+      else
+        value.respond_to?(:blank?) && value.blank? ? nil : value
+      end
     end
 
     def clean_submission_directory?(relative_path)

@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "work_id": 96185,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "title": "蟋蟀",
+  "categories": [
+    "唐風",
+    "國風"
+  ],
+  "sources": [
+    "https://zh.wikisource.org/wiki/%E8%A9%A9%E7%B6%93/%E8%9F%8B%E8%9F%80"
+  ],
+  "identifiers": [
+    {
+      "scheme": "mao_no",
+      "value": "114"
+    }
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 5463,
+      "title": "詩經",
+      "edition_id": 72,
+      "edition_label": "詩經本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 72,
+      "edition_label": "詩經本",
+      "source_work_id": 5463,
+      "source_title": "詩經",
+      "documents": [
+        {
+          "document_id": 11694,
+          "file": "蟋蟀.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/周/詩經/國風/唐風/蟋蟀/蟋蟀.txt",
+          "title": "詩經",
+          "page_title": "詩經/蟋蟀",
+          "display_title": "蟋蟀",
+          "authors": [
+            "姬旦"
+          ],
+          "identifiers": [
+            {
+              "scheme": "mao_no",
+              "value": "114"
+            }
+          ],
+          "body_start_line": 9
+        },
+        {
+          "document_id": 11695,
+          "file": "蟋蟀_毛詩序.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/周/詩經/國風/唐風/蟋蟀/蟋蟀_毛詩序.txt",
+          "title": "詩經",
+          "page_title": "詩經/蟋蟀",
+          "display_title": "蟋蟀",
+          "authors": [
+            "毛亨"
+          ],
+          "identifiers": [
+            {
+              "scheme": "mao_no",
+              "value": "114"
+            }
+          ],
+          "body_start_line": 9
+        }
+      ]
+    }
+  ]
+}

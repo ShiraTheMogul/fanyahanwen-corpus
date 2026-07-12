@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "work_id": 96147,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "title": "烈祖",
+  "categories": [
+    "商頌"
+  ],
+  "sources": [
+    "https://zh.wikisource.org/wiki/%E8%A9%A9%E7%B6%93/%E7%83%88%E7%A5%96"
+  ],
+  "identifiers": [
+    {
+      "scheme": "mao_no",
+      "value": "308"
+    }
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 5463,
+      "title": "詩經",
+      "edition_id": 34,
+      "edition_label": "詩經本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 34,
+      "edition_label": "詩經本",
+      "source_work_id": 5463,
+      "source_title": "詩經",
+      "documents": [
+        {
+          "document_id": 11605,
+          "file": "烈祖.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/周/詩經/商頌/烈祖/烈祖.txt",
+          "title": "詩經",
+          "page_title": "詩經/烈祖",
+          "display_title": "烈祖",
+          "identifiers": [
+            {
+              "scheme": "mao_no",
+              "value": "308"
+            }
+          ],
+          "body_start_line": 8
+        },
+        {
+          "document_id": 11606,
+          "file": "烈祖_毛詩序.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/周/詩經/商頌/烈祖/烈祖_毛詩序.txt",
+          "title": "詩經",
+          "page_title": "詩經/烈祖",
+          "display_title": "烈祖",
+          "authors": [
+            "毛亨"
+          ],
+          "identifiers": [
+            {
+              "scheme": "mao_no",
+              "value": "308"
+            }
+          ],
+          "body_start_line": 9
+        }
+      ]
+    }
+  ]
+}

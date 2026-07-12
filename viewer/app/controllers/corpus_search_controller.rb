@@ -14,8 +14,8 @@ class CorpusSearchController < ApplicationController
     @searched = @query.requested? && targeted_search?
     @result_page = nil
     @live_query_url = live_query_url(@query) if @query.valid?
-    @manifest = CorpusSearch::Manifest.load if (@searched || full_search?) && @query.valid?
-    @folder_tree = CorpusSearch::FolderTree.load(manifest: @manifest)
+    @manifest = CorpusSearch::Manifest.load_for_query(query: @query) if @searched && @query.valid?
+    @folder_tree = CorpusSearch::FolderTree.load
 
     return unless @searched
 

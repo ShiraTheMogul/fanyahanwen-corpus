@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "work_id": 96126,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "title": "振鷺",
+  "categories": [
+    "周頌",
+    "臣工之什"
+  ],
+  "sources": [
+    "https://zh.wikisource.org/wiki/%E8%A9%A9%E7%B6%93/%E6%8C%AF%E9%B7%BA"
+  ],
+  "identifiers": [
+    {
+      "scheme": "mao_no",
+      "value": "284"
+    }
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 5463,
+      "title": "詩經",
+      "edition_id": 13,
+      "edition_label": "詩經本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 13,
+      "edition_label": "詩經本",
+      "source_work_id": 5463,
+      "source_title": "詩經",
+      "documents": [
+        {
+          "document_id": 11563,
+          "file": "振鷺.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/周/詩經/周頌/臣工之什/振鷺/振鷺.txt",
+          "title": "詩經",
+          "page_title": "詩經/振鷺",
+          "display_title": "振鷺",
+          "identifiers": [
+            {
+              "scheme": "mao_no",
+              "value": "284"
+            }
+          ],
+          "body_start_line": 8
+        },
+        {
+          "document_id": 11564,
+          "file": "振鷺_毛詩序.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/周/詩經/周頌/臣工之什/振鷺/振鷺_毛詩序.txt",
+          "title": "詩經",
+          "page_title": "詩經/振鷺",
+          "display_title": "振鷺",
+          "authors": [
+            "毛亨"
+          ],
+          "identifiers": [
+            {
+              "scheme": "mao_no",
+              "value": "284"
+            }
+          ],
+          "body_start_line": 9
+        }
+      ]
+    }
+  ]
+}

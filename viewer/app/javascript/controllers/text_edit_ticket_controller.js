@@ -30,6 +30,16 @@ export default class extends Controller {
     "contactEmail",
     "contactNotes",
     "uploads",
+    "editMode",
+    "metadataTitle",
+    "metadataAuthors",
+    "metadataDateLabel",
+    "metadataCorpusRoot",
+    "metadataPeriod",
+    "metadataPolity",
+    "metadataRegion",
+    "metadataCategories",
+    "metadataSources",
   ];
 
   static values = {
@@ -67,7 +77,21 @@ export default class extends Controller {
       form.append("reasoning", reasoning);
       form.append("source", this.sourceValue || "corpus_viewer");
       form.append("target_path", this.targetPathValue);
-      form.append("new_text", newText);
+      const editMode = this.hasEditModeTarget ? this.editModeTarget.value : "body_text";
+      form.append("edit_mode", editMode);
+      if (editMode === "metadata_fields") {
+        form.append("metadata_title", this._targetValue("metadataTitle"));
+        form.append("metadata_authors", this._targetValue("metadataAuthors"));
+        form.append("metadata_date_label", this._targetValue("metadataDateLabel"));
+        form.append("metadata_corpus_root", this._targetValue("metadataCorpusRoot"));
+        form.append("metadata_period", this._targetValue("metadataPeriod"));
+        form.append("metadata_polity", this._targetValue("metadataPolity"));
+        form.append("metadata_region", this._targetValue("metadataRegion"));
+        form.append("metadata_categories", this._targetValue("metadataCategories"));
+        form.append("metadata_sources", this._targetValue("metadataSources"));
+      } else {
+        form.append("new_text", newText);
+      }
       appendSubmissionExtras(form, this);
 
       const resp = await fetch("/api/tickets/text_edit", {
@@ -131,6 +155,12 @@ export default class extends Controller {
     a.click();
     a.remove();
     URL.revokeObjectURL(url);
+  }
+
+  _targetValue(name) {
+    const hasName = `has${name.charAt(0).toUpperCase()}${name.slice(1)}Target`;
+    const targetName = `${name}Target`;
+    return this[hasName] ? this[targetName].value : "";
   }
 
   _csrfToken() {

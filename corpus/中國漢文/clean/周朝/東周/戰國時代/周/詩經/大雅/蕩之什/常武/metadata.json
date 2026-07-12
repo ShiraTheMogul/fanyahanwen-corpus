@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "work_id": 96333,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "title": "常武",
+  "categories": [
+    "大雅",
+    "蕩之什"
+  ],
+  "sources": [
+    "https://zh.wikisource.org/wiki/%E8%A9%A9%E7%B6%93/%E5%B8%B8%E6%AD%A6"
+  ],
+  "identifiers": [
+    {
+      "scheme": "mao_no",
+      "value": "269"
+    }
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 5463,
+      "title": "詩經",
+      "edition_id": 220,
+      "edition_label": "詩經本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 220,
+      "edition_label": "詩經本",
+      "source_work_id": 5463,
+      "source_title": "詩經",
+      "documents": [
+        {
+          "document_id": 11990,
+          "file": "常武.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/周/詩經/大雅/蕩之什/常武/常武.txt",
+          "title": "詩經",
+          "page_title": "詩經/常武",
+          "display_title": "常武",
+          "authors": [
+            "尹吉甫"
+          ],
+          "identifiers": [
+            {
+              "scheme": "mao_no",
+              "value": "269"
+            }
+          ],
+          "body_start_line": 9
+        },
+        {
+          "document_id": 11991,
+          "file": "常武_毛詩序.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/周/詩經/大雅/蕩之什/常武/常武_毛詩序.txt",
+          "title": "詩經",
+          "page_title": "詩經/常武",
+          "display_title": "常武",
+          "authors": [
+            "毛亨"
+          ],
+          "identifiers": [
+            {
+              "scheme": "mao_no",
+              "value": "269"
+            }
+          ],
+          "body_start_line": 9
+        }
+      ]
+    }
+  ]
+}

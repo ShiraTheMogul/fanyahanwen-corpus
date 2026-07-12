@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "work_id": 96164,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "title": "鵲巢",
+  "categories": [
+    "召南",
+    "國風"
+  ],
+  "sources": [
+    "https://zh.wikisource.org/wiki/%E8%A9%A9%E7%B6%93/%E9%B5%B2%E5%B7%A2"
+  ],
+  "identifiers": [
+    {
+      "scheme": "mao_no",
+      "value": "012"
+    }
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 5463,
+      "title": "詩經",
+      "edition_id": 51,
+      "edition_label": "詩經本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 51,
+      "edition_label": "詩經本",
+      "source_work_id": 5463,
+      "source_title": "詩經",
+      "documents": [
+        {
+          "document_id": 11645,
+          "file": "鵲巢.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/周/詩經/國風/召南/鵲巢/鵲巢.txt",
+          "title": "詩經",
+          "page_title": "詩經/鵲巢",
+          "display_title": "鵲巢",
+          "identifiers": [
+            {
+              "scheme": "mao_no",
+              "value": "012"
+            }
+          ],
+          "body_start_line": 8
+        },
+        {
+          "document_id": 11646,
+          "file": "鵲巢_毛詩序.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/周/詩經/國風/召南/鵲巢/鵲巢_毛詩序.txt",
+          "title": "詩經",
+          "page_title": "詩經/鵲巢",
+          "display_title": "鵲巢",
+          "authors": [
+            "毛亨"
+          ],
+          "identifiers": [
+            {
+              "scheme": "mao_no",
+              "value": "012"
+            }
+          ],
+          "body_start_line": 9
+        }
+      ]
+    }
+  ]
+}

@@ -22,6 +22,13 @@ class CorpusViewerController < ApplicationController
     @requested_annotation_system = normalized_annotation_system_param(params[:annotation_system].presence || params[:tradition])
 
     if fs.directory?(@abs_path)
+      metadata_store = CorpusMetadataStore.new(root: root, fs: fs)
+      if metadata_store.work_folder?(@rel_path)
+        load_work_folder_view(fs: fs, metadata_store: metadata_store)
+        render :show, formats: [:html]
+        return
+      end
+
       @kind = :dir
       @children = fs.list_dir(@abs_path)
       @children -= ROOT_HIDDEN_ENTRIES if @rel_path.blank?
@@ -51,7 +58,11 @@ class CorpusViewerController < ApplicationController
       source_raw = fs.read_text(@source_abs_path)
       @meta = metadata_store.display_entries_for_path(@source_rel_path)
       @meta = metadata_store.legacy_entries_from_text(source_raw) if @meta.blank?
+      @metadata_rel_path = metadata_store.metadata_relative_path_for(@source_rel_path)
+      @metadata_json_text = @metadata_rel_path.present? ? fs.read_text(fs.resolve(@metadata_rel_path)) : ""
+      @metadata_edit_values = metadata_store.editable_metadata_values_for_path(@source_rel_path)
       @source_body = body_from_text(source_raw)
+      @text_edit_enabled = true
 
       @available_annotation_systems = available_annotation_systems_for(fs, @source_rel_path)
       @annotation_system_bodies = load_annotation_system_bodies(fs, @available_annotation_systems)
@@ -96,6 +107,47 @@ class CorpusViewerController < ApplicationController
   end
 
   private
+
+  def load_work_folder_view(fs:, metadata_store:)
+    @kind = :file
+    @work_folder_view = true
+    @source_rel_path = @rel_path
+    @source_abs_path = @abs_path
+    @current_annotation_system_folder = nil
+    @direct_translation_id = nil
+    @requested_annotation_system = nil
+
+    @meta = metadata_store.display_entries_for_path(@rel_path)
+    @metadata_rel_path = metadata_store.metadata_relative_path_for(@rel_path)
+    @metadata_json_text = @metadata_rel_path.present? ? fs.read_text(fs.resolve(@metadata_rel_path)) : ""
+    @metadata_edit_values = metadata_store.editable_metadata_values_for_path(@rel_path)
+
+    @work_document_paths = metadata_store.document_paths_for_work_folder(@rel_path)
+    bodies = @work_document_paths.filter_map do |document_path|
+      raw = fs.read_text(fs.resolve(document_path))
+      body = body_from_text(raw)
+      body.presence
+    rescue Errno::ENOENT, SecurityError
+      nil
+    end
+
+    @source_body = bodies.join("\n\n")
+    @raw_body = @source_body
+    @text = view_text(@raw_body)
+    @active_text_target_path = @work_document_paths.first.to_s
+    @text_edit_enabled = @work_document_paths.length == 1
+
+    @available_annotation_systems = {}
+    @annotation_system_bodies = {}
+    @available_translations = {}
+    @variant_materials = []
+    @annotation_system_materials = {}
+    @display_annotation_system = nil
+    @display_translation = nil
+    @annotation_system_editor_enabled = false
+    @companion_submission_enabled = false
+    @companion_materials = []
+  end
 
   # Use the same body boundary as corpus search so body-offset deep links are
   # exact. New corpus files should already be body-only; DocumentReader remains

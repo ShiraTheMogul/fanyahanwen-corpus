@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "work_id": 96289,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "title": "株林",
+  "categories": [
+    "國風",
+    "陳風"
+  ],
+  "sources": [
+    "https://zh.wikisource.org/wiki/%E8%A9%A9%E7%B6%93/%E6%A0%AA%E6%9E%97"
+  ],
+  "identifiers": [
+    {
+      "scheme": "mao_no",
+      "value": "144"
+    }
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 5463,
+      "title": "詩經",
+      "edition_id": 176,
+      "edition_label": "詩經本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 176,
+      "edition_label": "詩經本",
+      "source_work_id": 5463,
+      "source_title": "詩經",
+      "documents": [
+        {
+          "document_id": 11903,
+          "file": "株林.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/周/詩經/國風/陳風/株林/株林.txt",
+          "title": "詩經",
+          "page_title": "詩經/株林",
+          "display_title": "株林",
+          "identifiers": [
+            {
+              "scheme": "mao_no",
+              "value": "144"
+            }
+          ],
+          "body_start_line": 8
+        },
+        {
+          "document_id": 11904,
+          "file": "株林_毛詩序.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/周/詩經/國風/陳風/株林/株林_毛詩序.txt",
+          "title": "詩經",
+          "page_title": "詩經/株林",
+          "display_title": "株林",
+          "authors": [
+            "毛亨"
+          ],
+          "identifiers": [
+            {
+              "scheme": "mao_no",
+              "value": "144"
+            }
+          ],
+          "body_start_line": 9
+        }
+      ]
+    }
+  ]
+}

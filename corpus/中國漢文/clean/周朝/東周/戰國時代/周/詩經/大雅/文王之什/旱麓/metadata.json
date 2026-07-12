@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "work_id": 96316,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "title": "旱麓",
+  "categories": [
+    "大雅",
+    "文王之什"
+  ],
+  "sources": [
+    "https://zh.wikisource.org/wiki/%E8%A9%A9%E7%B6%93/%E6%97%B1%E9%BA%93"
+  ],
+  "identifiers": [
+    {
+      "scheme": "mao_no",
+      "value": "245"
+    }
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 5463,
+      "title": "詩經",
+      "edition_id": 203,
+      "edition_label": "詩經本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 203,
+      "edition_label": "詩經本",
+      "source_work_id": 5463,
+      "source_title": "詩經",
+      "documents": [
+        {
+          "document_id": 11956,
+          "file": "旱麓.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/周/詩經/大雅/文王之什/旱麓/旱麓.txt",
+          "title": "詩經",
+          "page_title": "詩經/旱麓",
+          "display_title": "旱麓",
+          "identifiers": [
+            {
+              "scheme": "mao_no",
+              "value": "245"
+            }
+          ],
+          "body_start_line": 8
+        },
+        {
+          "document_id": 11957,
+          "file": "旱麓_毛詩序.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/周/詩經/大雅/文王之什/旱麓/旱麓_毛詩序.txt",
+          "title": "詩經",
+          "page_title": "詩經/旱麓",
+          "display_title": "旱麓",
+          "authors": [
+            "毛亨"
+          ],
+          "identifiers": [
+            {
+              "scheme": "mao_no",
+              "value": "245"
+            }
+          ],
+          "body_start_line": 9
+        }
+      ]
+    }
+  ]
+}

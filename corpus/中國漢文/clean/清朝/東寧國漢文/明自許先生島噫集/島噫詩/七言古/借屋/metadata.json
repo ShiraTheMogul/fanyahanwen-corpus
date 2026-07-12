@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "work_id": 124520,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "polity": "東寧國",
+  "title": "借屋",
+  "editors": [
+    "德資",
+    "盧若騰"
+  ],
+  "categories": [
+    "七言古",
+    "島噫詩"
+  ],
+  "sources": [
+    "1968年）17-18頁。",
+    "《島噫詩》",
+    "盧若騰撰",
+    "臺灣文獻叢刊第二四五種（臺北：臺灣銀行經濟研究室",
+    "陳漢光編輯"
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 79214,
+      "title": "明自許先生島噫集",
+      "edition_id": 28407,
+      "edition_label": "明自許先生島噫集本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 28407,
+      "edition_label": "明自許先生島噫集本",
+      "source_work_id": 79214,
+      "source_title": "明自許先生島噫集",
+      "documents": [
+        {
+          "document_id": 170786,
+          "file": "借屋.txt",
+          "path": "中國漢文/clean/清朝/東寧國漢文/明自許先生島噫集/島噫詩/七言古/借屋/借屋.txt",
+          "title": "借屋",
+          "geography_override": {
+            "polity": "東寧國"
+          },
+          "body_start_line": 9
+        }
+      ]
+    }
+  ]
+}

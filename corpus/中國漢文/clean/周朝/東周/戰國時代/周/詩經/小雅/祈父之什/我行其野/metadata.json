@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "work_id": 96386,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "title": "我行其野",
+  "categories": [
+    "小雅",
+    "鴻鴈之什"
+  ],
+  "sources": [
+    "https://zh.wikisource.org/wiki/%E8%A9%A9%E7%B6%93/%E6%88%91%E8%A1%8C%E5%85%B6%E9%87%8E"
+  ],
+  "identifiers": [
+    {
+      "scheme": "mao_no",
+      "value": "194"
+    }
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 5463,
+      "title": "詩經",
+      "edition_id": 273,
+      "edition_label": "詩經本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 273,
+      "edition_label": "詩經本",
+      "source_work_id": 5463,
+      "source_title": "詩經",
+      "documents": [
+        {
+          "document_id": 12097,
+          "file": "我行其野.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/周/詩經/小雅/祈父之什/我行其野/我行其野.txt",
+          "title": "詩經",
+          "page_title": "詩經/我行其野",
+          "display_title": "我行其野",
+          "identifiers": [
+            {
+              "scheme": "mao_no",
+              "value": "194"
+            }
+          ],
+          "body_start_line": 8
+        },
+        {
+          "document_id": 12098,
+          "file": "我行其野_毛詩序.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/周/詩經/小雅/祈父之什/我行其野/我行其野_毛詩序.txt",
+          "title": "詩經",
+          "page_title": "詩經/我行其野",
+          "display_title": "我行其野",
+          "authors": [
+            "毛亨"
+          ],
+          "identifiers": [
+            {
+              "scheme": "mao_no",
+              "value": "194"
+            }
+          ],
+          "body_start_line": 9
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "work_id": 96592,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "period": "戰國早期",
+  "title": "ASDC｜金文｜戰國早期｜殷周金文集成｜11649",
+  "categories": [
+    "戰國",
+    "早期"
+  ],
+  "sources": [
+    "https://inscription.asdc.sinica.edu.tw",
+    "殷周金文集成"
+  ],
+  "identifiers": [
+    {
+      "scheme": "source_db",
+      "value": "先秦甲骨金文簡牘詞彙資料庫"
+    },
+    {
+      "scheme": "entry_number",
+      "value": "116352"
+    },
+    {
+      "scheme": "legacy_id",
+      "value": "11649"
+    },
+    {
+      "scheme": "no_bronze_components",
+      "value": "2"
+    },
+    {
+      "scheme": "legacy_unique_id",
+      "value": "4af07bbd0025"
+    },
+    {
+      "scheme": "entry_number",
+      "value": "116351"
+    },
+    {
+      "scheme": "no_bronze_components",
+      "value": "1"
+    },
+    {
+      "scheme": "legacy_unique_id",
+      "value": "f6e44835c322"
+    }
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 5477,
+      "title": "金文",
+      "edition_id": 479,
+      "edition_label": "金文本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 479,
+      "edition_label": "金文本",
+      "source_work_id": 5477,
+      "source_title": "金文",
+      "documents": [
+        {
+          "document_id": 12973,
+          "file": "11649_4af07bbd0025.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/戰國金文/早期/ASDC｜金文｜戰國早期｜殷周金文集成｜11649/11649_4af07bbd0025.txt",
+          "title": "ASDC｜金文｜戰國早期｜殷周金文集成｜11649",
+          "identifiers": [
+            {
+              "scheme": "source_db",
+              "value": "先秦甲骨金文簡牘詞彙資料庫"
+            },
+            {
+              "scheme": "entry_number",
+              "value": "116352"
+            },
+            {
+              "scheme": "legacy_id",
+              "value": "11649"
+            },
+            {
+              "scheme": "no_bronze_components",
+              "value": "2"
+            },
+            {
+              "scheme": "legacy_unique_id",
+              "value": "4af07bbd0025"
+            }
+          ],
+          "geography_override": {
+            "period": "戰國早期"
+          },
+          "body_start_line": 14
+        },
+        {
+          "document_id": 12974,
+          "file": "11649_f6e44835c322.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/戰國金文/早期/ASDC｜金文｜戰國早期｜殷周金文集成｜11649/11649_f6e44835c322.txt",
+          "title": "ASDC｜金文｜戰國早期｜殷周金文集成｜11649",
+          "identifiers": [
+            {
+              "scheme": "source_db",
+              "value": "先秦甲骨金文簡牘詞彙資料庫"
+            },
+            {
+              "scheme": "entry_number",
+              "value": "116351"
+            },
+            {
+              "scheme": "legacy_id",
+              "value": "11649"
+            },
+            {
+              "scheme": "no_bronze_components",
+              "value": "1"
+            },
+            {
+              "scheme": "legacy_unique_id",
+              "value": "f6e44835c322"
+            }
+          ],
+          "geography_override": {
+            "period": "戰國早期"
+          },
+          "body_start_line": 14
+        }
+      ]
+    }
+  ]
+}

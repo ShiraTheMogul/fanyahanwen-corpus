@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "work_id": 96228,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "title": "伐柯",
+  "categories": [
+    "國風",
+    "豳風"
+  ],
+  "sources": [
+    "https://zh.wikisource.org/wiki/%E8%A9%A9%E7%B6%93/%E4%BC%90%E6%9F%AF"
+  ],
+  "identifiers": [
+    {
+      "scheme": "mao_no",
+      "value": "158"
+    }
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 5463,
+      "title": "詩經",
+      "edition_id": 115,
+      "edition_label": "詩經本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 115,
+      "edition_label": "詩經本",
+      "source_work_id": 5463,
+      "source_title": "詩經",
+      "documents": [
+        {
+          "document_id": 11781,
+          "file": "伐柯.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/周/詩經/國風/豳風/伐柯/伐柯.txt",
+          "title": "詩經",
+          "page_title": "詩經/伐柯",
+          "display_title": "伐柯",
+          "identifiers": [
+            {
+              "scheme": "mao_no",
+              "value": "158"
+            }
+          ],
+          "body_start_line": 8
+        },
+        {
+          "document_id": 11782,
+          "file": "伐柯_毛詩序.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/周/詩經/國風/豳風/伐柯/伐柯_毛詩序.txt",
+          "title": "詩經",
+          "page_title": "詩經/伐柯",
+          "display_title": "伐柯",
+          "authors": [
+            "毛亨"
+          ],
+          "identifiers": [
+            {
+              "scheme": "mao_no",
+              "value": "158"
+            }
+          ],
+          "body_start_line": 9
+        }
+      ]
+    }
+  ]
+}

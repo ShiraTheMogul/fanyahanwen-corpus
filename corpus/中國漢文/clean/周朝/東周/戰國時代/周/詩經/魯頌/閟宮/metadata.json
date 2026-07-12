@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "work_id": 96425,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "title": "閟宮",
+  "categories": [
+    "魯頌"
+  ],
+  "sources": [
+    "https://zh.wikisource.org/wiki/%E8%A9%A9%E7%B6%93/%E9%96%9F%E5%AE%AE"
+  ],
+  "identifiers": [
+    {
+      "scheme": "mao_no",
+      "value": "306"
+    }
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 5463,
+      "title": "詩經",
+      "edition_id": 312,
+      "edition_label": "詩經本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 312,
+      "edition_label": "詩經本",
+      "source_work_id": 5463,
+      "source_title": "詩經",
+      "documents": [
+        {
+          "document_id": 12175,
+          "file": "閟宮.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/周/詩經/魯頌/閟宮/閟宮.txt",
+          "title": "詩經",
+          "page_title": "詩經/閟宮",
+          "display_title": "閟宮",
+          "identifiers": [
+            {
+              "scheme": "mao_no",
+              "value": "306"
+            }
+          ],
+          "body_start_line": 8
+        },
+        {
+          "document_id": 12176,
+          "file": "閟宮_毛詩序.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/周/詩經/魯頌/閟宮/閟宮_毛詩序.txt",
+          "title": "詩經",
+          "page_title": "詩經/閟宮",
+          "display_title": "閟宮",
+          "authors": [
+            "毛亨"
+          ],
+          "identifiers": [
+            {
+              "scheme": "mao_no",
+              "value": "306"
+            }
+          ],
+          "body_start_line": 9
+        }
+      ]
+    }
+  ]
+}

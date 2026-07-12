@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "work_id": 128351,
+  "corpus_root": "四庫全書",
+  "title": "野古集",
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 80277,
+      "title": "四庫全書",
+      "edition_id": 32238,
+      "edition_label": "四庫全書本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 32238,
+      "edition_label": "四庫全書本",
+      "source_work_id": 80277,
+      "source_title": "四庫全書",
+      "documents": [
+        {
+          "document_id": 223237,
+          "file": "野古集__juan_01.txt",
+          "path": "四庫全書/clean/集部/別集類/明洪武至崇禎/野古集/野古集__juan_01.txt",
+          "title": "野古集 (四庫全書本)",
+          "page_title": "野古集 (四庫全書本)/卷上",
+          "display_title": "野古集",
+          "source_categories": [
+            "PD-old"
+          ],
+          "body_start_line": 6
+        },
+        {
+          "document_id": 223238,
+          "file": "野古集__juan_02.txt",
+          "path": "四庫全書/clean/集部/別集類/明洪武至崇禎/野古集/野古集__juan_02.txt",
+          "title": "野古集 (四庫全書本)",
+          "page_title": "野古集 (四庫全書本)/卷中",
+          "display_title": "野古集",
+          "source_categories": [
+            "1454年 (提及)",
+            "PD-old"
+          ],
+          "body_start_line": 6
+        },
+        {
+          "document_id": 223239,
+          "file": "野古集__juan_03.txt",
+          "path": "四庫全書/clean/集部/別集類/明洪武至崇禎/野古集/野古集__juan_03.txt",
+          "title": "野古集 (四庫全書本)",
+          "page_title": "野古集 (四庫全書本)/卷下",
+          "display_title": "野古集",
+          "source_categories": [
+            "PD-old"
+          ],
+          "body_start_line": 6
+        }
+      ]
+    }
+  ]
+}

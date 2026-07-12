@@ -5,7 +5,7 @@ import { t } from "i18n"
 export default class extends Controller {
   static targets = [
     "panel", "status", "ticketId", "ticketKey", "copyKeyBtn", "downloadKeyBtn", "storeOnDevice",
-    "parentPath", "workFolder", "title", "summary", "nation", "workTitle", "author", "textType",
+    "parentPath", "workFolder", "title", "summary", "nation", "workTitle", "author", "dateLabel", "period", "polity", "region", "categories", "textType",
     "sourceCitation", "url", "contextDetails", "pageMode", "singleFields", "multiFields",
     "fileName", "pageTitle", "body", "uploads", "pagesList",
     "evidenceLinks", "contactName", "contactEmail", "contactNotes"
@@ -86,6 +86,11 @@ export default class extends Controller {
     form.append("nation", this.hasNationTarget ? this.nationTarget.value : "")
     form.append("work_title", this.hasWorkTitleTarget ? this.workTitleTarget.value : "")
     form.append("author", this.hasAuthorTarget ? this.authorTarget.value : "")
+    form.append("date_label", this.hasDateLabelTarget ? this.dateLabelTarget.value : "")
+    form.append("period", this.hasPeriodTarget ? this.periodTarget.value : "")
+    form.append("polity", this.hasPolityTarget ? this.polityTarget.value : "")
+    form.append("region", this.hasRegionTarget ? this.regionTarget.value : "")
+    form.append("categories", this.hasCategoriesTarget ? this.categoriesTarget.value : "")
     form.append("text_type", this.hasTextTypeTarget ? this.textTypeTarget.value : "source")
     form.append("source_citation", this.hasSourceCitationTarget ? this.sourceCitationTarget.value : "")
     form.append("url", this.hasUrlTarget ? this.urlTarget.value : "")

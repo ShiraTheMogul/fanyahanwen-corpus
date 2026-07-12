@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "work_id": 125685,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "period": "戰國晚期或秦代",
+  "title": "ASDC｜簡牘｜戰國晚期或秦代｜睡虎地秦簡｜法律答問168",
+  "categories": [
+    "戰國晚期",
+    "秦代"
+  ],
+  "sources": [
+    "https://inscription.asdc.sinica.edu.tw",
+    "睡虎地秦簡"
+  ],
+  "identifiers": [
+    {
+      "scheme": "source_db",
+      "value": "先秦甲骨金文簡牘詞彙資料庫"
+    },
+    {
+      "scheme": "entry_number",
+      "value": "123796"
+    },
+    {
+      "scheme": "legacy_id",
+      "value": "法律答問168"
+    },
+    {
+      "scheme": "no_bronze_components",
+      "value": "0"
+    },
+    {
+      "scheme": "legacy_unique_id",
+      "value": "80fab5dc3495"
+    }
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 80012,
+      "title": "秦代簡牘",
+      "edition_id": 29572,
+      "edition_label": "秦代簡牘本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 29572,
+      "edition_label": "秦代簡牘本",
+      "source_work_id": 80012,
+      "source_title": "秦代簡牘",
+      "documents": [
+        {
+          "document_id": 173878,
+          "file": "法律答問168_80fab5dc3495.txt",
+          "path": "中國漢文/clean/秦朝/秦代簡牘/ASDC｜簡牘｜戰國晚期或秦代｜睡虎地秦簡｜法律答問168/法律答問168_80fab5dc3495.txt",
+          "title": "ASDC｜簡牘｜戰國晚期或秦代｜睡虎地秦簡｜法律答問168",
+          "identifiers": [
+            {
+              "scheme": "source_db",
+              "value": "先秦甲骨金文簡牘詞彙資料庫"
+            },
+            {
+              "scheme": "entry_number",
+              "value": "123796"
+            },
+            {
+              "scheme": "legacy_id",
+              "value": "法律答問168"
+            },
+            {
+              "scheme": "no_bronze_components",
+              "value": "0"
+            },
+            {
+              "scheme": "legacy_unique_id",
+              "value": "80fab5dc3495"
+            }
+          ],
+          "body_start_line": 14
+        }
+      ]
+    }
+  ]
+}

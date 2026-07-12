@@ -26,6 +26,7 @@ class CorpusMetadataApplyJson
     @strip_header_audit = options[:strip_header_audit] ? Pathname(options[:strip_header_audit]).expand_path : nil
     @strip_report_rows = []
     @strip_audit_line_numbers = Hash.new { |hash, key| hash[key] = Set.new }
+    @strip_audit_header_specs = Hash.new { |hash, key| hash[key] = [] }
     @strip_path_aliases = Hash.new { |hash, key| hash[key] = Set.new }
     @progress_every = options.fetch(:progress_every).to_i
     @started_at = Time.now.utc
@@ -33,6 +34,8 @@ class CorpusMetadataApplyJson
     @moves = []
     @writes = []
     @identical_text_merges = []
+    @metadata_write_resume_rows = []
+    @work_id_remap = {}
     @document_index = Hash.new { |hash, key| hash[key] = [] }
   end
 
@@ -43,6 +46,8 @@ class CorpusMetadataApplyJson
     load_metadata_records!
     progress "loading preflight move/write plans"
     load_preflight!
+    progress "normalising duplicate metadata destinations"
+    normalize_duplicate_metadata_destinations!
     progress "merging identical-text duplicate metadata"
     merge_identical_text_metadata!
     progress @apply ? "applying identical-text deduplication" : "dry-run identical-text deduplication"
@@ -51,12 +56,13 @@ class CorpusMetadataApplyJson
     apply_moves!
     progress @apply ? "writing metadata.json files" : "dry-run metadata writes"
     apply_metadata_writes!
+    write_metadata_resume_report! if @apply
     if @strip_txt_headers
-      progress "loading txt header strip audit" if @strip_header_audit
-      load_strip_header_audit! if @strip_header_audit
+      warn "[metadata-apply] --strip-header-audit is ignored by the current-header stripper; stripping is based on the file's current leading # block" if @strip_header_audit
       progress @apply ? "stripping old txt headers" : "dry-run txt header stripping"
       strip_txt_headers!
       write_strip_report!
+      abort_on_strip_failures! if @apply
     end
     progress "finished"
     warn "[metadata-apply] mode=#{@apply ? 'APPLY' : 'DRY RUN'} duplicate_merges=#{@identical_text_merges.length} moves=#{@moves.length} metadata_writes=#{@writes.length} header_strip_candidates=#{@strip_report_rows.count { |row| row[:status] == 'would_strip' || row[:status] == 'stripped' }}"
@@ -145,6 +151,108 @@ class CorpusMetadataApplyJson
     Array(payload["editions"]).each do |edition|
       Array(edition["documents"]).each(&block)
     end
+  end
+
+  def normalize_duplicate_metadata_destinations!
+    grouped = @writes.group_by { |row| row.fetch("relative_metadata_path") }
+    duplicate_groups = grouped.select { |_path, rows| rows.length > 1 }
+    return if duplicate_groups.empty?
+
+    progress "duplicate metadata destinations: #{duplicate_groups.length}"
+    normalised_writes = []
+
+    grouped.each_value do |rows|
+      if rows.length == 1
+        normalised_writes << rows.first
+        next
+      end
+
+      primary = choose_primary_metadata_write(rows)
+      primary_id = primary.fetch("work_id").to_s
+      rows.each do |row|
+        work_id = row.fetch("work_id").to_s
+        next if work_id == primary_id
+
+        @work_id_remap[work_id] = primary_id
+        merge_duplicate_work_payload!(primary_id, work_id)
+      end
+      normalised_writes << primary
+    end
+
+    @writes = normalised_writes
+    remap_work_references!
+    progress "metadata writes after duplicate-destination normalisation: #{@writes.length}"
+  end
+
+  def choose_primary_metadata_write(rows)
+    rows.find { |row| row["kind"].to_s == "folder_work" } || rows.first
+  end
+
+  def canonical_work_id(work_id)
+    current = work_id.to_s
+    seen = Set.new
+    while @work_id_remap.key?(current) && !seen.include?(current)
+      seen << current
+      current = @work_id_remap[current]
+    end
+    current
+  end
+
+  def merge_duplicate_work_payload!(primary_id, duplicate_id)
+    primary = @records_by_work_id.fetch(primary_id) { raise "No staged metadata record for primary work_id=#{primary_id}" }
+    duplicate = @records_by_work_id.fetch(duplicate_id) { raise "No staged metadata record for duplicate work_id=#{duplicate_id}" }
+    merged = merge_work_payloads(primary, duplicate)
+    primary.clear
+    primary.merge!(deep_compact(merged))
+  end
+
+  def merge_work_payloads(primary, duplicate)
+    merged = merge_hashes(primary, duplicate)
+    merged["work_id"] = primary.fetch("work_id")
+    merged["title"] = primary["title"] unless blank?(primary["title"])
+    merged["is_compilation"] = primary["is_compilation"] unless primary["is_compilation"].nil?
+    merged
+  end
+
+  def remap_work_references!
+    return if @work_id_remap.empty?
+
+    @records_by_work_id.each_value do |payload|
+      remap_work_references_in_object!(payload)
+      remove_self_worklist_references!(payload)
+    end
+  end
+
+  def remove_self_worklist_references!(payload)
+    self_id = payload["work_id"].to_s
+    return if self_id.empty?
+
+    if payload["worklist"].is_a?(Array)
+      payload["worklist"] = payload["worklist"].reject { |item| item.is_a?(Hash) && item["work_id"].to_s == self_id }
+    end
+    if payload["contained_works"].is_a?(Array)
+      payload["contained_works"] = payload["contained_works"].reject { |item| item.is_a?(Hash) && item["work_id"].to_s == self_id }
+    end
+  end
+
+  def remap_work_references_in_object!(object)
+    case object
+    when Hash
+      object.each do |key, value|
+        if work_id_reference_key?(key) && @work_id_remap.key?(value.to_s)
+          object[key] = canonical_work_id(value.to_s).to_i.to_s == canonical_work_id(value.to_s) ? canonical_work_id(value.to_s).to_i : canonical_work_id(value.to_s)
+        else
+          remap_work_references_in_object!(value)
+        end
+      end
+    when Array
+      object.each { |item| remap_work_references_in_object!(item) }
+    end
+  end
+
+  def work_id_reference_key?(key)
+    text = key.to_s
+    text == "work_id" || text.end_with?("_work_id") || text == "source_work_id"
   end
 
   def merge_identical_text_metadata!
@@ -280,18 +388,22 @@ class CorpusMetadataApplyJson
       remove = @corpus_root.join(remove_path)
 
       if @apply
-        raise "Missing duplicate source during apply: #{source}" unless source.file?
-        raise "Missing duplicate target during apply: #{target}" unless target.file?
-        unless same_text_body?(source, target)
-          raise "Duplicate text changed since preflight: #{source} vs #{target}"
-        end
-
-        if keep.expand_path == source.expand_path
-          FileUtils.mkdir_p(target.dirname)
-          FileUtils.rm_f(target)
-          FileUtils.mv(source, target)
+        if keep.file? && !remove.file?
+          # Resume mode: duplicate was already removed by an interrupted run.
         else
-          FileUtils.rm_f(remove)
+          raise "Missing duplicate source during apply: #{source}" unless source.file?
+          raise "Missing duplicate target during apply: #{target}" unless target.file?
+          unless same_text_body?(source, target)
+            raise "Duplicate text changed since preflight: #{source} vs #{target}"
+          end
+
+          if keep.expand_path == source.expand_path
+            FileUtils.mkdir_p(target.dirname)
+            FileUtils.rm_f(target)
+            FileUtils.mv(source, target)
+          else
+            FileUtils.rm_f(remove)
+          end
         end
       end
       maybe_progress(index + 1, "identical-text dedupes processed")
@@ -303,11 +415,16 @@ class CorpusMetadataApplyJson
       source = @corpus_root.join(row.fetch("source_path"))
       target = @corpus_root.join(row.fetch("target_path"))
       if @apply
-        raise "Missing source txt during apply: #{source}" unless source.file?
-        raise "Target already exists during apply: #{target}" if target.exist? && source.expand_path != target.expand_path
-
-        FileUtils.mkdir_p(target.dirname)
-        FileUtils.mv(source, target) unless source.expand_path == target.expand_path
+        if source.file? && target.exist? && source.expand_path != target.expand_path
+          raise "Target already exists during apply: #{target}"
+        elsif source.file?
+          FileUtils.mkdir_p(target.dirname)
+          FileUtils.mv(source, target) unless source.expand_path == target.expand_path
+        elsif target.file?
+          # Resume mode: a previous interrupted run already moved this file.
+        else
+          raise "Missing source txt and target txt during apply resume: source=#{source} target=#{target}"
+        end
       end
       maybe_progress(index + 1, "txt moves processed")
     end
@@ -315,26 +432,65 @@ class CorpusMetadataApplyJson
 
   def apply_metadata_writes!
     @writes.each_with_index do |row, index|
-      work_id = row.fetch("work_id").to_s
+      work_id = canonical_work_id(row.fetch("work_id").to_s)
       payload = @records_by_work_id.fetch(work_id) { raise "No staged metadata record for work_id=#{work_id}" }
       destination = @corpus_root.join(row.fetch("relative_metadata_path"))
       if @apply
-        if destination.exist? && !@allow_overwrite
-          raise "Refusing to overwrite existing metadata.json: #{destination}"
-        end
         FileUtils.mkdir_p(destination.dirname)
-        atomic_write_json(destination, payload)
+        write_metadata_json_resumable!(destination, payload, row)
       end
       maybe_progress(index + 1, "metadata writes processed")
     end
   end
 
+  def write_metadata_json_resumable!(destination, payload, row)
+    if destination.exist?
+      if same_json_payload?(destination, payload)
+        @metadata_write_resume_rows << resume_row(destination, row, "already_written_same_payload")
+        return
+      end
+
+      existing = read_json_file(destination)
+      if existing.is_a?(Hash) && existing["work_id"].to_s == payload["work_id"].to_s
+        @metadata_write_resume_rows << resume_row(destination, row, "refresh_existing_same_work_id")
+        atomic_write_json(destination, payload)
+        return
+      end
+
+      unless @allow_overwrite
+        raise "Refusing to overwrite existing metadata.json with different work_id: #{destination} existing_work_id=#{existing.is_a?(Hash) ? existing['work_id'] : nil} new_work_id=#{payload['work_id']}"
+      end
+    end
+
+    atomic_write_json(destination, payload)
+  end
+
+  def same_json_payload?(destination, payload)
+    existing = read_json_file(destination)
+    existing == JSON.parse(JSON.generate(payload))
+  rescue JSON::ParserError, SystemCallError
+    false
+  end
+
+  def read_json_file(path)
+    JSON.parse(path.read(encoding: "UTF-8"))
+  rescue JSON::ParserError
+    nil
+  end
+
+  def resume_row(destination, row, action)
+    {
+      action: action,
+      work_id: canonical_work_id(row.fetch("work_id").to_s),
+      title: row["title"],
+      relative_metadata_path: destination.relative_path_from(@corpus_root).to_s
+    }
+  end
+
   def atomic_write_json(destination, payload)
-    temp = destination.dirname.join(".#{destination.basename}.tmp-#{$$}")
-    temp.write(JSON.pretty_generate(payload) + "\n")
-    File.rename(temp, destination)
-  ensure
-    FileUtils.rm_f(temp) if temp && temp.exist?
+    atomic_write_with_retries(destination, "tmp") do |temp|
+      temp.write(JSON.pretty_generate(payload) + "\n")
+    end
   end
 
 
@@ -343,17 +499,49 @@ class CorpusMetadataApplyJson
     paths = metadata_document_paths
     progress "txt header strip paths: #{paths.length}"
     paths.each_with_index do |relative_path, index|
-      path = @corpus_root.join(relative_path)
-      row = strip_txt_header_plan(path, relative_path)
+      planned_path = @corpus_root.join(relative_path)
+      read_relative_path = readable_txt_path_for_strip(relative_path)
+      read_path = read_relative_path ? @corpus_root.join(read_relative_path) : planned_path
+      row = strip_txt_header_plan(read_path, relative_path, read_relative_path || relative_path)
       if @apply && row[:status] == "would_strip"
-        atomic_write_bytes(path, row.delete(:new_content))
-        row[:status] = "stripped"
+        begin
+          # In apply mode, txt moves have already run, so the planned path should
+          # be the real path.  If a resume edge case still points at the source,
+          # write back to the file we actually read rather than inventing a move.
+          destination = read_path
+          atomic_write_bytes(destination, row.fetch(:new_content))
+          row[:status] = "stripped"
+          row[:message] = ""
+        rescue SystemCallError => error
+          row[:status] = "write_failed"
+          row[:message] = "#{error.class}: #{error.message}"
+          warn "[metadata-apply] txt header strip failed for #{read_relative_path || relative_path}: #{row[:message]}"
+        ensure
+          row.delete(:new_content)
+        end
       else
         row.delete(:new_content)
       end
       @strip_report_rows << row
       maybe_progress(index + 1, "txt headers checked")
     end
+  end
+
+  def readable_txt_path_for_strip(relative_path)
+    target = @corpus_root.join(relative_path)
+    return relative_path if target.file?
+
+    # Dry runs happen before planned txt moves.  For a folderised document, the
+    # target path may not exist yet, but the source path still does.  Read the
+    # source path for the dry-run report instead of reporting thousands of fake
+    # missing files.
+    aliases = @strip_path_aliases[relative_path].to_a
+    aliases.each do |candidate|
+      next if candidate.to_s.empty? || candidate == relative_path
+      return candidate if @corpus_root.join(candidate).file?
+    end
+
+    nil
   end
 
   def build_strip_path_aliases!
@@ -375,41 +563,6 @@ class CorpusMetadataApplyJson
     end
   end
 
-  def load_strip_header_audit!
-    raise ArgumentError, "Header audit directory does not exist: #{@strip_header_audit}" unless @strip_header_audit.directory?
-
-    metadata_rows = @strip_header_audit.join("metadata_rows.csv")
-    malformed_rows = @strip_header_audit.join("malformed_headers.csv")
-    raise ArgumentError, "Missing metadata_rows.csv in #{@strip_header_audit}" unless metadata_rows.file?
-
-    build_strip_path_aliases! if @strip_path_aliases.empty?
-    wanted_paths = @strip_path_aliases.values.reduce(Set.new) { |memo, aliases| memo.merge(aliases) }
-    progress "txt header audit wanted paths: #{wanted_paths.length}"
-
-    rows_read = 0
-    CSV.foreach(metadata_rows, headers: true, encoding: "bom|utf-8") do |row|
-      path = row["path"].to_s
-      next unless wanted_paths.include?(path)
-
-      line_number = row["line_number"].to_i
-      @strip_audit_line_numbers[path] << line_number if line_number.positive?
-      rows_read += 1
-      maybe_progress(rows_read, "txt header audit rows matched")
-    end
-
-    if malformed_rows.file?
-      CSV.foreach(malformed_rows, headers: true, encoding: "bom|utf-8") do |row|
-        path = row["path"].to_s
-        next unless wanted_paths.include?(path)
-
-        line_number = row["line_number"].to_i
-        @strip_audit_line_numbers[path] << line_number if line_number.positive?
-      end
-    end
-
-    progress "txt header audit matched paths: #{@strip_audit_line_numbers.length}"
-  end
-
   def metadata_document_paths
     paths = Set.new
     @writes.each do |row|
@@ -423,78 +576,79 @@ class CorpusMetadataApplyJson
     paths.to_a.sort
   end
 
-  def strip_txt_header_plan(path, relative_path)
+  def strip_txt_header_plan(path, relative_path, read_relative_path)
     unless path.file?
       return {
         status: "missing",
         path: relative_path,
+        read_path: read_relative_path,
         stripped_lines: 0,
         stripped_bytes: 0,
-        strip_mode: strip_mode_label(relative_path),
-        message: "txt file missing"
+        strip_mode: "current_leading_hash_block",
+        message: "txt file missing at planned path and known source path"
       }
     end
 
     content = path.binread
-    stripped = strip_audited_header_bytes(content, relative_path)
-    stripped ||= strip_leading_hash_header_block(content)
+    stripped = strip_current_leading_hash_header_block(content)
     unless stripped
       return {
         status: "no_header",
         path: relative_path,
+        read_path: read_relative_path,
         stripped_lines: 0,
         stripped_bytes: 0,
-        strip_mode: strip_mode_label(relative_path),
-        message: "no leading old # header block detected"
+        strip_mode: "current_leading_hash_block",
+        message: "no current leading # header block detected"
       }
     end
 
-    new_content, stripped_lines, stripped_bytes, mode = stripped
+    new_content, stripped_lines, stripped_bytes = stripped
     return {
       status: "no_header",
       path: relative_path,
+      read_path: read_relative_path,
       stripped_lines: 0,
       stripped_bytes: 0,
-      strip_mode: mode,
+      strip_mode: "current_leading_hash_block",
       message: "header strip would not change content"
     } if new_content == content
+
+    if new_content.strip.empty?
+      return {
+        status: "blocked_header_only",
+        path: relative_path,
+        read_path: read_relative_path,
+        stripped_lines: stripped_lines,
+        stripped_bytes: stripped_bytes,
+        strip_mode: "current_leading_hash_block",
+        message: "current file contains a leading # header block but no text body; left unchanged"
+      }
+    end
 
     {
       status: "would_strip",
       path: relative_path,
+      read_path: read_relative_path,
       stripped_lines: stripped_lines,
       stripped_bytes: stripped_bytes,
-      strip_mode: mode,
-      message: mode == "audit" ? "leading header block matched previous metadata audit" : "leading # header block fallback",
+      strip_mode: "current_leading_hash_block",
+      message: "current leading # header block",
       new_content: new_content
     }
   rescue SystemCallError => error
     {
       status: "error",
       path: relative_path,
+      read_path: read_relative_path,
       stripped_lines: 0,
       stripped_bytes: 0,
-      strip_mode: strip_mode_label(relative_path),
+      strip_mode: "current_leading_hash_block",
       message: "#{error.class}: #{error.message}"
     }
   end
 
-  def strip_audited_header_bytes(content, relative_path)
-    audit_lines = audited_line_numbers_for(relative_path)
-    return nil if audit_lines.empty?
-
-    strip_header_bytes(content, "audit") do |line, line_number, stripped_any|
-      audit_lines.include?(line_number) || (stripped_any && line.strip.empty?)
-    end
-  end
-
-  def strip_leading_hash_header_block(content)
-    strip_header_bytes(content, "fallback_leading_hash_block") do |line, _line_number, stripped_any|
-      line.start_with?("#") || (stripped_any && line.strip.empty?)
-    end
-  end
-
-  def strip_header_bytes(content, mode)
+  def strip_current_leading_hash_header_block(content)
     bom = "\xEF\xBB\xBF".b
     has_bom = content.start_with?(bom)
     prefix = has_bom ? bom : "".b
@@ -505,43 +659,83 @@ class CorpusMetadataApplyJson
     index = 0
     stripped_lines = 0
     stripped_bytes = 0
-    stripped_any = false
-    while index < lines.length && yield(lines[index], index + 1, stripped_any)
+
+    while index < lines.length && lines[index].lstrip.start_with?("#")
       stripped_bytes += lines[index].bytesize
       stripped_lines += 1
-      stripped_any = true
       index += 1
     end
     return nil if stripped_lines.zero?
 
-    [prefix + (lines[index..]&.join || "".b), stripped_lines, stripped_bytes, mode]
-  end
-
-  def audited_line_numbers_for(relative_path)
-    aliases = @strip_path_aliases[relative_path]
-    aliases.each_with_object(Set.new) do |alias_path, memo|
-      memo.merge(@strip_audit_line_numbers[alias_path])
+    while index < lines.length && lines[index].strip.empty?
+      stripped_bytes += lines[index].bytesize
+      stripped_lines += 1
+      index += 1
     end
-  end
 
-  def strip_mode_label(relative_path)
-    @strip_header_audit && !audited_line_numbers_for(relative_path).empty? ? "audit" : "fallback_leading_hash_block"
+    [prefix + (lines[index..]&.join || "".b), stripped_lines, stripped_bytes]
   end
 
   def atomic_write_bytes(destination, content)
-    temp = destination.dirname.join(".#{destination.basename}.strip-tmp-#{$$}")
-    File.binwrite(temp, content)
-    File.rename(temp, destination)
-  ensure
-    FileUtils.rm_f(temp) if temp && temp.exist?
+    atomic_write_with_retries(destination, "strip-tmp") do |temp|
+      File.binwrite(temp, content)
+    end
+  end
+
+  def atomic_write_with_retries(destination, label)
+    attempts = 0
+    temp = nil
+    safe_label = label.to_s.gsub(/[^A-Za-z0-9_-]/, "-")
+
+    begin
+      attempts += 1
+      # Keep the temporary filename deliberately short.  Some corpus files have
+      # very long basenames, and Windows/WSL can open the real file but reject
+      # an atomic-write temp path such as `.VERY_LONG_FILENAME.txt.strip-tmp...`.
+      # The temp still lives in the same directory, so the final rename remains
+      # same-directory and effectively atomic.
+      temp = destination.dirname.join(".fhwc-#{safe_label}-#{$$}-#{attempts}.tmp")
+      FileUtils.rm_f(temp)
+      yield temp
+      File.rename(temp, destination)
+    rescue Errno::EACCES, Errno::EPERM, Errno::EBUSY => error
+      FileUtils.rm_f(temp) if temp && temp.exist?
+      if attempts < 12
+        sleep_time = [0.25 * attempts, 3.0].min
+        warn "[metadata-apply] write retry #{attempts}/12 for #{destination}: #{error.class}: #{error.message}; sleeping #{sleep_time.round(2)}s"
+        sleep sleep_time
+        retry
+      end
+      raise
+    ensure
+      FileUtils.rm_f(temp) if temp && temp.exist?
+    end
+  end
+
+  def abort_on_strip_failures!
+    failures = @strip_report_rows.count { |row| %w[write_failed error missing].include?(row[:status].to_s) }
+    return if failures.zero?
+
+    raise RuntimeError, "TXT header stripping had #{failures} write/read failures. See #{@preflight_output.join('stripped_txt_headers.csv')} before rerunning."
+  end
+
+  def write_metadata_resume_report!
+    return if @metadata_write_resume_rows.empty?
+
+    path = @preflight_output.join("resumed_metadata_writes.csv")
+    headers = %w[action work_id title relative_metadata_path]
+    CSV.open(path, "w", write_headers: true, headers: headers) do |csv|
+      @metadata_write_resume_rows.each { |row| csv << headers.map { |key| row[key.to_sym] } }
+    end
+    progress "wrote resumed_metadata_writes.csv"
   end
 
   def write_strip_report!
     report_name = @apply ? "stripped_txt_headers.csv" : "would_strip_txt_headers.csv"
     path = @preflight_output.join(report_name)
-    CSV.open(path, "w", write_headers: true, headers: %w[status path stripped_lines stripped_bytes strip_mode message]) do |csv|
+    CSV.open(path, "w", write_headers: true, headers: %w[status path read_path stripped_lines stripped_bytes strip_mode message]) do |csv|
       @strip_report_rows.each do |row|
-        csv << [row[:status], row[:path], row[:stripped_lines], row[:stripped_bytes], row[:strip_mode], row[:message]]
+        csv << [row[:status], row[:path], row[:read_path], row[:stripped_lines], row[:stripped_bytes], row[:strip_mode], row[:message]]
       end
     end
 
@@ -615,7 +809,7 @@ parser = OptionParser.new do |opts|
   opts.on("--apply", "Actually move txt files and write metadata.json files") { options[:apply] = true }
   opts.on("--allow-overwrite", "Allow overwriting existing metadata.json files after reviewing would_overwrite.csv") { options[:allow_overwrite] = true }
   opts.on("--strip-txt-headers", "After metadata.json writes, strip old leading # metadata headers from covered txt files") { options[:strip_txt_headers] = true }
-  opts.on("--strip-header-audit DIR", "Previous corpus_metadata_audit output. Uses metadata_rows.csv/malformed_headers.csv to strip exactly the audited old header block where possible") { |value| options[:strip_header_audit] = value }
+  opts.on("--strip-header-audit DIR", "Accepted for old command compatibility, but ignored by the current-header stripper") { |value| options[:strip_header_audit] = value }
   opts.on("--progress-every N", Integer, "Print progress every N rows. Default: 25000; 0 disables") { |value| options[:progress_every] = value }
 end
 

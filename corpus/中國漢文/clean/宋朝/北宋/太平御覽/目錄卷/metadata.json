@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "work_id": 124508,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "period": "北宋",
+  "polity": "宋",
+  "title": "目錄卷",
+  "authors": [
+    "李昉"
+  ],
+  "categories": [
+    "75%",
+    "太平御覽",
+    "宋四大書"
+  ],
+  "sources": [
+    "https://zh.wikisource.org/wiki/%E5%A4%AA%E5%B9%B3%E5%BE%A1%E8%A6%BD/%E7%9B%AE%E9%8C%84%E5%8D%B7"
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 52301,
+      "title": "太平御覽",
+      "edition_id": 28395,
+      "edition_label": "太平御覽本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 28395,
+      "edition_label": "太平御覽本",
+      "source_work_id": 52301,
+      "source_title": "太平御覽",
+      "documents": [
+        {
+          "document_id": 100058,
+          "file": "目錄卷.txt",
+          "path": "中國漢文/clean/宋朝/北宋/太平御覽/目錄卷/目錄卷.txt",
+          "page_title": "太平御覽/目錄卷",
+          "chapter": "目錄卷",
+          "body_start_line": 10
+        }
+      ]
+    }
+  ]
+}

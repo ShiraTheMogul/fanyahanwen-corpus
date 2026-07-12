@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "work_id": 123517,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "period": "北宋",
+  "polity": "宋",
+  "title": "0010",
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 52301,
+      "title": "太平御覽",
+      "edition_id": 27404,
+      "edition_label": "太平御覽本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 27404,
+      "edition_label": "太平御覽本",
+      "source_work_id": 52301,
+      "source_title": "太平御覽",
+      "documents": [
+        {
+          "document_id": 99064,
+          "file": "0010.txt",
+          "path": "中國漢文/clean/宋朝/北宋/太平御覽/0010/0010.txt",
+          "page_title": "太平御覽/0010",
+          "chapter": "0010",
+          "authors": [
+            "李昉"
+          ],
+          "categories": [
+            "132年 (提及)",
+            "北宋",
+            "宋四大書"
+          ],
+          "sources": [
+            "https://zh.wikisource.org/wiki/%E5%A4%AA%E5%B9%B3%E5%BE%A1%E8%A6%BD/0010"
+          ],
+          "body_start_line": 10
+        },
+        {
+          "document_id": 100057,
+          "file": "太平御覽__juan_03.txt",
+          "path": "中國漢文/clean/宋朝/北宋/太平御覽/0010/太平御覽__juan_03.txt",
+          "page_title": "太平御覽/0010",
+          "chapter": "0010",
+          "sources": [
+            "https://zh.wikisource.org/wiki/%E5%A4%AA%E5%B9%B3%E5%BE%A1%E8%A6%BD%2F0010"
+          ],
+          "body_start_line": 8
+        }
+      ]
+    }
+  ]
+}

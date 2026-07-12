@@ -40,6 +40,7 @@ export default class extends Controller {
     this._state = this._loadState()
     this._punct = this._loadPunct()
     this._justToggledOrientation = false
+    this._initialApply = true
 
     this._onScroll = () => { this._saveScrollLeft() }
     this.viewboxTarget.addEventListener("scroll", this._onScroll, { passive: true })
@@ -722,11 +723,14 @@ export default class extends Controller {
     window.requestAnimationFrame(() => {
       this._restoreScrollState(scrollState)
 
-      // Only do the "jump to edge" behavior when the user actually toggled orientation/flow.
-      if (this._justToggledOrientation && vertical) {
+      // On first vertical render, old scrollLeft=0 shows the blank far-left edge
+      // of vertical-rl content. Jump to the first reading column unless a search
+      // highlight is about to place the reader somewhere specific.
+      if ((this._justToggledOrientation || (this._initialApply && !this._searchRange)) && vertical) {
         const wantRight = (vflow !== "lr")
         this.viewboxTarget.scrollLeft = wantRight ? this.viewboxTarget.scrollWidth : 0
       }
+      this._initialApply = false
       this._justToggledOrientation = false
       this._applySearchHighlight(!this._searchRangeScrolled)
       window.dispatchEvent(new CustomEvent("corpus-reader-applied"))

@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "work_id": 98473,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "period": "西周早期",
+  "title": "ASDC｜金文｜西周早期｜殷周金文集成｜09385",
+  "categories": [
+    "早期",
+    "西周"
+  ],
+  "sources": [
+    "https://inscription.asdc.sinica.edu.tw",
+    "殷周金文集成"
+  ],
+  "identifiers": [
+    {
+      "scheme": "source_db",
+      "value": "先秦甲骨金文簡牘詞彙資料庫"
+    },
+    {
+      "scheme": "entry_number",
+      "value": "113652"
+    },
+    {
+      "scheme": "legacy_id",
+      "value": "09385"
+    },
+    {
+      "scheme": "no_bronze_components",
+      "value": "2"
+    },
+    {
+      "scheme": "legacy_unique_id",
+      "value": "48506f84aa8c"
+    },
+    {
+      "scheme": "entry_number",
+      "value": "113651"
+    },
+    {
+      "scheme": "no_bronze_components",
+      "value": "1"
+    },
+    {
+      "scheme": "legacy_unique_id",
+      "value": "800de0b66a40"
+    }
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 5541,
+      "title": "金文",
+      "edition_id": 2360,
+      "edition_label": "金文本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 2360,
+      "edition_label": "金文本",
+      "source_work_id": 5541,
+      "source_title": "金文",
+      "documents": [
+        {
+          "document_id": 14998,
+          "file": "09385_48506f84aa8c.txt",
+          "path": "中國漢文/clean/周朝/西周/周金文/早期/ASDC｜金文｜西周早期｜殷周金文集成｜09385/09385_48506f84aa8c.txt",
+          "title": "ASDC｜金文｜西周早期｜殷周金文集成｜09385",
+          "medium": "金文",
+          "identifiers": [
+            {
+              "scheme": "source_db",
+              "value": "先秦甲骨金文簡牘詞彙資料庫"
+            },
+            {
+              "scheme": "entry_number",
+              "value": "113652"
+            },
+            {
+              "scheme": "legacy_id",
+              "value": "09385"
+            },
+            {
+              "scheme": "no_bronze_components",
+              "value": "2"
+            },
+            {
+              "scheme": "legacy_unique_id",
+              "value": "48506f84aa8c"
+            }
+          ],
+          "geography_override": {
+            "period": "西周早期"
+          },
+          "body_start_line": 14
+        },
+        {
+          "document_id": 14999,
+          "file": "09385_800de0b66a40.txt",
+          "path": "中國漢文/clean/周朝/西周/周金文/早期/ASDC｜金文｜西周早期｜殷周金文集成｜09385/09385_800de0b66a40.txt",
+          "title": "ASDC｜金文｜西周早期｜殷周金文集成｜09385",
+          "medium": "金文",
+          "identifiers": [
+            {
+              "scheme": "source_db",
+              "value": "先秦甲骨金文簡牘詞彙資料庫"
+            },
+            {
+              "scheme": "entry_number",
+              "value": "113651"
+            },
+            {
+              "scheme": "legacy_id",
+              "value": "09385"
+            },
+            {
+              "scheme": "no_bronze_components",
+              "value": "1"
+            },
+            {
+              "scheme": "legacy_unique_id",
+              "value": "800de0b66a40"
+            }
+          ],
+          "geography_override": {
+            "period": "西周早期"
+          },
+          "body_start_line": 14
+        }
+      ]
+    }
+  ]
+}

@@ -80,11 +80,83 @@ class CorpusMetadataStore
     nil
   end
 
+  def metadata_relative_path_for(rel_path)
+    path = metadata_path_for(rel_path)
+    return nil unless path
+
+    path.relative_path_from(@root).to_s.tr("\\", "/")
+  rescue ArgumentError
+    nil
+  end
+
   def metadata_for_path(rel_path)
     path = metadata_path_for(rel_path)
     return {} unless path
 
     read_json(path)
+  end
+
+  def work_folder?(rel_path)
+    path = metadata_path_for(rel_path)
+    return false unless path
+
+    document_paths_for_work_folder(rel_path).any?
+  end
+
+  def document_paths_for_work_folder(rel_path)
+    metadata_path = metadata_path_for(rel_path)
+    return [] unless metadata_path
+
+    folder_rel = rel_path.to_s.tr('\\', '/').sub(%r{/+\z}, '')
+    folder_rel = '' if folder_rel == '.'
+    folder_abs = metadata_path.dirname
+    work = read_json(metadata_path)
+
+    paths = []
+    document_hashes_for(work).each do |doc|
+      next unless doc.is_a?(Hash)
+
+      explicit = doc['path'].to_s.tr('\\', '/').sub(%r{\A/+}, '')
+      if explicit.present? && @root.join(explicit).file?
+        paths << explicit
+        next
+      end
+
+      file = doc['file'].to_s
+      next if file.blank?
+
+      candidate = [folder_rel, file].reject(&:blank?).join('/')
+      paths << candidate if @root.join(candidate).file?
+    end
+
+    if paths.empty? && folder_abs.directory?
+      Dir.children(folder_abs).sort.each do |name|
+        next unless name.downcase.end_with?('.txt')
+
+        paths << [folder_rel, name].reject(&:blank?).join('/')
+      end
+    end
+
+    paths.uniq
+  rescue SystemCallError, JSON::ParserError
+    []
+  end
+
+  def editable_metadata_values_for_path(rel_path)
+    metadata = metadata_for_path(rel_path)
+    return {} if metadata.empty?
+
+    {
+      'title' => metadata['title'].to_s,
+      'authors' => names_string(metadata['authors']),
+      'date_label' => metadata['date_label'].to_s,
+      'corpus_root' => metadata['corpus_root'].to_s,
+      'period' => metadata['period'].to_s,
+      'polity' => metadata['polity'].to_s,
+      'region' => metadata['region'].to_s,
+      'categories' => Array(metadata['categories']).map(&:to_s).reject(&:blank?).join("\n"),
+      'sources' => Array(metadata['sources']).map { |source| source.is_a?(Hash) ? source['citation'].to_s.presence || source.to_json : source.to_s }.reject(&:blank?).join("\n")
+    }
   end
 
   def document_metadata_for_path(rel_path)
@@ -131,6 +203,12 @@ class CorpusMetadataStore
     document.metadata_entries.map do |key, value|
       [legacy_label(key), value]
     end
+  end
+
+  def document_hashes_for(work)
+    docs = Array(work['documents'])
+    docs.concat(Array(work['editions']).flat_map { |edition| Array(edition['documents']) })
+    docs
   end
 
   private

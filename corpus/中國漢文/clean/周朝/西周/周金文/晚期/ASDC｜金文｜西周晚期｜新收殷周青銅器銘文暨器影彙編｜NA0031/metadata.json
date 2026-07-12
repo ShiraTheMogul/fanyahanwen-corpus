@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "work_id": 98617,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "period": "西周晚期",
+  "title": "ASDC｜金文｜西周晚期｜新收殷周青銅器銘文暨器影彙編｜NA0031",
+  "categories": [
+    "晚期",
+    "西周"
+  ],
+  "sources": [
+    "https://inscription.asdc.sinica.edu.tw",
+    "新收殷周青銅器銘文暨器影彙編"
+  ],
+  "identifiers": [
+    {
+      "scheme": "source_db",
+      "value": "先秦甲骨金文簡牘詞彙資料庫"
+    },
+    {
+      "scheme": "entry_number",
+      "value": "116901"
+    },
+    {
+      "scheme": "legacy_id",
+      "value": "NA0031"
+    },
+    {
+      "scheme": "no_bronze_components",
+      "value": "2"
+    },
+    {
+      "scheme": "legacy_unique_id",
+      "value": "97167dc130ad"
+    },
+    {
+      "scheme": "entry_number",
+      "value": "116900"
+    },
+    {
+      "scheme": "no_bronze_components",
+      "value": "1"
+    },
+    {
+      "scheme": "legacy_unique_id",
+      "value": "d077dcaa010f"
+    }
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 5541,
+      "title": "金文",
+      "edition_id": 2504,
+      "edition_label": "金文本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 2504,
+      "edition_label": "金文本",
+      "source_work_id": 5541,
+      "source_title": "金文",
+      "documents": [
+        {
+          "document_id": 15506,
+          "file": "NA0031_97167dc130ad.txt",
+          "path": "中國漢文/clean/周朝/西周/周金文/晚期/ASDC｜金文｜西周晚期｜新收殷周青銅器銘文暨器影彙編｜NA0031/NA0031_97167dc130ad.txt",
+          "title": "ASDC｜金文｜西周晚期｜新收殷周青銅器銘文暨器影彙編｜NA0031",
+          "medium": "金文",
+          "identifiers": [
+            {
+              "scheme": "source_db",
+              "value": "先秦甲骨金文簡牘詞彙資料庫"
+            },
+            {
+              "scheme": "entry_number",
+              "value": "116901"
+            },
+            {
+              "scheme": "legacy_id",
+              "value": "NA0031"
+            },
+            {
+              "scheme": "no_bronze_components",
+              "value": "2"
+            },
+            {
+              "scheme": "legacy_unique_id",
+              "value": "97167dc130ad"
+            }
+          ],
+          "geography_override": {
+            "period": "西周晚期"
+          },
+          "body_start_line": 14
+        },
+        {
+          "document_id": 15507,
+          "file": "NA0031_d077dcaa010f.txt",
+          "path": "中國漢文/clean/周朝/西周/周金文/晚期/ASDC｜金文｜西周晚期｜新收殷周青銅器銘文暨器影彙編｜NA0031/NA0031_d077dcaa010f.txt",
+          "title": "ASDC｜金文｜西周晚期｜新收殷周青銅器銘文暨器影彙編｜NA0031",
+          "medium": "金文",
+          "identifiers": [
+            {
+              "scheme": "source_db",
+              "value": "先秦甲骨金文簡牘詞彙資料庫"
+            },
+            {
+              "scheme": "entry_number",
+              "value": "116900"
+            },
+            {
+              "scheme": "legacy_id",
+              "value": "NA0031"
+            },
+            {
+              "scheme": "no_bronze_components",
+              "value": "1"
+            },
+            {
+              "scheme": "legacy_unique_id",
+              "value": "d077dcaa010f"
+            }
+          ],
+          "geography_override": {
+            "period": "西周晚期"
+          },
+          "body_start_line": 14
+        }
+      ]
+    }
+  ]
+}

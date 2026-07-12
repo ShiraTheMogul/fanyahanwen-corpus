@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "work_id": 97573,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "period": "西周早期",
+  "title": "ASDC｜金文｜西周早期｜新收殷周青銅器銘文暨器影彙編｜NA0828",
+  "categories": [
+    "早期",
+    "西周"
+  ],
+  "sources": [
+    "https://inscription.asdc.sinica.edu.tw",
+    "新收殷周青銅器銘文暨器影彙編"
+  ],
+  "identifiers": [
+    {
+      "scheme": "source_db",
+      "value": "先秦甲骨金文簡牘詞彙資料庫"
+    },
+    {
+      "scheme": "entry_number",
+      "value": "117866"
+    },
+    {
+      "scheme": "legacy_id",
+      "value": "NA0828"
+    },
+    {
+      "scheme": "no_bronze_components",
+      "value": "2"
+    },
+    {
+      "scheme": "legacy_unique_id",
+      "value": "5845e0f32e13"
+    },
+    {
+      "scheme": "entry_number",
+      "value": "117865"
+    },
+    {
+      "scheme": "no_bronze_components",
+      "value": "1"
+    },
+    {
+      "scheme": "legacy_unique_id",
+      "value": "64a579761fe2"
+    }
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 5541,
+      "title": "金文",
+      "edition_id": 1460,
+      "edition_label": "金文本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 1460,
+      "edition_label": "金文本",
+      "source_work_id": 5541,
+      "source_title": "金文",
+      "documents": [
+        {
+          "document_id": 15229,
+          "file": "NA0828_5845e0f32e13.txt",
+          "path": "中國漢文/clean/周朝/西周/周金文/早期/ASDC｜金文｜西周早期｜新收殷周青銅器銘文暨器影彙編｜NA0828/NA0828_5845e0f32e13.txt",
+          "title": "ASDC｜金文｜西周早期｜新收殷周青銅器銘文暨器影彙編｜NA0828",
+          "medium": "金文",
+          "identifiers": [
+            {
+              "scheme": "source_db",
+              "value": "先秦甲骨金文簡牘詞彙資料庫"
+            },
+            {
+              "scheme": "entry_number",
+              "value": "117866"
+            },
+            {
+              "scheme": "legacy_id",
+              "value": "NA0828"
+            },
+            {
+              "scheme": "no_bronze_components",
+              "value": "2"
+            },
+            {
+              "scheme": "legacy_unique_id",
+              "value": "5845e0f32e13"
+            }
+          ],
+          "geography_override": {
+            "period": "西周早期"
+          },
+          "body_start_line": 14
+        },
+        {
+          "document_id": 15230,
+          "file": "NA0828_64a579761fe2.txt",
+          "path": "中國漢文/clean/周朝/西周/周金文/早期/ASDC｜金文｜西周早期｜新收殷周青銅器銘文暨器影彙編｜NA0828/NA0828_64a579761fe2.txt",
+          "title": "ASDC｜金文｜西周早期｜新收殷周青銅器銘文暨器影彙編｜NA0828",
+          "medium": "金文",
+          "identifiers": [
+            {
+              "scheme": "source_db",
+              "value": "先秦甲骨金文簡牘詞彙資料庫"
+            },
+            {
+              "scheme": "entry_number",
+              "value": "117865"
+            },
+            {
+              "scheme": "legacy_id",
+              "value": "NA0828"
+            },
+            {
+              "scheme": "no_bronze_components",
+              "value": "1"
+            },
+            {
+              "scheme": "legacy_unique_id",
+              "value": "64a579761fe2"
+            }
+          ],
+          "geography_override": {
+            "period": "西周早期"
+          },
+          "body_start_line": 14
+        }
+      ]
+    }
+  ]
+}

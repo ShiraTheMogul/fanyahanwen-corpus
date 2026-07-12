@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "work_id": 96324,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "title": "既醉",
+  "categories": [
+    "大雅",
+    "生民之什"
+  ],
+  "sources": [
+    "https://zh.wikisource.org/wiki/%E8%A9%A9%E7%B6%93/%E6%97%A2%E9%86%89"
+  ],
+  "identifiers": [
+    {
+      "scheme": "mao_no",
+      "value": "253"
+    }
+  ],
+  "is_compilation": false,
+  "contained_in": [
+    {
+      "work_id": 5463,
+      "title": "詩經",
+      "edition_id": 211,
+      "edition_label": "詩經本"
+    }
+  ],
+  "editions": [
+    {
+      "edition_id": 211,
+      "edition_label": "詩經本",
+      "source_work_id": 5463,
+      "source_title": "詩經",
+      "documents": [
+        {
+          "document_id": 11972,
+          "file": "既醉.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/周/詩經/大雅/生民之什/既醉/既醉.txt",
+          "title": "詩經",
+          "page_title": "詩經/既醉",
+          "display_title": "既醉",
+          "identifiers": [
+            {
+              "scheme": "mao_no",
+              "value": "253"
+            }
+          ],
+          "body_start_line": 8
+        },
+        {
+          "document_id": 11973,
+          "file": "既醉_毛詩序.txt",
+          "path": "中國漢文/clean/周朝/東周/戰國時代/周/詩經/大雅/生民之什/既醉/既醉_毛詩序.txt",
+          "title": "詩經",
+          "page_title": "詩經/既醉",
+          "display_title": "既醉",
+          "authors": [
+            "毛亨"
+          ],
+          "identifiers": [
+            {
+              "scheme": "mao_no",
+              "value": "253"
+            }
+          ],
+          "body_start_line": 9
+        }
+      ]
+    }
+  ]
+}
