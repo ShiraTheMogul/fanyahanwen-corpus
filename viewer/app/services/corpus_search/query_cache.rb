@@ -13,7 +13,7 @@ module CorpusSearch
   # records, but reads and updates one document row at a time. This bounds Ruby
   # memory and makes checkpoints incremental.
   class QueryCache
-    VERSION = 8
+    VERSION = 9
     BUSY_TIMEOUT_MS = 10_000
     Record = Data.define(:hits, :searchable_characters, :body_fingerprint)
 

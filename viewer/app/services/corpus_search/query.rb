@@ -31,7 +31,8 @@ module CorpusSearch
         metadata_filters: definition_hash["metadata_filters"] || {},
         document_roles: scope["document_roles"],
         include_folders: scope["include_folders"],
-        exclude_folders: scope["exclude_folders"]
+        exclude_folders: scope["exclude_folders"],
+        deduplicate_exact_bodies: scope["deduplicate_exact_bodies"]
       )
 
       presentation = PresentationOptions.new(
@@ -62,6 +63,7 @@ module CorpusSearch
     def document_roles = @search_definition.document_roles
     def include_folders = @search_definition.include_folders
     def exclude_folders = @search_definition.exclude_folders
+    def deduplicate_exact_bodies? = @search_definition.deduplicate_exact_bodies?
     def filters = @search_definition.manifest_filters
     def context = @presentation_options.context
     def page = @presentation_options.page
@@ -103,7 +105,7 @@ module CorpusSearch
 
     def to_h
       {
-        "version" => 6,
+        "version" => 7,
         "definition" => @search_definition.to_h,
         "presentation" => @presentation_options.to_h.except("page")
       }
@@ -111,7 +113,7 @@ module CorpusSearch
 
     def cache_key
       payload = {
-        "version" => 6,
+        "version" => 7,
         "definition" => @search_definition.to_h
       }
       CacheStore.hash_key(JSON.generate(payload))
@@ -150,6 +152,7 @@ module CorpusSearch
       document_roles.each { |role| pairs << ["roles[]", role] }
       include_folders.each { |folder| pairs << ["folders[]", folder] }
       exclude_folders.each { |folder| pairs << ["exclude_folders[]", folder] }
+      pairs << ["deduplicate", "1"] if deduplicate_exact_bodies?
       metadata_filters.each { |key, value| pairs << [key, value] if value.present? }
 
       if include_presentation

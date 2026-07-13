@@ -21,7 +21,8 @@ module CorpusSearch
           metadata_filters: METADATA_KEYS.to_h { |key| [key, source[key]] },
           document_roles: array_value(source["roles"]),
           include_folders: array_value(source["folders"]),
-          exclude_folders: array_value(source["exclude_folders"])
+          exclude_folders: array_value(source["exclude_folders"]),
+          deduplicate_exact_bodies: source["deduplicate"]
         )
 
         presentation = PresentationOptions.new(

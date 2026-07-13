@@ -35,8 +35,11 @@ module CorpusSearch
       scanned_files = 0
       complete = true
 
+      seen_body_fingerprints = Set.new
       docs.each_with_index do |doc, index|
-        per_file_hits = cache.current_hits_for(doc)
+        cached_record = cache.current_record_for(doc)
+        per_file_hits = cached_record&.hits
+        body_fingerprint = cached_record&.body_fingerprint
 
         unless per_file_hits
           if max_scans && max_scans.positive? && scanned_files >= max_scans
@@ -46,6 +49,7 @@ module CorpusSearch
 
           scan = scan_document(doc)
           per_file_hits = scan.hits
+          body_fingerprint = scan.body_fingerprint
           cache.write_hits_for(
             doc,
             per_file_hits,
@@ -55,6 +59,7 @@ module CorpusSearch
           scanned_files += 1
         end
 
+        next if skip_duplicate_body?(body_fingerprint, seen_body_fingerprints)
         hits.concat(deduplicate_hits(per_file_hits))
 
         if max_hits && hits.length >= max_hits
@@ -99,11 +104,15 @@ module CorpusSearch
       cache = QueryCache.new(query: @query, cache_store: @cache_store)
       hit_count = 0
 
+      seen_body_fingerprints = Set.new
       docs.each_with_index do |doc, index|
-        per_file_hits = cache.current_hits_for(doc)
+        cached_record = cache.current_record_for(doc)
+        per_file_hits = cached_record&.hits
+        body_fingerprint = cached_record&.body_fingerprint
         unless per_file_hits
           scan = scan_document(doc)
           per_file_hits = scan.hits
+          body_fingerprint = scan.body_fingerprint
           cache.write_hits_for(
             doc,
             per_file_hits,
@@ -112,9 +121,11 @@ module CorpusSearch
           )
         end
 
-        sort_hits(deduplicate_hits(per_file_hits)).each do |hit|
-          hit_count += 1
-          yield present_hit(hit) if block_given?
+        unless skip_duplicate_body?(body_fingerprint, seen_body_fingerprints)
+          sort_hits(deduplicate_hits(per_file_hits)).each do |hit|
+            hit_count += 1
+            yield present_hit(hit) if block_given?
+          end
         end
 
         progress&.call(index + 1, docs.length, hit_count)
@@ -142,6 +153,7 @@ module CorpusSearch
       all_documents_are_candidates = candidates.equal?(docs)
       candidate_ids = candidates.map { |doc| doc["id"] }.to_set unless all_documents_are_candidates
       cache = QueryCache.new(query: @query, cache_store: @cache_store)
+      seen_body_fingerprints = Set.new
 
       docs.each_with_index do |doc, index|
         cached_record = cache.current_record_for(doc)
@@ -189,12 +201,14 @@ module CorpusSearch
           end
         end
 
-        yield AnalysisDocument.new(
-          document: doc,
-          hits: sort_hits(hits),
-          searchable_characters: searchable_characters.to_i,
-          body_fingerprint: body_fingerprint.to_s
-        ) if block_given?
+        unless skip_duplicate_body?(body_fingerprint, seen_body_fingerprints)
+          yield AnalysisDocument.new(
+            document: doc,
+            hits: sort_hits(hits),
+            searchable_characters: searchable_characters.to_i,
+            body_fingerprint: body_fingerprint.to_s
+          ) if block_given?
+        end
 
         progress&.call(index + 1, docs.length)
         if checkpoint_due?(index + 1)
@@ -673,6 +687,18 @@ module CorpusSearch
 
     def occurrence_key(doc, start_offset, end_offset, search_start_offset, search_end_offset)
       [doc["id"], start_offset, end_offset, search_start_offset, search_end_offset].join(":")
+    end
+
+
+    def skip_duplicate_body?(body_fingerprint, seen)
+      return false unless @query.deduplicate_exact_bodies?
+
+      fingerprint = body_fingerprint.to_s
+      return false if fingerprint.empty?
+      return true if seen.include?(fingerprint)
+
+      seen << fingerprint
+      false
     end
 
     def deduplicate_hits(hits)

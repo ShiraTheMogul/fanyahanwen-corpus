@@ -4,7 +4,7 @@ module CorpusSearch
   # Immutable search meaning. Pagination and snippet presentation live in
   # PresentationOptions so display changes do not redefine a match.
   class SearchDefinition
-    SCHEMA_VERSION = 6
+    SCHEMA_VERSION = 7
     MODES = %w[exact proximity alternatives].freeze
     ORDERS = %w[any entered].freeze
     PUNCTUATION_MODES = NormalizedText::PUNCTUATION_MODES
@@ -15,12 +15,12 @@ module CorpusSearch
 
     attr_reader :mode, :query_text, :terms, :maximum_span, :order,
                 :punctuation, :character_equivalence, :metadata_filters,
-                :document_roles, :include_folders, :exclude_folders
+                :document_roles, :include_folders, :exclude_folders, :deduplicate_exact_bodies
 
     def initialize(mode: "exact", query_text: nil, terms: nil, maximum_span: 200,
                    order: "any", punctuation: "ignore", character_equivalence: "common",
                    metadata_filters: {}, document_roles: nil,
-                   include_folders: nil, exclude_folders: nil)
+                   include_folders: nil, exclude_folders: nil, deduplicate_exact_bodies: false)
       @mode = MODES.include?(mode.to_s) ? mode.to_s : "exact"
       @query_text = query_text.to_s.strip
       @terms = normalize_terms(terms).freeze
@@ -32,6 +32,7 @@ module CorpusSearch
       @document_roles = normalize_roles(document_roles).freeze
       @include_folders = normalize_paths(include_folders).freeze
       @exclude_folders = normalize_paths(exclude_folders).freeze
+      @deduplicate_exact_bodies = truthy?(deduplicate_exact_bodies)
       freeze
     end
 
@@ -40,6 +41,7 @@ module CorpusSearch
     def alternatives? = @mode == "alternatives"
     def multi_term? = proximity? || alternatives?
     def ignore_punctuation? = @punctuation == "ignore"
+    def deduplicate_exact_bodies? = @deduplicate_exact_bodies
 
     def effective_terms
       exact? ? [@query_text] : @terms
@@ -72,7 +74,8 @@ module CorpusSearch
         "scope" => {
           "document_roles" => @document_roles,
           "include_folders" => @include_folders,
-          "exclude_folders" => @exclude_folders
+          "exclude_folders" => @exclude_folders,
+          "deduplicate_exact_bodies" => @deduplicate_exact_bodies
         },
         "metadata_filters" => @metadata_filters.reject { |_key, value| value.blank? }
       }.compact
@@ -105,6 +108,10 @@ module CorpusSearch
         .reject(&:empty?)
         .uniq
         .sort
+    end
+
+    def truthy?(value)
+      value == true || %w[1 true yes on].include?(value.to_s.downcase)
     end
 
     def clamp_integer(value, default:, min:, max:)

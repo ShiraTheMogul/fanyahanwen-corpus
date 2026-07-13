@@ -1088,13 +1088,19 @@ class StandardAnalysis
         "matching_documents" => group[:matching_documents],
         "occurrences" => group[:occurrences],
         "searchable_characters" => group[:searchable_characters],
+        "body_length" => group[:max_searchable_characters],
+        "query_affecting" => group[:matching_documents].positive? || group[:occurrences].positive? ? 1 : 0,
         "example_title" => group[:example_title],
         "example_path" => group[:example_path]
       }
     end.sort_by { |row| [-row["documents"], -row["occurrences"], row["example_path"].to_s] }
     write_csv(@output_dir.join("duplicate_body_groups.csv"),
-              %w[body_fingerprint documents matching_documents occurrences searchable_characters example_title example_path], groups)
+              %w[body_fingerprint documents matching_documents occurrences searchable_characters body_length query_affecting example_title example_path], groups)
     @tables["duplicate_body_groups"] = "duplicate_body_groups.csv"
+    query_groups = groups.select { |row| row["query_affecting"].to_i == 1 }
+    write_csv(@output_dir.join("duplicate_body_query_groups.csv"),
+              %w[body_fingerprint documents matching_documents occurrences searchable_characters body_length query_affecting example_title example_path], query_groups)
+    @tables["duplicate_body_query_groups"] = "duplicate_body_query_groups.csv"
     @tables["duplicate_body_members"] = "duplicate_body_members.csv"
 
     stored = {

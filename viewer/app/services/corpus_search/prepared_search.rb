@@ -122,8 +122,10 @@ module CorpusSearch
         "notification" => notification,
         "cancel_requested" => false,
         "created_at" => Time.now.utc.iso8601,
+        "started_at" => nil,
         "updated_at" => Time.now.utc.iso8601,
         "completed_at" => nil,
+        "duration_seconds" => nil,
         "downloaded_at" => nil,
         "expires_at" => DEFAULT_EXPIRY_HOURS.hours.from_now.utc.iso8601,
         "progress" => {
@@ -278,7 +280,10 @@ module CorpusSearch
       load! unless @payload
       return false if complete? || cancelled?
 
-      @payload["status"] = status if status && STATUSES.include?(status)
+      if status && STATUSES.include?(status)
+        @payload["status"] = status
+        @payload["started_at"] ||= Time.now.utc.iso8601 if status == "running"
+      end
       @payload["progress"] = @payload.fetch("progress", {}).merge(progress) if progress
       @payload["outputs"] = @payload.fetch("outputs", {}).merge(outputs) if outputs
       @payload["error_message"] = error_message if error_message
@@ -300,12 +305,16 @@ module CorpusSearch
       next_payload["error_message"] = nil
       next_payload["completed_at"] = completed_at
       next_payload["updated_at"] = completed_at
+      started_at = next_payload["started_at"].presence || next_payload["created_at"]
+      next_payload["duration_seconds"] = (Time.iso8601(completed_at) - Time.iso8601(started_at)).round(3)
 
       frozen_payload = {
         "version" => 1,
         "id" => safe_id,
         "created_at" => next_payload["created_at"],
         "completed_at" => completed_at,
+        "started_at" => next_payload["started_at"],
+        "duration_seconds" => next_payload["duration_seconds"],
         "query" => next_payload["query"],
         "comparison" => next_payload["comparison"],
         "source_prepared_id" => next_payload["source_prepared_id"],

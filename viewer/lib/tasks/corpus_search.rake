@@ -1,3 +1,6 @@
+require "fileutils"
+require "pathname"
+
 # frozen_string_literal: true
 
 namespace :corpus_search do
@@ -94,4 +97,34 @@ namespace :corpus_search do
     puts "Warmed #{warmed} single-character term indexes."
     puts "Built aggregate frequency snapshot for #{frequencies.fetch("counts", {}).length} characters."
   end
+
+  desc "Audit or remove empty corpus TXT files (APPLY=1 performs deletion; otherwise dry run)"
+  task purge_empty_documents: :environment do
+    root = Pathname(Rails.configuration.x.corpus_root).realpath
+    apply = ENV["APPLY"].to_s == "1"
+    empty = []
+
+    root.find do |path|
+      next unless path.file? && path.extname.downcase == ".txt"
+      begin
+        has_content = File.foreach(path, encoding: "UTF-8").any? { |line| line.delete("\uFEFF").match?(/\S/) }
+      rescue Encoding::InvalidByteSequenceError, Encoding::UndefinedConversionError
+        has_content = File.binread(path).match?(/\S/)
+      end
+      empty << path unless has_content
+    rescue Errno::ENOENT, Errno::EACCES, Errno::EIO => e
+      warn "[corpus_search] skipped #{path}: #{e.class}: #{e.message}"
+    end
+
+    puts "Found #{empty.length} empty TXT files."
+    empty.each { |path| puts path.relative_path_from(root) }
+
+    if apply
+      empty.each { |path| FileUtils.rm_f(path) }
+      puts "Removed #{empty.length} empty TXT files. Rebuild the manifest next."
+    else
+      puts "Dry run only. Re-run with APPLY=1 to remove them."
+    end
+  end
+
 end

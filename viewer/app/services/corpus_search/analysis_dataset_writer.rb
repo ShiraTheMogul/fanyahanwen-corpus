@@ -53,7 +53,7 @@ module CorpusSearch
 
     def write_metadata!(path)
       payload = {
-        "version" => 5,
+        "version" => 6,
         "generated_at" => Time.now.utc.iso8601,
         "manifest_generated_at" => @manifest.generated_at.to_s,
         "query" => @query.to_h,

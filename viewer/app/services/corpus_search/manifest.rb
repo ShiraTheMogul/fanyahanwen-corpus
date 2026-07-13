@@ -12,9 +12,8 @@ module CorpusSearch
   # files safely, filter them, and notice changes.
   class Manifest
     DEFAULT_SKIP_DIRS = %w[.git .svn node_modules tmp log storage bak vendor].freeze
-    VERSION = 5
+    VERSION = 6
     CACHE_PATH = "manifest.json.gz"
-    SCOPED_CACHE_PREFIX = "scoped_manifests"
     FRONT_MATTER_READ_BYTES = 65_536
 
     class CacheMissing < StandardError; end
@@ -47,11 +46,6 @@ module CorpusSearch
       new(root: root, cache_store: cache_store).load_cached!
     end
 
-    def self.scoped_cache_path_for(include_folders)
-      folders = Array(include_folders).map(&:to_s).map(&:strip).reject(&:empty?).sort
-      key = folders.empty? ? "all" : CacheStore.hash_key(folders.join("\n"))
-      File.join(SCOPED_CACHE_PREFIX, "#{key}.json.gz")
-    end
 
     def initialize(root:, cache_store: CacheStore.new)
       @root = File.realpath(root.to_s)
@@ -90,20 +84,6 @@ module CorpusSearch
       end
     end
 
-    def load_cached_or_refresh_scoped!(include_folders:, refresh: false)
-      folders = normalized_paths(include_folders)
-      cache_path = self.class.scoped_cache_path_for(folders)
-      cached = refresh ? nil : @cache_store.read_json(cache_path, freeze: true)
-
-      if scoped_cache_current?(cached, folders)
-        load_from_payload(cached)
-        progress("targeted manifest loaded from cache: #{@documents.length} documents; scope #{scope_label(folders)}")
-        self
-      else
-        refresh_scoped!(include_folders: folders, cache_path: cache_path)
-      end
-    end
-
     def refresh!(force: false)
       progress("manifest scan starting at #{@root}")
       cached = force ? nil : @cache_store.read_json(CACHE_PATH, freeze: true)
@@ -122,33 +102,6 @@ module CorpusSearch
       @cache_store.write_json(CACHE_PATH, payload)
       load_from_payload(payload)
       progress("manifest scan complete: #{@documents.length} documents")
-      self
-    end
-
-    def refresh_scoped!(include_folders:, cache_path:)
-      folders = normalized_paths(include_folders)
-      progress("targeted manifest scan starting at #{@root}; scope #{scope_label(folders)}")
-      cached = @cache_store.read_json(cache_path, freeze: true)
-      cached_documents = scoped_cache_current?(cached, folders) ? cached["documents"] : nil
-      scanned = scan_documents(cached_documents: cached_documents, include_folders: folders)
-
-      payload = {
-        "version" => VERSION,
-        "generated_at" => Time.now.utc.iso8601,
-        "root" => @root,
-        "scope" => "targeted",
-        "scope_folders" => folders,
-        # If a full manifest/index exists, scoped searches can safely reuse its
-        # warmed term indexes and then intersect the results with this scoped
-        # document list. Missing or stale term indexes still fall back to direct
-        # scoped scanning.
-        "term_index_fingerprint" => cached_full_manifest_term_index_fingerprint,
-        "documents" => scanned
-      }
-
-      @cache_store.write_json(cache_path, payload)
-      load_from_payload(payload)
-      progress("targeted manifest scan complete: #{@documents.length} documents; scope #{scope_label(folders)}")
       self
     end
 
@@ -171,6 +124,7 @@ module CorpusSearch
         role = doc["document_role"].presence || DocumentRole.classify(doc["path"])
         next false unless roles.include?(role)
         next false unless DocumentRole.searchable?(role)
+        next false if doc["searchable_body"] == false || doc["size"].to_i.zero?
         next false unless included_folder?(doc, include_folders)
         next false if excluded_folder?(doc, exclude_folders)
 
@@ -192,13 +146,13 @@ module CorpusSearch
 
     private
 
-    def scan_documents(cached_documents: nil, include_folders: nil)
+    def scan_documents(cached_documents: nil)
       cached_by_path = Array(cached_documents).index_by { |doc| doc["path"].to_s }
       documents = []
       seen_files = 0
       skipped_files = 0
 
-      each_txt_path(include_folders: include_folders) do |absolute_path|
+      each_txt_path do |absolute_path|
         relative_path = relative_path_for(absolute_path)
 
         stat = File.stat(absolute_path)
@@ -206,11 +160,18 @@ module CorpusSearch
         fingerprint = fingerprint_for(stat, metadata_path)
         cached = cached_by_path[relative_path]
 
-        documents << if cached && cached["fingerprint"] == fingerprint
-                       cached
-                     else
-                       build_document(relative_path, absolute_path, stat, fingerprint)
-                     end
+        document = if cached && cached["fingerprint"] == fingerprint && cached.key?("searchable_body")
+          cached
+        else
+          build_document(relative_path, absolute_path, stat, fingerprint)
+        end
+
+        if document["searchable_body"]
+          documents << document
+        else
+          skipped_files += 1
+          progress("manifest excluded empty body: #{relative_path}") if @debug_dirs
+        end
 
         seen_files += 1
         if @progress_every.positive? && (seen_files % @progress_every).zero?
@@ -233,12 +194,12 @@ module CorpusSearch
     # On WSL + OneDrive, one bad readdir can make a single huge glob abort or sit
     # inside uninterruptible disk I/O. This walker gives progress output and makes
     # unreadable directories local damage instead of killing the whole scan.
-    def each_txt_path(include_folders: nil)
-      return enum_for(:each_txt_path, include_folders: include_folders) unless block_given?
+    def each_txt_path
+      return enum_for(:each_txt_path) unless block_given?
 
       dirs_seen = 0
       files_seen = 0
-      stack = scoped_scan_roots(include_folders)
+      stack = [@root]
 
       until stack.empty?
         directory = stack.pop
@@ -278,22 +239,6 @@ module CorpusSearch
       []
     end
 
-    def scoped_scan_roots(include_folders)
-      folders = normalized_paths(include_folders)
-      return [@root] if folders.empty?
-
-      folders.filter_map do |folder|
-        path = File.realpath(File.join(@root, folder))
-        next unless path == @root || path.start_with?("#{@root}/")
-        next unless File.directory?(path)
-
-        path
-      rescue Errno::ENOENT, Errno::EACCES, Errno::EIO, Encoding::CompatibilityError => e
-        progress("targeted manifest skipped scope #{folder}: #{e.class}: #{e.message}")
-        nil
-      end.uniq
-    end
-
     def build_document(relative_path, absolute_path, stat, fingerprint)
       metadata = @metadata_store.search_metadata_for_path(relative_path)
       path_metadata = metadata_from_path(relative_path)
@@ -323,20 +268,30 @@ module CorpusSearch
         "year_end" => integer_or_nil(merged["year_end"]),
         "size" => stat.size,
         "mtime" => stat.mtime.to_f,
+        "searchable_body" => body_has_content?(absolute_path),
         "fingerprint" => fingerprint
       }
     end
 
-    def metadata_from_path(relative_path)
-      parts = relative_path.split("/")
-      layer_index = parts.index("clean") || parts.index("raw")
-      after_clean = layer_index ? parts[(layer_index + 1)..] : parts
 
-      {
-        "nation" => parts.first.to_s,
-        "period" => after_clean && after_clean.length > 1 ? after_clean.first.to_s : "",
-        "region" => after_clean && after_clean.length > 2 ? after_clean[1].to_s : ""
-      }
+    # Empty files are not corpus documents. They must not enter search results,
+    # denominators, term indexes, or analysis exports. The maintenance purge task
+    # can remove them physically after a dry run.
+    def body_has_content?(absolute_path)
+      File.foreach(absolute_path, encoding: "UTF-8") do |line|
+        return true if line.delete("\uFEFF").match?(/\S/)
+      end
+      false
+    rescue Encoding::InvalidByteSequenceError, Encoding::UndefinedConversionError
+      File.binread(absolute_path).match?(/\S/)
+    end
+
+    def metadata_from_path(relative_path)
+      # Under the JSON metadata system, folder depth is not a metadata schema.
+      # Compilation titles and work folders previously leaked into `region`
+      # because the second path component after clean/ was guessed to be a
+      # region. Only the top-level corpus root is structurally reliable.
+      { "corpus_root" => relative_path.split("/").first.to_s }
     end
 
     def skip_dir_name?(entry)
@@ -420,19 +375,6 @@ module CorpusSearch
         payload["root"].to_s == @root
     end
 
-    def scoped_cache_current?(payload, folders)
-      cache_current?(payload) &&
-        payload["scope"].to_s == "targeted" &&
-        Array(payload["scope_folders"]).map(&:to_s).sort == Array(folders).map(&:to_s).sort
-    end
-
-    def cached_full_manifest_term_index_fingerprint
-      payload = @cache_store.read_json(CACHE_PATH, freeze: true)
-      return nil unless cache_current?(payload)
-
-      payload["term_index_fingerprint"].presence || term_index_fingerprint_for_documents(Array(payload["documents"]))
-    end
-
     def term_index_fingerprint_for_documents(documents)
       digest = Digest::SHA256.new
       digest << "manifest-role-profile:canonical-v1\n"
@@ -448,11 +390,6 @@ module CorpusSearch
         digest << "\n"
       end
       digest.hexdigest
-    end
-
-    def scope_label(folders)
-      folders = Array(folders)
-      folders.empty? ? "ALL" : folders.join(" | ")
     end
 
     def match_filter?(doc, key, value)

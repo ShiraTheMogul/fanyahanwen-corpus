@@ -15,6 +15,11 @@
       <p><%= t("corpus_search.prepared.status") %>: <strong data-prepared-status><%= t("corpus_search.statuses.#{payload["status"]}", default: payload["status"].to_s.humanize) %></strong></p>
       <p><%= t("corpus_search.prepared.query") %>: <strong><%= @prepared_search.query.display_label %></strong></p>
       <p>Stage: <span data-prepared-stage><%= t("corpus_search.stages.#{progress["stage"]}", default: progress["stage"].to_s.humanize) %></span>. Files: <span data-prepared-files><%= progress["files_scanned"] || 0 %> / <%= progress["files_total"] || 0 %></span>. Hits found: <span data-prepared-hits><%= progress["hits_found"] || 0 %></span>.</p>
+      <% if payload["duration_seconds"].present? %>
+        <p>Completed in <strong><%= number_with_precision(payload["duration_seconds"], precision: 2, strip_insignificant_zeros: true) %> seconds</strong>.</p>
+      <% elsif payload["started_at"].present? %>
+        <p>Started at <%= payload["started_at"] %>.</p>
+      <% end %>
       <p class="corpus-search-warning" data-worker-waiting hidden><%= t("corpus_search.prepared.worker_waiting", default: "This job has been queued but no worker has started it yet. In local development, run bin/corpus-search-worker in a second terminal.") %></p>
     </div>
 
@@ -63,7 +68,7 @@
         <% if query.exclude_folders.any? %>
           <div><dt><%= t("corpus_search.query_details.excluded_folders") %></dt><dd><%= query.exclude_folders.join("; ") %></dd></div>
         <% end %>
-        <div><dt><%= t("corpus_search.query_details.metadata") %></dt><dd><%= t("corpus_search.query_details.never_searched") %></dd></div>
+        <div><dt>Exact-body deduplication</dt><dd><%= query.deduplicate_exact_bodies? ? "Enabled" : "Disabled" %></dd></div>
         <div class="corpus-search-query-url"><dt><%= t("corpus_search.query_details.live_url") %></dt><dd><code><%= @live_query_url %></code></dd></div>
     </dl>
   </details>
@@ -297,11 +302,11 @@
           <% end %>
 
           <% sensitivity_rows = @analysis_report.table("exact_body_sensitivity") %>
-          <% duplicate_groups = @analysis_report.table("duplicate_body_groups", limit: 20) %>
+          <% duplicate_groups = @analysis_report.table("duplicate_body_query_groups", limit: 20) %>
           <% if sensitivity_rows.any? %>
             <article class="corpus-search-analysis-table-section corpus-search-duplicate-audit">
               <h4><%= t("corpus_search.analysis.advanced.duplicates", default: "Exact-text duplication audit") %></h4>
-              <p><%= t("corpus_search.analysis.advanced.duplicates_note", default: "Default statistics retain every stored document. The sensitivity check also treats documents with exactly identical body text as one unit. This detects exact copies only, not near-duplicate editions or quotations.") %></p>
+              <p><%= t("corpus_search.analysis.advanced.duplicates_note", default: "This table shows exact-body groups that actually affect this query. Empty and unrelated duplicate groups are excluded. The sensitivity check treats each identical body as one unit; near-duplicate editions and quotations remain distinct.") %></p>
               <div class="corpus-search-analysis-table-wrap">
                 <table class="corpus-search-analysis-table">
                   <thead><tr>
@@ -327,19 +332,23 @@
 
               <% if duplicate_groups.any? %>
                 <details>
-                  <summary><%= t("corpus_search.analysis.advanced.show_duplicate_groups", default: "Show the largest exact-body groups") %></summary>
+                  <summary><%= t("corpus_search.analysis.advanced.show_duplicate_groups", default: "Show exact-body groups affecting this query") %></summary>
                   <div class="corpus-search-analysis-table-wrap">
                     <table class="corpus-search-analysis-table">
                       <thead><tr>
                         <th><%= t("corpus_search.analysis.table.example", default: "Example") %></th>
                         <th><%= t("corpus_search.analysis.metrics.documents", default: "Documents") %></th>
+                        <th>Body length</th>
+                        <th>Matching documents</th>
                         <th><%= t("corpus_search.analysis.metrics.occurrences", default: "Occurrences") %></th>
                       </tr></thead>
                       <tbody>
                         <% duplicate_groups.each do |row| %>
                           <tr>
-                            <td><strong><%= row["example_title"].presence || File.basename(row["example_path"].to_s, ".txt") %></strong><small><%= row["example_path"] %></small></td>
+                            <td><strong><%= row["example_title"].presence || File.basename(row["example_path"].to_s, ".txt") %></strong><small><%= row["example_path"] %></small><%= link_to "Open example", CorpusSearch::SourceLink.relative_url(path: row["example_path"]), class: "corpus-search-analysis-row-link" %></td>
                             <td><%= number_with_delimiter(row["documents"].to_i) %></td>
+                            <td><%= number_with_delimiter(row["body_length"].to_i) %></td>
+                            <td><%= number_with_delimiter(row["matching_documents"].to_i) %></td>
                             <td><%= number_with_delimiter(row["occurrences"].to_i) %></td>
                           </tr>
                         <% end %>

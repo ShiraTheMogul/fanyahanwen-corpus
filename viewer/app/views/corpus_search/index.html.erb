@@ -190,6 +190,11 @@
     <span class="corpus-search-hint corpus-search-character-hint"
           data-corpus-search-form-target="characterHint"><%= t("corpus_search.character_hints.#{@query.character_equivalence}") %></span>
     <span class="corpus-search-rule"><%= t("corpus_search.form.body_only_rule") %></span>
+    <label class="corpus-search-check">
+      <%= check_box_tag :deduplicate, "1", @query.deduplicate_exact_bodies? %>
+      <span>Count each exact body only once</span>
+    </label>
+    <span class="corpus-search-hint">Useful when exact copies would otherwise dominate results. Distinct editions with different text remain separate.</span>
   </div>
 
   <details class="corpus-search-filters" <%= "open" if @query.metadata_filters.values.any?(&:present?) || @query.document_roles != CorpusSearch::DocumentRole::DEFAULT_ROLES %>>
