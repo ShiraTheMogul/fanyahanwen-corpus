@@ -11,8 +11,8 @@ module CorpusSearch
   # scan the corpus once for results and then a second time for denominators.
   class AnalysisDatasetWriter
     COLUMNS = %w[
-      doc_id body_fingerprint path folder_path document_role canonical_parent_path title work author date_text
-      year_start year_end nation period region searchable_characters
+      doc_id document_id work_id body_fingerprint path folder_path document_role canonical_parent_path
+      title work author date_text year_start year_end nation corpus_root macro_region polity period region searchable_characters
       occurrences matching_document matched_terms_json
     ].freeze
 
@@ -53,7 +53,7 @@ module CorpusSearch
 
     def write_metadata!(path)
       payload = {
-        "version" => 4,
+        "version" => 5,
         "generated_at" => Time.now.utc.iso8601,
         "manifest_generated_at" => @manifest.generated_at.to_s,
         "query" => @query.to_h,
@@ -76,6 +76,8 @@ module CorpusSearch
 
       {
         "doc_id" => doc["id"],
+        "document_id" => doc["id"],
+        "work_id" => doc["work_id"],
         "body_fingerprint" => record.body_fingerprint,
         "path" => doc["path"],
         "folder_path" => doc["folder_path"],
@@ -88,6 +90,9 @@ module CorpusSearch
         "year_start" => doc["year_start"],
         "year_end" => doc["year_end"],
         "nation" => doc["nation"],
+        "corpus_root" => doc["corpus_root"],
+        "macro_region" => doc["macro_region"],
+        "polity" => doc["polity"],
         "period" => doc["period"],
         "region" => doc["region"],
         "searchable_characters" => searchable_characters,

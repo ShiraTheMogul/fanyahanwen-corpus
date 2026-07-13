@@ -14,19 +14,20 @@ module CorpusSearch
   # fixed Ruby analysis profile. Metadata may label rows but never contributes to
   # matching, snippets, occurrence counts, or searchable-character denominators.
   class ExportWriter
+    EXPORT_SCHEMA_VERSION = 6
     RESULT_COLUMNS = %w[
       occurrence_id query mode query_text terms maximum_span order punctuation
       character_equivalence character_equivalence_version normalization_profile_version
       proximity_span matched_term_order matched_alternatives equivalence_matches
       snippet matched_text left_context right_context
-      title work author date_text year_start year_end nation period region path folder_path
-      document_role canonical_parent_path doc_id start_offset end_offset
+      title work author date_text year_start year_end nation corpus_root macro_region polity period region
+      path source_url occurrence_key folder_path document_role canonical_parent_path doc_id document_id work_id start_offset end_offset
       search_start_offset search_end_offset term_matches
     ].freeze
 
     FLASHCARD_COLUMNS = %w[front back target snippet source tags].freeze
     ANALYSIS_OCCURRENCE_COLUMNS = %w[
-      occurrence_id doc_id path mode search_start_offset search_end_offset
+      occurrence_id occurrence_key doc_id document_id work_id path source_url mode search_start_offset search_end_offset
       proximity_span matched_term_order matched_alternatives matched_forms
       left_neighbours right_neighbours
     ].freeze
@@ -110,6 +111,7 @@ module CorpusSearch
           "selected_scope" => scope_totals_by_role(document_counts_csv),
           "search_definition_schema" => SearchDefinition::SCHEMA_VERSION,
           "query_cache_version" => QueryCache::VERSION,
+          "export_schema_version" => EXPORT_SCHEMA_VERSION,
           "normalization_profile_version" => @query.normalization_profile_version,
           "character_equivalence_version" => @query.character_equivalence_version
         )
@@ -215,7 +217,8 @@ module CorpusSearch
 
     def write_query_json(path)
       payload = {
-        "version" => 1,
+        "version" => 2,
+        "export_schema_version" => EXPORT_SCHEMA_VERSION,
         "prepared_record_id" => @prepared_search.id,
         "source_prepared_id" => @prepared_search.source_prepared_id,
         "query" => @query.to_h,
@@ -591,8 +594,12 @@ module CorpusSearch
     def analysis_occurrence_row(hit, occurrence_id:)
       {
         "occurrence_id" => occurrence_id,
+        "occurrence_key" => hit["occurrence_key"],
         "doc_id" => hit["doc_id"],
+        "document_id" => hit["document_id"],
+        "work_id" => hit["work_id"],
         "path" => hit["path"],
+        "source_url" => hit["source_url"],
         "mode" => @query.mode,
         "search_start_offset" => hit["search_start_offset"],
         "search_end_offset" => hit["search_end_offset"],

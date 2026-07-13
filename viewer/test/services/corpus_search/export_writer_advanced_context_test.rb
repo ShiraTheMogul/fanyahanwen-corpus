@@ -12,6 +12,10 @@ class CorpusSearchExportWriterAdvancedContextTest < ActiveSupport::TestCase
     writer = CorpusSearch::ExportWriter.new(prepared_search: Prepared.new(query))
     hit = {
       "doc_id" => "doc-1",
+      "document_id" => "doc-1",
+      "work_id" => "work-1",
+      "occurrence_key" => "doc-1:10:11:10:11",
+      "source_url" => "/corpus_viewer/text?start=10&end=11",
       "path" => "中國漢文/clean/text.txt",
       "search_start_offset" => 10,
       "search_end_offset" => 11,
@@ -25,6 +29,8 @@ class CorpusSearchExportWriterAdvancedContextTest < ActiveSupport::TestCase
     assert_equal "甲甲甲甲乙", row.fetch("left_neighbours")
     assert_equal "丙丁丁丁丁", row.fetch("right_neighbours")
     assert_equal "仁⇒仁", row.fetch("matched_forms")
+    assert_equal "doc-1:10:11:10:11", row.fetch("occurrence_key")
+    assert_equal "/corpus_viewer/text?start=10&end=11", row.fetch("source_url")
     assert_equal 5, row.fetch("left_neighbours").each_char.count
     assert_equal 5, row.fetch("right_neighbours").each_char.count
   end

@@ -3,6 +3,7 @@
 require "digest"
 require "fileutils"
 require "json"
+require "securerandom"
 require "zlib"
 
 module CorpusSearch
@@ -56,7 +57,12 @@ module CorpusSearch
       # Compact JSON matters for term indexes. Pretty JSON is pleasant to read,
       # but it creates much larger strings for hundreds of thousands of entries.
       json = JSON.generate(object)
-      tmp_path = path.dirname.join(".#{path.basename}.#{$$}.tmp")
+      # PID alone is not unique when Puma threads write concurrently. Two
+      # requests in the same process previously shared one temporary filename;
+      # the first rename consumed it and the second raised Errno::ENOENT.
+      tmp_path = path.dirname.join(
+        ".#{path.basename}.#{$$}.#{Thread.current.object_id}.#{SecureRandom.hex(6)}.tmp"
+      )
 
       if gzip || path.extname == ".gz"
         Zlib::GzipWriter.open(tmp_path.to_s) { |gz| gz.write(json) }

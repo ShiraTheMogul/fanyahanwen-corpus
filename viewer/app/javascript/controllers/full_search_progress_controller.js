@@ -91,9 +91,17 @@ export default class extends Controller {
 
   updateFromStatus(payload) {
     const previous = this.searches.find((search) => search.id === payload.id) || this.activeSearch || {}
+    const wasTerminal = ["complete", "failed", "cancelled"].includes(previous.status)
     this.upsertSearch({ ...previous, ...payload })
     this.activeSearch = this.searches.find((search) => search.id === payload.id)
     this.render(this.activeSearch)
+    this.renderPreparedPage(payload)
+
+    const isTerminal = ["complete", "failed", "cancelled"].includes(payload.status)
+    const preparedPage = document.querySelector("[data-prepared-search-id]")
+    if (!wasTerminal && isTerminal && preparedPage?.dataset.preparedSearchId === payload.id) {
+      window.location.reload()
+    }
   }
 
   show(search) {
@@ -110,7 +118,10 @@ export default class extends Controller {
     this.minimizedTarget.hidden = !search.minimized
 
     this.queryTarget.textContent = search.query || ""
-    this.statusTarget.textContent = `${search.status_label || search.status || ""} · ${search.stage_label || search.stage || ""}`
+    const statusText = search.worker_waiting
+      ? "Queued · waiting for a background worker"
+      : `${search.status_label || search.status || ""} · ${search.stage_label || search.stage || ""}`
+    this.statusTarget.textContent = statusText
     this.barTarget.value = Number(search.percent || 0)
     this.countsTarget.textContent = `${Number(search.files_scanned || 0).toLocaleString()} / ${Number(search.files_total || 0).toLocaleString()} files · ${Number(search.hits_found || 0).toLocaleString()} hits`
     this.detailsTarget.href = this.detailsUrl(search)
@@ -127,6 +138,26 @@ export default class extends Controller {
       this.downloadTarget.hidden = true
       this.cancelTarget.hidden = false
     }
+  }
+
+  renderPreparedPage(search) {
+    document.querySelectorAll("[data-prepared-status]").forEach((element) => {
+      element.textContent = search.status_label || search.status || ""
+    })
+    document.querySelectorAll("[data-prepared-stage]").forEach((element) => {
+      element.textContent = search.worker_waiting
+        ? "Waiting for background worker"
+        : (search.stage_label || search.stage || "")
+    })
+    document.querySelectorAll("[data-prepared-files]").forEach((element) => {
+      element.textContent = `${Number(search.files_scanned || 0).toLocaleString()} / ${Number(search.files_total || 0).toLocaleString()}`
+    })
+    document.querySelectorAll("[data-prepared-hits]").forEach((element) => {
+      element.textContent = Number(search.hits_found || 0).toLocaleString()
+    })
+    document.querySelectorAll("[data-worker-waiting]").forEach((element) => {
+      element.hidden = !search.worker_waiting
+    })
   }
 
   miniLabel(search) {

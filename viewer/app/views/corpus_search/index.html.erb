@@ -309,7 +309,7 @@
         <% @query.canonical_params(include_presentation: true).each do |key, value| %>
           <%= hidden_field_tag key, value %>
         <% end %>
-        <%= submit_tag t("corpus_search.actions.prepare_analysis", default: "Prepare analysis"), class: "corpus-search-workspace-tab corpus-search-workspace-tab-button" %>
+        <%= submit_tag t("corpus_search.actions.prepare_analysis", default: "Prepare complete analysis in background"), class: "corpus-search-workspace-tab corpus-search-workspace-tab-button" %>
       <% end %>
       <a href="#query-details" class="corpus-search-workspace-tab"><%= t("corpus_search.analysis.tabs.query_details", default: "Query details") %></a>
     </nav>
@@ -337,8 +337,7 @@
   <% if @result_page.hits.any? %>
     <ol id="results" class="corpus-search-results" start="<%= ((@result_page.page - 1) * @result_page.per_page) + 1 %>">
       <% @result_page.hits.each do |hit| %>
-        <% source_path = corpus_viewer_path(hit["path"].to_s.split("/"), format: nil) %>
-        <% source_url = "#{source_path}?#{ { start: hit["start_offset"], end: hit["end_offset"], source: "corpus_search" }.to_query }" %>
+        <% source_url = hit["source_url"].presence || CorpusSearch::SourceLink.relative_url(path: hit["path"], start_offset: hit["start_offset"], end_offset: hit["end_offset"]) %>
         <li class="corpus-search-result">
           <h2>
             <%= hit["title"].presence || File.basename(hit["path"].to_s, ".txt") %>
@@ -347,7 +346,7 @@
             <% end %>
           </h2>
           <p class="corpus-search-meta">
-            <% [hit["author"], hit["date_text"], hit["nation"], hit["period"], hit["region"]].reject(&:blank?).each do |item| %>
+            <% [hit["author"], hit["date_text"], hit["corpus_root"], hit["macro_region"], hit["polity"], hit["period"], hit["region"]].reject(&:blank?).uniq.each do |item| %>
               <span><%= item %></span>
             <% end %>
           </p>

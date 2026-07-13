@@ -8,7 +8,7 @@ module CorpusSearch
   # never produce a hit or enter a statistical denominator.
   class Runner
     DEFAULT_INTERACTIVE_LIMIT = 1_000
-    DEFAULT_INTERACTIVE_SCAN_LIMIT = 5_000
+    DEFAULT_INTERACTIVE_SCAN_LIMIT = 1_000
     MAX_CACHED_CONTEXT = 200
     MAX_INDEX_EQUIVALENTS = 12
     DEFAULT_DIRECT_SCAN_SCOPE_LIMIT = 5_000
@@ -55,7 +55,7 @@ module CorpusSearch
           scanned_files += 1
         end
 
-        hits.concat(per_file_hits)
+        hits.concat(deduplicate_hits(per_file_hits))
 
         if max_hits && hits.length >= max_hits
           complete = false
@@ -112,7 +112,7 @@ module CorpusSearch
           )
         end
 
-        sort_hits(per_file_hits).each do |hit|
+        sort_hits(deduplicate_hits(per_file_hits)).each do |hit|
           hit_count += 1
           yield present_hit(hit) if block_given?
         end
@@ -630,6 +630,8 @@ module CorpusSearch
 
       {
         "doc_id" => doc["id"],
+        "document_id" => doc["id"],
+        "work_id" => doc["work_id"],
         "path" => doc["path"],
         "folder_path" => doc["folder_path"].to_s,
         "document_role" => doc["document_role"].presence || "canonical",
@@ -641,6 +643,9 @@ module CorpusSearch
         "year_start" => doc["year_start"],
         "year_end" => doc["year_end"],
         "nation" => doc["nation"].to_s,
+        "corpus_root" => doc["corpus_root"].to_s,
+        "macro_region" => doc["macro_region"].to_s,
+        "polity" => doc["polity"].to_s,
         "period" => doc["period"].to_s,
         "region" => doc["region"].to_s,
         "start_offset" => start_offset,
@@ -653,11 +658,35 @@ module CorpusSearch
         "equivalence_matches" => Array(equivalence_matches),
         "punctuation" => @query.punctuation,
         "normalization_profile_version" => @query.normalization_profile_version,
+        "occurrence_key" => occurrence_key(doc, start_offset, end_offset, search_start_offset, search_end_offset),
+        "source_url" => SourceLink.relative_url(
+          path: doc["path"],
+          start_offset: start_offset,
+          end_offset: end_offset
+        ),
         "left_context" => snippet["left_context"],
         "matched_text" => snippet["matched_text"],
         "right_context" => snippet["right_context"],
         "snippet" => snippet["snippet"]
       }
+    end
+
+    def occurrence_key(doc, start_offset, end_offset, search_start_offset, search_end_offset)
+      [doc["id"], start_offset, end_offset, search_start_offset, search_end_offset].join(":")
+    end
+
+    def deduplicate_hits(hits)
+      seen = {}
+      Array(hits).each_with_object([]) do |hit, unique|
+        key = hit["occurrence_key"].presence || [
+          hit["doc_id"], hit["start_offset"], hit["end_offset"],
+          hit["search_start_offset"], hit["search_end_offset"]
+        ].join(":")
+        next if seen[key]
+
+        seen[key] = true
+        unique << hit
+      end
     end
 
     def present_hit(hit)

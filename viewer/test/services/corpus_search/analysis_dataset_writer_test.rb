@@ -39,6 +39,13 @@ class CorpusSearchAnalysisDatasetWriterTest < ActiveSupport::TestCase
           force: true
         )
       end
+      matching_document = manifest.documents.find { |doc| doc["path"].end_with?("text.txt") }
+      matching_document["id"] = "174261"
+      matching_document["work_id"] = "80029"
+      matching_document["corpus_root"] = "中國漢文"
+      matching_document["macro_region"] = "東亞"
+      matching_document["polity"] = "周"
+
       writer = CorpusSearch::AnalysisDatasetWriter.new(
         query: query,
         manifest: manifest,
@@ -51,6 +58,12 @@ class CorpusSearchAnalysisDatasetWriterTest < ActiveSupport::TestCase
     assert_equal 2, rows.length
 
     matching = rows.find { |row| row["path"].end_with?("text.txt") }
+    assert_equal "174261", matching["doc_id"]
+    assert_equal "174261", matching["document_id"]
+    assert_equal "80029", matching["work_id"]
+    assert_equal "中國漢文", matching["corpus_root"]
+    assert_equal "東亞", matching["macro_region"]
+    assert_equal "周", matching["polity"]
     assert_equal "1", matching["occurrences"]
     assert_equal "1", matching["matching_document"]
     assert_equal "2", matching["searchable_characters"] # 孝道; punctuation and metadata excluded
@@ -66,7 +79,7 @@ class CorpusSearchAnalysisDatasetWriterTest < ActiveSupport::TestCase
     assert_not_equal matching["body_fingerprint"], unmatched["body_fingerprint"]
 
     metadata = JSON.parse(metadata_path.read)
-    assert_equal 4, metadata["version"]
+    assert_equal 5, metadata["version"]
     assert_equal true, metadata["body_only"]
     assert_equal 2, metadata["document_count"]
     assert_equal 4, metadata["searchable_character_count"]

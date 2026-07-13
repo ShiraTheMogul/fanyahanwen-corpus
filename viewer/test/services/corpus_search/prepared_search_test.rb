@@ -19,6 +19,13 @@ class CorpusSearchPreparedSearchTest < ActiveSupport::TestCase
     FileUtils.remove_entry(@directory) if @directory&.exist?
   end
 
+  test "new prepared searches record the current schema version" do
+    prepared = CorpusSearch::PreparedSearch.create!(query: @query, cache_store: @cache_store)
+
+    assert_equal CorpusSearch::PreparedSearch::RECORD_VERSION, prepared.record_version
+    assert prepared.current_record_version?
+  end
+
   test "writes a frozen record once and refuses later completion changes" do
     prepared = CorpusSearch::PreparedSearch.create!(query: @query, cache_store: @cache_store)
     snapshot = { "snapshot_id" => "snapshot-1" }

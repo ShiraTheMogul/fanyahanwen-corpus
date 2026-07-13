@@ -36,15 +36,13 @@ module CorpusSearch
 
     def self.load(manifest: nil, cache_store: CacheStore.new)
       if manifest.nil?
+        # Web requests are cache-only. Never traverse the corpus filesystem while
+        # rendering the search form: on WSL/OneDrive, even a shallow directory
+        # walk can block the request for more than a minute. The maintenance task
+        # rebuilds this cache immediately after rebuilding the manifest.
         cached = cache_store.read_json(CACHE_PATH)
-        if cached_payload_current?(cached) && cache_file_fresh?(cache_store)
-          tree = new(manifest: nil, cache_store: cache_store)
-          tree.send(:load_from_payload, cached)
-          return tree
-        end
-
         tree = new(manifest: nil, cache_store: cache_store)
-        tree.load_filesystem_tree!
+        tree.send(:load_from_payload, cached) if cached_payload_current?(cached)
         return tree
       end
 
@@ -59,14 +57,6 @@ module CorpusSearch
     end
     private_class_method :cached_payload_current?
 
-    def self.cache_file_fresh?(cache_store)
-      tree_path = cache_store.absolute(CACHE_PATH)
-      manifest_path = cache_store.absolute(Manifest::CACHE_PATH)
-      tree_path.file? && (!manifest_path.file? || tree_path.mtime >= manifest_path.mtime)
-    rescue Errno::ENOENT
-      false
-    end
-    private_class_method :cache_file_fresh?
 
     def initialize(manifest:, cache_store: CacheStore.new)
       @manifest = manifest
@@ -135,16 +125,7 @@ module CorpusSearch
         end
       end
 
-      nodes.each_value do |node|
-        next if node["depth"] >= MAX_DEPTH
-
-        child_depth = node["depth"] + 1
-        node["children"] = nodes.values.select do |candidate|
-          candidate["depth"] == child_depth && parent_path(candidate["path"]) == node["path"]
-        end
-        node["children"] = sort_nodes(node["children"])
-      end
-
+      attach_children!(nodes)
       sort_nodes(nodes.values.select { |node| node["depth"] == 1 })
     end
 
@@ -177,17 +158,24 @@ module CorpusSearch
         end
       end
 
-      nodes.each_value do |node|
-        next if node["depth"] >= MAX_DEPTH
+      attach_children!(nodes)
+      sort_nodes(nodes.values.select { |node| node["depth"] == 1 })
+    end
 
-        child_depth = node["depth"] + 1
-        node["children"] = nodes.values.select do |candidate|
-          candidate["depth"] == child_depth && parent_path(candidate["path"]) == node["path"]
-        end
-        node["children"] = sort_nodes(node["children"])
+    def attach_children!(nodes)
+      children_by_parent = Hash.new { |hash, key| hash[key] = [] }
+
+      nodes.each_value do |node|
+        next if node["depth"].to_i <= 1
+
+        children_by_parent[parent_path(node["path"])] << node
       end
 
-      sort_nodes(nodes.values.select { |node| node["depth"] == 1 })
+      nodes.each_value do |node|
+        next if node["depth"].to_i >= MAX_DEPTH
+
+        node["children"] = sort_nodes(children_by_parent[node["path"]])
+      end
     end
 
     def folder_parts(document)

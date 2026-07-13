@@ -16,6 +16,7 @@ module CorpusSearch
   # export publicly guessable. Full-corpus jobs also carry short-lived HMAC
   # client keys so the site can enforce accountless abuse protection.
   class PreparedSearch
+    RECORD_VERSION = 10
     STATUSES = %w[queued running complete failed cancel_requested cancelled].freeze
     ACTIVE_FULL_SEARCH_STATUSES = %w[queued running complete].freeze
     DEFAULT_EXPIRY_HOURS = 72
@@ -106,7 +107,7 @@ module CorpusSearch
       FileUtils.mkdir_p(@dir)
       notification = notification_payload(notification_email)
       @payload = {
-        "version" => 9,
+        "version" => RECORD_VERSION,
         "id" => safe_id,
         "key_digest" => digest(@key),
         "status" => "queued",
@@ -170,6 +171,14 @@ module CorpusSearch
     def locale
       candidate = @payload["locale"].to_s
       I18n.available_locales.map(&:to_s).include?(candidate) ? candidate : I18n.default_locale
+    end
+
+    def record_version
+      @payload["version"].to_i
+    end
+
+    def current_record_version?
+      record_version == RECORD_VERSION
     end
 
     def status

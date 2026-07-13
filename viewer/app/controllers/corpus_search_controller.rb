@@ -15,7 +15,8 @@ class CorpusSearchController < ApplicationController
     @result_page = nil
     @live_query_url = live_query_url(@query) if @query.valid?
     @manifest = CorpusSearch::Manifest.load_for_query(query: @query) if @searched && @query.valid?
-    @folder_tree = CorpusSearch::FolderTree.load
+    @corpus_index = CorpusSearch::CorpusIndex.load
+    @folder_tree = @corpus_index.folder_tree
 
     return unless @searched
 
@@ -200,6 +201,10 @@ class CorpusSearchController < ApplicationController
       files_total: files_total,
       percent: percent,
       hits_found: progress["hits_found"].to_i,
+      created_at: prepared_search.payload["created_at"],
+      updated_at: prepared_search.payload["updated_at"],
+      queue_wait_seconds: queue_wait_seconds(prepared_search),
+      worker_waiting: prepared_search.status == "queued" && queue_wait_seconds(prepared_search) >= 30,
       complete: prepared_search.complete?,
       cancelled: prepared_search.cancelled?,
       failed: prepared_search.failed?,
@@ -208,6 +213,13 @@ class CorpusSearchController < ApplicationController
       cancel_url: "/corpus/search/prepared/#{prepared_search.id}/cancel?key=#{ERB::Util.url_encode(prepared_search.key)}",
       download_url: prepared_search.complete? ? "/corpus/search/prepared/#{prepared_search.id}/download?key=#{ERB::Util.url_encode(prepared_search.key)}" : nil
     }
+  end
+
+  def queue_wait_seconds(prepared_search)
+    created_at = Time.iso8601(prepared_search.payload["created_at"].to_s)
+    [(Time.now.utc - created_at).to_i, 0].max
+  rescue ArgumentError, TypeError
+    0
   end
 
   def full_search_progress_seed(prepared_search)

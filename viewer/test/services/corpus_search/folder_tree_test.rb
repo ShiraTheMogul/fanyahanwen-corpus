@@ -45,6 +45,26 @@ class CorpusSearchFolderTreeTest < ActiveSupport::TestCase
     assert_equal %w[中國漢文 日本漢文], second.roots.map { |node| node["path"] }
   end
 
+  test "web cache-only load does not walk the corpus filesystem" do
+    CorpusSearch::FolderTree.stub(:new, ->(**kwargs) { CorpusSearch::FolderTree.allocate.tap { |tree| tree.send(:initialize, **kwargs) } }) do
+      tree = CorpusSearch::FolderTree.load(cache_store: @cache_store)
+      assert tree.empty?
+    end
+  end
+
+  test "web cache-only load accepts a valid tree after a newer manifest file" do
+    built = CorpusSearch::FolderTree.load(manifest: @manifest, cache_store: @cache_store)
+    manifest_path = @cache_store.absolute(CorpusSearch::Manifest::CACHE_PATH)
+    FileUtils.mkdir_p(manifest_path.dirname)
+    manifest_path.write("newer manifest placeholder")
+    future = Time.now + 60
+    File.utime(future, future, manifest_path)
+
+    loaded = CorpusSearch::FolderTree.load(cache_store: @cache_store)
+
+    assert_equal built.roots, loaded.roots
+  end
+
   private
 
   def document(path, role)

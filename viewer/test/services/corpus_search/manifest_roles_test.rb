@@ -111,6 +111,36 @@ class CorpusSearchManifestRolesTest < ActiveSupport::TestCase
     assert_not @cache_store.absolute(CorpusSearch::Manifest::CACHE_PATH).exist?
   end
 
+  test "bounded user query also reuses full manifest and never writes a scoped manifest" do
+    quietly do
+      CorpusSearch::Manifest.load(
+        root: @corpus_root,
+        cache_store: @cache_store,
+        refresh: true,
+        force: true
+      )
+    end
+
+    query = CorpusSearch::Query.from_params(
+      q: "正文",
+      search: "1",
+      folders: ["中國漢文/clean/周朝"]
+    )
+
+    manifest = quietly do
+      CorpusSearch::Manifest.load_for_query(
+        query: query,
+        root: @corpus_root,
+        cache_store: @cache_store
+      )
+    end
+
+    assert_equal 5, manifest.documents.length
+    assert_not @cache_store.absolute(
+      CorpusSearch::Manifest.scoped_cache_path_for(query.include_folders)
+    ).exist?
+  end
+
   test "unbounded user query reuses administrator-built full manifest" do
     quietly do
       CorpusSearch::Manifest.load(

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Runs the Sidekiq process used by prepared/full corpus searches in development.
+# Keep this in a second terminal while `bin/rails server` is running.
+exec bundle exec sidekiq -q default

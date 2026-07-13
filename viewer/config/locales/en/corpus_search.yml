@@ -88,7 +88,7 @@ en:
       request_full_search: Request full search
       cancel_full_search: Cancel search
       prepare_export: Prepare full ZIP export in background
-      prepare_analysis: Prepare analysis
+      prepare_analysis: Prepare complete analysis in background
       open_source_text: Open source text at this match
       download_zip: Download ZIP
       copy_live_url: Copy live query URL
@@ -103,6 +103,7 @@ en:
     results:
       summary: 'Showing %{visible} result(s) on this page. Cached/checked candidate files: %{candidates}. Files newly scanned for this request: %{scanned}.'
       truncated: This interactive search is partial. It stops at %{limit} hits or after a bounded cold scan; prepare a background export for the complete result set.
+      analysis_background_note: This scans the entire selected scope without the interactive hit or cold-scan cap.
       complete_count: 'Complete interactive result count: %{count}.'
       offset: body offset %{start}–%{finish}
       none: No results found.
@@ -139,6 +140,8 @@ en:
       progress: 'Stage: %{stage}. Files: %{scanned} / %{total}. Hits found: %{hits}.'
       zip_contents: The ZIP contains concordance results, body-only analysis data, grouped CSV tables, the exact Ruby script, SVG and PNG figures, and runtime provenance.
       refresh_notice: This page will refresh every %{seconds} seconds while the job is running.
+      poll_notice: Progress updates automatically while the background job is running. You may leave this page and return using the frozen URL.
+      worker_waiting: This job has been queued but no worker has started it yet. In local development, run bin/corpus-search-worker in a second terminal.
     analysis:
       title: Corpus Search Analysis
       workspace: Search workspace

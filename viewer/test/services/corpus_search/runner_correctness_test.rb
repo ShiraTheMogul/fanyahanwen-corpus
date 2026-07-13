@@ -125,6 +125,26 @@ class CorpusSearchRunnerCorrectnessTest < ActiveSupport::TestCase
     assert_equal 8, hit["search_end_offset"]
   end
 
+  test "hits preserve stable JSON identity and geographic metadata" do
+    page = with_manifest do |manifest|
+      document = manifest.documents.find { |doc| doc["path"].end_with?("body.txt") }
+      document["id"] = "174261"
+      document["work_id"] = "80029"
+      document["corpus_root"] = "中國漢文"
+      document["macro_region"] = "東亞"
+      document["polity"] = "周"
+      run_query_with_manifest(CorpusSearch::SearchDefinition.new(query_text: "關關雎鳩"), manifest)
+    end
+
+    hit = page.hits.fetch(0)
+    assert_equal "174261", hit["doc_id"]
+    assert_equal "174261", hit["document_id"]
+    assert_equal "80029", hit["work_id"]
+    assert_equal "中國漢文", hit["corpus_root"]
+    assert_equal "東亞", hit["macro_region"]
+    assert_equal "周", hit["polity"]
+  end
+
   test "respecting punctuation requires the entered punctuation" do
     no_match = run_query(
       CorpusSearch::SearchDefinition.new(
@@ -404,6 +424,17 @@ class CorpusSearchRunnerCorrectnessTest < ActiveSupport::TestCase
   ensure
     ENV["CORPUS_SEARCH_DIRECT_SCAN_LIMIT"] = previous_direct
     ENV["CORPUS_SEARCH_INTERACTIVE_SCAN_LIMIT"] = previous_scan
+  end
+
+  test "search hits expose stable occurrence identity and a viewer URL" do
+    page = run_query(CorpusSearch::SearchDefinition.new(query_text: "關關雎鳩"))
+    hit = page.hits.fetch(0)
+
+    assert hit["document_id"].present?
+    assert hit["occurrence_key"].start_with?("#{hit["document_id"]}:")
+    assert_match(%r{\A/corpus_viewer/}, hit["source_url"])
+    assert_includes hit["source_url"], "start="
+    assert_includes hit["source_url"], "end="
   end
 
   private

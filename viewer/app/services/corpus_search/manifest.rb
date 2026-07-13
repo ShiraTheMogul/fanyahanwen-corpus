@@ -32,18 +32,19 @@ module CorpusSearch
     end
 
     def self.load_for_query(query:, root: Rails.configuration.x.corpus_root, cache_store: CacheStore.new, refresh: false)
-      manifest = new(root: root, cache_store: cache_store)
-      folders = manifest.send(:normalized_paths, query.include_folders)
-
-      # An unbounded end-user request must never become a synchronous corpus
-      # crawl. It may reuse the administrator-built full manifest, but only an
-      # explicit maintenance command is allowed to create that manifest.
-      return manifest.load_cached! if folders.empty?
-
-      manifest.load_cached_or_refresh_scoped!(
-        include_folders: folders,
-        refresh: refresh
-      )
+      # A web request must never build any manifest, including a supposedly
+      # "targeted" one. The administrator-built full manifest already contains
+      # every document needed for folder filtering; Runner#candidate_documents
+      # applies include/exclude folders in memory.
+      #
+      # This also avoids two serious failure modes seen on WSL/OneDrive:
+      #   * selecting a large root folder synchronously walked hundreds of
+      #     thousands of files and held the request open for tens of minutes;
+      #   * concurrent requests attempted to write the same scoped cache file.
+      #
+      # `query` and `refresh` remain in the signature for compatibility with
+      # callers, but refreshes belong to maintenance tasks, never page loads.
+      new(root: root, cache_store: cache_store).load_cached!
     end
 
     def self.scoped_cache_path_for(include_folders)

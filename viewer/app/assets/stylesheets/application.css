@@ -2473,3 +2473,13 @@ body.rightbar-collapsed .rightbar {
   gap: 0.45rem;
   margin-top: 0.65rem;
 }
+
+.corpus-search-workspace-tab.is-disabled {
+  color: #7a8491;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.corpus-search-workspace-tab.is-disabled:hover {
+  background: transparent;
+}

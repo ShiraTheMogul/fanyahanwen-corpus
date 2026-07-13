@@ -13,7 +13,7 @@ module CorpusSearch
   # records, but reads and updates one document row at a time. This bounds Ruby
   # memory and makes checkpoints incremental.
   class QueryCache
-    VERSION = 7
+    VERSION = 8
     BUSY_TIMEOUT_MS = 10_000
     Record = Data.define(:hits, :searchable_characters, :body_fingerprint)
 
@@ -23,7 +23,10 @@ module CorpusSearch
       @path = @cache_store.absolute(File.join("query_caches", "#{@query.cache_key}.sqlite3"))
       FileUtils.mkdir_p(@path.dirname)
 
-      # Version 5 and earlier used one .json.gz file. It is not read by the new
+      # Version 5 and earlier used one .json.gz file. Version 8 also
+      # invalidates cached hit payloads created before stable JSON identities,
+      # source URLs, and occurrence keys were carried on every hit.
+      # It is not read by the new
       # cache and can be removed safely because all search caches are disposable.
       @cache_store.delete(File.join("query_caches", "#{@query.cache_key}.json.gz"))
 
