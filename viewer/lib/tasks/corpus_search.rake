@@ -102,28 +102,97 @@ namespace :corpus_search do
   task purge_empty_documents: :environment do
     root = Pathname(Rails.configuration.x.corpus_root).realpath
     apply = ENV["APPLY"].to_s == "1"
-    empty = []
+    retry_limit = [ENV.fetch("READ_RETRIES", "3").to_i, 1].max
+    progress_every = [ENV.fetch("PROGRESS_EVERY", "10000").to_i, 1].max
 
-    root.find do |path|
-      next unless path.file? && path.extname.downcase == ".txt"
+    empty = []
+    skipped_directories = []
+    skipped_files = []
+    directories = [root]
+    txt_seen = 0
+
+    read_children = lambda do |directory|
+      attempts = 0
+
       begin
-        has_content = File.foreach(path, encoding: "UTF-8").any? { |line| line.delete("\uFEFF").match?(/\S/) }
-      rescue Encoding::InvalidByteSequenceError, Encoding::UndefinedConversionError
-        has_content = File.binread(path).match?(/\S/)
+        attempts += 1
+        Dir.children(directory)
+      rescue Errno::ENOENT, Errno::EACCES, Errno::EIO => e
+        if attempts < retry_limit
+          warn "[corpus_search] retrying directory #{directory} after #{e.class} "                "(attempt #{attempts}/#{retry_limit})"
+          sleep 0.25 * attempts
+          retry
+        end
+
+        skipped_directories << [directory, e]
+        warn "[corpus_search] skipped directory #{directory}: #{e.class}: #{e.message}"
+        []
       end
-      empty << path unless has_content
-    rescue Errno::ENOENT, Errno::EACCES, Errno::EIO => e
-      warn "[corpus_search] skipped #{path}: #{e.class}: #{e.message}"
     end
 
+    until directories.empty?
+      directory = directories.pop
+
+      read_children.call(directory).each do |name|
+        path = Pathname(directory).join(name)
+
+        begin
+          stat = File.lstat(path)
+
+          # Do not follow directory symlinks: a corpus symlink loop would otherwise
+          # make this maintenance task walk forever.
+          if stat.directory? && !stat.symlink?
+            directories << path
+            next
+          end
+
+          next unless stat.file? && path.extname.downcase == ".txt"
+
+          txt_seen += 1
+          if (txt_seen % progress_every).zero?
+            puts "[corpus_search] empty-file audit: #{txt_seen} TXT files checked; "                  "#{empty.length} empty; #{skipped_directories.length} directories skipped"
+          end
+
+          begin
+            has_content = File.foreach(path, encoding: "UTF-8").any? do |line|
+              line.delete("\uFEFF").match?(/\S/)
+            end
+          rescue Encoding::InvalidByteSequenceError, Encoding::UndefinedConversionError
+            has_content = File.binread(path).match?(/\S/)
+          end
+
+          empty << path unless has_content
+        rescue Errno::ENOENT, Errno::EACCES, Errno::EIO => e
+          skipped_files << [path, e]
+          warn "[corpus_search] skipped file #{path}: #{e.class}: #{e.message}"
+        end
+      end
+    end
+
+    puts "Checked #{txt_seen} TXT files."
     puts "Found #{empty.length} empty TXT files."
     empty.each { |path| puts path.relative_path_from(root) }
 
+    if skipped_directories.any? || skipped_files.any?
+      warn "[corpus_search] WARNING: audit was incomplete: "            "#{skipped_directories.length} directories and #{skipped_files.length} files were unreadable."
+      warn "[corpus_search] Re-run the task after OneDrive/WSL access stabilises."
+    end
+
     if apply
-      empty.each { |path| FileUtils.rm_f(path) }
-      puts "Removed #{empty.length} empty TXT files. Rebuild the manifest next."
+      removed = 0
+      empty.each do |path|
+        begin
+          File.delete(path)
+          removed += 1
+        rescue Errno::ENOENT
+          # A file disappearing between audit and deletion is already gone.
+        rescue Errno::EACCES, Errno::EIO => e
+          warn "[corpus_search] could not remove #{path}: #{e.class}: #{e.message}"
+        end
+      end
+      puts "Removed #{removed} empty TXT files. Rebuild the manifest next."
     else
-      puts "Dry run only. Re-run with APPLY=1 to remove them."
+      puts "Dry run only. Re-run with APPLY=1 to remove the files listed above."
     end
   end
 
