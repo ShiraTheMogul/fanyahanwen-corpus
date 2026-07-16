@@ -23,13 +23,13 @@ require "zlib"
 
 class StandardAnalysis
   PROFILE = "standard_analysis"
-  VERSION = 5
+  VERSION = 6
   SAMPLING_SEED = 202_609
   UNKNOWN = "(Unknown / unclassified)"
   DOCUMENT_HEADERS = %w[
-    doc_id body_fingerprint path folder_path document_role title author
-    year_start year_end nation period region searchable_characters occurrences
-    matching_document
+    doc_id body_fingerprint duplicate_group_size representative_document_id duplicate_members_json
+    path folder_path document_role title author year_start year_end nation corpus_root macro_region polity period region
+    searchable_characters occurrences matching_document
   ].freeze
   OCCURRENCE_HEADERS = %w[
     occurrence_id mode path doc_id search_start_offset search_end_offset
@@ -37,6 +37,9 @@ class StandardAnalysis
   ].freeze
   DIMENSIONS = {
     "period" => { source: "period", label: "Period", limit: 40, chronological: true },
+    "corpus_root" => { source: "corpus_root", label: "Corpus root", limit: 20, chronological: false },
+    "macro_region" => { source: "macro_region", label: "Macro region", limit: 20, chronological: false },
+    "polity" => { source: "polity", label: "Polity", limit: 40, chronological: false },
     "nation" => { source: "nation", label: "Nation", limit: 30, chronological: false },
     "region" => { source: "region", label: "Region", limit: 30, chronological: false },
     "author" => { source: "author", label: "Author", limit: 30, chronological: false },
@@ -341,6 +344,7 @@ class StandardAnalysis
     dimension_tables = build_dimension_tables(document_state)
     write_overall(document_state)
     write_dimensions(dimension_tables)
+    write_metadata_quality_outputs(document_state)
     comparison = build_comparison(dimension_tables)
     render_dimension_charts(dimension_tables)
     write_document_distribution(document_state)
@@ -389,6 +393,8 @@ class StandardAnalysis
     dated_midpoint_frequencies = Hash.new(0)
     comparison_config = read_comparison_config
     comparison_docs = {}
+    scope_conflicts = []
+    scope_conflict_count = 0
 
     each_csv(@document_path) do |row|
       normalize_document_row!(row)
@@ -403,7 +409,16 @@ class StandardAnalysis
       matching_frequencies[occurrences] += 1 if occurrences.positive?
       distribution[occurrence_bucket(occurrences)] += 1 if occurrences.positive?
       fingerprint = row["body_fingerprint"].to_s.strip
-      fingerprint_counts[fingerprint] += 1 unless fingerprint.empty?
+      group_size = [row["duplicate_group_size"].to_i, 1].max
+      fingerprint_counts[fingerprint] += group_size unless fingerprint.empty?
+      physical_root = row["path"].to_s.split("/").first.to_s
+      declared_root = row["corpus_root"].to_s.strip
+      if !declared_root.empty? && !physical_root.empty? && declared_root != physical_root
+        scope_conflict_count += 1
+        if scope_conflicts.length < 1_000
+          scope_conflicts << { "document_id" => row["doc_id"], "path" => row["path"], "physical_root" => physical_root, "metadata_corpus_root" => declared_root }
+        end
+      end
 
       DIMENSIONS.each_key do |dimension|
         group = dimension_value(row, dimension)
@@ -444,12 +459,14 @@ class StandardAnalysis
       year_groups: year_groups,
       dated_midpoint_frequencies: dated_midpoint_frequencies,
       comparison_config: comparison_config,
-      comparison_docs: comparison_docs
+      comparison_docs: comparison_docs,
+      scope_conflicts: scope_conflicts,
+      scope_conflict_count: scope_conflict_count
     }
   end
 
   def normalize_document_row!(row)
-    %w[searchable_characters occurrences matching_document].each { |column| row[column] = integer(row[column]) }
+    %w[searchable_characters occurrences matching_document duplicate_group_size].each { |column| row[column] = integer(row[column]) }
     %w[year_start year_end].each { |column| row[column] = optional_number(row[column]) }
     row["folder"] = folder_group(row["folder_path"])
     role = clean_group(row["document_role"])
@@ -506,8 +523,24 @@ class StandardAnalysis
           [-row["occurrences"], -row["searchable_characters"], row["group"]]
         end
       end
-      [dimension, rows]
-    end
+      if invalid_dimension_reason(dimension, rows, state[:overall][:documents])
+        @invalid_dimensions ||= {}
+        @invalid_dimensions[dimension] = invalid_dimension_reason(dimension, rows, state[:overall][:documents])
+        [dimension, []]
+      else
+        [dimension, rows]
+      end
+    end.reject { |_dimension, rows| rows.empty? }.to_h
+  end
+
+  def invalid_dimension_reason(dimension, rows, document_count)
+    return nil unless %w[region polity period].include?(dimension)
+    group_count = rows.length
+    singleton_count = rows.count { |row| row["documents"].to_i == 1 }
+    singleton_share = group_count.zero? ? 0.0 : singleton_count.fdiv(group_count)
+    return "#{group_count} groups for #{document_count} documents" if group_count > [1_000, (document_count * 0.10).to_i].max
+    return "#{(singleton_share * 100).round(1)}% of groups contain one document" if group_count > 500 && singleton_share > 0.80
+    nil
   end
 
   def write_overall(state)
@@ -533,6 +566,24 @@ class StandardAnalysis
       filename = "#{dimension}_summary.csv"
       write_csv(@output_dir.join(filename), DIMENSION_HEADERS, rows)
       @tables[dimension] = filename
+    end
+  end
+
+
+  def write_metadata_quality_outputs(state)
+    conflicts = Array(state[:scope_conflicts])
+    unless conflicts.empty?
+      write_csv(@output_dir.join("scope_metadata_conflicts.csv"),
+                %w[document_id path physical_root metadata_corpus_root], conflicts)
+      @tables["scope_metadata_conflicts"] = "scope_metadata_conflicts.csv"
+    end
+
+    invalid = (@invalid_dimensions || {}).map do |dimension, reason|
+      { "dimension" => dimension, "reason" => reason }
+    end
+    unless invalid.empty?
+      write_csv(@output_dir.join("invalid_dimensions.csv"), %w[dimension reason], invalid)
+      @tables["invalid_dimensions"] = "invalid_dimensions.csv"
     end
   end
 
@@ -1014,6 +1065,7 @@ class StandardAnalysis
     duplicate_members_path = @output_dir.join("duplicate_body_members.csv")
     duplicate_headers = %w[body_fingerprint doc_id title author period nation document_role path searchable_characters occurrences matching_document]
     unique_totals = { documents: 0, matching_documents: 0, occurrences: 0, searchable_characters: 0 }
+    stored_totals = { documents: 0, matching_documents: 0, occurrences: 0, searchable_characters: 0 }
     dp_sum = 0.0
     min_expected = nil
     total_occurrences = overall[:occurrences].to_f
@@ -1032,15 +1084,25 @@ class StandardAnalysis
         end
 
         fingerprint = row["body_fingerprint"].to_s.strip
+        group_size = [row["duplicate_group_size"].to_i, 1].max
+        stored_totals[:documents] += group_size
+        stored_totals[:matching_documents] += group_size if row["matching_document"].positive?
+        stored_totals[:occurrences] += count * group_size
+        stored_totals[:searchable_characters] += exposure * group_size
         if fingerprint.empty?
           add_unique_totals(unique_totals, row)
         elsif duplicate_fingerprints.include?(fingerprint)
-          duplicate_csv << duplicate_headers.map { |header| row[header] }
+          members = JSON.parse(row["duplicate_members_json"].to_s) rescue []
+          members = [{ "document_id" => row["doc_id"], "path" => row["path"] }] if members.empty?
+          members.each do |member|
+            member_row = row.to_h.merge("doc_id" => member["document_id"], "path" => member["path"])
+            duplicate_csv << duplicate_headers.map { |header| member_row[header] }
+          end
           group = duplicate_groups[fingerprint]
-          group[:documents] += 1
-          group[:matching_documents] += 1 if row["matching_document"].positive?
-          group[:occurrences] += count
-          group[:searchable_characters] += exposure
+          group[:documents] += group_size
+          group[:matching_documents] += group_size if row["matching_document"].positive?
+          group[:occurrences] += count * group_size
+          group[:searchable_characters] += exposure * group_size
           group[:max_occurrences] = [group[:max_occurrences], count].max
           group[:max_searchable_characters] = [group[:max_searchable_characters], exposure].max
           group[:max_matching_document] = [group[:max_matching_document], row["matching_document"]].max
@@ -1104,8 +1166,8 @@ class StandardAnalysis
     @tables["duplicate_body_members"] = "duplicate_body_members.csv"
 
     stored = {
-      "basis" => "documents_as_stored", "documents" => overall[:documents], "matching_documents" => overall[:matching_documents],
-      "occurrences" => overall[:occurrences], "searchable_characters" => overall[:searchable_characters]
+      "basis" => "documents_as_stored", "documents" => stored_totals[:documents], "matching_documents" => stored_totals[:matching_documents],
+      "occurrences" => stored_totals[:occurrences], "searchable_characters" => stored_totals[:searchable_characters]
     }
     unique = {
       "basis" => "unique_exact_bodies", "documents" => unique_totals[:documents], "matching_documents" => unique_totals[:matching_documents],
@@ -1288,10 +1350,15 @@ class StandardAnalysis
   end
 
   def write_warnings(state, comparison)
-    undated = state[:overall][:documents] - state[:time_bins].values.sum { |bucket| bucket[:documents] }
-    @warnings << "#{undated} document(s) lack a parseable date or searchable body characters; they remain in the overall analysis but not the time chart." if undated.positive?
-    @warnings << "#{state[:overall][:zero_length_documents]} document(s) contain no searchable body characters under this punctuation policy." if state[:overall][:zero_length_documents].positive?
-    @warnings << "Some figures show only the highest-valued groups; complete groups remain in the corresponding CSV table." if @charts.any? { |chart| chart["omitted_groups"].to_i.positive? }
+    if state[:overall][:zero_length_documents].positive?
+      @warnings << "#{state[:overall][:zero_length_documents]} document(s) contain no searchable body characters and should have been excluded by manifest schema 7."
+    end
+    if state[:scope_conflict_count].to_i.positive?
+      @warnings << "#{state[:scope_conflict_count]} document(s) declare a corpus_root that conflicts with their physical top-level folder; examples are listed in scope_metadata_conflicts.csv."
+    end
+    (@invalid_dimensions || {}).each do |dimension, reason|
+      @warnings << "#{dimension.humanize} analysis was suppressed because the field failed validation (#{reason}); repair metadata before using this dimension academically."
+    end
     if comparison && comparison["summary"].any? { |row| row["occurrences"].to_i.zero? }
       @warnings << "The comparison rate-ratio confidence interval uses a 0.5 continuity correction because one selected scope has zero occurrences."
     end
@@ -1299,18 +1366,12 @@ class StandardAnalysis
       @warnings << "At least one comparison scope has no searchable body characters; exposure-based comparison statistics are unavailable."
     end
     if state[:duplicate_group_count].to_i.positive?
-      @warnings << "#{state[:duplicate_group_count]} exact body-fingerprint group(s) contain repeated texts. Default counts retain every stored document; exact_body_sensitivity.csv shows a one-body-one-unit sensitivity check."
+      @warnings << "#{state[:duplicate_group_count]} exact-body group(s) affect the stored-document sensitivity calculation; duplicate provenance is retained in duplicate_body_members.csv."
     end
-    dated = state[:time_bins].values.sum { |bucket| bucket[:documents] }
-    @warnings << "#{dated} dated document(s) contributed to century bins; undated documents remain in the overall analysis but not the time chart or trend model." if dated.positive?
-    if state[:time_model]
-      @warnings << "The time-trend model is descriptive. It models document counts with searchable body characters as exposure and does not establish historical causation."
-      @warnings << "The dated-document Poisson model was overdispersed, so quasi-Poisson standard errors were used for the century trend." if state[:time_model]["model_family"] == "quasipoisson"
+    if state[:time_model] && state[:time_model]["model_family"] == "quasipoisson"
+      @warnings << "The dated-document model was overdispersed, so quasi-Poisson standard errors were used."
     end
-    @warnings << "DPnorm is calculated across documents from occurrence shares and searchable-character exposure shares; values nearer 1 indicate stronger concentration." if state[:document_dp_norm]
-    @warnings << "Fixed-seed samples use seeds #{SAMPLING_SEED} for matching documents and #{SAMPLING_SEED + 1} for occurrences; IDs permit joins back to the complete exported tables."
-    @warnings << "Neighbour-keyness compares the five-character windows around matches in the two selected scopes. It describes contextual distinctiveness, not general corpus-wide word keyness." if @tables.key?("comparison_neighbour_keyness") && comparison
-    @output_dir.join("warnings.txt").write(@warnings.uniq.join("\n") + "\n", encoding: "UTF-8")
+    @output_dir.join("warnings.txt").write(@warnings.uniq.join("\n") + (@warnings.empty? ? "" : "\n"), encoding: "UTF-8")
   end
 
   def add_chart(key:, kind:, dimension:, metric:, title:, svg:, png:, table:, shown:, omitted:)
@@ -1345,7 +1406,7 @@ class StandardAnalysis
 
   def dimension_value(row, dimension)
     case dimension
-    when "period", "nation", "region", "author"
+    when "period", "nation", "corpus_root", "macro_region", "polity", "region", "author"
       clean_group(row[dimension])
     when "folder"
       clean_group(row["folder"] || folder_group(row["folder_path"]))

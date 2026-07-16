@@ -14,7 +14,7 @@ module CorpusSearch
   # fixed Ruby analysis profile. Metadata may label rows but never contributes to
   # matching, snippets, occurrence counts, or searchable-character denominators.
   class ExportWriter
-    EXPORT_SCHEMA_VERSION = 6
+    EXPORT_SCHEMA_VERSION = 7
     RESULT_COLUMNS = %w[
       occurrence_id query mode query_text terms maximum_span order punctuation
       character_equivalence character_equivalence_version normalization_profile_version
@@ -50,6 +50,8 @@ module CorpusSearch
       end
 
       I18n.with_locale(@prepared_search.locale) do
+        total_started = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+        stage_timings = {}
         source_prepared = @prepared_search.source_prepared
         @prepared_search.update!(
           status: "running",
@@ -80,6 +82,7 @@ module CorpusSearch
         checksums_path = output_dir.join("checksums.sha256")
         zip_path = output_dir.join("corpus_search_#{@prepared_search.id}.zip")
 
+        dataset_started = Process.clock_gettime(Process::CLOCK_MONOTONIC)
         if source_prepared
           copy_source_datasets!(source_prepared, output_dir)
           dataset_stats = dataset_stats_from(document_counts_csv)
@@ -106,6 +109,7 @@ module CorpusSearch
           }
           corpus_snapshot = corpus_snapshot_for(manifest)
         end
+        stage_timings["dataset_seconds"] = elapsed_stage(dataset_started)
 
         corpus_snapshot = corpus_snapshot.merge(
           "selected_scope" => scope_totals_by_role(document_counts_csv),
@@ -122,6 +126,7 @@ module CorpusSearch
         comparison_path = write_comparison_csv(comparison_csv)
         write_rerun_instructions(rerun_txt, comparison: comparison_path.present?)
         @prepared_search.update!(progress: { "stage" => "running_analysis", "hits_found" => dataset_stats["occurrences"] })
+        analysis_started = Process.clock_gettime(Process::CLOCK_MONOTONIC)
         analysis_result = AnalysisRunner.new.run(
           profile: "standard_analysis",
           document_counts_path: document_counts_csv,
@@ -129,7 +134,9 @@ module CorpusSearch
           output_dir: analysis_dir,
           comparison_path: comparison_path
         )
+        stage_timings["analysis_seconds"] = elapsed_stage(analysis_started)
 
+        packaging_started = Process.clock_gettime(Process::CLOCK_MONOTONIC)
         copy_analysis_readme(output_dir.join("analysis"))
         write_research_readme(readme_txt, analysis_result, corpus_snapshot: corpus_snapshot)
         write_metadata(
@@ -144,6 +151,8 @@ module CorpusSearch
         write_research_manifest(research_manifest_json, output_dir, corpus_snapshot: corpus_snapshot)
         write_checksums(checksums_path, output_dir)
         write_zip(zip_path, output_dir)
+        stage_timings["packaging_seconds"] = elapsed_stage(packaging_started)
+        stage_timings["total_seconds"] = elapsed_stage(total_started)
 
         overall = analysis_overall(analysis_dir)
         outputs = {
@@ -159,7 +168,9 @@ module CorpusSearch
           "document_prevalence" => overall["document_prevalence"],
           "comparison" => @prepared_search.comparison&.to_h,
           "source_prepared_id" => source_prepared&.id,
-          "snapshot_id" => corpus_snapshot["snapshot_id"]
+          "snapshot_id" => corpus_snapshot["snapshot_id"],
+          "stage_timings" => stage_timings,
+          "documents_per_second" => stage_timings["dataset_seconds"].to_f.positive? ? (dataset_stats["documents"].to_f / stage_timings["dataset_seconds"]).round(2) : nil
         }
         artifacts = artifact_rows(output_dir, include_zip: true)
 
@@ -182,6 +193,10 @@ module CorpusSearch
     end
 
     private
+
+    def elapsed_stage(started)
+      (Process.clock_gettime(Process::CLOCK_MONOTONIC) - started).round(4)
+    end
 
     class CancelledSearch < StandardError; end
 

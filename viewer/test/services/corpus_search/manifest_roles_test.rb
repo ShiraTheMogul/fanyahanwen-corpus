@@ -136,9 +136,8 @@ class CorpusSearchManifestRolesTest < ActiveSupport::TestCase
     end
 
     assert_equal 5, manifest.documents.length
-    assert_not @cache_store.absolute(
-      CorpusSearch::Manifest.scoped_cache_path_for(query.include_folders)
-    ).exist?
+    scoped_caches = @cache_root.glob("**/*scoped*")
+    assert_empty scoped_caches
   end
 
   test "unbounded user query reuses administrator-built full manifest" do
@@ -161,6 +160,26 @@ class CorpusSearchManifestRolesTest < ActiveSupport::TestCase
     end
 
     assert_equal 5, manifest.documents.length
+  end
+
+  test "invalid UTF-8 documents are excluded and reported without replacing the scan" do
+    bad = @corpus_root.join("中國漢文/clean/周朝/壞字節.txt")
+    FileUtils.mkdir_p(bad.dirname)
+    File.binwrite(bad, "正文\xFF".b)
+
+    manifest = quietly do
+      CorpusSearch::Manifest.load(
+        root: @corpus_root,
+        cache_store: @cache_store,
+        refresh: true,
+        force: true
+      )
+    end
+
+    assert_not manifest.documents.any? { |doc| doc["path"].end_with?("壞字節.txt") }
+    report = Rails.root.join("tmp/corpus_search_manifest_audit/manifest_scan_issues.csv")
+    assert_includes report.read, "invalid_utf8"
+    assert_includes report.read, "壞字節.txt"
   end
 
   private

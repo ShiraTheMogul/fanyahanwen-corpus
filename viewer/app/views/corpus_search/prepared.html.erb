@@ -17,6 +17,10 @@
       <p>Stage: <span data-prepared-stage><%= t("corpus_search.stages.#{progress["stage"]}", default: progress["stage"].to_s.humanize) %></span>. Files: <span data-prepared-files><%= progress["files_scanned"] || 0 %> / <%= progress["files_total"] || 0 %></span>. Hits found: <span data-prepared-hits><%= progress["hits_found"] || 0 %></span>.</p>
       <% if payload["duration_seconds"].present? %>
         <p>Completed in <strong><%= number_with_precision(payload["duration_seconds"], precision: 2, strip_insignificant_zeros: true) %> seconds</strong>.</p>
+        <% timings = outputs["stage_timings"] || {} %>
+        <% if timings.any? %>
+          <p class="corpus-search-hint">Dataset/search: <%= number_with_precision(timings["dataset_seconds"], precision: 2, strip_insignificant_zeros: true) %> s · Analysis: <%= number_with_precision(timings["analysis_seconds"], precision: 2, strip_insignificant_zeros: true) %> s · Packaging: <%= number_with_precision(timings["packaging_seconds"], precision: 2, strip_insignificant_zeros: true) %> s<% if outputs["documents_per_second"].present? %> · <%= number_with_delimiter(outputs["documents_per_second"]) %> documents/s<% end %></p>
+        <% end %>
       <% elsif payload["started_at"].present? %>
         <p>Started at <%= payload["started_at"] %>.</p>
       <% end %>

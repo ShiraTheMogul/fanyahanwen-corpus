@@ -16,7 +16,7 @@ module CorpusSearch
 
     ScanResult = Data.define(:hits, :searchable_characters, :body_fingerprint)
     DocumentStats = Data.define(:searchable_characters, :body_fingerprint)
-    AnalysisDocument = Data.define(:document, :hits, :searchable_characters, :body_fingerprint)
+    AnalysisDocument = Data.define(:document, :hits, :searchable_characters, :body_fingerprint, :duplicate_group_size, :representative_document_id, :duplicate_members)
 
     def initialize(query:, manifest: nil, cache_store: CacheStore.new)
       @query = query
@@ -154,12 +154,18 @@ module CorpusSearch
       candidate_ids = candidates.map { |doc| doc["id"] }.to_set unless all_documents_are_candidates
       cache = QueryCache.new(query: @query, cache_store: @cache_store)
       seen_body_fingerprints = Set.new
+      duplicate_groups = if @query.deduplicate_exact_bodies?
+        docs.group_by { |doc| doc["body_fingerprint"].to_s.presence || doc["id"].to_s }
+      else
+        {}
+      end
+      duplicate_representatives = duplicate_groups.transform_values { |members| members.first["id"].to_s }
 
       docs.each_with_index do |doc, index|
         cached_record = cache.current_record_for(doc)
         hits = cached_record&.hits
-        searchable_characters = cached_record&.searchable_characters
-        body_fingerprint = cached_record&.body_fingerprint
+        searchable_characters = cached_record&.searchable_characters || doc["searchable_characters"]
+        body_fingerprint = cached_record&.body_fingerprint.presence || doc["body_fingerprint"].presence
 
         if all_documents_are_candidates || candidate_ids.include?(doc["id"])
           if hits.nil?
@@ -202,11 +208,16 @@ module CorpusSearch
         end
 
         unless skip_duplicate_body?(body_fingerprint, seen_body_fingerprints)
+          group_key = body_fingerprint.to_s.presence || doc["id"].to_s
+          members = @query.deduplicate_exact_bodies? ? duplicate_groups.fetch(group_key, [doc]) : [doc]
           yield AnalysisDocument.new(
             document: doc,
             hits: sort_hits(hits),
             searchable_characters: searchable_characters.to_i,
-            body_fingerprint: body_fingerprint.to_s
+            body_fingerprint: body_fingerprint.to_s,
+            duplicate_group_size: members.length,
+            representative_document_id: duplicate_representatives.fetch(group_key, doc["id"].to_s),
+            duplicate_members: members.map { |member| { "document_id" => member["id"], "path" => member["path"] } }
           ) if block_given?
         end
 

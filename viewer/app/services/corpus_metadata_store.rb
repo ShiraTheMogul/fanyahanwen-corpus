@@ -181,9 +181,9 @@ class CorpusMetadataStore
       "nation" => first_present(metadata["corpus_root"], path_metadata["nation"]),
       "corpus_root" => first_present(metadata["corpus_root"], path_metadata["nation"]),
       "macro_region" => metadata["macro_region"].to_s,
-      "period" => first_present(metadata["period"], path_metadata["period"]),
+      "period" => metadata["period"].to_s,
       "polity" => metadata["polity"].to_s,
-      "region" => first_present(metadata["region"], path_metadata["region"]),
+      "region" => metadata["region"].to_s,
       "category" => Array(metadata["categories"]).join("; "),
       "year_start" => integer_or_nil(metadata["year_start"] || metadata["year"]),
       "year_end" => integer_or_nil(metadata["year_end"] || metadata["year"])
@@ -290,13 +290,8 @@ class CorpusMetadataStore
 
   def metadata_from_path(relative_path)
     parts = relative_path.to_s.split("/")
-    layer_index = parts.index("clean") || parts.index("raw")
-    after_clean = layer_index ? parts[(layer_index + 1)..] : parts
-
     {
-      "nation" => parts.first.to_s,
-      "period" => after_clean && after_clean.length > 1 ? after_clean.first.to_s : "",
-      "region" => after_clean && after_clean.length > 2 ? after_clean[1].to_s : ""
+      "nation" => parts.first.to_s
     }
   end
 

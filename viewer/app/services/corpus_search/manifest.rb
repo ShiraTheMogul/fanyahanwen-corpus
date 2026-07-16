@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
+require "csv"
 require "digest"
+require "fileutils"
 require "pathname"
 require "time"
 
@@ -12,11 +14,13 @@ module CorpusSearch
   # files safely, filter them, and notice changes.
   class Manifest
     DEFAULT_SKIP_DIRS = %w[.git .svn node_modules tmp log storage bak vendor].freeze
-    VERSION = 6
+    VERSION = 8
     CACHE_PATH = "manifest.json.gz"
     FRONT_MATTER_READ_BYTES = 65_536
 
     class CacheMissing < StandardError; end
+    class IncompleteScan < StandardError; end
+    class InvalidUtf8Document < StandardError; end
 
     attr_reader :documents, :generated_at
 
@@ -57,6 +61,8 @@ module CorpusSearch
       @max_files = integer_env("CORPUS_SEARCH_MAX_FILES", 0)
       @debug_dirs = ENV["CORPUS_SEARCH_DEBUG_DIRS"].to_s == "1"
       @silent = ENV["CORPUS_SEARCH_SILENT"].to_s == "1"
+      @read_retries = [integer_env("CORPUS_SEARCH_READ_RETRIES", 3), 1].max
+      @scan_issues = []
       @metadata_store = CorpusMetadataStore.new(root: @root)
     end
 
@@ -88,7 +94,14 @@ module CorpusSearch
       progress("manifest scan starting at #{@root}")
       cached = force ? nil : @cache_store.read_json(CACHE_PATH, freeze: true)
       cached_documents = cache_current?(cached) ? cached["documents"] : nil
+      @scan_issues = []
       scanned = scan_documents(cached_documents: cached_documents)
+      issue_report = write_scan_issue_report
+      incomplete = @scan_issues.any? { |issue| %w[unreadable_directory unreadable_entry unreadable_file].include?(issue.fetch("kind")) }
+      if incomplete && ENV["ALLOW_INCOMPLETE_MANIFEST"].to_s != "1"
+        raise IncompleteScan,
+          "Manifest scan was incomplete and the existing cache was preserved. "           "Review #{issue_report}. Re-run after filesystem access stabilises."
+      end
 
       payload = {
         "version" => VERSION,
@@ -166,11 +179,11 @@ module CorpusSearch
           build_document(relative_path, absolute_path, stat, fingerprint)
         end
 
-        if document["searchable_body"]
+        if document && document["searchable_body"]
           documents << document
         else
           skipped_files += 1
-          progress("manifest excluded empty body: #{relative_path}") if @debug_dirs
+          progress("manifest excluded non-searchable body: #{relative_path}") if @debug_dirs
         end
 
         seen_files += 1
@@ -179,8 +192,14 @@ module CorpusSearch
         end
 
         break if @max_files.positive? && seen_files >= @max_files
+      rescue InvalidUtf8Document => e
+        skipped_files += 1
+        record_scan_issue("invalid_utf8", absolute_path, e)
+        progress("manifest excluded invalid UTF-8 file #{relative_display(absolute_path)}")
+        next
       rescue Errno::ENOENT, Errno::EACCES, Errno::EIO, Encoding::CompatibilityError => e
         skipped_files += 1
+        record_scan_issue("unreadable_file", absolute_path, e)
         progress("manifest skipped file #{absolute_path}: #{e.class}: #{e.message}")
         next
       end
@@ -226,6 +245,7 @@ module CorpusSearch
             yield absolute_path
           end
         rescue Errno::ENOENT, Errno::EACCES, Errno::EIO, Encoding::CompatibilityError => e
+          record_scan_issue("unreadable_entry", absolute_path, e)
           progress("manifest skipped entry #{absolute_path}: #{e.class}: #{e.message}")
           next
         end
@@ -233,10 +253,20 @@ module CorpusSearch
     end
 
     def safe_children(directory)
-      Dir.children(directory).sort
-    rescue Errno::ENOENT, Errno::EACCES, Errno::EIO, Encoding::CompatibilityError => e
-      progress("manifest skipped unreadable directory #{directory}: #{e.class}: #{e.message}")
-      []
+      attempts = 0
+      begin
+        attempts += 1
+        Dir.children(directory).sort
+      rescue Errno::ENOENT, Errno::EACCES, Errno::EIO, Encoding::CompatibilityError => e
+        if attempts < @read_retries
+          progress("manifest retrying directory #{relative_display(directory)} after #{e.class} (attempt #{attempts}/#{@read_retries})")
+          sleep(0.25 * attempts)
+          retry
+        end
+        record_scan_issue("unreadable_directory", directory, e)
+        progress("manifest skipped unreadable directory #{directory}: #{e.class}: #{e.message}")
+        []
+      end
     end
 
     def build_document(relative_path, absolute_path, stat, fingerprint)
@@ -245,6 +275,7 @@ module CorpusSearch
       merged = path_metadata.merge(metadata) { |_key, path_value, json_value| json_value.presence || path_value }
 
       role = DocumentRole.classify(relative_path)
+      body_stats = searchable_body_stats(absolute_path)
 
       {
         "id" => merged["document_id"].presence&.to_s || stable_id(relative_path),
@@ -268,22 +299,51 @@ module CorpusSearch
         "year_end" => integer_or_nil(merged["year_end"]),
         "size" => stat.size,
         "mtime" => stat.mtime.to_f,
-        "searchable_body" => body_has_content?(absolute_path),
+        "searchable_body" => body_stats.fetch("searchable_body"),
+        "searchable_characters" => body_stats.fetch("searchable_characters"),
+        "body_fingerprint" => body_stats.fetch("body_fingerprint"),
         "fingerprint" => fingerprint
       }
     end
 
 
-    # Empty files are not corpus documents. They must not enter search results,
-    # denominators, term indexes, or analysis exports. The maintenance purge task
-    # can remove them physically after a dry run.
-    def body_has_content?(absolute_path)
-      File.foreach(absolute_path, encoding: "UTF-8") do |line|
-        return true if line.delete("\uFEFF").match?(/\S/)
+    # A corpus document must contain at least one searchable character after
+    # punctuation/whitespace normalisation. Physically non-empty punctuation-only
+    # placeholders are excluded from search and reported separately by maintenance.
+    def searchable_body_stats(absolute_path)
+      raw = File.binread(absolute_path).force_encoding(Encoding::UTF_8)
+      unless raw.valid_encoding?
+        raise InvalidUtf8Document, "invalid UTF-8 byte sequence"
       end
-      false
-    rescue Encoding::InvalidByteSequenceError, Encoding::UndefinedConversionError
-      File.binread(absolute_path).match?(/\S/)
+
+      body = DocumentReader.parse(raw).body.to_s.delete("\uFEFF")
+      normalized = NormalizedText.build(body, punctuation: "ignore")
+      {
+        "searchable_body" => normalized.units.any?,
+        "searchable_characters" => normalized.units.length,
+        "body_fingerprint" => Digest::SHA256.hexdigest(body)
+      }
+    end
+
+    def record_scan_issue(kind, path, error = nil)
+      @scan_issues << {
+        "kind" => kind,
+        "path" => relative_display(path),
+        "error_class" => error&.class&.name.to_s,
+        "message" => error&.message.to_s
+      }
+    end
+
+    def write_scan_issue_report
+      directory = Rails.root.join("tmp", "corpus_search_manifest_audit")
+      FileUtils.mkdir_p(directory)
+      path = directory.join("manifest_scan_issues.csv")
+      CSV.open(path, "w", encoding: "UTF-8", write_headers: true,
+        headers: %w[kind path error_class message]) do |csv|
+        @scan_issues.each { |issue| csv << issue }
+      end
+      progress("manifest audit report: #{path} (#{@scan_issues.length} issues)")
+      path
     end
 
     def metadata_from_path(relative_path)

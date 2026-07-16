@@ -16,7 +16,7 @@ module CorpusSearch
       occurrences_per_million
     ].freeze
 
-    DIMENSIONS = %w[period nation region author folder document_role].freeze
+    DIMENSIONS = %w[period corpus_root macro_region polity nation region author folder document_role].freeze
 
     attr_reader :directory, :payload
 

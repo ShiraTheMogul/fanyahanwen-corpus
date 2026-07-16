@@ -105,9 +105,11 @@ namespace :corpus_search do
     retry_limit = [ENV.fetch("READ_RETRIES", "3").to_i, 1].max
     progress_every = [ENV.fetch("PROGRESS_EVERY", "10000").to_i, 1].max
 
-    empty = []
+    physically_empty = []
+    zero_searchable = []
     skipped_directories = []
     skipped_files = []
+    invalid_utf8_files = []
     directories = [root]
     txt_seen = 0
 
@@ -150,18 +152,22 @@ namespace :corpus_search do
 
           txt_seen += 1
           if (txt_seen % progress_every).zero?
-            puts "[corpus_search] empty-file audit: #{txt_seen} TXT files checked; "                  "#{empty.length} empty; #{skipped_directories.length} directories skipped"
+            puts "[corpus_search] empty-file audit: #{txt_seen} TXT files checked; "                  "#{physically_empty.length} empty; #{zero_searchable.length} zero-searchable; #{skipped_directories.length} directories skipped"
           end
 
-          begin
-            has_content = File.foreach(path, encoding: "UTF-8").any? do |line|
-              line.delete("\uFEFF").match?(/\S/)
-            end
-          rescue Encoding::InvalidByteSequenceError, Encoding::UndefinedConversionError
-            has_content = File.binread(path).match?(/\S/)
+          raw = File.binread(path).force_encoding(Encoding::UTF_8)
+          unless raw.valid_encoding?
+            invalid_utf8_files << path
+            raw = raw.scrub
           end
 
-          empty << path unless has_content
+          body = CorpusSearch::DocumentReader.parse(raw).body.to_s
+          body = body.encode(Encoding::UTF_8, invalid: :replace, undef: :replace, replace: "").delete("\uFEFF")
+          if !body.match?(/\S/)
+            physically_empty << path
+          elsif CorpusSearch::NormalizedText.build(body, punctuation: "ignore").units.empty?
+            zero_searchable << path
+          end
         rescue Errno::ENOENT, Errno::EACCES, Errno::EIO => e
           skipped_files << [path, e]
           warn "[corpus_search] skipped file #{path}: #{e.class}: #{e.message}"
@@ -170,8 +176,12 @@ namespace :corpus_search do
     end
 
     puts "Checked #{txt_seen} TXT files."
-    puts "Found #{empty.length} empty TXT files."
-    empty.each { |path| puts path.relative_path_from(root) }
+    puts "Found #{physically_empty.length} physically empty/header-only TXT files."
+    physically_empty.each { |path| puts "EMPTY\t#{path.relative_path_from(root)}" }
+    puts "Found #{zero_searchable.length} non-empty files with zero searchable characters."
+    zero_searchable.each { |path| puts "REVIEW\t#{path.relative_path_from(root)}" }
+    puts "Found #{invalid_utf8_files.length} TXT files with invalid UTF-8 bytes; they were scrubbed in memory for this audit."
+    invalid_utf8_files.each { |path| puts "INVALID_UTF8\t#{path.relative_path_from(root)}" }
 
     if skipped_directories.any? || skipped_files.any?
       warn "[corpus_search] WARNING: audit was incomplete: "            "#{skipped_directories.length} directories and #{skipped_files.length} files were unreadable."
@@ -180,7 +190,12 @@ namespace :corpus_search do
 
     if apply
       removed = 0
-      empty.each do |path|
+      deletion_targets = physically_empty.dup
+      if ENV["APPLY_ZERO_SEARCHABLE"].to_s == "1"
+        deletion_targets.concat(zero_searchable)
+        warn "[corpus_search] APPLY_ZERO_SEARCHABLE=1: deleting punctuation/markup-only review records too."
+      end
+      deletion_targets.each do |path|
         begin
           File.delete(path)
           removed += 1
@@ -190,10 +205,102 @@ namespace :corpus_search do
           warn "[corpus_search] could not remove #{path}: #{e.class}: #{e.message}"
         end
       end
-      puts "Removed #{removed} empty TXT files. Rebuild the manifest next."
+      puts "Removed #{removed} TXT files. Rebuild the manifest next."
     else
-      puts "Dry run only. Re-run with APPLY=1 to remove the files listed above."
+      puts "Dry run only. APPLY=1 removes only EMPTY rows; REVIEW rows require APPLY=1 APPLY_ZERO_SEARCHABLE=1 after inspection."
     end
   end
 
+  desc "Audit unambiguous JSON geography repairs (APPLY=1 writes changes; BACKUP=1 keeps .bak copies)"
+  task repair_metadata_geography: :environment do
+    root = Rails.configuration.x.corpus_root.to_s
+    script = Rails.root.join("script/corpus_metadata_repair_geography.rb")
+    args = [RbConfig.ruby, script.to_s, "--root", root, "--output", Rails.root.join("tmp/corpus_metadata_geography_repair").to_s]
+    args << "--apply" if ENV["APPLY"].to_s == "1"
+    args << "--backup" if ENV["BACKUP"].to_s == "1"
+    abort "Metadata geography repair failed" unless system(*args)
+    puts "Review tmp/corpus_metadata_geography_repair/geography_repairs.csv before rebuilding the manifest."
+  end
+
+end
+
+namespace :corpus_search do
+  desc "Audit invalid UTF-8 corpus TXT files (APPLY=1 BACKUP=1 scrubs invalid bytes in place)"
+  task audit_text_encoding: :environment do
+    require "csv"
+    require "fileutils"
+
+    root = Pathname(Rails.configuration.x.corpus_root).realpath
+    apply = ENV["APPLY"].to_s == "1"
+    backup = ENV["BACKUP"].to_s == "1"
+    abort "APPLY=1 requires BACKUP=1 because scrubbing malformed bytes is destructive." if apply && !backup
+
+    output = Rails.root.join("tmp", "corpus_search_encoding_audit")
+    FileUtils.mkdir_p(output)
+    rows = []
+    checked = 0
+    stack = [root]
+    retries = [ENV.fetch("READ_RETRIES", "3").to_i, 1].max
+
+    read_children = lambda do |directory|
+      attempts = 0
+      begin
+        attempts += 1
+        Dir.children(directory)
+      rescue Errno::ENOENT, Errno::EACCES, Errno::EIO => e
+        if attempts < retries
+          warn "[corpus_search] encoding audit retrying #{directory} after #{e.class} (#{attempts}/#{retries})"
+          sleep(0.25 * attempts)
+          retry
+        end
+        rows << ["skipped_directory", directory.relative_path_from(root).to_s, e.class.name, e.message, ""]
+        []
+      end
+    end
+
+    until stack.empty?
+      directory = stack.pop
+      read_children.call(directory).each do |name|
+        path = directory.join(name)
+        begin
+          stat = File.lstat(path)
+          next if stat.symlink?
+          if stat.directory?
+            stack << path
+          elsif stat.file? && path.extname.downcase == ".txt"
+            checked += 1
+            raw = File.binread(path).force_encoding(Encoding::UTF_8)
+            next if raw.valid_encoding?
+
+            relative = path.relative_path_from(root).to_s.tr("\\", "/")
+            invalid_count = raw.scrub("�").count("�")
+            action = apply ? "repaired" : "invalid_utf8"
+            rows << [action, relative, "Encoding::InvalidByteSequenceError", "invalid UTF-8 bytes", invalid_count]
+
+            if apply
+              FileUtils.cp(path, "#{path}.invalid-utf8.bak")
+              temp = Pathname("#{path}.utf8-tmp-#{Process.pid}-#{SecureRandom.hex(4)}")
+              temp.binwrite(raw.scrub.encode(Encoding::UTF_8))
+              File.rename(temp, path)
+            end
+          end
+        rescue Errno::ENOENT, Errno::EACCES, Errno::EIO => e
+          rows << ["skipped_file", path.relative_path_from(root).to_s, e.class.name, e.message, ""]
+        ensure
+          FileUtils.rm_f(temp) if defined?(temp) && temp
+        end
+      end
+      puts "[corpus_search] encoding audit: #{checked} TXT files checked" if checked.positive? && (checked % 10_000).zero?
+    end
+
+    report = output.join("text_encoding_issues.csv")
+    CSV.open(report, "w", write_headers: true, headers: %w[action path error_class message replacement_characters], encoding: "UTF-8") do |csv|
+      rows.each { |row| csv << row }
+    end
+    invalid = rows.count { |row| %w[invalid_utf8 repaired].include?(row[0]) }
+    skipped = rows.count { |row| row[0].start_with?("skipped_") }
+    puts "Checked #{checked} TXT files; found #{invalid} invalid UTF-8 files; #{skipped} paths skipped."
+    puts "Report: #{report}"
+    puts(apply ? "Malformed files were scrubbed with .invalid-utf8.bak backups." : "Dry run only. APPLY=1 BACKUP=1 performs a lossy scrub with backups.")
+  end
 end
