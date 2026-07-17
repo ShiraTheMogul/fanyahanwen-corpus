@@ -22,7 +22,7 @@ module CorpusSearch
     class IncompleteScan < StandardError; end
     class InvalidUtf8Document < StandardError; end
 
-    attr_reader :documents, :generated_at
+    attr_reader :documents, :generated_at, :scan_issues
 
     def self.load(root: Rails.configuration.x.corpus_root, cache_store: CacheStore.new, refresh: false, force: false)
       manifest = new(root: root, cache_store: cache_store)

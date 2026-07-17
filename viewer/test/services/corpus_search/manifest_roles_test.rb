@@ -177,9 +177,11 @@ class CorpusSearchManifestRolesTest < ActiveSupport::TestCase
     end
 
     assert_not manifest.documents.any? { |doc| doc["path"].end_with?("壞字節.txt") }
-    report = Rails.root.join("tmp/corpus_search_manifest_audit/manifest_scan_issues.csv")
-    assert_includes report.read, "invalid_utf8"
-    assert_includes report.read, "壞字節.txt"
+
+    issue = manifest.scan_issues.find { |row| row["kind"] == "invalid_utf8" }
+    assert issue, "expected an invalid_utf8 scan issue"
+    assert_includes issue["path"], "壞字節.txt"
+    assert_equal "CorpusSearch::Manifest::InvalidUtf8Document", issue["error_class"]
   end
 
   private

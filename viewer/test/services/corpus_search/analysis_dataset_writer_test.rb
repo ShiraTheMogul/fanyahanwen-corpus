@@ -79,7 +79,7 @@ class CorpusSearchAnalysisDatasetWriterTest < ActiveSupport::TestCase
     assert_not_equal matching["body_fingerprint"], unmatched["body_fingerprint"]
 
     metadata = JSON.parse(metadata_path.read)
-    assert_equal 5, metadata["version"]
+    assert_equal 7, metadata["version"]
     assert_equal true, metadata["body_only"]
     assert_equal 2, metadata["document_count"]
     assert_equal 4, metadata["searchable_character_count"]
