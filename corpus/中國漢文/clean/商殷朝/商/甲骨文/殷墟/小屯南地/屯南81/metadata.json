@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "work_id": 129138,
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "period": "商朝",
+  "polity": "商",
+  "local_polity": "商",
+  "region": "小屯南地",
+  "title": "屯南81",
+  "object_type": "甲骨",
+  "medium": "甲骨文",
+  "findspot": {
+    "site": "殷墟",
+    "area": "小屯南地"
+  },
+  "canonical_identifier": {
+    "scheme": "小屯南地甲骨",
+    "value": "81"
+  },
+  "identifiers": [
+    {
+      "scheme": "小屯南地甲骨",
+      "value": "81"
+    },
+    {
+      "scheme": "catalog",
+      "value": "TN 81"
+    }
+  ],
+  "categories": [
+    "商殷朝",
+    "甲骨文",
+    "出土文獻"
+  ],
+  "sources": [
+    "A. C. (2020). The Oracle Bone Inscriptions from Huayuanzhuang East. Translated with an Introduction and Commentary. De Gruyter. ISBN: 978-1-5015-1448-7. https://doi.org/10.1515/9781501505294-001",
+    "Schwartz"
+  ],
+  "is_compilation": false,
+  "documents": [
+    {
+      "document_id": 86924,
+      "file": "屯南81_Schwartz.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/小屯南地/屯南81/屯南81_Schwartz.txt",
+      "title": "屯南81",
+      "source_locator": "81",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "Adam C. Schwartz",
+      "source_label": "Schwartz",
+      "catalogue": "小屯南地甲骨",
+      "identifiers": [
+        {
+          "scheme": "catalog",
+          "value": "TN 81"
+        }
+      ],
+      "body_start_line": 6
+    }
+  ],
+  "transcriptions": [
+    {
+      "source": "Adam C. Schwartz",
+      "source_label": "Schwartz",
+      "catalogue": "小屯南地甲骨",
+      "documents": [
+        86924
+      ]
+    }
+  ]
+}

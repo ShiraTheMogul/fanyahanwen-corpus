@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "work_id": 100700,
+  "legacy_work_ids": [
+    100701
+  ],
+  "corpus_root": "中國漢文",
+  "macro_region": "中國",
+  "period": "商朝",
+  "polity": "商",
+  "local_polity": "商",
+  "region": "小屯南地",
+  "title": "屯南4399",
+  "object_type": "甲骨",
+  "medium": "甲骨文",
+  "findspot": {
+    "site": "殷墟",
+    "area": "小屯南地"
+  },
+  "canonical_identifier": {
+    "scheme": "小屯南地甲骨",
+    "value": "4399"
+  },
+  "identifiers": [
+    {
+      "scheme": "小屯南地甲骨",
+      "value": "4399"
+    },
+    {
+      "scheme": "source_db",
+      "value": "先秦甲骨金文簡牘詞彙資料庫"
+    },
+    {
+      "scheme": "entry_number",
+      "value": "91295"
+    },
+    {
+      "scheme": "legacy_id",
+      "value": "4399.3"
+    },
+    {
+      "scheme": "no_bronze_components",
+      "value": "0"
+    },
+    {
+      "scheme": "legacy_unique_id",
+      "value": "5637de94d8ff"
+    },
+    {
+      "scheme": "entry_number",
+      "value": "91296"
+    },
+    {
+      "scheme": "legacy_id",
+      "value": "4399.4"
+    },
+    {
+      "scheme": "legacy_unique_id",
+      "value": "a3865bf99d0b"
+    },
+    {
+      "scheme": "legacy_work_id",
+      "value": "100701"
+    }
+  ],
+  "categories": [
+    "不詳",
+    "雨",
+    "甲骨文",
+    "出土文獻"
+  ],
+  "sources": [
+    "https://inscription.asdc.sinica.edu.tw",
+    "小屯南地甲骨"
+  ],
+  "is_compilation": false,
+  "documents": [
+    {
+      "document_id": 84552,
+      "file": "屯南4399.3_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/小屯南地/屯南4399/屯南4399.3_ASDC.txt",
+      "title": "屯南4399.3",
+      "segment": 3,
+      "source_locator": "4399.3",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "source_label": "ASDC",
+      "catalogue": "小屯南地甲骨",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "91295"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "4399.3"
+        },
+        {
+          "scheme": "no_bronze_components",
+          "value": "0"
+        },
+        {
+          "scheme": "legacy_unique_id",
+          "value": "5637de94d8ff"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "document_id": 84553,
+      "file": "屯南4399.4_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/小屯南地/屯南4399/屯南4399.4_ASDC.txt",
+      "title": "屯南4399.4",
+      "segment": 4,
+      "source_locator": "4399.4",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "source_label": "ASDC",
+      "catalogue": "小屯南地甲骨",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "91296"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "4399.4"
+        },
+        {
+          "scheme": "no_bronze_components",
+          "value": "0"
+        },
+        {
+          "scheme": "legacy_unique_id",
+          "value": "a3865bf99d0b"
+        }
+      ],
+      "body_start_line": 1
+    }
+  ],
+  "transcriptions": [
+    {
+      "source": "先秦甲骨金文簡牘詞彙資料庫",
+      "source_label": "ASDC",
+      "catalogue": "小屯南地甲骨",
+      "documents": [
+        84552,
+        84553
+      ]
+    }
+  ]
+}

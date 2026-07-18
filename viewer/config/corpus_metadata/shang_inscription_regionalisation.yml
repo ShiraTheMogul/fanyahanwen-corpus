@@ -88,6 +88,20 @@ oracle_series:
       locus: H3
     region: 花園莊東地
 
+  # Three Schwartz records use HYZ 0.x as publication locators but explicitly
+  # identify different H3 excavation objects in their text. They must not be
+  # collapsed into a fictional object called 花東0.
+  花園莊東地H3發掘號:
+    canonical_scheme: 花園莊東地H3發掘號
+    display_prefix: ""
+    parser: generic_segment
+    target_path: [商, 甲骨文, 殷墟, 花園莊東地, H3]
+    findspot:
+      site: 殷墟
+      area: 花園莊東地
+      locus: H3
+    region: 花園莊東地
+
 legacy_flat_sources:
   # These filename prefixes occur in the old 花園庄（洹北） source folder.
   # They are mapped back onto the same physical-object catalogue rules used

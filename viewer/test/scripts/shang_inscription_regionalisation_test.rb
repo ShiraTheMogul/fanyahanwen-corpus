@@ -4,25 +4,20 @@ require "csv"
 require "fileutils"
 require "json"
 require "minitest/autorun"
-require "open3"
 require "pathname"
-require "rbconfig"
 require "tmpdir"
 
-class ShangInscriptionRegionalisationTest < Minitest::Test
-  ROOT = Pathname(__dir__).join("../..").expand_path
-  SCRIPT = ROOT.join("script/shang_inscription_regionalisation.rb")
-  CONFIG = ROOT.join("config/corpus_metadata/shang_inscription_regionalisation.yml")
+require_relative "../../script/shang_inscription_regionalisation"
 
+class ShangInscriptionRegionalisationTest < Minitest::Test
   def setup
     @tmp = Pathname(Dir.mktmpdir("shang-regionalisation-test"))
-    @shang = @tmp.join("商殷朝")
+    @root = @tmp.join("商殷朝")
     @plan = @tmp.join("plan")
-    @concordances = @tmp.join("concordances.csv")
-    @overrides = @tmp.join("overrides.csv")
-    FileUtils.mkdir_p(@shang)
-    write_csv(@concordances, %w[series object_value canonical_series canonical_object_value source note], [])
-    write_csv(@overrides, %w[series object_value target_path period polity local_polity region site area locus source note], [])
+    @registry = @tmp.join("metadata_id_registry.csv")
+    @config = Pathname(__dir__).join("../../config/corpus_metadata/shang_inscription_regionalisation.yml").expand_path
+    @concordances = Pathname(__dir__).join("../../config/corpus_metadata/shang_oracle_concordances.csv").expand_path
+    @overrides = Pathname(__dir__).join("../../config/corpus_metadata/shang_oracle_overrides.csv").expand_path
     build_fixture
   end
 
@@ -30,171 +25,124 @@ class ShangInscriptionRegionalisationTest < Minitest::Test
     FileUtils.rm_rf(@tmp)
   end
 
-  def test_dry_run_collapses_segments_and_preserves_translation_support_and_bronze_ids
-    write_csv(
-      @concordances,
-      %w[series object_value canonical_series canonical_object_value source note],
-      [["英國所藏甲骨", "23", "甲骨文合集", "00014", "test", "same physical object"]]
-    )
+  def test_global_registry_allocation_h3_split_and_registry_rewrite
+    run_migration
 
-    run_script
-    summary = read_json(@plan.join("summary.json"))
-    assert_equal 2, summary.fetch("oracle_objects")
-    assert_equal 1, summary.fetch("bronze_objects")
-    assert_equal 9, summary.fetch("document_moves")
+    summary = JSON.parse(@plan.join("summary.json").read)
+    assert_equal 4, summary.fetch("oracle_objects")
     assert_equal 0, summary.fetch("unparsed")
+    assert_equal 1003, summary.fetch("next_allocated_work_id")
+    assert_equal 2003, summary.fetch("next_allocated_document_id")
 
-    plan = read_json(@plan.join("migration_plan.json"))
-    heji = plan.fetch("entries").find { |entry| entry["title"] == "合集00014" }
-    refute_nil heji
-    assert_equal 10, heji.fetch("work_id")
-    assert_equal [11, 12], heji.fetch("metadata").fetch("legacy_work_ids")
-    assert_equal 4, heji.fetch("metadata").fetch("documents").length
-    assert_equal "商/甲骨文/殷墟/出土位置不詳/合集00014", heji.fetch("target_folder")
-    assert heji.fetch("metadata").fetch("identifiers").any? { |row| row["scheme"] == "英國所藏甲骨集" && row["value"] == "23" }
+    objects = CSV.read(@plan.join("object_plan.csv"), headers: true, encoding: "UTF-8").map { |row| row["title"] }
+    refute_includes objects, "花東0"
+    assert_includes objects, "H3：1573"
+    assert_includes objects, "H3：1616"
+    assert_includes objects, "H3：1630"
 
-    huadong = plan.fetch("entries").find { |entry| entry["title"] == "花東1" }
-    refute_nil huadong
-    assert_equal 1, huadong.fetch("metadata").fetch("documents").length
-    translation = huadong.fetch("metadata").fetch("translations").first.fetch("documents").first
-    assert_equal "eng", translation.fetch("language_code")
-    assert_match %r{/translation/eng/Schwartz/花東1\.1_Schwartz\.txt\z}, translation.fetch("path")
-    assert_equal 7, translation.fetch("body_start_line")
-    support = huadong.fetch("metadata").fetch("support_files").first
-    assert_equal "transcription_review_evidence", support.fetch("kind")
-
-    bronze = plan.fetch("entries").find { |entry| entry["kind"] == "bronze_object" }
-    assert_equal "集成00793", bronze.fetch("title")
-    assert_equal "商/金文/商代中期/集成00793", bronze.fetch("target_folder")
-    assert_equal "集成00793_ASDC.txt", bronze.fetch("metadata").fetch("documents").first.fetch("file")
-
-    all_sources = plan.fetch("entries").flat_map { |entry| entry.fetch("moves", []) }.map { |move| move.fetch("source") }
-    all_sources.concat(plan.fetch("extra_moves", []).map { |move| move.fetch("source") })
-    fixture_sources = @shang.glob("**/*").select(&:file?).reject { |path| path.basename.to_s == "metadata.json" }
-      .map { |path| path.relative_path_from(@shang).to_s }
-    assert_equal fixture_sources.sort, all_sources.sort
+    registry = registry_by_kind_id(@plan.join("metadata_id_registry.updated.csv"))
+    assert_equal "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集00014", registry.fetch(["work", 11]).fetch("path")
+    assert_equal "merged_into_work:11", registry.fetch(["work", 13]).fetch("status")
+    assert_equal "work_alias:13", registry.fetch(["work", 13]).fetch("identity_key")
+    assert_equal "merged_into_work:10", registry.fetch(["work", 12]).fetch("status")
+    assert_equal "中國漢文/clean/商殷朝/商/甲骨文/殷墟/花園莊東地/H3/H3：1573", registry.fetch(["work", 1001]).fetch("path")
+    assert_equal "中國漢文/clean/商殷朝/商/甲骨文/殷墟/花園莊東地/H3/H3：1573/translation/eng/Schwartz/花東0.6_Schwartz.txt", registry.fetch(["document", 2001]).fetch("path")
+    assert_equal "1001", registry.fetch(["document", 2001]).fetch("parent_work_id")
   end
 
-  def test_reviewed_override_changes_path_and_geography_without_changing_object_identity
-    write_csv(
-      @overrides,
-      %w[series object_value target_path period polity local_polity region site area locus source note],
-      [["甲骨文合集", "00014", "周方/甲骨文/周原/鳳雛", "商朝", "商", "周方", "周原", "周原", "鳳雛", "", "test source", "reviewed test override"]]
-    )
+  def test_apply_installs_reviewed_registry_and_is_second_apply_safe
+    run_migration
+    original_registry = Digest::SHA256.file(@registry).hexdigest
 
-    run_script
-    plan = read_json(@plan.join("migration_plan.json"))
-    heji = plan.fetch("entries").find { |entry| entry["title"] == "合集00014" }
-    assert_equal "周方/甲骨文/周原/鳳雛/合集00014", heji.fetch("target_folder")
-    metadata = heji.fetch("metadata")
-    assert_equal "周方", metadata.fetch("local_polity")
-    assert_equal({ "site" => "周原", "area" => "鳳雛" }, metadata.fetch("findspot"))
-    assert_includes metadata.fetch("sources"), "test source"
-    assert_includes metadata.fetch("notes"), "reviewed test override"
-  end
+    run_migration(apply: true)
 
-  def test_apply_is_hash_checked_resume_safe_and_removes_the_old_tree
-    run_script
-    run_script("--reviewed-plan", @plan.to_s, "--apply")
-
+    plan = JSON.parse(@plan.join("migration_plan.json").read)
+    assert_equal plan.fetch("updated_id_registry_sha256"), Digest::SHA256.file(@registry).hexdigest
+    refute_equal original_registry, Digest::SHA256.file(@registry).hexdigest
+    assert @plan.join("metadata_id_registry.before_shang_regionalisation.csv").file?
     assert @plan.join("APPLIED.json").file?
-    refute @shang.join("甲骨").exist?
-    refute @shang.join("金文").exist?
-    refute @shang.join("花園庄（洹北）").exist?
-    assert @shang.join("商/甲骨文/殷墟/出土位置不詳/合集00014/合集00014正.1_ASDC.txt").file?
-    assert @shang.join("商/甲骨文/殷墟/花園莊東地/H3/花東1/translation/eng/Schwartz/花東1.1_Schwartz.txt").file?
-    assert @shang.join("商/金文/商代中期/集成00793/集成00793_ASDC.txt").file?
+    assert @root.join("商/甲骨文/殷墟/花園莊東地/H3/H3：1573/metadata.json").file?
 
-    metadata = read_json(@shang.join("商/甲骨文/殷墟/出土位置不詳/合集00014/metadata.json"))
-    assert_equal 10, metadata.fetch("work_id")
-    assert_equal 3, metadata.fetch("documents").length
+    error = assert_raises(ArgumentError) { run_migration(apply: true) }
+    assert_match(/already has APPLIED/, error.message)
+  end
 
-    _out, err, status = run_script("--reviewed-plan", @plan.to_s, "--apply", expect_success: false)
-    refute status.success?
-    assert_includes err, "APPLIED.json"
+  def test_hash_u_decoder_does_not_swallow_hexadecimal_identifier_digits
+    migration = ShangInscriptionRegionalisation.new(
+      shang_root: @root.to_s, output: @plan.to_s, config: @config.to_s,
+      concordances: @concordances.to_s, overrides: @overrides.to_s,
+      id_registry: @registry.to_s, apply: false, reviewed_plan: nil,
+      scope: "oracle_bones", progress_every: 0
+    )
+    assert_equal "補2", migration.send(:decode_hash_u, "#U88dc2")
+  end
+
+  def test_registry_collision_outside_shang_blocks_plan
+    rows = CSV.read(@registry, headers: true, encoding: "UTF-8").map(&:to_h)
+    row = rows.find { |item| item["kind"] == "work" && item["id"] == "11" }
+    row["path"] = "日本漢文/clean/平安時代/別作品"
+    row["identity_key"] = "work:日本漢文/clean/平安時代/別作品"
+    write_registry(rows)
+
+    error = assert_raises(ArgumentError) { run_migration }
+    assert_match(/belongs outside 商殷朝/, error.message)
   end
 
   private
 
-  def run_script(*extra, expect_success: true)
-    command = [
-      RbConfig.ruby,
-      SCRIPT.to_s,
-      "--shang-root", @shang.to_s,
-      "--config", CONFIG.to_s,
-      "--concordances", @concordances.to_s,
-      "--overrides", @overrides.to_s,
-      "--output", @plan.to_s,
-      "--progress-every", "0",
-      *extra
-    ]
-    out, err, status = Open3.capture3({ "LANG" => "C.UTF-8", "LC_ALL" => "C.UTF-8" }, *command)
-    out = out.dup.force_encoding(Encoding::UTF_8).scrub
-    err = err.dup.force_encoding(Encoding::UTF_8).scrub
-    assert status.success?, "command failed:\n#{command.join(' ')}\nSTDOUT:\n#{out}\nSTDERR:\n#{err}" if expect_success
-    [out, err, status]
+  def run_migration(apply: false)
+    options = {
+      shang_root: @root.to_s,
+      output: @plan.to_s,
+      config: @config.to_s,
+      concordances: @concordances.to_s,
+      overrides: @overrides.to_s,
+      id_registry: @registry.to_s,
+      apply: apply,
+      reviewed_plan: apply ? @plan.to_s : nil,
+      scope: "oracle_bones",
+      progress_every: 0
+    }
+    ShangInscriptionRegionalisation.new(options).run
   end
 
   def build_fixture
-    write_json(@shang.join("甲骨/metadata.json"), collection_metadata(1, "甲骨"))
-    write_oracle_segment("甲骨文合集", "00014正.1", 10, 100, "甲骨第一辭")
-    write_oracle_segment("甲骨文合集", "00014正.2", 11, 101, "甲骨第二辭")
-    write_oracle_segment("英國所藏甲骨", "23.1", 12, 102, "英藏同片辭")
+    write_json(@root.join("甲骨/metadata.json"), base_metadata(10, "甲骨"))
 
-    heji_root = @shang.join("花園庄（洹北）/甲骨文合集")
-    write_text(heji_root.join("Heji 00014正.3.txt"), legacy_text("Heji 00014正.3", "甲骨第三辭"))
-    write_json(heji_root.join("metadata.json"), compilation_metadata(2, "Heji 00014正.3.txt", 103))
-
-    huadong_root = @shang.join("花園庄（洹北）/花园庄东地甲骨")
-    write_text(huadong_root.join("HYZ 1.1.txt"), legacy_text("HYZ 1.1", "花東釋文"))
-    write_json(huadong_root.join("metadata.json"), compilation_metadata(3, "HYZ 1.1.txt", 104))
-    write_text(huadong_root.join("英譯文/HYZ 1.1.txt"), legacy_text("HYZ 1.1", "English translation."))
-    write_text(huadong_root.join("HYZ 1.1.evidence.tsv"), "char_index\treason\n1\ttest\n")
-    write_text(huadong_root.join("REVIEW_INDEX.tsv"), "file\tstatus\nHYZ 1.1\treview\n")
-
-    write_json(@shang.join("金文/metadata.json"), collection_metadata(4, "金文"))
-    bronze_folder = @shang.join("金文/中期/ASDC｜金文｜商代中期｜殷周金文集成｜00793")
-    write_text(bronze_folder.join("00793_old.txt"), "亞獏\n")
-    write_json(
-      bronze_folder.join("metadata.json"),
-      {
-        "schema_version" => 1,
-        "work_id" => 20,
-        "corpus_root" => "中國漢文",
-        "macro_region" => "中國",
-        "period" => "商朝",
-        "polity" => "商",
-        "title" => "ASDC｜金文｜商代中期｜殷周金文集成｜00793",
-        "identifiers" => [{ "scheme" => "legacy_id", "value" => "00793" }],
-        "editions" => [{ "documents" => [{ "document_id" => 105, "file" => "00793_old.txt", "path" => "中國漢文/clean/商殷朝/金文/中期/x/00793_old.txt", "body_start_line" => 10 }] }]
-      }
+    write_oracle_segment(
+      folder: "甲骨/segment_1", work_id: 11, document_id: 21,
+      title: "ASDC｜甲骨｜商｜甲骨文合集｜00014正.1", file: "00014正.1.txt", text: "甲"
     )
+    write_oracle_segment(
+      folder: "甲骨/segment_2", work_id: 13, document_id: 22,
+      title: "ASDC｜甲骨｜商｜甲骨文合集｜00014正.2", file: "00014正.2.txt", text: "乙"
+    )
+
+    legacy = @root.join("花園庄（洹北）/花园庄东地甲骨")
+    write_json(legacy.join("metadata.json"), base_metadata(12, "甲骨"))
+    translations = legacy.join("英譯文")
+    {
+      "HYZ 0.6.txt" => "H3:1573\n",
+      "HYZ 0.7.txt" => "H3:1616\n",
+      "HYZ 0.9.txt" => "H3:1630\n"
+    }.each do |name, text|
+      FileUtils.mkdir_p(translations)
+      translations.join(name).write(text, encoding: "UTF-8")
+    end
+
+    write_registry([
+      registry_row("work", 10, "中國漢文/clean/商殷朝/甲骨", "甲骨"),
+      registry_row("work", 11, "中國漢文/clean/商殷朝/甲骨/segment_1", "segment 1"),
+      registry_row("work", 12, "中國漢文/clean/商殷朝/花園庄（洹北）/花园庄东地甲骨", "甲骨"),
+      registry_row("work", 13, "中國漢文/clean/商殷朝/甲骨/segment_2", "segment 2"),
+      registry_row("document", 21, "中國漢文/clean/商殷朝/甲骨/segment_1/00014正.1.txt", "00014正.1", 11),
+      registry_row("document", 22, "中國漢文/clean/商殷朝/甲骨/segment_2/00014正.2.txt", "00014正.2", 13),
+      registry_row("work", 1000, "日本漢文/clean/平安時代/外部作品", "外部作品"),
+      registry_row("document", 2000, "日本漢文/clean/平安時代/外部作品/外部作品.txt", "外部作品", 1000)
+    ])
   end
 
-  def write_oracle_segment(series, locator, work_id, document_id, body)
-    title = "ASDC｜甲骨｜商｜#{series}｜#{locator}"
-    folder = @shang.join("甲骨/#{title}")
-    file = "#{locator}_source.txt"
-    write_text(folder.join(file), "#{body}\n")
-    write_json(
-      folder.join("metadata.json"),
-      {
-        "schema_version" => 1,
-        "work_id" => work_id,
-        "corpus_root" => "中國漢文",
-        "macro_region" => "中國",
-        "period" => "商朝",
-        "polity" => "商",
-        "title" => title,
-        "identifiers" => [{ "scheme" => "legacy_id", "value" => locator }],
-        "categories" => ["卜辭"],
-        "sources" => ["ASDC"],
-        "editions" => [{ "documents" => [{ "document_id" => document_id, "file" => file, "path" => "中國漢文/clean/商殷朝/甲骨/#{title}/#{file}", "body_start_line" => 12 }] }]
-      }
-    )
-  end
-
-  def collection_metadata(work_id, title)
+  def base_metadata(work_id, title)
     {
       "schema_version" => 1,
       "work_id" => work_id,
@@ -203,42 +151,25 @@ class ShangInscriptionRegionalisationTest < Minitest::Test
       "period" => "商朝",
       "polity" => "商",
       "title" => title,
-      "categories" => [title],
-      "is_compilation" => true
+      "is_compilation" => true,
+      "documents" => []
     }
   end
 
-  def compilation_metadata(work_id, file, document_id)
-    collection_metadata(work_id, "甲骨").merge(
-      "identifiers" => [{ "scheme" => "catalog", "value" => File.basename(file, ".txt") }],
-      "editions" => [{
-        "documents" => [{
-          "document_id" => document_id,
-          "file" => file,
-          "path" => "中國漢文/clean/商殷朝/花園庄（洹北）/#{file}",
-          "sources" => ["Schwartz"],
-          "identifiers" => [{ "scheme" => "catalog", "value" => File.basename(file, ".txt") }],
-          "body_start_line" => 7
-        }]
+  def write_oracle_segment(folder:, work_id:, document_id:, title:, file:, text:)
+    directory = @root.join(folder)
+    FileUtils.mkdir_p(directory)
+    directory.join(file).write(text, encoding: "UTF-8")
+    payload = base_metadata(work_id, title).merge(
+      "is_compilation" => false,
+      "documents" => [{
+        "document_id" => document_id,
+        "file" => file,
+        "path" => "中國漢文/clean/商殷朝/#{folder}/#{file}",
+        "body_start_line" => 1
       }]
     )
-  end
-
-  def legacy_text(catalogue, body)
-    <<~TEXT
-      # WORK_BASE_TITLE: test
-      # NATION: 商殷朝
-      # CATEGORIES: 甲骨文
-      # CATALOG: #{catalogue}
-      # SOURCE: test
-
-      #{body}
-    TEXT
-  end
-
-  def write_text(path, text)
-    FileUtils.mkdir_p(path.dirname)
-    path.write(text, encoding: "UTF-8")
+    write_json(directory.join("metadata.json"), payload)
   end
 
   def write_json(path, payload)
@@ -246,14 +177,29 @@ class ShangInscriptionRegionalisationTest < Minitest::Test
     path.write(JSON.pretty_generate(payload) + "\n", encoding: "UTF-8")
   end
 
-  def read_json(path)
-    JSON.parse(path.read(encoding: "UTF-8"))
+  def registry_row(kind, id, path, title, parent_work_id = nil)
+    {
+      "kind" => kind,
+      "id" => id.to_s,
+      "identity_key" => "#{kind}:#{path}",
+      "path" => path,
+      "title" => title,
+      "parent_work_id" => parent_work_id.to_s,
+      "source_document_id" => "",
+      "status" => "active"
+    }
   end
 
-  def write_csv(path, headers, rows)
-    FileUtils.mkdir_p(path.dirname)
-    CSV.open(path, "w", write_headers: true, headers: headers, encoding: "UTF-8") do |csv|
-      rows.each { |row| csv << row }
+  def write_registry(rows)
+    headers = ShangInscriptionRegionalisation::REGISTRY_HEADERS
+    CSV.open(@registry, "w", write_headers: true, headers: headers) do |csv|
+      rows.each { |row| csv << headers.map { |header| row[header] } }
+    end
+  end
+
+  def registry_by_kind_id(path)
+    CSV.read(path, headers: true, encoding: "UTF-8").to_h do |row|
+      [[row["kind"], row["id"].to_i], row.to_h]
     end
   end
 end
