@@ -1,0 +1,126 @@
+version: 1
+schema_version: 1
+
+# This file is deliberately separate from the Ruby script. Archaeological and
+# catalogue decisions should be reviewable data, not hidden in conditionals.
+
+corpus:
+  corpus_root: 中國漢文
+  macro_region: 中國
+  period: 商朝
+  polity: 商
+  local_polity: 商
+
+folder_skeleton:
+  - [商, 甲骨文, 殷墟, 小屯宮殿宗廟區, YH127]
+  - [商, 甲骨文, 殷墟, 小屯南地]
+  - [商, 甲骨文, 殷墟, 花園莊東地, H3]
+  - [商, 甲骨文, 殷墟, 出土位置不詳]
+  - [商, 甲骨文, 洹北商城]
+  - [商, 甲骨文, 鄭州商城]
+  - [商, 甲骨文, 大辛莊]
+  - [商, 甲骨文, 出土地不詳]
+  - [商, 金文]
+  - [周方, 甲骨文, 周原, 鳳雛]
+  - [周方, 甲骨文, 周原, 齊家村]
+  - [周方, 甲骨文, 周原, 周公廟]
+  - [周方, 金文]
+  - [子方, 甲骨文]
+  - [子方, 金文]
+  - [土方, 甲骨文]
+  - [土方, 金文]
+
+oracle_series:
+  甲骨文合集:
+    canonical_scheme: 甲骨文合集
+    display_prefix: 合集
+    parser: heji
+    target_path: [商, 甲骨文, 殷墟, 出土位置不詳]
+    findspot:
+      site: 殷墟
+    region: 殷墟
+
+  小屯南地甲骨:
+    canonical_scheme: 小屯南地甲骨
+    display_prefix: 屯南
+    parser: generic_segment
+    target_path: [商, 甲骨文, 殷墟, 小屯南地]
+    findspot:
+      site: 殷墟
+      area: 小屯南地
+    region: 小屯南地
+
+  英國所藏甲骨:
+    canonical_scheme: 英國所藏甲骨集
+    display_prefix: 英藏
+    parser: generic_segment
+    target_path: [商, 甲骨文, 殷墟, 出土位置不詳]
+    findspot:
+      site: 殷墟
+    region: 殷墟
+
+  懷特氏等所藏甲骨:
+    canonical_scheme: 懷特氏等所藏甲骨文集
+    display_prefix: 懷
+    parser: generic_segment
+    target_path: [商, 甲骨文, 殷墟, 出土位置不詳]
+    findspot:
+      site: 殷墟
+    region: 殷墟
+
+  東京大學所藏甲骨:
+    canonical_scheme: 東京大學東洋文化研究所藏甲骨文字
+    display_prefix: 東文研
+    parser: generic_segment
+    target_path: [商, 甲骨文, 殷墟, 出土位置不詳]
+    findspot:
+      site: 殷墟
+    region: 殷墟
+
+  花園莊東地甲骨:
+    canonical_scheme: 殷墟花園莊東地甲骨
+    display_prefix: 花東
+    parser: generic_segment
+    target_path: [商, 甲骨文, 殷墟, 花園莊東地, H3]
+    findspot:
+      site: 殷墟
+      area: 花園莊東地
+      locus: H3
+    region: 花園莊東地
+
+legacy_flat_sources:
+  # These filename prefixes occur in the old 花園庄（洹北） source folder.
+  # They are mapped back onto the same physical-object catalogue rules used
+  # above, so Heji/TN material can join an existing ASDC object.
+  - filename_pattern: '\AHYZ\s+(.+)\z'
+    series: 花園莊東地甲骨
+    source_label: Schwartz
+  - filename_pattern: '\AHeji\s+(.+)\z'
+    series: 甲骨文合集
+    source_label: Schwartz
+  - filename_pattern: '\ATN\s+(.+)\z'
+    series: 小屯南地甲骨
+    source_label: Schwartz
+
+source_labels:
+  ASDC:
+    name: 先秦甲骨金文簡牘詞彙資料庫
+    url: https://inscription.asdc.sinica.edu.tw
+  Schwartz:
+    name: Adam C. Schwartz
+
+bronze:
+  target_root: [商, 金文]
+  medium: 金文
+  object_type: 青銅器
+  catalogues:
+    殷周金文集成:
+      canonical_scheme: 殷周金文集成
+      display_prefix: 集成
+    新收殷周青銅器銘文暨器影彙編:
+      canonical_scheme: 新收殷周青銅器銘文暨器影彙編
+      display_prefix: 新收
+  period_folder_names:
+    中期: 商代中期
+    晚期: 商代晚期
+    晚期或西周早期: 商代晚期或西周早期
