@@ -5,6 +5,10 @@
 
   <nav class="grammar-breadcrumbs" aria-label="<%= t("atlas.breadcrumbs") %>">
     <%= link_to t("atlas.title"), "/atlas" %>
+    <% @atlas_breadcrumbs.reject(&:root?).each do |crumb| %>
+      <span aria-hidden="true">›</span>
+      <%= link_to crumb.label, atlas_hierarchy_path_for(crumb) %>
+    <% end %>
     <span aria-hidden="true">›</span>
     <span><%= @article.metadata["title"].presence || @entry.title %></span>
   </nav>
@@ -126,6 +130,33 @@
           <% end %>
           <% if @entry.territory_note.present? %>
             <div><dt><%= t("atlas.metadata.territory_note") %></dt><dd><%= @entry.territory_note %></dd></div>
+          <% end %>
+          <% if @entry.corpus_root.present? %>
+            <div><dt><%= t("atlas.metadata.corpus_root") %></dt><dd><%= @entry.corpus_root %></dd></div>
+          <% end %>
+          <% if @entry.periods.any? %>
+            <div><dt><%= t("atlas.metadata.periods") %></dt><dd><%= @entry.periods.join(" · ") %></dd></div>
+          <% end %>
+          <% if @entry.polity.present? %>
+            <div><dt><%= t("atlas.metadata.corpus_polity") %></dt><dd><%= @entry.polity %></dd></div>
+          <% end %>
+          <% if @entry.relationship_with_shang.present? %>
+            <div><dt><%= t("atlas.metadata.relationship_with_shang") %></dt><dd><%= @entry.relationship_with_shang %></dd></div>
+          <% end %>
+          <% if @entry.attested_in.any? %>
+            <div><dt><%= t("atlas.metadata.attested_in") %></dt><dd><%= @entry.attested_in.join(" · ") %></dd></div>
+          <% end %>
+          <% if @entry.corpus_paths.any? %>
+            <div>
+              <dt><%= t("atlas.metadata.corpus_folders") %></dt>
+              <dd>
+                <ul class="atlas-corpus-folder-list">
+                  <% @entry.corpus_paths.each do |folder| %>
+                    <li><%= link_to folder, atlas_folder_search_url(folder) %></li>
+                  <% end %>
+                </ul>
+              </dd>
+            </div>
           <% end %>
         </dl>
       </section>

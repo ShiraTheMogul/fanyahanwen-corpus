@@ -6,7 +6,19 @@ class AtlasController < ApplicationController
   def index
     @store = Atlas::EntryStore.default
     @store.validate!
-    @entries = @store.all.sort_by { |entry| [entry.timespan["start_year"] || Float::INFINITY, entry.title] }
+    @hierarchy = Atlas::CorpusHierarchy.default
+    @hierarchy.validate!(entry_store: @store)
+    @node = @hierarchy.find!(params[:path])
+    @breadcrumbs = @hierarchy.ancestors(@node)
+    @node_entry = @node.entry_id && @store.find(@node.entry_id)
+    @child_rows = @node.children.map do |child|
+      entry = child.entry_id && @store.find(child.entry_id)
+      {
+        node: child,
+        entry: entry,
+        published: entry && @store.article_exists?(entry)
+      }
+    end
   end
 
   def show
@@ -68,6 +80,11 @@ class AtlasController < ApplicationController
     @submission_action = submission_action
     @submission_locale = I18n.locale.to_s
     @submission_markdown = @store.submission_markdown_for(@entry, locale: @submission_locale)
+
+    @hierarchy = Atlas::CorpusHierarchy.default
+    @placement_nodes = @entry.placements.filter_map { |path| @hierarchy.find(path) }
+    @primary_placement = @placement_nodes.first
+    @atlas_breadcrumbs = @primary_placement ? @hierarchy.ancestors(@primary_placement) : []
   end
 
   def submission_action

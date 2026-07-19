@@ -12,7 +12,7 @@ module Atlas
     end
 
     def id = attributes.fetch("id")
-    def kind = attributes["kind"].presence || "state"
+    def kind = attributes["kind"].presence || "polity"
 
     def name
       value = attributes["name"]
@@ -35,11 +35,30 @@ module Atlas
       value.is_a?(Hash) ? Grammar::MarkdownDocument.stringify_keys(value) : {}
     end
 
+    def corpus
+      value = attributes["corpus"]
+      value.is_a?(Hash) ? Grammar::MarkdownDocument.stringify_keys(value) : {}
+    end
+
+    def historical
+      value = attributes["historical"]
+      value.is_a?(Hash) ? Grammar::MarkdownDocument.stringify_keys(value) : {}
+    end
+
     def capitals = Array(locations["capital"]).map(&:to_s).reject(&:blank?)
     def territory_note = locations["territory_note"].to_s
     def notable_authors = Array(attributes["notable_authors"]).map(&:to_s).reject(&:blank?)
     def notable_works = Array(attributes["notable_works"]).map(&:to_s).reject(&:blank?)
     def notes = attributes["notes"].to_s
+
+    def corpus_root = corpus["root"].to_s
+    def periods = Array(corpus["periods"]).map(&:to_s).reject(&:blank?).uniq
+    def polity = corpus["polity"].to_s
+    def corpus_paths = Array(corpus["paths"]).map(&:to_s).reject(&:blank?).uniq
+    def placements = Array(attributes["placements"]).map(&:to_s).reject(&:blank?).uniq
+    def attested_in = Array(historical["attested_in"]).map(&:to_s).reject(&:blank?).uniq
+    def relationship_with_shang = historical["relationship_with_shang"].to_s
+    def period_description = historical["period_description"].to_s
 
     def search_label
       hanzi.present? && hanzi != title ? "#{title} (#{hanzi})" : title

@@ -6,10 +6,23 @@ en:
     translation_fallback: This article is not yet available in the selected language, so the English source article is shown.
     kinds:
       state: State or polity
+      polity: Polity
+      period_or_polity: Period or polity
+      polity_or_region: Polity or region
     index:
       introduction: Historical states and polities connected to texts, people, places, and searchable evidence in the corpus.
       no_entries: No atlas entries are available.
       date_unknown: Date uncertain
+      folder_explanation: This view follows the historical levels encoded by the clean corpus folders. Work folders are deliberately not mixed into the atlas navigation.
+      open_article: Open article
+      search_folder: Open this corpus folder in search
+      browse_folder: Browse period or folder
+      child_count: '%{count} subdivisions'
+      article_available: Article available
+      article_needed: Article metadata available; article needed
+      folder_only: Corpus period or territory folder
+      no_children_heading: No further historical subdivision
+      no_children: This is a leaf in the atlas hierarchy. Use the corpus-search preset above to work within its folder.
     missing:
       heading: Article needed
       explanation: The atlas metadata exists, but the article has not yet been written.
@@ -30,6 +43,12 @@ en:
       territory_note: Location note
       also_known_as: Also known as
       present: present
+      corpus_root: Corpus collection
+      periods: Corpus period
+      corpus_polity: Corpus polity
+      corpus_folders: Corpus folders
+      relationship_with_shang: Relationship with Shang
+      attested_in: Attested in
     credits:
       heading: Credits and publication details
       anonymous: Anonymous
@@ -105,3 +124,14 @@ en:
       ticket_key: Ticket key
       copy_key: Copy key
       download_key: Download key
+    hierarchy_kinds:
+      corpus_root: Corpus collection
+      period: Period
+      polity: Polity
+      period_or_polity: Period or polity
+      polity_or_region: Polity or region
+      period_group: Period group
+      dynastic_period: Dynastic period
+      territory: Territory
+      undated: Undated material
+      folder: Corpus folder

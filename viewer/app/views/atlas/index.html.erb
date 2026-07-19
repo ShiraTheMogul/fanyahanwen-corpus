@@ -1,27 +1,75 @@
 <div class="grammar-page atlas-index">
-  <header class="grammar-page-header">
+  <% unless @node.root? %>
+    <nav class="grammar-breadcrumbs" aria-label="<%= t("atlas.breadcrumbs") %>">
+      <%= link_to t("atlas.title"), "/atlas" %>
+      <% @breadcrumbs.reject(&:root?).each do |crumb| %>
+        <span aria-hidden="true">›</span>
+        <%= link_to crumb.label, atlas_hierarchy_path_for(crumb) %>
+      <% end %>
+      <span aria-hidden="true">›</span>
+      <span><%= @node.label %></span>
+    </nav>
+  <% end %>
+
+  <header class="grammar-page-header atlas-browser-header">
     <div>
-      <h1><%= t("atlas.title") %></h1>
-      <p><%= t("atlas.index.introduction") %></p>
+      <h1><%= @node.root? ? t("atlas.title") : @node.label %></h1>
+      <p>
+        <% if @node.root? %>
+          <%= t("atlas.index.introduction") %>
+        <% elsif @node.description.present? %>
+          <%= @node.description %>
+        <% else %>
+          <%= t("atlas.index.folder_explanation") %>
+        <% end %>
+      </p>
     </div>
+
+    <% unless @node.root? %>
+      <div class="atlas-browser-actions">
+        <% if @node_entry %>
+          <%= link_to t("atlas.index.open_article"), atlas_entry_path_for(@node_entry), class: "grammar-btn" %>
+        <% end %>
+        <% if @node.corpus_path.present? %>
+          <%= link_to t("atlas.index.search_folder"), atlas_folder_search_url(@node), class: "grammar-btn grammar-btn-secondary" %>
+        <% end %>
+      </div>
+    <% end %>
   </header>
 
-  <% if @entries.empty? %>
-    <p class="grammar-empty"><%= t("atlas.index.no_entries") %></p>
+  <% if @child_rows.empty? %>
+    <section class="grammar-missing-article atlas-empty-folder">
+      <h2><%= t("atlas.index.no_children_heading") %></h2>
+      <p><%= t("atlas.index.no_children") %></p>
+    </section>
   <% else %>
     <div class="grammar-entry-grid atlas-entry-grid">
-      <% @entries.each do |entry| %>
+      <% @child_rows.each do |row| %>
+        <% child = row.fetch(:node) %>
+        <% entry = row[:entry] %>
         <article class="grammar-entry-cluster grammar-entry-cluster--article atlas-entry-card">
-          <%= link_to atlas_entry_path_for(entry), class: "grammar-entry-tile grammar-entry-tile--article" do %>
+          <%= link_to atlas_node_destination(child, entry: entry), class: "grammar-entry-tile grammar-entry-tile--article" do %>
             <span class="grammar-entry-tile-primary atlas-entry-tile-primary">
-              <span class="grammar-entry-tile-title grammar-entry-tile-title--article"><%= entry.title %></span>
-              <% if entry.hanzi.present? %>
-                <span class="atlas-entry-hanzi"><%= entry.hanzi %></span>
+              <span class="grammar-entry-tile-title grammar-entry-tile-title--article"><%= child.label %></span>
+              <span class="atlas-node-kind"><%= t("atlas.hierarchy_kinds.#{child.kind}", default: child.kind.humanize) %></span>
+            </span>
+            <span class="grammar-entry-tile-footer atlas-entry-tile-footer">
+              <% if child.children.any? %>
+                <span><%= t("atlas.index.child_count", count: child.children.length) %></span>
+              <% elsif entry %>
+                <span><%= row[:published] ? t("atlas.index.article_available") : t("atlas.index.article_needed") %></span>
+              <% else %>
+                <span><%= t("atlas.index.folder_only") %></span>
               <% end %>
             </span>
-            <span class="grammar-entry-tile-footer">
-              <span><%= atlas_timespan_label(entry) || t("atlas.index.date_unknown") %></span>
-            </span>
+          <% end %>
+
+          <% if child.children.any? && entry %>
+            <div class="atlas-entry-card-actions">
+              <%= link_to t("atlas.index.open_article"), atlas_entry_path_for(entry) %>
+              <span aria-hidden="true">·</span>
+              <%= link_to t("atlas.index.browse_folder"), atlas_hierarchy_path_for(child) %>
+            </div>
           <% end %>
         </article>
       <% end %>

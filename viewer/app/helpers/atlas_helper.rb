@@ -8,6 +8,25 @@ module AtlasHelper
     "/atlas/#{ERB::Util.url_encode(entry.id)}"
   end
 
+
+  def atlas_hierarchy_path_for(node)
+    return "/atlas" if node.root? || node.path.blank?
+
+    "/atlas?#{ { path: node.path }.to_query }"
+  end
+
+  def atlas_node_destination(node, entry: nil)
+    return atlas_hierarchy_path_for(node) if node.children.any?
+    return atlas_entry_path_for(entry) if entry
+
+    atlas_hierarchy_path_for(node)
+  end
+
+  def atlas_folder_search_url(node_or_path)
+    folder = node_or_path.respond_to?(:corpus_path) ? node_or_path.corpus_path : node_or_path.to_s
+    "/corpus/search?#{ { folders: [folder], roles: ["canonical"] }.to_query }"
+  end
+
   def atlas_template_path_for(entry, locale: I18n.locale)
     "/atlas/#{ERB::Util.url_encode(entry.id)}/template?locale=#{ERB::Util.url_encode(locale)}"
   end
@@ -48,7 +67,9 @@ module AtlasHelper
       region: values["region"],
       author: values["author"],
       year_start: values["year_start"],
-      year_end: values["year_end"]
+      year_end: values["year_end"],
+      folders: Array(values["folders"]).map(&:to_s).reject(&:blank?),
+      exclude_folders: Array(values["exclude_folders"]).map(&:to_s).reject(&:blank?)
     }.compact
     "/corpus/search?#{params.to_query}"
   end

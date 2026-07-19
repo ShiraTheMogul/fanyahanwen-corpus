@@ -47,3 +47,54 @@
   margin: 0;
   overflow-wrap: anywhere;
 }
+
+.atlas-browser-header {
+  align-items: flex-start;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.atlas-browser-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.atlas-node-kind {
+  color: #596473;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: none;
+}
+
+.atlas-entry-tile-footer {
+  min-height: 1.4rem;
+}
+
+.atlas-entry-card-actions {
+  font-size: 0.88rem;
+  padding: 0.55rem 0.75rem 0.1rem;
+}
+
+.atlas-empty-folder {
+  margin-top: 1.5rem;
+}
+
+.atlas-corpus-folder-list {
+  display: grid;
+  gap: 0.35rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.atlas-corpus-folder-list a {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 48rem) {
+  .atlas-browser-header {
+    display: grid;
+  }
+}

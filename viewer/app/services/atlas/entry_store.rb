@@ -129,7 +129,7 @@ module Atlas
       raise ArgumentError, "Duplicate atlas article paths: #{duplicate_paths.join(', ')}" if duplicate_paths.any?
 
       entries.each do |entry|
-        raise ArgumentError, "Invalid atlas ID: #{entry.id}" unless entry.id.match?(/\A[a-z0-9][a-z0-9-]*\z/)
+        raise ArgumentError, "Invalid atlas ID: #{entry.id}" unless entry.id.match?(/\A[\p{L}\p{N}][\p{L}\p{N}._-]*\z/u)
         safe_article_path(entry.article_path)
         unknown = entry.related_ids - ids
         raise ArgumentError, "Unknown atlas links for #{entry.id}: #{unknown.join(', ')}" if unknown.any?
@@ -147,7 +147,8 @@ module Atlas
     def entries_by_id = entries.index_by(&:id)
 
     def load_entries
-      Pathname.glob(root.join("states", "*", "metadata.json").to_s).sort.map do |path|
+      Dir.glob(root.join("polities", "**", "metadata.json").to_s).sort.map do |filename|
+        path = Pathname.new(filename.dup.force_encoding(Encoding::UTF_8).scrub)
         payload = JSON.parse(path.binread.force_encoding("UTF-8").scrub)
         raise ArgumentError, "Atlas metadata must be a key/value mapping: #{path}" unless payload.is_a?(Hash)
 

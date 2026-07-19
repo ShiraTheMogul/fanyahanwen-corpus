@@ -1,0 +1,54 @@
+---
+id: 中國漢文--商殷朝--薛邳
+kind: polity
+title: Xue or Pi
+hanzi: 薛／邳
+corpus_searches:
+- label: 薛、邳 within its corpus folder
+  mode: alternatives
+  terms: &id001
+  - 薛
+  - 邳
+  folders:
+  - 中國漢文/clean/商殷朝/薛邳
+  context: 30
+- label: Mentions of 薛、邳
+  mode: alternatives
+  terms: *id001
+  context: 30
+contributors:
+- name: Llinos Evans
+  orcid: 0009-0007-4733-5800
+  role: author
+  date: '2026-07-19'
+licence: CC BY
+published_at: '2026-07-19'
+updated_at: '2026-07-19'
+---
+
+## Overview
+
+Xue or Pi (薛／邳) was a polity represented in the corpus’s Shang-period folderisation.
+
+The research inventory dates or describes it as: Shang dynasty.
+
+## Geography
+
+East of Yin (present Tengzhou)
+
+## Relationship with Shang
+
+The inventory classifies its relationship with Shang as allied.
+
+## Attestation
+
+The research inventory lists the following forms of attestation:
+
+- Records of the Grand Historian
+- Bronze inscriptions
+
+## References
+
+- (2014). “不”. *漢字甲骨部件分析*. Chinese University of Hong Kong. https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/oraclePiece.php?piece=%E4%B8%8D&sub=1.
+- (1991–2005). *山东地情档案*. “文物志(1991—2005)，第二编 可移动文物， 第三章 铜器 铁器 金银器， 第一节 铜 器”. 山东地方志资料归档. https://shandong-chorography.org/database/g0/section/61/article/57/.
+- Qian Sima. (109 BC-91 BC). *史記*. “殷本紀，周本紀”. Chinese Text Project. https://ctext.org/shiji/.

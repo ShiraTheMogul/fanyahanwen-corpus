@@ -10,7 +10,8 @@ module Grammar
     MODES = %w[exact proximity alternatives].freeze
     ORDERS = %w[either a_before_b b_before_a].freeze
     FILTER_KEYS = %w[nation polity period region author year_start year_end].freeze
-    ALLOWED_KEYS = %w[label mode term_a term_b terms distance context order].freeze + FILTER_KEYS
+    FOLDER_KEYS = %w[folders exclude_folders].freeze
+    ALLOWED_KEYS = %w[label mode term_a term_b terms distance context order].freeze + FILTER_KEYS + FOLDER_KEYS
 
     def normalize_all(value)
       Array(value).map { |row| normalize(row) }
@@ -60,8 +61,19 @@ module Grammar
         normalized[key] = row[key].to_s.strip if row[key].present?
       end
 
+      FOLDER_KEYS.each do |key|
+        folders = Array(row[key]).map { |value| normalise_folder(value) }.reject(&:blank?).uniq
+        raise ArgumentError, "A grammar corpus search cannot include more than 20 folder paths" if folders.length > 20
+        normalized[key] = folders if folders.any?
+      end
+
       normalized
     end
+
+    def normalise_folder(value)
+      value.to_s.tr("\\", "/").split("/").reject(&:blank?).join("/")
+    end
+    private_class_method :normalise_folder
 
     def bounded_integer(value, default:, min:, max:)
       integer = Integer(value)
