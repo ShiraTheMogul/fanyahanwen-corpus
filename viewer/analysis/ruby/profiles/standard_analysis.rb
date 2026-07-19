@@ -23,12 +23,12 @@ require "zlib"
 
 class StandardAnalysis
   PROFILE = "standard_analysis"
-  VERSION = 6
+  VERSION = 7
   SAMPLING_SEED = 202_609
   UNKNOWN = "(Unknown / unclassified)"
   DOCUMENT_HEADERS = %w[
-    doc_id body_fingerprint duplicate_group_size representative_document_id duplicate_members_json
-    path folder_path document_role title author year_start year_end nation corpus_root macro_region polity period region
+    doc_id document_id work_id body_fingerprint duplicate_group_size representative_document_id duplicate_members_json
+    path folder_path document_role title work author year_start year_end nation corpus_root macro_region polity period region
     searchable_characters occurrences matching_document
   ].freeze
   OCCURRENCE_HEADERS = %w[
@@ -40,12 +40,24 @@ class StandardAnalysis
     "corpus_root" => { source: "corpus_root", label: "Corpus root", limit: 20, chronological: false },
     "macro_region" => { source: "macro_region", label: "Macro region", limit: 20, chronological: false },
     "polity" => { source: "polity", label: "Polity", limit: 40, chronological: false },
-    "nation" => { source: "nation", label: "Nation", limit: 30, chronological: false },
     "region" => { source: "region", label: "Region", limit: 30, chronological: false },
     "author" => { source: "author", label: "Author", limit: 30, chronological: false },
     "folder" => { source: "folder", label: "Folder branch", limit: 40, chronological: false },
     "document_role" => { source: "document_role_group", label: "Text or corpus layer", limit: 20, chronological: false }
   }.freeze
+  EXPECTED_MACRO_REGIONS = {
+    "中國漢文" => "中國",
+    "日本漢文" => "日本",
+    "朝鮮漢文" => "朝鮮",
+    "越南漢文" => "越南",
+    "琉球漢文" => "琉球",
+    "西域漢文" => "西域",
+    "新加坡漢文" => "新加坡",
+    "馬來西亞漢文" => "馬來西亞"
+  }.freeze
+  METADATA_COVERAGE_FIELDS = %w[
+    document_id work_id corpus_root macro_region period polity region author year_range
+  ].freeze
   METRICS = {
     "occurrences" => { label: "Occurrences", column: "occurrences", multiplier: 1.0 },
     "matching_documents" => { label: "Matching documents", column: "matching_documents", multiplier: 1.0 },
@@ -338,6 +350,7 @@ class StandardAnalysis
     started = Process.clock_gettime(Process::CLOCK_MONOTONIC)
     validate_inputs!
     FileUtils.mkdir_p(@figure_dir)
+    remove_deprecated_outputs
     @chart_writer = ChartWriter.new(@figure_dir)
 
     document_state = scan_documents
@@ -364,6 +377,11 @@ class StandardAnalysis
   end
 
   private
+
+  def remove_deprecated_outputs
+    FileUtils.rm_f(@output_dir.join("nation_summary.csv"))
+    Dir.glob(@figure_dir.join("nation_*.{svg,png}").to_s).each { |path| FileUtils.rm_f(path) }
+  end
 
   def validate_inputs!
     [@document_path, @occurrence_path, @comparison_path].compact.each do |path|
@@ -395,6 +413,32 @@ class StandardAnalysis
     comparison_docs = {}
     scope_conflicts = []
     scope_conflict_count = 0
+    macro_region_conflicts = []
+    macro_region_conflict_count = 0
+    identifier_quality = {
+      "documents" => 0,
+      "numeric_document_ids" => 0,
+      "fallback_document_ids" => 0,
+      "numeric_work_ids" => 0,
+      "missing_work_ids" => 0,
+      "fully_stable_documents" => 0
+    }
+    identifier_fallback_documents = []
+    identifier_work_groups = Hash.new do |hash, key|
+      hash[key] = {
+        "work_id" => key[0],
+        "work" => key[1],
+        "title" => key[2],
+        "folder_path" => key[3],
+        "documents" => 0,
+        "fallback_document_ids" => 0,
+        "missing_work_ids" => 0,
+        "sample_path" => nil
+      }
+    end
+    metadata_coverage = METADATA_COVERAGE_FIELDS.to_h do |field|
+      [field, { "field" => field, "present" => 0, "missing" => 0 }]
+    end
 
     each_csv(@document_path) do |row|
       normalize_document_row!(row)
@@ -419,6 +463,26 @@ class StandardAnalysis
           scope_conflicts << { "document_id" => row["doc_id"], "path" => row["path"], "physical_root" => physical_root, "metadata_corpus_root" => declared_root }
         end
       end
+
+      expected_macro_region = EXPECTED_MACRO_REGIONS[physical_root]
+      declared_macro_region = row["macro_region"].to_s.strip
+      if expected_macro_region && !declared_macro_region.empty? && declared_macro_region != expected_macro_region
+        macro_region_conflict_count += 1
+        if macro_region_conflicts.length < 10_000
+          macro_region_conflicts << {
+            "document_id" => row["doc_id"],
+            "work_id" => row["work_id"],
+            "title" => row["title"],
+            "path" => row["path"],
+            "physical_root" => physical_root,
+            "expected_macro_region" => expected_macro_region,
+            "metadata_macro_region" => declared_macro_region
+          }
+        end
+      end
+
+      record_identifier_quality!(identifier_quality, identifier_fallback_documents, identifier_work_groups, row)
+      record_metadata_coverage!(metadata_coverage, row)
 
       DIMENSIONS.each_key do |dimension|
         group = dimension_value(row, dimension)
@@ -461,8 +525,69 @@ class StandardAnalysis
       comparison_config: comparison_config,
       comparison_docs: comparison_docs,
       scope_conflicts: scope_conflicts,
-      scope_conflict_count: scope_conflict_count
+      scope_conflict_count: scope_conflict_count,
+      macro_region_conflicts: macro_region_conflicts,
+      macro_region_conflict_count: macro_region_conflict_count,
+      identifier_quality: identifier_quality,
+      identifier_fallback_documents: identifier_fallback_documents,
+      identifier_work_groups: identifier_work_groups,
+      metadata_coverage: metadata_coverage
     }
+  end
+
+  def record_identifier_quality!(quality, fallback_documents, work_groups, row)
+    document_id = row["document_id"].to_s.strip
+    work_id = row["work_id"].to_s.strip
+    numeric_document_id = numeric_identifier?(document_id)
+    numeric_work_id = numeric_identifier?(work_id)
+
+    quality["documents"] += 1
+    quality[numeric_document_id ? "numeric_document_ids" : "fallback_document_ids"] += 1
+    quality[numeric_work_id ? "numeric_work_ids" : "missing_work_ids"] += 1
+    quality["fully_stable_documents"] += 1 if numeric_document_id && numeric_work_id
+    return if numeric_document_id && numeric_work_id
+
+    reasons = []
+    reasons << (document_id.match?(/\A[0-9a-f]{24}\z/i) ? "path_hash_document_id" : "non_numeric_document_id") unless numeric_document_id
+    reasons << "missing_work_id" unless numeric_work_id
+    record = {
+      "doc_id" => row["doc_id"],
+      "document_id" => document_id,
+      "work_id" => work_id,
+      "work" => row["work"],
+      "title" => row["title"],
+      "folder_path" => row["folder_path"],
+      "path" => row["path"],
+      "reason" => reasons.join(";")
+    }
+    fallback_documents << record
+
+    group_key = [work_id.empty? ? "(missing)" : work_id, row["work"].to_s, row["title"].to_s, row["folder_path"].to_s]
+    group = work_groups[group_key]
+    group["documents"] += 1
+    group["fallback_document_ids"] += 1 unless numeric_document_id
+    group["missing_work_ids"] += 1 unless numeric_work_id
+    group["sample_path"] ||= row["path"]
+  end
+
+  def record_metadata_coverage!(coverage, row)
+    METADATA_COVERAGE_FIELDS.each do |field|
+      present = case field
+      when "document_id"
+        numeric_identifier?(row["document_id"])
+      when "work_id"
+        numeric_identifier?(row["work_id"])
+      when "year_range"
+        !row["year_start"].nil? || !row["year_end"].nil?
+      else
+        !row[field].to_s.strip.empty?
+      end
+      coverage.fetch(field)[present ? "present" : "missing"] += 1
+    end
+  end
+
+  def numeric_identifier?(value)
+    value.to_s.strip.match?(/\A[1-9]\d*\z/)
   end
 
   def normalize_document_row!(row)
@@ -577,6 +702,46 @@ class StandardAnalysis
                 %w[document_id path physical_root metadata_corpus_root], conflicts)
       @tables["scope_metadata_conflicts"] = "scope_metadata_conflicts.csv"
     end
+
+    macro_conflicts = Array(state[:macro_region_conflicts])
+    unless macro_conflicts.empty?
+      write_csv(@output_dir.join("macro_region_scope_conflicts.csv"),
+                %w[document_id work_id title path physical_root expected_macro_region metadata_macro_region], macro_conflicts)
+      @tables["macro_region_scope_conflicts"] = "macro_region_scope_conflicts.csv"
+    end
+
+    quality_rows = state.fetch(:identifier_quality).map { |metric, value| { "metric" => metric, "value" => value }
+    }
+    write_csv(@output_dir.join("identifier_quality_summary.csv"), %w[metric value], quality_rows)
+    @tables["identifier_quality_summary"] = "identifier_quality_summary.csv"
+
+    fallback_documents = Array(state[:identifier_fallback_documents])
+    unless fallback_documents.empty?
+      write_csv(@output_dir.join("identifier_fallback_documents.csv"),
+                %w[doc_id document_id work_id work title folder_path path reason], fallback_documents)
+      @tables["identifier_fallback_documents"] = "identifier_fallback_documents.csv"
+    end
+
+    fallback_works = state.fetch(:identifier_work_groups).values.sort_by do |row|
+      [-row["fallback_document_ids"].to_i, -row["missing_work_ids"].to_i, row["work_id"].to_s, row["folder_path"].to_s]
+    end
+    unless fallback_works.empty?
+      write_csv(@output_dir.join("identifier_fallback_works.csv"),
+                %w[work_id work title folder_path documents fallback_document_ids missing_work_ids sample_path], fallback_works)
+      @tables["identifier_fallback_works"] = "identifier_fallback_works.csv"
+    end
+
+    total_documents = state.dig(:identifier_quality, "documents").to_i
+    coverage_rows = state.fetch(:metadata_coverage).values.map do |row|
+      present = row["present"].to_i
+      row.merge(
+        "documents" => total_documents,
+        "coverage" => safe_rate(present, total_documents)
+      )
+    end
+    write_csv(@output_dir.join("metadata_field_coverage.csv"),
+              %w[field documents present missing coverage], coverage_rows)
+    @tables["metadata_field_coverage"] = "metadata_field_coverage.csv"
 
     invalid = (@invalid_dimensions || {}).map do |dimension, reason|
       { "dimension" => dimension, "reason" => reason }
@@ -1355,6 +1520,17 @@ class StandardAnalysis
     end
     if state[:scope_conflict_count].to_i.positive?
       @warnings << "#{state[:scope_conflict_count]} document(s) declare a corpus_root that conflicts with their physical top-level folder; examples are listed in scope_metadata_conflicts.csv."
+    end
+    if state[:macro_region_conflict_count].to_i.positive?
+      @warnings << "#{state[:macro_region_conflict_count]} document(s) declare a macro_region that conflicts with the physical corpus root; examples are listed in macro_region_scope_conflicts.csv."
+    end
+    fallback_ids = state.dig(:identifier_quality, "fallback_document_ids").to_i
+    missing_work_ids = state.dig(:identifier_quality, "missing_work_ids").to_i
+    if fallback_ids.positive?
+      @warnings << "#{fallback_ids} document(s) still use path-hash or otherwise non-numeric document IDs; affected works are listed in identifier_fallback_works.csv."
+    end
+    if missing_work_ids.positive?
+      @warnings << "#{missing_work_ids} document(s) have no numeric work_id; affected paths are listed in identifier_fallback_documents.csv."
     end
     (@invalid_dimensions || {}).each do |dimension, reason|
       @warnings << "#{dimension.humanize} analysis was suppressed because the field failed validation (#{reason}); repair metadata before using this dimension academically."
