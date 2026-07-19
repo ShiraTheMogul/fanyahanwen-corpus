@@ -4,37 +4,27 @@
 
 require "json"
 require "pathname"
+require "zlib"
 
 Encoding.default_external = Encoding::UTF_8
 Encoding.default_internal = Encoding::UTF_8
 
 class UnicodeIntegrityVerifier
   TEXT_EXTENSIONS = %w[.css .csv .erb .js .json .md .rb .txt .yaml .yml].freeze
-  REQUIRED_LABELS = %w[中國漢文 商殷朝 清朝 日本漢文 江戸時代 朝鮮漢文 越南漢文].freeze
+  REQUIRED_LABELS = %w[中國 商殷朝 清朝 日本 江戸時代 朝鮮 越南 琉球].freeze
 
-  # These are characteristic products of UTF-8 bytes being decoded as CP437,
-  # Windows-1252, or Latin-1. Build them from code points so the verifier does
-  # not flag its own source code.
   MOJIBAKE_MARKERS = [
     [0xFFFD],
-    [0x00EF, 0x00BF, 0x00BD],
-    [0x00E2, 0x20AC, 0x2122],
-    [0x00E2, 0x20AC, 0x0153],
-    [0x00E2, 0x20AC, 0x009D],
-    [0x03A3, 0x2555],
-    [0x03C3, 0x00A3],
-    [0x00B5, 0x255A],
-    [0x00B5, 0x00A3],
-    [0x00B5, 0x00FB],
-    [0x0398, 0x00A1],
-    [0x03A6, 0x00D1],
-    [0x2555, 0x00A1],
-    [0x2563, 0x0398]
+    [0x00E4, 0x00B8],
+    [0x00E5, 0x0153],
+    [0x00E6, 0x0153],
+    [0x00E6, 0x00BC],
+    [0x00E6, 0x2013],
+    [0x00B5, 0x00A3, 0x00D8, 0x00DA]
   ].map { |codepoints| codepoints.pack("U*") }.freeze
 
-  def initialize(root, all: false)
+  def initialize(root)
     @root = Pathname.new(root).expand_path
-    @all = all
     @errors = []
     @checked_paths = 0
     @checked_text_files = 0
@@ -43,10 +33,12 @@ class UnicodeIntegrityVerifier
   def run
     raise "Directory does not exist: #{@root}" unless @root.directory?
 
-    scan_paths
-    scan_text_files
-    check_known_labels
-    check_atlas_references
+    each_path do |path|
+      @checked_paths += 1
+      check_string(relative_path(path), "path")
+      check_text_file(path) if path.file? && TEXT_EXTENSIONS.include?(path.extname.downcase)
+    end
+    check_catalogue_labels
 
     if @errors.any?
       warn "UNICODE INTEGRITY CHECK FAILED"
@@ -61,147 +53,103 @@ class UnicodeIntegrityVerifier
 
   private
 
-  def scan_paths
-    each_path do |path|
-      @checked_paths += 1
-      relative = relative_path(path)
-      check_string(relative, "path")
-    end
-  end
+  def each_path
+    roots = [
+      @root.join("content", "atlas"),
+      @root.join("app", "controllers", "atlas_controller.rb"),
+      @root.join("app", "helpers", "atlas_helper.rb"),
+      @root.join("app", "services", "atlas"),
+      @root.join("app", "views", "atlas"),
+      @root.join("app", "assets", "stylesheets", "atlas.css"),
+      @root.join("config", "locales", "en", "atlas.yml"),
+      @root.join("lib", "tasks", "atlas.rake"),
+      @root.join("script", "atlas_integration_smoke.rb"),
+      @root.join("script", "atlas_catalogue_smoke.rb"),
+      @root.join("script", "verify_unicode_integrity.rb"),
+      @root.join("script", "verify_atlas_front_matter.rb"),
+      @root.join("script", "verify_shang_atlas_articles.rb"),
+      @root.join("script", "rewrite_shang_atlas_articles.rb")
+    ]
 
-  def scan_text_files
-    each_path do |path|
-      next unless path.file?
-      next unless TEXT_EXTENSIONS.include?(path.extname.downcase)
+    roots.each do |root|
+      next unless root.exist?
 
-      @checked_text_files += 1
-      bytes = path.binread
-      text = bytes.dup.force_encoding(Encoding::UTF_8)
-      unless text.valid_encoding?
-        @errors << "Invalid UTF-8 bytes in #{relative_path(path)}"
-        next
-      end
-      check_string(text, "contents of #{relative_path(path)}")
-    end
-  end
+      yield root
+      next unless root.directory?
 
-  def check_known_labels
-    hierarchy = @root.join("content", "atlas", "hierarchy.json")
-    return unless hierarchy.file?
-
-    text = strict_utf8_read(hierarchy)
-    REQUIRED_LABELS.each do |label|
-      @errors << "Known label missing from hierarchy.json: #{label}" unless text.include?(label)
-    end
-  end
-
-  def check_atlas_references
-    hierarchy_path = @root.join("content", "atlas", "hierarchy.json")
-    polities_root = @root.join("content", "atlas", "polities")
-    return unless hierarchy_path.file? && polities_root.directory?
-
-    hierarchy = JSON.parse(strict_utf8_read(hierarchy_path))
-    entry_ids = []
-    walk = lambda do |nodes|
-      Array(nodes).each do |node|
-        entry_ids << node["entry_id"] if node.is_a?(Hash) && node["entry_id"]
-        walk.call(node["children"]) if node.is_a?(Hash)
+      Dir.glob(root.join("**", "*").to_s, File::FNM_DOTMATCH).sort.each do |filename|
+        path = Pathname.new(filename)
+        next if [".", ".."].include?(path.basename.to_s)
+        yield path
       end
     end
-    walk.call(hierarchy.fetch("roots"))
-
-    metadata_ids = Dir.glob(polities_root.join("**", "metadata.json").to_s, File::FNM_DOTMATCH).map do |filename|
-      data = JSON.parse(strict_utf8_read(Pathname.new(filename)))
-      data.fetch("id")
-    end
-
-    missing_metadata = entry_ids - metadata_ids
-    orphan_metadata = metadata_ids - entry_ids
-    @errors << "Hierarchy entries missing metadata: #{missing_metadata.join(', ')}" if missing_metadata.any?
-    @errors << "Metadata not registered in hierarchy: #{orphan_metadata.join(', ')}" if orphan_metadata.any?
-  rescue JSON::ParserError, KeyError => error
-    @errors << "Atlas JSON validation failed: #{error.message}"
   end
 
-  def check_string(value, location)
-    text = value.to_s
-    unless text.encoding == Encoding::UTF_8 || text.ascii_only?
-      text = text.encode(Encoding::UTF_8)
-    end
+  def check_text_file(path)
+    @checked_text_files += 1
+    bytes = path.binread
+    text = bytes.force_encoding(Encoding::UTF_8)
     unless text.valid_encoding?
-      @errors << "Invalid UTF-8 in #{location}"
+      @errors << "Invalid UTF-8 bytes in #{relative_path(path)}"
       return
     end
 
-    MOJIBAKE_MARKERS.each do |marker|
-      @errors << "Mojibake marker #{marker.inspect} found in #{location}" if text.include?(marker)
-    end
-  rescue EncodingError => error
-    @errors << "Encoding failure in #{location}: #{error.message}"
+    check_string(text, relative_path(path))
+  rescue Errno::ENOENT, Errno::EACCES => e
+    @errors << "Could not read #{relative_path(path)}: #{e.class}: #{e.message}"
   end
 
-  def strict_utf8_read(path)
-    bytes = path.binread
-    text = bytes.force_encoding(Encoding::UTF_8)
-    raise EncodingError, "invalid UTF-8 in #{relative_path(path)}" unless text.valid_encoding?
-    text
-  end
-
-  def each_path
-    paths = if @all
-              [@root, *glob_tree(@root)]
-            else
-              scoped_paths
-            end
-
-    paths.uniq.sort_by(&:to_s).each { |path| yield path }
-  end
-
-  def scoped_paths
-    paths = []
-    tree_roots = [
-      @root.join("content", "atlas"),
-      @root.join("app", "services", "atlas"),
-      @root.join("app", "views", "atlas")
-    ]
-    tree_roots.each do |tree|
-      next unless tree.exist?
-      paths << tree
-      paths.concat(glob_tree(tree))
+  def check_string(value, context)
+    text = value.to_s.dup.force_encoding(Encoding::UTF_8)
+    unless text.valid_encoding?
+      @errors << "Invalid UTF-8 in #{context}"
+      return
     end
 
-    files = [
-      "ATLAS_INTEGRATION_REPORT.md",
-      "ATLAS_ROUTES_TO_ADD.txt",
-      "app/controllers/atlas_controller.rb",
-      "app/helpers/atlas_helper.rb",
-      "app/javascript/controllers/atlas_submission_controller.js",
-      "config/locales/en/atlas.yml",
-      "docs/atlas_articles.md",
-      "script/atlas_integration_smoke.rb",
-      "script/generate_atlas_from_corpus.rb",
-      "script/verify_unicode_integrity.rb"
-    ]
-    files.each do |relative|
-      path = @root.join(relative)
-      paths << path if path.exist?
-    end
-    paths
+    marker = MOJIBAKE_MARKERS.find { |candidate| text.include?(candidate) }
+    @errors << "Mojibake marker #{marker.inspect} in #{context}" if marker
   end
 
-  def glob_tree(tree)
-    Dir.glob(tree.join("**", "*").to_s, File::FNM_DOTMATCH).filter_map do |filename|
-      path = Pathname.new(filename)
-      next if [".", ".."].include?(path.basename.to_s)
-      path
+  def check_catalogue_labels
+    periodisation_path = @root.join("content", "atlas", "periodisation.json")
+    catalogue_path = @root.join("storage", "corpus_search", "atlas", "catalogue-v2.json.gz")
+
+    texts = []
+    texts << periodisation_path.read(encoding: "UTF-8") if periodisation_path.file?
+
+    if catalogue_path.file?
+      raw = Zlib::GzipReader.open(catalogue_path.to_s, &:read).force_encoding(Encoding::UTF_8)
+      unless raw.valid_encoding?
+        @errors << "Atlas runtime catalogue is not valid UTF-8"
+        return
+      end
+
+      check_string(raw, relative_path(catalogue_path))
+      texts << raw
+
+      payload = JSON.parse(raw)
+      @errors << "Atlas catalogue version is not 2" unless payload["version"].to_i == 2
+      @errors << "Atlas catalogue has no entries" unless payload["entries"].is_a?(Array) && payload["entries"].any?
+    else
+      @errors << "Atlas runtime catalogue is missing; run bin/rails atlas:rebuild_catalogue"
     end
+
+    text = texts.join("\n")
+    REQUIRED_LABELS.each do |label|
+      @errors << "Known label missing from atlas data: #{label}" unless text.include?(label)
+    end
+  rescue JSON::ParserError => e
+    @errors << "Atlas catalogue JSON is invalid: #{e.message}"
+  rescue Zlib::GzipFile::Error, Zlib::Error => e
+    @errors << "Atlas catalogue gzip is invalid: #{e.message}"
   end
 
   def relative_path(path)
     path.relative_path_from(@root).to_s.encode(Encoding::UTF_8)
+  rescue ArgumentError
+    path.to_s.encode(Encoding::UTF_8)
   end
 end
 
-all = ARGV.delete("--all")
 root = ARGV.fetch(0, Pathname.new(__dir__).join("..").expand_path.to_s)
-UnicodeIntegrityVerifier.new(root, all: !!all).run
+UnicodeIntegrityVerifier.new(root).run

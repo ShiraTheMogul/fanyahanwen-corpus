@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "digest"
-require "json"
 require "pathname"
 
 module Atlas
@@ -26,17 +25,24 @@ module Atlas
       def body = document&.body.to_s
     end
 
-    attr_reader :root
-
-    def self.default = new
-
-    def initialize(root: ROOT)
-      @root = Pathname.new(root)
+    def self.default
+      @default ||= new
     end
 
-    def all = entries
-    def find(id) = entries_by_id[id.to_s]
-    def find!(id) = find(id) || raise(ActiveRecord::RecordNotFound, "Unknown atlas entry")
+    def self.reset!
+      @default = nil
+    end
+
+    attr_reader :root, :catalogue
+
+    def initialize(root: ROOT, catalogue: Catalogue.default)
+      @root = Pathname.new(root)
+      @catalogue = catalogue
+    end
+
+    def all = catalogue.entries
+    def find(id) = catalogue.find(id)
+    def find!(id) = catalogue.find!(id)
 
     def related_for(entry, metadata: nil)
       metadata = Grammar::MarkdownDocument.stringify_keys(metadata.to_h)
@@ -65,7 +71,7 @@ module Atlas
         revision: nil
       ) unless path
 
-      raw = path.binread.force_encoding("UTF-8").scrub
+      raw = read_utf8!(path)
       LoadedEntry.new(
         entry: entry,
         document: Grammar::MarkdownDocument.parse(raw),
@@ -116,46 +122,23 @@ module Atlas
 
     def template_body
       path = root.join("_templates", "article.md")
-      path.file? ? path.read : "## Overview\n\n\n## History\n\n\n## References\n\n"
+      path.file? ? read_utf8!(path) : "## Overview\n\n\n## History\n\n\n## References\n\n"
     end
 
     def validate!
-      ids = entries.map(&:id)
-      duplicate_ids = ids.group_by(&:itself).select { |_id, rows| rows.length > 1 }.keys
-      raise ArgumentError, "Duplicate atlas IDs: #{duplicate_ids.join(', ')}" if duplicate_ids.any?
-
-      paths = entries.map(&:article_path)
-      duplicate_paths = paths.group_by(&:itself).select { |_path, rows| rows.length > 1 }.keys
-      raise ArgumentError, "Duplicate atlas article paths: #{duplicate_paths.join(', ')}" if duplicate_paths.any?
-
-      entries.each do |entry|
-        raise ArgumentError, "Invalid atlas ID: #{entry.id}" unless entry.id.match?(/\A[\p{L}\p{N}][\p{L}\p{N}._-]*\z/u)
-        safe_article_path(entry.article_path)
-        unknown = entry.related_ids - ids
-        raise ArgumentError, "Unknown atlas links for #{entry.id}: #{unknown.join(', ')}" if unknown.any?
-      end
+      catalogue.validate!
+      all.each { |entry| safe_article_path(entry.article_path) }
       true
     end
 
     private
 
-    def entries
-      return load_entries if Rails.env.development?
-      @entries ||= load_entries
-    end
+    def read_utf8!(path)
+      raw = path.binread.force_encoding(Encoding::UTF_8)
+      raise ArgumentError, "Atlas file is not valid UTF-8: #{path}" unless raw.valid_encoding?
 
-    def entries_by_id = entries.index_by(&:id)
-
-    def load_entries
-      Dir.glob(root.join("polities", "**", "metadata.json").to_s).sort.map do |filename|
-        path = Pathname.new(filename.dup.force_encoding(Encoding::UTF_8).scrub)
-        payload = JSON.parse(path.binread.force_encoding("UTF-8").scrub)
-        raise ArgumentError, "Atlas metadata must be a key/value mapping: #{path}" unless payload.is_a?(Hash)
-
-        Entry.new(payload, metadata_path: path)
-      end
-    rescue JSON::ParserError => e
-      raise ArgumentError, "Invalid atlas metadata JSON: #{e.message}"
+      Atlas::UnicodeGuard.validate!(raw, context: path.to_s)
+      raw
     end
 
     def safe_article_path(relative)

@@ -1,152 +1,90 @@
-# Historical Atlas article and folder system
+# Fanya Hanwen Atlas
 
-The atlas uses the same article workflow as the Literary Chinese Grammar Wiki,
-but its navigation is generated from historically meaningful corpus folders.
-
-## Four separate jobs
-
-The implementation keeps four concerns apart:
-
-1. `content/atlas/hierarchy.json` stores the browse tree: corpus collection,
-   period, polity, territory, and other deliberate historical levels.
-2. Each `metadata.json` identifies one polity and records its corpus placement.
-3. `index.md` stores the readable article, references, corpus quotations,
-   preset searches, publication dates, and credits.
-4. Rails services load, validate, render, preview, and publish those files.
-
-This is why a Qing reader does not have to pass through Shang polities. The
-atlas opens with corpus collections, then follows the period/polity structure
-already encoded in the clean corpus folders.
-
-## Content folder pattern
-
-Article storage mirrors the relevant corpus placement:
+The atlas is a set of polity overview pages connected directly to the corpus.
+Public navigation is organised as:
 
 ```text
-content/atlas/polities/<corpus-root>/<period>/<polity>/
-├── metadata.json
-└── index.md                 # absent until an article is written
+macro-region → period → polity
 ```
 
-Examples:
+The corpus manifest supplies macro-region, period, polity, document, work, and
+author data. `Atlas::CatalogueBuilder` compiles that information together with
+the human-edited files in `content/atlas/entries/`.
 
-```text
-content/atlas/polities/中國漢文/商殷朝/土方/
-content/atlas/polities/中國漢文/清朝/東寧國漢文/
-```
+Web requests read one prepared catalogue. They do not walk the corpus tree,
+glob metadata files, or validate every entry.
 
-A metadata-only folder is intentional. It creates a real atlas page with the
-same preview/edit/ticket workflow, while making clear that prose still needs to
-be written.
+## Maintenance commands
 
-## Why the hierarchy is selective
-
-The corpus contains more than 100,000 directories, most of which are works.
-The atlas therefore does **not** treat every directory as a polity. Only nodes
-recorded in `hierarchy.json`, or direct children of a node explicitly marked
-with `discover_children_as`, are navigational data.
-
-For example, `中國漢文/商殷朝` is marked so that a new direct child is a polity.
-`中國漢文/唐朝` is not marked, because its direct children are normally works.
-This is the difference between using the folder tree as data and guessing from
-folder depth.
-
-## Corpus quotation pattern
-
-Put a corpus quotation in a Markdown article with:
-
-```text
-{% corpus_quote path="中國漢文/clean/.../text.txt" text="quoted text" highlight="word|second word" source="displayed source title" %}
-```
-
-- `path` opens the cited corpus document.
-- `text` is the displayed quotation.
-- `highlight` marks one or more strings separated by `|`.
-- `source` is the human-readable source label.
-
-## Preset corpus searches
-
-Searches live in YAML front matter. A broad search is:
-
-```yaml
-corpus_searches:
-  - label: Mentions of 土方
-    mode: exact
-    term_a: 土方
-    context: 30
-```
-
-A folder-scoped search is:
-
-```yaml
-  - label: 土方 within its corpus folder
-    mode: exact
-    term_a: 土方
-    folders:
-      - 中國漢文/clean/商殷朝/土方
-    context: 30
-```
-
-The second form is especially useful for one-character names such as `光` or
-`呂`. It uses the corpus folder as an exact scope rather than hoping that a
-metadata label or a common character is unambiguous.
-
-Available metadata filters remain:
-
-```text
-nation, polity, period, region, author, year_start, year_end
-```
-
-Folder filters are:
-
-```text
-folders, exclude_folders
-```
-
-## Updating from the corpus
-
-Run from the viewer directory:
+Rebuild the full search manifest, corpus index, and atlas catalogue together:
 
 ```bash
-ruby script/generate_atlas_from_corpus.rb --dry-run
-ruby script/generate_atlas_from_corpus.rb --apply
+bin/rails corpus_search:rebuild_manifest
 ```
 
-When `corpus/` is beside rather than inside `viewer/`, the script detects the
-sibling folder. An explicit path can be supplied:
+Rebuild only the atlas catalogue from an existing manifest:
 
 ```bash
-ruby script/generate_atlas_from_corpus.rb \
-  --corpus /mnt/c/Users/chipp/OneDrive/Documents/fanyahanwen-corpus/corpus \
-  --dry-run
+bin/rails atlas:rebuild_catalogue
 ```
 
-The dry run reports new configured historical children. Apply mode adds only
-missing hierarchy nodes and metadata files. It never overwrites an existing
-`metadata.json` or `index.md`.
+Rebuild the metadata-only fallback used before a local manifest is available:
 
-Reports are written under:
+```bash
+```
+
+Verify catalogue structure, source articles, and Unicode integrity:
+
+```bash
+bin/rails atlas:verify
+ruby script/verify_unicode_integrity.rb
+```
+
+## Source files
+
+Each polity has a `metadata.json` and, when written, an `index.md`. Markdown
+uses the same rendering, citations, corpus quotations, preview, and ticketed
+editing workflow as the Grammar Wiki.
+
+Manual fields include:
+
+- names and aliases;
+- dates;
+- capitals;
+- rulers;
+- notable writers and works;
+- related polities;
+- corpus placement;
+- attestations and historical notes.
+
+The manifest adds factual corpus counts and representative writers and works.
+Those derived lists are labelled as corpus representation, not as claims of
+historical importance.
+
+## Writing polity overviews
+
+Atlas prose should read like an article, not like a generated inventory report. The
+opening paragraph should identify the polity, place it in its period, and name the
+sources in which it is mentioned or attested. For example:
 
 ```text
-tmp/atlas_generation/<timestamp>/
+Bogu (薄姑) was a polity during the Shang dynasty, mentioned in the Bamboo Annals.
 ```
 
-## Edit and publication workflow
+Do not write phrases such as “represented in the corpus folderisation” or “the
+research inventory describes it as”. The folder tree and research inventory are
+editorial sources; they are not the subject of the public article.
 
-```text
-article page
-  -> create/edit/translation form
-  -> full preview
-  -> accountless ticket
-  -> moderator review
-  -> validation against the atlas registry
-  -> atomic publication into content/atlas
+Political relationships belong in the History section as ordinary prose. They are
+not displayed as permanent headline facts. Attestation belongs in the overview,
+while geography should be written in complete sentences.
+
+Shang polity stubs can be checked and, when explicitly requested, regenerated with:
+
+```bash
+ruby script/rewrite_shang_atlas_articles.rb --apply
+ruby script/verify_shang_atlas_articles.rb
 ```
 
-“Atomic” means the publisher writes a complete temporary file and then moves it
-into place. A failed write cannot leave half an article behind.
-
-## Routes
-
-Routes are intentionally not edited by the patch. Copy the unchanged block in
-`ATLAS_ROUTES_TO_ADD.txt` into `config/routes.rb` manually.
+The rewriter preserves the full hand-written Shang and Chong articles. It refuses
+to overwrite other manually edited articles unless `--force` is supplied.

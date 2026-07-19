@@ -3,11 +3,15 @@
     <div class="grammar-preview-banner"><%= t("atlas.preview_banner") %></div>
   <% end %>
 
-  <nav class="grammar-breadcrumbs" aria-label="<%= t("atlas.breadcrumbs") %>">
+  <nav class="grammar-breadcrumbs" aria-label="<%= t('atlas.breadcrumbs') %>">
     <%= link_to t("atlas.title"), "/atlas" %>
-    <% @atlas_breadcrumbs.reject(&:root?).each do |crumb| %>
+    <% if @primary_macro_region %>
       <span aria-hidden="true">›</span>
-      <%= link_to crumb.label, atlas_hierarchy_path_for(crumb) %>
+      <%= link_to @primary_macro_region["label"], atlas_macro_region_path(@primary_macro_region_id) %>
+    <% end %>
+    <% if @primary_period %>
+      <span aria-hidden="true">›</span>
+      <%= link_to @primary_period["label"], atlas_period_path(@primary_macro_region_id, @primary_period_id) %>
     <% end %>
     <span aria-hidden="true">›</span>
     <span><%= @article.metadata["title"].presence || @entry.title %></span>
@@ -27,10 +31,7 @@
           </div>
         <% end %>
       </dl>
-      <h1><%= @article.metadata["title"].presence || @entry.title %><% if @entry.hanzi.present? %> <span class="atlas-heading-hanzi"><%= @entry.hanzi %></span><% end %></h1>
-      <% if @entry.aliases.any? %>
-        <p class="grammar-muted"><%= t("atlas.metadata.also_known_as") %>: <%= @entry.aliases.join(" · ") %></p>
-      <% end %>
+      <h1><%= @article.metadata["title"].presence || @entry.title %></h1>
     </div>
   </header>
 
@@ -53,8 +54,8 @@
         </section>
       <% end %>
 
-      <% if @article_searches.any? %>
-        <section class="grammar-searches">
+      <% if @article_searches.any? || @entry.corpus_paths.any? %>
+        <section class="grammar-searches atlas-corpus-entry-point">
           <h2><%= t("atlas.searches.heading") %></h2>
           <p><%= t("atlas.searches.explanation") %></p>
           <div class="grammar-search-buttons">
@@ -62,7 +63,45 @@
               <% label = search["label"].presence || t("atlas.searches.entry_label", headword: @entry.hanzi.presence || @entry.title) %>
               <%= link_to label, atlas_search_url(search), class: "grammar-btn grammar-btn-secondary" %>
             <% end %>
+            <% @entry.corpus_paths.each do |folder| %>
+              <%= link_to t("atlas.searches.browse_assigned_texts"), atlas_folder_search_url(folder), class: "grammar-btn grammar-btn-secondary" %>
+            <% end %>
           </div>
+        </section>
+      <% end %>
+
+      <% if @entry.document_count.positive? || @entry.work_count.positive? || @entry.represented_authors.any? || @entry.represented_works.any? %>
+        <section class="atlas-corpus-summary">
+          <h2><%= t("atlas.corpus_summary.heading") %></h2>
+          <p><%= t("atlas.corpus_summary.counts", works: number_with_delimiter(@entry.work_count), documents: number_with_delimiter(@entry.document_count)) %></p>
+
+          <% if @entry.represented_authors.any? %>
+            <h3><%= t("atlas.corpus_summary.authors_heading") %></h3>
+            <ul class="atlas-compact-list">
+              <% @entry.represented_authors.each do |row| %>
+                <li>
+                  <span><%= row["name"] %></span>
+                  <small><%= t("atlas.corpus_summary.author_count", count: row["work_count"].to_i) %></small>
+                </li>
+              <% end %>
+            </ul>
+          <% end %>
+
+          <% if @entry.represented_works.any? %>
+            <h3><%= t("atlas.corpus_summary.works_heading") %></h3>
+            <ul class="atlas-compact-list atlas-work-list">
+              <% @entry.represented_works.each do |row| %>
+                <li>
+                  <% if row["path"].present? %>
+                    <%= link_to row["title"], atlas_corpus_document_path(row["path"]) %>
+                  <% else %>
+                    <span><%= row["title"] %></span>
+                  <% end %>
+                  <small><%= t("atlas.corpus_summary.document_count", count: row["document_count"].to_i) %></small>
+                </li>
+              <% end %>
+            </ul>
+          <% end %>
         </section>
       <% end %>
 
@@ -113,52 +152,61 @@
     </main>
 
     <aside class="grammar-reference-column atlas-reference-column">
-      <section class="grammar-component-frame atlas-fact-frame">
-        <h2><%= t("atlas.metadata.heading") %></h2>
-        <dl class="atlas-fact-list">
-          <% if (timespan = atlas_timespan_label(@entry)).present? %>
-            <div><dt><%= t("atlas.metadata.timespan") %></dt><dd><%= timespan %></dd></div>
+      <% quick_facts_present = atlas_timespan_label(@entry).present? || @entry.capitals.any? || @entry.rulers.any? || @entry.notable_authors.any? || @entry.notable_works.any? || @entry.territory_note.present? %>
+      <section class="grammar-component-frame atlas-identity-frame">
+        <% if @entry.hanzi.present? %>
+          <% long_written_form = @entry.hanzi.each_char.count > 2 %>
+          <% oracle_available = @entry.periods.include?("商殷朝") && HanFonts.covers_text?(:oracular, @entry.hanzi) %>
+          <div class="atlas-script-display <%= 'atlas-script-display--with-oracle' if oracle_available %>" aria-label="<%= t('atlas.name_forms.heading') %>">
+            <figure class="atlas-script-sample atlas-script-sample--regular">
+              <div class="atlas-script-glyph atlas-script-glyph--regular <%= 'atlas-script-glyph--long' if long_written_form %>"><%= @entry.hanzi %></div>
+              <figcaption><%= t("atlas.name_forms.regular") %></figcaption>
+            </figure>
+            <figure class="atlas-script-sample atlas-script-sample--seal">
+              <div class="atlas-script-glyph atlas-script-glyph--seal <%= 'atlas-script-glyph--long' if long_written_form %>"
+                   style='font-family:"<%= HanFonts.family_for(:chongxi_seal) %>", serif;'>
+                <%= @entry.hanzi %>
+              </div>
+              <figcaption><%= t("atlas.name_forms.seal") %></figcaption>
+            </figure>
+            <% if oracle_available %>
+              <figure class="atlas-script-sample atlas-script-sample--oracle">
+                <div class="atlas-script-glyph atlas-script-glyph--oracle <%= 'atlas-script-glyph--long' if long_written_form %>"
+                     style='font-family:"<%= HanFonts.family_for(:oracular) %>", serif;'>
+                  <%= @entry.hanzi %>
+                </div>
+                <figcaption><%= t("atlas.name_forms.oracle") %></figcaption>
+              </figure>
+            <% end %>
+          </div>
+
+          <% if @entry.aliases.any? %>
+            <p class="atlas-name-aliases"><strong><%= t("atlas.metadata.also_known_as") %>:</strong> <%= @entry.aliases.join(" · ") %></p>
           <% end %>
-          <% if @entry.capitals.any? %>
-            <div><dt><%= t("atlas.metadata.capitals") %></dt><dd><%= @entry.capitals.join(" · ") %></dd></div>
-          <% end %>
-          <% if @entry.notable_authors.any? %>
-            <div><dt><%= t("atlas.metadata.notable_authors") %></dt><dd><%= @entry.notable_authors.join(" · ") %></dd></div>
-          <% end %>
-          <% if @entry.notable_works.any? %>
-            <div><dt><%= t("atlas.metadata.notable_works") %></dt><dd><%= @entry.notable_works.join(" · ") %></dd></div>
-          <% end %>
-          <% if @entry.territory_note.present? %>
-            <div><dt><%= t("atlas.metadata.territory_note") %></dt><dd><%= @entry.territory_note %></dd></div>
-          <% end %>
-          <% if @entry.corpus_root.present? %>
-            <div><dt><%= t("atlas.metadata.corpus_root") %></dt><dd><%= @entry.corpus_root %></dd></div>
-          <% end %>
-          <% if @entry.periods.any? %>
-            <div><dt><%= t("atlas.metadata.periods") %></dt><dd><%= @entry.periods.join(" · ") %></dd></div>
-          <% end %>
-          <% if @entry.polity.present? %>
-            <div><dt><%= t("atlas.metadata.corpus_polity") %></dt><dd><%= @entry.polity %></dd></div>
-          <% end %>
-          <% if @entry.relationship_with_shang.present? %>
-            <div><dt><%= t("atlas.metadata.relationship_with_shang") %></dt><dd><%= @entry.relationship_with_shang %></dd></div>
-          <% end %>
-          <% if @entry.attested_in.any? %>
-            <div><dt><%= t("atlas.metadata.attested_in") %></dt><dd><%= @entry.attested_in.join(" · ") %></dd></div>
-          <% end %>
-          <% if @entry.corpus_paths.any? %>
-            <div>
-              <dt><%= t("atlas.metadata.corpus_folders") %></dt>
-              <dd>
-                <ul class="atlas-corpus-folder-list">
-                  <% @entry.corpus_paths.each do |folder| %>
-                    <li><%= link_to folder, atlas_folder_search_url(folder) %></li>
-                  <% end %>
-                </ul>
-              </dd>
-            </div>
-          <% end %>
-        </dl>
+        <% end %>
+
+        <% if quick_facts_present %>
+          <dl class="atlas-fact-list atlas-fact-list--compact">
+            <% if (timespan = atlas_timespan_label(@entry)).present? %>
+              <div><dt><%= t("atlas.metadata.timespan") %></dt><dd><%= timespan %></dd></div>
+            <% end %>
+            <% if @entry.territory_note.present? %>
+              <div><dt><%= t("atlas.metadata.territory_note") %></dt><dd><%= @entry.territory_note %></dd></div>
+            <% end %>
+            <% if @entry.capitals.any? %>
+              <div><dt><%= t("atlas.metadata.capitals") %></dt><dd><%= @entry.capitals.join(" · ") %></dd></div>
+            <% end %>
+            <% if @entry.rulers.any? %>
+              <div><dt><%= t("atlas.metadata.rulers") %></dt><dd><%= @entry.rulers.join(" · ") %></dd></div>
+            <% end %>
+            <% if @entry.notable_authors.any? %>
+              <div><dt><%= t("atlas.metadata.notable_authors") %></dt><dd><%= @entry.notable_authors.join(" · ") %></dd></div>
+            <% end %>
+            <% if @entry.notable_works.any? %>
+              <div><dt><%= t("atlas.metadata.notable_works") %></dt><dd><%= @entry.notable_works.join(" · ") %></dd></div>
+            <% end %>
+          </dl>
+        <% end %>
       </section>
     </aside>
   </div>

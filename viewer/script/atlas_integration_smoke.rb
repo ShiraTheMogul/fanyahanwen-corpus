@@ -4,8 +4,10 @@
 #
 #   bin/rails runner script/atlas_integration_smoke.rb
 #
-# This script reads the real atlas content but writes only to a temporary copy.
+# Reads the real catalogue and articles. Publication is tested only in a
+# temporary copy.
 
+require "benchmark"
 require "fileutils"
 require "tmpdir"
 
@@ -16,15 +18,16 @@ class AtlasIntegrationSmoke
   end
 
   def run
-    phase("1/9", "Validate the polity registry") { validate_registry }
-    phase("2/9", "Validate folder-derived hierarchy") { validate_hierarchy }
-    phase("3/9", "Load every published article") { validate_articles }
-    phase("4/9", "Validate preset corpus searches") { validate_searches }
-    phase("5/9", "Render a corpus quotation") { validate_quote_renderer }
-    phase("6/9", "Validate an edit submission") { validate_edit_submission }
-    phase("7/9", "Validate creation for a metadata-only polity") { validate_create_submission }
-    phase("8/9", "Publish safely to a temporary copy") { validate_publisher }
-    phase("9/9", "Check the manually added routes") { validate_routes }
+    phase("1/10", "Validate the prepared catalogue") { validate_catalogue }
+    phase("2/10", "Validate macro-region periodisation") { validate_periodisation }
+    phase("3/10", "Benchmark indexed lookups") { benchmark_catalogue }
+    phase("4/10", "Load every published article") { validate_articles }
+    phase("5/10", "Validate preset corpus searches") { validate_searches }
+    phase("6/10", "Render a corpus quotation") { validate_quote_renderer }
+    phase("7/10", "Validate an edit submission") { validate_edit_submission }
+    phase("8/10", "Validate creation for a metadata-only polity") { validate_create_submission }
+    phase("9/10", "Publish safely to a temporary copy") { validate_publisher }
+    phase("10/10", "Check the existing routes") { validate_routes }
     finish
   end
 
@@ -39,32 +42,54 @@ class AtlasIntegrationSmoke
     puts "      FAIL: #{e.class}: #{e.message}"
   end
 
+  def catalogue
+    @catalogue ||= Atlas::Catalogue.default
+  end
+
   def store
     @store ||= Atlas::EntryStore.default
   end
 
-  def hierarchy
-    @hierarchy ||= Atlas::CorpusHierarchy.default
-  end
-
-  def validate_registry
+  def validate_catalogue
+    catalogue.validate!
     store.validate!
     entries = store.all
     raise "No atlas entries were discovered" if entries.empty?
     raise "The Shang polity inventory is incomplete" unless entries.count { |entry| entry.corpus_paths.any? { |path| path.start_with?("中國漢文/clean/商殷朝/") } } == 53
 
     published = entries.count { |entry| store.article_exists?(entry) }
-    puts "      entries=#{entries.length}, published_articles=#{published}"
+    puts "      entries=#{entries.length}, published_articles=#{published}, source=#{catalogue.source}"
   end
 
-  def validate_hierarchy
-    hierarchy.validate!(entry_store: store)
-    nodes = hierarchy.all_nodes.reject(&:root?)
-    raise "Hierarchy has no corpus roots" unless hierarchy.root.children.any?
-    raise "Shang period is missing from hierarchy" unless hierarchy.find("中國漢文/商殷朝")
-    raise "Japanese Edo period is missing from hierarchy" unless hierarchy.find("日本漢文/日本/江戸時代")
+  def validate_periodisation
+    regions = catalogue.macro_regions
+    raise "No macro-regions were compiled" if regions.empty?
+    raise "China macro-region is missing" unless catalogue.macro_region("中國")
+    raise "Shang period is missing" unless catalogue.period("中國", "商殷朝")
+    raise "Japanese macro-region is missing" unless catalogue.macro_region("日本")
 
-    puts "      nodes=#{nodes.length}, roots=#{hierarchy.root.children.length}"
+    periods = regions.sum { |region| Array(region["periods"]).length }
+    puts "      macro_regions=#{regions.length}, periods=#{periods}"
+  end
+
+  def benchmark_catalogue
+    sample = store.all.first(100)
+    lookup_time = Benchmark.realtime do
+      100.times { sample.each { |entry| raise "lookup failed" unless store.find(entry.id) } }
+    end
+    browse_time = Benchmark.realtime do
+      100.times do
+        catalogue.macro_regions.each do |region|
+          catalogue.periods_for(region["id"]).each do |period|
+            catalogue.entries_for(macro_region_id: region["id"], period_id: period["id"])
+          end
+        end
+      end
+    end
+
+    raise "Indexed lookups are too slow: #{lookup_time.round(3)}s" if lookup_time > 1.0
+    raise "Period traversal is too slow: #{browse_time.round(3)}s" if browse_time > 2.0
+    puts format("      lookups=%.3fs, period_traversals=%.3fs", lookup_time, browse_time)
   end
 
   def validate_articles
@@ -160,7 +185,7 @@ class AtlasIntegrationSmoke
     Dir.mktmpdir("atlas-integration-smoke") do |directory|
       copied_root = Pathname.new(directory).join("atlas")
       FileUtils.cp_r(store.root, copied_root)
-      copied_store = Atlas::EntryStore.new(root: copied_root)
+      copied_store = Atlas::EntryStore.new(root: copied_root, catalogue: catalogue)
       entry = copied_store.all.find { |candidate| !copied_store.article_exists?(candidate) }
       proposed = copied_store.submission_markdown_for(entry)
 
@@ -178,7 +203,7 @@ class AtlasIntegrationSmoke
       final = Grammar::MarkdownDocument.parse(final_markdown)
       raise "Publisher did not preserve CC BY" unless final.metadata["licence"] == "CC BY"
       raise "Publisher did not record the reviewer" unless Array(final.metadata["contributors"]).any? { |row| row["role"] == "editor" }
-      raise "Publisher did not create the nested article" unless copied_store.article_path(entry).file?
+      raise "Publisher did not create the article" unless copied_store.article_path(entry).file?
     end
   end
 
@@ -199,15 +224,11 @@ class AtlasIntegrationSmoke
       "#{method} #{path}"
     end
 
-    return if missing.empty?
-
-    message = "Manual atlas routes are still missing: #{missing.join(', ')}. Copy ATLAS_ROUTES_TO_ADD.txt into config/routes.rb."
-    @warnings << message
-    puts "      WARNING: #{message}"
+    raise "Atlas routes are missing: #{missing.join(', ')}" if missing.any?
   end
 
   def finish
-    puts "\n=== Historical Atlas integration result ==="
+    puts "\n=== Atlas integration result ==="
     @warnings.each { |warning| puts "WARNING: #{warning}" }
 
     if @failures.empty?

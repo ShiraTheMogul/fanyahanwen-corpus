@@ -542,7 +542,7 @@ module Api
 
       ticket = EditTicket.new(
         public_id: SecureRandom.hex(12),
-        title: params[:title].to_s.presence || "Historical Atlas: #{result.entry.title}",
+        title: params[:title].to_s.presence || "Atlas: #{result.entry.title}",
         summary: params[:summary].to_s,
         reasoning: params[:reasoning].to_s,
         source: params[:source].to_s.presence || "historical_atlas",

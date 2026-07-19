@@ -1,25 +1,164 @@
-.atlas-entry-grid {
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+.atlas-index,
+.atlas-show {
+  --atlas-border: color-mix(in srgb, currentColor 18%, transparent);
+  --atlas-muted: #596473;
+  --atlas-surface: color-mix(in srgb, Canvas 96%, currentColor 4%);
 }
 
-.atlas-entry-card {
-  min-width: 0;
-}
-
-.atlas-entry-tile-primary {
+.atlas-browser-header {
+  align-items: flex-start;
   display: flex;
-  align-items: baseline;
+  gap: 1rem;
   justify-content: space-between;
+}
+
+.atlas-browser-header h1 {
+  margin-bottom: 0.35rem;
+}
+
+.atlas-eyebrow {
+  color: var(--atlas-muted);
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem;
+}
+
+.atlas-search-form {
+  border-block: 1px solid var(--atlas-border);
+  margin-block: 1.25rem 1.75rem;
+  padding-block: 1rem;
+}
+
+.atlas-search-label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+
+.atlas-search-controls {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.atlas-search-controls input[type="search"] {
+  flex: 1 1 22rem;
+  font: inherit;
+  min-height: 2.65rem;
+  padding: 0.55rem 0.7rem;
+}
+
+.atlas-browser-section {
+  margin-top: 1.5rem;
+}
+
+.atlas-section-heading {
+  margin-bottom: 0.9rem;
+}
+
+.atlas-section-heading h2 {
+  margin-bottom: 0.25rem;
+}
+
+.atlas-section-heading p {
+  color: var(--atlas-muted);
+  margin: 0;
+}
+
+.atlas-region-grid,
+.atlas-polity-grid {
+  display: grid;
   gap: 0.8rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+}
+
+.atlas-region-card,
+.atlas-polity-card,
+.atlas-period-row {
+  border: 1px solid var(--atlas-border);
+  border-radius: 0.65rem;
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 120ms ease, transform 120ms ease, background 120ms ease;
+}
+
+.atlas-region-card:hover,
+.atlas-polity-card:hover,
+.atlas-period-row:hover {
+  background: var(--atlas-surface);
+  border-color: color-mix(in srgb, currentColor 38%, transparent);
+  transform: translateY(-1px);
+}
+
+.atlas-region-card {
+  display: grid;
+  gap: 0.35rem;
+  min-height: 8rem;
+  padding: 1rem;
+}
+
+.atlas-region-card strong {
+  font-size: 1.18rem;
+}
+
+.atlas-region-card span,
+.atlas-region-card small,
+.atlas-period-row span,
+.atlas-period-row small {
+  color: var(--atlas-muted);
+}
+
+.atlas-period-list {
+  display: grid;
+  gap: 0.55rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.atlas-period-row {
+  align-items: baseline;
+  display: grid;
+  gap: 0.35rem 1rem;
+  grid-template-columns: minmax(9rem, 1fr) auto auto;
+  padding: 0.8rem 0.9rem;
+}
+
+.atlas-period-row strong {
+  font-family: var(--han-font-stack);
+  font-size: 1.05rem;
+}
+
+.atlas-polity-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 8.5rem;
+  padding: 0.85rem 0.9rem;
+}
+
+.atlas-polity-card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.atlas-polity-card-aliases {
+  color: var(--atlas-muted);
+  font-size: 0.86rem;
+  margin-top: 0.35rem;
+}
+
+.atlas-polity-card-footer {
+  color: var(--atlas-muted);
+  font-size: 0.82rem;
+  margin-top: auto;
+  padding-top: 0.75rem;
 }
 
 .atlas-entry-hanzi,
-.atlas-heading-hanzi {
+.atlas-heading-hanzi,
+.atlas-polity-card-title {
   font-family: var(--han-font-stack);
-}
-
-.atlas-entry-hanzi {
-  font-size: 1.45rem;
 }
 
 .atlas-heading-hanzi {
@@ -38,7 +177,7 @@
 }
 
 .atlas-fact-list dt {
-  color: #596473;
+  color: var(--atlas-muted);
   font-size: 0.82rem;
   font-weight: 700;
 }
@@ -48,53 +187,136 @@
   overflow-wrap: anywhere;
 }
 
-.atlas-browser-header {
-  align-items: flex-start;
+.atlas-corpus-entry-point,
+.atlas-corpus-summary {
+  border-top: 1px solid var(--atlas-border);
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+}
+
+.atlas-compact-list {
+  display: grid;
+  gap: 0.45rem;
+  list-style: none;
+  margin: 0 0 1.25rem;
+  padding: 0;
+}
+
+.atlas-compact-list li {
+  align-items: baseline;
   display: flex;
-  gap: 1rem;
+  gap: 0.75rem;
   justify-content: space-between;
 }
 
-.atlas-browser-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
+.atlas-compact-list small {
+  color: var(--atlas-muted);
+  flex: 0 0 auto;
 }
 
-.atlas-node-kind {
-  color: #596473;
-  font-size: 0.8rem;
-  font-weight: 700;
-  text-transform: none;
-}
-
-.atlas-entry-tile-footer {
-  min-height: 1.4rem;
-}
-
-.atlas-entry-card-actions {
-  font-size: 0.88rem;
-  padding: 0.55rem 0.75rem 0.1rem;
+.atlas-work-list a {
+  overflow-wrap: anywhere;
 }
 
 .atlas-empty-folder {
   margin-top: 1.5rem;
 }
 
-.atlas-corpus-folder-list {
-  display: grid;
-  gap: 0.35rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.atlas-corpus-folder-list a {
-  overflow-wrap: anywhere;
-}
-
 @media (max-width: 48rem) {
-  .atlas-browser-header {
+  .atlas-browser-header,
+  .atlas-period-row {
     display: grid;
+  }
+
+  .atlas-period-row {
+    grid-template-columns: 1fr;
+  }
+
+  .atlas-compact-list li {
+    align-items: flex-start;
+    display: grid;
+    gap: 0.15rem;
+  }
+}
+
+/* Polity identity is presented as a written name, not as a database card. */
+.atlas-identity-frame {
+  display: grid;
+  gap: 1rem;
+}
+
+.atlas-script-display {
+  display: grid;
+  gap: 0.7rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.atlas-script-sample {
+  margin: 0;
+  min-width: 0;
+  text-align: center;
+}
+
+.atlas-script-sample--regular {
+  grid-column: 1 / -1;
+}
+
+.atlas-script-display:not(.atlas-script-display--with-oracle) .atlas-script-sample--seal {
+  grid-column: 1 / -1;
+}
+
+.atlas-script-glyph {
+  align-items: center;
+  border: 1px solid var(--atlas-border);
+  border-radius: 0.65rem;
+  display: flex;
+  font-size: clamp(2.35rem, 4vw, 3.5rem);
+  justify-content: center;
+  line-height: 1;
+  min-height: 5.25rem;
+  overflow: hidden;
+  padding: 0.5rem;
+  white-space: nowrap;
+}
+
+.atlas-script-sample--regular .atlas-script-glyph {
+  font-size: clamp(3.75rem, 7vw, 5.5rem);
+  min-height: 8.25rem;
+  padding: 0.65rem;
+}
+
+.atlas-script-glyph--regular {
+  font-family: var(--han-font-stack);
+}
+
+.atlas-script-glyph--long {
+  font-size: clamp(1.85rem, 3.2vw, 2.8rem);
+}
+
+.atlas-script-sample--regular .atlas-script-glyph--long {
+  font-size: clamp(2.8rem, 5.2vw, 4.3rem);
+}
+
+.atlas-script-sample figcaption {
+  color: var(--atlas-muted);
+  font-size: 0.82rem;
+  margin-top: 0.35rem;
+}
+
+.atlas-name-aliases {
+  border-top: 1px solid var(--atlas-border);
+  margin: 0;
+  padding-top: 0.9rem;
+}
+
+.atlas-fact-list--compact {
+  border-top: 1px solid var(--atlas-border);
+  margin-top: 0;
+  padding-top: 0.95rem;
+}
+
+@media (max-width: 24rem) {
+  .atlas-script-display {
+    grid-template-columns: 1fr;
   }
 }

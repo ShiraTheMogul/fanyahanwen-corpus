@@ -12,6 +12,8 @@ switcher can request. It does not alter or overwrite the source TTF.
 from __future__ import annotations
 
 import argparse
+import hashlib
+import json
 import shutil
 import sys
 from pathlib import Path
@@ -62,6 +64,15 @@ def parse_args() -> argparse.Namespace:
             "app/assets/fonts/oracular/Oracular-Web-Regular.woff2"
         ),
     )
+    parser.add_argument(
+        "--coverage-output",
+        type=Path,
+        default=None,
+        help=(
+            "JSON file recording the Unicode mappings in the finished webfont. "
+            "Default: coverage.json beside --output."
+        ),
+    )
     return parser.parse_args()
 
 
@@ -94,6 +105,21 @@ def human_size(number: int) -> str:
     raise AssertionError("unreachable")
 
 
+def write_coverage(font_path: Path, codepoints: set[int], output: Path) -> None:
+    payload = {
+        "version": 1,
+        "font_file": font_path.name,
+        "font_sha256": hashlib.sha256(font_path.read_bytes()).hexdigest(),
+        "codepoints": sorted(codepoints),
+    }
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    print(f"Coverage: {output} ({len(codepoints):,} Unicode mappings)")
+
+
 def copy_license(source: Path, output_dir: Path) -> None:
     candidates = (
         source.with_name("LICENSE.txt"),
@@ -110,7 +136,7 @@ def copy_license(source: Path, output_dir: Path) -> None:
     print("Warning: no licence file was found beside the source TTF.")
 
 
-def build(source: Path, output: Path) -> None:
+def build(source: Path, output: Path, coverage_output: Path | None = None) -> None:
     if not source.is_file():
         raise SystemExit(f"Source font does not exist: {source}")
     if source.suffix.lower() != ".ttf":
@@ -176,13 +202,19 @@ def build(source: Path, output: Path) -> None:
     print(f"Output glyphs: {len(result_font.getGlyphOrder()):,}")
     print(f"Output Unicode mappings: {len(result_cmap):,}")
 
+    coverage_path = coverage_output or output.with_name("coverage.json")
+    write_coverage(output, set(result_cmap), coverage_path)
     copy_license(source, output.parent)
 
 
 if __name__ == "__main__":
     arguments = parse_args()
     try:
-        build(arguments.source.expanduser().resolve(), arguments.output.expanduser())
+        build(
+            arguments.source.expanduser().resolve(),
+            arguments.output.expanduser(),
+            arguments.coverage_output.expanduser() if arguments.coverage_output else None,
+        )
     except Exception as exc:  # keep the terminal error concrete and readable
         print(f"Error: {exc}", file=sys.stderr)
         raise

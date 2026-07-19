@@ -9,17 +9,21 @@ module AtlasHelper
   end
 
 
-  def atlas_hierarchy_path_for(node)
-    return "/atlas" if node.root? || node.path.blank?
-
-    "/atlas?#{ { path: node.path }.to_query }"
+  def atlas_macro_region_path(macro_region_id)
+    "/atlas?#{ { macro_region: macro_region_id }.to_query }"
   end
 
-  def atlas_node_destination(node, entry: nil)
-    return atlas_hierarchy_path_for(node) if node.children.any?
-    return atlas_entry_path_for(entry) if entry
+  def atlas_period_path(macro_region_id, period_id)
+    "/atlas?#{ { macro_region: macro_region_id, period: period_id }.to_query }"
+  end
 
-    atlas_hierarchy_path_for(node)
+  def atlas_search_path(query:, macro_region_id: nil, period_id: nil)
+    values = { q: query, macro_region: macro_region_id, period: period_id }.compact
+    "/atlas?#{values.to_query}"
+  end
+
+  def atlas_corpus_document_path(path)
+    corpus_viewer_path(path.to_s.split("/"), format: nil)
   end
 
   def atlas_folder_search_url(node_or_path)
@@ -116,9 +120,9 @@ module AtlasHelper
       original_year = canonical_metadata["published_at"].to_s[/\A\d{4}/]
       translation_note = " (#{atlas_apa_names(translators)}, Trans.)"
       original_note = original_year.present? ? " (Original work published #{original_year})" : ""
-      "#{author_text}. (#{year}). #{title}#{translation_note}. In Fanya Hanwen Historical Atlas. Fanya Hanwen Corpus.#{original_note} #{request_url}"
+      "#{author_text}. (#{year}). #{title}#{translation_note}. In Fanya Hanwen Atlas. Fanya Hanwen Corpus.#{original_note} #{request_url}"
     else
-      "#{author_text}. (#{year}). #{title}. In Fanya Hanwen Historical Atlas. Fanya Hanwen Corpus. #{request_url}"
+      "#{author_text}. (#{year}). #{title}. In Fanya Hanwen Atlas. Fanya Hanwen Corpus. #{request_url}"
     end
   end
 

@@ -4,24 +4,41 @@ class AtlasController < ApplicationController
   helper AtlasHelper
 
   def index
-    @store = Atlas::EntryStore.default
-    @store.validate!
-    @hierarchy = Atlas::CorpusHierarchy.default
-    @hierarchy.validate!(entry_store: @store)
-    @node = @hierarchy.find!(params[:path])
-    @breadcrumbs = @hierarchy.ancestors(@node)
-    @node_entry = @node.entry_id && @store.find(@node.entry_id)
-    @child_rows = @node.children.map do |child|
-      entry = child.entry_id && @store.find(child.entry_id)
-      {
-        node: child,
-        entry: entry,
-        published: entry && @store.article_exists?(entry)
-      }
+    @catalogue = Atlas::Catalogue.default
+    resolve_legacy_path!
+    return if performed?
+
+    @query = params[:q].to_s.strip
+    @macro_region_id = params[:macro_region].to_s.presence
+    @period_id = params[:period].to_s.presence
+
+    @macro_region = @macro_region_id && @catalogue.macro_region!(@macro_region_id)
+    @period = if @period_id
+                raise ActiveRecord::RecordNotFound, "A period requires a macro-region" unless @macro_region
+                @catalogue.period!(@macro_region_id, @period_id)
+              end
+
+    if @query.present?
+      @view_mode = :search
+      @entries = @catalogue.search(
+        @query,
+        macro_region_id: @macro_region_id,
+        period_id: @period_id
+      )
+    elsif @period
+      @view_mode = :period
+      @entries = @catalogue.entries_for(macro_region_id: @macro_region_id, period_id: @period_id)
+    elsif @macro_region
+      @view_mode = :macro_region
+      @periods = @catalogue.periods_for(@macro_region_id)
+    else
+      @view_mode = :landing
+      @macro_regions = @catalogue.macro_regions
     end
   end
 
   def show
+    @catalogue = Atlas::Catalogue.default
     @store = Atlas::EntryStore.default
     @entry = @store.find!(params[:id])
     @article = @store.load(@entry, locale: I18n.locale)
@@ -29,6 +46,7 @@ class AtlasController < ApplicationController
   end
 
   def preview
+    @catalogue = Atlas::Catalogue.default
     @store = Atlas::EntryStore.default
     @entry = @store.find!(params[:entry_id])
     requested_locale = params[:locale].presence || I18n.locale.to_s
@@ -66,6 +84,38 @@ class AtlasController < ApplicationController
 
   private
 
+  def resolve_legacy_path!
+    path = params[:path].to_s
+    return if path.blank? || params[:macro_region].present? || params[:period].present?
+
+    root, period, polity = path.split("/", 3)
+    macro_region = @catalogue.macro_region_for_root(root)
+    raise ActiveRecord::RecordNotFound, "Unknown atlas path" if macro_region.blank?
+
+    if polity.present?
+      entry = @catalogue.find_by_corpus(root: root, period: period, polity: polity)
+      if entry
+        redirect_to "/atlas/#{ERB::Util.url_encode(entry.id)}", status: :moved_permanently
+        return
+      end
+
+      # Older corpus navigation sometimes inserted a broad polity folder between
+      # the corpus root and its actual period, for example
+      # 日本漢文/日本/江戸時代. Treat the final component as the period when it
+      # is present in the compiled catalogue.
+      if @catalogue.period(macro_region, polity)
+        params[:macro_region] = macro_region
+        params[:period] = polity
+        return
+      end
+
+      raise ActiveRecord::RecordNotFound, "Unknown atlas polity or period"
+    end
+
+    params[:macro_region] = macro_region
+    params[:period] = period if period.present?
+  end
+
   def prepare_show
     @canonical_article = if @article.translated?
                            @store.load(@entry, locale: Atlas::EntryStore::SOURCE_LOCALE)
@@ -81,10 +131,12 @@ class AtlasController < ApplicationController
     @submission_locale = I18n.locale.to_s
     @submission_markdown = @store.submission_markdown_for(@entry, locale: @submission_locale)
 
-    @hierarchy = Atlas::CorpusHierarchy.default
-    @placement_nodes = @entry.placements.filter_map { |path| @hierarchy.find(path) }
-    @primary_placement = @placement_nodes.first
-    @atlas_breadcrumbs = @primary_placement ? @hierarchy.ancestors(@primary_placement) : []
+    @primary_macro_region_id = @entry.macro_regions.first
+    @primary_macro_region = @primary_macro_region_id && @catalogue.macro_region(@primary_macro_region_id)
+    @primary_period_id = @entry.periods.first
+    @primary_period = if @primary_macro_region_id && @primary_period_id
+                        @catalogue.period(@primary_macro_region_id, @primary_period_id)
+                      end
   end
 
   def submission_action

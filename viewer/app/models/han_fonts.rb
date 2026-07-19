@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require "digest"
+require "json"
+
 # Discover available Han-script fonts from app/assets/fonts and expose them
 # to the UI (rightbar) and to a dynamic @font-face injector in the layout.
 #
@@ -73,6 +76,54 @@ module HanFonts
     end
   end
 
+  # Return true only when the selected font explicitly maps every Han
+  # character in +text+. Punctuation and Latin text are ignored because the
+  # browser may correctly render those through an ordinary fallback font.
+  #
+  # Coverage is supplied by a small sidecar generated from the actual webfont.
+  # This avoids the misleading CSS behaviour where a missing historical glyph
+  # silently falls back to a modern font.
+  def covers_text?(key, text)
+    characters = text.to_s.each_char.select { |character| character.match?(/\p{Han}/) }
+    return false if characters.empty?
+
+    coverage = coverage_for(key)
+    return false if coverage.empty?
+
+    characters.all? { |character| coverage.key?(character.ord) }
+  end
+
+  def coverage_for(key)
+    normalised = normalise_key(key)
+    face = faces.find { |font_face| font_face.key == normalised }
+    return {} unless face
+
+    font_path = Rails.root.join("app", "assets", "fonts", face.asset_path)
+    coverage_path = font_path.dirname.join("coverage.json")
+    return {} unless font_path.file? && coverage_path.file?
+
+    stamp = [font_path.mtime.to_f, coverage_path.mtime.to_f]
+    @coverage_cache ||= {}
+    cached = @coverage_cache[normalised]
+    return cached.fetch(:values) if cached && cached.fetch(:stamp) == stamp
+
+    payload = JSON.parse(coverage_path.read(encoding: "UTF-8"))
+    expected_font = payload.fetch("font_file").to_s
+    expected_digest = payload.fetch("font_sha256").to_s
+
+    return {} unless expected_font == font_path.basename.to_s
+    return {} unless Digest::SHA256.file(font_path).hexdigest == expected_digest
+
+    values = Array(payload.fetch("codepoints")).each_with_object({}) do |codepoint, output|
+      output[Integer(codepoint)] = true
+    end.freeze
+
+    @coverage_cache[normalised] = { stamp: stamp, values: values }
+    values
+  rescue JSON::ParserError, KeyError, ArgumentError, Errno::ENOENT
+    {}
+  end
+
   # Allowed scopes for applying the selected Han font.
   # - :all       applies to all Han text in main content + tooltip
   # - :headwords applies only to headwords (dictionary + tooltip)
@@ -92,6 +143,7 @@ def faces
   def refresh!
     @faces = discover_faces
     @credits_paths = nil
+    @coverage_cache = nil
   end
 
   # ---- internal ----

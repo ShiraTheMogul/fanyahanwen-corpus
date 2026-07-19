@@ -12,6 +12,9 @@ namespace :corpus_search do
     corpus_index = CorpusSearch::CorpusIndex.build!(manifest: manifest)
     puts "Built corpus index: #{corpus_index.document_count} searchable documents, #{corpus_index.work_count} works, #{corpus_index.folder_tree.roots.length} corpus roots."
 
+    atlas_catalogue = Atlas::CatalogueBuilder.build!(manifest: manifest)
+    puts "Built atlas catalogue: #{atlas_catalogue.entry_count} polities across #{atlas_catalogue.macro_region_count} macro-regions and #{atlas_catalogue.period_count} periods."
+
     term_limit = Integer(ENV.fetch("CORPUS_SEARCH_MANIFEST_TERM_LIMIT", CorpusSearch::WarmTermList::DEFAULT_LIMIT.to_s))
     cache_store = CorpusSearch::CacheStore.new
     grammar_store = Grammar::EntryStore.default
@@ -54,6 +57,9 @@ namespace :corpus_search do
     manifest = CorpusSearch::Manifest.load
     corpus_index = CorpusSearch::CorpusIndex.build!(manifest: manifest)
     puts "Built corpus index: #{corpus_index.document_count} searchable documents, #{corpus_index.work_count} works, #{corpus_index.folder_tree.roots.length} corpus roots."
+
+    atlas_catalogue = Atlas::CatalogueBuilder.build!(manifest: manifest)
+    puts "Built atlas catalogue: #{atlas_catalogue.entry_count} polities across #{atlas_catalogue.macro_region_count} macro-regions and #{atlas_catalogue.period_count} periods."
   end
 
   desc "Warm ranked, Grammar Wiki, and existing single-character term indexes"
@@ -273,7 +279,8 @@ namespace :corpus_search do
             next if raw.valid_encoding?
 
             relative = path.relative_path_from(root).to_s.tr("\\", "/")
-            invalid_count = raw.scrub("�").count("�")
+            replacement_character = [0xFFFD].pack("U")
+            invalid_count = raw.scrub(replacement_character).count(replacement_character)
             action = apply ? "repaired" : "invalid_utf8"
             rows << [action, relative, "Encoding::InvalidByteSequenceError", "invalid UTF-8 bytes", invalid_count]
 
