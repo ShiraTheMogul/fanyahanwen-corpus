@@ -220,6 +220,11 @@
       </label>
 
       <label>
+        <%= t("corpus_search.form.polity", default: "Polity") %>
+        <%= text_field_tag :polity, @query.metadata_filters["polity"], class: "corpus-search-input", placeholder: t("corpus_search.placeholders.polity", default: "商 / 周 / 大清...") %>
+      </label>
+
+      <label>
         <%= t("corpus_search.form.period") %>
         <%= text_field_tag :period, @query.metadata_filters["period"], class: "corpus-search-input", placeholder: t("corpus_search.placeholders.period") %>
       </label>

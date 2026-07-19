@@ -1,0 +1,49 @@
+.atlas-entry-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+}
+
+.atlas-entry-card {
+  min-width: 0;
+}
+
+.atlas-entry-tile-primary {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.atlas-entry-hanzi,
+.atlas-heading-hanzi {
+  font-family: var(--han-font-stack);
+}
+
+.atlas-entry-hanzi {
+  font-size: 1.45rem;
+}
+
+.atlas-heading-hanzi {
+  white-space: nowrap;
+}
+
+.atlas-fact-list {
+  display: grid;
+  gap: 0.8rem;
+  margin: 0;
+}
+
+.atlas-fact-list > div {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.atlas-fact-list dt {
+  color: #596473;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.atlas-fact-list dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}

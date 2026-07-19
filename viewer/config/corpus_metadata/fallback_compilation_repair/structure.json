@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "canonical_groups": {
+    "work_76620": {
+      "work_id": 76620,
+      "path": "中國漢文/clean/清朝/大清/欽定古今圖書集成",
+      "period": "清朝",
+      "polity": "大清",
+      "mode": "ordinary"
+    },
+    "work_69565": {
+      "work_id": 69565,
+      "path": "中國漢文/clean/明朝/大明/永樂大典",
+      "period": "明朝",
+      "polity": "大明",
+      "mode": "ordinary"
+    },
+    "work_51009": {
+      "work_id": 51009,
+      "path": "中國漢文/clean/宋朝/北宋/冊府元龜",
+      "mode": "ordinary"
+    },
+    "work_5445": {
+      "work_id": 5445,
+      "path": "中國漢文/clean/周朝/東周/戰國時代/原不詳/國語",
+      "mode": "ordinary"
+    },
+    "work_75266": {
+      "work_id": 75266,
+      "path": "中國漢文/clean/清朝/大清/四庫全書",
+      "mode": "ordinary"
+    }
+  },
+  "qtw": {
+    "title": "全唐文",
+    "canonical_work_id": 8563,
+    "alias_work_id": 74785,
+    "source_group": "work_8563",
+    "duplicate_group": "work_74785",
+    "source_path": "中國漢文/clean/唐朝/全唐文",
+    "target_path": "中國漢文/clean/清朝/大清/全唐文",
+    "period": "清朝",
+    "polity": "大清",
+    "filename_width": 4,
+    "duplicate_volume": 1000
+  },
+  "qts": {
+    "title": "全唐詩",
+    "canonical_work_id": 8564,
+    "alias_work_id": 74786,
+    "subset_group": "work_8564",
+    "complete_group": "work_74786",
+    "source_path": "中國漢文/clean/唐朝/全唐詩",
+    "target_path": "中國漢文/clean/清朝/大清/全唐詩",
+    "period": "清朝",
+    "polity": "大清",
+    "filename_width": 4
+  },
+  "chuci": {
+    "work_id": 5480,
+    "root_path": "中國漢文/clean/周朝/東周/戰國時代/楚/楚辭",
+    "moves": [
+      {
+        "group_key": "orphan_008",
+        "document_id": 13280,
+        "target_file": "九思_亂曰.txt",
+        "title": "九思·亂曰",
+        "work_title": "九思",
+        "authors": [
+          "王逸"
+        ],
+        "period": "漢朝",
+        "polity": "漢"
+      },
+      {
+        "group_key": "orphan_009",
+        "document_id": 13292,
+        "target_file": "九懷_亂曰.txt",
+        "title": "九懷·亂曰",
+        "work_title": "九懷",
+        "authors": [
+          "王褒"
+        ],
+        "period": "漢朝",
+        "polity": "漢"
+      }
+    ]
+  },
+  "base_metadata": {
+    "work_76620": {
+      "file": "base_metadata/work_76620.json",
+      "sha256": "0cf5f33c62852729bc010271973b410a138219b54a48e19271b40642e64592d1",
+      "work_id": 76620,
+      "title": "欽定古今圖書集成"
+    },
+    "work_69565": {
+      "file": "base_metadata/work_69565.json",
+      "sha256": "c2618217b3dc8ccf0a52429ecd0c835ef66df469e2ff57dd11872b4ab86c35c5",
+      "work_id": 69565,
+      "title": "永樂大典"
+    },
+    "work_8563": {
+      "file": "base_metadata/work_8563.json",
+      "sha256": "c5fa6a6f2e3a7f26d209ef732a05073cf7f86532ab5aa411ad4a7ce16010f0d6",
+      "work_id": 8563,
+      "title": "全唐文"
+    },
+    "work_74786": {
+      "file": "base_metadata/work_74786.json",
+      "sha256": "186a585583748eea83d22fdbc2ac3f7bf46693bec7cfa966aceda8cdcc52e304",
+      "work_id": 74786,
+      "title": "全唐詩"
+    },
+    "work_8564": {
+      "file": "base_metadata/work_8564.json",
+      "sha256": "f2d4c78d0b6894bd82eb5380551a82bb30fcd483fb2b81a9b702b0d6e7010725",
+      "work_id": 8564,
+      "title": "全唐詩"
+    },
+    "work_51009": {
+      "file": "base_metadata/work_51009.json",
+      "sha256": "8cb6f637a5bb9ff47fbaa2e9813b2f2789bd17526cbddf503bf8bc9d0292842d",
+      "work_id": 51009,
+      "title": "冊府元龜"
+    },
+    "work_5445": {
+      "file": "base_metadata/work_5445.json",
+      "sha256": "5590eacf0a8a50254b41212106c055a426e33917f16c0f73b7d4e77042be405b",
+      "work_id": 5445,
+      "title": "國語"
+    },
+    "orphan_008": {
+      "file": "base_metadata/orphan_008.json",
+      "sha256": "7eb56f0848f15e277da9d27908249b7482cb4181dcd3e67de7852774566cfd57",
+      "work_id": 5480,
+      "title": "楚辭"
+    },
+    "orphan_009": {
+      "file": "base_metadata/orphan_009.json",
+      "sha256": "7eb56f0848f15e277da9d27908249b7482cb4181dcd3e67de7852774566cfd57",
+      "work_id": 5480,
+      "title": "楚辭"
+    },
+    "work_74785": {
+      "file": "base_metadata/work_74785.json",
+      "sha256": "8d262112060eec84be2c364c9bae24aa2305af57d7195643a948f95302cb8f72",
+      "work_id": 74785,
+      "title": "全唐文"
+    },
+    "work_75266": {
+      "file": "base_metadata/work_75266.json",
+      "sha256": "c15ba1d76ce69c0851a9fe5cc651ccc2689dcd968c2ea5d377389cbe043bb897",
+      "work_id": 75266,
+      "title": "四庫全書"
+    }
+  },
+  "expected_fallback_documents": 13759,
+  "expected_final_canonical_documents": 13420
+}

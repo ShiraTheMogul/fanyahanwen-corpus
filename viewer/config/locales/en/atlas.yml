@@ -1,0 +1,107 @@
+en:
+  atlas:
+    title: Fanya Hanwen Historical Atlas
+    breadcrumbs: Historical Atlas navigation
+    preview_banner: Preview — this version has not been published
+    translation_fallback: This article is not yet available in the selected language, so the English source article is shown.
+    kinds:
+      state: State or polity
+    index:
+      introduction: Historical states and polities connected to texts, people, places, and searchable evidence in the corpus.
+      no_entries: No atlas entries are available.
+      date_unknown: Date uncertain
+    missing:
+      heading: Article needed
+      explanation: The atlas metadata exists, but the article has not yet been written.
+      suggest: Suggest an article
+    searches:
+      heading: Search the corpus
+      explanation: These prepared searches open the corpus with useful names, variants, and scope filters already filled in. Common characters may still produce unrelated matches; narrowly scoped searches answer a different question from broad mention searches.
+      entry_label: Find %{headword} in the corpus
+    related:
+      heading: Related atlas entries
+    metadata:
+      heading: Atlas data
+      entry_type: Entry type
+      timespan: Timespan
+      capitals: Capitals
+      notable_authors: Notable authors
+      notable_works: Notable works
+      territory_note: Location note
+      also_known_as: Also known as
+      present: present
+    credits:
+      heading: Credits and publication details
+      anonymous: Anonymous
+      first_published: First published
+      last_updated: Last updated
+      licence: Licence
+      revision: Revision
+      roles:
+        author: Author
+        contributor: Contributor
+        editor: Editor
+        translator: Translator
+    citation:
+      heading: Cite this page
+      apa: APA
+    submission:
+      create_heading: Suggest an article
+      edit_heading: Suggest an edit or translation
+      explanation: Write or revise the article in Markdown, preview it in the full atlas frame, and submit it through the existing ticket workflow for editorial review.
+      language: Article language
+      action: Submission type
+      actions:
+        create: Create article
+        edit: Suggest an edit
+        translate: Submit a translation
+      public_name: Public name or pseudonym
+      orcid: ORCID (optional)
+      credit_role: Public credit
+      markdown: Article Markdown
+      snippets:
+        heading: Insert a template
+        explanation: Corpus quotations are inserted at the cursor. Preset searches are added to the YAML front matter automatically.
+        quote_button: Add corpus quotation
+        exact_button: Add one-term search
+        alternatives_button: Add OR search
+        proximity_button: Add proximity search
+        guide_heading: What the fields do
+        quote_comment: path opens the corpus source; text is the quotation; highlight marks matching text yellow; source is the displayed source name.
+        exact_comment: exact searches for one uninterrupted string; term_a is the text to find.
+        alternatives_comment: alternatives searches for any listed spelling or name.
+        proximity_comment: proximity finds term_a and term_b near one another; distance is their maximum separation.
+        path_placeholder: Place the corpus file path here
+        text_placeholder: Place the quoted text here
+        highlight_placeholder: Place the text to highlight yellow here
+        source_placeholder: Place the displayed source title here
+        second_term_placeholder: Place another name or search term here
+        path_help: The corpus file path. It makes the source caption open the quoted text in the corpus viewer.
+        text_help: The passage shown to the reader.
+        highlight_help: Text within the passage that should be marked yellow. Separate alternatives with a vertical bar (|).
+        source_help: The readable source title shown beneath the quotation.
+        terms_help: A list used by an alternatives search. A result may contain any one of the listed names.
+        polity_help: An optional metadata filter. It restricts results to documents assigned to one polity; this is useful for common characters but changes the historical question being asked.
+        distance_help: The greatest permitted distance between proximity terms, measured in characters.
+      preview: Preview
+      download_template: Download Markdown template
+      summary: Short summary
+      reasoning: Reasoning or editorial note
+      evidence_links: Evidence links, one per line
+      evidence_files: Supporting files
+      contact_heading: Private contact details (optional)
+      contact_explanation: These details are stored privately by the ticket system and are not used as the public byline.
+      contact_name: Contact name
+      contact_email: Email
+      contact_notes: Contact note
+      cc_by_agreement: I wrote this material or have the right to submit it, and I agree to its publication under CC BY.
+      store_key: Store this ticket key on this device
+      submit: Submit for review
+      submitting: Submitting…
+      success: The atlas ticket was created. Save the key before leaving this page.
+      error_prefix: Submission failed
+      change_language_warning: Changing the article language will replace the Markdown currently in the editor. Continue?
+      ticket_id: Ticket ID
+      ticket_key: Ticket key
+      copy_key: Copy key
+      download_key: Download key

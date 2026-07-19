@@ -53,6 +53,7 @@
 <% companion_ticket = annotation_meta["kind"] == "companion_material_submission" %>
 <% annotation_system_ticket = %w[annotation_system_submission derived_tradition_submission].include?(annotation_meta["kind"]) %>
 <% grammar_ticket = annotation_meta["kind"] == "grammar_entry_submission" %>
+<% atlas_ticket = annotation_meta["kind"] == "atlas_article_submission" %>
 
 <h2>Actions</h2>
 
@@ -168,6 +169,45 @@
     <details class="grammar-moderator-source">
       <summary>Raw submitted Markdown</summary>
       <pre><%= h(@grammar_proposed_document.raw) %></pre>
+    </details>
+  <% else %>
+    <p>(The proposed Markdown attachment could not be loaded.)</p>
+  <% end %>
+<% end %>
+
+<% if atlas_ticket %>
+  <hr>
+
+  <h2>Historical Atlas proposal</h2>
+  <p>
+    <% if @atlas_entry %>
+      <strong>Entry:</strong> <%= link_to @atlas_entry.search_label, atlas_entry_path_for(@atlas_entry), target: "_blank", rel: "noopener noreferrer" %><br>
+    <% end %>
+    <strong>Language:</strong> <%= annotation_meta["locale"] %><br>
+    <strong>Submission type:</strong> <%= annotation_meta["submission_action"].to_s.humanize %><br>
+    <strong>Target file:</strong> <code><%= annotation_meta["target_path"] %></code><br>
+    <strong>Licence:</strong> <%= annotation_meta["licence"] %>
+  </p>
+
+  <% atlas_credit = annotation_meta["credit"].is_a?(Hash) ? annotation_meta["credit"] : {} %>
+  <p>
+    <strong>Public credit:</strong>
+    <%= atlas_credit["role"].to_s.humanize %>
+    <% if atlas_credit["name"].present? %> — <%= atlas_credit["name"] %><% end %>
+    <% if atlas_credit["orcid"].present? %>
+      — <%= link_to "ORCID #{atlas_credit['orcid']}", "https://orcid.org/#{ERB::Util.url_encode(atlas_credit['orcid'])}", target: "_blank", rel: "noopener noreferrer" %>
+    <% end %>
+  </p>
+
+  <% if @atlas_proposed_error.present? %>
+    <p class="grammar-notice"><strong>Preview error:</strong> <%= @atlas_proposed_error %></p>
+  <% elsif @atlas_proposed_document %>
+    <section class="grammar-article grammar-moderator-preview">
+      <%= atlas_markdown(@atlas_proposed_document) %>
+    </section>
+    <details class="grammar-moderator-source">
+      <summary>Raw submitted Markdown</summary>
+      <pre><%= h(@atlas_proposed_document.raw) %></pre>
     </details>
   <% else %>
     <p>(The proposed Markdown attachment could not be loaded.)</p>

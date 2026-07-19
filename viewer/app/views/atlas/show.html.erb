@@ -1,0 +1,144 @@
+<div class="grammar-page grammar-show atlas-show" data-controller="grammar-edit-panel">
+  <% if @preview %>
+    <div class="grammar-preview-banner"><%= t("atlas.preview_banner") %></div>
+  <% end %>
+
+  <nav class="grammar-breadcrumbs" aria-label="<%= t("atlas.breadcrumbs") %>">
+    <%= link_to t("atlas.title"), "/atlas" %>
+    <span aria-hidden="true">›</span>
+    <span><%= @article.metadata["title"].presence || @entry.title %></span>
+  </nav>
+
+  <header class="grammar-entry-header atlas-entry-header">
+    <div>
+      <dl class="grammar-entry-classification">
+        <div>
+          <dt><%= t("atlas.metadata.entry_type") %></dt>
+          <dd><span class="grammar-chip"><%= t("atlas.kinds.#{@entry.kind}", default: @entry.kind.humanize) %></span></dd>
+        </div>
+        <% if (timespan = atlas_timespan_label(@entry)).present? %>
+          <div>
+            <dt><%= t("atlas.metadata.timespan") %></dt>
+            <dd><span class="grammar-chip"><%= timespan %></span></dd>
+          </div>
+        <% end %>
+      </dl>
+      <h1><%= @article.metadata["title"].presence || @entry.title %><% if @entry.hanzi.present? %> <span class="atlas-heading-hanzi"><%= @entry.hanzi %></span><% end %></h1>
+      <% if @entry.aliases.any? %>
+        <p class="grammar-muted"><%= t("atlas.metadata.also_known_as") %>: <%= @entry.aliases.join(" · ") %></p>
+      <% end %>
+    </div>
+  </header>
+
+  <% if @article.fallback %>
+    <p class="grammar-notice"><%= t("atlas.translation_fallback") %></p>
+  <% end %>
+
+  <div class="grammar-entry-layout atlas-entry-layout">
+    <main class="grammar-article">
+      <% if @article.published? %>
+        <%= atlas_markdown(@article.document) %>
+      <% else %>
+        <section class="grammar-missing-article">
+          <h2><%= t("atlas.missing.heading") %></h2>
+          <p><%= t("atlas.missing.explanation") %></p>
+          <div class="grammar-submission-actions">
+            <a href="#suggest-article" class="grammar-btn" data-action="grammar-edit-panel#open"><%= t("atlas.missing.suggest") %></a>
+            <%= link_to t("atlas.submission.download_template"), atlas_template_path_for(@entry, locale: I18n.locale), class: "grammar-btn grammar-btn-secondary" %>
+          </div>
+        </section>
+      <% end %>
+
+      <% if @article_searches.any? %>
+        <section class="grammar-searches">
+          <h2><%= t("atlas.searches.heading") %></h2>
+          <p><%= t("atlas.searches.explanation") %></p>
+          <div class="grammar-search-buttons">
+            <% @article_searches.each do |search| %>
+              <% label = search["label"].presence || t("atlas.searches.entry_label", headword: @entry.hanzi.presence || @entry.title) %>
+              <%= link_to label, atlas_search_url(search), class: "grammar-btn grammar-btn-secondary" %>
+            <% end %>
+          </div>
+        </section>
+      <% end %>
+
+      <% if @related_entries.any? %>
+        <section class="grammar-related">
+          <h2><%= t("atlas.related.heading") %></h2>
+          <ul>
+            <% @related_entries.each do |related| %>
+              <li><%= link_to related.search_label, atlas_entry_path_for(related) %></li>
+            <% end %>
+          </ul>
+        </section>
+      <% end %>
+
+      <% if !@preview && @article.published? && @article.metadata.present? %>
+        <% source_contributors = @article.translated? ? Array(@canonical_article.metadata["contributors"]) : [] %>
+        <% translation_contributors = Array(@article.metadata["contributors"]) %>
+        <% contributors = (source_contributors + translation_contributors).select { |row| row.is_a?(Hash) }.uniq %>
+        <section class="grammar-accountability">
+          <h2><%= t("atlas.credits.heading") %></h2>
+
+          <% if contributors.any? %>
+            <div class="grammar-credit-list">
+              <% contributors.each do |contributor| %>
+                <%= atlas_contributor_label(contributor) %>
+              <% end %>
+            </div>
+          <% end %>
+
+          <dl class="grammar-dates">
+            <% if @article.metadata["published_at"].present? %>
+              <div><dt><%= t("atlas.credits.first_published") %></dt><dd><%= @article.metadata["published_at"] %></dd></div>
+            <% end %>
+            <% if @article.metadata["updated_at"].present? %>
+              <div><dt><%= t("atlas.credits.last_updated") %></dt><dd><%= @article.metadata["updated_at"] %></dd></div>
+            <% end %>
+            <div><dt><%= t("atlas.credits.licence") %></dt><dd><%= @article.metadata["licence"].presence || "CC BY" %></dd></div>
+            <div><dt><%= t("atlas.credits.revision") %></dt><dd><code><%= atlas_revision_label(@article) %></code></dd></div>
+          </dl>
+
+          <details class="grammar-citation">
+            <summary><%= t("atlas.citation.heading") %></summary>
+            <p><%= t("atlas.citation.apa") %></p>
+            <textarea readonly rows="5"><%= atlas_apa_citation(@article, request_url: request.original_url, canonical_article: @canonical_article) %></textarea>
+          </details>
+        </section>
+      <% end %>
+    </main>
+
+    <aside class="grammar-reference-column atlas-reference-column">
+      <section class="grammar-component-frame atlas-fact-frame">
+        <h2><%= t("atlas.metadata.heading") %></h2>
+        <dl class="atlas-fact-list">
+          <% if (timespan = atlas_timespan_label(@entry)).present? %>
+            <div><dt><%= t("atlas.metadata.timespan") %></dt><dd><%= timespan %></dd></div>
+          <% end %>
+          <% if @entry.capitals.any? %>
+            <div><dt><%= t("atlas.metadata.capitals") %></dt><dd><%= @entry.capitals.join(" · ") %></dd></div>
+          <% end %>
+          <% if @entry.notable_authors.any? %>
+            <div><dt><%= t("atlas.metadata.notable_authors") %></dt><dd><%= @entry.notable_authors.join(" · ") %></dd></div>
+          <% end %>
+          <% if @entry.notable_works.any? %>
+            <div><dt><%= t("atlas.metadata.notable_works") %></dt><dd><%= @entry.notable_works.join(" · ") %></dd></div>
+          <% end %>
+          <% if @entry.territory_note.present? %>
+            <div><dt><%= t("atlas.metadata.territory_note") %></dt><dd><%= @entry.territory_note %></dd></div>
+          <% end %>
+        </dl>
+      </section>
+    </aside>
+  </div>
+
+  <% unless @preview %>
+    <% submission_heading = @article.published? ? t("atlas.submission.edit_heading") : t("atlas.submission.create_heading") %>
+    <details id="suggest-article" class="grammar-submission-panel" data-grammar-edit-panel-target="panel">
+      <summary><%= submission_heading %></summary>
+      <div class="grammar-submission-panel-body">
+        <%= render "submission_form", entry: @entry, article: @article %>
+      </div>
+    </details>
+  <% end %>
+</div>

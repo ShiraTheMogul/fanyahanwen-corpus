@@ -2,16 +2,17 @@ module UnicodeRanges
 	HAN_RANGES = [
 		(0x3400..0x4DBF),   # Ext A
 		(0x4E00..0x9FFF),   # Unified
-		(0xF900..0xFAFF),   # Compatibility
-		(0x2F800..0x2FA1F),	# Supplement
+		(0xF900..0xFAFF),   # Compatibility Ideographs block
+		(0x2F800..0x2FA1D), # Compatibility Ideographs Supplement
 		(0x20000..0x2A6DF), # Ext B
 		(0x2A700..0x2B73F), # Ext C
 		(0x2B740..0x2B81D), # Ext D
 		(0x2B820..0x2CEAD), # Ext E
-		(0x2CEB0..0x2EBEF), # Ext F
-		(0x31350..0x323AF),	# Ext H
-		(0x2EBF0..0x2EE5D),	# Ext I
-		(0x323B0..0x33479)	# Ext J
+		(0x2CEB0..0x2EBE0), # Ext F
+		(0x2EBF0..0x2EE5D), # Ext I
+		(0x30000..0x3134A), # Ext G
+		(0x31350..0x323AF), # Ext H
+		(0x323B0..0x33479)  # Ext J
 	].freeze
 
 	HAN_LABELS = [
@@ -24,8 +25,9 @@ module UnicodeRanges
 		"Ext D",
 		"Ext E",
 		"Ext F",
-		"Ext H",
 		"Ext I",
+		"Ext G",
+		"Ext H",
 		"Ext J"
 	].freeze
 

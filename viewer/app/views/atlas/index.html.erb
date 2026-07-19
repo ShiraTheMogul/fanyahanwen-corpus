@@ -1,0 +1,30 @@
+<div class="grammar-page atlas-index">
+  <header class="grammar-page-header">
+    <div>
+      <h1><%= t("atlas.title") %></h1>
+      <p><%= t("atlas.index.introduction") %></p>
+    </div>
+  </header>
+
+  <% if @entries.empty? %>
+    <p class="grammar-empty"><%= t("atlas.index.no_entries") %></p>
+  <% else %>
+    <div class="grammar-entry-grid atlas-entry-grid">
+      <% @entries.each do |entry| %>
+        <article class="grammar-entry-cluster grammar-entry-cluster--article atlas-entry-card">
+          <%= link_to atlas_entry_path_for(entry), class: "grammar-entry-tile grammar-entry-tile--article" do %>
+            <span class="grammar-entry-tile-primary atlas-entry-tile-primary">
+              <span class="grammar-entry-tile-title grammar-entry-tile-title--article"><%= entry.title %></span>
+              <% if entry.hanzi.present? %>
+                <span class="atlas-entry-hanzi"><%= entry.hanzi %></span>
+              <% end %>
+            </span>
+            <span class="grammar-entry-tile-footer">
+              <span><%= atlas_timespan_label(entry) || t("atlas.index.date_unknown") %></span>
+            </span>
+          <% end %>
+        </article>
+      <% end %>
+    </div>
+  <% end %>
+</div>

@@ -51,6 +51,12 @@ Rails.application.routes.draw do
 	get  "/grammar/:id/template", to: "grammar#template", as: :grammar_entry_template
 	get  "/grammar/:id",          to: "grammar#show",     as: :grammar_entry
 	
+	  # Fanya Hanwen Historical Atlas
+	get  "/atlas",              to: "atlas#index",    as: :atlas
+	post "/atlas/preview",      to: "atlas#preview",  as: :preview_atlas_entry
+	get  "/atlas/:id/template", to: "atlas#template", as: :atlas_entry_template
+	get  "/atlas/:id",          to: "atlas#show",     as: :atlas_entry
+	
 	# The Textbook is currently unused.
 	# Textbook (interactive lessons)
 	get  "/textbook", to: "textbook#index", as: :textbook

@@ -16,6 +16,7 @@ module EditTickets
 
     def call
       return apply_grammar_entry_ticket! if grammar_entry_ticket?
+      return apply_atlas_article_ticket! if atlas_article_ticket?
       return apply_annotation_ticket! if annotation_ticket?
       return apply_companion_material_ticket! if companion_material_ticket?
       return apply_annotation_system_ticket! if annotation_system_ticket?
@@ -87,6 +88,40 @@ module EditTickets
       )
     rescue Grammar::SubmissionValidator::ValidationError => e
       raise "Grammar ticket is no longer valid: #{e.message}"
+    end
+
+    def atlas_article_ticket?
+      metadata["kind"] == "atlas_article_submission"
+    end
+
+    def apply_atlas_article_ticket!
+      proposed = find_proposed_text_attachment
+      raise "No proposed atlas Markdown attachment found." if proposed.nil?
+
+      credit = metadata["credit"].is_a?(Hash) ? metadata["credit"] : {}
+      result = Atlas::SubmissionValidator.new.validate!(
+        entry_id: metadata["entry_id"],
+        action: metadata["submission_action"],
+        locale: metadata["locale"],
+        raw_markdown: proposed.blob.download.to_s,
+        public_name: credit["name"],
+        orcid: credit["orcid"],
+        credit_role: credit["role"],
+        licence_agreed: true
+      )
+
+      expected_path = result.target_path.relative_path_from(Rails.root).to_s
+      supplied_path = metadata["target_path"].to_s
+      raise SecurityError, "Atlas ticket target does not match the atlas registry" unless supplied_path == expected_path
+
+      Atlas::Publisher.new(reviewer_name: @reviewer_name).publish!(
+        entry_id: result.entry.id,
+        locale: result.locale,
+        proposed_markdown: result.markdown,
+        credit: result.credit
+      )
+    rescue Atlas::SubmissionValidator::ValidationError => e
+      raise "Atlas ticket is no longer valid: #{e.message}"
     end
 
     def annotation_ticket?

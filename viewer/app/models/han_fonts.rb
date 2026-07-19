@@ -243,7 +243,7 @@ end
         family: family,
         asset_path: "wenjin_mincho/#{File.basename(p3)}",
         format: css_format_for(p3),
-        unicode_range: "U+2EBF0-2EE5D, U+31350-323AF, U+323B0-33479"
+        unicode_range: "U+2EBF0-2EE5D, U+30000-3134A, U+31350-323AF, U+323B0-33479"
       )
     end
 

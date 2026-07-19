@@ -1,0 +1,122 @@
+<% snippet_headword = entry.hanzi.presence || entry.title %>
+<% snippets = {
+     quote: "<!-- #{t("atlas.submission.snippets.quote_comment")} -->\n{% corpus_quote path=\"#{t("atlas.submission.snippets.path_placeholder")}\" text=\"#{t("atlas.submission.snippets.text_placeholder")}\" highlight=\"#{t("atlas.submission.snippets.highlight_placeholder")}\" source=\"#{t("atlas.submission.snippets.source_placeholder")}\" %}",
+     exact_search: "  # #{t("atlas.submission.snippets.exact_comment")}\n  - mode: exact\n    term_a: \"#{snippet_headword}\"",
+     alternatives_search: "  # #{t("atlas.submission.snippets.alternatives_comment")}\n  - mode: alternatives\n    terms:\n      - \"#{snippet_headword}\"\n      - \"#{t("atlas.submission.snippets.second_term_placeholder")}\"\n    context: 30",
+     proximity_search: "  # #{t("atlas.submission.snippets.proximity_comment")}\n  - mode: proximity\n    term_a: \"#{snippet_headword}\"\n    term_b: \"#{t("atlas.submission.snippets.second_term_placeholder")}\"\n    distance: 200\n    order: either\n    context: 20"
+   } %>
+<section class="grammar-submission grammar-submission--embedded"
+         data-controller="atlas-submission"
+         data-atlas-submission-entry-id-value="<%= entry.id %>"
+         data-atlas-submission-published-locales-value="<%= @published_locales.to_json %>"
+         data-atlas-submission-source-locale-value="<%= Atlas::EntryStore::SOURCE_LOCALE %>"
+         data-atlas-submission-submitting-message-value="<%= t("atlas.submission.submitting") %>"
+         data-atlas-submission-success-message-value="<%= t("atlas.submission.success") %>"
+         data-atlas-submission-error-prefix-value="<%= t("atlas.submission.error_prefix") %>"
+         data-atlas-submission-change-language-warning-value="<%= t("atlas.submission.change_language_warning") %>"
+         data-atlas-submission-snippets-value="<%= snippets.to_json %>">
+  <p><%= t("atlas.submission.explanation") %></p>
+
+  <%= form_with url: "/atlas/preview", method: :post, local: true, data: { atlas_submission_target: "previewForm" }, html: { target: "_blank", hidden: true } do %>
+    <input type="hidden" name="entry_id" data-atlas-submission-target="previewEntryId">
+    <input type="hidden" name="locale" data-atlas-submission-target="previewLocale">
+    <textarea name="raw_markdown" data-atlas-submission-target="previewMarkdown"></textarea>
+  <% end %>
+
+  <form data-action="submit->atlas-submission#submit">
+    <div class="grammar-submission-grid">
+      <label>
+        <span><%= t("atlas.submission.language") %></span>
+        <select data-atlas-submission-target="locale" data-action="change->atlas-submission#localeChanged">
+          <% InterfaceLocales::ALL.each do |locale| %>
+            <option value="<%= locale %>" <%= "selected" if locale.to_s == @submission_locale %>><%= InterfaceLocales.native_name(locale) %> [<%= locale %>]</option>
+          <% end %>
+        </select>
+      </label>
+
+      <label>
+        <span><%= t("atlas.submission.action") %></span>
+        <input type="text"
+               value="<%= t("atlas.submission.actions.#{@submission_action}") %>"
+               readonly
+               data-create-label="<%= t("atlas.submission.actions.create") %>"
+               data-edit-label="<%= t("atlas.submission.actions.edit") %>"
+               data-translate-label="<%= t("atlas.submission.actions.translate") %>"
+               data-atlas-submission-target="actionLabel">
+        <input type="hidden" value="<%= @submission_action %>" data-atlas-submission-target="submissionAction">
+      </label>
+
+      <label><span><%= t("atlas.submission.public_name") %></span><input type="text" data-atlas-submission-target="publicName"></label>
+      <label><span><%= t("atlas.submission.orcid") %></span><input type="text" placeholder="0000-0002-1825-0097" data-atlas-submission-target="orcid"></label>
+      <label>
+        <span><%= t("atlas.submission.credit_role") %></span>
+        <select data-atlas-submission-target="creditRole">
+          <option value="author"><%= t("atlas.credits.roles.author") %></option>
+          <option value="contributor"><%= t("atlas.credits.roles.contributor") %></option>
+          <option value="translator"><%= t("atlas.credits.roles.translator") %></option>
+          <option value="anonymous"><%= t("atlas.credits.anonymous") %></option>
+        </select>
+      </label>
+    </div>
+
+    <div class="grammar-snippet-tools">
+      <div><strong><%= t("atlas.submission.snippets.heading") %></strong><p><%= t("atlas.submission.snippets.explanation") %></p></div>
+      <div class="grammar-submission-actions">
+        <button type="button" class="grammar-btn grammar-btn-secondary" data-action="atlas-submission#insertCorpusQuote"><%= t("atlas.submission.snippets.quote_button") %></button>
+        <button type="button" class="grammar-btn grammar-btn-secondary" data-action="atlas-submission#insertExactSearch"><%= t("atlas.submission.snippets.exact_button") %></button>
+        <button type="button" class="grammar-btn grammar-btn-secondary" data-action="atlas-submission#insertAlternativesSearch"><%= t("atlas.submission.snippets.alternatives_button") %></button>
+        <button type="button" class="grammar-btn grammar-btn-secondary" data-action="atlas-submission#insertProximitySearch"><%= t("atlas.submission.snippets.proximity_button") %></button>
+      </div>
+      <details class="grammar-snippet-guide">
+        <summary><%= t("atlas.submission.snippets.guide_heading") %></summary>
+        <dl>
+          <div><dt><code>path</code></dt><dd><%= t("atlas.submission.snippets.path_help") %></dd></div>
+          <div><dt><code>text</code></dt><dd><%= t("atlas.submission.snippets.text_help") %></dd></div>
+          <div><dt><code>highlight</code></dt><dd><%= t("atlas.submission.snippets.highlight_help") %></dd></div>
+          <div><dt><code>source</code></dt><dd><%= t("atlas.submission.snippets.source_help") %></dd></div>
+          <div><dt><code>terms</code></dt><dd><%= t("atlas.submission.snippets.terms_help") %></dd></div>
+          <div><dt><code>polity</code></dt><dd><%= t("atlas.submission.snippets.polity_help") %></dd></div>
+          <div><dt><code>distance</code></dt><dd><%= t("atlas.submission.snippets.distance_help") %></dd></div>
+        </dl>
+      </details>
+    </div>
+
+    <label class="grammar-submission-markdown"><span><%= t("atlas.submission.markdown") %></span><textarea rows="28" spellcheck="true" data-atlas-submission-target="rawMarkdown"><%= @submission_markdown %></textarea></label>
+
+    <div class="grammar-submission-actions">
+      <button type="button" class="grammar-btn grammar-btn-secondary" data-action="atlas-submission#preview"><%= t("atlas.submission.preview") %></button>
+      <%= link_to t("atlas.submission.download_template"), atlas_template_path_for(entry, locale: @submission_locale), class: "grammar-btn grammar-btn-secondary", data: { atlas_submission_target: "downloadTemplate" } %>
+    </div>
+
+    <label><span><%= t("atlas.submission.summary") %></span><input type="text" data-atlas-submission-target="summary"></label>
+    <label><span><%= t("atlas.submission.reasoning") %></span><textarea rows="4" data-atlas-submission-target="reasoning"></textarea></label>
+    <label><span><%= t("atlas.submission.evidence_links") %></span><textarea rows="3" placeholder="https://..." data-atlas-submission-target="evidenceLinks"></textarea></label>
+    <label><span><%= t("atlas.submission.evidence_files") %></span><input type="file" multiple data-atlas-submission-target="uploads"></label>
+
+    <details class="grammar-submission-contact">
+      <summary><%= t("atlas.submission.contact_heading") %></summary>
+      <p><%= t("atlas.submission.contact_explanation") %></p>
+      <div class="grammar-submission-grid">
+        <label><span><%= t("atlas.submission.contact_name") %></span><input type="text" data-atlas-submission-target="contactName"></label>
+        <label><span><%= t("atlas.submission.contact_email") %></span><input type="email" data-atlas-submission-target="contactEmail"></label>
+      </div>
+      <label><span><%= t("atlas.submission.contact_notes") %></span><textarea rows="3" data-atlas-submission-target="contactNotes"></textarea></label>
+    </details>
+
+    <label class="grammar-checkbox grammar-licence"><input type="checkbox" required data-atlas-submission-target="licence"><span><%= t("atlas.submission.cc_by_agreement") %></span></label>
+    <label class="grammar-checkbox"><input type="checkbox" checked data-atlas-submission-target="storeOnDevice"><span><%= t("atlas.submission.store_key") %></span></label>
+    <button type="submit" class="grammar-btn" data-atlas-submission-target="submit"><%= t("atlas.submission.submit") %></button>
+  </form>
+
+  <div class="grammar-ticket-result" aria-live="polite">
+    <p data-atlas-submission-target="status"></p>
+    <dl hidden data-atlas-submission-target="ticketResult">
+      <div><dt><%= t("atlas.submission.ticket_id") %></dt><dd><code data-atlas-submission-target="ticketId"></code></dd></div>
+      <div><dt><%= t("atlas.submission.ticket_key") %></dt><dd><code data-atlas-submission-target="ticketKey"></code></dd></div>
+    </dl>
+    <div class="grammar-submission-actions">
+      <button type="button" class="grammar-btn grammar-btn-secondary" hidden data-atlas-submission-target="copyKeyBtn" data-action="atlas-submission#copyKey"><%= t("atlas.submission.copy_key") %></button>
+      <button type="button" class="grammar-btn grammar-btn-secondary" hidden data-atlas-submission-target="downloadKeyBtn" data-action="atlas-submission#downloadKey"><%= t("atlas.submission.download_key") %></button>
+    </div>
+  </div>
+</section>

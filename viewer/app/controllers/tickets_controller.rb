@@ -1,5 +1,6 @@
 class TicketsController < ApplicationController
   helper GrammarHelper
+  helper AtlasHelper
   before_action :require_moderator!
   before_action :load_ticket, only: %i[show approve reject close apply_patch create_message]
 
@@ -24,6 +25,7 @@ class TicketsController < ApplicationController
     @material_attachments = @ticket.material_files.attachments
     @diff_text = load_diff_text
     load_grammar_proposal
+    load_atlas_proposal
     @corpus_viewer_path = corpus_viewer_target_path
     @contact = active_contact
   end
@@ -157,6 +159,22 @@ class TicketsController < ApplicationController
     @grammar_entry = Grammar::EntryStore.default.find(metadata["entry_id"])
   rescue Psych::SyntaxError, ArgumentError => e
     @grammar_proposed_error = e.message
+  end
+
+  def load_atlas_proposal
+    metadata = @ticket.diff_metadata.is_a?(Hash) ? @ticket.diff_metadata : {}
+    return unless metadata["kind"] == "atlas_article_submission"
+
+    attachment = @ticket.evidence_files.attachments.find do |candidate|
+      candidate.blob.filename.to_s.include?(".proposed")
+    end
+    return unless attachment
+
+    raw = attachment.blob.download.to_s.dup.force_encoding("UTF-8").scrub
+    @atlas_proposed_document = Grammar::MarkdownDocument.parse(raw)
+    @atlas_entry = Atlas::EntryStore.default.find(metadata["entry_id"])
+  rescue Psych::SyntaxError, ArgumentError => e
+    @atlas_proposed_error = e.message
   end
 
   def active_contact

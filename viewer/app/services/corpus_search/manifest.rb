@@ -142,6 +142,7 @@ module CorpusSearch
         next false if excluded_folder?(doc, exclude_folders)
 
         match_filter?(doc, "nation", filters["nation"]) &&
+          match_filter?(doc, "polity", filters["polity"]) &&
           match_filter?(doc, "period", filters["period"]) &&
           match_filter?(doc, "region", filters["region"]) &&
           match_filter?(doc, "author", filters["author"]) &&

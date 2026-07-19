@@ -693,7 +693,16 @@ class CorpusMetadataJsonDryRun
     geography = folds.fetch(:geography)
     compilation_rule = compilation_rule_for(work)
     worklist = compilation_rule ? compilation_worklist(work, folds, compilation_rule) : []
-    docs = compilation_rule ? [] : work.documents.map { |doc| build_document(doc, folds) }
+    # A compilation can contain both separately-foldered works and direct
+    # container documents (volumes, fascicles, catalogues, editorial matter).
+    # Keep only the direct files here; child-folder works continue to live in
+    # their own metadata.json files and remain linked through worklist.
+    direct_documents = if compilation_rule
+      work.documents.select { |doc| File.dirname(doc.path.to_s) == work.folder.to_s }
+    else
+      work.documents
+    end
+    docs = direct_documents.map { |doc| build_document(doc, folds) }
     base_categories = Array(folds.dig(:lists, "categories"))
     rule_categories = compilation_rule ? Array(compilation_rule["categories"]) : []
 
@@ -738,7 +747,7 @@ class CorpusMetadataJsonDryRun
     payload = deep_compact(payload)
     payload["known_commentaries"] ||= []
     payload["worklist"] ||= [] if payload["is_compilation"]
-    payload.delete("documents") if payload["is_compilation"]
+    payload.delete("documents") if Array(payload["documents"]).empty?
     payload
   end
 
@@ -1783,48 +1792,50 @@ class CorpusMetadataJsonDryRun
   end
 end
 
-options = {
-  key_map: CorpusMetadataJsonDryRun::DEFAULT_KEY_MAP,
-  geography_map: CorpusMetadataJsonDryRun::DEFAULT_GEOGRAPHY_MAP,
-  compilation_map: CorpusMetadataJsonDryRun::DEFAULT_COMPILATION_MAP,
-  apply: false,
-  mirror_staged_paths: false,
-  json_output_mode: "jsonl",
-  source_mode: "clean",
-  progress_every: 25_000,
-  work_id_start: 1,
-  document_id_start: 1,
-  edition_id_start: 1
-}
+if $PROGRAM_NAME == __FILE__
+  options = {
+    key_map: CorpusMetadataJsonDryRun::DEFAULT_KEY_MAP,
+    geography_map: CorpusMetadataJsonDryRun::DEFAULT_GEOGRAPHY_MAP,
+    compilation_map: CorpusMetadataJsonDryRun::DEFAULT_COMPILATION_MAP,
+    apply: false,
+    mirror_staged_paths: false,
+    json_output_mode: "jsonl",
+    source_mode: "clean",
+    progress_every: 25_000,
+    work_id_start: 1,
+    document_id_start: 1,
+    edition_id_start: 1
+  }
 
-parser = OptionParser.new do |opts|
-  opts.banner = "Usage: ruby script/corpus_metadata_json_dry_run.rb --audit-output DIR --output DIR [options]"
-  opts.on("--audit-output DIR", "Directory produced by corpus_metadata_audit.rb") { |value| options[:audit_output] = value }
-  opts.on("--geography-suggestions CSV", "geography_mapping_suggestions.csv from the geography mapping script") { |value| options[:geography_suggestions] = value }
-  opts.on("--key-map PATH", "JSON generation key map YAML") { |value| options[:key_map] = value }
-  opts.on("--geography-map PATH", "Geography seed map YAML") { |value| options[:geography_map] = value }
-  opts.on("--compilation-map PATH", "Known compilation/collection map YAML") { |value| options[:compilation_map] = value }
-  opts.on("--id-registry PATH", "Existing metadata_id_registry.csv to reuse stable IDs") { |value| options[:id_registry] = value }
-  opts.on("--write-id-registry PATH", "Where to write the updated ID registry; defaults to OUTPUT/metadata_id_registry.csv") { |value| options[:write_id_registry] = value }
-  opts.on("--output DIR", "Output directory") { |value| options[:output] = value }
-  opts.on("--corpus-root DIR", "Corpus root; required only with --apply") { |value| options[:corpus_root] = value }
-  opts.on("--apply", "Write metadata.json into the corpus instead of staged_metadata (dangerous; review first)") { options[:apply] = true }
-  opts.on("--mirror-staged-paths", "With --json-output-mode files/both, mirror corpus paths instead of short by_work_id paths") { options[:mirror_staged_paths] = true }
-  opts.on("--json-output-mode MODE", "Dry-run output mode: jsonl, files, or both. Default: jsonl") { |value| options[:json_output_mode] = value }
-  opts.on("--source-mode MODE", "Source mode: clean, all, or raw. Default: clean; clean excludes raw/ paths") { |value| options[:source_mode] = value }
-  opts.on("--progress-every N", Integer, "Print progress every N loaded/written rows. Default: 25000; 0 disables") { |value| options[:progress_every] = value }
-  opts.on("--max-folders N", Integer, "Smoke-test only the first N folders") { |value| options[:max_folders] = value }
-  opts.on("--max-files N", Integer, "Smoke-test only the first N txt files") { |value| options[:max_files] = value }
-  opts.on("--work-id-start N", Integer, "First assigned work_id") { |value| options[:work_id_start] = value }
-  opts.on("--document-id-start N", Integer, "First assigned document_id") { |value| options[:document_id_start] = value }
-  opts.on("--edition-id-start N", Integer, "First assigned edition_id") { |value| options[:edition_id_start] = value }
+  parser = OptionParser.new do |opts|
+    opts.banner = "Usage: ruby script/corpus_metadata_json_dry_run.rb --audit-output DIR --output DIR [options]"
+    opts.on("--audit-output DIR", "Directory produced by corpus_metadata_audit.rb") { |value| options[:audit_output] = value }
+    opts.on("--geography-suggestions CSV", "geography_mapping_suggestions.csv from the geography mapping script") { |value| options[:geography_suggestions] = value }
+    opts.on("--key-map PATH", "JSON generation key map YAML") { |value| options[:key_map] = value }
+    opts.on("--geography-map PATH", "Geography seed map YAML") { |value| options[:geography_map] = value }
+    opts.on("--compilation-map PATH", "Known compilation/collection map YAML") { |value| options[:compilation_map] = value }
+    opts.on("--id-registry PATH", "Existing metadata_id_registry.csv to reuse stable IDs") { |value| options[:id_registry] = value }
+    opts.on("--write-id-registry PATH", "Where to write the updated ID registry; defaults to OUTPUT/metadata_id_registry.csv") { |value| options[:write_id_registry] = value }
+    opts.on("--output DIR", "Output directory") { |value| options[:output] = value }
+    opts.on("--corpus-root DIR", "Corpus root; required only with --apply") { |value| options[:corpus_root] = value }
+    opts.on("--apply", "Write metadata.json into the corpus instead of staged_metadata (dangerous; review first)") { options[:apply] = true }
+    opts.on("--mirror-staged-paths", "With --json-output-mode files/both, mirror corpus paths instead of short by_work_id paths") { options[:mirror_staged_paths] = true }
+    opts.on("--json-output-mode MODE", "Dry-run output mode: jsonl, files, or both. Default: jsonl") { |value| options[:json_output_mode] = value }
+    opts.on("--source-mode MODE", "Source mode: clean, all, or raw. Default: clean; clean excludes raw/ paths") { |value| options[:source_mode] = value }
+    opts.on("--progress-every N", Integer, "Print progress every N loaded/written rows. Default: 25000; 0 disables") { |value| options[:progress_every] = value }
+    opts.on("--max-folders N", Integer, "Smoke-test only the first N folders") { |value| options[:max_folders] = value }
+    opts.on("--max-files N", Integer, "Smoke-test only the first N txt files") { |value| options[:max_files] = value }
+    opts.on("--work-id-start N", Integer, "First assigned work_id") { |value| options[:work_id_start] = value }
+    opts.on("--document-id-start N", Integer, "First assigned document_id") { |value| options[:document_id_start] = value }
+    opts.on("--edition-id-start N", Integer, "First assigned edition_id") { |value| options[:edition_id_start] = value }
+  end
+
+  parser.parse!(ARGV)
+  missing = %i[audit_output output].select { |key| options[key].to_s.empty? }
+  if missing.any?
+    warn parser
+    abort "Missing required option(s): #{missing.join(', ')}"
+  end
+
+  CorpusMetadataJsonDryRun.new(options).run
 end
-
-parser.parse!(ARGV)
-missing = %i[audit_output output].select { |key| options[key].to_s.empty? }
-if missing.any?
-  warn parser
-  abort "Missing required option(s): #{missing.join(', ')}"
-end
-
-CorpusMetadataJsonDryRun.new(options).run

@@ -4,7 +4,7 @@ module CorpusSearch
   # The boundary between GET parameters and the search domain objects. The
   # controller should not know how individual query fields are normalised.
   class QueryParams
-    METADATA_KEYS = %w[nation period region author year_start year_end].freeze
+    METADATA_KEYS = %w[nation polity period region author year_start year_end].freeze
 
     class << self
       def parse(params = nil, locale: I18n.locale, **keyword_params)

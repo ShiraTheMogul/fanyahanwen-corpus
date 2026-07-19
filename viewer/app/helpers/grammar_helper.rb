@@ -69,11 +69,12 @@ module GrammarHelper
     mode = values["mode"].presence || "exact"
     first_term = values["term_a"].to_s
     second_term = values["term_b"].to_s
+    alternative_terms = Array(values["terms"]).map(&:to_s).reject(&:blank?)
     order = values["order"].to_s
 
-    # Grammar articles retain their compact term_a/term_b authoring schema, but
-    # links must use the public corpus-search URL schema. For b_before_a, reverse
-    # the terms and then ask for entered order; the search meaning is unchanged.
+    # Article metadata uses a compact authoring schema, while links use the
+    # public corpus-search URL schema. For b_before_a, reverse the terms and ask
+    # for entered order; the search meaning is unchanged.
     if mode == "proximity" && order == "b_before_a"
       first_term, second_term = second_term, first_term
       order = "entered"
@@ -84,7 +85,7 @@ module GrammarHelper
     params = {
       mode: mode,
       q: (first_term if mode == "exact"),
-      terms: ([first_term, second_term] if mode == "proximity"),
+      terms: (mode == "alternatives" ? alternative_terms : ([first_term, second_term] if mode == "proximity")),
       span: (values["distance"] if mode == "proximity"),
       order: (order if mode == "proximity"),
       punctuation: "ignore",
@@ -92,6 +93,7 @@ module GrammarHelper
       roles: ["canonical"],
       context: values["context"],
       nation: values["nation"],
+      polity: values["polity"],
       period: values["period"],
       region: values["region"],
       author: values["author"],
