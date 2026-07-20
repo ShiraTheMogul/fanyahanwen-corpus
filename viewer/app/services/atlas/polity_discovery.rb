@@ -3,12 +3,13 @@
 require "set"
 
 module Atlas
-  # Discovers represented polities from the prepared corpus manifest.
+  # Discovers represented polities from the prepared corpus manifest and the
+  # generated directory index.
   #
-  # Existing human-written Atlas entries remain authoritative. Discovery only
-  # fills gaps so that a polity represented by corpus metadata or by an
-  # explicitly configured polity-folder layer cannot disappear from a period
-  # page merely because no Atlas article has been written yet.
+  # A same-name polity is NOT assumed to be the same historical entity across
+  # every period. Discovered candidates are period-scoped. Human source
+  # metadata may deliberately connect periods by listing multiple period_ids,
+  # corpus paths, and (when names changed) corpus.polities.
   class PolityDiscovery
     GENERIC_CHILD_FOLDERS = Set.new(%w[
       原不詳 未分類 不詳 其他 其它 雜項
@@ -33,16 +34,24 @@ module Atlas
         merge_candidate!(candidates, key, candidate)
       end
 
-      existing_by_key = source_entries.each_with_object({}) do |row, index|
-        key = source_key(row)
-        index[key] = row if key
+      claims = source_entries.flat_map do |source|
+        source_claims(source).map { |claim| [source, claim] }
       end
 
       generated_count = 0
       folder_discovered_count = 0
-      candidates.each do |key, candidate|
-        if (existing = existing_by_key[key])
-          merge_into_source!(existing, candidate)
+      candidates.each_value do |candidate|
+        matches = claims.filter_map do |source, claim|
+          source if claim_matches_candidate?(claim, candidate)
+        end.uniq
+
+        if matches.length > 1
+          raise ArgumentError,
+            "Ambiguous Atlas continuity claim for #{candidate[:root]} / " \
+            "#{candidate[:placement_period_id]} / #{candidate[:polity]}: " \
+            "#{matches.map { |row| row['id'] }.join(', ')}"
+        elsif matches.one?
+          merge_into_source!(matches.first, candidate)
         else
           source_entries << synthetic_source(candidate)
           generated_count += 1
@@ -81,11 +90,12 @@ module Atlas
             next if child.blank? || excluded_child?(child, excluded)
             next unless child_allowed?(child, mode: mode, period: period)
 
-            key = [root, child]
+            key = [root, period_id, child]
             candidate = (candidates[key] ||= blank_candidate(
               root: root,
               polity: child,
               macro_region: region,
+              placement_period_id: period_id,
               folder_discovered: true
             ))
             candidate[:paths] << [prefix, child].join("/")
@@ -94,10 +104,6 @@ module Atlas
         end
       end
 
-      # Tie manifest rows to folder-discovered entries for statistics and prevent
-      # stale broad metadata values from creating duplicate entries. Index the
-      # candidate paths first: walking each document's few ancestor paths is
-      # bounded, unlike comparing every document with every candidate polity.
       candidates_by_path = Hash.new { |hash, key| hash[key] = [] }
       candidates.each do |candidate_key, candidate|
         candidate[:paths].each { |path| candidates_by_path[path] << candidate_key }
@@ -127,10 +133,6 @@ module Atlas
         root = document["corpus_root"].to_s.strip
         polity = document["polity"].to_s.strip
         next if root.blank? || polity.blank? || @periodisation.excluded_corpus_root?(root)
-
-        # An explicitly configured folder layer is more trustworthy than stale
-        # work-level polity metadata. This prevents, for example, every Edo
-        # domain from collapsing back into the broad polity value 日本.
         next if claimed_documents.include?(document_identity(document))
 
         region = @periodisation.normalise_macro_region(
@@ -139,46 +141,62 @@ module Atlas
         ).to_s
         next if region.blank?
 
-        inferred_paths = inferred_paths_for(document, region: region, polity: polity)
-        # A metadata value may be stale or copied from another context. New
-        # Atlas entries require structural support from a typed corpus path;
-        # metadata still enriches any existing human source entry later.
-        next if inferred_paths.empty?
+        deepest_period_ids(region, @periodisation.period_ids_for_document(document)).each do |period_id|
+          inferred_paths = inferred_paths_for(
+            document,
+            region: region,
+            polity: polity,
+            period_id: period_id
+          )
+          next if inferred_paths.empty?
 
-        key = [root, polity]
-        candidate = (candidates[key] ||= blank_candidate(
-          root: root,
-          polity: polity,
-          macro_region: region,
-          folder_discovered: false
-        ))
-        candidate[:period_ids].merge(@periodisation.period_ids_for_document(document))
-        candidate[:document_ids] << document_identity(document)
-        candidate[:paths].merge(inferred_paths)
+          key = [root, period_id, polity]
+          candidate = (candidates[key] ||= blank_candidate(
+            root: root,
+            polity: polity,
+            macro_region: region,
+            placement_period_id: period_id,
+            folder_discovered: false
+          ))
+          period = @periodisation.period(region, period_id)
+          chain = (@periodisation.ancestors_for(region, period_id) + [period]).compact.map { |row| row.fetch("id") }
+          candidate[:period_ids].merge(chain)
+          candidate[:document_ids] << document_identity(document)
+          candidate[:paths].merge(inferred_paths)
+        end
       end
 
       candidates
     end
 
-    def inferred_paths_for(document, region:, polity:)
+    def inferred_paths_for(document, region:, polity:, period_id:)
       paths = Set.new
-      @periodisation.period_ids_for_document(document).each do |period_id|
-        period = @periodisation.period(region, period_id)
-        next unless period
+      period = @periodisation.period(region, period_id)
+      return paths unless period
 
-        Array(period["corpus_paths"]).each do |prefix|
-          candidate = best_document_path(document)
-          next unless path_within?(candidate, prefix)
+      Array(period["corpus_paths"]).each do |prefix|
+        candidate = best_document_path(document)
+        next unless path_within?(candidate, prefix)
 
-          child = immediate_child(candidate, prefix)
-          if child == polity
-            paths << [prefix, child].join("/")
-          elsif child.blank?
-            paths << prefix
-          end
+        child = immediate_child(candidate, prefix)
+        if child == polity
+          paths << [prefix, child].join("/")
+        elsif child.blank?
+          paths << prefix
         end
       end
       paths
+    end
+
+    def deepest_period_ids(region, ids)
+      ids = Array(ids).map(&:to_s).reject(&:blank?).uniq
+      ids.reject do |id|
+        ids.any? do |other|
+          next false if other == id
+
+          @periodisation.ancestors_for(region, other).any? { |ancestor| ancestor.fetch("id") == id }
+        end
+      end
     end
 
     def merge_candidate!(candidates, key, candidate)
@@ -194,9 +212,49 @@ module Atlas
       current[:folder_discovered] ||= candidate[:folder_discovered]
     end
 
+    def source_claims(source)
+      corpus = stringify_keys(source["corpus"].to_h)
+      atlas = stringify_keys(source["atlas"].to_h)
+      root = corpus["root"].to_s.strip
+      return [] if root.blank?
+
+      polities = Array(corpus["polities"]).map(&:to_s).reject(&:blank?)
+      polities.unshift(corpus["polity"].to_s) if corpus["polity"].to_s.present?
+      polities.uniq.map do |polity|
+        {
+          root: root,
+          polity: polity,
+          period_ids: Set.new(Array(atlas["period_ids"]).map(&:to_s).reject(&:blank?)),
+          paths: Set.new(Array(corpus["paths"]).map(&:to_s).reject(&:blank?))
+        }
+      end
+    end
+
+    def claim_matches_candidate?(claim, candidate)
+      return false unless claim[:root] == candidate[:root]
+      return false unless claim[:polity] == candidate[:polity]
+
+      claim[:period_ids].include?(candidate[:placement_period_id]) ||
+        paths_overlap?(claim[:paths], candidate[:paths])
+    end
+
+    def paths_overlap?(left, right)
+      left.any? do |left_path|
+        right.any? do |right_path|
+          path_within?(left_path, right_path) || path_within?(right_path, left_path)
+        end
+      end
+    end
+
     def merge_into_source!(source, candidate)
       corpus = stringify_keys(source["corpus"].to_h)
       atlas = stringify_keys(source["atlas"].to_h)
+      polities = Array(corpus["polities"]).map(&:to_s).reject(&:blank?)
+      polities.unshift(corpus["polity"].to_s) if corpus["polity"].to_s.present?
+      polities << candidate[:polity]
+
+      corpus["polity"] = polities.compact.first.to_s
+      corpus["polities"] = polities.compact.uniq
       corpus["paths"] = (Array(corpus["paths"]) + candidate[:paths].to_a).map(&:to_s).reject(&:blank?).uniq
       atlas["period_ids"] = (Array(atlas["period_ids"]) + candidate[:period_ids].to_a).map(&:to_s).reject(&:blank?).uniq
       source["corpus"] = corpus
@@ -207,8 +265,10 @@ module Atlas
     def synthetic_source(candidate)
       polity = candidate.fetch(:polity)
       region = candidate.fetch(:macro_region)
+      period_id = candidate.fetch(:placement_period_id)
+      folder_name = "#{polity}（#{period_id}）".tr("/\\", "／／")
       {
-        "id" => "#{region}--#{polity}",
+        "id" => "#{region}--#{period_id}--#{polity}",
         "kind" => "polity",
         "name" => {
           "display" => polity,
@@ -230,38 +290,32 @@ module Atlas
           "root" => candidate.fetch(:root),
           "periods" => [],
           "polity" => polity,
+          "polities" => [polity],
           "paths" => candidate[:paths].to_a.sort
         },
         "atlas" => {
           "period_ids" => candidate[:period_ids].to_a,
           "generated_from_manifest" => true,
-          "folder_discovered" => candidate[:folder_discovered] == true
+          "folder_discovered" => candidate[:folder_discovered] == true,
+          "placement_period_id" => period_id
         },
-        "article_path" => "entries/#{polity}/index.md",
+        "article_path" => "entries/#{folder_name}/index.md",
         "published" => false,
         "notes" => ""
       }
     end
 
-    def blank_candidate(root:, polity:, macro_region:, folder_discovered:)
+    def blank_candidate(root:, polity:, macro_region:, placement_period_id:, folder_discovered:)
       {
         root: root,
         polity: polity,
         macro_region: macro_region,
+        placement_period_id: placement_period_id,
         paths: Set.new,
         period_ids: Set.new,
         document_ids: Set.new,
         folder_discovered: folder_discovered
       }
-    end
-
-    def source_key(row)
-      corpus = stringify_keys(row["corpus"].to_h)
-      root = corpus["root"].to_s.strip
-      polity = corpus["polity"].to_s.strip
-      return nil if root.blank? || polity.blank?
-
-      [root, polity]
     end
 
     def child_allowed?(child, mode:, period:)

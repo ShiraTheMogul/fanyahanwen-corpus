@@ -19,14 +19,20 @@ module AtlasDiscoveryPolicyVerifier
     expected.each do |row|
       root = row.dig("corpus", "root").to_s
       polity = row.dig("corpus", "polity").to_s
-      entry = catalogue.entries.find { |candidate| candidate.corpus_root == root && candidate.polity == polity }
+      placement_period_id = row.dig("atlas", "placement_period_id").to_s.presence
+      expected_periods = Array(row.dig("atlas", "period_ids")).map(&:to_s)
+      entry = catalogue.entries.find do |candidate|
+        next false unless candidate.corpus_root == root
+        next false unless candidate.polities.include?(polity)
+
+        placement_period_id.blank? || candidate.periods.include?(placement_period_id)
+      end
       unless entry
-        errors << "Missing discovered polity #{root} / #{polity}"
+        placement = placement_period_id.present? ? " / #{placement_period_id}" : ""
+        errors << "Missing discovered polity #{root}#{placement} / #{polity}"
         next
       end
 
-      by_region = row.dig("atlas", "period_ids_by_region") || {}
-      expected_periods = Array(row.dig("atlas", "period_ids")) + by_region.values.flatten
       expected_periods.map(&:to_s).uniq.each do |period_id|
         next if entry.periods.include?(period_id)
         errors << "#{polity} is missing from period #{period_id}"

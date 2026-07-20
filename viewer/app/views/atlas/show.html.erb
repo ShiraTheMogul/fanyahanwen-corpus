@@ -159,25 +159,24 @@
       <% quick_facts_present = atlas_timespan_label(@entry).present? || @entry.capitals.any? || @entry.rulers.any? || @entry.notable_authors.any? || @entry.notable_works.any? || @entry.territory_note.present? %>
       <section class="grammar-component-frame atlas-identity-frame">
         <% if @entry.hanzi.present? %>
-          <% long_written_form = @entry.hanzi.each_char.count > 2 %>
           <% oracle_available = @entry.periods.include?("商殷朝") && HanFonts.covers_text?(:oracular, @entry.hanzi) %>
           <div class="atlas-script-display <%= 'atlas-script-display--with-oracle' if oracle_available %>" aria-label="<%= t('atlas.name_forms.heading') %>">
             <figure class="atlas-script-sample atlas-script-sample--regular">
-              <div class="atlas-script-glyph atlas-script-glyph--regular <%= 'atlas-script-glyph--long' if long_written_form %>"><%= @entry.hanzi %></div>
+              <div class="<%= atlas_script_glyph_classes(@entry.hanzi, regular: true) %>"><%= atlas_balanced_script_name(@entry.hanzi) %></div>
               <figcaption><%= t("atlas.name_forms.regular") %></figcaption>
             </figure>
             <figure class="atlas-script-sample atlas-script-sample--seal">
-              <div class="atlas-script-glyph atlas-script-glyph--seal <%= 'atlas-script-glyph--long' if long_written_form %>"
+              <div class="<%= atlas_script_glyph_classes(@entry.hanzi) %> atlas-script-glyph--seal"
                    style='font-family:"<%= HanFonts.family_for(:chongxi_seal) %>", serif;'>
-                <%= @entry.hanzi %>
+                <%= atlas_balanced_script_name(@entry.hanzi) %>
               </div>
               <figcaption><%= t("atlas.name_forms.seal") %></figcaption>
             </figure>
             <% if oracle_available %>
               <figure class="atlas-script-sample atlas-script-sample--oracle">
-                <div class="atlas-script-glyph atlas-script-glyph--oracle <%= 'atlas-script-glyph--long' if long_written_form %>"
+                <div class="<%= atlas_script_glyph_classes(@entry.hanzi) %> atlas-script-glyph--oracle"
                      style='font-family:"<%= HanFonts.family_for(:oracular) %>", serif;'>
-                  <%= @entry.hanzi %>
+                  <%= atlas_balanced_script_name(@entry.hanzi) %>
                 </div>
                 <figcaption><%= t("atlas.name_forms.oracle") %></figcaption>
               </figure>

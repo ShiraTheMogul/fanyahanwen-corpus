@@ -611,10 +611,12 @@ module AtlasNodeTypeMigration
 
   def infer_entry_region(metadata)
     root = metadata.dig("corpus", "root").to_s
+    return nil if %w[他漢文 西域漢文].include?(root)
+
     {
       "中國漢文" => "中國", "日本漢文" => "日本", "朝鮮漢文" => "朝鮮",
-      "琉球漢文" => "琉球", "越南漢文" => "越南", "西域漢文" => "西域",
-      "新加坡漢文" => "新加坡", "他漢文" => "英國"
+      "琉球漢文" => "琉球", "越南漢文" => "越南",
+      "新加坡漢文" => "新加坡"
     }[root] || Array(metadata.dig("atlas", "macro_regions")).first.to_s
   end
 

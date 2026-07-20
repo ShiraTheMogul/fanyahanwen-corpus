@@ -33,8 +33,7 @@ module AtlasLayoutMigration
     "日本漢文" => "日本",
     "朝鮮漢文" => "朝鮮",
     "琉球漢文" => "琉球",
-    "越南漢文" => "越南",
-    "西域漢文" => "西域"
+    "越南漢文" => "越南"
   }.freeze
 
   OBSOLETE_DIRECTORIES = %w[

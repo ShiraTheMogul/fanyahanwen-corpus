@@ -68,7 +68,12 @@ module Atlas
       values = Array(atlas["periods"]).map(&:to_s).reject(&:blank?).uniq
       values.presence || Array(corpus["periods"]).map(&:to_s).reject(&:blank?).uniq
     end
-    def polity = corpus["polity"].to_s
+    def polities
+      values = Array(corpus["polities"]).map(&:to_s).reject(&:blank?)
+      values.unshift(corpus["polity"].to_s) if corpus["polity"].to_s.present?
+      values.uniq
+    end
+    def polity = polities.first.to_s
     def corpus_paths = Array(corpus["paths"]).map(&:to_s).reject(&:blank?).uniq
     def macro_regions = Array(atlas["macro_regions"]).map(&:to_s).reject(&:blank?).uniq
     def attested_in = Array(historical["attested_in"]).map(&:to_s).reject(&:blank?).uniq

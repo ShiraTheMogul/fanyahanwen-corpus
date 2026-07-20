@@ -88,14 +88,6 @@
       ]
     },
     {
-      "id": "西域",
-      "label": "Western Regions 西域",
-      "corpus_roots": [
-        "西域漢文"
-      ],
-      "period_ids": []
-    },
-    {
       "id": "新加坡",
       "label": "Singapore 新加坡",
       "corpus_roots": [
@@ -115,6 +107,7 @@
     }
   ],
   "excluded_corpus_roots": [
-    "他漢文"
+    "他漢文",
+    "西域漢文"
   ]
 }

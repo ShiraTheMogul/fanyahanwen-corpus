@@ -176,10 +176,12 @@ module Atlas
       corpus = Grammar::MarkdownDocument.stringify_keys(row["corpus"].to_h)
       root = corpus["root"].to_s
       corpus_periods = Array(corpus["periods"]).map(&:to_s).reject(&:blank?).uniq
-      polity = corpus["polity"].to_s
+      polities = Array(corpus["polities"]).map(&:to_s).reject(&:blank?)
+      polities.unshift(corpus["polity"].to_s) if corpus["polity"].to_s.present?
+      polities = polities.uniq
       paths = Array(corpus["paths"]).map(&:to_s).reject(&:blank?).uniq
 
-      keyed_documents = Array(documents_by_key[[root, polity]])
+      keyed_documents = polities.flat_map { |polity| Array(documents_by_key[[root, polity]]) }
       path_documents = if paths.any?
                          Array(documents_by_root[root]).select do |document|
                            document_path = document["path"].to_s
@@ -215,7 +217,8 @@ module Atlas
 
       corpus["root"] = root
       corpus["periods"] = corpus_periods
-      corpus["polity"] = polity
+      corpus["polity"] = polities.first.to_s
+      corpus["polities"] = polities
       corpus["paths"] = paths
       row["corpus"] = corpus
       row["atlas"] = source_atlas.merge(
@@ -229,25 +232,16 @@ module Atlas
 
     def corpus_stats(documents)
       work_groups = documents.group_by { |document| work_identity(document) }
-      author_groups = documents.reject { |document| document["author"].to_s.blank? }
-        .group_by { |document| document["author"].to_s }
-
-      represented_authors = author_groups.map do |name, rows|
-        {
-          "name" => name,
-          "work_count" => distinct_work_ids(rows).length,
-          "document_count" => rows.length
-        }
-      end.sort_by { |row| [-row["work_count"], -row["document_count"], row["name"]] }.first(12)
+      represented_authors = represented_author_rows(documents)
 
       represented_works = work_groups.map do |work_id, rows|
-        first = rows.first
-        title = first["work"].to_s.presence || first["title"].to_s.presence || File.basename(first["folder_path"].to_s)
+        representative = representative_document(rows)
         {
           "id" => work_id,
-          "title" => title,
+          "title" => represented_work_title(rows, representative),
           "document_count" => rows.length,
-          "path" => first["path"].to_s
+          "canonical_document_count" => rows.count { |row| row["document_role"].to_s == "canonical" },
+          "path" => representative["path"].to_s
         }
       end.reject { |row| row["title"].blank? }
         .sort_by { |row| [-row["document_count"], row["title"]] }
@@ -260,6 +254,78 @@ module Atlas
         "represented_authors" => represented_authors,
         "represented_works" => represented_works
       }
+    end
+
+    def represented_author_rows(documents)
+      rows_by_name = Hash.new do |hash, name|
+        hash[name] = { "work_ids" => Set.new, "document_ids" => Set.new }
+      end
+
+      documents.each do |document|
+        work_id = work_identity(document)
+        document_id = document["id"].to_s.presence || document["path"].to_s
+        split_author_names(document["author"]).each do |name|
+          rows_by_name[name]["work_ids"] << work_id if work_id.present?
+          rows_by_name[name]["document_ids"] << document_id if document_id.present?
+        end
+      end
+
+      rows_by_name.map do |name, values|
+        {
+          "name" => name,
+          "work_count" => values.fetch("work_ids").length,
+          "document_count" => values.fetch("document_ids").length
+        }
+      end.sort_by { |row| [-row["work_count"], -row["document_count"], row["name"]] }.first(12)
+    end
+
+    def split_author_names(value)
+      value.to_s.split(/[;；]+/).map(&:strip).reject(&:blank?).uniq
+    end
+
+    def representative_document(rows)
+      Array(rows).min_by do |document|
+        [
+          document_role_rank(document["document_role"]),
+          canonical_work_folder(document).split("/").length,
+          document["path"].to_s.length,
+          document["path"].to_s
+        ]
+      end || {}
+    end
+
+    def represented_work_title(rows, representative)
+      canonical_rows = Array(rows).select { |row| row["document_role"].to_s == "canonical" }
+      preferred_rows = canonical_rows.presence || Array(rows)
+      titles = preferred_rows.filter_map { |row| row["work"].to_s.strip.presence }
+      folder_title = File.basename(canonical_work_folder(representative))
+
+      titles.find { |title| title == folder_title }.presence ||
+        titles.group_by(&:itself).max_by { |title, values| [values.length, -title.length] }&.first.presence ||
+        folder_title.presence ||
+        representative["title"].to_s.presence ||
+        File.basename(representative["path"].to_s, ".txt")
+    end
+
+    def document_role_rank(role)
+      {
+        "canonical" => 0,
+        "textual_variant" => 1,
+        "derived_reading" => 2,
+        "translation" => 3,
+        "annotation" => 4,
+        "raw" => 5
+      }.fetch(role.to_s, 9)
+    end
+
+    def canonical_work_folder(document)
+      path = document["folder_path"].to_s.presence || File.dirname(document["path"].to_s)
+      parts = path.tr("\\", "/").split("/").reject(&:blank?)
+      role_index = parts.index do |part|
+        %w[raw variants variant translation translations annotation annotations kanbun hanmun hanvan].include?(part.downcase)
+      end
+      parts = parts.first(role_index) if role_index
+      parts.join("/").presence || path
     end
 
     def build_macro_regions(entry_rows, documents)
@@ -303,7 +369,7 @@ module Atlas
           "id" => region,
           "label" => config["label"].presence || region,
           "corpus_roots" => Array(config["corpus_roots"]).map(&:to_s),
-          "entry_ids" => ids.sort_by { |id| entry_title(entry_rows, id) },
+          "entry_ids" => sort_entry_ids(entry_rows, ids),
           "polity_count" => ids.length,
           "period_count" => count_compiled_periods(period_rows),
           "document_count" => stats.fetch("document_count"),
@@ -335,8 +401,8 @@ module Atlas
         "kind" => source_period.fetch("kind", "period"),
         "parent_id" => source_period["parent_id"],
         "hidden" => source_period["hidden"] == true,
-        "entry_ids" => all_ids.sort_by { |entry_id| entry_title(entry_rows, entry_id) },
-        "direct_entry_ids" => direct_ids.sort_by { |entry_id| entry_title(entry_rows, entry_id) },
+        "entry_ids" => sort_entry_ids(entry_rows, all_ids),
+        "direct_entry_ids" => sort_entry_ids(entry_rows, direct_ids),
         "polity_count" => all_ids.length,
         "direct_polity_count" => direct_ids.length,
         "document_count" => stats.fetch("document_count"),
@@ -393,11 +459,14 @@ module Atlas
       entry_by_corpus_key = {}
       entry_rows.each do |row|
         root = row.dig("corpus", "root").to_s
-        polity = row.dig("corpus", "polity").to_s
+        polities = Array(row.dig("corpus", "polities")).map(&:to_s).reject(&:blank?)
+        polities.unshift(row.dig("corpus", "polity").to_s) if row.dig("corpus", "polity").to_s.present?
         periods = Array(row.dig("corpus", "periods")) + Array(row.dig("atlas", "periods"))
         periods.map(&:to_s).reject(&:blank?).uniq.each do |period|
-          key = [root, period, polity].join("\u0000")
-          entry_by_corpus_key[key] = row.fetch("id").to_s
+          polities.uniq.each do |polity|
+            key = [root, period, polity].join("\u0000")
+            entry_by_corpus_key[key] = row.fetch("id").to_s
+          end
         end
       end
 
@@ -470,7 +539,17 @@ module Atlas
     end
 
     def work_identity(document)
-      document["work_id"].to_s.presence || document["folder_path"].to_s.presence || document["path"].to_s
+      document["work_id"].to_s.presence || canonical_work_folder(document).presence || document["path"].to_s
+    end
+
+    def sort_entry_ids(entry_rows, ids)
+      index = entry_rows.index_by { |row| row.fetch("id").to_s }
+      Array(ids).map(&:to_s).uniq.sort_by do |id|
+        row = index[id] || {}
+        work_count = row.dig("atlas", "corpus_stats", "work_count").to_i
+        title = row.dig("name", "display").to_s.presence || row.dig("name", "hanzi").to_s.presence || id
+        [-work_count, title]
+      end
     end
 
     def entry_title(entry_rows, id)

@@ -161,8 +161,8 @@ module AtlasRegionRefinement
       actions << action("remove", "remove excluded polity source", needed: true, path: relative(root, path))
     end
 
-    catalogue = root.join("storage", "corpus_search", "atlas", "catalogue-v3.json.gz")
-    actions << action("generated", "remove stale catalogue-v3", needed: catalogue.file?, path: relative(root, catalogue))
+    catalogue = root.join("storage", "corpus_search", "atlas", "catalogue-v4.json.gz")
+    actions << action("generated", "remove stale catalogue-v4", needed: catalogue.file?, path: relative(root, catalogue))
 
     {
       "version" => 1,
@@ -182,7 +182,7 @@ module AtlasRegionRefinement
 
     paths_to_backup = [atlas_root.join("periodisation.json"), atlas_root.join("periods", "日本"), atlas_root.join("entries", "日本")]
     plan.fetch("excluded_source_paths").each { |row| paths_to_backup << root.join(row.fetch("path")) }
-    catalogue = root.join("storage", "corpus_search", "atlas", "catalogue-v3.json.gz")
+    catalogue = root.join("storage", "corpus_search", "atlas", "catalogue-v4.json.gz")
     paths_to_backup << catalogue if catalogue.file?
     backup_paths!(root, backup, paths_to_backup.uniq)
 

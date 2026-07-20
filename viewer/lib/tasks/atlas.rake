@@ -58,9 +58,10 @@ namespace :atlas do
     catalogue.validate!
     store.validate!
 
-    if catalogue.macro_regions.any? { |row| Array(row["corpus_roots"]).include?("他漢文") }
-      raise "他漢文 leaked into the generated Atlas catalogue"
-    end
+    forbidden_roots = %w[他漢文 西域漢文]
+    leaked_roots = catalogue.macro_regions.flat_map { |row| Array(row["corpus_roots"]) } & forbidden_roots
+    raise "Excluded corpus roots leaked into the generated Atlas catalogue: #{leaked_roots.join(', ')}" if leaked_roots.any?
+    raise "西域 leaked into the generated Atlas catalogue" if catalogue.macro_region("西域")
     raise "英國 leaked into the generated Atlas catalogue" if catalogue.macro_region("英國")
 
     store.all.each do |entry|
@@ -71,4 +72,11 @@ namespace :atlas do
     puts "Polities: #{store.all.length}; typed periods/subperiods: #{periodisation.periods.length}; macro-regions: #{catalogue.macro_regions.length}."
     puts "Source: #{catalogue.source}; generated: #{catalogue.generated_at}."
   end
+
+  desc "Verify Atlas ordering, author splitting, continuity claims, and excluded regions"
+  task verify_quality: :environment do
+    require Rails.root.join("script", "verify_atlas_quality")
+    AtlasQualityVerifier.verify!
+  end
+
 end

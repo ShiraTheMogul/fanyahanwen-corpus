@@ -8,7 +8,7 @@ module Atlas
       end
       return configured if configured.any?
 
-      terms = ([entry.hanzi] + entry.aliases).map(&:to_s).reject(&:blank?).uniq.first(10)
+      terms = ([entry.hanzi] + entry.aliases + entry.polities).map(&:to_s).reject(&:blank?).uniq.first(10)
       return [] if terms.empty?
 
       broad = search_for(terms)

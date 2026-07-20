@@ -21,11 +21,17 @@ module AtlasRegionPolicyVerifier
     data = read_json(periodisation_path)
 
     excluded = Array(data["excluded_corpus_roots"])
-    raise "Atlas periodisation must exclude 他漢文" unless excluded.include?("他漢文")
+    %w[他漢文 西域漢文].each do |root_name|
+      raise "Atlas periodisation must exclude #{root_name}" unless excluded.include?(root_name)
+    end
 
     macro_regions = Array(data["macro_regions"])
-    offenders = macro_regions.select { |row| Array(row["corpus_roots"]).include?("他漢文") }
-    raise "他漢文 still appears in Atlas macro-regions: #{offenders.map { |row| row['id'] }.join(', ')}" if offenders.any?
+    offenders = macro_regions.select do |row|
+      (Array(row["corpus_roots"]) & %w[他漢文 西域漢文]).any? || row["id"].to_s == "西域"
+    end
+    if offenders.any?
+      raise "Excluded Atlas regions remain: #{offenders.map { |row| row['id'] }.join(', ')}"
+    end
 
     japan = macro_regions.find { |row| row["id"].to_s == "日本" }
     raise "Missing 日本 Atlas macro-region" unless japan

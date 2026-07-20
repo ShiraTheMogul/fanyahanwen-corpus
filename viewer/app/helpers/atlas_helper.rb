@@ -34,6 +34,41 @@ module AtlasHelper
     "/corpus/search?#{ { folders: folders, roles: ["canonical"] }.to_query }"
   end
 
+
+  # Break long polity names into visually balanced lines. Names of up to five
+  # grapheme clusters remain on one line. Longer names use the fewest possible
+  # lines while keeping line lengths as even as possible.
+  def atlas_balanced_name_lines(value, max_per_line: 5)
+    clusters = value.to_s.each_grapheme_cluster.to_a
+    return [value.to_s] if clusters.length <= max_per_line
+
+    line_count = (clusters.length.to_f / max_per_line).ceil
+    base_size, remainder = clusters.length.divmod(line_count)
+    sizes = Array.new(line_count, base_size)
+    centre_first_indexes(line_count).first(remainder).each { |index| sizes[index] += 1 }
+
+    offset = 0
+    sizes.map do |size|
+      line = clusters.slice(offset, size).join
+      offset += size
+      line
+    end
+  end
+
+  def atlas_script_glyph_classes(value, regular: false)
+    count = value.to_s.each_grapheme_cluster.count
+    classes = ["atlas-script-glyph"]
+    classes << (regular ? "atlas-script-glyph--regular" : nil)
+    classes << "atlas-script-glyph--long" if count > 2
+    classes << "atlas-script-glyph--multiline" if count > 5
+    classes << "atlas-script-glyph--very-long" if count > 10
+    classes.compact.join(" ")
+  end
+
+  def atlas_balanced_script_name(value)
+    safe_join(atlas_balanced_name_lines(value), tag.br)
+  end
+
   def atlas_template_path_for(entry, locale: I18n.locale)
     "/atlas/#{ERB::Util.url_encode(entry.id)}/template?locale=#{ERB::Util.url_encode(locale)}"
   end
@@ -149,6 +184,11 @@ module AtlasHelper
   end
 
   private
+
+  def centre_first_indexes(length)
+    centre = (length - 1) / 2.0
+    (0...length).sort_by { |index| [(index - centre).abs, index] }
+  end
 
   def atlas_apa_names(names)
     cleaned = Array(names).map(&:to_s).reject(&:blank?)

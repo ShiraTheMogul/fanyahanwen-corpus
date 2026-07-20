@@ -11,8 +11,8 @@ module Atlas
   # polity sources, or period sources. In development, the generated file is
   # checked at most once per second.
   class Catalogue
-    VERSION = 3
-    CACHE_PATH = "atlas/catalogue-v3.json.gz"
+    VERSION = 4
+    CACHE_PATH = "atlas/catalogue-v4.json.gz"
     DEVELOPMENT_RELOAD_INTERVAL = 1.0
 
     class Missing < StandardError; end
@@ -163,7 +163,7 @@ module Atlas
              end
 
       pool.filter_map do |entry|
-        fields = [entry.title, entry.hanzi, *entry.aliases, entry.polity, *entry.periods, *entry.macro_regions]
+        fields = [entry.title, entry.hanzi, *entry.aliases, *entry.polities, *entry.periods, *entry.macro_regions]
         normalized = fields.map { |value| normalise_search_text(value) }
         exact = normalized.include?(needle)
         prefix = normalized.any? { |value| value.start_with?(needle) }
