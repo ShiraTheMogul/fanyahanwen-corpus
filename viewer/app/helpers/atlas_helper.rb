@@ -27,8 +27,11 @@ module AtlasHelper
   end
 
   def atlas_folder_search_url(node_or_path)
-    folder = node_or_path.respond_to?(:corpus_path) ? node_or_path.corpus_path : node_or_path.to_s
-    "/corpus/search?#{ { folders: [folder], roles: ["canonical"] }.to_query }"
+    folders = Array(node_or_path).filter_map do |value|
+      folder = value.respond_to?(:corpus_path) ? value.corpus_path : value.to_s
+      folder.presence
+    end.uniq
+    "/corpus/search?#{ { folders: folders, roles: ["canonical"] }.to_query }"
   end
 
   def atlas_template_path_for(entry, locale: I18n.locale)

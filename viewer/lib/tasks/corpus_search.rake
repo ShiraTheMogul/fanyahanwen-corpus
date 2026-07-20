@@ -12,8 +12,11 @@ namespace :corpus_search do
     corpus_index = CorpusSearch::CorpusIndex.build!(manifest: manifest)
     puts "Built corpus index: #{corpus_index.document_count} searchable documents, #{corpus_index.work_count} works, #{corpus_index.folder_tree.roots.length} corpus roots."
 
-    atlas_catalogue = Atlas::CatalogueBuilder.build!(manifest: manifest)
-    puts "Built atlas catalogue: #{atlas_catalogue.entry_count} polities across #{atlas_catalogue.macro_region_count} macro-regions and #{atlas_catalogue.period_count} periods."
+    directory_index = CorpusSearch::DirectoryIndex.build!
+    puts "Built full directory index: #{directory_index.paths.length} clean-corpus directories."
+
+    atlas_catalogue = Atlas::CatalogueBuilder.build!(manifest: manifest, directory_index: directory_index)
+    puts "Built atlas catalogue: #{atlas_catalogue.entry_count} polities across #{atlas_catalogue.macro_region_count} macro-regions and #{atlas_catalogue.period_count} typed periods/subperiods."
 
     term_limit = Integer(ENV.fetch("CORPUS_SEARCH_MANIFEST_TERM_LIMIT", CorpusSearch::WarmTermList::DEFAULT_LIMIT.to_s))
     cache_store = CorpusSearch::CacheStore.new
@@ -58,8 +61,11 @@ namespace :corpus_search do
     corpus_index = CorpusSearch::CorpusIndex.build!(manifest: manifest)
     puts "Built corpus index: #{corpus_index.document_count} searchable documents, #{corpus_index.work_count} works, #{corpus_index.folder_tree.roots.length} corpus roots."
 
-    atlas_catalogue = Atlas::CatalogueBuilder.build!(manifest: manifest)
-    puts "Built atlas catalogue: #{atlas_catalogue.entry_count} polities across #{atlas_catalogue.macro_region_count} macro-regions and #{atlas_catalogue.period_count} periods."
+    directory_index = CorpusSearch::DirectoryIndex.load_or_build
+    puts "Directory index available: #{directory_index.paths.length} clean-corpus directories."
+
+    atlas_catalogue = Atlas::CatalogueBuilder.build!(manifest: manifest, directory_index: directory_index)
+    puts "Built atlas catalogue: #{atlas_catalogue.entry_count} polities across #{atlas_catalogue.macro_region_count} macro-regions and #{atlas_catalogue.period_count} typed periods/subperiods."
   end
 
   desc "Warm ranked, Grammar Wiki, and existing single-character term indexes"

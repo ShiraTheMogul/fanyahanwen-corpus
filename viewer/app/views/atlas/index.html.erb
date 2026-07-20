@@ -10,6 +10,10 @@
           <span><%= @macro_region["label"] %></span>
         <% end %>
       <% end %>
+      <% Array(@period_ancestors).each do |ancestor| %>
+        <span aria-hidden="true">›</span>
+        <%= link_to ancestor["label"], atlas_period_path(@macro_region_id, ancestor["id"]) %>
+      <% end %>
       <% if @period %>
         <span aria-hidden="true">›</span>
         <span><%= @period["label"] %></span>
@@ -97,7 +101,44 @@
         <% end %>
       </ol>
     </section>
-  <% elsif @view_mode == :period || @view_mode == :search %>
+  <% elsif @view_mode == :period %>
+    <% if @child_periods.any? %>
+      <section class="atlas-browser-section">
+        <div class="atlas-section-heading">
+          <h2><%= t("atlas.index.subperiods_heading", default: "Periods within #{@period['label']}") %></h2>
+        </div>
+        <ol class="atlas-period-list atlas-subperiod-list">
+          <% @child_periods.each do |child| %>
+            <li>
+              <%= link_to atlas_period_path(@macro_region_id, child["id"]), class: "atlas-period-row" do %>
+                <strong><%= child["label"] %></strong>
+                <span><%= t("atlas.index.polity_count", count: child["polity_count"]) %></span>
+                <% if child["document_count"].to_i.positive? %>
+                  <small><%= t("atlas.index.corpus_documents", count: child["document_count"].to_i, formatted_count: number_with_delimiter(child["document_count"])) %></small>
+                <% end %>
+              <% end %>
+            </li>
+          <% end %>
+        </ol>
+      </section>
+    <% end %>
+
+    <section class="atlas-browser-section">
+      <div class="atlas-section-heading">
+        <h2><%= t("atlas.index.polities_heading", default: "Polities") %></h2>
+      </div>
+      <% if @entries.empty? %>
+        <% unless @child_periods.any? %>
+          <div class="grammar-missing-article atlas-empty-folder">
+            <h2><%= t("atlas.index.no_results_heading") %></h2>
+            <p><%= t("atlas.index.no_results") %></p>
+          </div>
+        <% end %>
+      <% else %>
+        <%= render "polity_cards", entries: @entries %>
+      <% end %>
+    </section>
+  <% elsif @view_mode == :search %>
     <section class="atlas-browser-section">
       <% if @entries.empty? %>
         <div class="grammar-missing-article atlas-empty-folder">
@@ -105,25 +146,7 @@
           <p><%= t("atlas.index.no_results") %></p>
         </div>
       <% else %>
-        <div class="atlas-polity-grid">
-          <% @entries.each do |entry| %>
-            <%= link_to atlas_entry_path_for(entry), class: "atlas-polity-card" do %>
-              <span class="atlas-polity-card-title"><%= entry.search_label %></span>
-              <% if entry.aliases.any? %>
-                <span class="atlas-polity-card-aliases"><%= entry.aliases.first(4).join(" · ") %></span>
-              <% end %>
-              <span class="atlas-polity-card-footer">
-                <% if entry.work_count.positive? || entry.document_count.positive? %>
-                  <%= t("atlas.index.entry_corpus_summary", works: number_with_delimiter(entry.work_count), documents: number_with_delimiter(entry.document_count)) %>
-                <% elsif entry.published_in_catalogue? %>
-                  <%= t("atlas.index.article_available") %>
-                <% else %>
-                  <%= t("atlas.index.article_needed") %>
-                <% end %>
-              </span>
-            <% end %>
-          <% end %>
-        </div>
+        <%= render "polity_cards", entries: @entries %>
       <% end %>
     </section>
   <% end %>

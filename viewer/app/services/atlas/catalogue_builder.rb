@@ -6,8 +6,9 @@ require "set"
 require "time"
 
 module Atlas
-  # Compiles source atlas metadata and the corpus manifest into one small runtime
-  # catalogue. This runs during maintenance, never during a web request.
+  # Compiles polity sources, typed period sources, and the corpus manifest into
+  # one compact runtime catalogue. No corpus or source-tree traversal occurs in
+  # a web request.
   class CatalogueBuilder
     VERSION = Catalogue::VERSION
     CACHE_PATH = Catalogue::CACHE_PATH
@@ -19,9 +20,9 @@ module Atlas
       keyword_init: true
     )
 
-    def self.build!(manifest:, cache_store: CorpusSearch::CacheStore.new, source_root: SOURCE_ROOT, periodisation: Periodisation.default)
+    def self.build!(manifest:, directory_index: nil, cache_store: CorpusSearch::CacheStore.new, source_root: SOURCE_ROOT, periodisation: Periodisation.default)
       new(cache_store: cache_store, source_root: source_root, periodisation: periodisation)
-        .build!(manifest: manifest)
+        .build!(manifest: manifest, directory_index: directory_index)
     end
 
     def initialize(cache_store: CorpusSearch::CacheStore.new, source_root: SOURCE_ROOT, periodisation: Periodisation.default)
@@ -30,10 +31,16 @@ module Atlas
       @periodisation = periodisation
     end
 
-    def build!(manifest:)
+    def build!(manifest:, directory_index: nil)
+      @periodisation.validate!
       documents = searchable_documents(Array(manifest.documents))
+        .reject { |document| @periodisation.excluded_corpus_root?(document["corpus_root"]) }
+      directory_paths = Array(directory_index&.paths).reject do |path|
+        @periodisation.excluded_corpus_root?(path.to_s.split("/").first)
+      end
       payload = compile(
         documents: documents,
+        directory_paths: directory_paths,
         generated_at: Time.now.utc.iso8601,
         manifest_generated_at: manifest.generated_at.to_s,
         source: "corpus_manifest"
@@ -44,11 +51,24 @@ module Atlas
 
     private
 
-    def compile(documents:, generated_at:, manifest_generated_at:, source:)
+    def compile(documents:, directory_paths:, generated_at:, manifest_generated_at:, source:)
       source_entries = load_source_entries
+      discovery = Atlas::PolityDiscovery.new(periodisation: @periodisation).merge(
+        source_entries: source_entries,
+        documents: documents,
+        directory_paths: directory_paths
+      )
       documents_by_key = index_documents(documents)
-      entry_rows = source_entries.map do |payload|
-        enrich_entry(payload, documents_by_key: documents_by_key)
+      documents_by_root = documents.group_by { |document| document["corpus_root"].to_s }
+      entry_rows = discovery.entries.map do |payload|
+        enrich_entry(
+          payload,
+          documents_by_key: documents_by_key,
+          documents_by_root: documents_by_root
+        )
+      end
+      entry_rows.select! do |row|
+        Array(row.dig("atlas", "macro_regions")).any?
       end
 
       macro_regions = build_macro_regions(entry_rows, documents)
@@ -67,7 +87,7 @@ module Atlas
         "totals" => {
           "entries" => entry_rows.length,
           "macro_regions" => macro_regions.length,
-          "periods" => macro_regions.sum { |row| Array(row["periods"]).length },
+          "periods" => macro_regions.sum { |row| count_compiled_periods(row["periods"]) },
           "documents" => documents.length,
           "works" => distinct_work_ids(documents).length
         }
@@ -78,8 +98,8 @@ module Atlas
     end
 
     def load_source_entries
-      paths = Dir.glob(@source_root.join("entries", "**", "metadata.json").to_s).sort
-      raise ArgumentError, "No atlas entry metadata was found under #{@source_root.join("entries")}" if paths.empty?
+      paths = Dir.glob(@source_root.join("entries", "*", "metadata.json").to_s).sort
+      raise ArgumentError, "No atlas polity metadata was found under #{@source_root.join('entries')}" if paths.empty?
 
       rows = paths.map do |filename|
         metadata_path = Pathname.new(filename)
@@ -90,24 +110,47 @@ module Atlas
         raise ArgumentError, "Atlas metadata must be a mapping: #{metadata_path}" unless payload.is_a?(Hash)
 
         row = Grammar::MarkdownDocument.stringify_keys(payload)
-        row["source_metadata_path"] = metadata_path.relative_path_from(@source_root).to_s.tr("\\", "/")
+        kind = row.fetch("kind", "polity").to_s
+        unless kind == "polity"
+          raise ArgumentError, "Only polities belong under content/atlas/entries: #{metadata_path} is #{kind.inspect}"
+        end
 
-        # Use the path that actually exists in this tree. This avoids trusting an
-        # old path field that may have been damaged by a ZIP filename conversion.
+        row["source_metadata_path"] = metadata_path.relative_path_from(@source_root).to_s.tr("\\", "/")
         article_path = metadata_path.dirname.join("index.md").relative_path_from(@source_root).to_s.tr("\\", "/")
         row["article_path"] = article_path
         row["published"] = @source_root.join(article_path).file?
+        sanitise_public_aliases!(row)
         row
-      rescue JSON::ParserError => e
-        raise ArgumentError, "Invalid atlas metadata JSON in #{metadata_path}: #{e.message}"
+      rescue JSON::ParserError => error
+        raise ArgumentError, "Invalid atlas metadata JSON in #{metadata_path}: #{error.message}"
       end
 
       ids = rows.map { |row| row.fetch("id").to_s }
       duplicate_ids = ids.group_by(&:itself).select { |_id, values| values.length > 1 }.keys
       raise ArgumentError, "Duplicate atlas IDs: #{duplicate_ids.join(', ')}" if duplicate_ids.any?
 
-      Atlas::UnicodeGuard.validate!(rows, context: "atlas source metadata")
+      Atlas::UnicodeGuard.validate!(rows, context: "atlas polity source metadata")
       rows
+    end
+
+    def sanitise_public_aliases!(row)
+      name = Grammar::MarkdownDocument.stringify_keys(row["name"].to_h)
+      corpus = Grammar::MarkdownDocument.stringify_keys(row["corpus"].to_h)
+      blocked = Set.new
+      blocked.merge(Array(corpus["periods"]).map(&:to_s))
+      blocked.merge(@periodisation.periods.flat_map do |period|
+        [period["id"], period["label"], *Array(period["manifest_periods"])]
+      end.map(&:to_s))
+      blocked.merge(@periodisation.macro_regions.flat_map do |region|
+        [region["id"], region["label"], *Array(region["corpus_roots"])]
+      end.map(&:to_s))
+      blocked << name["display"].to_s
+      blocked << name["hanzi"].to_s
+
+      name["alt"] = Array(name["alt"]).map(&:to_s).reject(&:blank?).reject do |value|
+        blocked.include?(value) || value.include?("--") || value.include?("/") || value.include?("\\")
+      end.uniq
+      row["name"] = name
     end
 
     def searchable_documents(documents)
@@ -127,27 +170,28 @@ module Atlas
       end
     end
 
-    def enrich_entry(source, documents_by_key:)
+    def enrich_entry(source, documents_by_key:, documents_by_root:)
       row = deep_dup(source)
       source_atlas = Grammar::MarkdownDocument.stringify_keys(row["atlas"].to_h)
       corpus = Grammar::MarkdownDocument.stringify_keys(row["corpus"].to_h)
       root = corpus["root"].to_s
-      periods = Array(corpus["periods"]).map(&:to_s).reject(&:blank?).uniq
+      corpus_periods = Array(corpus["periods"]).map(&:to_s).reject(&:blank?).uniq
       polity = corpus["polity"].to_s
+      paths = Array(corpus["paths"]).map(&:to_s).reject(&:blank?).uniq
 
-      documents = Array(documents_by_key[[root, polity]])
-      paths = Array(corpus["paths"]).map(&:to_s).reject(&:blank?)
-      if paths.any?
-        documents = documents.select do |document|
-          document_path = document["path"].to_s
-          folder_path = document["folder_path"].to_s
-          paths.any? do |path|
-            document_path == path || document_path.start_with?(path + "/") ||
-              folder_path == path || folder_path.start_with?(path + "/")
-          end
-        end
-      end
-      documents = documents.uniq { |document| document["id"].to_s }
+      keyed_documents = Array(documents_by_key[[root, polity]])
+      path_documents = if paths.any?
+                         Array(documents_by_root[root]).select do |document|
+                           document_path = document["path"].to_s
+                           folder_path = document["folder_path"].to_s
+                           paths.any? do |path|
+                             path_within?(document_path, path) || path_within?(folder_path, path)
+                           end
+                         end
+                       else
+                         []
+                       end
+      documents = (keyed_documents + path_documents).uniq { |document| document["id"].to_s.presence || [document["path"], document["folder_path"]] }
 
       macro_regions = documents.filter_map do |document|
         @periodisation.normalise_macro_region(
@@ -157,29 +201,36 @@ module Atlas
       end.uniq
       fallback_region = @periodisation.macro_region_for_root(root)
       macro_regions << fallback_region if macro_regions.empty? && fallback_region.present?
-      derived_periods = documents.filter_map { |document| document["period"].to_s.presence }.uniq
-      derived_periods = Array(source_atlas["periods"]).map(&:to_s).reject(&:blank?).uniq if derived_periods.empty?
-      derived_periods = periods if derived_periods.empty?
-      if derived_periods.empty? && @periodisation.macro_region(fallback_region)
-        configured = Array(@periodisation.macro_region(fallback_region)["periods"])
-        derived_periods = [polity] if configured.include?(polity)
-      end
+
+      manifest_periods = documents.filter_map { |document| document["period"].to_s.presence }
+      manifest_periods.concat(corpus_periods)
+      explicit_period_ids = Array(source_atlas["period_ids"]).map(&:to_s).reject(&:blank?)
+      period_ids_by_region = @periodisation.period_ids_for_entry(
+        root: root,
+        paths: paths,
+        manifest_periods: manifest_periods.uniq,
+        explicit_ids: explicit_period_ids,
+        macro_regions: macro_regions
+      )
 
       corpus["root"] = root
-      corpus["periods"] = periods
+      corpus["periods"] = corpus_periods
       corpus["polity"] = polity
+      corpus["paths"] = paths
       row["corpus"] = corpus
-      row["atlas"] = {
+      row["atlas"] = source_atlas.merge(
         "macro_regions" => macro_regions.compact.uniq,
-        "periods" => derived_periods,
+        "periods" => period_ids_by_region.values.flatten.uniq,
+        "period_ids_by_region" => period_ids_by_region,
         "corpus_stats" => corpus_stats(documents)
-      }
+      )
       row
     end
 
     def corpus_stats(documents)
       work_groups = documents.group_by { |document| work_identity(document) }
-      author_groups = documents.reject { |document| document["author"].to_s.blank? }.group_by { |document| document["author"].to_s }
+      author_groups = documents.reject { |document| document["author"].to_s.blank? }
+        .group_by { |document| document["author"].to_s }
 
       represented_authors = author_groups.map do |name, rows|
         {
@@ -213,43 +264,36 @@ module Atlas
 
     def build_macro_regions(entry_rows, documents)
       document_stats = aggregate_document_stats(documents)
-      entries_by_region_period = Hash.new { |hash, key| hash[key] = [] }
       entries_by_region = Hash.new { |hash, key| hash[key] = [] }
+      entries_by_region_period = Hash.new { |hash, key| hash[key] = [] }
 
       entry_rows.each do |row|
         entry_id = row.fetch("id").to_s
         regions = Array(row.dig("atlas", "macro_regions")).map(&:to_s).reject(&:blank?)
-        periods = Array(row.dig("atlas", "periods")).map(&:to_s).reject(&:blank?)
+        by_region = Grammar::MarkdownDocument.stringify_keys(row.dig("atlas", "period_ids_by_region").to_h)
         regions.each do |region|
           entries_by_region[region] << entry_id
-          periods.each { |period| entries_by_region_period[[region, period]] << entry_id }
+          Array(by_region[region]).each do |period_id|
+            entries_by_region_period[[region, period_id.to_s]] << entry_id
+          end
         end
       end
 
-      configured_regions = @periodisation.macro_regions.map { |row| row.fetch("id") }
-      discovered_regions = (configured_regions + entries_by_region.keys + document_stats.fetch(:regions).keys).uniq
-      ordered_regions = discovered_regions.sort_by do |region|
-        [@periodisation.macro_region_order(region), @periodisation.label_for(region)]
-      end
+      # Atlas macro-regions are human-curated. Manifest metadata may contain
+      # useful geographic values that do not belong in public Atlas navigation
+      # (for example documents under 他漢文), so do not auto-promote newly
+      # discovered values into macro-regions.
+      ordered_regions = @periodisation.macro_regions.map { |row| row.fetch("id") }
 
       ordered_regions.map do |region|
-        discovered_periods = entries_by_region_period.keys.filter_map { |key_region, period| period if key_region == region }
-        discovered_periods.concat(document_stats.fetch(:periods).keys.filter_map { |key_region, period| period if key_region == region })
-        periods = discovered_periods.uniq.sort_by do |period|
-          [@periodisation.period_order(region, period), period]
-        end
-
-        period_rows = periods.map do |period|
-          ids = entries_by_region_period[[region, period]].uniq
-          stats = document_stats.fetch(:periods)[[region, period]] || empty_stats
-          {
-            "id" => period,
-            "label" => period,
-            "entry_ids" => ids.sort_by { |id| entry_title(entry_rows, id) },
-            "polity_count" => ids.length,
-            "document_count" => stats.fetch("document_count"),
-            "work_count" => stats.fetch("work_count")
-          }
+        period_rows = @periodisation.root_periods(region).map do |source_period|
+          compile_period_row(
+            region: region,
+            source_period: source_period,
+            entry_rows: entry_rows,
+            entries_by_region_period: entries_by_region_period,
+            document_stats: document_stats
+          )
         end
 
         stats = document_stats.fetch(:regions)[region] || empty_stats
@@ -261,12 +305,48 @@ module Atlas
           "corpus_roots" => Array(config["corpus_roots"]).map(&:to_s),
           "entry_ids" => ids.sort_by { |id| entry_title(entry_rows, id) },
           "polity_count" => ids.length,
-          "period_count" => period_rows.length,
+          "period_count" => count_compiled_periods(period_rows),
           "document_count" => stats.fetch("document_count"),
           "work_count" => stats.fetch("work_count"),
           "periods" => period_rows
         }
       end
+    end
+
+    def compile_period_row(region:, source_period:, entry_rows:, entries_by_region_period:, document_stats:)
+      id = source_period.fetch("id")
+      children = @periodisation.children_for(region, id).map do |child|
+        compile_period_row(
+          region: region,
+          source_period: child,
+          entry_rows: entry_rows,
+          entries_by_region_period: entries_by_region_period,
+          document_stats: document_stats
+        )
+      end
+      all_ids = entries_by_region_period[[region, id]].uniq
+      child_ids = children.flat_map { |child| Array(child["entry_ids"]) }.uniq
+      direct_ids = all_ids - child_ids
+      stats = document_stats.fetch(:periods)[[region, id]] || empty_stats
+
+      {
+        "id" => id,
+        "label" => source_period.fetch("label", id),
+        "kind" => source_period.fetch("kind", "period"),
+        "parent_id" => source_period["parent_id"],
+        "hidden" => source_period["hidden"] == true,
+        "entry_ids" => all_ids.sort_by { |entry_id| entry_title(entry_rows, entry_id) },
+        "direct_entry_ids" => direct_ids.sort_by { |entry_id| entry_title(entry_rows, entry_id) },
+        "polity_count" => all_ids.length,
+        "direct_polity_count" => direct_ids.length,
+        "document_count" => stats.fetch("document_count"),
+        "work_count" => stats.fetch("work_count"),
+        "corpus_paths" => Array(source_period["corpus_paths"]),
+        "article_path" => source_period["article_path"],
+        "published" => source_period["published"] == true,
+        "legacy_entry_ids" => Array(source_period["legacy_entry_ids"]),
+        "children" => children
+      }
     end
 
     def aggregate_document_stats(documents)
@@ -278,16 +358,17 @@ module Atlas
           document["macro_region"],
           corpus_root: document["corpus_root"]
         ).presence
-        period = document["period"].to_s
         next if region.blank?
 
         region_rows[region] << document
-        period_rows[[region, period]] << document if period.present?
+        @periodisation.period_ids_for_document(document).each do |period_id|
+          period_rows[[region, period_id]] << document
+        end
       end
 
       {
         regions: region_rows.transform_values { |rows| count_stats(rows) },
-        periods: period_rows.transform_values { |rows| count_stats(rows) }
+        periods: period_rows.transform_values { |rows| count_stats(rows.uniq { |row| row["id"].to_s }) }
       }
     end
 
@@ -303,8 +384,6 @@ module Atlas
     end
 
     def build_aliases(entry_rows)
-      # Existing IDs remain canonical for now. This mapping exists so later ASCII
-      # migrations can preserve old URLs without changing the controller contract.
       entry_rows.each_with_object({}) do |row, aliases|
         Array(row["legacy_ids"]).each { |legacy| aliases[legacy.to_s] = row.fetch("id").to_s }
       end
@@ -315,8 +394,9 @@ module Atlas
       entry_rows.each do |row|
         root = row.dig("corpus", "root").to_s
         polity = row.dig("corpus", "polity").to_s
-        Array(row.dig("corpus", "periods")).each do |period|
-          key = [root, period, polity].map(&:to_s).join("\u0000")
+        periods = Array(row.dig("corpus", "periods")) + Array(row.dig("atlas", "periods"))
+        periods.map(&:to_s).reject(&:blank?).uniq.each do |period|
+          key = [root, period, polity].join("\u0000")
           entry_by_corpus_key[key] = row.fetch("id").to_s
         end
       end
@@ -328,9 +408,24 @@ module Atlas
         end
       end
 
+      period_redirect_by_legacy_id = {}
+      period_by_corpus_path = {}
+      @periodisation.periods.each do |period|
+        region = period.fetch("macro_region")
+        id = period.fetch("id")
+        Array(period["legacy_entry_ids"]).each do |legacy_id|
+          period_redirect_by_legacy_id[legacy_id.to_s] = [region, id]
+        end
+        Array(period["corpus_paths"]).each do |path|
+          period_by_corpus_path[path.to_s] = [region, id]
+        end
+      end
+
       {
         "entry_by_corpus_key" => entry_by_corpus_key,
-        "macro_region_by_corpus_root" => macro_region_by_corpus_root
+        "macro_region_by_corpus_root" => macro_region_by_corpus_root,
+        "period_redirect_by_legacy_id" => period_redirect_by_legacy_id,
+        "period_by_corpus_path" => period_by_corpus_path
       }
     end
 
@@ -342,6 +437,15 @@ module Atlas
       payload.fetch("entries").each do |row|
         unknown = Array(row["related"]).map(&:to_s) - ids
         raise ArgumentError, "Unknown atlas links for #{row['id']}: #{unknown.join(', ')}" if unknown.any?
+
+        by_region = Grammar::MarkdownDocument.stringify_keys(row.dig("atlas", "period_ids_by_region").to_h)
+        by_region.each do |region, period_ids|
+          Array(period_ids).each do |period_id|
+            unless @periodisation.period(region, period_id)
+              raise ArgumentError, "Unknown period #{region} / #{period_id} for #{row['id']}"
+            end
+          end
+        end
       end
 
       Atlas::UnicodeGuard.validate!(payload, context: "compiled atlas catalogue")
@@ -374,9 +478,16 @@ module Atlas
       row&.dig("name", "display").to_s.presence || id.to_s
     end
 
+    def count_compiled_periods(rows)
+      Array(rows).sum { |row| 1 + count_compiled_periods(row["children"]) }
+    end
+
+    def path_within?(candidate, prefix)
+      candidate == prefix || candidate.start_with?(prefix + "/")
+    end
+
     def deep_dup(value)
       Marshal.load(Marshal.dump(value))
     end
-
   end
 end

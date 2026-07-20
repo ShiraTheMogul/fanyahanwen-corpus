@@ -112,7 +112,7 @@ class UnicodeIntegrityVerifier
 
   def check_catalogue_labels
     periodisation_path = @root.join("content", "atlas", "periodisation.json")
-    catalogue_path = @root.join("storage", "corpus_search", "atlas", "catalogue-v2.json.gz")
+    catalogue_path = @root.join("storage", "corpus_search", "atlas", "catalogue-v3.json.gz")
 
     texts = []
     texts << periodisation_path.read(encoding: "UTF-8") if periodisation_path.file?
@@ -128,7 +128,7 @@ class UnicodeIntegrityVerifier
       texts << raw
 
       payload = JSON.parse(raw)
-      @errors << "Atlas catalogue version is not 2" unless payload["version"].to_i == 2
+      @errors << "Atlas catalogue version is not 3" unless payload["version"].to_i == 3
       @errors << "Atlas catalogue has no entries" unless payload["entries"].is_a?(Array) && payload["entries"].any?
     else
       @errors << "Atlas runtime catalogue is missing; run bin/rails atlas:rebuild_catalogue"

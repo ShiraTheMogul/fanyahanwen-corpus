@@ -9,6 +9,10 @@
       <span aria-hidden="true">›</span>
       <%= link_to @primary_macro_region["label"], atlas_macro_region_path(@primary_macro_region_id) %>
     <% end %>
+    <% Array(@primary_period_ancestors).each do |ancestor| %>
+      <span aria-hidden="true">›</span>
+      <%= link_to ancestor["label"], atlas_period_path(@primary_macro_region_id, ancestor["id"]) %>
+    <% end %>
     <% if @primary_period %>
       <span aria-hidden="true">›</span>
       <%= link_to @primary_period["label"], atlas_period_path(@primary_macro_region_id, @primary_period_id) %>
@@ -63,8 +67,8 @@
               <% label = search["label"].presence || t("atlas.searches.entry_label", headword: @entry.hanzi.presence || @entry.title) %>
               <%= link_to label, atlas_search_url(search), class: "grammar-btn grammar-btn-secondary" %>
             <% end %>
-            <% @entry.corpus_paths.each do |folder| %>
-              <%= link_to t("atlas.searches.browse_assigned_texts"), atlas_folder_search_url(folder), class: "grammar-btn grammar-btn-secondary" %>
+            <% if @entry.corpus_paths.any? %>
+              <%= link_to t("atlas.searches.browse_assigned_texts"), atlas_folder_search_url(@entry.corpus_paths), class: "grammar-btn grammar-btn-secondary" %>
             <% end %>
           </div>
         </section>

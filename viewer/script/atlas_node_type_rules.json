@@ -1,0 +1,1298 @@
+{
+  "version": 1,
+  "macro_regions": [
+    {
+      "id": "中國",
+      "label": "China 中國",
+      "corpus_roots": [
+        "中國漢文"
+      ],
+      "periods": [
+        {
+          "id": "商殷朝",
+          "label": "商殷朝",
+          "kind": "period",
+          "corpus_paths": [
+            "中國漢文/clean/商殷朝"
+          ],
+          "manifest_periods": [
+            "商朝",
+            "商殷朝"
+          ]
+        },
+        {
+          "id": "周朝",
+          "label": "周朝",
+          "kind": "period",
+          "corpus_paths": [
+            "中國漢文/clean/周朝"
+          ],
+          "children": [
+            {
+              "id": "西周",
+              "label": "西周",
+              "kind": "period",
+              "corpus_paths": [
+                "中國漢文/clean/周朝/西周"
+              ],
+              "manifest_periods": [
+                "西周",
+                "西周早期",
+                "西周中期",
+                "西周晚期"
+              ]
+            },
+            {
+              "id": "東周",
+              "label": "東周",
+              "kind": "period",
+              "corpus_paths": [
+                "中國漢文/clean/周朝/東周"
+              ],
+              "children": [
+                {
+                  "id": "春秋",
+                  "label": "春秋",
+                  "kind": "period",
+                  "corpus_paths": [
+                    "中國漢文/clean/周朝/東周/春秋時代"
+                  ],
+                  "manifest_periods": [
+                    "春秋",
+                    "春秋早期",
+                    "春秋中期",
+                    "春秋晚期"
+                  ]
+                },
+                {
+                  "id": "戰國",
+                  "label": "戰國",
+                  "kind": "period",
+                  "corpus_paths": [
+                    "中國漢文/clean/周朝/東周/戰國時代"
+                  ],
+                  "manifest_periods": [
+                    "戰國",
+                    "戰國早期",
+                    "戰國中期",
+                    "戰國晚期"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "秦朝",
+          "label": "秦朝",
+          "kind": "period",
+          "corpus_paths": [
+            "中國漢文/clean/秦朝"
+          ],
+          "manifest_periods": [
+            "秦朝"
+          ]
+        },
+        {
+          "id": "漢朝",
+          "label": "漢朝",
+          "kind": "period",
+          "corpus_paths": [
+            "中國漢文/clean/漢朝"
+          ],
+          "children": [
+            {
+              "id": "十八國",
+              "label": "十八國",
+              "kind": "period_group",
+              "corpus_paths": [
+                "中國漢文/clean/漢朝/十八國"
+              ]
+            },
+            {
+              "id": "西漢",
+              "label": "西漢",
+              "kind": "period",
+              "corpus_paths": [
+                "中國漢文/clean/漢朝/西漢"
+              ],
+              "manifest_periods": [
+                "西漢"
+              ]
+            },
+            {
+              "id": "新朝",
+              "label": "新朝",
+              "kind": "period",
+              "corpus_paths": [
+                "中國漢文/clean/漢朝/新朝"
+              ],
+              "manifest_periods": [
+                "新朝"
+              ]
+            },
+            {
+              "id": "東漢",
+              "label": "東漢",
+              "kind": "period",
+              "corpus_paths": [
+                "中國漢文/clean/漢朝/東漢"
+              ],
+              "manifest_periods": [
+                "東漢"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "三國",
+          "label": "三國",
+          "kind": "period",
+          "corpus_paths": [
+            "中國漢文/clean/三國"
+          ],
+          "manifest_periods": [
+            "三國"
+          ]
+        },
+        {
+          "id": "晉朝",
+          "label": "晉朝",
+          "kind": "period",
+          "corpus_paths": [
+            "中國漢文/clean/晉朝"
+          ],
+          "children": [
+            {
+              "id": "西晉",
+              "label": "西晉",
+              "kind": "period",
+              "corpus_paths": [
+                "中國漢文/clean/晉朝/西晉"
+              ],
+              "manifest_periods": [
+                "西晉"
+              ]
+            },
+            {
+              "id": "東晉",
+              "label": "東晉",
+              "kind": "period",
+              "corpus_paths": [
+                "中國漢文/clean/晉朝/東晉"
+              ],
+              "manifest_periods": [
+                "東晉"
+              ]
+            },
+            {
+              "id": "十六國",
+              "label": "十六國",
+              "kind": "period_group",
+              "corpus_paths": [
+                "中國漢文/clean/晉朝/十六國"
+              ],
+              "manifest_periods": [
+                "十六國"
+              ]
+            },
+            {
+              "id": "小朝",
+              "label": "小朝",
+              "kind": "period_group",
+              "corpus_paths": [
+                "中國漢文/clean/晉朝/小朝"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "南北朝",
+          "label": "南北朝",
+          "kind": "period",
+          "corpus_paths": [
+            "中國漢文/clean/南北朝"
+          ],
+          "manifest_periods": [
+            "南北朝"
+          ]
+        },
+        {
+          "id": "隋朝",
+          "label": "隋朝",
+          "kind": "period",
+          "corpus_paths": [
+            "中國漢文/clean/隋朝"
+          ],
+          "manifest_periods": [
+            "隋朝"
+          ]
+        },
+        {
+          "id": "唐朝",
+          "label": "唐朝",
+          "kind": "period",
+          "corpus_paths": [
+            "中國漢文/clean/唐朝"
+          ],
+          "manifest_periods": [
+            "唐朝",
+            "唐"
+          ]
+        },
+        {
+          "id": "五代十國",
+          "label": "五代十國",
+          "kind": "period",
+          "corpus_paths": [
+            "中國漢文/clean/五代十國"
+          ],
+          "children": [
+            {
+              "id": "五代",
+              "label": "五代",
+              "kind": "period_group",
+              "corpus_paths": [
+                "中國漢文/clean/五代十國/五代"
+              ]
+            },
+            {
+              "id": "十國",
+              "label": "十國",
+              "kind": "period_group",
+              "corpus_paths": [
+                "中國漢文/clean/五代十國/十國"
+              ]
+            },
+            {
+              "id": "遼朝",
+              "label": "遼朝",
+              "kind": "period",
+              "corpus_paths": [
+                "中國漢文/clean/五代十國/遼朝"
+              ],
+              "manifest_periods": [
+                "遼朝"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "宋朝",
+          "label": "宋朝",
+          "kind": "period",
+          "corpus_paths": [
+            "中國漢文/clean/宋朝"
+          ],
+          "children": [
+            {
+              "id": "北宋",
+              "label": "北宋",
+              "kind": "period",
+              "corpus_paths": [
+                "中國漢文/clean/宋朝/北宋"
+              ],
+              "manifest_periods": [
+                "北宋"
+              ]
+            },
+            {
+              "id": "南宋",
+              "label": "南宋",
+              "kind": "period",
+              "corpus_paths": [
+                "中國漢文/clean/宋朝/南宋"
+              ],
+              "manifest_periods": [
+                "南宋"
+              ]
+            },
+            {
+              "id": "金朝",
+              "label": "金朝",
+              "kind": "period",
+              "corpus_paths": [
+                "中國漢文/clean/宋朝/金朝"
+              ],
+              "manifest_periods": [
+                "金朝"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "元朝",
+          "label": "元朝",
+          "kind": "period",
+          "corpus_paths": [
+            "中國漢文/clean/元朝"
+          ],
+          "manifest_periods": [
+            "元朝"
+          ]
+        },
+        {
+          "id": "明朝",
+          "label": "明朝",
+          "kind": "period",
+          "corpus_paths": [
+            "中國漢文/clean/明朝"
+          ],
+          "manifest_periods": [
+            "明朝",
+            "明"
+          ]
+        },
+        {
+          "id": "清朝",
+          "label": "清朝",
+          "kind": "period",
+          "corpus_paths": [
+            "中國漢文/clean/清朝"
+          ],
+          "manifest_periods": [
+            "清朝"
+          ],
+          "children": [
+            {
+              "id": "西朝",
+              "label": "西朝",
+              "kind": "period",
+              "corpus_paths": [
+                "中國漢文/clean/清朝/西朝"
+              ],
+              "manifest_periods": [
+                "西朝"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "中華帝國",
+          "label": "中華帝國",
+          "kind": "period",
+          "corpus_paths": [
+            "中國漢文/clean/中華帝國"
+          ],
+          "manifest_periods": [
+            "中華帝國"
+          ]
+        },
+        {
+          "id": "中華民國",
+          "label": "中華民國",
+          "kind": "period",
+          "corpus_paths": [
+            "中國漢文/clean/中華民國"
+          ],
+          "manifest_periods": [
+            "中華民國"
+          ]
+        },
+        {
+          "id": "中華人民共和國",
+          "label": "中華人民共和國",
+          "kind": "period",
+          "corpus_paths": [
+            "中國漢文/clean/中華人民共和國"
+          ],
+          "manifest_periods": [
+            "中華人民共和國"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "日本",
+      "label": "Japan 日本",
+      "corpus_roots": [
+        "日本漢文"
+      ],
+      "periods": [
+        {
+          "id": "倭",
+          "label": "倭",
+          "kind": "period",
+          "corpus_paths": [
+            "日本漢文/clean/倭"
+          ],
+          "children": [
+            {
+              "id": "彌生時代",
+              "label": "彌生時代",
+              "kind": "period",
+              "corpus_paths": [
+                "日本漢文/clean/倭/弥生時代"
+              ],
+              "manifest_periods": [
+                "彌生時代",
+                "弥生時代"
+              ]
+            },
+            {
+              "id": "古墳時代",
+              "label": "古墳時代",
+              "kind": "period",
+              "corpus_paths": [
+                "日本漢文/clean/倭/古墳時代"
+              ],
+              "manifest_periods": [
+                "古墳時代"
+              ]
+            },
+            {
+              "id": "飛鳥時代",
+              "label": "飛鳥時代",
+              "kind": "period",
+              "corpus_paths": [
+                "日本漢文/clean/倭/飛鳥時代"
+              ],
+              "manifest_periods": [
+                "飛鳥時代"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "奈良時代",
+          "label": "奈良時代",
+          "kind": "period",
+          "corpus_paths": [
+            "日本漢文/clean/日本/奈良時代"
+          ],
+          "manifest_periods": [
+            "奈良時代"
+          ]
+        },
+        {
+          "id": "平安時代",
+          "label": "平安時代",
+          "kind": "period",
+          "corpus_paths": [
+            "日本漢文/clean/日本/平安時代"
+          ],
+          "manifest_periods": [
+            "平安時代"
+          ]
+        },
+        {
+          "id": "鎌倉時代",
+          "label": "鎌倉時代",
+          "kind": "period",
+          "corpus_paths": [
+            "日本漢文/clean/日本/鎌倉時代"
+          ],
+          "manifest_periods": [
+            "鎌倉時代"
+          ]
+        },
+        {
+          "id": "室町時代",
+          "label": "室町時代",
+          "kind": "period",
+          "corpus_paths": [
+            "日本漢文/clean/日本/室町時代"
+          ],
+          "manifest_periods": [
+            "室町時代"
+          ]
+        },
+        {
+          "id": "安土桃山時代",
+          "label": "安土桃山時代",
+          "kind": "period",
+          "corpus_paths": [
+            "日本漢文/clean/日本/安土桃山時代"
+          ],
+          "manifest_periods": [
+            "安土桃山時代"
+          ]
+        },
+        {
+          "id": "江戶時代",
+          "label": "江戶時代",
+          "kind": "period",
+          "corpus_paths": [
+            "日本漢文/clean/日本/江戸時代"
+          ],
+          "manifest_periods": [
+            "江戶時代",
+            "江戸時代"
+          ]
+        },
+        {
+          "id": "明治時代",
+          "label": "明治時代",
+          "kind": "period",
+          "corpus_paths": [
+            "日本漢文/clean/日本/明治時代"
+          ],
+          "manifest_periods": [
+            "明治時代"
+          ]
+        },
+        {
+          "id": "大正時代",
+          "label": "大正時代",
+          "kind": "period",
+          "corpus_paths": [
+            "日本漢文/clean/日本/大正時代"
+          ],
+          "manifest_periods": [
+            "大正時代"
+          ]
+        },
+        {
+          "id": "昭和時代",
+          "label": "昭和時代",
+          "kind": "period",
+          "corpus_paths": [
+            "日本漢文/clean/日本/昭和時代"
+          ],
+          "manifest_periods": [
+            "昭和時代"
+          ]
+        },
+        {
+          "id": "平成時代",
+          "label": "平成時代",
+          "kind": "period",
+          "corpus_paths": [
+            "日本漢文/clean/日本/平成時代"
+          ],
+          "manifest_periods": [
+            "平成時代"
+          ]
+        },
+        {
+          "id": "令和時代",
+          "label": "令和時代",
+          "kind": "period",
+          "corpus_paths": [
+            "日本漢文/clean/日本/令和時代"
+          ],
+          "manifest_periods": [
+            "令和時代"
+          ]
+        },
+        {
+          "id": "大日本帝國",
+          "label": "大日本帝國",
+          "kind": "period",
+          "corpus_paths": [
+            "日本漢文/clean/大日本帝国"
+          ],
+          "manifest_periods": [
+            "大日本帝國"
+          ],
+          "aliases": [
+            "大日本帝国"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "朝鮮",
+      "label": "Korea 朝鮮",
+      "corpus_roots": [
+        "朝鮮漢文"
+      ],
+      "periods": [
+        {
+          "id": "古朝鮮",
+          "label": "古朝鮮",
+          "kind": "period",
+          "corpus_paths": [
+            "朝鮮漢文/clean/古朝鮮"
+          ],
+          "manifest_periods": [
+            "古朝鮮"
+          ]
+        },
+        {
+          "id": "三韓",
+          "label": "三韓",
+          "kind": "period",
+          "corpus_paths": [
+            "朝鮮漢文/clean/三韓"
+          ],
+          "manifest_periods": [
+            "三韓"
+          ]
+        },
+        {
+          "id": "原三國",
+          "label": "原三國",
+          "kind": "period",
+          "corpus_paths": [
+            "朝鮮漢文/clean/原三國"
+          ],
+          "manifest_periods": [
+            "原三國"
+          ]
+        },
+        {
+          "id": "三國",
+          "label": "三國",
+          "kind": "period",
+          "corpus_paths": [
+            "朝鮮漢文/clean/三國"
+          ],
+          "manifest_periods": [
+            "三國"
+          ]
+        },
+        {
+          "id": "加倻",
+          "label": "加倻",
+          "kind": "period",
+          "corpus_paths": [
+            "朝鮮漢文/clean/加倻"
+          ],
+          "manifest_periods": [
+            "加倻"
+          ]
+        },
+        {
+          "id": "後三國",
+          "label": "後三國",
+          "kind": "period",
+          "corpus_paths": [
+            "朝鮮漢文/clean/後三國"
+          ],
+          "manifest_periods": [
+            "後三國"
+          ]
+        },
+        {
+          "id": "渤海",
+          "label": "渤海",
+          "kind": "period",
+          "corpus_paths": [
+            "朝鮮漢文/clean/渤海"
+          ],
+          "manifest_periods": [
+            "渤海"
+          ]
+        },
+        {
+          "id": "高麗",
+          "label": "高麗",
+          "kind": "period",
+          "corpus_paths": [
+            "朝鮮漢文/clean/高麗"
+          ],
+          "manifest_periods": [
+            "高麗"
+          ],
+          "children": [
+            {
+              "id": "征東行省期",
+              "label": "征東行省期",
+              "kind": "period",
+              "manifest_periods": [
+                "征東行省期"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "耽羅",
+          "label": "耽羅",
+          "kind": "period",
+          "corpus_paths": [
+            "朝鮮漢文/clean/耽羅"
+          ],
+          "manifest_periods": [
+            "耽羅"
+          ]
+        },
+        {
+          "id": "朝鮮王朝",
+          "label": "朝鮮王朝",
+          "kind": "period",
+          "corpus_paths": [
+            "朝鮮漢文/clean/朝鮮王朝"
+          ],
+          "manifest_periods": [
+            "朝鮮王朝"
+          ]
+        },
+        {
+          "id": "大韓帝國",
+          "label": "大韓帝國",
+          "kind": "period",
+          "corpus_paths": [
+            "朝鮮漢文/clean/大韓國"
+          ],
+          "manifest_periods": [
+            "大韓帝國",
+            "1897 transition"
+          ],
+          "aliases": [
+            "大韓國"
+          ]
+        },
+        {
+          "id": "大韓民國",
+          "label": "大韓民國",
+          "kind": "period",
+          "corpus_paths": [
+            "朝鮮漢文/clean/大韓民國"
+          ],
+          "manifest_periods": [
+            "大韓民國"
+          ]
+        },
+        {
+          "id": "朝鮮民主主義人民共和國",
+          "label": "朝鮮民主主義人民共和國",
+          "kind": "period",
+          "corpus_paths": [
+            "朝鮮漢文/clean/朝鮮民主主義人民共和國"
+          ],
+          "manifest_periods": [
+            "朝鮮民主主義人民共和國"
+          ]
+        },
+        {
+          "id": "未詳",
+          "label": "未詳",
+          "kind": "period",
+          "corpus_paths": [
+            "朝鮮漢文/clean/無年份"
+          ],
+          "manifest_periods": [
+            "近現代/待分類"
+          ],
+          "hidden": true
+        }
+      ]
+    },
+    {
+      "id": "琉球",
+      "label": "Ryukyu 琉球",
+      "corpus_roots": [
+        "琉球漢文"
+      ],
+      "periods": [
+        {
+          "id": "三山",
+          "label": "三山",
+          "kind": "period",
+          "corpus_paths": [
+            "琉球漢文/clean/三山"
+          ],
+          "manifest_periods": [
+            "三山"
+          ]
+        },
+        {
+          "id": "琉球國",
+          "label": "琉球國",
+          "kind": "period",
+          "corpus_paths": [
+            "琉球漢文/clean/琉球國"
+          ],
+          "manifest_periods": [
+            "琉球國"
+          ],
+          "children": [
+            {
+              "id": "第一尚氏王朝",
+              "label": "第一尚氏王朝",
+              "kind": "period",
+              "corpus_paths": [
+                "琉球漢文/clean/琉球國/第一尚氏王朝"
+              ],
+              "manifest_periods": [
+                "第一尚氏王朝"
+              ]
+            },
+            {
+              "id": "第二尚氏王朝",
+              "label": "第二尚氏王朝",
+              "kind": "period",
+              "corpus_paths": [
+                "琉球漢文/clean/琉球國/第二尚氏王朝"
+              ],
+              "manifest_periods": [
+                "第二尚氏王朝"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "越南",
+      "label": "Vietnam 越南",
+      "corpus_roots": [
+        "越南漢文"
+      ],
+      "periods": [
+        {
+          "id": "北屬及間歇獨立時期",
+          "label": "北屬及間歇獨立時期",
+          "kind": "period",
+          "corpus_paths": [
+            "越南漢文/clean/北屬及間歇獨立時期"
+          ],
+          "children": [
+            {
+              "id": "第一次北屬",
+              "label": "第一次北屬",
+              "kind": "period",
+              "corpus_paths": [
+                "越南漢文/clean/北屬及間歇獨立時期/第一次北屬"
+              ]
+            },
+            {
+              "id": "第二次北屬",
+              "label": "第二次北屬",
+              "kind": "period",
+              "corpus_paths": [
+                "越南漢文/clean/北屬及間歇獨立時期/第二次北屬"
+              ]
+            },
+            {
+              "id": "第三次北屬",
+              "label": "第三次北屬",
+              "kind": "period",
+              "corpus_paths": [
+                "越南漢文/clean/北屬及間歇獨立時期/第三次北屬"
+              ]
+            },
+            {
+              "id": "前李朝",
+              "label": "前李朝",
+              "kind": "period",
+              "corpus_paths": [
+                "越南漢文/clean/北屬及間歇獨立時期/前李朝"
+              ],
+              "manifest_periods": [
+                "前李朝"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "大越",
+          "label": "大越",
+          "kind": "period",
+          "corpus_paths": [
+            "越南漢文/clean/大越"
+          ],
+          "manifest_periods": [
+            "大越"
+          ],
+          "children": [
+            {
+              "id": "吳朝",
+              "label": "吳朝",
+              "kind": "period",
+              "corpus_paths": [
+                "越南漢文/clean/大越/吳朝"
+              ],
+              "manifest_periods": [
+                "吳朝"
+              ]
+            },
+            {
+              "id": "丁朝",
+              "label": "丁朝",
+              "kind": "period",
+              "corpus_paths": [
+                "越南漢文/clean/大越/丁朝"
+              ],
+              "manifest_periods": [
+                "丁朝"
+              ]
+            },
+            {
+              "id": "李朝",
+              "label": "李朝",
+              "kind": "period",
+              "corpus_paths": [
+                "越南漢文/clean/大越/李朝"
+              ],
+              "manifest_periods": [
+                "李朝"
+              ]
+            },
+            {
+              "id": "陳朝",
+              "label": "陳朝",
+              "kind": "period",
+              "corpus_paths": [
+                "越南漢文/clean/大越/陳朝"
+              ],
+              "manifest_periods": [
+                "陳朝"
+              ]
+            },
+            {
+              "id": "第四次北屬",
+              "label": "第四次北屬",
+              "kind": "period",
+              "corpus_paths": [
+                "越南漢文/clean/大越/第四次北屬"
+              ]
+            },
+            {
+              "id": "後黎朝",
+              "label": "後黎朝",
+              "kind": "period",
+              "corpus_paths": [
+                "越南漢文/clean/大越/後黎朝"
+              ],
+              "manifest_periods": [
+                "後黎朝"
+              ]
+            },
+            {
+              "id": "莫朝",
+              "label": "莫朝",
+              "kind": "period",
+              "corpus_paths": [
+                "越南漢文/clean/大越/莫朝"
+              ],
+              "manifest_periods": [
+                "莫朝"
+              ]
+            },
+            {
+              "id": "黎中興朝",
+              "label": "黎中興朝",
+              "kind": "period",
+              "corpus_paths": [
+                "越南漢文/clean/大越/黎中興朝"
+              ],
+              "manifest_periods": [
+                "黎中興朝"
+              ]
+            },
+            {
+              "id": "西山朝",
+              "label": "西山朝",
+              "kind": "period",
+              "corpus_paths": [
+                "越南漢文/clean/大越/西山朝"
+              ],
+              "manifest_periods": [
+                "西山朝"
+              ]
+            },
+            {
+              "id": "阮朝",
+              "label": "阮朝",
+              "kind": "period",
+              "corpus_paths": [
+                "越南漢文/clean/大越/阮朝"
+              ],
+              "manifest_periods": [
+                "阮朝"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "越南共和國",
+          "label": "越南共和國",
+          "kind": "period",
+          "corpus_paths": [
+            "越南漢文/clean/越南共和國"
+          ],
+          "manifest_periods": [
+            "越南共和國"
+          ]
+        },
+        {
+          "id": "越南民主共和國",
+          "label": "越南民主共和國",
+          "kind": "period",
+          "corpus_paths": [
+            "越南漢文/clean/越南民主共和國"
+          ],
+          "manifest_periods": [
+            "越南民主共和國"
+          ]
+        },
+        {
+          "id": "越南社會主義共和國",
+          "label": "越南社會主義共和國",
+          "kind": "period",
+          "corpus_paths": [
+            "越南漢文/clean/越南社會主義共和國"
+          ],
+          "manifest_periods": [
+            "越南社會主義共和國"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "西域",
+      "label": "Western Regions 西域",
+      "corpus_roots": [
+        "西域漢文"
+      ],
+      "periods": []
+    },
+    {
+      "id": "新加坡",
+      "label": "Singapore 新加坡",
+      "corpus_roots": [
+        "新加坡漢文"
+      ],
+      "periods": [
+        {
+          "id": "未分期",
+          "label": "未分期",
+          "kind": "period",
+          "corpus_paths": [
+            "新加坡漢文/clean"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "臺灣",
+      "label": "Taiwan 臺灣",
+      "corpus_roots": [],
+      "periods": [
+        {
+          "id": "大日本帝國",
+          "label": "大日本帝國",
+          "kind": "period",
+          "corpus_paths": [
+            "日本漢文/clean/大日本帝国/臺灣"
+          ],
+          "manifest_periods": [
+            "大日本帝國"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "英國",
+      "label": "United Kingdom 英國",
+      "corpus_roots": [
+        "他漢文"
+      ],
+      "periods": [
+        {
+          "id": "未分期",
+          "label": "未分期",
+          "kind": "period",
+          "corpus_paths": [
+            "他漢文/clean"
+          ]
+        }
+      ]
+    }
+  ],
+  "merge_polities": [
+    {
+      "target_folder": "周",
+      "target_id": "中國--周",
+      "display": "Zhou",
+      "hanzi": "周",
+      "source_entry_names": [
+        "西周",
+        "東周"
+      ],
+      "corpus_polity": "周",
+      "period_ids": [
+        "西周",
+        "東周"
+      ]
+    },
+    {
+      "target_folder": "漢",
+      "target_id": "中國--漢",
+      "display": "Han",
+      "hanzi": "漢",
+      "source_entry_names": [
+        "西漢",
+        "東漢"
+      ],
+      "corpus_polity": "漢",
+      "period_ids": [
+        "西漢",
+        "東漢"
+      ]
+    },
+    {
+      "target_folder": "晉",
+      "target_id": "中國--晉",
+      "display": "Jin",
+      "hanzi": "晉",
+      "source_entry_names": [
+        "西晉",
+        "東晉"
+      ],
+      "corpus_polity": "晉",
+      "period_ids": [
+        "西晉",
+        "東晉"
+      ]
+    },
+    {
+      "target_folder": "宋",
+      "target_id": "中國--宋",
+      "display": "Song",
+      "hanzi": "宋",
+      "source_entry_names": [
+        "北宋",
+        "南宋"
+      ],
+      "corpus_polity": "宋",
+      "period_ids": [
+        "北宋",
+        "南宋"
+      ]
+    }
+  ],
+  "convert_polities": [
+    {
+      "source_entry_name": "新朝",
+      "target_folder": "新",
+      "display": "Xin",
+      "hanzi": "新",
+      "corpus_polity": "新",
+      "period_ids": [
+        "新朝"
+      ],
+      "aliases": [
+        "新朝"
+      ]
+    },
+    {
+      "source_entry_name": "西朝",
+      "target_folder": "大西",
+      "display": "Daxi",
+      "hanzi": "大西",
+      "corpus_polity": "大西",
+      "period_ids": [
+        "西朝"
+      ],
+      "aliases": [
+        "西朝"
+      ]
+    },
+    {
+      "source_entry_name": "遼朝",
+      "target_folder": "遼",
+      "display": "Liao",
+      "hanzi": "遼",
+      "corpus_polity": "遼",
+      "period_ids": [
+        "遼朝"
+      ],
+      "aliases": [
+        "遼朝"
+      ]
+    },
+    {
+      "source_entry_name": "金朝",
+      "target_folder": "金",
+      "display": "Jin",
+      "hanzi": "金",
+      "corpus_polity": "金",
+      "period_ids": [
+        "金朝"
+      ],
+      "aliases": [
+        "金朝"
+      ]
+    },
+    {
+      "source_entry_name": "大元",
+      "target_folder": "元",
+      "display": "Yuan",
+      "hanzi": "元",
+      "corpus_polity": "元",
+      "period_ids": [
+        "元朝"
+      ],
+      "aliases": [
+        "大元"
+      ]
+    },
+    {
+      "source_entry_name": "朝鮮王朝",
+      "target_folder": "朝鮮",
+      "display": "Joseon",
+      "hanzi": "朝鮮",
+      "corpus_polity": "朝鮮",
+      "period_ids": [
+        "朝鮮王朝"
+      ],
+      "aliases": [
+        "朝鮮王朝"
+      ]
+    },
+    {
+      "source_entry_name": "大韓國",
+      "target_folder": "大韓帝國",
+      "display": "Korean Empire",
+      "hanzi": "大韓帝國",
+      "corpus_polity": "大韓帝國",
+      "period_ids": [
+        "大韓帝國"
+      ],
+      "aliases": [
+        "大韓國"
+      ]
+    },
+    {
+      "source_entry_name": "大日本帝国",
+      "target_folder": "大日本帝國",
+      "display": "Empire of Japan",
+      "hanzi": "大日本帝國",
+      "corpus_polity": "大日本帝國",
+      "period_ids": [
+        "大日本帝國"
+      ],
+      "aliases": [
+        "大日本帝国"
+      ]
+    }
+  ],
+  "period_only_entries": [
+    "十八國",
+    "丁朝",
+    "吳朝",
+    "前李朝",
+    "李朝",
+    "陳朝",
+    "後黎朝",
+    "莫朝",
+    "西山朝",
+    "阮朝",
+    "黎中興朝"
+  ],
+  "manual_review_entries": [
+    {
+      "name": "長沙國",
+      "reason": "Folder identifies a polity but descendant metadata currently collapses it into 漢."
+    },
+    {
+      "name": "高句麗",
+      "reason": "Descendant metadata says 高麗; likely a metadata error rather than an Atlas type error."
+    },
+    {
+      "name": "蝦夷島",
+      "reason": "Could be region, polity, or corpus grouping; do not reclassify automatically."
+    },
+    {
+      "name": "渤海",
+      "reason": "Sparse direct-file metadata; keep as polity pending fuller metadata."
+    },
+    {
+      "name": "新羅",
+      "reason": "Current descendant metadata has missing polity values; keep from explicit corpus structure."
+    }
+  ]
+}

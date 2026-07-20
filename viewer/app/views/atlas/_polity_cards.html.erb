@@ -1,0 +1,19 @@
+<div class="atlas-polity-grid">
+  <% entries.each do |entry| %>
+    <%= link_to atlas_entry_path_for(entry), class: "atlas-polity-card" do %>
+      <span class="atlas-polity-card-title"><%= entry.search_label %></span>
+      <% if entry.aliases.any? %>
+        <span class="atlas-polity-card-aliases"><%= entry.aliases.first(4).join(" · ") %></span>
+      <% end %>
+      <span class="atlas-polity-card-footer">
+        <% if entry.work_count.positive? || entry.document_count.positive? %>
+          <%= t("atlas.index.entry_corpus_summary", works: number_with_delimiter(entry.work_count), documents: number_with_delimiter(entry.document_count)) %>
+        <% elsif entry.published_in_catalogue? %>
+          <%= t("atlas.index.article_available") %>
+        <% else %>
+          <%= t("atlas.index.article_needed") %>
+        <% end %>
+      </span>
+    <% end %>
+  <% end %>
+</div>
