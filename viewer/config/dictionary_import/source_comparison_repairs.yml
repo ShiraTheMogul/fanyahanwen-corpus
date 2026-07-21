@@ -1,0 +1,113 @@
+version: 3
+policy: approved_comparison_repairs_to_corpus_txt
+notes:
+  - The corpus Wikisource scrape remains the captured source text.
+  - A comparison witness may restore a demonstrably missing reading.
+  - Every restoration is guarded by the exact dictionary, document, line, fanqie, and payload SHA-256.
+  - Approved restorations are applied to corpus TXT only after an exact dry-run plan.
+  - The repair plan, comparison evidence, and backups stay in the process output under tmp/.
+  - metadata.json is not changed by this workflow.
+matching_guards:
+  - dictionary_title
+  - document_id
+  - source_line_start
+  - fanqie
+  - payload_sha256
+repairs:
+  - repair_id: hongwu-206427-577-bang
+    dictionary_title: 洪武正韻
+    document_id: 206427
+    source_line_start: 577
+    fanqie: 博旁切
+    payload_sha256: 9743f62ce2e285cd9d8ac34c5da450811a8a79f96eafab358e655bacaa25f7cd
+    restored_headword: 邦
+    decision: approved_for_corpus_repair
+    confidence: exact_same_work_witness
+    witness_label: Chinese Text Project, 洪武正韻卷五至卷七
+    witness_url: https://ctext.org/wiki.pl?chapter=436282&if=gb
+    witness_reading: 〇邦博旁切
+    note: Same-work comparison witness supplies the omitted group head.
+
+  - repair_id: hongwu-206428-516-hong
+    dictionary_title: 洪武正韻
+    document_id: 206428
+    source_line_start: 516
+    fanqie: 烏宏切
+    payload_sha256: ee02d2543e9dff9393c2c1bfa34c8d795456a65fe9d704158d9022cd18779dac
+    restored_headword: 泓
+    decision: approved_for_corpus_repair
+    confidence: exact_same_work_witness
+    witness_label: Chinese Text Project, 洪武正韻卷五至卷七
+    witness_url: https://ctext.org/wiki.pl?chapter=436282&if=gb
+    witness_reading: 〇泓烏宏切
+    note: Same-work comparison witness supplies the omitted group head.
+
+  - repair_id: hongwu-206428-997-can
+    dictionary_title: 洪武正韻
+    document_id: 206428
+    source_line_start: 997
+    fanqie: 徂含切
+    payload_sha256: 6d392b3b24711743bf4bfe8edde1802b5897bc3ecf2baec7788009dc3a7c3e7e
+    restored_headword: 蠶
+    decision: approved_for_corpus_repair
+    confidence: exact_same_work_witness
+    witness_label: Chinese Text Project, 洪武正韻卷五至卷七
+    witness_url: https://ctext.org/wiki.pl?chapter=436282&if=gb
+    witness_reading: 〇蠶徂含切
+    note: Same-work comparison witness supplies the omitted group head.
+
+  - repair_id: hongwu-206430-907-xuan
+    dictionary_title: 洪武正韻
+    document_id: 206430
+    source_line_start: 907
+    fanqie: 胡犬切
+    payload_sha256: 8aeced8a0ec8a2931db18d1d2b2dbaee4cf488623e72dcbbe509f6843e1e3925
+    restored_headword: 泫
+    decision: approved_for_corpus_repair
+    confidence: exact_same_work_witness
+    witness_label: Chinese Text Project, 洪武正韻卷八至卷九
+    witness_url: https://ctext.org/wiki.pl?chapter=262653&if=gb
+    witness_reading: 〇泫胡犬切
+    note: Same-work comparison witness supplies the omitted group head.
+
+  - repair_id: hongwu-206431-762-jing
+    dictionary_title: 洪武正韻
+    document_id: 206431
+    source_line_start: 762
+    fanqie: 子郢切
+    payload_sha256: fb15be842c1ffeae430f9f2d4fda2d9910e1eb8958a66cfbee663bcc76c50943
+    restored_headword: 井
+    decision: approved_for_corpus_repair
+    confidence: exact_same_work_witness
+    witness_label: Chinese Text Project, 洪武正韻卷八至卷九
+    witness_url: https://ctext.org/wiki.pl?chapter=262653&if=gb
+    witness_reading: 〇井子郢切
+    note: Same-work comparison witness supplies the omitted group head.
+
+  - repair_id: hongwu-206433-248-tu
+    dictionary_title: 洪武正韻
+    document_id: 206433
+    source_line_start: 248
+    fanqie: 土故切
+    payload_sha256: cee102b606561778717b98474aede19250553092a91a0766302c4321f292b71d
+    restored_headword: 兔
+    decision: approved_for_corpus_repair
+    confidence: same_work_plus_independent_lexicographic_witness
+    witness_label: Chinese Text Project, 洪武正韻卷十至卷十一; independent lexicographic cross-check
+    witness_url: https://ctext.org/wiki.pl?chapter=341714&if=gb
+    witness_reading: 〇兔土故切
+    note: The same-work location and an independent rhyme-dictionary witness agree.
+
+  - repair_id: hongwu-206434-343-xuan
+    dictionary_title: 洪武正韻
+    document_id: 206434
+    source_line_start: 343
+    fanqie: 熒絹切
+    payload_sha256: d34989364bf1254d382421261cae91158e485e74712152d9164a2fb09f0aeb80
+    restored_headword: 眩
+    decision: approved_for_corpus_repair
+    confidence: exact_same_work_witness
+    witness_label: Chinese Text Project, 洪武正韻卷十二至卷十三
+    witness_url: https://ctext.org/wiki.pl?chapter=911750&if=gb
+    witness_reading: 〇眩熒絹切
+    note: Same-work comparison witness supplies the omitted group head.

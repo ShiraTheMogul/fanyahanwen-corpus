@@ -1,0 +1,96 @@
+version: 1
+policy: proposed_not_applied
+matching_guards:
+  - dictionary_title
+  - document_id
+  - source_line_start
+  - fanqie
+  - payload_sha256
+notes:
+  - These are externally corroborated review candidates, not automatic repairs.
+  - A candidate is surfaced only when every matching guard is exact.
+  - The dry run always writes applied=false and never inserts the proposed headword into an entry.
+candidates:
+  - dictionary_title: 洪武正韻
+    document_id: 206427
+    source_line_start: 577
+    fanqie: 博旁切
+    payload_sha256: 9743f62ce2e285cd9d8ac34c5da450811a8a79f96eafab358e655bacaa25f7cd
+    proposed_headword: 邦
+    review_status: externally_corroborated_not_applied
+    confidence: exact_witness_match
+    witness_label: Chinese Text Project, 洪武正韻卷五至卷七
+    witness_url: https://ctext.org/wiki.pl?chapter=436282&if=gb
+    note: External witness reads 〇邦博旁切; proposal remains unapplied.
+
+  - dictionary_title: 洪武正韻
+    document_id: 206428
+    source_line_start: 516
+    fanqie: 烏宏切
+    payload_sha256: ee02d2543e9dff9393c2c1bfa34c8d795456a65fe9d704158d9022cd18779dac
+    proposed_headword: 泓
+    review_status: externally_corroborated_not_applied
+    confidence: exact_witness_match
+    witness_label: Chinese Text Project, 洪武正韻卷五至卷七
+    witness_url: https://ctext.org/wiki.pl?chapter=436282&if=gb
+    note: External witness reads 〇泓烏宏切; proposal remains unapplied.
+
+  - dictionary_title: 洪武正韻
+    document_id: 206428
+    source_line_start: 997
+    fanqie: 徂含切
+    payload_sha256: 6d392b3b24711743bf4bfe8edde1802b5897bc3ecf2baec7788009dc3a7c3e7e
+    proposed_headword: 蠶
+    review_status: externally_corroborated_not_applied
+    confidence: exact_witness_match
+    witness_label: Chinese Text Project, 洪武正韻卷五至卷七
+    witness_url: https://ctext.org/wiki.pl?chapter=436282&if=gb
+    note: External witness reads 〇蠶徂含切; proposal remains unapplied.
+
+  - dictionary_title: 洪武正韻
+    document_id: 206430
+    source_line_start: 907
+    fanqie: 胡犬切
+    payload_sha256: 8aeced8a0ec8a2931db18d1d2b2dbaee4cf488623e72dcbbe509f6843e1e3925
+    proposed_headword: 泫
+    review_status: externally_corroborated_not_applied
+    confidence: exact_witness_match
+    witness_label: Chinese Text Project, 洪武正韻卷八至卷九
+    witness_url: https://ctext.org/wiki.pl?chapter=262653&if=gb
+    note: External witness reads 〇泫胡犬切; proposal remains unapplied.
+
+  - dictionary_title: 洪武正韻
+    document_id: 206431
+    source_line_start: 762
+    fanqie: 子郢切
+    payload_sha256: fb15be842c1ffeae430f9f2d4fda2d9910e1eb8958a66cfbee663bcc76c50943
+    proposed_headword: 井
+    review_status: externally_corroborated_not_applied
+    confidence: exact_witness_match
+    witness_label: Chinese Text Project, 洪武正韻卷八至卷九
+    witness_url: https://ctext.org/wiki.pl?chapter=262653&if=gb
+    note: External witness reads 〇井子郢切; proposal remains unapplied.
+
+  - dictionary_title: 洪武正韻
+    document_id: 206433
+    source_line_start: 248
+    fanqie: 土故切
+    payload_sha256: cee102b606561778717b98474aede19250553092a91a0766302c4321f292b71d
+    proposed_headword: 兔
+    review_status: externally_corroborated_not_applied
+    confidence: strongly_corroborated
+    witness_label: Chinese Text Project, 洪武正韻卷十至卷十一 and lexicographic cross-check
+    witness_url: https://ctext.org/wiki.pl?chapter=341714&if=gb
+    note: Witness location and later lexica support 兔土故切; proposal remains unapplied.
+
+  - dictionary_title: 洪武正韻
+    document_id: 206434
+    source_line_start: 343
+    fanqie: 熒絹切
+    payload_sha256: d34989364bf1254d382421261cae91158e485e74712152d9164a2fb09f0aeb80
+    proposed_headword: 眩
+    review_status: externally_corroborated_not_applied
+    confidence: exact_witness_match
+    witness_label: Chinese Text Project, 洪武正韻卷十二至卷十三
+    witness_url: https://ctext.org/wiki.pl?chapter=911750&if=gb
+    note: External witness reads 〇眩熒絹切; proposal remains unapplied.

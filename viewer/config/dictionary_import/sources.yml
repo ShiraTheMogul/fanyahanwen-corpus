@@ -1,0 +1,219 @@
+version: 1
+
+# Works copied in full by the default "starter" profile.
+# These give a useful spread of rhyme dictionaries, a semantic work, and a
+# character dictionary without making the upload unnecessarily enormous.
+starter_full_works:
+  - 廣韻
+  - 洪武正韻
+  - 集韻
+  - 重修廣韻
+  - 五音集韻
+  - 釋名
+  - 玉篇
+
+
+profiles:
+  hongwu_only:
+    - 洪武正韻
+
+categories:
+  訓詁之屬:
+    - title: 爾雅注疏
+      aliases: [爾雅注疏]
+    - title: 爾雅注疏_考證
+      aliases: [爾雅注疏_考證, 爾雅注疏考證]
+    - title: 爾雅鄭注
+      aliases: [爾雅鄭注]
+    - title: 輶軒使者絕代語釋别國方言
+      aliases: [輶軒使者絕代語釋别國方言, 輶軒使者絕代語釋別國方言]
+    - title: 釋名
+      aliases: [釋名]
+    - title: 廣雅
+      aliases: [廣雅]
+    - title: 匡謬正俗
+      aliases: [匡謬正俗]
+    - title: 羣經音辨
+      aliases: [羣經音辨, 群經音辨]
+    - title: 埤雅
+      aliases: [埤雅]
+    - title: 埤雅_音釋
+      aliases: [埤雅_音釋, 埤雅音釋]
+    - title: 爾雅翼
+      aliases: [爾雅翼]
+    - title: 駢雅
+      aliases: [駢雅]
+    - title: 字詁
+      aliases: [字詁]
+    - title: 續方言
+      aliases: [續方言]
+    - title: 别雅
+      aliases: [别雅, 別雅]
+
+  字書之屬:
+    - title: 急就篇
+      aliases: [急就篇]
+    - title: 說文解字
+      aliases: [說文解字]
+    - title: 說文繫傳
+      aliases: [說文繫傳]
+    - title: 說文繫傳考異
+      aliases: [說文繫傳考異]
+    - title: 說文解字篆韻譜
+      aliases: [說文解字篆韻譜]
+    - title: 玉篇
+      aliases: [玉篇]
+    - title: 幹祿字書
+      aliases: [幹祿字書]
+    - title: 五經文字
+      aliases: [五經文字]
+    - title: 九經字樣
+      aliases: [九經字樣]
+    - title: 汗簡
+      aliases: [汗簡]
+    - title: 佩觹
+      aliases: [佩觹]
+    - title: 古文四聲韻
+      aliases: [古文四聲韻]
+    - title: 類篇
+      aliases: [類篇]
+    - title: 歷代鐘鼎彝器款識法帖
+      aliases: [歷代鐘鼎彝器款識法帖]
+    - title: 復古編
+      aliases: [復古編]
+    - title: 班馬字類
+      aliases: [班馬字類]
+    - title: 漢隸字源
+      aliases: [漢隸字源]
+    - title: 六書故
+      aliases: [六書故]
+    - title: 龍龕手鑑
+      aliases: [龍龕手鑑]
+    - title: 六書統
+      aliases: [六書統]
+    - title: 周秦刻石釋音
+      aliases: [周秦刻石釋音]
+    - title: 字鑑
+      aliases: [字鑑]
+    - title: 漢隸分韻
+      aliases: [漢隸分韻]
+    - title: 六書本義
+      aliases: [六書本義]
+    - title: 奇字韻
+      aliases: [奇字韻]
+    - title: 古音駢字
+      aliases: [古音駢字]
+    - title: 古音駢字續篇
+      aliases: [古音駢字續篇]
+    - title: 俗書刊誤
+      aliases: [俗書刊誤]
+    - title: 字㝈
+      aliases: [字㝈]
+    - title: 御定康熙字典
+      aliases: [御定康熙字典]
+    - title: 欽定西域同文志
+      aliases: [欽定西域同文志]
+    - title: 隸辨
+      aliases: [隸辨]
+    - title: 篆隸考異
+      aliases: [篆隸考異]
+
+  韻書之屬:
+    - title: 廣韻
+      aliases: [廣韻]
+    - title: 重修廣韻
+      aliases: [重修廣韻]
+    - title: 集韻
+      aliases: [集韻]
+    - title: 切韵指掌圖
+      aliases: [切韵指掌圖, 切韻指掌圖]
+    - title: 韻補
+      aliases: [韻補]
+    - title: 附釋文互註禮部韻畧
+      aliases: [附釋文互註禮部韻畧, 附釋文互注禮部韻畧, 附釋文互註禮部韻略]
+    - title: 増脩互注禮部韻畧
+      aliases: [増脩互注禮部韻畧, 增脩互注禮部韻畧, 增修互注禮部韻畧]
+    - title: 增修校正押韻釋疑
+      aliases: [增修校正押韻釋疑, 増修校正押韻釋疑]
+    - title: 九經補韻
+      aliases: [九經補韻]
+    - title: 五音集韻
+      aliases: [五音集韻]
+    - title: 古今韻會舉要
+      aliases: [古今韻會舉要]
+    - title: 四聲全形等子
+      aliases: [四聲全形等子]
+    - title: 經史正音切韻指南
+      aliases: [經史正音切韻指南]
+    - title: 洪武正韻
+      aliases: [洪武正韻]
+    - title: 古音叢目
+      aliases: [古音叢目]
+    - title: 轉注古音略
+      aliases: [轉注古音略]
+    - title: 屈宋古音義
+      aliases: [屈宋古音義]
+    - title: 御定音韻闡微
+      aliases: [御定音韻闡微]
+    - title: 欽定同文韻統
+      aliases: [欽定同文韻統]
+    - title: 欽定叶韻彚輯
+      aliases: [欽定叶韻彚輯, 欽定葉韻彙輯]
+    - title: 欽定音韻述㣲
+      aliases: [欽定音韻述㣲, 欽定音韻述微]
+    - title: 音論
+      aliases: [音論]
+    - title: 詩本音
+      aliases: [詩本音]
+    - title: 易音
+      aliases: [易音]
+    - title: 唐韻正
+      aliases: [唐韻正]
+    - title: 古音表
+      aliases: [古音表]
+    - title: 韻補正
+      aliases: [韻補正]
+    - title: 古今通韻
+      aliases: [古今通韻]
+    - title: 易韻
+      aliases: [易韻]
+    - title: 孫氏唐韻考
+      aliases: [孫氏唐韻考]
+    - title: 古韻標準
+      aliases: [古韻標準]
+    - title: 六藝綱目
+      aliases: [六藝綱目]
+
+# Initial dry-run parser policy. These are deliberately conservative.
+# A work may be listed here and still be rejected by structural validation.
+work_settings:
+  廣韻:
+    parser: rime_dictionary
+    status: reference_import
+  重修廣韻:
+    parser: rime_dictionary
+    status: candidate_import
+  集韻:
+    parser: rime_dictionary
+    status: candidate_import
+  五音集韻:
+    parser: rime_dictionary
+    status: candidate_import
+  洪武正韻:
+    parser: hongwu_rime_dictionary
+    status: candidate_import
+  玉篇:
+    parser: probe_only
+    status: repair_and_review
+  釋名:
+    parser: probe_only
+    status: needs_semantic_segmenter
+  爾雅注疏:
+    parser: probe_only
+    status: needs_layered_commentary_parser
+  切韵指掌圖:
+    parser: probe_only
+    status: needs_table_source
+  古音表:
+    parser: probe_only
+    status: incomplete_source

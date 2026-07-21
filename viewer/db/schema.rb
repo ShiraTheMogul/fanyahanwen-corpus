@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_05_085000) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_21_150000) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.integer "blob_id", null: false
     t.datetime "created_at", null: false
@@ -90,6 +90,123 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_05_085000) do
     t.datetime "updated_at", null: false
     t.index ["series_key", "has_text", "order_index"], name: "idx_on_series_key_has_text_order_index_30cf074536"
     t.index ["series_key", "order_index"], name: "index_daily_readings_on_series_key_and_order_index", unique: true
+  end
+
+  create_table "dictionary_entries", force: :cascade do |t|
+    t.boolean "contains_unresolved_glyph", default: false, null: false
+    t.bigint "corpus_document_id", null: false
+    t.datetime "created_at", null: false
+    t.text "definition"
+    t.integer "dictionary_section_id", null: false
+    t.integer "dictionary_work_id", null: false
+    t.boolean "group_head", default: false, null: false
+    t.integer "group_sequence"
+    t.string "headword", null: false
+    t.json "metadata", default: {}, null: false
+    t.string "parser_name", null: false
+    t.string "parser_version", null: false
+    t.text "raw_payload", null: false
+    t.boolean "review_required", default: false, null: false
+    t.integer "sequence_number", null: false
+    t.integer "small_rime_number"
+    t.integer "source_line_end", null: false
+    t.integer "source_line_start", null: false
+    t.datetime "updated_at", null: false
+    t.index ["corpus_document_id", "source_line_start"], name: "idx_dictionary_entries_document_line"
+    t.index ["dictionary_section_id", "group_sequence"], name: "idx_dictionary_entries_section_group"
+    t.index ["dictionary_section_id"], name: "index_dictionary_entries_on_dictionary_section_id"
+    t.index ["dictionary_work_id", "sequence_number"], name: "idx_dictionary_entries_work_sequence", unique: true
+    t.index ["dictionary_work_id"], name: "index_dictionary_entries_on_dictionary_work_id"
+    t.index ["headword"], name: "index_dictionary_entries_on_headword"
+  end
+
+  create_table "dictionary_entry_characters", force: :cascade do |t|
+    t.integer "character_codepoint_id", null: false
+    t.datetime "created_at", null: false
+    t.integer "dictionary_entry_id", null: false
+    t.string "glyph", null: false
+    t.integer "position", null: false
+    t.string "role", null: false
+    t.datetime "updated_at", null: false
+    t.index ["character_codepoint_id"], name: "index_dictionary_entry_characters_on_character_codepoint_id"
+    t.index ["dictionary_entry_id", "position"], name: "idx_dictionary_entry_characters_entry_position", unique: true
+    t.index ["dictionary_entry_id"], name: "index_dictionary_entry_characters_on_dictionary_entry_id"
+    t.index ["glyph"], name: "index_dictionary_entry_characters_on_glyph"
+  end
+
+  create_table "dictionary_readings", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "dictionary_entry_id", null: false
+    t.string "kind", null: false
+    t.json "metadata", default: {}, null: false
+    t.integer "position", default: 1, null: false
+    t.string "raw_value", null: false
+    t.datetime "updated_at", null: false
+    t.string "value"
+    t.index ["dictionary_entry_id", "position"], name: "idx_dictionary_readings_entry_position", unique: true
+    t.index ["dictionary_entry_id"], name: "index_dictionary_readings_on_dictionary_entry_id"
+    t.index ["kind", "value"], name: "index_dictionary_readings_on_kind_and_value"
+  end
+
+  create_table "dictionary_references", force: :cascade do |t|
+    t.bigint "corpus_document_id", null: false
+    t.bigint "corpus_work_id", null: false
+    t.datetime "created_at", null: false
+    t.integer "dictionary_entry_id", null: false
+    t.integer "line_end", null: false
+    t.integer "line_start", null: false
+    t.json "metadata", default: {}, null: false
+    t.integer "position", default: 1, null: false
+    t.string "raw_sha256", null: false
+    t.string "source_file", null: false
+    t.string "source_kind", null: false
+    t.string "source_label", null: false
+    t.text "source_path", null: false
+    t.datetime "updated_at", null: false
+    t.index ["corpus_document_id", "line_start"], name: "idx_dictionary_references_document_line"
+    t.index ["dictionary_entry_id", "position"], name: "idx_dictionary_references_entry_position", unique: true
+    t.index ["dictionary_entry_id"], name: "index_dictionary_references_on_dictionary_entry_id"
+    t.index ["raw_sha256"], name: "index_dictionary_references_on_raw_sha256"
+  end
+
+  create_table "dictionary_sections", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "dictionary_work_id", null: false
+    t.string "initial"
+    t.string "label", null: false
+    t.json "metadata", default: {}, null: false
+    t.text "raw_heading"
+    t.string "rhyme_label"
+    t.integer "rhyme_number"
+    t.integer "sequence_number", null: false
+    t.string "tone"
+    t.datetime "updated_at", null: false
+    t.index ["dictionary_work_id", "sequence_number"], name: "idx_dictionary_sections_work_sequence", unique: true
+    t.index ["dictionary_work_id", "tone", "rhyme_label"], name: "idx_dictionary_sections_work_tone_rhyme"
+    t.index ["dictionary_work_id"], name: "index_dictionary_sections_on_dictionary_work_id"
+  end
+
+  create_table "dictionary_works", force: :cascade do |t|
+    t.bigint "corpus_work_id", null: false
+    t.datetime "created_at", null: false
+    t.string "edition_label"
+    t.integer "entry_character_count", default: 0, null: false
+    t.integer "entry_count", default: 0, null: false
+    t.integer "group_count", default: 0, null: false
+    t.string "import_fingerprint", null: false
+    t.json "import_metadata", default: {}, null: false
+    t.datetime "imported_at", null: false
+    t.string "parser_name", null: false
+    t.string "parser_version", null: false
+    t.integer "reading_count", default: 0, null: false
+    t.integer "reference_count", default: 0, null: false
+    t.integer "section_count", default: 0, null: false
+    t.string "source_label", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.index ["corpus_work_id"], name: "index_dictionary_works_on_corpus_work_id", unique: true
+    t.index ["import_fingerprint"], name: "index_dictionary_works_on_import_fingerprint", unique: true
+    t.index ["title"], name: "index_dictionary_works_on_title"
   end
 
   create_table "edit_tickets", force: :cascade do |t|
@@ -245,6 +362,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_05_085000) do
   add_foreign_key "character_component_memberships", "character_codepoints"
   add_foreign_key "character_properties", "character_codepoints"
   add_foreign_key "character_radical_memberships", "character_codepoints"
+  add_foreign_key "dictionary_entries", "dictionary_sections"
+  add_foreign_key "dictionary_entries", "dictionary_works"
+  add_foreign_key "dictionary_entry_characters", "character_codepoints"
+  add_foreign_key "dictionary_entry_characters", "dictionary_entries"
+  add_foreign_key "dictionary_readings", "dictionary_entries"
+  add_foreign_key "dictionary_references", "dictionary_entries"
+  add_foreign_key "dictionary_sections", "dictionary_works"
   add_foreign_key "laoguoyin_readings", "character_codepoints"
   add_foreign_key "ticket_audit_events", "edit_tickets"
   add_foreign_key "ticket_contacts", "edit_tickets"
