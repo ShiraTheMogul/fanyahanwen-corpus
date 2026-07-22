@@ -1014,69 +1014,122 @@ module DictionaryImport
     end
 
     class WuyinJiyun < Base
-      INITIALS = %w[見 溪 羣 群 疑 端 透 定 泥 知 徹 澄 娘 精 清 從 心 邪 照 穿 牀 床 審 禪 來 日 曉 匣 影 喻 云 以].freeze
+      INITIALS = %w[
+        幫 滂 並 明 眀 非 敷 奉 微
+        見 溪 羣 群 疑
+        端 透 定 泥
+        知 徹 澄 娘 孃
+        精 清 從 心 邪
+        照 穿 牀 床 審 禪
+        來 来 日
+        曉 匣 影 喻 云 以
+      ].freeze
       CN = "[〇零一二三四五六七八九十百0-9]+"
       HAN = "[\\p{Han}□]+"
+      DIVISION = "[一二三四]"
+      COUNT_RE = /([〇零一二三四五六七八九十百]+)\z/u
+      STRUCTURAL_DIVISIONS = %w[一 二 三 四].freeze
+      TONE_BY_DOCUMENT_SEQUENCE = {
+        (1..6) => "平聲",
+        (7..9) => "上聲",
+        (10..12) => "去聲",
+        (13..15) => "入聲"
+      }.freeze
 
-      def before_document(_document, _lines, _warnings, _metrics)
+      def before_document(document, _lines, warnings, metrics)
+        finish_declared_group(warnings, metrics)
+        reset_declared_group
+        @current_warnings = warnings
+        @current_metrics = metrics
         @entry_mode = false
         @pending_heads = nil
         @pending_group_start = false
+        @pending_group_boundary = false
+        @pending_group_boundary_source_map = nil
         @last_entry = nil
         @group_sequence = 0
         @rhyme_number = nil
         @rhyme_label = nil
         @initial = nil
         @small_rime_number = nil
+        @next_heads_start_group = false
+        @pending_initial_cut_count = nil
+
+        document_sequence = document["document_sequence"].to_i
+        @tone = TONE_BY_DOCUMENT_SEQUENCE.find { |range, _tone| range.cover?(document_sequence) }&.last
+        @tone_section = @tone
       end
 
-      def handle_structural_line(raw, index, lines, metrics, _warnings)
-        stripped = compact_structure_text(raw)
-        initial_alt = INITIALS.join("|")
+      def after_document(_document, _entries, warnings, metrics)
+        finish_declared_group(warnings, metrics)
+        reset_declared_group
+      end
 
-        if (match = stripped.match(/\A(#{CN})([\p{Han}□]{1,3})(#{initial_alt})(#{HAN})\z/u))
+      def finish_parse(entries, warnings, metrics)
+        finish_declared_group(warnings, metrics)
+        metrics[:tone_missing_entries] = entries.count { |entry| entry["tone"].to_s.empty? }
+        metrics[:structural_headword_contamination] = entries.count do |entry|
+          heads = Array(entry["headwords"])
+          heads.length > 1 && STRUCTURAL_DIVISIONS.include?(heads.first)
+        end
+        super
+      end
+
+      def handle_structural_line(raw, index, lines, metrics, warnings)
+        stripped = compact_structure_text(raw)
+
+        # The final colophon is source text but not an entry head.
+        return true if stripped.match?(/\A五?音集韻卷#{CN}\z/u)
+
+        if (section = parse_outer_section(stripped))
           return true unless next_nonblank(lines, index, count: 2).any? { |line| line.include?("〈") }
 
-          start_outer_section(match[1], match[2], match[3], match[4], metrics)
+          start_outer_section(
+            section.fetch(:number),
+            section.fetch(:label),
+            section.fetch(:initial),
+            section.fetch(:heads),
+            warnings,
+            metrics,
+            division: section[:division]
+          )
           return true
         end
-        if (match = stripped.match(/\A(#{CN})([\p{Han}□]{1,3})(#{initial_alt})\z/u))
-          @entry_mode = true
-          @section_sequence += 1
-          @rhyme_number = DictionaryImport::Support.parse_chinese_number(match[1])
-          @rhyme_label = match[2]
-          @initial = match[3]
-          @small_rime_number = nil
-          @pending_heads = nil
-          @group_sequence = 0
-          metrics[:rhyme_headers] += 1
-          metrics[:initial_headers] += 1
-          return true
-        end
+
         if @entry_mode && INITIALS.include?(stripped)
-          @initial = stripped
-          @small_rime_number = nil
-          metrics[:initial_headers] += 1
+          start_initial(stripped, warnings, metrics)
           return true
         end
         if @entry_mode && (match = stripped.match(/\A〈(#{CN})〉(#{HAN})\z/u))
-          @small_rime_number = DictionaryImport::Support.parse_chinese_number(match[1])
-          @pending_heads = match[2].each_char.to_a
-          @pending_group_start = true
+          queue_wuyin_group_heads(
+            match[2].each_char.to_a,
+            division: DictionaryImport::Support.parse_chinese_number(match[1]),
+            source_map: nil,
+            warnings: warnings,
+            metrics: metrics
+          )
           return true
         end
-        if @entry_mode && (match = stripped.match(/\A(#{initial_alt})(#{CN})(#{HAN})\z/u))
+        if @entry_mode && (match = stripped.match(/\A(#{initial_alt})(#{DIVISION})(#{HAN})\z/u))
           @initial = match[1]
-          @small_rime_number = DictionaryImport::Support.parse_chinese_number(match[2])
-          @pending_heads = match[3].each_char.to_a
-          @pending_group_start = true
           metrics[:initial_headers] += 1
+          queue_wuyin_group_heads(
+            match[3].each_char.to_a,
+            division: DictionaryImport::Support.parse_chinese_number(match[2]),
+            source_map: nil,
+            warnings: warnings,
+            metrics: metrics
+          )
           return true
         end
-        if @entry_mode && (match = stripped.match(/\A(#{CN})(#{HAN})\z/u))
-          @small_rime_number = DictionaryImport::Support.parse_chinese_number(match[1])
-          @pending_heads = match[2].each_char.to_a
-          @pending_group_start = true
+        if @entry_mode && (match = stripped.match(/\A(#{DIVISION})(#{HAN})\z/u))
+          queue_wuyin_group_heads(
+            match[2].each_char.to_a,
+            division: DictionaryImport::Support.parse_chinese_number(match[1]),
+            source_map: nil,
+            warnings: warnings,
+            metrics: metrics
+          )
           return true
         end
         return true unless @entry_mode
@@ -1084,22 +1137,286 @@ module DictionaryImport
         super
       end
 
-      def structural_payload?(_payload)
-        false
+      # Headers frequently occur after the preceding payload on the same
+      # physical line, for example 〈...〉三弓, 〈...〉溪一空, or 〈...〉九模見.
+      def queue_heads(segment, source_map, warnings, metrics)
+        stripped = compact_structure_text(segment)
+        return if stripped.empty?
+
+        if (section = parse_outer_section(stripped))
+          start_outer_section(
+            section.fetch(:number),
+            section.fetch(:label),
+            section.fetch(:initial),
+            section.fetch(:heads),
+            warnings,
+            metrics,
+            division: section[:division]
+          )
+          return
+        end
+
+        if (match = stripped.match(/\A(#{initial_alt})(#{DIVISION})(#{HAN})\z/u))
+          @initial = match[1]
+          metrics[:initial_headers] += 1
+          queue_wuyin_group_heads(
+            match[3].each_char.to_a,
+            division: DictionaryImport::Support.parse_chinese_number(match[2]),
+            source_map: source_map,
+            warnings: warnings,
+            metrics: metrics
+          )
+          return
+        end
+
+        if (match = stripped.match(/\A(#{DIVISION})(#{HAN})\z/u))
+          queue_wuyin_group_heads(
+            match[2].each_char.to_a,
+            division: DictionaryImport::Support.parse_chinese_number(match[1]),
+            source_map: source_map,
+            warnings: warnings,
+            metrics: metrics
+          )
+          return
+        end
+
+        if INITIALS.include?(stripped)
+          start_initial(stripped, warnings, metrics)
+          return
+        end
+
+        if @next_heads_start_group
+          extracted = extract_heads(stripped)
+          if extracted
+            queue_wuyin_group_heads(
+              extracted.fetch(:heads),
+              division: @small_rime_number,
+              source_map: source_map,
+              warnings: warnings,
+              metrics: metrics
+            )
+            return
+          end
+        end
+
+        super
       end
 
-      def start_outer_section(number, label, initial, heads, metrics)
+      # These payloads describe the surrounding structural header. They do not
+      # constitute lexical definitions themselves.
+      def structural_payload?(payload)
+        text = compact_structure_text(payload)
+        if (match = text.match(/\A(#{DIVISION})\z/u))
+          @small_rime_number = DictionaryImport::Support.parse_chinese_number(match[1])
+          @next_heads_start_group = true
+          return true
+        end
+        if (match = text.match(/\A切(#{CN})\z/u))
+          @pending_initial_cut_count = DictionaryImport::Support.parse_chinese_number(match[1])
+          @small_rime_number = nil
+          @next_heads_start_group = true
+          return true
+        end
+
+        super
+      end
+
+      # Until a payload is encountered, adjacent head-only lines belong to the
+      # same pending record rather than replacing one another.
+      def replace_pending_heads(heads, group_start, source_map, warnings, metrics)
+        if @pending_heads&.any? && !group_start
+          @pending_heads = (@pending_heads + Array(heads)).uniq
+          @pending_group_start ||= group_start
+          return
+        end
+
+        super
+      end
+
+      def build_entry(payload, source_map, group_head:, **kwargs)
+        if group_head
+          begin_declared_group(payload, source_map)
+          info = @active_group_info
+          super(
+            payload,
+            source_map,
+            group_head: true,
+            fanqie: info.fetch(:fanqie),
+            definition: info.fetch(:definition),
+            extras: declared_group_extras(1, @observed_group_size).merge(kwargs.delete(:extras) || {}),
+            **kwargs
+          )
+        else
+          start_position = @observed_group_size + 1
+          @observed_group_size += Array(@pending_heads).length
+          super(
+            payload,
+            source_map,
+            group_head: false,
+            fanqie: nil,
+            definition: payload,
+            extras: declared_group_extras(start_position, @observed_group_size).merge(kwargs.delete(:extras) || {}),
+            **kwargs
+          )
+        end
+      end
+
+      def parse_outer_section(stripped)
+        match = stripped.match(/\A(#{CN})([\p{Han}□]{1,3}?)(#{initial_alt})(.*)\z/u)
+        return nil unless match
+
+        remainder = match[4].to_s
+        division = nil
+        heads = remainder
+        if remainder.match?(/\A#{DIVISION}/u)
+          division = DictionaryImport::Support.parse_chinese_number(remainder[0])
+          heads = remainder[1..].to_s
+        end
+        return nil unless heads.empty? || heads.match?(/\A#{HAN}\z/u)
+
+        {
+          number: match[1],
+          label: match[2],
+          initial: match[3],
+          division: division,
+          heads: heads
+        }
+      end
+
+      def start_initial(initial, warnings, metrics)
+        finish_declared_group(warnings, metrics)
+        reset_declared_group
+        @initial = initial
+        @small_rime_number = nil
+        @pending_initial_cut_count = nil
+        @next_heads_start_group = true
+        metrics[:initial_headers] += 1
+      end
+
+      def queue_wuyin_group_heads(heads, division:, source_map:, warnings:, metrics:)
+        finish_declared_group(warnings, metrics)
+        reset_declared_group
+        @small_rime_number = division
+        @next_heads_start_group = false
+        @pending_initial_cut_count = nil
+        replace_pending_heads(Array(heads), true, source_map, warnings, metrics)
+      end
+
+      def start_outer_section(number, label, initial, heads, warnings, metrics, division: nil)
+        finish_declared_group(warnings, metrics)
+        reset_declared_group
         @entry_mode = true
         @section_sequence += 1
         @rhyme_number = DictionaryImport::Support.parse_chinese_number(number)
         @rhyme_label = label
         @initial = initial
-        @small_rime_number = nil
+        @small_rime_number = division
         @group_sequence = 0
-        @pending_heads = heads.each_char.to_a
-        @pending_group_start = true
+        @pending_heads = nil
+        @pending_group_start = false
+        @next_heads_start_group = true
+        @pending_initial_cut_count = nil
         metrics[:rhyme_headers] += 1
         metrics[:initial_headers] += 1
+
+        return if heads.to_s.empty?
+
+        queue_wuyin_group_heads(
+          heads.each_char.to_a,
+          division: division,
+          source_map: nil,
+          warnings: warnings,
+          metrics: metrics
+        )
+      end
+
+      def begin_declared_group(payload, source_map)
+        @active_group_info = parse_group_head_info(payload)
+        @declared_group_size = @active_group_info.fetch(:count)
+        @observed_group_size = Array(@pending_heads).length
+        @group_source_map = source_map
+        @group_headwords = Array(@pending_heads).dup
+        @current_metrics[:declared_groups] += 1 if @declared_group_size
+      end
+
+      # A long group-head definition can be split into several adjacent payload
+      # fragments. Re-evaluate the complete payload after each continuation so
+      # a count appearing in the final fragment is not reported as missing.
+      def after_append_payload(entry, source_map, _warnings, metrics)
+        return unless entry["is_group_head"] && @active_group_info
+
+        old_count = @declared_group_size
+        info = parse_group_head_info(entry["payload_raw"])
+        @active_group_info = info
+        @declared_group_size = info.fetch(:count)
+        metrics[:declared_groups] += 1 if old_count.nil? && @declared_group_size
+        entry["fanqie"] = info.fetch(:fanqie)
+        entry["pronunciation_marker_raw"] = info.fetch(:marker_raw)
+        entry["pronunciation_marker_type"] = info.fetch(:marker_type)
+        entry["definition"] = info.fetch(:definition)
+        entry["declared_group_size"] = @declared_group_size
+        entry["group_count_source"] = @declared_group_size ? "payload_suffix" : nil
+        entry["source_line_end"] = source_map["source_line_end"].to_i
+      end
+
+      def parse_group_head_info(payload)
+        parsed = parse_pronunciation_prefix(payload, group_head: true)
+        definition = parsed.fetch(:definition).to_s
+        count_match = definition.match(COUNT_RE)
+        count = count_match && DictionaryImport::Support.parse_chinese_number(count_match[1])
+        valid_count = count && count.positive? && count <= 500
+        clean_definition = valid_count ? definition[0...count_match.begin(1)].to_s : definition
+
+        {
+          fanqie: parsed.fetch(:fanqie),
+          marker_raw: parsed.fetch(:marker_raw),
+          marker_type: parsed.fetch(:marker_type),
+          definition: clean_definition,
+          count: valid_count ? count : nil
+        }
+      end
+
+      def declared_group_extras(position_start, position_end)
+        {
+          "declared_group_size" => @declared_group_size,
+          "observed_group_position" => position_start,
+          "observed_group_position_end" => position_end,
+          "group_count_source" => @declared_group_size ? "payload_suffix" : nil
+        }
+      end
+
+      def finish_declared_group(warnings, metrics)
+        return unless @active_group_info
+
+        if @declared_group_size.nil?
+          metrics[:group_count_missing] += 1
+          warnings << warning(
+            @group_source_map,
+            nil,
+            "group_head_without_declared_count",
+            "group=#{@group_sequence}; heads=#{Array(@group_headwords).join}; observed=#{@observed_group_size}"
+          )
+        elsif @observed_group_size != @declared_group_size
+          metrics[:group_count_mismatches] += 1
+          warnings << warning(
+            @group_source_map,
+            nil,
+            "declared_group_count_mismatch",
+            "group=#{@group_sequence}; declared=#{@declared_group_size}; observed=#{@observed_group_size}; heads=#{Array(@group_headwords).join}"
+          )
+        end
+      end
+
+      def reset_declared_group
+        @active_group_info = nil
+        @declared_group_size = nil
+        @observed_group_size = 0
+        @group_source_map = nil
+        @group_headwords = nil
+      end
+
+      def initial_alt
+        @initial_alt ||= INITIALS.sort_by { |value| -value.length }.map { |value| Regexp.escape(value) }.join("|")
       end
     end
 

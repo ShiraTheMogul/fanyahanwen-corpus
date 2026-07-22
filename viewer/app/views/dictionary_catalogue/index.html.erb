@@ -1,0 +1,48 @@
+<% content_for :title, t("dictionary.catalogue.title", default: "Historical dictionaries") %>
+
+<% content_for :rightbar do %>
+  <h3><%= t("view_options.heading") %></h3>
+  <%= render "shared/view_options_rightbar" %>
+<% end %>
+
+<%= render "styles" %>
+
+<h1><%= t("dictionary.catalogue.heading", default: "Historical dictionaries") %></h1>
+
+<p>
+  <%= t(
+    "dictionary.catalogue.intro",
+    default: "Browse dictionaries that have been structurally imported from the corpus. Every entry remains linked to its corpus text and source lines."
+  ) %>
+</p>
+
+<% if @works.empty? %>
+  <div class="dictionary-status-box">
+    <%= t(
+      "dictionary.catalogue.empty_html",
+      default: "No normalized dictionaries have been imported yet. Run the reviewed dictionary import before opening this page."
+    ) %>
+  </div>
+<% else %>
+  <div class="dictionary-catalogue-grid">
+    <% @works.each do |work| %>
+      <%= link_to dictionary_catalogue_work_path(corpus_work_id: work.corpus_work_id),
+        class: "dictionary-catalogue-card",
+        data: { turbo: false, turbo_prefetch: false } do %>
+        <div class="dictionary-card-title"><%= work.title %></div>
+        <div class="dictionary-card-meta">
+          <% if work.edition_label.present? %>
+            <div><%= work.edition_label %></div>
+          <% end %>
+          <div>
+            <%= number_with_delimiter(work.entry_count) %>
+            <%= t("dictionary.catalogue.entries", default: "entries") %>
+            ·
+            <%= number_with_delimiter(work.section_count) %>
+            <%= t("dictionary.catalogue.sections", default: "sections") %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

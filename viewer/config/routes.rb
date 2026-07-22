@@ -27,6 +27,13 @@ Rails.application.routes.draw do
 	get "/dictionary/guangyun/:category", to: "guangyun_categories#show", as: :dictionary_guangyun_category
 	get "/dictionary/guangyun/:category/chars", to: "guangyun_categories#chars", as: :dictionary_guangyun_category_chars
 	
+	# Normalized historical dictionary catalogue
+	get "/dictionary/catalogue", to: "dictionary_catalogue#index", as: :dictionary_catalogue
+	get "/dictionary/catalogue/:corpus_work_id/sections/:section_sequence/entries", to: "dictionary_catalogue#entries", as: :dictionary_catalogue_section_entries
+	get "/dictionary/catalogue/:corpus_work_id/sections/:section_sequence", to: "dictionary_catalogue#section", as: :dictionary_catalogue_section
+	get "/dictionary/catalogue/:corpus_work_id/entries/:entry_sequence", to: "dictionary_catalogue#entry", as: :dictionary_catalogue_entry
+	get "/dictionary/catalogue/:corpus_work_id", to: "dictionary_catalogue#show", as: :dictionary_catalogue_work
+	
 	# search system 
 	  get  "/corpus/search", to: "corpus_search#index", as: :corpus_search
 	  post "/corpus/search/prepare", to: "corpus_search#prepare", as: :prepare_corpus_search

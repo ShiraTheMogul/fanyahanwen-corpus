@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_21_150000) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_21_173000) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.integer "blob_id", null: false
     t.datetime "created_at", null: false
@@ -94,7 +94,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_21_150000) do
 
   create_table "dictionary_entries", force: :cascade do |t|
     t.boolean "contains_unresolved_glyph", default: false, null: false
-    t.bigint "corpus_document_id", null: false
+    t.bigint "corpus_document_id"
     t.datetime "created_at", null: false
     t.text "definition"
     t.integer "dictionary_section_id", null: false
@@ -109,8 +109,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_21_150000) do
     t.boolean "review_required", default: false, null: false
     t.integer "sequence_number", null: false
     t.integer "small_rime_number"
-    t.integer "source_line_end", null: false
-    t.integer "source_line_start", null: false
+    t.integer "source_line_end"
+    t.integer "source_line_start"
     t.datetime "updated_at", null: false
     t.index ["corpus_document_id", "source_line_start"], name: "idx_dictionary_entries_document_line"
     t.index ["dictionary_section_id", "group_sequence"], name: "idx_dictionary_entries_section_group"
@@ -149,12 +149,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_21_150000) do
   end
 
   create_table "dictionary_references", force: :cascade do |t|
-    t.bigint "corpus_document_id", null: false
+    t.bigint "corpus_document_id"
     t.bigint "corpus_work_id", null: false
     t.datetime "created_at", null: false
     t.integer "dictionary_entry_id", null: false
-    t.integer "line_end", null: false
-    t.integer "line_start", null: false
+    t.integer "line_end"
+    t.integer "line_start"
     t.json "metadata", default: {}, null: false
     t.integer "position", default: 1, null: false
     t.string "raw_sha256", null: false
@@ -162,11 +162,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_21_150000) do
     t.string "source_kind", null: false
     t.string "source_label", null: false
     t.text "source_path", null: false
+    t.string "source_record_key"
     t.datetime "updated_at", null: false
     t.index ["corpus_document_id", "line_start"], name: "idx_dictionary_references_document_line"
     t.index ["dictionary_entry_id", "position"], name: "idx_dictionary_references_entry_position", unique: true
     t.index ["dictionary_entry_id"], name: "index_dictionary_references_on_dictionary_entry_id"
     t.index ["raw_sha256"], name: "index_dictionary_references_on_raw_sha256"
+    t.index ["source_kind", "source_record_key"], name: "idx_dictionary_refs_kind_record"
   end
 
   create_table "dictionary_sections", force: :cascade do |t|

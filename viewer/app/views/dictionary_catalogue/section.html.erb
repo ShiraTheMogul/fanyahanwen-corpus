@@ -1,0 +1,101 @@
+<% content_for :title, "#{@work.title} — #{@section.label}" %>
+
+<% content_for :rightbar do %>
+  <h3><%= t("view_options.heading") %></h3>
+  <%= render "shared/view_options_rightbar" %>
+<% end %>
+
+<%= render "styles" %>
+
+<h1><%= @work.title %>：<%= @section.label %></h1>
+
+<div class="dictionary-browser-columns">
+  <div class="dictionary-browser-sidebar">
+    <% if @display_character.present? %>
+      <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.7.0/dist/hanzi-writer.min.js"></script>
+      <div id="hanzi-writer-dictionary-section" style="margin: 4px 0 14px;"></div>
+      <script>
+        (function(){
+          try {
+            var ch = "<%= j @display_character %>".trim();
+            if (!ch) return;
+            HanziWriter.create('hanzi-writer-dictionary-section', ch, {
+              width: 140,
+              height: 140,
+              padding: 6
+            }).loopCharacterAnimation();
+          } catch(e) {}
+        })();
+      </script>
+    <% end %>
+
+    <h2><%= t("dictionary.catalogue.about_section", default: "About this section") %></h2>
+
+    <dl class="dictionary-stat-list">
+      <dt><%= t("dictionary.catalogue.section", default: "Section") %></dt>
+      <dd><%= @section.label %></dd>
+
+      <dt><%= t("dictionary.catalogue.sequence", default: "Sequence") %></dt>
+      <dd><%= @section.sequence_number %></dd>
+
+      <% if @section.tone.present? %>
+        <dt><%= t("dictionary.catalogue.tone", default: "Tone") %></dt>
+        <dd><%= @section.tone %></dd>
+      <% end %>
+
+      <% if @section.rhyme_label.present? %>
+        <dt><%= t("dictionary.catalogue.rhyme", default: "Rhyme") %></dt>
+        <dd><%= [@section.rhyme_number, @section.rhyme_label].compact.join(". ") %></dd>
+      <% end %>
+
+      <dt><%= t("dictionary.catalogue.entries", default: "Entries") %></dt>
+      <dd><%= number_with_delimiter(@total) %></dd>
+
+      <% group_count = @section.metadata.to_h["group_count"] %>
+      <% if group_count.present? %>
+        <dt><%= t("dictionary.catalogue.groups", default: "Pronunciation groups") %></dt>
+        <dd><%= number_with_delimiter(group_count) %></dd>
+      <% end %>
+    </dl>
+
+    <% seal_family = HanFonts.family_for(:chongxi_seal) rescue nil %>
+    <% if seal_family.present? && @display_character.present? %>
+      <p>
+        <strong><%= t("dictionary.common.seal_font_chongxi", default: "Seal form") %></strong>
+        <span style='font-size: 2rem; font-family: "<%= seal_family %>", serif;'>
+          <%= @display_character %>
+        </span>
+      </p>
+    <% end %>
+
+    <p style="margin-top: 18px;">
+      <%= link_to t("dictionary.catalogue.back_to_work", default: "Back to this dictionary"),
+        dictionary_catalogue_work_path(corpus_work_id: @work.corpus_work_id),
+        data: { turbo: false } %>
+    </p>
+  </div>
+
+  <div class="dictionary-browser-main">
+    <h2><%= t("dictionary.catalogue.entries", default: "Entries") %></h2>
+    <p>
+      <%= t(
+        "dictionary.catalogue.total_page_per_page",
+        default: "%{total} entries; page %{page}; %{per} per page",
+        total: number_with_delimiter(@total),
+        page: @page,
+        per: @per
+      ) %>
+    </p>
+
+    <turbo-frame id="dictionary_section_entries" src="<%= dictionary_catalogue_section_entries_path(
+      corpus_work_id: @work.corpus_work_id,
+      section_sequence: @section.sequence_number,
+      page: @page,
+      per: @per
+    ) %>">
+      <div style="padding: 10px 0; opacity: 0.75;">
+        <%= t("dictionary.catalogue.loading_entries", default: "Loading entries…") %>
+      </div>
+    </turbo-frame>
+  </div>
+</div>

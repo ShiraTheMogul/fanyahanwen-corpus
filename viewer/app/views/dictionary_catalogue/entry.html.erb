@@ -1,0 +1,159 @@
+<% content_for :title, "#{@entry.headword} — #{@work.title}" %>
+
+<% content_for :rightbar do %>
+  <h3><%= t("view_options.heading") %></h3>
+  <%= render "shared/view_options_rightbar" %>
+<% end %>
+
+<%= render "styles" %>
+
+<h1>
+  <span style="font-size: 2.4rem;"><%= @entry.headword %></span>
+  <span style="font-size: 1rem; opacity: 0.65;">#<%= @entry.sequence_number %></span>
+</h1>
+
+<div class="dictionary-browser-columns">
+  <div class="dictionary-browser-sidebar">
+    <% primary_character = @entry.dictionary_entry_characters.sort_by(&:position).first %>
+    <% if primary_character %>
+      <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.7.0/dist/hanzi-writer.min.js"></script>
+      <div id="hanzi-writer-dictionary-entry" style="margin: 4px 0 14px;"></div>
+      <script>
+        (function(){
+          try {
+            var ch = "<%= j primary_character.glyph %>".trim();
+            if (!ch) return;
+            HanziWriter.create('hanzi-writer-dictionary-entry', ch, {
+              width: 140,
+              height: 140,
+              padding: 6
+            }).loopCharacterAnimation();
+          } catch(e) {}
+        })();
+      </script>
+    <% end %>
+
+    <h2><%= t("dictionary.catalogue.about_entry", default: "About this entry") %></h2>
+
+    <dl class="dictionary-stat-list">
+      <dt><%= t("dictionary.catalogue.dictionary", default: "Dictionary") %></dt>
+      <dd>
+        <%= link_to @work.title,
+          dictionary_catalogue_work_path(corpus_work_id: @work.corpus_work_id),
+          data: { turbo: false } %>
+      </dd>
+
+      <dt><%= t("dictionary.catalogue.section", default: "Section") %></dt>
+      <dd>
+        <%= link_to @section.label,
+          dictionary_catalogue_section_path(
+            corpus_work_id: @work.corpus_work_id,
+            section_sequence: @section.sequence_number
+          ),
+          data: { turbo: false } %>
+      </dd>
+
+      <dt><%= t("dictionary.catalogue.entry_sequence", default: "Entry sequence") %></dt>
+      <dd><%= @entry.sequence_number %></dd>
+
+      <% if @entry.group_sequence.present? %>
+        <dt><%= t("dictionary.catalogue.group_sequence", default: "Group sequence") %></dt>
+        <dd><%= @entry.group_sequence %><%= " — group head" if @entry.group_head? %></dd>
+      <% end %>
+    </dl>
+
+    <h3><%= t("dictionary.catalogue.characters", default: "Characters") %></h3>
+    <% if @entry.dictionary_entry_characters.empty? %>
+      <p>—</p>
+    <% else %>
+      <p style="font-size: 1.8rem; line-height: 1.4;">
+        <% @entry.dictionary_entry_characters.sort_by(&:position).each_with_index do |entry_character, index| %>
+          <%= " · " unless index.zero? %>
+          <%= link_to entry_character.glyph,
+            character_path("U+#{entry_character.glyph.ord.to_s(16).upcase.rjust(4, "0")}"),
+            data: { turbo: false } %>
+        <% end %>
+      </p>
+    <% end %>
+
+    <h3><%= t("dictionary.catalogue.readings", default: "Readings") %></h3>
+    <% if @entry.dictionary_readings.empty? %>
+      <p>—</p>
+    <% else %>
+      <% @entry.dictionary_readings.sort_by(&:position).each do |reading| %>
+        <p>
+          <strong><%= reading.kind %>:</strong>
+          <%= reading.raw_value %>
+          <% if reading.value.present? && reading.value != reading.raw_value %>
+            <span style="opacity: 0.75;">(<%= reading.value %>)</span>
+          <% end %>
+        </p>
+      <% end %>
+    <% end %>
+
+    <% if @entry.contains_unresolved_glyph? || @entry.review_required? %>
+      <div class="dictionary-status-box">
+        <% if @entry.contains_unresolved_glyph? %>
+          <div><%= t("dictionary.catalogue.unresolved_glyph", default: "The source entry contains an unresolved glyph marker.") %></div>
+        <% end %>
+        <% if @entry.review_required? %>
+          <div><%= t("dictionary.catalogue.review_required", default: "This entry remains marked for review.") %></div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="dictionary-browser-main">
+    <h2><%= t("dictionary.catalogue.definition", default: "Definition") %></h2>
+    <p style="font-size: 1.12rem; line-height: 1.75;">
+      <%= @entry.definition.presence || "—" %>
+    </p>
+
+    <details style="margin-top: 18px;">
+      <summary><strong><%= t("dictionary.catalogue.raw_source_entry", default: "Raw parsed source entry") %></strong></summary>
+      <pre style="white-space: pre-wrap; overflow-wrap: anywhere;"><%= @entry.raw_payload %></pre>
+    </details>
+
+    <h2 style="margin-top: 24px;"><%= t("dictionary.catalogue.source_references", default: "Corpus source") %></h2>
+
+    <% @entry.dictionary_references.sort_by(&:position).each do |reference| %>
+      <div class="dictionary-source-reference">
+        <div>
+          <%= link_to reference.source_file,
+            corpus_viewer_path(path: reference.source_path),
+            data: { turbo: false } %>
+        </div>
+        <div style="opacity: 0.75; font-size: 0.9rem;">
+          <%= reference.source_path %><br>
+          <%= t("dictionary.catalogue.lines", default: "Lines") %>
+          <%= reference.line_start %><%= "–#{reference.line_end}" if reference.line_end != reference.line_start %>
+          ·
+          <%= t("dictionary.catalogue.document_id", default: "document ID") %> <%= reference.corpus_document_id %>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="dictionary-entry-navigation">
+      <div>
+        <% if @previous_entry %>
+          <%= link_to "← #{@previous_entry.headword}",
+            dictionary_catalogue_entry_path(
+              corpus_work_id: @work.corpus_work_id,
+              entry_sequence: @previous_entry.sequence_number
+            ),
+            data: { turbo: false } %>
+        <% end %>
+      </div>
+      <div>
+        <% if @next_entry %>
+          <%= link_to "#{@next_entry.headword} →",
+            dictionary_catalogue_entry_path(
+              corpus_work_id: @work.corpus_work_id,
+              entry_sequence: @next_entry.sequence_number
+            ),
+            data: { turbo: false } %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

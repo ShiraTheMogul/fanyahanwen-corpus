@@ -1,0 +1,46 @@
+version: 1
+policy: exact_same_work_comparison_repairs
+work: 五音集韻
+base_source: Fanya Hanwen Corpus Wikisource scrape
+comparison_witness: Chinese Text Project, 《欽定四庫全書》本《五音集韻》
+notes:
+  - These are exact, localized repairs to demonstrably damaged transcription spans.
+  - The comparison witness is the same work and edition family, but remains a comparison witness rather than a replacement source.
+  - metadata.json is never changed.
+  - Parser-only fixes are not represented as textual repairs.
+repairs:
+  - repair_id: wuyin-206178-1970-zetian-star
+    document_id: 206178
+    source_line: 1970
+    original_line: "〈亦古文□石也釋名散也言列位布散也今増〉○"
+    replacement_line: "〈亦古文□石也釋名散也言列位布散也今増〉〇"
+    witness_url: https://ctext.org/wiki.pl?chapter=997684&if=gb
+    witness_reading: "今増〇唐武后作星字"
+    reason: U+25CB group separator was used where U+3007 is the actual Zetian headword.
+
+  - repair_id: wuyin-206180-32-xie
+    document_id: 206180
+    source_line: 32
+    original_line: "〈切一〉□"
+    replacement_line: "〈切一〉𩌌"
+    witness_url: https://ctext.org/wiki.pl?chapter=254937&if=gb
+    witness_reading: "見切一𩌌古孔切生皮也一字"
+    reason: The headword was lost while the following fanqie and definition survived.
+
+  - repair_id: wuyin-206184-1955-xian
+    document_id: 206184
+    source_line: 1955
+    original_line: "□"
+    replacement_line: "絃𦃜"
+    witness_url: https://ctext.org/wiki.pl?chapter=709527&if=gb
+    witness_reading: "四絢絃𦃜許縣切文彩之貌二十一字"
+    reason: Two additional headwords in the 絢 group were lost.
+
+  - repair_id: wuyin-206188-3148-ye
+    document_id: 206188
+    source_line: 3148
+    original_line: "曅"
+    replacement_line: "爗曅"
+    witness_url: https://ctext.org/wiki.pl?chapter=594187&if=gb
+    witness_reading: "喻三煜…曄爗曅暐曄又筠輙切"
+    reason: The middle variant headword 爗 was omitted.

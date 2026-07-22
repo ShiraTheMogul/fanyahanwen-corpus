@@ -1,0 +1,93 @@
+<%# Locals: work:, section:, entries:, total:, page:, per: %>
+
+<div class="dictionary-pager">
+  <% if page > 1 %>
+    <%= link_to t("dictionary.common.previous", default: "Previous"),
+      dictionary_catalogue_section_entries_path(
+        corpus_work_id: work.corpus_work_id,
+        section_sequence: section.sequence_number,
+        page: page - 1,
+        per: per
+      ),
+      data: { turbo_frame: "dictionary_section_entries" } %>
+  <% end %>
+
+  <% if (page * per) < total %>
+    <%= link_to t("dictionary.common.next", default: "Next"),
+      dictionary_catalogue_section_entries_path(
+        corpus_work_id: work.corpus_work_id,
+        section_sequence: section.sequence_number,
+        page: page + 1,
+        per: per
+      ),
+      data: { turbo_frame: "dictionary_section_entries" } %>
+  <% end %>
+
+  <span style="opacity: 0.75;">
+    <%= t("dictionary.common.per", default: "Per page") %>
+    <% [50, 100, 200].each_with_index do |amount, index| %>
+      <%= " | " unless index.zero? %>
+      <%= link_to amount,
+        dictionary_catalogue_section_entries_path(
+          corpus_work_id: work.corpus_work_id,
+          section_sequence: section.sequence_number,
+          page: 1,
+          per: amount
+        ),
+        data: { turbo_frame: "dictionary_section_entries" } %>
+    <% end %>
+  </span>
+</div>
+
+<table class="dictionary-entry-table">
+  <thead>
+    <tr>
+      <th><%= t("dictionary.catalogue.headword", default: "Headword") %></th>
+      <th><%= t("dictionary.catalogue.reading", default: "Reading") %></th>
+      <th><%= t("dictionary.catalogue.definition", default: "Definition") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% entries.each do |entry| %>
+      <tr>
+        <td style="width: 150px;">
+          <div class="dictionary-entry-headword">
+            <%= link_to entry.headword,
+              dictionary_catalogue_entry_path(
+                corpus_work_id: work.corpus_work_id,
+                entry_sequence: entry.sequence_number
+              ),
+              data: { turbo: false } %>
+          </div>
+          <div class="dictionary-entry-sequence">#<%= entry.sequence_number %></div>
+          <% if entry.group_head? %>
+            <span class="dictionary-group-head"><%= t("dictionary.catalogue.group_head", default: "group head") %></span>
+          <% end %>
+          <% if entry.dictionary_entry_characters.present? %>
+            <div style="margin-top: 5px; font-size: 0.9rem;">
+              <% entry.dictionary_entry_characters.sort_by(&:position).each_with_index do |link, index| %>
+                <%= " · " unless index.zero? %>
+                <%= link_to link.glyph,
+                  character_path("U+#{link.glyph.ord.to_s(16).upcase.rjust(4, "0")}"),
+                  data: { turbo: false } %>
+              <% end %>
+            </div>
+          <% end %>
+        </td>
+
+        <td style="width: 150px;">
+          <% readings = entry.dictionary_readings.sort_by(&:position) %>
+          <% if readings.empty? %>
+            —
+          <% else %>
+            <%= safe_join(readings.map { |reading| h(reading.raw_value) }, tag.br) %>
+          <% end %>
+        </td>
+
+        <td>
+          <%= entry.definition.presence || "—" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
