@@ -77,16 +77,22 @@
     <% end %>
 
     <h3><%= t("dictionary.catalogue.readings", default: "Readings") %></h3>
-    <% if @entry.dictionary_readings.empty? %>
-      <p>—</p>
+    <% reading_state = @effective_readings.fetch(@entry.id, { readings: [], inherited: false, group_head: nil }) %>
+    <% if reading_state.fetch(:readings).empty? %>
+      <p class="dictionary-reading-missing"><%= t("dictionary.catalogue.not_preserved", default: "not preserved in this source group") %></p>
     <% else %>
-      <% @entry.dictionary_readings.sort_by(&:position).each do |reading| %>
+      <% reading_state.fetch(:readings).each do |reading| %>
         <p>
           <strong><%= reading.kind %>:</strong>
           <%= reading.raw_value %>
           <% if reading.value.present? && reading.value != reading.raw_value %>
             <span style="opacity: 0.75;">(<%= reading.value %>)</span>
           <% end %>
+        </p>
+      <% end %>
+      <% if reading_state.fetch(:inherited) %>
+        <p class="dictionary-reading-inherited">
+          <%= t("dictionary.catalogue.inherited_reading_long", default: "This reading is inherited from pronunciation-group head %{headword} (#%{sequence}).", headword: reading_state.fetch(:group_head).headword, sequence: reading_state.fetch(:group_head).sequence_number) %>
         </p>
       <% end %>
     <% end %>

@@ -12,12 +12,19 @@
 
 <hr>
 
-<h2><%= t("dictionary.browse_by_component") %></h2>
+<%= render "dictionary_catalogue/styles" %>
 
-<p><%= t("dictionary.browse_explanation") %></p>
+<h2><%= t("dictionary.catalogue.heading", default: "Historical dictionaries") %></h2>
 
-<ul>
-  <li><%= link_to t("dictionary.links.kangxi_radicals"), dictionary_radicals_path %></li>
-  <li><%= link_to t("dictionary.links.shuowen_components"), dictionary_components_path %></li>
-  <li><%= link_to t("dictionary.links.guangyun_categories"), dictionary_guangyun_path %></li>
-</ul>
+<p>
+  <%= t(
+    "dictionary.catalogue.character_landing_intro",
+    default: "Browse the imported dictionaries as complete historical works. Kangxi radicals, Shuowen components, and Guangyun tone-and-rhyme browsing remain available from their dictionary cards."
+  ) %>
+</p>
+
+<%= render "dictionary_catalogue/work_cards", works: @dictionary_works, specialized_links: true %>
+
+<p class="dictionary-catalogue-more-link">
+  <%= link_to t("dictionary.catalogue.open_full_catalogue", default: "Open the full historical-dictionary catalogue"), dictionary_catalogue_path, data: { turbo: false } %>
+</p>

@@ -121,6 +121,7 @@ module DictionaryImport
 
       def entry_mode? = @entry_mode
       def each_entry_starts_group? = false
+      def payload_starts_group?(_payload) = false
 
       def handle_structural_line(raw, _index, _lines, _metrics, _warnings)
         stripped = raw.strip
@@ -147,7 +148,7 @@ module DictionaryImport
             next if structural_payload?(payload)
 
             if @pending_heads&.any?
-              group_head = @pending_group_start || @group_sequence.zero? || each_entry_starts_group?
+              group_head = @pending_group_start || @group_sequence.zero? || each_entry_starts_group? || payload_starts_group?(payload)
               @group_sequence += 1 if group_head
               @small_rime_number = @group_sequence if group_head && @small_rime_number.nil?
               @sequence += 1
@@ -1054,6 +1055,7 @@ module DictionaryImport
         @small_rime_number = nil
         @next_heads_start_group = false
         @pending_initial_cut_count = nil
+        @pending_possible_initial = nil
 
         document_sequence = document["document_sequence"].to_i
         @tone = TONE_BY_DOCUMENT_SEQUENCE.find { |range, _tone| range.cover?(document_sequence) }&.last
@@ -1097,10 +1099,11 @@ module DictionaryImport
         end
 
         if @entry_mode && INITIALS.include?(stripped)
-          start_initial(stripped, warnings, metrics)
+          queue_possible_initial(stripped, nil, warnings, metrics)
           return true
         end
         if @entry_mode && (match = stripped.match(/\A〈(#{CN})〉(#{HAN})\z/u))
+          promote_possible_initial!
           queue_wuyin_group_heads(
             match[2].each_char.to_a,
             division: DictionaryImport::Support.parse_chinese_number(match[1]),
@@ -1181,7 +1184,7 @@ module DictionaryImport
         end
 
         if INITIALS.include?(stripped)
-          start_initial(stripped, warnings, metrics)
+          queue_possible_initial(stripped, source_map, warnings, metrics)
           return
         end
 
@@ -1207,17 +1210,20 @@ module DictionaryImport
       def structural_payload?(payload)
         text = compact_structure_text(payload)
         if (match = text.match(/\A(#{DIVISION})\z/u))
+          promote_possible_initial!
           @small_rime_number = DictionaryImport::Support.parse_chinese_number(match[1])
           @next_heads_start_group = true
           return true
         end
         if (match = text.match(/\A切(#{CN})\z/u))
+          promote_possible_initial!
           @pending_initial_cut_count = DictionaryImport::Support.parse_chinese_number(match[1])
           @small_rime_number = nil
           @next_heads_start_group = true
           return true
         end
 
+        @pending_possible_initial = nil
         super
       end
 
@@ -1235,6 +1241,10 @@ module DictionaryImport
 
       def build_entry(payload, source_map, group_head:, **kwargs)
         if group_head
+          if @active_group_info
+            finish_declared_group(@current_warnings, @current_metrics)
+            reset_declared_group
+          end
           begin_declared_group(payload, source_map)
           info = @active_group_info
           super(
@@ -1259,6 +1269,25 @@ module DictionaryImport
             **kwargs
           )
         end
+      end
+
+      def payload_starts_group?(payload)
+        compact_structure_text(payload).match?(/\A[\p{Han}□]{2}切/u)
+      end
+
+      def queue_possible_initial(initial, source_map, warnings, metrics)
+        @pending_possible_initial = initial
+        replace_pending_heads([initial], false, source_map, warnings, metrics)
+      end
+
+      def promote_possible_initial!
+        return unless @pending_possible_initial
+
+        initial = @pending_possible_initial
+        @pending_possible_initial = nil
+        @pending_heads = nil
+        @pending_group_start = false
+        start_initial(initial, @current_warnings, @current_metrics)
       end
 
       def parse_outer_section(stripped)

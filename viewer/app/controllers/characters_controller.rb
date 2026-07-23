@@ -12,7 +12,10 @@ class CharactersController < ApplicationController
 			return
 		end
 
-		# Otherwise Rails renders index.html.erb
+		# Otherwise Rails renders index.html.erb. The generic dictionary cards
+		# make this page the single entrance to both normalized historical
+		# dictionaries and the older specialist radical/component browsers.
+		@dictionary_works = DictionaryWork.order(:title, :corpus_work_id).to_a
 	end
 
 	# Memoised CharacterCodepoint lookup by integer codepoint.

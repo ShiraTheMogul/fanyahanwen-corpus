@@ -1,4 +1,4 @@
-<%# Locals: work:, section:, entries:, total:, page:, per: %>
+<%# Locals: work:, section:, entries:, total:, page:, per:, effective_readings: %>
 
 <div class="dictionary-pager">
   <% if page > 1 %>
@@ -75,12 +75,19 @@
           <% end %>
         </td>
 
-        <td style="width: 150px;">
-          <% readings = entry.dictionary_readings.sort_by(&:position) %>
+        <td style="width: 170px;">
+          <% reading_state = effective_readings.fetch(entry.id, { readings: [], inherited: false, group_head: nil }) %>
+          <% readings = reading_state.fetch(:readings) %>
           <% if readings.empty? %>
-            —
+            <span class="dictionary-reading-missing"><%= t("dictionary.catalogue.not_preserved", default: "not preserved") %></span>
           <% else %>
             <%= safe_join(readings.map { |reading| h(reading.raw_value) }, tag.br) %>
+            <% if reading_state.fetch(:inherited) %>
+              <div class="dictionary-reading-inherited">
+                <%= t("dictionary.catalogue.inherited_reading", default: "inherited from group head") %>
+                #<%= reading_state.fetch(:group_head).sequence_number %>
+              </div>
+            <% end %>
           <% end %>
         </td>
 

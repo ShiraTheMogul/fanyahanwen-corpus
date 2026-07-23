@@ -25,7 +25,7 @@ module DryRunDictionaryImports
     "洪武正韻" => "hongwu_explicit_grouped_rime",
     "重修廣韻" => "chongxiu_guangyun_declared_small_rime",
     "集韻" => "jiyun_multi_head_group",
-    "五音集韻" => "wuyin_jiyun_structural_v9",
+    "五音集韻" => "wuyin_jiyun_structural_v10",
     "玉篇" => "yupian_section_queue",
     "釋名" => "shiming_segment_probe"
   }.freeze
@@ -371,28 +371,46 @@ module DryRunDictionaryImports
                  "ready_for_import_review"
                end
     when "五音集韻"
+      # Parser v10 separates structural validity from source-quality evidence.
+      #
+      # Structural blockers mean the parser has not understood the work safely.
+      # Source findings mean the work is readable, but the Wikisource scrape has
+      # an omitted fanqie or a damaged/missing group-count suffix. Those findings
+      # remain in warnings.csv and the group/section review files; they do not
+      # collapse the entire dictionary back into quarantine.
       blockers << "fewer_than_45000_entries" if entries < 45_000
       blockers << "payload_match_below_99_percent" if ratio < 0.99
       blockers << "parsed_sections_not_160=#{metrics[:parsed_sections]}" unless metrics[:parsed_sections].to_i == 160
-      blockers << "fewer_than_3000_pronunciation_groups=#{metrics[:observed_groups]}" if metrics[:observed_groups].to_i < 3_000
+      blockers << "fewer_than_3500_pronunciation_groups=#{metrics[:observed_groups]}" if metrics[:observed_groups].to_i < 3_500
       if metrics[:group_heads].to_i != metrics[:observed_groups].to_i
         blockers << "group_head_count_mismatch=#{metrics[:group_heads]}:#{metrics[:observed_groups]}"
       end
-      blockers << "groups_without_pronunciation_marker=#{metrics[:group_heads_without_pronunciation_marker]}" if metrics[:group_heads_without_pronunciation_marker].to_i.positive?
-      blockers << "groups_without_declared_count=#{metrics[:group_count_missing]}" if metrics[:group_count_missing].to_i.positive?
-      blockers << "declared_group_count_mismatches=#{metrics[:group_count_mismatches]}" if metrics[:group_count_mismatches].to_i.positive?
       blockers << "structural_headword_contamination=#{metrics[:structural_headword_contamination]}" if metrics[:structural_headword_contamination].to_i.positive?
       blockers << "entries_without_tone=#{metrics[:tone_missing_entries]}" if metrics[:tone_missing_entries].to_i.positive?
       blockers << "unmatched_payloads=#{metrics[:unmatched_payloads]}" if metrics[:unmatched_payloads].to_i.positive?
-      blockers << "unmatched_head_groups=#{metrics[:unmatched_head_groups]}" if metrics[:unmatched_head_groups].to_i.positive?
       blockers << "source_gap_entries=#{metrics[:source_gap_entries]}" if metrics[:source_gap_entries].to_i.positive?
-      blockers << "parser_warnings=#{warnings.length}" if warnings.any?
       blockers << "replacement_characters=#{metrics[:replacement_characters]}" if metrics[:replacement_characters].to_i.positive?
       blockers << "invalid_source_documents" if invalid_rows.any?
+
+      source_warning_kinds = %w[
+        group_head_without_declared_count
+        declared_group_count_mismatch
+        head_group_replaced
+      ]
+      unexpected_warning_total = warning_counts.sum do |kind, count|
+        source_warning_kinds.include?(kind) ? 0 : count.to_i
+      end
+      blockers << "unexpected_parser_warnings=#{unexpected_warning_total}" if unexpected_warning_total.positive?
+
       append_structural_notes(notes, metrics, warning_counts)
+      notes << "source_finding_groups_without_pronunciation_marker=#{metrics[:group_heads_without_pronunciation_marker]}" if metrics[:group_heads_without_pronunciation_marker].to_i.positive?
+      notes << "source_finding_groups_without_declared_count=#{metrics[:group_count_missing]}" if metrics[:group_count_missing].to_i.positive?
+      notes << "source_finding_declared_group_count_mismatches=#{metrics[:group_count_mismatches]}" if metrics[:group_count_mismatches].to_i.positive?
+      notes << "source_finding_unmatched_head_groups=#{metrics[:unmatched_head_groups]}" if metrics[:unmatched_head_groups].to_i.positive?
       notes << "tone_derived_from_volume_sequence"
       notes << "division_and_initial_headers_excluded_from_headwords"
-      notes << "group_declared_counts_validated"
+      notes << "fanqie_led_payloads_start_pronunciation_groups"
+      notes << "damaged_group_counts_reported_not_silently_repaired"
       status = blockers.any? ? "parser_or_source_review" : "ready_for_import_review"
     when "重修廣韻", "集韻"
       blockers << "fewer_than_1000_entries" if entries < 1_000

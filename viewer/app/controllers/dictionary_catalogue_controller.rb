@@ -26,6 +26,7 @@ class DictionaryCatalogueController < ApplicationController
 
     @lookup_query = normalize_lookup_query(params[:q])
     @lookup_entries = lookup_entries(@lookup_query) if @lookup_query.present?
+    @effective_readings = effective_readings_for(@lookup_entries) if @lookup_entries.present?
   end
 
   def section
@@ -40,6 +41,7 @@ class DictionaryCatalogueController < ApplicationController
 
     @total = scope.count
     @entries = scope.limit(@per).offset((@page - 1) * @per).to_a
+    @effective_readings = effective_readings_for(@entries)
 
     render layout: false
   end
@@ -56,6 +58,7 @@ class DictionaryCatalogueController < ApplicationController
       .find_by!(sequence_number: positive_integer!(params[:entry_sequence]))
 
     @section = @entry.dictionary_section
+    @effective_readings = effective_readings_for([@entry])
 
     @previous_entry = @work.dictionary_entries
       .where("sequence_number < ?", @entry.sequence_number)
@@ -122,6 +125,54 @@ class DictionaryCatalogueController < ApplicationController
     end
 
     scope.limit(LOOKUP_LIMIT).to_a
+  end
+
+
+  # Return the reading actually relevant to each entry without duplicating
+  # inherited fanqie rows in the database.
+  #
+  # Pattern:
+  #   group head has an explicit DictionaryReading row;
+  #   following entries share section + group_sequence;
+  #   the view resolves the group-head reading for display.
+  def effective_readings_for(entries)
+    rows = Array(entries)
+    return {} if rows.empty?
+
+    result = {}
+    rows.each do |entry|
+      explicit = entry.dictionary_readings.sort_by(&:position)
+      result[entry.id] = { readings: explicit, inherited: false, group_head: entry } if explicit.any?
+    end
+
+    missing = rows.reject { |entry| result.key?(entry.id) }
+    keys = missing.filter_map do |entry|
+      next unless entry.dictionary_section_id.present? && entry.group_sequence.present?
+
+      [entry.dictionary_section_id, entry.group_sequence]
+    end.uniq
+    return result if keys.empty?
+
+    by_section = keys.group_by(&:first)
+    by_section.each do |section_id, section_keys|
+      sequences = section_keys.map(&:last)
+      heads = DictionaryEntry
+        .where(dictionary_section_id: section_id, group_sequence: sequences, group_head: true)
+        .includes(:dictionary_readings)
+        .index_by(&:group_sequence)
+
+      missing.each do |entry|
+        next unless entry.dictionary_section_id == section_id
+
+        head = heads[entry.group_sequence]
+        next unless head
+
+        readings = head.dictionary_readings.sort_by(&:position)
+        result[entry.id] = { readings: readings, inherited: readings.any?, group_head: head }
+      end
+    end
+
+    result
   end
 
   def positive_integer!(value)
