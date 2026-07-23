@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_21_173000) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_23_043000) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.integer "blob_id", null: false
     t.datetime "created_at", null: false
@@ -102,6 +102,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_21_173000) do
     t.boolean "group_head", default: false, null: false
     t.integer "group_sequence"
     t.string "headword", null: false
+    t.string "initial"
     t.json "metadata", default: {}, null: false
     t.string "parser_name", null: false
     t.string "parser_version", null: false
@@ -115,6 +116,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_21_173000) do
     t.index ["corpus_document_id", "source_line_start"], name: "idx_dictionary_entries_document_line"
     t.index ["dictionary_section_id", "group_sequence"], name: "idx_dictionary_entries_section_group"
     t.index ["dictionary_section_id"], name: "index_dictionary_entries_on_dictionary_section_id"
+    t.index ["dictionary_work_id", "initial"], name: "idx_dictionary_entries_work_initial"
     t.index ["dictionary_work_id", "sequence_number"], name: "idx_dictionary_entries_work_sequence", unique: true
     t.index ["dictionary_work_id"], name: "index_dictionary_entries_on_dictionary_work_id"
     t.index ["headword"], name: "index_dictionary_entries_on_headword"

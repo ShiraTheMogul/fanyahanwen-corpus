@@ -76,6 +76,10 @@
         </td>
 
         <td style="width: 170px;">
+          <% effective_initial = entry.initial.presence || section.initial.presence %>
+          <% if effective_initial %>
+            <div class="dictionary-entry-initial"><%= effective_initial %>母</div>
+          <% end %>
           <% reading_state = effective_readings.fetch(entry.id, { readings: [], inherited: false, group_head: nil }) %>
           <% readings = reading_state.fetch(:readings) %>
           <% if readings.empty? %>

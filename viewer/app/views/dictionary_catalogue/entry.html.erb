@@ -60,6 +60,13 @@
         <dt><%= t("dictionary.catalogue.group_sequence", default: "Group sequence") %></dt>
         <dd><%= @entry.group_sequence %><%= " — group head" if @entry.group_head? %></dd>
       <% end %>
+
+      <% effective_initial = @entry.initial.presence || @section.initial.presence %>
+      <% if effective_initial %>
+        <dt><%= t("dictionary.catalogue.initial", default: "Initial") %></dt>
+        <dd><%= effective_initial %>母</dd>
+      <% end %>
+
     </dl>
 
     <h3><%= t("dictionary.catalogue.characters", default: "Characters") %></h3>

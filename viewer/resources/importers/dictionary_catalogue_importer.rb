@@ -7,6 +7,7 @@ require Rails.root.join("lib/dictionary_import/ready_jsonl").to_s
 module Importers
   class DictionaryCatalogueImporter
     DEFAULT_LOG_EVERY = 500
+    IMPORT_SCHEMA_VERSION = 2
 
     def self.import!(entries_path:, corpus_root:, expected_entries:, edition_label:, source_label:,
                      replace: false, verbose: true, log_every: DEFAULT_LOG_EVERY)
@@ -29,13 +30,15 @@ module Importers
 
       existing = DictionaryWork.find_by(corpus_work_id: dataset.corpus_work_id)
       if existing
-        if existing.import_fingerprint == dataset.input_sha256 && existing.entry_count == dataset.rows.length
+        if existing.import_fingerprint == dataset.input_sha256 &&
+           existing.entry_count == dataset.rows.length &&
+           existing.import_metadata["import_schema_version"].to_i == IMPORT_SCHEMA_VERSION
           puts "[dictionary-import] already current: #{existing.title} (#{existing.entry_count} entries)" if verbose
           return result_for(existing, status: "already_current")
         end
 
         unless replace
-          raise "Dictionary work #{dataset.corpus_work_id} already exists with a different fingerprint. Rerun with REPLACE=1 only after reviewing the new plan."
+          raise "Dictionary work #{dataset.corpus_work_id} already exists with a different fingerprint or import schema. Rerun with REPLACE=1 only after reviewing the new plan."
         end
       end
 
@@ -67,6 +70,7 @@ module Importers
           group_count: dataset.group_count,
           imported_at: Time.current,
           import_metadata: {
+            "import_schema_version" => IMPORT_SCHEMA_VERSION,
             "entries_sha256" => dataset.input_sha256,
             "corpus_root_at_import" => Pathname.new(corpus_root).expand_path.to_s,
             "documents" => dataset.documents.values.sort_by { |document| document["document_id"] },
@@ -86,7 +90,9 @@ module Importers
             metadata: {
               "entry_count" => section["entry_count"],
               "group_count" => section["group_count"],
-              "document_ids" => section["document_ids"]
+              "document_ids" => section["document_ids"],
+              "initials" => section["initials"],
+              "initial_count" => section["initial_count"]
             }
           )
           memo[section["sequence_number"]] = record
@@ -103,6 +109,7 @@ module Importers
             group_sequence: nullable_integer(row["group_sequence"]),
             small_rime_number: nullable_integer(row["small_rime_number"]),
             group_head: truthy?(row["is_group_head"]),
+            initial: blank_to_nil(row["initial"]),
             headword: row.fetch("headword").to_s,
             definition: blank_to_nil(row["definition"]),
             raw_payload: row.fetch("payload_raw").to_s,
@@ -208,6 +215,7 @@ module Importers
     def self.entry_metadata(row)
       {
         "tone_section" => blank_to_nil(row["tone_section"]),
+        "initial" => blank_to_nil(row["initial"]),
         "payload_parts" => Array(row["payload_parts"]),
         "source_structure_notes" => Array(row["source_structure_notes"]),
         "validation_notes" => Array(row["validation_notes"]),
@@ -232,7 +240,8 @@ module Importers
         sections: work.section_count,
         entries: work.entry_count,
         readings: work.reading_count,
-        fingerprint: work.import_fingerprint
+        fingerprint: work.import_fingerprint,
+        import_schema_version: work.import_metadata["import_schema_version"]
       }
     end
 

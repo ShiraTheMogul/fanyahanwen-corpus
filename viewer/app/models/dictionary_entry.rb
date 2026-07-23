@@ -8,5 +8,7 @@ class DictionaryEntry < ApplicationRecord
   has_many :dictionary_references, dependent: :delete_all
 
   validates :sequence_number, presence: true, uniqueness: { scope: :dictionary_work_id }
+
+  scope :for_initial, ->(value) { where(initial: value) }
   validates :headword, :raw_payload, :parser_name, :parser_version, presence: true
 end

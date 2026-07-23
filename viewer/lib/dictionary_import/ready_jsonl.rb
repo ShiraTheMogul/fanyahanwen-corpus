@@ -100,12 +100,15 @@ module DictionaryImport
                          .sort_by { |sequence, _| sequence }
                          .map do |sequence, section_rows|
         first = section_rows.first
+        initials = section_initials(section_rows)
         {
           "sequence_number" => sequence,
           "tone" => blank_to_nil(first["tone"]),
           "rhyme_number" => nullable_integer(first["rhyme_number"]),
           "rhyme_label" => blank_to_nil(first["rhyme_label"]),
-          "initial" => blank_to_nil(first["initial"]),
+          "initial" => initials.length == 1 ? initials.first : nil,
+          "initials" => initials,
+          "initial_count" => initials.length,
           "label" => section_label(first),
           "entry_count" => section_rows.length,
           "group_count" => section_rows.map { |row| nullable_integer(row["group_sequence"]) }.compact.uniq.length,
@@ -296,7 +299,7 @@ module DictionaryImport
       rows.group_by { |row| nullable_integer(row["section_sequence"]) }.each do |sequence, section_rows|
         next if sequence.nil?
 
-        %w[tone rhyme_number rhyme_label initial].each do |key|
+        %w[tone rhyme_number rhyme_label].each do |key|
           values = section_rows.map { |row| normalized_scalar(row[key]) }.uniq
           next if values.length <= 1
 
@@ -468,7 +471,7 @@ module DictionaryImport
     end
 
     def write_sections(output)
-      headers = %w[sequence_number label tone rhyme_number rhyme_label initial entry_count group_count document_ids]
+      headers = %w[sequence_number label tone rhyme_number rhyme_label initial initials initial_count entry_count group_count document_ids]
       CSV.open(output.join("sections.csv"), "w", write_headers: true, headers: headers, encoding: "UTF-8") do |csv|
         sections.each do |section|
           csv << headers.map do |header|
@@ -486,6 +489,11 @@ module DictionaryImport
           csv << headers.map { |header| document[header] }
         end
       end
+    end
+
+
+    def section_initials(section_rows)
+      section_rows.map { |row| blank_to_nil(row["initial"]) }.compact.uniq
     end
 
     def section_label(row)
