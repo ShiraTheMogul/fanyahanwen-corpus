@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_23_043000) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_23_110000) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.integer "blob_id", null: false
     t.datetime "created_at", null: false
@@ -42,17 +42,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_23_043000) do
     t.index ["codepoint"], name: "index_character_codepoints_on_codepoint", unique: true
   end
 
-  create_table "character_component_memberships", force: :cascade do |t|
-    t.integer "character_codepoint_id", null: false
-    t.integer "component_number", null: false
-    t.datetime "created_at", null: false
-    t.string "raw_token"
-    t.datetime "updated_at", null: false
-    t.index ["character_codepoint_id"], name: "idx_on_character_codepoint_id_50d573bd3b"
-    t.index ["component_number", "character_codepoint_id"], name: "idx_ccm_component_ccid"
-    t.index ["component_number"], name: "index_character_component_memberships_on_component_number"
-  end
-
   create_table "character_properties", force: :cascade do |t|
     t.integer "character_codepoint_id", null: false
     t.datetime "created_at", null: false
@@ -65,17 +54,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_23_043000) do
     t.index ["character_codepoint_id", "source", "field"], name: "index_character_properties_on_ccid_source_field"
     t.index ["character_codepoint_id"], name: "index_character_properties_on_character_codepoint_id"
     t.index ["source", "field", "value"], name: "index_character_properties_on_source_field_value"
-  end
-
-  create_table "character_radical_memberships", force: :cascade do |t|
-    t.integer "additional_strokes", null: false
-    t.integer "character_codepoint_id", null: false
-    t.datetime "created_at", null: false
-    t.integer "radical_number", null: false
-    t.string "raw_token"
-    t.datetime "updated_at", null: false
-    t.index ["character_codepoint_id"], name: "index_character_radical_memberships_on_character_codepoint_id"
-    t.index ["radical_number", "additional_strokes", "character_codepoint_id"], name: "idx_crm_radical_strokes_ccid"
   end
 
   create_table "daily_readings", force: :cascade do |t|
@@ -237,26 +215,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_23_043000) do
     t.index ["target_ref"], name: "index_edit_tickets_on_target_ref"
   end
 
-  create_table "kangxi_radicals", force: :cascade do |t|
-    t.string "colloquial_names"
-    t.datetime "created_at", null: false
-    t.string "examples"
-    t.integer "frequency"
-    t.string "japanese"
-    t.string "korean"
-    t.string "meaning"
-    t.integer "number", null: false
-    t.string "pinyin"
-    t.string "radical", null: false
-    t.string "simplified"
-    t.string "sino_vietnamese"
-    t.integer "stroke_count"
-    t.datetime "updated_at", null: false
-    t.string "variants"
-    t.index ["number"], name: "index_kangxi_radicals_on_number", unique: true
-    t.index ["radical"], name: "index_kangxi_radicals_on_radical"
-  end
-
   create_table "laoguoyin_readings", force: :cascade do |t|
     t.integer "character_codepoint_id", null: false
     t.datetime "created_at", null: false
@@ -267,15 +225,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_23_043000) do
     t.string "zhuyin"
     t.index ["character_codepoint_id", "laoguoyin", "source"], name: "idx_laoguoyin_readings_unique", unique: true
     t.index ["character_codepoint_id"], name: "index_laoguoyin_readings_on_character_codepoint_id"
-  end
-
-  create_table "shuowen_components", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.string "glyph", null: false
-    t.integer "number", null: false
-    t.datetime "updated_at", null: false
-    t.index ["glyph"], name: "index_shuowen_components_on_glyph"
-    t.index ["number"], name: "index_shuowen_components_on_number", unique: true
   end
 
   create_table "ticket_audit_events", force: :cascade do |t|
@@ -363,9 +312,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_23_043000) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "character_component_memberships", "character_codepoints"
   add_foreign_key "character_properties", "character_codepoints"
-  add_foreign_key "character_radical_memberships", "character_codepoints"
   add_foreign_key "dictionary_entries", "dictionary_sections"
   add_foreign_key "dictionary_entries", "dictionary_works"
   add_foreign_key "dictionary_entry_characters", "character_codepoints"

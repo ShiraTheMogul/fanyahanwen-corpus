@@ -12,8 +12,8 @@
 <p>
   <%= t(
     "dictionary.catalogue.intro",
-    default: "Browse dictionaries that have been structurally imported from the corpus. Every entry remains linked to its corpus text and source lines."
+    default: "Browse dictionaries that have been structurally imported from the corpus. Every entry remains linked to its source."
   ) %>
 </p>
 
-<%= render "work_cards", works: @works, specialized_links: true %>
+<%= render "work_cards", works: @works %>

@@ -12,9 +12,8 @@ class CharactersController < ApplicationController
 			return
 		end
 
-		# Otherwise Rails renders index.html.erb. The generic dictionary cards
-		# make this page the single entrance to both normalized historical
-		# dictionaries and the older specialist radical/component browsers.
+		# Otherwise Rails renders index.html.erb. The normalized dictionary cards
+		# make this page the single public entrance to historical dictionaries.
 		@dictionary_works = DictionaryWork.order(:title, :corpus_work_id).to_a
 	end
 

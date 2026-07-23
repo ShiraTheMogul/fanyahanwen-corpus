@@ -1,0 +1,39 @@
+<% if params[:q].present? %>
+  <div class="dictionary-lookup-results">
+    <% if @lookup_query.blank? %>
+      <p><%= t("dictionary.catalogue.invalid_lookup", default: "That Unicode value is not valid.") %></p>
+    <% elsif @lookup_entries.blank? %>
+      <p><%= t("dictionary.catalogue.no_lookup_results", default: "No imported entries matched this query.") %></p>
+    <% else %>
+      <p>
+        <strong><%= @lookup_query %></strong>:
+        <%= number_with_delimiter(@lookup_entries.length) %>
+        <%= t("dictionary.catalogue.matches", default: "matches shown") %>
+      </p>
+      <ol>
+        <% @lookup_entries.each do |entry| %>
+          <li style="margin-bottom: 8px;">
+            <%= link_to entry.headword,
+              dictionary_catalogue_entry_path(
+                corpus_work_id: @work.corpus_work_id,
+                entry_sequence: entry.sequence_number
+              ),
+              data: { turbo: false } %>
+            <span style="opacity: 0.7;">— <%= entry.dictionary_section.label %></span>
+            <% reading_state = @effective_readings.fetch(entry.id, { readings: [], inherited: false, group_head: nil }) %>
+            <% reading = reading_state.fetch(:readings).first %>
+            <% if reading %>
+              <strong style="margin-left: 8px;"><%= reading.raw_value %></strong>
+              <% if reading_state.fetch(:inherited) %>
+                <small class="dictionary-reading-inherited"><%= t("dictionary.catalogue.inherited_short", default: "inherited") %></small>
+              <% end %>
+            <% end %>
+            <% if entry.definition.present? %>
+              <span><%= truncate(entry.definition, length: 110) %></span>
+            <% end %>
+          </li>
+        <% end %>
+      </ol>
+    <% end %>
+  </div>
+<% end %>

@@ -9,6 +9,8 @@
 
 <h1><%= @work.title %>：<%= @section.label %></h1>
 
+<%= render "lookup_form", work: @work %>
+
 <div class="dictionary-browser-columns">
   <div class="dictionary-browser-sidebar">
     <% if @display_character.present? %>

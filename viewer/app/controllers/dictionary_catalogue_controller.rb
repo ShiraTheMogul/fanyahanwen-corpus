@@ -2,11 +2,10 @@
 
 # Generic browser for dictionaries imported into the normalized dictionary tables.
 #
-# This deliberately follows the existing Kangxi/Shuowen browser pattern:
-# - compact index cards;
-# - a left information column;
-# - a paginated Turbo Frame on the right;
-# - stable public identifiers rather than database row IDs in URLs.
+# The public interface is intentionally shared across Kangxi, Shuowen, Guangyun,
+# Hongwu Zhengyun, Wuyin Jiyun, and later imports. This is the only public
+# historical-dictionary browser; source-specific structure is represented by
+# normalized sections and entries rather than parallel controllers.
 class DictionaryCatalogueController < ApplicationController
   DEFAULT_PER = 50
   MAX_PER = 200
@@ -22,7 +21,9 @@ class DictionaryCatalogueController < ApplicationController
 
   def show
     @sections = @work.dictionary_sections.order(:sequence_number).to_a
-    @section_groups = @sections.group_by { |section| section.tone.presence || "其他" }
+    grouping = DictionaryCatalogue::SectionGrouping.call(@sections)
+    @section_grouping_mode = grouping.fetch(:mode)
+    @section_groups = grouping.fetch(:groups)
 
     @lookup_query = normalize_lookup_query(params[:q])
     @lookup_entries = lookup_entries(@lookup_query) if @lookup_query.present?
@@ -127,14 +128,9 @@ class DictionaryCatalogueController < ApplicationController
     scope.limit(LOOKUP_LIMIT).to_a
   end
 
-
-  # Return the reading actually relevant to each entry without duplicating
-  # inherited fanqie rows in the database.
-  #
-  # Pattern:
-  #   group head has an explicit DictionaryReading row;
-  #   following entries share section + group_sequence;
-  #   the view resolves the group-head reading for display.
+  # Resolve a group's reading for display without copying the same fanqie into
+  # every database row. An entry with no explicit reading inherits from the
+  # group head sharing section + group_sequence.
   def effective_readings_for(entries)
     rows = Array(entries)
     return {} if rows.empty?
@@ -153,8 +149,7 @@ class DictionaryCatalogueController < ApplicationController
     end.uniq
     return result if keys.empty?
 
-    by_section = keys.group_by(&:first)
-    by_section.each do |section_id, section_keys|
+    keys.group_by(&:first).each do |section_id, section_keys|
       sequences = section_keys.map(&:last)
       heads = DictionaryEntry
         .where(dictionary_section_id: section_id, group_sequence: sequences, group_head: true)

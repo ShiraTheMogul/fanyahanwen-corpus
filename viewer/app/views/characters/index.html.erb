@@ -19,11 +19,11 @@
 <p>
   <%= t(
     "dictionary.catalogue.character_landing_intro",
-    default: "Browse the imported dictionaries as complete historical works. Kangxi radicals, Shuowen components, and Guangyun tone-and-rhyme browsing remain available from their dictionary cards."
+    default: "Browse imported historical dictionaries through one consistent catalogue. Radical, component, rhyme, and pronunciation divisions now appear as sections within the relevant work."
   ) %>
 </p>
 
-<%= render "dictionary_catalogue/work_cards", works: @dictionary_works, specialized_links: true %>
+<%= render "dictionary_catalogue/work_cards", works: @dictionary_works %>
 
 <p class="dictionary-catalogue-more-link">
   <%= link_to t("dictionary.catalogue.open_full_catalogue", default: "Open the full historical-dictionary catalogue"), dictionary_catalogue_path, data: { turbo: false } %>

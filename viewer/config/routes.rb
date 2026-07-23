@@ -11,21 +11,6 @@ Rails.application.routes.draw do
 	post "/tools/lunar", to: "tools#lunar", as: :tools_lunar
 	post "/tools/phonetic/mandarin", to: "tools#phonetic_mandarin", as: :tools_phonetic_mandarin
 	post "/tools/phonetic/cantonese", to: "tools#phonetic_cantonese", as: :tools_phonetic_cantonese
-
-	# Kangxi radicals browser
-	get "/dictionary/radicals", to: "kangxi_radicals#index", as: :dictionary_radicals
-	get "/dictionary/radicals/:number", to: "kangxi_radicals#show", as: :dictionary_radical
-	get "/dictionary/radicals/:number/chars", to: "kangxi_radicals#chars", as: :dictionary_radical_chars
-	
-	# Shuowen category browser
-	get "/dictionary/shuowen", to: "shuowen_components#index", as: :dictionary_components
-	get "/dictionary/shuowen/:number", to: "shuowen_components#show", as: :dictionary_component
-	get "/dictionary/shuowen/:number/chars", to: "shuowen_components#chars", as: :dictionary_component_chars
-	
-	# Guangyun category browser (tone + rhyme)
-	get "/dictionary/guangyun", to: "guangyun_categories#index", as: :dictionary_guangyun
-	get "/dictionary/guangyun/:category", to: "guangyun_categories#show", as: :dictionary_guangyun_category
-	get "/dictionary/guangyun/:category/chars", to: "guangyun_categories#chars", as: :dictionary_guangyun_category_chars
 	
 	# Normalized historical dictionary catalogue
 	get "/dictionary/catalogue", to: "dictionary_catalogue#index", as: :dictionary_catalogue

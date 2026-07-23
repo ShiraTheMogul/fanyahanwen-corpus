@@ -9,6 +9,9 @@
 
 <h1><%= @work.title %></h1>
 
+<%= render "lookup_form", work: @work %>
+<%= render "lookup_results" %>
+
 <div class="dictionary-browser-columns">
   <div class="dictionary-browser-sidebar">
     <h2><%= t("dictionary.catalogue.about_work", default: "About this dictionary") %></h2>
@@ -28,11 +31,15 @@
       <dt><%= t("dictionary.catalogue.entries", default: "Entries") %></dt>
       <dd><%= number_with_delimiter(@work.entry_count) %></dd>
 
-      <dt><%= t("dictionary.catalogue.groups", default: "Pronunciation groups") %></dt>
-      <dd><%= number_with_delimiter(@work.group_count) %></dd>
+      <% if @work.group_count.to_i.positive? %>
+        <dt><%= t("dictionary.catalogue.groups", default: "Pronunciation groups") %></dt>
+        <dd><%= number_with_delimiter(@work.group_count) %></dd>
+      <% end %>
 
-      <dt><%= t("dictionary.catalogue.readings", default: "Explicit readings") %></dt>
-      <dd><%= number_with_delimiter(@work.reading_count) %></dd>
+      <% if @work.reading_count.to_i.positive? %>
+        <dt><%= t("dictionary.catalogue.readings", default: "Explicit readings") %></dt>
+        <dd><%= number_with_delimiter(@work.reading_count) %></dd>
+      <% end %>
     </dl>
 
     <details style="margin-top: 14px;">
@@ -50,10 +57,10 @@
   <div class="dictionary-browser-main">
     <h2><%= t("dictionary.catalogue.sections", default: "Sections") %></h2>
 
-    <% @section_groups.each do |tone, sections| %>
-      <h3 style="margin-top: 18px;"><%= tone %> (<%= sections.length %>)</h3>
+    <% @section_groups.each do |group| %>
+      <h3 class="dictionary-section-divider"><%= group.fetch(:label) %> (<%= group.fetch(:sections).length %>)</h3>
       <div class="dictionary-section-grid">
-        <% sections.each do |section| %>
+        <% group.fetch(:sections).each do |section| %>
           <%= link_to dictionary_catalogue_section_path(
                 corpus_work_id: @work.corpus_work_id,
                 section_sequence: section.sequence_number
@@ -68,66 +75,11 @@
               <% if entry_count.present? %>
                 <div><%= number_with_delimiter(entry_count) %> <%= t("dictionary.catalogue.entries", default: "entries") %></div>
               <% end %>
-              <% if group_count.present? %>
+              <% if group_count.to_i.positive? %>
                 <div><%= number_with_delimiter(group_count) %> <%= t("dictionary.catalogue.groups", default: "groups") %></div>
               <% end %>
             </div>
           <% end %>
-        <% end %>
-      </div>
-    <% end %>
-
-    <hr style="margin: 24px 0;">
-
-    <h2><%= t("dictionary.catalogue.lookup", default: "Character lookup") %></h2>
-    <p style="opacity: 0.85;">
-      <%= t("dictionary.catalogue.lookup_help", default: "Enter one character, a complete headword, or a Unicode value such as U+6771.") %>
-    </p>
-
-    <%= form_with url: dictionary_catalogue_work_path(corpus_work_id: @work.corpus_work_id), method: :get, local: true do %>
-      <label>
-        <%= t("dictionary.catalogue.character_or_headword", default: "Character or headword") %>
-        <%= text_field_tag :q, params[:q].to_s, style: "width: 240px;" %>
-      </label>
-      <%= submit_tag t("dictionary.catalogue.lookup_button", default: "Look up") %>
-    <% end %>
-
-    <% if params[:q].present? %>
-      <div class="dictionary-lookup-results">
-        <% if @lookup_query.blank? %>
-          <p><%= t("dictionary.catalogue.invalid_lookup", default: "That Unicode value is not valid.") %></p>
-        <% elsif @lookup_entries.blank? %>
-          <p><%= t("dictionary.catalogue.no_lookup_results", default: "No imported entries matched this query.") %></p>
-        <% else %>
-          <p>
-            <strong><%= @lookup_query %></strong>:
-            <%= number_with_delimiter(@lookup_entries.length) %>
-            <%= t("dictionary.catalogue.matches", default: "matches shown") %>
-          </p>
-          <ol>
-            <% @lookup_entries.each do |entry| %>
-              <li style="margin-bottom: 8px;">
-                <%= link_to entry.headword,
-                  dictionary_catalogue_entry_path(
-                    corpus_work_id: @work.corpus_work_id,
-                    entry_sequence: entry.sequence_number
-                  ),
-                  data: { turbo: false } %>
-                <span style="opacity: 0.7;">— <%= entry.dictionary_section.label %></span>
-                <% reading_state = @effective_readings.fetch(entry.id, { readings: [], inherited: false, group_head: nil }) %>
-                <% reading = reading_state.fetch(:readings).first %>
-                <% if reading %>
-                  <strong style="margin-left: 8px;"><%= reading.raw_value %></strong>
-                  <% if reading_state.fetch(:inherited) %>
-                    <small class="dictionary-reading-inherited"><%= t("dictionary.catalogue.inherited_short", default: "inherited") %></small>
-                  <% end %>
-                <% end %>
-                <% if entry.definition.present? %>
-                  <span><%= truncate(entry.definition, length: 110) %></span>
-                <% end %>
-              </li>
-            <% end %>
-          </ol>
         <% end %>
       </div>
     <% end %>

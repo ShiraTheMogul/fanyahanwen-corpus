@@ -12,6 +12,8 @@
   <span style="font-size: 1rem; opacity: 0.65;">#<%= @entry.sequence_number %></span>
 </h1>
 
+<%= render "lookup_form", work: @work %>
+
 <div class="dictionary-browser-columns">
   <div class="dictionary-browser-sidebar">
     <% primary_character = @entry.dictionary_entry_characters.sort_by(&:position).first %>

@@ -1,6 +1,4 @@
-<%# Locals: works:, specialized_links: true/false %>
-<% specialized_links = local_assigns.fetch(:specialized_links, true) %>
-
+<%# Locals: works: %>
 <% if works.empty? %>
   <div class="dictionary-status-box">
     <%= t(
@@ -11,38 +9,23 @@
 <% else %>
   <div class="dictionary-catalogue-grid">
     <% works.each do |work| %>
-      <article class="dictionary-catalogue-card">
-        <%= link_to dictionary_catalogue_work_path(corpus_work_id: work.corpus_work_id),
-          class: "dictionary-card-main-link",
-          data: { turbo: false, turbo_prefetch: false } do %>
-          <div class="dictionary-card-title"><%= work.title %></div>
-          <div class="dictionary-card-meta">
-            <% if work.edition_label.present? %>
-              <div><%= work.edition_label %></div>
-            <% end %>
-            <div>
-              <%= number_with_delimiter(work.entry_count) %>
-              <%= t("dictionary.catalogue.entries", default: "entries") %>
-              ·
-              <%= number_with_delimiter(work.section_count) %>
-              <%= t("dictionary.catalogue.sections", default: "sections") %>
-            </div>
-          </div>
-        <% end %>
-
-        <% if specialized_links %>
-          <% specialized = case work.corpus_work_id
-             when 127355 then [t("dictionary.links.kangxi_radicals", default: "Browse Kangxi radicals"), dictionary_radicals_path]
-             when 79653 then [t("dictionary.links.shuowen_components", default: "Browse Shuowen components"), dictionary_components_path]
-             when 127386 then [t("dictionary.links.guangyun_categories", default: "Browse Guangyun tones and rhymes"), dictionary_guangyun_path]
-             end %>
-          <% if specialized %>
-            <div class="dictionary-card-specialized-link">
-              <%= link_to specialized.first, specialized.last, data: { turbo: false } %>
-            </div>
+      <%= link_to dictionary_catalogue_work_path(corpus_work_id: work.corpus_work_id),
+        class: "dictionary-catalogue-card dictionary-card-main-link",
+        data: { turbo: false, turbo_prefetch: false } do %>
+        <div class="dictionary-card-title"><%= work.title %></div>
+        <div class="dictionary-card-meta">
+          <% if work.edition_label.present? %>
+            <div><%= work.edition_label %></div>
           <% end %>
-        <% end %>
-      </article>
+          <div>
+            <%= number_with_delimiter(work.entry_count) %>
+            <%= t("dictionary.catalogue.entries", default: "entries") %>
+            ·
+            <%= number_with_delimiter(work.section_count) %>
+            <%= t("dictionary.catalogue.sections", default: "sections") %>
+          </div>
+        </div>
+      <% end %>
     <% end %>
   </div>
 <% end %>

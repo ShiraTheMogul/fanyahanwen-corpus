@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "csv"
 require "digest"
 require "json"
 require "roo"
@@ -10,6 +11,8 @@ module Importers
     LOG_EVERY = 500
     KANGXI_WORK_ID = 127355
     SHUOWEN_WORK_ID = 79_653
+    KANGXI_RADICALS_CSV = Rails.root.join("db", "seed_data", "kangxi_radicals.csv")
+    SHUOWEN_COMPONENTS_TXT = Rails.root.join("lib", "data", "shuowen_components.txt")
 
     def self.plan(kangxi_xlsx:, shuowen_xlsx:)
       {
@@ -121,29 +124,29 @@ module Importers
 
     def self.build_kangxi(path)
       rows = read_sheet(path)
-      radicals = KangxiRadical.order(:number).to_a
+      radicals = read_kangxi_radicals
       radical_map = {}
       radicals.each do |radical|
-        ([radical.radical, radical.simplified] + radical.variants.to_s.split(/[、,，\s]+/)).compact.reject(&:blank?).each do |glyph|
-          radical_map[glyph] = radical
-        end
+        ([radical.fetch("radical"), radical["simplified"]] + radical.fetch("variants").to_s.split(/[、,，\s]+/))
+          .compact
+          .reject(&:blank?)
+          .each { |glyph| radical_map[glyph] = radical }
       end
 
       blockers = []
-      blockers << "Expected 214 Kangxi radicals; found #{radicals.length}" unless radicals.length == 214
-      grouped = rows.group_by { |r| [r.fetch("繁體"), r.fetch("康熙字典解釋")] }
-      entries = grouped.values.sort_by { |group| group.map { |r| r.fetch("_row") }.min }.map do |group|
+      blockers << "Expected 214 Kangxi radicals in #{KANGXI_RADICALS_CSV}; found #{radicals.length}" unless radicals.length == 214
+      grouped = rows.group_by { |row| [row.fetch("繁體"), row.fetch("康熙字典解釋")] }
+      entries = grouped.values.sort_by { |group| group.map { |row| row.fetch("_row") }.min }.map do |group|
         first = group.first
         radical = radical_map[first.fetch("部首")]
         blockers << "Unmapped Kangxi radical #{first['部首'].inspect} at row #{first['_row']}" unless radical
+
         glyph = first.fetch("繁體")
         linked = glyph.each_char.count == 1 ? glyph : nil
-        membership = if linked && radical
-                       codepoint = CharacterCodepoint.find_by(chr: linked)
-                       CharacterRadicalMembership.find_by(character_codepoint_id: codepoint&.id, radical_number: radical.number)
-                     end
+        membership = linked && radical ? kangxi_membership_for(linked, radical.fetch("number")) : nil
+
         {
-          "section_sequence" => radical&.number,
+          "section_sequence" => radical&.fetch("number", nil),
           "headword" => glyph,
           "linked_glyph" => linked,
           "definition" => first.fetch("康熙字典解釋"),
@@ -153,43 +156,55 @@ module Importers
             "volume_label" => first["集 1"],
             "radical" => first["部首"],
             "total_strokes" => integer_or_nil(first["筆劃數"]),
-            "additional_strokes" => membership&.additional_strokes,
-            "ordering_key" => [radical&.number, membership&.additional_strokes, first.fetch("_row")],
+            "additional_strokes" => membership&.fetch(:additional_strokes, nil),
+            "ordering_key" => [radical&.fetch("number", nil), membership&.fetch(:additional_strokes, nil), first.fetch("_row")],
             "duplicate_source_rows" => group.length
           },
-          "source_rows" => group.map { |r| source_row(r, "kx") }
+          "source_rows" => group.map { |row| source_row(row, "kx") }
         }
       end
-
-      legacy_count = CharacterProperty.where(source: "Kangxi", field: "kangxi_gloss").count
-      blockers << "Legacy Kangxi parity mismatch: structured=#{entries.length}; legacy=#{legacy_count}" unless legacy_count == entries.length
 
       sections = radicals.map do |radical|
         {
-          "sequence_number" => radical.number,
-          "label" => "#{radical.radical}部",
+          "sequence_number" => radical.fetch("number"),
+          "label" => "#{radical.fetch('radical')}部",
           "raw_heading" => nil,
-          "metadata" => radical.attributes.slice("number", "radical", "variants", "stroke_count", "meaning", "colloquial_names", "pinyin", "sino_vietnamese", "japanese", "korean", "frequency", "simplified", "examples").merge(
-            "ordering_system" => "kangxi_radical"
-          )
+          "metadata" => radical.merge("ordering_system" => "kangxi_radical")
         }
       end
-      dataset("御定康熙字典", KANGXI_WORK_ID, "四庫全書本", "Kangxi structured XLSX", "legacy_kangxi_xlsx_adapter", path, sections, entries, blockers,
-              { "ordering_system" => "kangxi_radical", "legacy_entry_count" => legacy_count, "source_rows" => rows.length, "deduplicated_source_rows" => rows.length - entries.length })
+
+      dataset(
+        "御定康熙字典",
+        KANGXI_WORK_ID,
+        "四庫全書本",
+        "Kangxi structured XLSX",
+        "structured_kangxi_xlsx_adapter",
+        path,
+        sections,
+        entries,
+        blockers,
+        {
+          "ordering_system" => "kangxi_radical",
+          "radical_catalogue_source" => KANGXI_RADICALS_CSV.relative_path_from(Rails.root).to_s,
+          "membership_source" => "CharacterProperty:kRSUnicode",
+          "source_rows" => rows.length,
+          "deduplicated_source_rows" => rows.length - entries.length
+        }
+      )
     end
 
     def self.build_shuowen(path)
       rows = read_sheet(path)
       categories = []
-      rows.each { |r| categories << r.fetch("shuowen_category") unless categories.include?(r.fetch("shuowen_category")) }
-      components = ShuowenComponent.order(:number).to_a
+      rows.each { |row| categories << row.fetch("shuowen_category") unless categories.include?(row.fetch("shuowen_category")) }
+      components = read_shuowen_components
       blockers = []
       blockers << "Expected 540 Shuowen categories; found #{categories.length}" unless categories.length == 540
-      blockers << "Expected 540 legacy Shuowen components; found #{components.length}" unless components.length == 540
+      blockers << "Expected 540 component glyphs in #{SHUOWEN_COMPONENTS_TXT}; found #{components.length}" unless components.length == 540
 
       sections = categories.each_with_index.map do |category, index|
         source_glyph = category.sub(/部\z/, "")
-        legacy = components[index]
+        catalogue_glyph = components[index]
         {
           "sequence_number" => index + 1,
           "label" => category,
@@ -197,20 +212,22 @@ module Importers
           "metadata" => {
             "ordering_system" => "shuowen_component",
             "source_glyph" => source_glyph,
-            "legacy_component_glyph" => legacy&.glyph,
-            "legacy_component_number" => legacy&.number,
-            "source_legacy_glyph_mismatch" => legacy && legacy.glyph != source_glyph
+            "catalogue_component_glyph" => catalogue_glyph,
+            "catalogue_component_number" => index + 1,
+            "source_catalogue_glyph_mismatch" => catalogue_glyph.present? && catalogue_glyph != source_glyph
           }
         }
       end
+
       category_sequence = categories.each_with_index.to_h { |category, index| [category, index + 1] }
       entries = rows.map do |row|
         raw_headword = row.fetch("character")
         linked = if raw_headword.each_char.count == 1
-                   raw_headword
-                 elsif raw_headword.match?(/\A\p{Han}[;；]\z/u)
-                   raw_headword.each_char.first
-                 end
+          raw_headword
+        elsif raw_headword.match?(/\A\p{Han}[;；]\z/u)
+          raw_headword.each_char.first
+        end
+
         {
           "section_sequence" => category_sequence.fetch(row.fetch("shuowen_category")),
           "headword" => raw_headword,
@@ -225,10 +242,77 @@ module Importers
           "source_rows" => [source_row(row, "shuowen")]
         }
       end
-      legacy_count = CharacterProperty.where(source: "Shuowen Jiezi", field: "shuowen_entry").count
-      blockers << "Legacy Shuowen parity mismatch: structured=#{entries.length}; legacy=#{legacy_count}" unless legacy_count == entries.length
-      dataset("說文解字", SHUOWEN_WORK_ID, nil, "Shuowen structured XLSX", "legacy_shuowen_xlsx_adapter", path, sections, entries, blockers,
-              { "ordering_system" => "shuowen_component", "legacy_entry_count" => legacy_count, "source_rows" => rows.length })
+
+      dataset(
+        "說文解字",
+        SHUOWEN_WORK_ID,
+        nil,
+        "Shuowen structured XLSX",
+        "structured_shuowen_xlsx_adapter",
+        path,
+        sections,
+        entries,
+        blockers,
+        {
+          "ordering_system" => "shuowen_component",
+          "component_catalogue_source" => SHUOWEN_COMPONENTS_TXT.relative_path_from(Rails.root).to_s,
+          "source_rows" => rows.length
+        }
+      )
+    end
+
+    def self.read_kangxi_radicals
+      CSV.foreach(KANGXI_RADICALS_CSV, headers: true, encoding: "bom|utf-8").map do |row|
+        {
+          "number" => row.fetch("Number").to_i,
+          "radical" => row.fetch("Radical").to_s,
+          "variants" => row["Variants"].to_s.presence,
+          "stroke_count" => integer_or_nil(row["Stroke count"]),
+          "meaning" => row["Meaning"].to_s.presence,
+          "colloquial_names" => row["Colloquial / Traditional names"].to_s.presence,
+          "pinyin" => row["Pinyin (Mandarin)"].to_s.presence,
+          "sino_vietnamese" => row["Vietnamese (Sino-Vietnamese)"].to_s.presence,
+          "japanese" => row["Japanese (On/Kun/Romaji)"].to_s.presence,
+          "korean" => row["Korean (Hanja / Hangul-Romaja)"].to_s.presence,
+          "frequency" => integer_or_nil(row["Frequency"]),
+          "simplified" => row["Simplified"].to_s.presence,
+          "examples" => row["Examples"].to_s.presence
+        }
+      end
+    end
+
+    def self.read_shuowen_components
+      File.readlines(SHUOWEN_COMPONENTS_TXT, chomp: true, encoding: "UTF-8")
+        .map(&:strip)
+        .reject(&:empty?)
+    end
+
+    def self.kangxi_membership_for(glyph, radical_number)
+      character = CharacterCodepoint.find_by(chr: glyph)
+      return nil unless character
+
+      raw_values = CharacterProperty
+        .where(character_codepoint_id: character.id, field: "kRSUnicode")
+        .order(:id)
+        .pluck(:value)
+
+      parsed = raw_values.flat_map do |raw_value|
+        raw_value.to_s.split(/\s+/).filter_map do |token|
+          match = token.match(/\A(?<radical>\d+)(?:')?\.(?<additional>\d+)\z/)
+          next unless match
+
+          {
+            radical_number: match[:radical].to_i,
+            additional_strokes: match[:additional].to_i,
+            raw_token: token
+          }
+        end
+      end
+
+      matching = parsed.select { |membership| membership.fetch(:radical_number) == radical_number.to_i }
+      (matching.presence || parsed).min_by do |membership|
+        [membership.fetch(:additional_strokes), membership.fetch(:radical_number), membership.fetch(:raw_token)]
+      end
     end
 
     def self.dataset(title, work_id, edition, label, parser, path, sections, entries, blockers, metadata)
@@ -239,7 +323,7 @@ module Importers
         "edition_label" => edition,
         "source_label" => label,
         "parser_name" => parser,
-        "parser_version" => "1",
+        "parser_version" => "2",
         "source_path" => Pathname.new(path).relative_path_from(Rails.root).to_s,
         "sections" => sections,
         "entries" => entries,

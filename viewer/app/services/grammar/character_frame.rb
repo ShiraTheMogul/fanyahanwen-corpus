@@ -5,7 +5,7 @@ require "erb"
 module Grammar
   # Read-only reference data for the side panel on a single-character grammar hub.
   # It consumes the same CharacterCodepoint, CharacterProperty, VariantMapping,
-  # PronunciationRegistry and Kangxi radical data used by the dictionary.
+  # PronunciationRegistry and normalized dictionary data used by the dictionary.
   class CharacterFrame
     attr_reader :character, :properties, :variants, :pronunciation_sections,
                 :shuowen_entry, :kangxi_entry, :radical_membership, :radical
@@ -49,11 +49,9 @@ module Grammar
       pronunciation_rows = properties.select { |property| PronunciationRegistry.pronunciation_field?(property.field) }
       @pronunciation_sections = PronunciationRegistry.pronunciation_sections(pronunciation_rows)
       @variants = load_variants
-      @radical_membership = CharacterRadicalMembership
-        .where(character_codepoint_id: @character.id)
-        .order(:additional_strokes, :radical_number)
-        .first
-      @radical = KangxiRadical.find_by(number: @radical_membership.radical_number) if @radical_membership
+      kangxi_structure = DictionaryCatalogue::KangxiStructure.for_character_ids([@character.id])[@character.id]
+      @radical_membership = kangxi_structure&.membership
+      @radical = kangxi_structure&.radical
 
       self
     end

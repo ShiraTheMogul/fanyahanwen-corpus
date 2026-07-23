@@ -1,0 +1,15 @@
+<%# Local: work %>
+<div class="dictionary-lookup-panel">
+  <div class="dictionary-lookup-heading">
+    <strong><%= t("dictionary.catalogue.lookup", default: "Character lookup") %></strong>
+    <span><%= t("dictionary.catalogue.lookup_help", default: "Enter one character, a complete headword, or a Unicode value such as U+6771.") %></span>
+  </div>
+
+  <%= form_with url: dictionary_catalogue_work_path(corpus_work_id: work.corpus_work_id), method: :get, local: true, class: "dictionary-lookup-form" do %>
+    <label for="dictionary_lookup_q" class="visually-hidden">
+      <%= t("dictionary.catalogue.character_or_headword", default: "Character or headword") %>
+    </label>
+    <%= text_field_tag :q, params[:q].to_s, id: "dictionary_lookup_q", placeholder: t("dictionary.catalogue.character_or_headword", default: "Character or headword"), autocomplete: "off" %>
+    <%= submit_tag t("dictionary.catalogue.lookup_button", default: "Look up") %>
+  <% end %>
+</div>

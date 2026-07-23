@@ -108,25 +108,16 @@ module Grammar
       codepoints = character_entries.map { |entry| entry.headword.ord }
 
       character_ids = CharacterCodepoint.where(codepoint: codepoints).pluck(:codepoint, :id).to_h
-      memberships = CharacterRadicalMembership
-        .where(character_codepoint_id: character_ids.values)
-        .order(:additional_strokes, :radical_number)
-        .to_a
-        .group_by(&:character_codepoint_id)
-        .transform_values(&:first)
-      radical_numbers = memberships.values.map(&:radical_number).compact.uniq
-      radicals = KangxiRadical.where(number: radical_numbers).index_by(&:number)
+      kangxi_structure = DictionaryCatalogue::KangxiStructure.for_character_ids(character_ids.values)
       readings = include_pronunciation ? pronunciation_map(character_ids) : {}
       frequencies = include_frequency ? frequency_map(character_entries) : {}
 
       entries.map do |entry|
         character_id = character_ids[entry.headword.ord] if entry.single_character?
-        membership = memberships[character_id] if character_id
-        radical = radicals[membership.radical_number] if membership
-        total_strokes =
-          if radical&.stroke_count && membership&.additional_strokes
-            radical.stroke_count.to_i + membership.additional_strokes.to_i
-          end
+        structure = kangxi_structure[character_id] if character_id
+        membership = structure&.membership
+        radical = structure&.radical
+        total_strokes = structure&.total_strokes
 
         published = @store.article_exists?(entry, locale: @locale) ||
           (@locale != EntryStore::SOURCE_LOCALE && @store.article_exists?(entry, locale: EntryStore::SOURCE_LOCALE))
