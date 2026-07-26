@@ -22,7 +22,7 @@ module DictionaryImport
 
     DEFAULT_CONFIG = Pathname("config/dictionary_import/sources.yml").freeze
     RETRYABLE_ERRORS = [Errno::EIO, Errno::EACCES, Errno::EBUSY, Errno::ENOENT].freeze
-    ROLE_DIRS = %w[raw variants variant translation translations annotation annotations kanbun hanmun hanvan].to_set.freeze
+    ROLE_DIRS = %w[raw variants variant reconstruction reconstructions translation translations annotation annotations kanbun hanmun hanvan].to_set.freeze
 
     def timestamp
       Time.now.utc.strftime("%Y%m%dT%H%M%SZ")

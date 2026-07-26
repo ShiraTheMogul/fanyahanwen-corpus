@@ -7,6 +7,7 @@ module CorpusSearch
     ROLES = %w[
       canonical
       textual_variant
+      reconstruction
       raw
       derived_reading
       translation
@@ -17,6 +18,7 @@ module CorpusSearch
     DEFAULT_ROLES = %w[canonical].freeze
     SEARCHABLE_ROLES = (ROLES - %w[support]).freeze
 
+    RECONSTRUCTION_SEGMENTS = %w[reconstruction reconstructions].freeze
     DERIVED_SEGMENTS = %w[kanbun hanmun hanvan].freeze
     TRANSLATION_SEGMENTS = %w[translation translations].freeze
     ANNOTATION_SEGMENTS = %w[annotation annotations].freeze
@@ -30,6 +32,7 @@ module CorpusSearch
         # folder called variants or translation, but it is still raw material.
         return "raw" if lowered.include?("raw")
         return "textual_variant" if lowered.include?("variants")
+        return "reconstruction" if (lowered & RECONSTRUCTION_SEGMENTS).any?
         return "derived_reading" if (lowered & DERIVED_SEGMENTS).any?
         return "translation" if (lowered & TRANSLATION_SEGMENTS).any?
         return "annotation" if (lowered & ANNOTATION_SEGMENTS).any?
@@ -40,7 +43,8 @@ module CorpusSearch
 
       def canonical_parent_path(path)
         parts = segments(path)
-        index = parts.map(&:downcase).index("variants")
+        lowered = parts.map(&:downcase)
+        index = lowered.index("variants") || RECONSTRUCTION_SEGMENTS.filter_map { |segment| lowered.index(segment) }.min
         return nil unless index
 
         parts[0...index].join("/")

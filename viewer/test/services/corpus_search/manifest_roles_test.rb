@@ -10,6 +10,7 @@ class CorpusSearchManifestRolesTest < ActiveSupport::TestCase
 
     write("中國漢文/clean/周朝/詩經/詩經.txt", "# TITLE: 詩經\n\n正文\n")
     write("中國漢文/clean/周朝/詩經/variants/版本甲.txt", "版本正文\n")
+    write("中國漢文/clean/周朝/詩經/reconstruction/復原本.txt", "復原正文\n")
     write("中國漢文/clean/周朝/詩經/kanbun/詩經.txt", "訓讀\n")
     write("中國漢文/raw/周朝/詩經.txt", "原始抓取\n")
     write("notes/readme.txt", "support\n")
@@ -34,6 +35,7 @@ class CorpusSearchManifestRolesTest < ActiveSupport::TestCase
     roles = manifest.documents.to_h { |doc| [doc["path"], doc["document_role"]] }
     assert_equal "canonical", roles["中國漢文/clean/周朝/詩經/詩經.txt"]
     assert_equal "textual_variant", roles["中國漢文/clean/周朝/詩經/variants/版本甲.txt"]
+    assert_equal "reconstruction", roles["中國漢文/clean/周朝/詩經/reconstruction/復原本.txt"]
     assert_equal "derived_reading", roles["中國漢文/clean/周朝/詩經/kanbun/詩經.txt"]
     assert_equal "raw", roles["中國漢文/raw/周朝/詩經.txt"]
     assert_equal "support", roles["notes/readme.txt"]
@@ -135,7 +137,7 @@ class CorpusSearchManifestRolesTest < ActiveSupport::TestCase
       )
     end
 
-    assert_equal 5, manifest.documents.length
+    assert_equal 6, manifest.documents.length
     scoped_caches = @cache_root.glob("**/*scoped*")
     assert_empty scoped_caches
   end
@@ -159,7 +161,7 @@ class CorpusSearchManifestRolesTest < ActiveSupport::TestCase
       )
     end
 
-    assert_equal 5, manifest.documents.length
+    assert_equal 6, manifest.documents.length
   end
 
   test "invalid UTF-8 documents are excluded and reported without replacing the scan" do

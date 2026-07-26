@@ -36,6 +36,12 @@ class CorpusMetadataStore
     "known_commentaries" => "Known commentaries",
     "is_compilation" => "Compilation",
     "edition" => "Edition",
+    "edition_label" => "Edition",
+    "material_type" => "Text type",
+    "reconstruction" => "Reconstruction",
+    "reconstruction_scope" => "Reconstruction scope",
+    "reconstruction_basis" => "Reconstruction basis",
+    "source_document_id" => "Source document ID",
     "page_title" => "Page title",
     "chapter" => "Chapter",
     "file" => "File",
@@ -74,8 +80,17 @@ class CorpusMetadataStore
   def metadata_path_for(rel_path)
     abs = Pathname(@fs.resolve(rel_path))
     dir = abs.file? ? abs.dirname : abs
-    path = dir.join("metadata.json")
-    path.file? ? path : nil
+
+    loop do
+      path = dir.join("metadata.json")
+      return path if path.file?
+      break if dir == @root
+      break unless dir.to_s.start_with?(@root.to_s + File::SEPARATOR)
+
+      dir = dir.parent
+    end
+
+    nil
   rescue SecurityError, SystemCallError
     nil
   end
@@ -213,6 +228,7 @@ class CorpusMetadataStore
   def document_hashes_for(work)
     docs = Array(work['documents'])
     docs.concat(Array(work['editions']).flat_map { |edition| Array(edition['documents']) })
+    docs.concat(Array(work['translations']).flat_map { |translation| Array(translation['documents']) })
     docs
   end
 
@@ -232,19 +248,31 @@ class CorpusMetadataStore
   end
 
   def find_document_metadata(work, rel_path)
-    docs = Array(work["documents"])
-    docs.concat(Array(work["editions"]).flat_map { |edition| Array(edition["documents"]) })
+    candidates = []
+    Array(work["documents"]).each do |document|
+      candidates << [{}, document]
+    end
+    Array(work["editions"]).each do |edition|
+      parent = edition.to_h.except("documents")
+      Array(edition["documents"]).each { |document| candidates << [parent, document] }
+    end
+    Array(work["translations"]).each do |translation|
+      parent = translation.to_h.except("documents")
+      Array(translation["documents"]).each { |document| candidates << [parent, document] }
+    end
 
     normalized_path = rel_path.to_s.tr("\\", "/")
     file_name = File.basename(normalized_path)
+    pair = candidates.find { |_parent, doc| doc.is_a?(Hash) && doc["path"].to_s == normalized_path } ||
+      candidates.find { |_parent, doc| doc.is_a?(Hash) && doc["file"].to_s == file_name }
+    return {} unless pair
 
-    docs.find { |doc| doc.is_a?(Hash) && doc["path"].to_s == normalized_path } ||
-      docs.find { |doc| doc.is_a?(Hash) && doc["file"].to_s == file_name } ||
-      {}
+    parent, document = pair
+    merge_hashes(parent, document)
   end
 
   def work_metadata_only(work)
-    work.except("documents", "worklist", "editions")
+    work.except("documents", "worklist", "editions", "translations")
   end
 
   def merge_hashes(work, document)

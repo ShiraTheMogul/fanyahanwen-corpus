@@ -1,0 +1,39 @@
+version: 1
+
+starter_full_works:
+  - 集韻
+  - 玉篇
+  - 重修廣韻
+
+profiles:
+  jiyun_only:
+    - 集韻
+  yupian_only:
+    - 玉篇
+  chongxiu_guangyun_only:
+    - 重修廣韻
+  next_dictionary_cycle:
+    - 集韻
+    - 玉篇
+    - 重修廣韻
+
+categories:
+  韻書之屬:
+    - title: 集韻
+      aliases: [集韻]
+    - title: 重修廣韻
+      aliases: [重修廣韻]
+  字書之屬:
+    - title: 玉篇
+      aliases: [玉篇]
+
+work_settings:
+  集韻:
+    parser: rime_dictionary
+    status: candidate_import
+  重修廣韻:
+    parser: rime_dictionary
+    status: candidate_import
+  玉篇:
+    parser: probe_only
+    status: repair_and_review
