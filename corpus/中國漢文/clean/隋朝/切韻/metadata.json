@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "work_id": 129688,
+  "corpus_root": "中國漢文",
+  "title": "切韻",
+  "is_compilation": false,
+  "authors": [
+    {
+      "name": "陸法言",
+      "role": "author"
+    }
+  ],
+  "date_label": "隋",
+  "macro_region": "中國",
+  "period": "隋朝",
+  "polity": "隋",
+  "categories": [
+    "韻書"
+  ],
+  "sources": [
+    {
+      "citation": "nk2028. qieyun-restored: Restored Qieyun and other data from Fujita (2017; 2023).",
+      "url": "https://github.com/nk2028/qieyun-restored",
+      "revision": "6db59f89004ac747f5e6aa2d54e54bf6f6af2926"
+    }
+  ],
+  "rights": {
+    "license": "MIT",
+    "source": "https://github.com/nk2028/qieyun-restored"
+  },
+  "known_commentaries": [],
+  "editions": [
+    {
+      "edition_id": 32725,
+      "edition_label": "藤田拓海復元本",
+      "material_type": "reconstruction",
+      "reconstruction": true,
+      "reconstruction_scope": "complete restored text",
+      "editors": [
+        {
+          "name": "藤田拓海",
+          "role": "reconstruction editor"
+        }
+      ],
+      "contributors": [
+        {
+          "name": "nk2028",
+          "role": "digital editor"
+        }
+      ],
+      "sources": [
+        {
+          "citation": "藤田拓海. 2017. 陸法言『切韻』研究. 二松学舎大学博士学位論文."
+        },
+        {
+          "citation": "nk2028/qieyun-restored: 切韻 藤田拓海復元.csv",
+          "url": "https://github.com/nk2028/qieyun-restored",
+          "revision": "6db59f89004ac747f5e6aa2d54e54bf6f6af2926"
+        }
+      ],
+      "rights": {
+        "license": "MIT",
+        "source": "https://github.com/nk2028/qieyun-restored"
+      },
+      "documents": [
+        {
+          "document_id": 266333,
+          "file": "切韻（藤田拓海復元本）.txt",
+          "path": "中國漢文/clean/隋朝/切韻/reconstruction/藤田拓海/切韻（藤田拓海復元本）.txt",
+          "title": "切韻 (藤田拓海復元本)",
+          "page_title": "切韻 (藤田拓海復元本)",
+          "display_title": "切韻",
+          "body_start_line": 1,
+          "material_type": "reconstruction",
+          "reconstruction": true,
+          "reconstruction_scope": "complete restored text",
+          "source_csv": "切韻 藤田拓海復元.csv",
+          "source_repository": "https://github.com/nk2028/qieyun-restored",
+          "source_revision": "6db59f89004ac747f5e6aa2d54e54bf6f6af2926"
+        }
+      ]
+    },
+    {
+      "edition_id": 32726,
+      "edition_label": "李永富復元本",
+      "material_type": "reconstruction",
+      "reconstruction": true,
+      "reconstruction_scope": "complete restored text",
+      "editors": [
+        {
+          "name": "李永富",
+          "role": "reconstruction editor"
+        }
+      ],
+      "contributors": [
+        {
+          "name": "nk2028",
+          "role": "digital editor"
+        }
+      ],
+      "sources": [
+        {
+          "citation": "李永富復元資料（nk2028/qieyun-restored 所收）."
+        },
+        {
+          "citation": "nk2028/qieyun-restored: 切韻 李永富復元.csv",
+          "url": "https://github.com/nk2028/qieyun-restored",
+          "revision": "6db59f89004ac747f5e6aa2d54e54bf6f6af2926"
+        }
+      ],
+      "rights": {
+        "license": "MIT",
+        "source": "https://github.com/nk2028/qieyun-restored"
+      },
+      "documents": [
+        {
+          "document_id": 266334,
+          "file": "切韻（李永富復元本）.txt",
+          "path": "中國漢文/clean/隋朝/切韻/reconstruction/李永富/切韻（李永富復元本）.txt",
+          "title": "切韻 (李永富復元本)",
+          "page_title": "切韻 (李永富復元本)",
+          "display_title": "切韻",
+          "body_start_line": 1,
+          "material_type": "reconstruction",
+          "reconstruction": true,
+          "reconstruction_scope": "complete restored text",
+          "source_csv": "切韻 李永富復元.csv",
+          "source_repository": "https://github.com/nk2028/qieyun-restored",
+          "source_revision": "6db59f89004ac747f5e6aa2d54e54bf6f6af2926"
+        }
+      ]
+    }
+  ]
+}

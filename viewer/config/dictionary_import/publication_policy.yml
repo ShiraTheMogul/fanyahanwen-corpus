@@ -1,0 +1,42 @@
+version: 1
+
+# Publication here means "readable enough to enter the public dictionary
+# catalogue". It does not mean that every glyph has been normalised or that
+# every source-layout warning has been resolved.
+#
+# Historical, taboo, variant, and otherwise unusual forms are preserved exactly
+# as the parser read them. A missing headword is represented by □ for display;
+# the original gap and review reasons remain in entry metadata.
+works:
+  集韻:
+    profile: jiyun_only
+    mode: publish
+    source_files:
+      - entries.candidate_review.jsonl
+      - entries.localized_source_gaps.jsonl
+    minimum_entries: 40000
+    maximum_entries: 41000
+    missing_headword_placeholder: "□"
+    non_fanqie_markers: ["舊無切"]
+    publication_scope: complete_source_with_visible_gaps
+
+  玉篇:
+    profile: yupian_only
+    mode: publish
+    source_files:
+      - entries.quarantined.jsonl
+    minimum_entries: 22000
+    maximum_entries: 23000
+    missing_headword_placeholder: "□"
+    publication_scope: partial_source_volume_30_pending
+
+  重修廣韻:
+    profile: chongxiu_guangyun_only
+    mode: review
+    source_files:
+      - entries.candidate_review.jsonl
+      - entries.localized_source_gaps.jsonl
+    minimum_entries: 24000
+    maximum_entries: 26000
+    missing_headword_placeholder: "□"
+    publication_scope: review_before_publication
