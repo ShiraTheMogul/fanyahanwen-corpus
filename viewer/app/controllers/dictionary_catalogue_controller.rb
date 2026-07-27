@@ -2,10 +2,9 @@
 
 # Generic browser for dictionaries imported into the normalized dictionary tables.
 #
-# The public interface is intentionally shared across Kangxi, Shuowen, Guangyun,
-# Hongwu Zhengyun, Wuyin Jiyun, and later imports. This is the only public
-# historical-dictionary browser; source-specific structure is represented by
-# normalized sections and entries rather than parallel controllers.
+# One corpus work may have multiple imported editions. The route remains keyed
+# by corpus_work_id; the optional ?edition=<corpus edition ID> query parameter
+# selects the catalogue row.
 class DictionaryCatalogueController < ApplicationController
   DEFAULT_PER = 50
   MAX_PER = 200
@@ -16,7 +15,7 @@ class DictionaryCatalogueController < ApplicationController
   before_action :load_pagination, only: %i[section entries]
 
   def index
-    @works = DictionaryWork.order(:title, :corpus_work_id).to_a
+    @works = DictionaryWork.order(:title, :edition_label, :corpus_work_id, :corpus_edition_id).to_a
   end
 
   def show
@@ -74,10 +73,30 @@ class DictionaryCatalogueController < ApplicationController
       .first
   end
 
+  # Rails merges these values into every URL generated during the request.
+  # This means existing route helpers keep the selected edition without adding
+  # a second set of routes.
+  def default_url_options
+    options = super
+    return options unless @work&.corpus_edition_id.present?
+
+    options.merge(edition: @work.corpus_edition_id)
+  end
+
   private
 
   def load_work
-    @work = DictionaryWork.find_by!(corpus_work_id: positive_integer!(params[:corpus_work_id]))
+    corpus_work_id = positive_integer!(params[:corpus_work_id])
+    scope = DictionaryWork.where(corpus_work_id: corpus_work_id)
+
+    @work =
+      if params[:edition].present?
+        scope.find_by!(corpus_edition_id: positive_integer!(params[:edition]))
+      else
+        scope
+          .order(Arel.sql("CASE WHEN corpus_edition_id IS NULL THEN 0 ELSE 1 END"), :corpus_edition_id)
+          .first!
+      end
   end
 
   def load_section

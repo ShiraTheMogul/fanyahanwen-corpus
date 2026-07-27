@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_23_110000) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_26_120000) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.integer "blob_id", null: false
     t.datetime "created_at", null: false
@@ -169,6 +169,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_23_110000) do
   end
 
   create_table "dictionary_works", force: :cascade do |t|
+    t.bigint "corpus_edition_id"
     t.bigint "corpus_work_id", null: false
     t.datetime "created_at", null: false
     t.string "edition_label"
@@ -186,7 +187,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_23_110000) do
     t.string "source_label", null: false
     t.string "title", null: false
     t.datetime "updated_at", null: false
-    t.index ["corpus_work_id"], name: "index_dictionary_works_on_corpus_work_id", unique: true
+    t.index ["corpus_work_id", "corpus_edition_id"], name: "idx_dictionary_works_corpus_edition", unique: true, where: "corpus_edition_id IS NOT NULL"
+    t.index ["corpus_work_id"], name: "idx_dictionary_works_default_edition", unique: true, where: "corpus_edition_id IS NULL"
     t.index ["import_fingerprint"], name: "index_dictionary_works_on_import_fingerprint", unique: true
     t.index ["title"], name: "index_dictionary_works_on_title"
   end

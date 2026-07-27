@@ -16,7 +16,7 @@ module DictionaryImport
     DEFAULT_RELATIVE_PATH = "中國漢文/clean/隋朝/切韻"
     TONES = %w[平聲 上聲 去聲 入聲].freeze
     PARSER_NAME = "qieyun_reconstruction_text"
-    PARSER_VERSION = "2"
+    PARSER_VERSION = "3"
 
     attr_reader :corpus_root, :relative_path, :metadata, :work_id, :title,
                 :source_revision, :editions, :sections, :entries, :input_sha256,
@@ -112,6 +112,10 @@ module DictionaryImport
       raise DatasetError, "Replacement character found in #{source_path}" if raw.include?("\uFFFD")
       digest << raw.b
 
+      edition_digest = Digest::SHA256.new
+      edition_digest << JSON.generate(edition_metadata)
+      edition_digest << raw.b
+
       edition_section_start = sections.length
       edition_entry_start = entries.length
       parse_document!(
@@ -136,6 +140,7 @@ module DictionaryImport
         "source_path" => source_path,
         "metadata_source_path" => metadata_source_path,
         "source_file" => source_file,
+        "input_sha256" => edition_digest.hexdigest,
         "section_count" => edition_sections,
         "entry_count" => edition_entries,
         "group_count" => edition_groups,
@@ -202,10 +207,8 @@ module DictionaryImport
             "tone_section" => current_tone,
             "rhyme_heading" => text,
             "rhyme_label" => text.sub(/韻\z/, ""),
-            # Keep the real tone for the existing catalogue grouping. The
-            # edition remains explicit in the section label and metadata.
             "tone" => current_tone,
-            "label" => "#{edition_label}｜#{current_tone}｜#{text}",
+            "label" => text,
             "document_id" => document_id,
             "source_path" => source_path,
             "source_file" => source_file,

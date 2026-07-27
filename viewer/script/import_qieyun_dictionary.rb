@@ -85,7 +85,7 @@ puts <<~REPORT
   ============================================================================
   Corpus work ID:          #{dataset.work_id}
   Dictionary:              #{dataset.title}
-  Reconstructed editions:  #{dataset.editions.length}
+  Catalogue rows planned:   #{dataset.editions.length}
   Sections:                #{dataset.sections.length}
   Entries:                 #{dataset.entries.length}
   Small-rime groups:       #{dataset.entries.count { |entry| entry.fetch('group_head') }}
@@ -120,5 +120,7 @@ result = Importers::QieyunReconstructionImporter.import!(
 output.join("import_result.json").write(JSON.pretty_generate(result) + "\n", encoding: "UTF-8")
 puts
 puts "QIEYUN DICTIONARY IMPORT COMPLETE"
-puts "Catalogue URL: /dictionary/catalogue/#{dataset.work_id}"
+result.fetch(:editions).each do |edition|
+  puts "Catalogue URL: #{edition.fetch(:catalogue_url)}"
+end
 puts "Result: #{result.inspect}"

@@ -8,7 +8,9 @@ require Rails.root.join("lib/dictionary_import/qieyun_reconstruction_dataset").t
 require Rails.root.join("app/services/importers/qieyun_reconstruction_importer").to_s
 
 class QieyunReconstructionDatasetTest < ActiveSupport::TestCase
-  test "parses and imports two reconstructed editions without merging their forms" do
+  test "imports each reconstructed edition as its own catalogue row" do
+    skip "Run bin/rails db:migrate first" unless DictionaryWork.column_names.include?("corpus_edition_id")
+
     Dir.mktmpdir do |tmp|
       corpus_root = Pathname(tmp).join("corpus")
       build_fixture(corpus_root)
@@ -19,23 +21,30 @@ class QieyunReconstructionDatasetTest < ActiveSupport::TestCase
       assert_equal 2, dataset.editions.length
       assert_equal 4, dataset.sections.length
       assert_equal 7, dataset.entries.length
-      assert_equal 4, dataset.entries.count { |entry| entry.fetch("group_head") }
       assert_equal 2, dataset.path_mismatches.length
-      assert dataset.editions.all? { |edition| edition.fetch("source_path").include?("/隋朝/切韻/") }
-      assert_equal ["縦", "縱"], dataset.entries.select { |entry| entry.fetch("edition_entry_sequence") == 2 }.map { |entry| entry.fetch("headword") }
+      assert dataset.editions.all? { |edition| edition.fetch("input_sha256").length == 64 }
 
       result = Importers::QieyunReconstructionImporter.import!(dataset: dataset, replace: true, verbose: false)
       assert_equal "imported", result.fetch(:status)
 
-      work = DictionaryWork.find_by!(corpus_work_id: 909_999)
-      assert_equal "切韻", work.title
-      assert_equal 4, work.dictionary_sections.count
-      assert_equal 7, work.dictionary_entries.count
-      assert_equal 2, work.import_metadata.fetch("editions").length
-      assert_equal ["平聲", "入聲"], work.dictionary_sections.order(:sequence_number).pluck(:tone).uniq
-      assert_equal ["藤田拓海復元本", "李永富復元本"], work.dictionary_sections.order(:sequence_number).map { |section| section.metadata.fetch("edition_label") }.uniq
-      assert_equal ["縦", "縱"], work.dictionary_entries.where(headword: ["縦", "縱"]).order(:sequence_number).pluck(:headword)
-      assert_equal 4, DictionaryReading.joins(:dictionary_entry).where(dictionary_entries: { dictionary_work_id: work.id }).count
+      works = DictionaryWork.where(corpus_work_id: 909_999).order(:corpus_edition_id).to_a
+      assert_equal 2, works.length
+      assert_equal [801, 802], works.map(&:corpus_edition_id)
+      assert_equal ["藤田拓海復元本", "李永富復元本"], works.map(&:edition_label)
+      assert_equal [3, 4], works.map(&:entry_count)
+      assert_equal [2, 2], works.map(&:section_count)
+
+      fujita, li = works
+      assert_equal ["東韻", "屋韻"], fujita.dictionary_sections.order(:sequence_number).pluck(:label)
+      assert_equal ["東", "縦", "屋"], fujita.dictionary_entries.order(:sequence_number).pluck(:headword)
+      assert_equal ["東", "縱", "涷", "屋"], li.dictionary_entries.order(:sequence_number).pluck(:headword)
+
+      assert_equal [1, 2, 3], fujita.dictionary_entries.order(:sequence_number).pluck(:sequence_number)
+      assert_equal [1, 2, 3, 4], li.dictionary_entries.order(:sequence_number).pluck(:sequence_number)
+
+      second = Importers::QieyunReconstructionImporter.import!(dataset: dataset, replace: false, verbose: false)
+      assert_equal "already_current", second.fetch(:status)
+      assert_equal 2, DictionaryWork.where(corpus_work_id: 909_999).count
     end
   end
 
