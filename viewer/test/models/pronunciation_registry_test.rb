@@ -211,4 +211,20 @@ class PronunciationRegistryTest < ActiveSupport::TestCase
     assert_equal :jejueo_hangul, PronunciationRegistry.ruby_source(:jejueo_hangul)[:key]
   end
 
+  test "groups Jejueo rows under Koreanic rather than Other" do
+    props = [
+      Property.new("reading.koreanic.jejueo.hangul", "Yang, Yang & O’Grady 2020", "백"),
+      Property.new("reading.koreanic.jejueo.source_romanisation", "Yang, Yang & O’Grady 2020", "beg")
+    ]
+
+    sections = PronunciationRegistry.pronunciation_sections(props)
+    koreanic = sections.find { |section| section[:key] == "koreanic" }
+    other = sections.find { |section| section[:key] == "other" }
+    jejueo = koreanic[:varieties].find { |group| group[:key] == "jejueo" }
+
+    assert_equal 2, koreanic[:count]
+    assert_equal props, jejueo[:props]
+    assert_nil other
+  end
+
 end
