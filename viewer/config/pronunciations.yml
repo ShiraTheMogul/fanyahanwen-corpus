@@ -416,6 +416,77 @@ fields:
       formatter: raw
       order: 120
 
+  reading.koreanic.jejueo.hangul:
+    family: koreanic
+    label: Hangul
+    order: 30
+    variety_key: jejueo
+    variety_label: 제주어
+    variety_label_en: Jejueo
+    location: 제주도
+    location_en: Jeju Island
+    notation: hangul
+    references:
+      - label: Book
+        citation: "Changyong Yang, Sejung Yang, and William O’Grady. 2020. Jejueo: The Language of Korea’s Jeju Island. Honolulu: University of Hawai‘i Press. Table 4.1."
+        url: "https://uhpress.hawaii.edu/title/jejueo-the-language-of-koreas-jeju-island/"
+      - label: Basic dictionary
+        citation: "Changyong Yang, William O’Grady, and Sejung Yang. Jejueo-English Basic Dictionary, prepared to accompany Jejueo: The Language of Korea’s Jeju Island."
+        url: "https://sites.google.com/a/hawaii.edu/jejueo/jejueo-english-basic-dictionary-%EC%A0%9C%EC%A3%BC%EC%96%B4-%EC%98%81%EC%96%B4-%EA%B8%B0%EC%B4%88-%EC%82%AC%EC%A0%84"
+      - label: Grammar guide
+        citation: "Changyong Yang, William O’Grady, and Sejung Yang. 2024. A Sketch Grammar of Jejueo."
+        url: "https://sites.google.com/a/hawaii.edu/jejueo/a-sketch-grammar-of-jejueo"
+    ruby:
+      key: jejueo_hangul
+      label: Jejueo — Hangul
+      sources: [Yang, Yang & O’Grady 2020, Jejueo-English Basic Dictionary]
+      formatter: raw
+      order: 130
+
+  reading.koreanic.jejueo.source_romanisation:
+    family: koreanic
+    label: Source romanisation
+    order: 40
+    variety_key: jejueo
+    variety_label: 제주어
+    variety_label_en: Jejueo
+    location: 제주도
+    location_en: Jeju Island
+    notation: source_romanisation
+
+  reading.koreanic.jejueo.compound_hangul:
+    family: koreanic
+    label: Hangul (compound-attested)
+    order: 50
+    variety_key: jejueo
+    variety_label: 제주어
+    variety_label_en: Jejueo
+    location: 제주도
+    location_en: Jeju Island
+    notation: compound_hangul
+
+  reading.koreanic.jejueo.compound_source_romanisation:
+    family: koreanic
+    label: Source romanisation (compound-attested)
+    order: 60
+    variety_key: jejueo
+    variety_label: 제주어
+    variety_label_en: Jejueo
+    location: 제주도
+    location_en: Jeju Island
+    notation: compound_source_romanisation
+
+  reading.koreanic.jejueo.compound_attestation:
+    family: koreanic
+    label: Attested compound
+    order: 70
+    variety_key: jejueo
+    variety_label: 제주어
+    variety_label_en: Jejueo
+    location: 제주도
+    location_en: Jeju Island
+    notation: compound_attestation
+
   kKorean:
     family: koreanic
     label: Korean (Yale)

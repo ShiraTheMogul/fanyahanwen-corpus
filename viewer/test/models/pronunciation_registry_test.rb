@@ -198,4 +198,17 @@ class PronunciationRegistryTest < ActiveSupport::TestCase
     assert_nil PronunciationRegistry.value_annotation_for("kMandarin", "ai4")
   end
 
+  test "Jejueo fields distinguish standalone and compound-attested readings" do
+    direct = PronunciationRegistry.field_metadata("reading.koreanic.jejueo.hangul")
+    compound = PronunciationRegistry.field_metadata("reading.koreanic.jejueo.compound_hangul")
+
+    assert_equal "koreanic", direct[:family]
+    assert_equal "Jejueo", PronunciationRegistry.display_variety_label(direct)
+    assert_equal "Jeju Island", PronunciationRegistry.display_location_label(direct)
+    assert_equal "Hangul", direct[:label]
+    assert_equal "Hangul (compound-attested)", compound[:label]
+    assert_equal 3, direct[:references].length
+    assert_equal :jejueo_hangul, PronunciationRegistry.ruby_source(:jejueo_hangul)[:key]
+  end
+
 end
