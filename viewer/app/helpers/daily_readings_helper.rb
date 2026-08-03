@@ -6,12 +6,12 @@
 #
 # Key idea:
 # - The database stores the poem metadata (Mao no, mother/period, subgroup, title, phase, and path).
+# - We resolve the current corpus path through the stable Mao number, because compilation folders may move.
 # - We read the *actual poem file* to display the full text.
 # - The poem-of-the-day advances one item per day starting on lunar 正月初一.
 #
 module DailyReadingsHelper
   SHIJING_SERIES_KEY  = "shijing"
-  SHIJING_ROOT_REL    = "中國漢文/clean/周朝/東周/戰國時代/周/詩經"
   MAX_LUNAR_BACKTRACK = 420
 
   # Returns a Hash for the widget, or nil if no reading can be found.
@@ -22,13 +22,14 @@ module DailyReadingsHelper
   #   :display_period => "國風期" etc (derived from reading.mother)
   #   :text           => full poem text (string)
   def daily_shijing_payload(date = Date.current)
-    cache_key = "daily_reading:shijing:v1:#{date.iso8601}"
+    # Version 2 prevents an already-cached missing-file response surviving the fix.
+    cache_key = "daily_reading:shijing:v2:#{date.iso8601}"
 
     Rails.cache.fetch(cache_key, expires_in: 36.hours) do
       reading = pick_daily_reading(SHIJING_SERIES_KEY, date: date)
       return nil if reading.nil?
 
-      viewer_rel = File.join(SHIJING_ROOT_REL, reading.path.to_s)
+      viewer_rel = DailyReadings::ShijingPathResolver.new.resolve(reading)
 
       mother = safe_attr(reading, :mother)
       display_period = mother.present? ? "#{mother}期" : nil
@@ -98,13 +99,10 @@ module DailyReadingsHelper
 
   # Reads the poem text from the corpus file on disk.
   #
-  # viewer_rel is something like:
-  #   "中國漢文/clean/先秦/詩經/國風/周南/關雎/關雎.txt"
-  #
-  # We convert that to a filesystem path:
-  #   Rails.root/../corpus/<viewer_rel>
+  # viewer_rel is a corpus-root-relative path such as:
+  #   "中國漢文/clean/周朝/東周/戰國時代/周/詩經/國風/周南/關雎/關雎.txt"
   def read_poem_text_from_viewer_rel(viewer_rel)
-    corpus_path = Rails.root.join("..", "corpus", viewer_rel)
+    corpus_path = File.join(Rails.configuration.x.corpus_root.to_s, viewer_rel.to_s)
     raw = File.read(corpus_path, encoding: "utf-8", invalid: :replace, undef: :replace)
 
     # Remove metadata lines starting with '#'. Keep everything else.
