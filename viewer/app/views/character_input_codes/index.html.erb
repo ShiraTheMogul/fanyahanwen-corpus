@@ -1,0 +1,52 @@
+<h1>Character input codes</h1>
+
+<p>
+  Browse character-level codes imported from RIME schema data. These records are dictionary data;
+  RIME remains the input engine used by RIME-enabled typing interfaces.
+</p>
+
+<%= form_with url: request.path, method: :get, local: true do %>
+  <label for="input-code-system">System</label>
+  <%= select_tag :system_id,
+                 options_for_select([["All systems", ""]] + @systems.map { |system| [system, system] }, @system_id),
+                 id: "input-code-system" %>
+
+  <label for="input-code-query">Character or code prefix</label>
+  <%= text_field_tag :q, @query, id: "input-code-query", placeholder: "e.g. 清 or a code" %>
+  <%= submit_tag "Search" %>
+<% end %>
+
+<% if @results.any? %>
+  <table class="cj-table">
+    <thead>
+      <tr>
+        <th>Character</th>
+        <th>System</th>
+        <th>Code</th>
+        <th>Kind</th>
+        <th>Source</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @results.each do |row| %>
+        <tr>
+          <td class="cj-char">
+            <%= link_to view_text(row.glyph), character_path("U+#{row.character_codepoint.codepoint.to_s(16).upcase}") %>
+          </td>
+          <td><%= row.system_id %></td>
+          <td class="cj-code"><code><%= row.code %></code></td>
+          <td><%= row.kind %></td>
+          <td>
+            <%= row.source %>
+            <% if row.source_version.present? %><small><%= row.source_version.first(12) %></small><% end %>
+            <% if row.metadata.is_a?(Hash) && row.metadata["decomposition"].present? %>
+              <br><small>Decomposition: <%= view_text(row.metadata["decomposition"]) %></small>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% elsif @query.present? %>
+  <p>No matching input codes were found.</p>
+<% end %>

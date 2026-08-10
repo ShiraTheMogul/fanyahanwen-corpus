@@ -444,7 +444,7 @@ end
 
   # 3) Decide group for any given field
 	def self.group_for(field)
-		return "Strokes & radicals" if field.start_with?("kRS") || field == "kTotalStrokes" || field == "shuowen_category"
+		return "Strokes & radicals" if field.start_with?("kRS") || field == "kTotalStrokes" || field == "shuowen_category" || field == "ids_difficult_component_lookup"
 		return "Education notes" if field.match?("kGradeLevel") || field.match?("kKoreanEducationHanja") || field == "cjk_808_common"
 		return "Education notes" if field == "context" 
 		return "Pronunciation" if PronunciationRegistry.pronunciation_field?(field)
@@ -487,6 +487,7 @@ end
   
   # Manually replace some of Unihan's "kX" stuff with explicit, transparent wording, and/or characters when Chinese calques appear (e.g. Fanqie). 
   PRETTY = {
+	"ids_difficult_component_lookup" => "IDS hard-to-input component lookup",
 	"kDefinition" => { i18n: "unihan_definition" },
 	"kFanqie" => {
 			han: "反切", 

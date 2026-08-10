@@ -1,0 +1,187 @@
+.transcription-page {
+  --transcription-past: #b4232c;
+  --transcription-future: #245aa5;
+  --transcription-unsupported: #c66a00;
+  --transcription-token-size: clamp(2rem, 6vw, 4rem);
+}
+
+.transcription-setup label,
+.transcription-setup textarea,
+.transcription-setup input[type="text"] {
+  display: block;
+  width: 100%;
+  margin: 0.35rem 0 0.8rem;
+}
+
+.transcription-settings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 0.8rem;
+}
+
+.transcription-setup fieldset {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 0.8rem 0;
+}
+
+.transcription-stage {
+  margin: 1.4rem 0;
+  min-height: 8rem;
+  border: 1px solid rgba(127, 127, 127, 0.35);
+  border-radius: 0.8rem;
+  overflow: hidden;
+  background: rgba(127, 127, 127, 0.04);
+}
+
+.transcription-focus-viewport {
+  --transcription-window: 7;
+  width: min(100%, calc(var(--transcription-window) * 1.65 * var(--transcription-token-size)));
+  min-height: 8rem;
+  margin: 0 auto;
+  overflow: hidden;
+  display: grid;
+  align-items: center;
+}
+
+.transcription-focus-track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  transform: translateX(var(--transcription-offset, 0));
+  transition: transform 160ms ease-out;
+  will-change: transform;
+}
+
+.transcription-focus-track.is-vertical {
+  flex-direction: column;
+  transform: translateY(var(--transcription-offset, 0));
+}
+
+.transcription-token {
+  position: relative;
+  flex: 0 0 1.65em;
+  width: 1.65em;
+  min-height: 1.65em;
+  display: inline-grid;
+  place-items: center;
+  font-family: var(--han-font-stack);
+  font-size: var(--transcription-token-size);
+  line-height: 1.35;
+  transition: color 120ms linear, opacity 120ms linear, border-color 120ms linear;
+}
+
+.transcription-token.is-past {
+  color: var(--transcription-past);
+  opacity: 0.5;
+  text-decoration: underline;
+  text-decoration-style: solid;
+}
+
+.transcription-token.is-future {
+  color: var(--transcription-future);
+  opacity: 0.55;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+}
+
+.transcription-token.is-current {
+  border: 0.12em solid currentColor;
+  border-radius: 0.12em;
+  opacity: 1;
+}
+
+.transcription-token.is-current::after {
+  content: "↓";
+  position: absolute;
+  top: -0.9em;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: sans-serif;
+  font-size: 0.45em;
+  line-height: 1;
+}
+
+.transcription-token.is-unsupported {
+  color: var(--transcription-unsupported);
+  opacity: 1;
+  text-decoration: underline wavy currentColor 0.09em;
+}
+
+.transcription-token.is-display-only {
+  opacity: 0.55;
+  color: inherit;
+  text-decoration: none;
+}
+
+.transcription-no-fade .transcription-token.is-past,
+.transcription-no-fade .transcription-token.is-future {
+  opacity: 1;
+}
+
+.transcription-full-text {
+  padding: 1rem;
+  font-family: var(--han-font-stack);
+  line-height: 1.9;
+}
+
+.transcription-full-text .transcription-token {
+  font-size: clamp(1.6rem, 4vw, 2.5rem);
+  display: inline-grid;
+  width: 1.45em;
+  min-height: 1.45em;
+  flex: none;
+}
+
+.transcription-full-text.is-vertical {
+  writing-mode: vertical-rl;
+  max-height: 70vh;
+  overflow-x: auto;
+  width: 100%;
+}
+
+.transcription-full-text.is-vertical .transcription-token.is-current::after {
+  content: "←";
+  top: 50%;
+  left: auto;
+  right: -0.9em;
+  transform: translateY(-50%);
+}
+
+.transcription-input-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  align-items: center;
+}
+
+.transcription-input-row input {
+  min-width: 12rem;
+  font-size: 1.4rem;
+  font-family: var(--han-font-stack);
+}
+
+.transcription-stage.is-wrong {
+  animation: transcription-wrong 150ms linear 1;
+}
+
+@keyframes transcription-wrong {
+  0%, 100% { transform: translateX(0); }
+  33% { transform: translateX(-0.25rem); }
+  66% { transform: translateX(0.25rem); }
+}
+
+.transcription-report {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border: 1px solid rgba(127, 127, 127, 0.35);
+  border-radius: 0.75rem;
+}
+
+
+.transcription-focus-viewport.is-vertical {
+  width: min(100%, 10rem);
+  height: calc(var(--transcription-window) * 1.65 * var(--transcription-token-size));
+  max-height: 70vh;
+}

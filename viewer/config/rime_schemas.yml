@@ -1,0 +1,30 @@
+# The browser runtime consumes RIME schema_id values. This is a catalogue, not
+# an implementation or rebranding of the input methods themselves.
+schemas:
+  - schema_id: cangjie5
+    label: Cangjie 5 倉頡五代
+    family: shape
+  - schema_id: cangjie5_express
+    label: Cangjie 5 Express 倉頡五代快打
+    family: shape
+  - schema_id: wubi86
+    label: Wubi 86 五筆86
+    family: shape
+  - schema_id: luna_pinyin
+    label: Mandarin Pinyin 朙月拼音
+    family: phonetic
+  - schema_id: jyut6ping3
+    label: Cantonese Jyutping 粵拼
+    family: phonetic
+  - schema_id: wugniu
+    label: Shanghainese 上海話
+    family: phonetic
+  - schema_id: sampheng
+    label: Middle Chinese 三拼
+    family: historical
+  - schema_id: zyenpheng
+    label: Middle Chinese 中古漢語全拼
+    family: historical
+  - schema_id: moran
+    label: Moran 魔然
+    family: hybrid

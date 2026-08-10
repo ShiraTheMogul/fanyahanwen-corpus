@@ -1,0 +1,113 @@
+<%= stylesheet_link_tag "transcription", "data-turbo-track": "reload" %>
+
+<div class="transcription-page"
+     data-controller="transcription"
+     data-transcription-variants-value="<%= json_escape(@variant_equivalents.to_json) %>"
+     style="--transcription-past:#b4232c; --transcription-future:#245aa5; --transcription-unsupported:#c66a00;">
+  <h1>Transcription practice</h1>
+
+  <p>
+    Type the highlighted character using <strong>Your input method</strong>. Han characters, Kana, Hangul, encoded numerals, and other character symbols can all be practised; punctuation and unsupported characters remain visible but are not scored.
+    The same session state powers the scrolling and full-text views.
+  </p>
+
+  <details class="transcription-setup" open>
+    <summary>Exercise settings</summary>
+
+    <label for="transcription-title">Text name</label>
+    <input id="transcription-title" type="text" value="<%= @title %>" data-transcription-target="title">
+
+    <label for="transcription-source">Text</label>
+    <textarea id="transcription-source" rows="5" data-transcription-target="source"><%= @text %></textarea>
+
+    <div class="transcription-settings-grid">
+      <label>
+        Presentation
+        <select data-transcription-target="viewMode" data-action="transcription#settingsChanged">
+          <option value="focus">Focus scrolling</option>
+          <option value="full">Full text</option>
+        </select>
+      </label>
+
+      <label>
+        Direction
+        <select data-transcription-target="direction" data-action="transcription#settingsChanged">
+          <option value="horizontal">Horizontal</option>
+          <option value="vertical">Vertical</option>
+        </select>
+      </label>
+
+      <label>
+        Visible characters
+        <input type="number" min="1" max="40" value="7" data-transcription-target="windowSize" data-action="input->transcription#settingsChanged">
+      </label>
+
+      <label>
+        Variants
+        <select data-transcription-target="variantMode" data-action="transcription#restart">
+          <option value="canonical">Canonical corpus / variant text</option>
+          <option value="accept">Accept variants</option>
+          <option value="scramble">Variant Scramble</option>
+        </select>
+      </label>
+
+      <label>
+        Input
+        <select aria-label="Input method">
+          <option>Your input method</option>
+          <optgroup label="RIME schemas (runtime adapter)">
+            <% @rime_schemas.each do |schema| %>
+              <option value="rime:<%= schema.fetch("schema_id") %>" disabled><%= schema.fetch("label") %></option>
+            <% end %>
+          </optgroup>
+        </select>
+      </label>
+    </div>
+
+    <fieldset>
+      <legend>Challenge</legend>
+      <label><input type="checkbox" data-transcription-target="hard" data-action="transcription#restart"> Hard Mode — no skip</label>
+      <label><input type="checkbox" data-transcription-target="zen" data-action="transcription#settingsChanged"> Zen 禪 Mode — hide live score</label>
+    </fieldset>
+
+    <fieldset>
+      <legend>Visual accommodation</legend>
+      <label>Past <input type="color" value="#b4232c" data-transcription-target="pastColor" data-action="input->transcription#settingsChanged"></label>
+      <label>Future <input type="color" value="#245aa5" data-transcription-target="futureColor" data-action="input->transcription#settingsChanged"></label>
+      <label>Unsupported <input type="color" value="#c66a00" data-transcription-target="unsupportedColor" data-action="input->transcription#settingsChanged"></label>
+      <label><input type="checkbox" checked data-transcription-target="fade" data-action="transcription#settingsChanged"> Fade past/future text</label>
+    </fieldset>
+
+    <button type="button" data-action="transcription#start">Start / restart</button>
+  </details>
+
+  <div class="transcription-stage" data-transcription-target="stage">
+    <div class="transcription-focus-viewport">
+      <div class="transcription-focus-track" data-transcription-target="track"></div>
+    </div>
+
+    <div class="transcription-full-text" data-transcription-target="fullText" hidden></div>
+  </div>
+
+  <div class="transcription-input-row">
+    <label for="transcription-input">Your input method</label>
+    <input id="transcription-input"
+           type="text"
+           autocomplete="off"
+           autocapitalize="off"
+           spellcheck="false"
+           data-transcription-target="input"
+           data-action="input->transcription#input">
+    <button type="button" data-transcription-target="skipButton" data-action="transcription#skip">Skip (-10)</button>
+    <span data-transcription-target="score"></span>
+  </div>
+
+  <p class="transcription-status" data-transcription-target="status" aria-live="polite"></p>
+
+  <section class="transcription-report" data-transcription-target="report" hidden>
+    <h2>Learning report</h2>
+    <div data-transcription-target="reportBody"></div>
+    <button type="button" data-action="transcription#practiceDifficult">Practice difficult characters</button>
+    <button type="button" data-action="transcription#restart">Try again</button>
+  </section>
+</div>

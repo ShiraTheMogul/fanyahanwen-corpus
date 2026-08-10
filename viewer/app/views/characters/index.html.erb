@@ -10,6 +10,11 @@
   <%= submit_tag t("dictionary.submit") %>
 <% end %>
 
+<p>
+  <%= link_to "Search by IDS / construct a character", "/characters/structure-search" %> ·
+  <%= link_to "Browse Cangjie, Wubi, Moran, and other input codes", character_input_codes_path %>
+</p>
+
 <hr>
 
 <%= render "dictionary_catalogue/styles" %>

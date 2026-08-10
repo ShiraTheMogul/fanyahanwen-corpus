@@ -1,0 +1,128 @@
+<%= stylesheet_link_tag "character_structures", "data-turbo-track": "reload" %>
+
+<h1>IDS character structure search</h1>
+
+<p>
+  Search the dictionary by Ideographic Description Sequence (IDS), or construct one from components.
+  Exact search respects the full structure; fuzzy search also finds structurally similar characters.
+</p>
+
+<%= form_with url: request.path, method: :get, local: true, class: "ids-search-form", data: { ids_constructor_target: "searchForm" } do %>
+  <label for="ids-query">IDS or components</label>
+  <%= text_field_tag :q, @query, id: "ids-query", placeholder: "e.g. ⿰氵青", autocomplete: "off", data: { ids_constructor_target: "query" } %>
+  <label for="ids-mode">Search mode</label>
+  <%= select_tag :mode, options_for_select([["Fuzzy structure", "fuzzy"], ["Exact IDS", "exact"]], @mode), id: "ids-mode" %>
+  <%= submit_tag "Search" %>
+<% end %>
+
+<div class="ids-constructor" data-controller="ids-constructor">
+  <h2>Construct a character structure</h2>
+  <p class="muted">Select a slot, then add a structure operator or a component. The constructor writes standard prefix-order IDS for you.</p>
+
+  <div class="ids-constructor-toolbar" aria-label="IDS structure operators">
+    <% ["⿰", "⿱", "⿲", "⿳", "⿴", "⿵", "⿶", "⿷", "⿸", "⿹", "⿺", "⿻", "⿼", "⿽", "⿾", "⿿", "㇯"].each do |operator| %>
+      <button type="button" class="ids-operator" data-action="ids-constructor#insertOperator" data-operator="<%= operator %>"><%= operator %></button>
+    <% end %>
+  </div>
+
+  <div class="ids-component-entry">
+    <label for="ids-component">Component</label>
+    <input id="ids-component" type="text" maxlength="64" inputmode="text" data-ids-constructor-target="component" placeholder="氵">
+    <button type="button" data-action="ids-constructor#insertComponent">Add component</button>
+  </div>
+
+  <details class="ids-difficult-components">
+    <summary>Hard-to-input components <span lang="zh-Hant">難輸入部件</span></summary>
+    <p class="muted">
+      If a component is awkward to type directly, choose its total stroke count and then its first stroke.
+      This is an input aid, not a judgement about how difficult the component is to learn. The five first-stroke classes follow the IRG system.
+    </p>
+
+    <div class="ids-difficult-stroke-counts" role="tablist" aria-label="Total stroke count">
+      <% @difficult_component_groups.each_with_index do |group, index| %>
+        <button
+          type="button"
+          class="ids-difficult-count<%= " is-active" if index.zero? %>"
+          role="tab"
+          aria-selected="<%= index.zero? %>"
+          data-action="ids-constructor#showDifficultGroup"
+          data-group="<%= group[:stroke_count] %>"><%= group[:stroke_count] %></button>
+      <% end %>
+    </div>
+
+    <div class="ids-difficult-groups">
+      <% @difficult_component_groups.each_with_index do |group, index| %>
+        <section
+          class="ids-difficult-group"
+          data-ids-constructor-target="difficultGroup"
+          data-group="<%= group[:stroke_count] %>"
+          <%= "hidden" unless index.zero? %>>
+          <% group[:classes].each do |stroke_class| %>
+            <% next if stroke_class[:glyphs].empty? %>
+            <div class="ids-difficult-row">
+              <div class="ids-difficult-label">
+                <strong><%= stroke_class[:english] %></strong>
+                <span><%= stroke_class[:han] %> <%= stroke_class[:representative] %></span>
+              </div>
+              <div class="ids-difficult-glyphs">
+                <% stroke_class[:glyphs].each do |glyph| %>
+                  <button
+                    type="button"
+                    class="ids-difficult-glyph"
+                    title="U+<%= glyph.ord.to_s(16).upcase %> · <%= group[:stroke_count] %> strokes · <%= stroke_class[:english] %> (<%= stroke_class[:han] %>)"
+                    data-action="ids-constructor#insertDifficultComponent"
+                    data-component="<%= glyph %>"><%= glyph %></button>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </section>
+      <% end %>
+    </div>
+  </details>
+
+  <div class="ids-tree" data-ids-constructor-target="tree" aria-live="polite"></div>
+
+  <p class="ids-expression-row">
+    <strong>IDS:</strong>
+    <code data-ids-constructor-target="expression">?</code>
+  </p>
+
+  <div class="ids-constructor-actions">
+    <button type="button" data-action="ids-constructor#undo">Undo</button>
+    <button type="button" data-action="ids-constructor#clear">Clear</button>
+    <button type="button" data-action="ids-constructor#search">Search this structure</button>
+  </div>
+</div>
+
+<% if @query_error.present? %>
+  <p class="ids-search-note"><%= @query_error %></p>
+<% end %>
+
+<% if @query.present? %>
+  <h2>Results</h2>
+  <% if @results.empty? %>
+    <p>No matching structures were found.</p>
+  <% else %>
+    <ol class="ids-results">
+      <% @results.each do |result| %>
+        <% structure = result.structure %>
+        <li class="ids-result">
+          <%= link_to character_path("U+#{structure.character_codepoint.codepoint.to_s(16).upcase}"), class: "ids-result-glyph" do %>
+            <%= view_text(structure.glyph) %>
+          <% end %>
+          <div>
+            <code class="ids-result-expression"><%= structure.expression %></code>
+            <span class="ids-result-score"><%= number_to_percentage(result.score * 100, precision: 0) %> structural match</span>
+            <div class="ids-result-meta">
+              U+<%= structure.character_codepoint.codepoint.to_s(16).upcase %> ·
+              <%= structure.source %>
+              <% if structure.source_level.present? %> · <%= structure.source_level %><% end %>
+              <% if structure.glyph_region.present? %> · <%= structure.glyph_region %><% end %>
+            </div>
+          </div>
+        </li>
+      <% end %>
+    </ol>
+  <% end %>
+<% end %>

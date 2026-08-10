@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_26_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_09_125600) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.integer "blob_id", null: false
     t.datetime "created_at", null: false
@@ -42,6 +42,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_26_120000) do
     t.index ["codepoint"], name: "index_character_codepoints_on_codepoint", unique: true
   end
 
+  create_table "character_input_codes", force: :cascade do |t|
+    t.integer "character_codepoint_id", null: false
+    t.string "code", null: false
+    t.datetime "created_at", null: false
+    t.string "kind", default: "input", null: false
+    t.json "metadata", default: {}, null: false
+    t.string "source", null: false
+    t.string "source_version"
+    t.string "system_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["character_codepoint_id", "system_id", "code", "kind", "source"], name: "idx_character_input_codes_unique_source_code", unique: true
+    t.index ["character_codepoint_id"], name: "index_character_input_codes_on_character_codepoint_id"
+    t.index ["system_id", "code"], name: "idx_character_input_codes_lookup"
+  end
+
   create_table "character_properties", force: :cascade do |t|
     t.integer "character_codepoint_id", null: false
     t.datetime "created_at", null: false
@@ -54,6 +69,42 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_26_120000) do
     t.index ["character_codepoint_id", "source", "field"], name: "index_character_properties_on_ccid_source_field"
     t.index ["character_codepoint_id"], name: "index_character_properties_on_character_codepoint_id"
     t.index ["source", "field", "value"], name: "index_character_properties_on_source_field_value"
+  end
+
+  create_table "character_structure_components", force: :cascade do |t|
+    t.integer "character_structure_id", null: false
+    t.string "component", null: false
+    t.integer "component_codepoint"
+    t.datetime "created_at", null: false
+    t.integer "depth", default: 0, null: false
+    t.integer "preorder_index", null: false
+    t.datetime "updated_at", null: false
+    t.index ["character_structure_id", "preorder_index"], name: "idx_character_structure_components_position", unique: true
+    t.index ["character_structure_id"], name: "index_character_structure_components_on_character_structure_id"
+    t.index ["component"], name: "index_character_structure_components_on_component"
+    t.index ["component_codepoint"], name: "index_character_structure_components_on_component_codepoint"
+  end
+
+  create_table "character_structures", force: :cascade do |t|
+    t.integer "character_codepoint_id", null: false
+    t.text "component_signature"
+    t.datetime "created_at", null: false
+    t.text "expression", null: false
+    t.string "glyph_region"
+    t.integer "leaf_count", default: 0, null: false
+    t.json "metadata", default: {}, null: false
+    t.text "normalized_expression", null: false
+    t.text "operator_signature"
+    t.string "source", null: false
+    t.string "source_level"
+    t.string "source_version"
+    t.string "system", default: "ids", null: false
+    t.string "top_level_operator"
+    t.datetime "updated_at", null: false
+    t.index ["character_codepoint_id", "system", "normalized_expression", "source", "source_level", "glyph_region"], name: "idx_character_structures_unique_source_expression", unique: true
+    t.index ["character_codepoint_id", "system"], name: "idx_character_structures_character_system"
+    t.index ["character_codepoint_id"], name: "index_character_structures_on_character_codepoint_id"
+    t.index ["system", "normalized_expression"], name: "idx_character_structures_expression"
   end
 
   create_table "daily_readings", force: :cascade do |t|
@@ -314,7 +365,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_26_120000) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "character_input_codes", "character_codepoints"
   add_foreign_key "character_properties", "character_codepoints"
+  add_foreign_key "character_structure_components", "character_structures"
+  add_foreign_key "character_structures", "character_codepoints"
   add_foreign_key "dictionary_entries", "dictionary_sections"
   add_foreign_key "dictionary_entries", "dictionary_works"
   add_foreign_key "dictionary_entry_characters", "character_codepoints"

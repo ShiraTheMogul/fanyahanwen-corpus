@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
 	root "home#index"
 
+    get "/characters/structure", to: "character_structures#index", as: :character_structure_search
+    get "/characters/input_codes", to: "character_input_codes#index", as: :character_input_codes
+
 	resources :characters, only: [:index, :show] do
 	  get :preview, on: :member
 	end
@@ -109,6 +112,7 @@ Rails.application.routes.draw do
 	get "/fun/xuanji", to: "xuanji#show", as: :xuanji
 	post "/fun/xuanji/sync_colors", to: "xuanji#sync_colors", as: :xuanji_sync_colors
 	post "/fun/xuanji/phoneticize", to: "xuanji#phoneticize", as: :xuanji_phoneticize
+	get "/fun/transcription", to: "transcription#show", as: :transcription
 	
 	get "/xiangqi", to: "xiangqi#show"
 	post "/xiangqi/theme", to: "xiangqi#theme"
