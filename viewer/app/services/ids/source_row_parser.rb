@@ -145,7 +145,7 @@ module Ids
       annotations = []
       expression = raw
 
-      # Yi Bai lv1/lv2 may prefix an IDS with one or more source/glyph
+      # Yi Bai data may prefix an IDS with one or more source/glyph
       # annotations such as {一} or {?0丗}. They describe the source form;
       # they are not operands in the structural IDS tree.
       loop do
@@ -166,7 +166,7 @@ module Ids
         end
       end
 
-      # lv2 also carries inline scholarly/source annotations. In the pinned
+      # Yi Bai data also carries inline scholarly/source annotations. In the pinned
       # Yi Bai data the remaining form is `qs`, most visibly after 与 inside
       # complex 與-family decompositions. It is descriptive metadata, not two
       # Latin IDS operands. Keep it in the candidate metadata and remove it

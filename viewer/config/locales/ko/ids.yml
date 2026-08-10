@@ -1,0 +1,37 @@
+ko:
+  ids_search:
+    title: IDS 자형 구조 검색 / 동적 조자
+    intro: 표의문자 기술 수열(IDS)로 사전을 검색하거나 부품을 조합해 자형을 만들 수 있습니다. 정확 검색은 전체 구조를 비교하고, 유사 검색은 구조가 비슷한 글자도 찾습니다.
+    query_label: IDS 또는 부품
+    query_placeholder: '예: ⿰氵青'
+    mode_label: 검색 방식
+    modes:
+      fuzzy: 구조 유사 검색
+      exact: 정확한 IDS
+    search: 검색
+    ids_label: IDS
+    constructor:
+      title: 자형 조합
+      instructions: 칸을 선택한 뒤 구조 연산자나 부품을 추가하세요. 표준 전위 표기 IDS는 자동으로 만들어집니다.
+      operators_aria: IDS 구조 연산자
+      component_label: 부품
+      add_component: 부품 추가
+      hard_to_input_summary: 입력하기 어려운 부품 (難輸入部件)
+      hard_to_input_help: 직접 입력하기 어려운 부품은 총획수를 고른 뒤 첫 획으로 찾을 수 있습니다. 이는 입력 보조 기능이며 학습 난이도를 뜻하지 않습니다. 다섯 첫획 분류는 IRG 체계를 따릅니다.
+      stroke_count_aria: 총획수
+      component_title: U+%{codepoint} · %{strokes}획 · %{stroke_class} (%{han})
+      undo: 실행 취소
+      clear: 지우기
+      search_structure: 이 구조 검색
+    first_strokes:
+      horizontal: 가로획
+      vertical: 세로획
+      slash: 삐침
+      dot: 점
+      turn: 꺾임
+    incomplete_fuzzy: 완전한 IDS 식이 아니므로 보이는 부품을 사용해 유사 검색했습니다.
+    results: 검색 결과
+    no_results: 일치하는 구조를 찾지 못했습니다.
+    structural_match: 구조 일치 %{percent}
+    dictionary_link: IDS로 검색 / 글자 조합
+    input_codes_link: 창힐·오필·Moran 등 입력 코드 보기

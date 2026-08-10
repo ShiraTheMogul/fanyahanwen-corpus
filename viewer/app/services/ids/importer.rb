@@ -4,7 +4,9 @@ module Ids
   class Importer
     DEFAULT_SOURCE = "yi-bai/ids"
     DEFAULT_VERSION = "8b8a58093b97bd80e5a51c3b19dfa47261b82bf7"
+    LEVELS = %w[lv0 lv1 lv2].freeze
     DEFAULT_URLS = {
+      "lv0" => "https://raw.githubusercontent.com/yi-bai/ids/#{DEFAULT_VERSION}/ids_lv0.txt",
       "lv1" => "https://raw.githubusercontent.com/yi-bai/ids/#{DEFAULT_VERSION}/ids_lv1.txt",
       "lv2" => "https://raw.githubusercontent.com/yi-bai/ids/#{DEFAULT_VERSION}/ids_lv2.txt"
     }.freeze

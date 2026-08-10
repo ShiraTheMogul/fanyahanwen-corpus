@@ -26,6 +26,9 @@ namespace :character_data do
       row.candidates.each { |candidate| Ids::Parser.parse(candidate.expression) }
     end
 
+    missing_ids_levels = Ids::Importer::LEVELS.reject { |level| Ids::Importer::DEFAULT_URLS.key?(level) }
+    raise "Missing yi-bai/ids source presets: #{missing_ids_levels.join(', ')}" if missing_ids_levels.any?
+
     required_sources = %w[cangjie5 wubi86 moran]
     missing_sources = required_sources.reject { |system_id| CharacterData::SourceCatalogue::SOURCES.key?(system_id) }
     raise "Missing character input source presets: #{missing_sources.join(', ')}" if missing_sources.any?
@@ -54,7 +57,7 @@ namespace :character_data do
     puts "[character-data] difficult components: memberships=#{result.memberships} characters=#{result.characters} created=#{result.created_characters} properties=#{result.properties}"
   end
 
-  desc "Diagnose yi-bai/ids parsing without writing data. Usage: LEVEL=lv1|lv2 [FILE=...] [SAMPLES=20]"
+  desc "Diagnose yi-bai/ids parsing without writing data. Usage: LEVEL=lv0|lv1|lv2 [FILE=...] [SAMPLES=20]"
   task diagnose_ids: :environment do
     level = ENV.fetch("LEVEL", "lv1")
     sample_limit = ENV.fetch("SAMPLES", "20").to_i
@@ -89,7 +92,7 @@ namespace :character_data do
     end
   end
 
-  desc "Import yi-bai/ids strictly. Usage: bin/rails character_data:import_ids LEVEL=lv1 [FILE=...] [REPLACE=1]"
+  desc "Import yi-bai/ids strictly. Usage: bin/rails character_data:import_ids LEVEL=lv0|lv1|lv2 [FILE=...] [REPLACE=1]"
   task import_ids: :environment do
     level = ENV.fetch("LEVEL", "lv1")
     result = Ids::Importer.new.import(
@@ -127,7 +130,7 @@ namespace :character_data do
     difficult = CharacterData::DifficultComponentSeeder.new.seed
     puts "[character-data] difficult components: memberships=#{difficult.memberships} characters=#{difficult.characters} created=#{difficult.created_characters} properties=#{difficult.properties}"
 
-    %w[lv1 lv2].each do |level|
+    Ids::Importer::LEVELS.each do |level|
       diagnostic = Ids::Diagnostic.new(sample_limit: 5).run(level: level)
       unless diagnostic.clean?
         abort "[ids] #{level} diagnostic failed before import: source_errors=#{diagnostic.source_errors} candidate_errors=#{diagnostic.candidate_errors} empty_rows=#{diagnostic.empty_rows}. Run character_data:diagnose_ids LEVEL=#{level}."

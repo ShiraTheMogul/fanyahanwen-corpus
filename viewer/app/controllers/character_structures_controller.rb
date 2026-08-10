@@ -14,7 +14,7 @@ class CharacterStructuresController < ApplicationController
     if @query.present?
       search = Ids::Search.new
       @results = @mode == "exact" ? search.exact(@query, limit: @limit) : search.fuzzy(@query, limit: @limit)
-      @query_error = "That is not a complete IDS expression, so fuzzy matching used its visible components." if @mode == "fuzzy" && !(Ids::Parser.valid?(@query))
+      @query_error = I18n.t("ids_search.incomplete_fuzzy") if @mode == "fuzzy" && !(Ids::Parser.valid?(@query))
     end
 
     respond_to do |format|

@@ -1,0 +1,37 @@
+ja:
+  ids_search:
+    title: IDS 字形構造検索／動的組字
+    intro: IDS（漢字構成記述文字列）で辞書を検索するか、部品から字形を組み立てます。完全一致では構造全体を、あいまい検索では構造が似た文字も検索します。
+    query_label: IDS または部品
+    query_placeholder: 例：⿰氵青
+    mode_label: 検索方式
+    modes:
+      fuzzy: 構造のあいまい検索
+      exact: IDS 完全一致
+    search: 検索
+    ids_label: IDS
+    constructor:
+      title: 字形を組み立てる
+      instructions: 枠を選び、構造演算子または部品を追加します。標準の前置記法 IDS は自動で生成されます。
+      operators_aria: IDS 構造演算子
+      component_label: 部品
+      add_component: 部品を追加
+      hard_to_input_summary: 入力しにくい部品（難輸入部件）
+      hard_to_input_help: 直接入力しにくい部品は、総画数を選び、次に第一画から探せます。これは入力補助であり、学習上の難しさを表すものではありません。五つの第一画分類は IRG 方式に従います。
+      stroke_count_aria: 総画数
+      component_title: U+%{codepoint} · %{strokes}画 · %{stroke_class}（%{han}）
+      undo: 元に戻す
+      clear: クリア
+      search_structure: この構造を検索
+    first_strokes:
+      horizontal: 横
+      vertical: 縦
+      slash: 払い
+      dot: 点
+      turn: 折れ
+    incomplete_fuzzy: 完全な IDS 式ではないため、見えている部品を使ってあいまい検索しました。
+    results: 検索結果
+    no_results: 一致する構造は見つかりませんでした。
+    structural_match: 構造一致 %{percent}
+    dictionary_link: IDS で検索／文字を組み立てる
+    input_codes_link: 倉頡・五筆・Moran などの入力コードを見る

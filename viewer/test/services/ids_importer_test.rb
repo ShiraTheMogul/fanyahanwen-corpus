@@ -4,6 +4,17 @@ require_relative "../test_helper"
 require "stringio"
 
 class IdsImporterTest < ActiveSupport::TestCase
+  test "defines all three pinned Yi Bai IDS levels" do
+    assert_equal %w[lv0 lv1 lv2], Ids::Importer::LEVELS
+
+    Ids::Importer::LEVELS.each do |level|
+      assert_equal(
+        "https://raw.githubusercontent.com/yi-bai/ids/#{Ids::Importer::DEFAULT_VERSION}/ids_#{level}.txt",
+        Ids::Importer::DEFAULT_URLS.fetch(level)
+      )
+    end
+  end
+
   test "registers non-Han subjects and literal IDS leaves in the canonical codepoint table" do
     io = StringIO.new("⺌\t⿰丶リ\nの\t#(kana)\n")
 

@@ -1,0 +1,39 @@
+vie:
+  ids_search:
+    title: Tra cứu cấu trúc IDS / ghép chữ động
+    intro: Tra cứu từ điển bằng Chuỗi Mô tả Chữ biểu ý (IDS), hoặc ghép hình chữ từ các bộ phận. Tìm chính xác xét toàn bộ
+      cấu trúc; tìm gần đúng cũng trả về các chữ có cấu trúc tương tự.
+    query_label: IDS hoặc bộ phận
+    query_placeholder: 'ví dụ: ⿰氵青'
+    mode_label: Chế độ tìm
+    modes:
+      fuzzy: Cấu trúc gần đúng
+      exact: IDS chính xác
+    search: Tìm
+    ids_label: IDS
+    constructor:
+      title: Ghép cấu trúc chữ
+      instructions: Chọn một vị trí rồi thêm toán tử cấu trúc hoặc bộ phận. Hệ thống tự tạo IDS theo thứ tự tiền tố chuẩn.
+      operators_aria: Toán tử cấu trúc IDS
+      component_label: Bộ phận
+      add_component: Thêm bộ phận
+      hard_to_input_summary: Bộ phận khó nhập (難輸入部件)
+      hard_to_input_help: Nếu khó gõ trực tiếp một bộ phận, hãy chọn tổng số nét rồi chọn nét đầu. Đây chỉ là công cụ hỗ trợ
+        nhập liệu, không phải đánh giá độ khó học. Năm nhóm nét đầu theo hệ thống IRG.
+      stroke_count_aria: Tổng số nét
+      component_title: U+%{codepoint} · %{strokes} nét · %{stroke_class} (%{han})
+      undo: Hoàn tác
+      clear: Xóa
+      search_structure: Tìm cấu trúc này
+    first_strokes:
+      horizontal: Ngang
+      vertical: Sổ
+      slash: Phẩy
+      dot: Chấm
+      turn: Gập
+    incomplete_fuzzy: Đây không phải biểu thức IDS hoàn chỉnh, nên tìm gần đúng đã dùng các bộ phận nhìn thấy được.
+    results: Kết quả
+    no_results: Không tìm thấy cấu trúc phù hợp.
+    structural_match: Khớp cấu trúc %{percent}
+    dictionary_link: Tra theo IDS / ghép chữ
+    input_codes_link: Xem mã nhập Thương Hiệt, Ngũ Bút, Moran và các hệ khác

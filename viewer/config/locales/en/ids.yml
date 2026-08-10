@@ -1,0 +1,41 @@
+en:
+  ids_search:
+    title: IDS character structure search
+    intro: Search the dictionary by Ideographic Description Sequence (IDS), or construct one from components. Exact search
+      respects the full structure; fuzzy search also finds structurally similar characters.
+    query_label: IDS or components
+    query_placeholder: e.g. ⿰氵青
+    mode_label: Search mode
+    modes:
+      fuzzy: Fuzzy structure
+      exact: Exact IDS
+    search: Search
+    ids_label: IDS
+    constructor:
+      title: Construct a character structure
+      instructions: Select a slot, then add a structure operator or a component. The constructor writes standard prefix-order
+        IDS for you.
+      operators_aria: IDS structure operators
+      component_label: Component
+      add_component: Add component
+      hard_to_input_summary: Hard-to-input components 難輸入部件
+      hard_to_input_help: If a component is awkward to type directly, choose its total stroke count and then its first stroke.
+        This is an input aid, not a judgement about how difficult the component is to learn. The five first-stroke classes
+        follow the IRG system.
+      stroke_count_aria: Total stroke count
+      component_title: U+%{codepoint} · %{strokes} strokes · %{stroke_class} (%{han})
+      undo: Undo
+      clear: Clear
+      search_structure: Search this structure
+    first_strokes:
+      horizontal: Horizontal bar
+      vertical: Vertical bar
+      slash: Slash
+      dot: Dot
+      turn: Turn
+    incomplete_fuzzy: That is not a complete IDS expression, so fuzzy matching used its visible components.
+    results: Results
+    no_results: No matching structures were found.
+    structural_match: '%{percent} structural match'
+    dictionary_link: Search by IDS / construct a character
+    input_codes_link: Browse Cangjie, Wubi, Moran, and other input codes

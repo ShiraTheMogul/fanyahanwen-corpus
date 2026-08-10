@@ -1,0 +1,37 @@
+lzh:
+  ids_search:
+    title: 結構檢字／動態組字
+    intro: 可用表意文字描述序列（IDS）檢字，或以部件動態組字。精確檢索依完整結構比對；模糊檢索亦會尋找結構相近的字。
+    query_label: IDS 或部件
+    query_placeholder: 例如：⿰氵青
+    mode_label: 檢索方式
+    modes:
+      fuzzy: 模糊結構
+      exact: 精確 IDS
+    search: 檢字
+    ids_label: IDS
+    constructor:
+      title: 動態組字
+      instructions: 先選擇格位，再加入結構運算符或部件。系統會自動產生標準前綴 IDS。
+      operators_aria: IDS 結構運算符
+      component_label: 部件
+      add_component: 加入部件
+      hard_to_input_summary: 難輸入部件
+      hard_to_input_help: 若部件不易直接輸入，可先選總筆畫數，再按第一筆選取。此處的「難輸入」只指輸入不便，不表示字形本身難學；五種首筆分類依 IRG 系統。
+      stroke_count_aria: 總筆畫數
+      component_title: U+%{codepoint} · %{strokes} 畫 · %{stroke_class}（%{han}）
+      undo: 復原
+      clear: 清除
+      search_structure: 按此結構檢字
+    first_strokes:
+      horizontal: 橫
+      vertical: 豎
+      slash: 撇
+      dot: 點
+      turn: 折
+    incomplete_fuzzy: 此輸入不是完整的 IDS；模糊檢索已依可見部件比對。
+    results: 檢字結果
+    no_results: 未找到相符結構。
+    structural_match: '%{percent} 結構相符'
+    dictionary_link: 以 IDS 檢字／動態組字
+    input_codes_link: 瀏覽倉頡、五筆、墨奇及其他輸入碼
