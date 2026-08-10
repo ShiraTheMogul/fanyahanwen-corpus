@@ -36,7 +36,30 @@ export default class extends Controller {
     const operator = event.currentTarget.dataset.operator
     const definition = OPERATOR_LAYOUT[operator]
     if (!definition) return
-    this.mutateSelected({ token: operator, children: Array.from({ length: definition.arity }, () => this.emptyNode()) })
+
+    const current = this.nodeAt(this.root, this.selectedPath)
+    let replacement
+
+    if (this.operatorDefinition(current)) {
+      // The frame itself is selected: change its layout instead of nesting a
+      // second frame.  Existing operands survive whenever that can be done
+      // without throwing populated slots away.
+      const resizedChildren = this.resizedChildren(current.children, definition.arity)
+      if (!resizedChildren) return
+      replacement = { token: operator, children: resizedChildren }
+    } else if (current.token) {
+      // A populated operand is selected: nesting should not destroy a component
+      // that may have taken time to locate.  Wrap it as operand 1.
+      replacement = {
+        token: operator,
+        children: [structuredClone(current), ...Array.from({ length: definition.arity - 1 }, () => this.emptyNode())],
+      }
+    } else {
+      // An empty operand box is selected: put the new frame inside that box.
+      replacement = { token: operator, children: Array.from({ length: definition.arity }, () => this.emptyNode()) }
+    }
+
+    this.replaceSelected(replacement, { select: "replacement" })
   }
 
   insertComponent() {
@@ -44,7 +67,8 @@ export default class extends Controller {
     if (!value) return
     const token = this.componentToken(value)
     if (!token) return
-    this.mutateSelected({ token, children: [] })
+
+    this.insertComponentToken(token)
     this.componentTarget.value = ""
     this.componentTarget.focus()
   }
@@ -52,7 +76,27 @@ export default class extends Controller {
   insertDifficultComponent(event) {
     const token = this.componentToken(event.currentTarget.dataset.component || "")
     if (!token) return
-    this.mutateSelected({ token, children: [] })
+    this.insertComponentToken(token)
+  }
+
+  insertComponentToken(token) {
+    const current = this.nodeAt(this.root, this.selectedPath)
+
+    if (this.operatorDefinition(current)) {
+      // Immediately after choosing a frame, the frame remains selected so a
+      // second operator can replace it.  A component, however, naturally fills
+      // the first empty operand of that selected frame.
+      const relativeEmpty = this.firstEmptyPath(current)
+      if (!relativeEmpty) return
+      const targetPath = [...this.selectedPath, ...relativeEmpty]
+      this.pushHistory()
+      this.root = this.replaceAt(this.root, targetPath, { token, children: [] })
+      this.selectedPath = this.firstEmptyPath(this.root) || targetPath
+      this.render()
+      return
+    }
+
+    this.replaceSelected({ token, children: [] }, { select: "next-empty" })
   }
 
   showDifficultGroup(event) {
@@ -68,6 +112,13 @@ export default class extends Controller {
   }
 
   select(event) {
+    event.stopPropagation()
+    this.selectedPath = JSON.parse(event.currentTarget.dataset.path)
+    this.render()
+  }
+
+  selectFrame(event) {
+    event.stopPropagation()
     this.selectedPath = JSON.parse(event.currentTarget.dataset.path)
     this.render()
   }
@@ -97,10 +148,19 @@ export default class extends Controller {
     window.location.assign(url.toString())
   }
 
-  mutateSelected(replacement) {
+  replaceSelected(replacement, { select = "replacement" } = {}) {
+    const replacedPath = [...this.selectedPath]
     this.pushHistory()
-    this.root = this.replaceAt(this.root, this.selectedPath, replacement)
-    this.selectedPath = this.firstEmptyPath(this.root) || this.selectedPath
+    this.root = this.replaceAt(this.root, replacedPath, replacement)
+
+    if (select === "next-empty") {
+      this.selectedPath = this.firstEmptyPath(this.root) || replacedPath
+    } else {
+      // Keep the newly-created/replaced frame selected.  This is what makes a
+      // second operator click change the frame rather than unexpectedly nest.
+      this.selectedPath = replacedPath
+    }
+
     this.render()
   }
 
@@ -110,6 +170,28 @@ export default class extends Controller {
   }
 
   emptyNode() { return { token: null, children: [] } }
+
+  operatorDefinition(node) {
+    return node?.token ? OPERATOR_LAYOUT[node.token] : null
+  }
+
+  resizedChildren(children, arity) {
+    const existing = Array(children).map((child) => structuredClone(child))
+
+    if (existing.length > arity) {
+      const discarded = existing.slice(arity)
+      if (discarded.some((child) => !this.nodeEmpty(child))) return null
+    }
+
+    const kept = existing.slice(0, arity)
+    while (kept.length < arity) kept.push(this.emptyNode())
+    return kept
+  }
+
+  nodeEmpty(node) {
+    if (!node?.token) return true
+    return false
+  }
 
   componentToken(value) {
     if (value.startsWith("&") && value.endsWith(";")) return value
@@ -155,7 +237,7 @@ export default class extends Controller {
   }
 
   renderNode(node, path) {
-    const definition = OPERATOR_LAYOUT[node.token]
+    const definition = this.operatorDefinition(node)
     if (definition) return this.renderOperatorNode(node, path, definition)
     return this.renderLeafNode(node, path)
   }
@@ -177,14 +259,15 @@ export default class extends Controller {
   }
 
   renderOperatorNode(node, path, definition) {
+    const selected = this.samePath(path, this.selectedPath)
     const wrapper = document.createElement("div")
     wrapper.className = `ids-tree-node ids-tree-node--operator ids-layout ids-layout--${definition.layout}`
+    if (selected) wrapper.classList.add("is-selected")
     wrapper.dataset.operator = node.token
 
     const selector = document.createElement("button")
     selector.type = "button"
     selector.className = "ids-layout-selector"
-    if (this.samePath(path, this.selectedPath)) selector.classList.add("is-selected")
     selector.textContent = node.token
     selector.title = `Select ${node.token} structure`
     selector.dataset.path = JSON.stringify(path)
@@ -195,12 +278,17 @@ export default class extends Controller {
     frame.className = `ids-layout-frame ids-layout-frame--${definition.layout}`
     frame.setAttribute("role", "group")
     frame.setAttribute("aria-label", `${node.token} IDS structure`)
+    frame.dataset.path = JSON.stringify(path)
+    frame.dataset.action = "click->ids-constructor#selectFrame"
 
     node.children.forEach((child, index) => {
       const slot = document.createElement("div")
+      const childPath = [...path, index]
       slot.className = `ids-layout-child ids-layout-child--${index + 1}`
       slot.dataset.slotIndex = index
-      slot.append(this.renderNode(child, [...path, index]))
+      slot.dataset.path = JSON.stringify(childPath)
+      slot.dataset.action = "click->ids-constructor#select"
+      slot.append(this.renderNode(child, childPath))
       frame.append(slot)
     })
 

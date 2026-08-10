@@ -290,13 +290,15 @@
 /* -------------------------------------------------------------------------
    WYSIWYG IDS composition
    -------------------------------------------------------------------------
-   IDS operators are spatial instructions.  The editor therefore draws the
-   slot geometry itself instead of presenting every operator as the same
-   generic parent-with-children tree.  Nested operators simply put another
-   grid inside a slot. */
+   IDS operators are layout instructions.  The live editor therefore gives
+   each operator stable spatial geometry and lets nested operators expand their
+   operand box rather than squeezing the entire structure into one narrow cell. */
 
 .ids-shared-builder .ids-constructor-toolbar {
+  display: flex;
+  flex-wrap: wrap;
   gap: 0.42rem;
+  align-items: center;
 }
 
 .ids-shared-builder .ids-operator {
@@ -391,39 +393,54 @@
 }
 
 .ids-tree {
-  --ids-slot-size: clamp(3.2rem, 7vw, 5.2rem);
+  --ids-slot-size: clamp(3.4rem, 6vw, 5rem);
+  --ids-enclosure-size: calc(var(--ids-slot-size) * 2.25);
+  display: flex;
+  align-items: flex-start;
+  min-height: calc(var(--ids-slot-size) + 2rem);
+  padding: 0.4rem 0.25rem 0.55rem;
+  overflow: auto;
 }
 
 .ids-tree > .ids-tree-node {
-  min-width: min-content;
+  flex: 0 0 auto;
+  width: max-content;
+  max-width: none;
 }
 
 .ids-tree-node--operator {
   position: relative;
   display: inline-flex;
   flex-direction: column;
-  align-items: stretch;
-  gap: 0.28rem;
+  align-items: flex-start;
+  gap: 0.25rem;
+  width: max-content;
   vertical-align: top;
 }
 
+/* A frame is selected as a frame.  This mirrors zi.tools: another operator
+   click now changes this frame.  Operand boxes have their own orange focus. */
+.ids-tree-node--operator.is-selected > .ids-layout-frame {
+  outline: 3px solid #d58a00;
+  outline-offset: 2px;
+}
+
 .ids-layout-selector {
-  align-self: flex-start;
-  min-width: 1.8rem;
-  min-height: 1.45rem;
-  padding: 0.05rem 0.28rem;
-  border: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+  min-width: 1.75rem;
+  min-height: 1.35rem;
+  padding: 0.03rem 0.25rem;
+  border: 1px solid color-mix(in srgb, currentColor 28%, transparent);
   background: Canvas;
   color: CanvasText;
   font-family: var(--han-font-stack);
-  font-size: 0.9rem;
-  line-height: 1.15;
-  opacity: 0.7;
+  font-size: 0.82rem;
+  line-height: 1.1;
+  opacity: 0.5;
 }
 
-.ids-layout-selector.is-selected {
-  outline: 3px solid currentColor;
-  outline-offset: 1px;
+.ids-tree-node--operator.is-selected > .ids-layout-selector,
+.ids-layout-selector:hover,
+.ids-layout-selector:focus-visible {
   opacity: 1;
 }
 
@@ -431,20 +448,25 @@
   position: relative;
   display: grid;
   box-sizing: border-box;
+  width: max-content;
   min-width: var(--ids-slot-size);
   min-height: var(--ids-slot-size);
   border: 2px dashed color-mix(in srgb, currentColor 42%, transparent);
   background: color-mix(in srgb, Canvas 97%, CanvasText 3%);
+  overflow: visible;
+  cursor: pointer;
 }
 
 .ids-layout-child {
   position: relative;
   display: grid;
   place-items: center;
+  box-sizing: border-box;
   min-width: var(--ids-slot-size);
   min-height: var(--ids-slot-size);
-  padding: 0.28rem;
-  box-sizing: border-box;
+  padding: 0.32rem;
+  overflow: visible;
+  cursor: pointer;
 }
 
 .ids-layout-child + .ids-layout-child {
@@ -455,17 +477,18 @@
 .ids-tree-node--leaf {
   display: grid;
   place-items: center;
+  width: max-content;
 }
 
 .ids-tree-slot {
-  min-width: calc(var(--ids-slot-size) * 0.62);
-  min-height: calc(var(--ids-slot-size) * 0.62);
+  min-width: calc(var(--ids-slot-size) * 0.58);
+  min-height: calc(var(--ids-slot-size) * 0.58);
   padding: 0.2rem;
   border: 1px solid color-mix(in srgb, currentColor 28%, transparent);
   background: Canvas;
   color: CanvasText;
   font-family: var(--han-font-stack);
-  font-size: clamp(1.6rem, 4vw, 2.7rem);
+  font-size: clamp(1.55rem, 3.6vw, 2.55rem);
   line-height: 1;
 }
 
@@ -474,25 +497,38 @@
   outline-offset: 2px;
 }
 
-/* Linear compositions. */
-.ids-layout-frame--left-right { grid-template-columns: repeat(2, minmax(var(--ids-slot-size), 1fr)); }
+/* Linear compositions use max-content as the upper bound.  That is the key to
+   nesting: a child frame can enlarge its parent cell instead of being crushed
+   into the parent's original slot width. */
+.ids-layout-frame--left-right {
+  grid-template-columns: repeat(2, minmax(var(--ids-slot-size), max-content));
+  grid-template-rows: minmax(var(--ids-slot-size), max-content);
+}
 .ids-layout-frame--left-right > .ids-layout-child--2 { border-left-width: 2px; }
 
-.ids-layout-frame--left-middle-right { grid-template-columns: repeat(3, minmax(var(--ids-slot-size), 1fr)); }
+.ids-layout-frame--left-middle-right {
+  grid-template-columns: repeat(3, minmax(var(--ids-slot-size), max-content));
+  grid-template-rows: minmax(var(--ids-slot-size), max-content);
+}
 .ids-layout-frame--left-middle-right > .ids-layout-child--2,
 .ids-layout-frame--left-middle-right > .ids-layout-child--3 { border-left-width: 2px; }
 
-.ids-layout-frame--top-bottom { grid-template-rows: repeat(2, minmax(var(--ids-slot-size), auto)); }
+.ids-layout-frame--top-bottom {
+  grid-template-columns: minmax(var(--ids-slot-size), max-content);
+  grid-template-rows: repeat(2, minmax(var(--ids-slot-size), max-content));
+}
 .ids-layout-frame--top-bottom > .ids-layout-child--2 { border-top-width: 2px; }
 
-.ids-layout-frame--top-middle-bottom { grid-template-rows: repeat(3, minmax(var(--ids-slot-size), auto)); }
+.ids-layout-frame--top-middle-bottom {
+  grid-template-columns: minmax(var(--ids-slot-size), max-content);
+  grid-template-rows: repeat(3, minmax(var(--ids-slot-size), max-content));
+}
 .ids-layout-frame--top-middle-bottom > .ids-layout-child--2,
 .ids-layout-frame--top-middle-bottom > .ids-layout-child--3 { border-top-width: 2px; }
 
-/* Enclosures.  The first operand occupies the enclosing shelf/edge; the second
-   operand sits in the visually enclosed area.  This is deliberately schematic:
-   it teaches the IDS relation without pretending every enclosing component has
-   the same physical stroke geometry. */
+/* Enclosures get a stable square-ish minimum canvas.  They can still expand if
+   a nested structure requires more room, but an empty enclosure no longer
+   collapses into a thin strip. */
 .ids-layout-frame--surround,
 .ids-layout-frame--surround-above,
 .ids-layout-frame--surround-below,
@@ -504,11 +540,13 @@
 .ids-layout-frame--surround-lower-right,
 .ids-layout-frame--overlay,
 .ids-layout-frame--subtraction {
-  grid-template-columns: repeat(3, minmax(calc(var(--ids-slot-size) * 0.55), 1fr));
-  grid-template-rows: repeat(3, minmax(calc(var(--ids-slot-size) * 0.55), auto));
+  min-width: var(--ids-enclosure-size);
+  min-height: var(--ids-enclosure-size);
+  grid-template-columns: repeat(3, minmax(calc(var(--ids-slot-size) * 0.55), max-content));
+  grid-template-rows: repeat(3, minmax(calc(var(--ids-slot-size) * 0.55), max-content));
 }
 
-.ids-layout-frame--surround > .ids-layout-child--1 { grid-area: 1 / 1 / 4 / 4; padding: 0.18rem; align-items: start; justify-items: start; }
+.ids-layout-frame--surround > .ids-layout-child--1 { grid-area: 1 / 1 / 4 / 4; align-items: start; justify-items: start; padding: 0.2rem; }
 .ids-layout-frame--surround > .ids-layout-child--2 { grid-area: 2 / 2 / 3 / 3; z-index: 2; border-width: 2px; }
 
 .ids-layout-frame--surround-above > .ids-layout-child--1 { grid-area: 1 / 1 / 2 / 4; }
@@ -523,7 +561,11 @@
 .ids-layout-frame--surround-right > .ids-layout-child--1 { grid-area: 1 / 3 / 4 / 4; }
 .ids-layout-frame--surround-right > .ids-layout-child--2 { grid-area: 2 / 1 / 3 / 3; border-width: 2px 0 2px 2px; }
 
-.ids-layout-frame--surround-upper-left > .ids-layout-child--1 { grid-area: 1 / 1 / 2 / 4; }
+.ids-layout-frame--surround-upper-left > .ids-layout-child--1,
+.ids-layout-frame--surround-upper-right > .ids-layout-child--1 { grid-area: 1 / 1 / 2 / 4; }
+.ids-layout-frame--surround-lower-left > .ids-layout-child--1,
+.ids-layout-frame--surround-lower-right > .ids-layout-child--1 { grid-area: 3 / 1 / 4 / 4; }
+
 .ids-layout-frame--surround-upper-left > .ids-layout-child--1::after,
 .ids-layout-frame--surround-lower-left > .ids-layout-child--1::after,
 .ids-layout-frame--surround-upper-right > .ids-layout-child--1::after,
@@ -534,18 +576,13 @@
   border-color: color-mix(in srgb, currentColor 42%, transparent);
   border-style: dashed;
 }
+
 .ids-layout-frame--surround-upper-left > .ids-layout-child--1::after { left: 0; top: 100%; height: 200%; border-left-width: 2px; }
 .ids-layout-frame--surround-upper-left > .ids-layout-child--2 { grid-area: 2 / 2 / 4 / 4; border-width: 0; }
-
-.ids-layout-frame--surround-upper-right > .ids-layout-child--1 { grid-area: 1 / 1 / 2 / 4; }
 .ids-layout-frame--surround-upper-right > .ids-layout-child--1::after { right: 0; top: 100%; height: 200%; border-right-width: 2px; }
 .ids-layout-frame--surround-upper-right > .ids-layout-child--2 { grid-area: 2 / 1 / 4 / 3; border-width: 0; }
-
-.ids-layout-frame--surround-lower-left > .ids-layout-child--1 { grid-area: 3 / 1 / 4 / 4; }
 .ids-layout-frame--surround-lower-left > .ids-layout-child--1::after { left: 0; bottom: 100%; height: 200%; border-left-width: 2px; }
 .ids-layout-frame--surround-lower-left > .ids-layout-child--2 { grid-area: 1 / 2 / 3 / 4; border-width: 0; }
-
-.ids-layout-frame--surround-lower-right > .ids-layout-child--1 { grid-area: 3 / 1 / 4 / 4; }
 .ids-layout-frame--surround-lower-right > .ids-layout-child--1::after { right: 0; bottom: 100%; height: 200%; border-right-width: 2px; }
 .ids-layout-frame--surround-lower-right > .ids-layout-child--2 { grid-area: 1 / 1 / 3 / 3; border-width: 0; }
 
@@ -553,17 +590,15 @@
 .ids-layout-frame--subtraction > .ids-layout-child {
   grid-area: 1 / 1 / 4 / 4;
 }
-.ids-layout-frame--overlay > .ids-layout-child--1 { transform: translate(-8%, -8%); }
-.ids-layout-frame--overlay > .ids-layout-child--2 { transform: translate(8%, 8%); z-index: 2; border-width: 2px; }
+.ids-layout-frame--overlay > .ids-layout-child--1 { transform: translate(-7%, -7%); }
+.ids-layout-frame--overlay > .ids-layout-child--2 { transform: translate(7%, 7%); z-index: 2; border-width: 2px; }
 .ids-layout-frame--subtraction > .ids-layout-child--1 { z-index: 1; }
 .ids-layout-frame--subtraction > .ids-layout-child--2 { z-index: 2; transform: scale(0.62); border-width: 2px; }
 
-/* Unary transform operators keep one full-size operand but visibly mark the
-   transformation on the frame. */
 .ids-layout-frame--horizontal-reflection,
 .ids-layout-frame--rotation {
-  grid-template-columns: minmax(var(--ids-slot-size), 1fr);
-  grid-template-rows: minmax(var(--ids-slot-size), auto);
+  grid-template-columns: minmax(var(--ids-slot-size), max-content);
+  grid-template-rows: minmax(var(--ids-slot-size), max-content);
 }
 .ids-layout-frame--horizontal-reflection::after,
 .ids-layout-frame--rotation::after {
@@ -580,11 +615,15 @@
 .ids-layout-frame--rotation::after { content: "↻"; }
 
 .site-ids-quick-compose__panel .ids-tree {
-  --ids-slot-size: 3.2rem;
+  --ids-slot-size: 3.1rem;
+  --ids-enclosure-size: 7.2rem;
 }
 
 @media (max-width: 700px) {
-  .ids-tree { --ids-slot-size: 2.8rem; }
+  .ids-tree {
+    --ids-slot-size: 2.9rem;
+    --ids-enclosure-size: 6.7rem;
+  }
   .ids-shared-builder .ids-operator {
     width: 2.35rem;
     height: 2.35rem;
