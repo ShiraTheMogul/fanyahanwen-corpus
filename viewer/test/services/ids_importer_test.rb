@@ -53,6 +53,30 @@ class IdsImporterTest < ActiveSupport::TestCase
     assert_equal ["g.n", "gpn"], variant.fetch("indicators")
   end
 
+  test "stores level 0 stroke qualifiers as metadata rather than searchable components" do
+    raw = "⿻乚w一.(T)"
+    io = StringIO.new("七\t#{raw}\n")
+
+    result = Ids::Importer.new(source: "test/ids", source_version: "test").import(level: "lv0", io: io)
+
+    assert result.clean?
+    structure = CharacterStructure.find_by!(
+      character_codepoint: CharacterCodepoint.find_by!(codepoint: "七".ord),
+      system: "ids",
+      source: "test/ids",
+      source_level: "lv0"
+    )
+
+    assert_equal "⿻乚一", structure.expression
+    assert_equal ["乚", "一"], structure.components.order(:preorder_index).pluck(:component)
+    refute structure.components.where(component: ["w", "."]).exists?
+
+    variant = structure.metadata.fetch("variants").fetch(0)
+    assert_equal raw, variant.fetch("raw_expression")
+    assert_equal ["w", "."], variant.fetch("annotations")
+    assert_equal ["T"], variant.fetch("indicators")
+  end
+
   test "strict import rolls back when any yi-bai candidate is not understood" do
     before_structures = CharacterStructure.count
     before_components = CharacterStructureComponent.count

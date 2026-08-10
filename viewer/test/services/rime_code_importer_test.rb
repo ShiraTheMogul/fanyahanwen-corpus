@@ -31,6 +31,12 @@ class RimeCodeImporterTest < ActiveSupport::TestCase
     )
 
     assert_equal 3, result.codes
+    assert_equal 1, result.skipped
+    assert_equal 1, result.skipped_multi_character
+    assert_equal 0, result.skipped_empty_code
+    assert_equal 0, result.skipped_malformed
+    assert_equal "multi_character", result.skip_samples.first.fetch(:reason)
+    assert_match(/清明/, result.skip_samples.first.fetch(:line))
     row = CharacterInputCode.joins(:character_codepoint).find_by!(
       system_id: "test_rime",
       character_codepoints: { chr: "清" }
@@ -64,4 +70,32 @@ class RimeCodeImporterTest < ActiveSupport::TestCase
     assert_equal "auxiliary", row.kind
     assert_equal "氵青", row.metadata["decomposition"]
   end
+  test "reports empty-code and malformed rows separately from intentional phrases" do
+    io = StringIO.new(<<~YAML)
+      ---
+      name: test
+      columns:
+        - text
+        - code
+      ...
+      清	q
+      清明	qm
+      明	
+      broken
+    YAML
+
+    result = CharacterData::RimeCodeImporter.new.import(
+      system_id: "test_rime_diagnostics",
+      source: "test",
+      io: io
+    )
+
+    assert_equal 1, result.codes
+    assert_equal 3, result.skipped
+    assert_equal 1, result.skipped_multi_character
+    assert_equal 1, result.skipped_empty_code
+    assert_equal 1, result.skipped_malformed
+    assert_equal %w[multi_character empty_code malformed], result.skip_samples.map { |sample| sample.fetch(:reason) }
+  end
+
 end

@@ -24,6 +24,13 @@ module Ids
 
     class ParseError < StandardError; end
 
+    # Yi Bai's lv0 notation attaches compact rendering/stroke qualifiers to
+    # operands.  zi.tools' public zi-assets splitter uses this exact modifier
+    # alphabet when separating structural components from source notation.
+    # These are metadata, not IDS operands, so they must never enter search.
+    OPERAND_MODIFIER_CHARS = ".0123456789BGHJKMPQSTUVabcdefghjlmnpqrstuvwxyz".freeze
+    OPERAND_MODIFIER_SET = OPERAND_MODIFIER_CHARS.each_char.to_h { |char| [char, true] }.freeze
+
     def parse(line)
       text = line.to_s.delete_prefix("\uFEFF").chomp
       return nil if ignorable?(text)
@@ -145,17 +152,6 @@ module Ids
       annotations = []
       expression = raw
 
-      # Yi Bai data may prefix an IDS with one or more source/glyph
-      # annotations such as {一} or {?0丗}. They describe the source form;
-      # they are not operands in the structural IDS tree.
-      loop do
-        match = expression.match(/\A\{([^{}]*)\}\s*(.*)\z/m)
-        break unless match
-
-        annotations << match[1]
-        expression = match[2].to_s.strip
-      end
-
       # A trailing parenthesised group is Yi Bai's regional/glyph indicator,
       # e.g. (.,T). Do not confuse it with a structural #(…) operand.
       if (match = expression.match(/\A(.*)\(([^()]*)\)\s*\z/m))
@@ -166,18 +162,7 @@ module Ids
         end
       end
 
-      # Yi Bai data also carries inline scholarly/source annotations. In the pinned
-      # Yi Bai data the remaining form is `qs`, most visibly after 与 inside
-      # complex 與-family decompositions. It is descriptive metadata, not two
-      # Latin IDS operands. Keep it in the candidate metadata and remove it
-      # from the functional expression used by Ids::Parser and search.
-      #
-      # raw_expression still preserves the exact upstream spelling/position.
-      expression = expression.gsub("qs") do
-        annotations << "qs"
-        ""
-      end.strip
-
+      expression = strip_source_notation(expression, annotations)
       return nil if expression.empty?
 
       Candidate.new(
@@ -189,5 +174,100 @@ module Ids
         annotations: annotations
       )
     end
+
+    # Convert Yi Bai's source notation into the functional IDS expression used
+    # by Parser/Search while retaining the removed information as metadata.
+    #
+    # Examples:
+    #   ⿱一.亅              -> ⿱一亅
+    #   ⿻乚w一.(T)          -> ⿻乚一       (w and . retained as annotations)
+    #   ⿺⿻[b]㇉一.一(J)     -> ⿺⿻㇉一一    ([b] retained as annotation)
+    #   {丗}⿱卅s一.(T)      -> ⿱卅一
+    #
+    # This follows the same boundary Yi Bai/zi.tools tooling uses: suffix
+    # letters/dots/digits qualify the preceding graphical operand; braces and
+    # IDC brackets qualify source/rendering choices. None are tree operands.
+    def strip_source_notation(source, annotations)
+      out = +""
+      chars = source.to_s.each_char.to_a
+      index = 0
+
+      while index < chars.length
+        char = chars[index]
+
+        if char == "{"
+          closing = find_closing(chars, index + 1, "}")
+          if closing
+            value = chars[(index + 1)...closing].join
+            annotations << value unless value.empty?
+            index = closing + 1
+            next
+          end
+        end
+
+        if Parser::OPERATORS.include?(char)
+          out << char
+          index += 1
+
+          if chars[index] == "["
+            closing = find_closing(chars, index + 1, "]")
+            if closing
+              value = chars[(index + 1)...closing].join
+              annotations << "[#{value}]" unless value.empty?
+              index = closing + 1
+            end
+          end
+          next
+        end
+
+        if char == "&"
+          closing = find_closing(chars, index + 1, ";")
+          if closing
+            out << chars[index..closing].join
+            index = closing + 1
+            index = consume_operand_modifiers(chars, index, annotations)
+            next
+          end
+        end
+
+        if char == "#" && chars[index + 1] == "("
+          closing = find_closing(chars, index + 2, ")")
+          if closing
+            out << chars[index..closing].join
+            index = closing + 1
+            index = consume_operand_modifiers(chars, index, annotations)
+            next
+          end
+        end
+
+        # Ordinary encoded component. The modifier alphabet is ASCII-only, so
+        # one Unicode scalar/grapheme is the structural leaf and any following
+        # modifier run belongs to that leaf.
+        out << char
+        index += 1
+        index = consume_operand_modifiers(chars, index, annotations) unless char.match?(/\s/)
+      end
+
+      out.strip
+    end
+
+    def consume_operand_modifiers(chars, index, annotations)
+      buffer = +""
+      while index < chars.length && OPERAND_MODIFIER_SET[chars[index]]
+        buffer << chars[index]
+        index += 1
+      end
+      annotations << buffer unless buffer.empty?
+      index
+    end
+
+    def find_closing(chars, index, closing_char)
+      while index < chars.length
+        return index if chars[index] == closing_char
+        index += 1
+      end
+      nil
+    end
+
   end
 end

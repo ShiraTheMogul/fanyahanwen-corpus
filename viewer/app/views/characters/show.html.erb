@@ -79,6 +79,25 @@
 
   </p>
 
+  <% ids_deconstructions = FieldLens.ids_deconstructions_for(@character) %>
+  <% if ids_deconstructions.any? %>
+    <section class="character-ids-deconstructions">
+      <h2><%= t("dictionary.character.ideographic_description_sequence_deconstructions") %></h2>
+      <ul>
+        <% ids_deconstructions.each do |deconstruction| %>
+          <li>
+            <code><%= view_text(deconstruction[:expression]) %></code>
+            <% if deconstruction[:levels].any? || deconstruction[:sources].any? %>
+              <small>
+                <%= ([deconstruction[:sources].join(" / ").presence, deconstruction[:levels].map(&:upcase).join(" / ").presence].compact).join(" · ") %>
+              </small>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </section>
+  <% end %>
+
   <% if @base_character.present? %>
     <h2><%= t("dictionary.character.base_character") %></h2>
     <p>
@@ -313,7 +332,7 @@
 
   <h2><%= t("dictionary.character.properties") %></h2>
   <% hkcards_image_rendered = false %>
-  <% (@grouped_properties || {}).each do |group_name, props| %>
+  <% FieldLens.with_character_data(@grouped_properties, @character).each do |group_name, props| %>
     
 <% property_group_key = {
      "Strokes & radicals" => "dictionary.character.property_groups.strokes_radicals",
@@ -347,9 +366,11 @@
           <%= view_text(display_text) %>
         <% end %>
 
-        <% if prop.field == "kCangjie" %>
+        <% if ["kCangjie", "rime_cangjie5"].include?(prop.field) %>
           <span class="cj-shapes">(<%= CangjieKeymap.latin_to_han(prop.value) %>)</span>
+        <% end %>
 
+        <% if prop.field == "kCangjie" %>
           <% unless hkcards_image_rendered %>
             <div class="imgwrap cj-card">
               <img class="cjimg cjimg-small"

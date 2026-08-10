@@ -3,7 +3,7 @@ module FieldLens
 	"Strokes & radicals", # TODO: Component listings.
 	 # TODO: Make these hyperlink to new pages. 
 	"Pronunciation",
-    "Input", # TODO: Wubi, SKIP
+    "Input",
 	"Education notes", # Education system; include Japanese, HSK, etc information later. Qianziwen / Baijiaxing No.?
     "Dictionary indices",
     "Encodings & mappings",
@@ -198,7 +198,18 @@ module FieldLens
 		prefix: [ # There are three Japanese parts, so let's put these together.
 			"kJapanese"
 		]
-	}
+	  },
+	  "Input" => {
+		exact: %w[
+			kCangjie
+			rime_cangjie5
+			rime_wubi86
+			rime_moran
+			kFourCornerCode
+			kMainlandTelegraph
+			kTaiwanTelegraph
+		]
+	  }
 }.freeze
 	
 
@@ -431,6 +442,93 @@ end
 	  out.strip
 	end
 
+
+	# ------------------------------------------------------------------
+	# Character-learning data projected into the Dictionary Field Lens
+	# ------------------------------------------------------------------
+	# CharacterInputCode and CharacterStructure are deliberately separate
+	# database tables: they are not Unihan properties.  The Field Lens only
+	# needs a small read-only projection so the dictionary can present them
+	# alongside the older CharacterProperty data without copying the data.
+	ProjectedProperty = Struct.new(
+		:field, :value, :source, :character_codepoint, :metadata,
+		keyword_init: true
+	)
+
+	INPUT_SYSTEM_FIELDS = {
+		"cangjie5" => "rime_cangjie5",
+		"wubi86" => "rime_wubi86",
+		"moran" => "rime_moran"
+	}.freeze
+
+	IDS_LEVEL_ORDER = { "lv0" => 0, "lv1" => 1, "lv2" => 2 }.freeze
+
+	def self.input_code_properties(character)
+		return [] if character.nil?
+
+		CharacterInputCode
+			.where(character_codepoint_id: character.id, system_id: INPUT_SYSTEM_FIELDS.keys)
+			.order(:system_id, :code, :source)
+			.map do |row|
+				ProjectedProperty.new(
+					field: INPUT_SYSTEM_FIELDS.fetch(row.system_id),
+					value: row.code,
+					source: row.source,
+					character_codepoint: character,
+					metadata: row.metadata
+				)
+			end
+	end
+
+	def self.with_character_data(grouped_properties, character)
+		group_hash = {}
+		Array(grouped_properties&.to_a).each do |entry|
+			next unless entry.is_a?(Array) && entry.length == 2
+
+			group_name, props = entry
+			group_hash[group_name] = Array(props).dup
+		end
+
+		input_rows = input_code_properties(character)
+		group_hash["Input"] = Array(group_hash["Input"]) + input_rows if input_rows.any?
+
+		sort_grouped(group_hash)
+	end
+
+	def self.ids_deconstructions_for(character)
+		return [] if character.nil?
+
+		rows = CharacterStructure
+			.where(character_codepoint_id: character.id, system: "ids")
+			.order(:normalized_expression, :source_level, :source, :id)
+			.to_a
+
+		rows.group_by(&:normalized_expression).map do |normalized_expression, structures|
+			variants = structures.flat_map do |structure|
+				metadata = structure.metadata.is_a?(Hash) ? structure.metadata : {}
+				Array(metadata["variants"])
+			end
+
+			source_annotations = variants.flat_map do |variant|
+				next [] unless variant.is_a?(Hash)
+
+				Array(variant["annotations"]) + Array(variant["indicators"])
+			end.map(&:to_s).map(&:strip).reject(&:empty?).uniq
+
+			levels = structures.map(&:source_level).compact.uniq.sort_by do |level|
+				[IDS_LEVEL_ORDER.fetch(level, 99), level]
+			end
+
+			{
+				expression: structures.first.expression,
+				normalized_expression: normalized_expression,
+				levels: levels,
+				sources: structures.map(&:source).compact.uniq,
+				source_annotations: source_annotations
+			}
+		end.sort_by { |entry| [entry[:expression].to_s.length, entry[:expression].to_s] }
+	end
+
 	def self.sort_groups(group_hash)
 	  group_hash.sort_by { |group_name, _| GROUP_ORDER.index(group_name) || 999 }
 	end
@@ -448,7 +546,7 @@ end
 		return "Education notes" if field.match?("kGradeLevel") || field.match?("kKoreanEducationHanja") || field == "cjk_808_common"
 		return "Education notes" if field == "context" 
 		return "Pronunciation" if PronunciationRegistry.pronunciation_field?(field)
-		return "Input" if %w[kCangjie kFourCornerCode kMainlandTelegraph kTaiwanTelegraph].include?(field)
+		return "Input" if %w[kCangjie rime_cangjie5 rime_wubi86 rime_moran kFourCornerCode kMainlandTelegraph kTaiwanTelegraph].include?(field)
 		return "Encodings & mappings" if field.include?("Variant") || field.start_with?("kSemantic") || field.start_with?("kSimplified") || field.start_with?("cedict_simp") || field.start_with?("kTraditional")
 		return "Dictionary indices" if field.include?("kPhonetic") || field.match?(/hanyu/i) || field.start_with?("kMorohashi") || field.include?("kCihai") || field.start_with?("kFenn") || field.match?("kCowles") || field.include?("DaeJaweon") || field.start_with?("kFennIndex") || field.start_with?("kGSR") || field.include?("KangXi") || field.match?("kLau") || field.match?("kMatthews") || field.match?("kMeyerWempe") || field.match?("kNelson") || field.start_with?("kSBGY") || field.match?("kSMSZD2003Index") || field.start_with?("kSMSZD2003Index") || field.start_with?("kHKGlyph") || field.match?("kKarlgren") || field.match?("guangyun_rhyme_number") || field.match?("guangyun_category") || field.match?("menggu_ziyun_category") || field.match?("menggu_ziyun_xiaoyun_key") || field.match?("menggu_ziyun_xiaoyun_number") || field == "menggu_ziyun_rhyme" || field == "zhongyuan_yinyun_initial" || field == "zhongyuan_yinyun_final" || field == "zhongyuan_yinyun_xiaoyun" || field == "zhongyuan_yinyun_category" || field == "zhongyuan_yinyun_xiaoyun_key"
 		return "Ideographic Research Group (IRG) sources" if field.start_with?("kIRG_") || field == "kIICore"
@@ -501,7 +599,10 @@ end
 		},
 	"kHanyuPinlu" => { i18n: "hanyu_frequency" },
 	"laoguoyin" => { i18n: "old_national_pronunciation" },
-    "kCangjie" => { i18n: "cangjie_input" },
+    "kCangjie" => { i18n: "cangjie3_input" },
+    "rime_cangjie5" => { i18n: "cangjie5_input" },
+    "rime_wubi86" => { i18n: "wubi86_input" },
+    "rime_moran" => { i18n: "moran_input" },
     "kFourCornerCode" => { i18n: "four_corner_input" },
 	"kKorean" => { i18n: "korean_yale" },
 	"kKangXi" => {

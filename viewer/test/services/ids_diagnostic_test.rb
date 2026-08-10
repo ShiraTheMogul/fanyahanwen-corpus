@@ -28,4 +28,17 @@ class IdsDiagnosticTest < ActiveSupport::TestCase
     assert_equal 1, result.candidate_errors
     assert_equal 0, result.empty_rows
   end
+  test "accepts yi-bai level 0 source modifiers without treating them as operands" do
+    io = StringIO.new("丁\t⿱一.亅\n七\t⿻乚w一.(T)\n与\t⿺⿻[b]㇉一.一.(J)\n")
+
+    result = Ids::Diagnostic.new.run(level: "lv0", io: io)
+
+    assert result.clean?
+    assert_equal 3, result.rows
+    assert_equal 3, result.candidates
+    assert_equal 0, result.source_errors
+    assert_equal 0, result.candidate_errors
+    assert_equal 0, result.empty_rows
+  end
+
 end

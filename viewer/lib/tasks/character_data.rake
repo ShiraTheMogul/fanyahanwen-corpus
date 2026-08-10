@@ -17,7 +17,11 @@ namespace :character_data do
       "〣\t⿰丨〢  ⿰〢丨;⿴〢丨\n",
       "◜\t#(Qd)\n",
       "の\t#(kana)\n",
-      "한\t#(hangul)\n"
+      "한\t#(hangul)\n",
+      "丁\t⿱一.亅\n",
+      "七\t⿻乚w一.(T)\n",
+      "与\t⿺⿻[b]㇉一.一.(J)\n",
+      "卌\t{丗}⿱卅s一.(T)\n"
     ]
     parser = Ids::SourceRowParser.new
     samples.each do |sample|
@@ -119,7 +123,13 @@ namespace :character_data do
       kind: ENV["KIND"].presence,
       replace: ENV["REPLACE"].to_s == "1"
     )
-    puts "[rime-codes] system=#{system_id} lines=#{result.lines} tables=#{result.tables} codes=#{result.codes} characters=#{result.characters} skipped=#{result.skipped}"
+    puts "[rime-codes] system=#{system_id} lines=#{result.lines} tables=#{result.tables} codes=#{result.codes} characters=#{result.characters} " \
+         "skipped=#{result.skipped} multi_character=#{result.skipped_multi_character} empty_code=#{result.skipped_empty_code} malformed=#{result.skipped_malformed}"
+
+    sample_limit = ENV.fetch("SAMPLES", "5").to_i
+    result.skip_samples.first(sample_limit).each do |sample|
+      puts "[rime-codes] skipped #{sample[:reason]} table=#{sample[:source_table]}: #{sample[:line]}"
+    end
   end
 
   desc "Import the curated character-data set used by the dictionary and games"
@@ -142,7 +152,11 @@ namespace :character_data do
 
     %w[cangjie5 wubi86 moran].each do |system_id|
       result = CharacterData::RimeCodeImporter.new.import(system_id: system_id, replace: ENV["REPLACE"].to_s == "1")
-      puts "[rime-codes] #{system_id}: tables=#{result.tables} codes=#{result.codes} characters=#{result.characters} skipped=#{result.skipped}"
+      puts "[rime-codes] #{system_id}: tables=#{result.tables} codes=#{result.codes} characters=#{result.characters} " \
+           "skipped=#{result.skipped} multi_character=#{result.skipped_multi_character} empty_code=#{result.skipped_empty_code} malformed=#{result.skipped_malformed}"
+      result.skip_samples.first(3).each do |sample|
+        puts "[rime-codes] #{system_id} skipped #{sample[:reason]} table=#{sample[:source_table]}: #{sample[:line]}"
+      end
     end
   end
 end
