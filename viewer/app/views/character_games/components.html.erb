@@ -14,14 +14,14 @@
     <div data-component-game-target="codepoint"></div>
   </section>
 
-  <fieldset class="component-game-choice">
+  <fieldset class="component-game-choice" data-component-dimension="stroke-count">
     <legend>1. Total stroke count</legend>
     <% @stroke_counts.each do |stroke_count| %>
       <button type="button" data-action="component-game#chooseStrokeCount" data-value="<%= stroke_count %>"><%= stroke_count %></button>
     <% end %>
   </fieldset>
 
-  <fieldset class="component-game-choice">
+  <fieldset class="component-game-choice" data-component-dimension="stroke-class">
     <legend>2. First stroke</legend>
     <% @stroke_classes.each do |stroke_class| %>
       <button type="button" data-action="component-game#chooseStrokeClass" data-value="<%= stroke_class[:key] %>">

@@ -29,7 +29,15 @@ export default class extends Controller {
     this.selectedPath = []
     this.history = []
     this.decorateOperatorButtons()
+    this.openDictionaryResultsInNewTabs()
     this.render()
+  }
+
+  openDictionaryResultsInNewTabs() {
+    document.querySelectorAll("a.ids-result-glyph").forEach((link) => {
+      link.target = "_blank"
+      link.rel = "noopener"
+    })
   }
 
   insertOperator(event) {
@@ -145,7 +153,7 @@ export default class extends Controller {
     const url = new URL(destination, window.location.origin)
     url.searchParams.set("q", expression)
     url.searchParams.set("mode", expression.includes("?") ? "fuzzy" : "exact")
-    window.location.assign(url.toString())
+    window.open(url.toString(), "_blank", "noopener")
   }
 
   replaceSelected(replacement, { select = "replacement" } = {}) {

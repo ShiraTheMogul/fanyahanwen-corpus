@@ -1,7 +1,6 @@
 .transcription-page {
   --transcription-past: #b4232c;
   --transcription-future: #245aa5;
-  --transcription-unsupported: #c66a00;
   --transcription-token-size: clamp(2rem, 6vw, 4rem);
 }
 
@@ -107,16 +106,12 @@
   line-height: 1;
 }
 
-.transcription-token.is-unsupported {
-  color: var(--transcription-unsupported);
-  opacity: 1;
-  text-decoration: underline wavy currentColor 0.09em;
-}
 
-.transcription-token.is-display-only {
-  opacity: 0.55;
-  color: inherit;
-  text-decoration: none;
+
+
+.transcription-token--empty {
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .transcription-no-fade .transcription-token.is-past,

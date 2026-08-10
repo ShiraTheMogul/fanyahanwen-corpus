@@ -631,3 +631,41 @@
     min-height: 2.35rem;
   }
 }
+
+/* Component lookup feedback: selected answers are easy to distinguish from a
+   confirmed lookup location.  The confirmation remains visible for a moment
+   before the next round so the learner can connect the component to its shelf. */
+.component-game-choice button.is-correct,
+.component-game-choice button.is-answer {
+  outline: 3px solid #1a7f37;
+  outline-offset: 2px;
+}
+
+.component-game-choice button.is-correct {
+  box-shadow: 0 0 0.7rem rgba(26, 127, 55, 0.5);
+  animation: component-answer-glow 520ms ease-out 1;
+}
+
+.component-game-choice button.is-incorrect {
+  outline: 2px solid #b4232c;
+  outline-offset: 2px;
+}
+
+.component-game-choice button:disabled {
+  opacity: 0.72;
+}
+
+.component-game-choice button.is-answer:disabled {
+  opacity: 1;
+}
+
+.character-learning-game__actions [data-component-game-target="status"] {
+  max-width: 46rem;
+  line-height: 1.35;
+}
+
+@keyframes component-answer-glow {
+  0% { box-shadow: 0 0 0 rgba(26, 127, 55, 0); }
+  45% { box-shadow: 0 0 1.05rem rgba(26, 127, 55, 0.7); }
+  100% { box-shadow: 0 0 0.7rem rgba(26, 127, 55, 0.5); }
+}

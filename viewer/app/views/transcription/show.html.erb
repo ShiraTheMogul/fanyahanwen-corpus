@@ -3,12 +3,12 @@
 <div class="transcription-page"
      data-controller="transcription"
      data-transcription-variants-value="<%= json_escape(@variant_equivalents.to_json) %>"
-     style="--transcription-past:#b4232c; --transcription-future:#245aa5; --transcription-unsupported:#c66a00;">
+     style="--transcription-past:#b4232c; --transcription-future:#245aa5;">
   <h1>Transcription practice</h1>
 
   <p>
-    Type the highlighted character using your normal browser/system input method. Cangjie 5 and Wubi86 can also be used as optional dictionary-backed code helpers.
-    Han characters, Kana, Hangul, encoded numerals, and other character symbols can all be practised; punctuation remains visible but is not scored.
+    Type the highlighted character using your normal browser/system input method. In “Your input method” mode the site does not decide whether a character is supported: that is entirely up to your browser, operating system, and IME.
+    Cangjie 5 and Wubi86 are optional dictionary-backed code helpers. Punctuation and spacing are stripped from the exercise entirely.
   </p>
 
   <div class="transcription-stage" data-transcription-target="stage">
@@ -114,7 +114,6 @@
       <legend>Visual accommodation</legend>
       <label>Past <input type="color" value="#b4232c" data-transcription-target="pastColor" data-action="input->transcription#settingsChanged"></label>
       <label>Future <input type="color" value="#245aa5" data-transcription-target="futureColor" data-action="input->transcription#settingsChanged"></label>
-      <label>Unsupported <input type="color" value="#c66a00" data-transcription-target="unsupportedColor" data-action="input->transcription#settingsChanged"></label>
       <label><input type="checkbox" checked data-transcription-target="fade" data-action="transcription#settingsChanged"> Fade past/future text</label>
     </fieldset>
 

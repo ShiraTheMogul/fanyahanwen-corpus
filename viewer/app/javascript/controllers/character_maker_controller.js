@@ -86,6 +86,8 @@ export default class extends Controller {
     const link = document.createElement("a")
     link.className = "character-maker-match__glyph"
     link.href = `/characters/${encodeURIComponent(row.codepoint)}`
+    link.target = "_blank"
+    link.rel = "noopener"
     link.textContent = row.character
 
     const details = document.createElement("div")

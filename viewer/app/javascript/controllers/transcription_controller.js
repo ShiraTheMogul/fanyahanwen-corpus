@@ -7,7 +7,7 @@ export default class extends Controller {
   static targets = [
     "source", "title", "stage", "track", "fullText", "input", "score", "status",
     "report", "reportBody", "windowSize", "viewMode", "direction", "hard", "zen",
-    "fade", "pastColor", "futureColor", "unsupportedColor", "skipButton", "variantMode",
+    "fade", "pastColor", "futureColor", "skipButton", "variantMode",
     "inputMethod", "candidates", "rimeOptions", "showCandidates",
   ]
 
@@ -17,6 +17,10 @@ export default class extends Controller {
     this.isComposing = false
     this.lastCompositionCommit = null
     this.adapter = new YourInputMethodAdapter((value) => this.commit(value))
+    this.focusWindowStart = null
+    this.fullTextRenderedFor = null
+    this.fullTextTokenElements = new Map()
+    this.lastFullCurrentIndex = null
     this.restoreCorpusHandoff()
     this.loadAppearance()
     this.start()
@@ -47,7 +51,6 @@ export default class extends Controller {
     this.engine = new SessionEngine(text, {
       hard: this.hardTarget.checked,
       zen: this.zenTarget.checked,
-      supported: () => true,
       display: (canonical) => {
         if (variantMode !== "scramble") return canonical
         const family = variants[canonical] || [canonical]
@@ -59,7 +62,13 @@ export default class extends Controller {
         return [token.canonical]
       },
     })
+    this.exerciseSignature = `${this.engine.tokens.length}:${fingerprint(this.engine.tokens.map((token) => token.canonical).join(""))}`
     this.reportTarget.hidden = true
+    this.focusWindowStart = null
+    this.fullTextRenderedFor = null
+    this.fullTextTokenElements.clear()
+    this.fullTextTarget.replaceChildren()
+    this.lastFullCurrentIndex = null
     this.inputTarget.disabled = false
     this.inputTarget.value = ""
     this.clearCandidates()
@@ -263,64 +272,117 @@ export default class extends Controller {
   render() {
     if (!this.engine) return
     this.applyAppearance()
-    this.renderFocus()
-    this.renderFullText()
+
+    const full = this.viewModeTarget.value === "full"
+    this.trackTarget.parentElement.hidden = full
+    this.fullTextTarget.hidden = !full
+
+    if (full) this.renderFullText()
+    else this.renderFocus()
 
     const zen = this.zenTarget.checked
     this.scoreTarget.hidden = zen
     this.scoreTarget.textContent = `Score ${this.engine.score}`
     this.skipButtonTarget.disabled = this.hardTarget.checked || !this.engine.current
-
-    const full = this.viewModeTarget.value === "full"
-    this.trackTarget.parentElement.hidden = full
-    this.fullTextTarget.hidden = !full
   }
 
+  // Focus mode is deliberately virtualised.  A 100,000-character corpus text
+  // should not create 100,000 DOM nodes on every correct keystroke.  We render
+  // only the requested visible window and slide that window through the token
+  // array as the learner advances.
   renderFocus() {
     const currentIndex = this.engine.currentIndex ?? this.engine.tokens.length
     const windowSize = Math.max(1, Math.min(40, Number(this.windowSizeTarget.value || 7)))
     const vertical = this.directionTarget.value === "vertical"
+    const midpoint = Math.floor(windowSize / 2)
+    const startIndex = Math.max(0, currentIndex - midpoint)
 
-    this.trackTarget.replaceChildren(...this.engine.tokens.map((token) => this.tokenElement(token)))
+    const elements = []
+    for (let offset = 0; offset < windowSize; offset += 1) {
+      const token = this.engine.tokens[startIndex + offset]
+      elements.push(token ? this.tokenElement(token) : this.emptyFocusSlot())
+    }
+
+    const previousStart = this.focusWindowStart
+    this.focusWindowStart = startIndex
+    this.trackTarget.replaceChildren(...elements)
     this.trackTarget.parentElement.style.setProperty("--transcription-window", windowSize)
     this.trackTarget.classList.toggle("is-vertical", vertical)
     this.trackTarget.parentElement.classList.toggle("is-vertical", vertical)
+    this.trackTarget.style.transform = "none"
 
-    requestAnimationFrame(() => this.positionFocus(currentIndex, windowSize, vertical))
+    // Once the midpoint starts moving, give the new virtual window a short
+    // one-cell slide.  This keeps the familiar scrolling cue without retaining
+    // the entire document in the DOM.
+    if (previousStart !== null && startIndex === previousStart + 1) {
+      requestAnimationFrame(() => this.animateFocusShift(vertical))
+    }
   }
 
-  positionFocus(currentIndex, windowSize, vertical) {
-    const children = Array.from(this.trackTarget.children)
-    if (children.length === 0) return
+  animateFocusShift(vertical) {
+    if (typeof this.trackTarget.animate !== "function") return
+    const first = this.trackTarget.firstElementChild
+    if (!first) return
+    const box = first.getBoundingClientRect()
+    const distance = vertical ? box.height : box.width
+    if (!distance) return
 
-    // Keep the text still while the cursor is in the first half-window. From
-    // the midpoint onward, the cursor stays in the middle of the viewport.
-    // Near the end this intentionally leaves empty future-space on the right:
-    // the cursor does not drift away from the user's visual anchor.
-    const midpoint = Math.floor(windowSize / 2)
-    const focusIndex = Math.min(currentIndex, children.length - 1)
-    const startIndex = Math.max(0, focusIndex - midpoint)
-    const first = children[0].getBoundingClientRect()
-    const step = vertical ? first.height : first.width
-    const offset = -(startIndex * step)
-
-    this.trackTarget.style.transform = vertical
-      ? `translateY(${offset}px)`
-      : `translateX(${offset}px)`
+    const from = vertical ? `translateY(${distance}px)` : `translateX(${distance}px)`
+    const to = vertical ? "translateY(0)" : "translateX(0)"
+    this.trackTarget.animate([{ transform: from }, { transform: to }], {
+      duration: 150,
+      easing: "ease-out",
+    })
   }
 
+  emptyFocusSlot() {
+    const span = document.createElement("span")
+    span.className = "transcription-token transcription-token--empty"
+    span.setAttribute("aria-hidden", "true")
+    return span
+  }
+
+  // Full-text mode is necessarily larger, but it is still built only once per
+  // exercise.  Subsequent answers update the two affected token nodes instead
+  // of replacing the entire document.
   renderFullText() {
-    this.fullTextTarget.replaceChildren(...this.engine.tokens.map((token) => this.tokenElement(token)))
+    const signature = this.exerciseSignature
+    if (this.fullTextRenderedFor !== signature) {
+      this.fullTextTokenElements.clear()
+      const elements = this.engine.tokens.map((token) => {
+        const element = this.tokenElement(token)
+        this.fullTextTokenElements.set(token.index, element)
+        return element
+      })
+      this.fullTextTarget.replaceChildren(...elements)
+      this.fullTextRenderedFor = signature
+      this.lastFullCurrentIndex = null
+    }
+
+    const currentIndex = this.engine.currentIndex
+    const touched = new Set([this.lastFullCurrentIndex, currentIndex])
+    touched.forEach((index) => {
+      if (index === null || index === undefined) return
+      const token = this.engine.tokens[index]
+      const element = this.fullTextTokenElements.get(index)
+      if (token && element) this.applyTokenState(element, token)
+    })
+    this.lastFullCurrentIndex = currentIndex
     this.fullTextTarget.classList.toggle("is-vertical", this.directionTarget.value === "vertical")
   }
 
   tokenElement(token) {
     const span = document.createElement("span")
-    span.className = `transcription-token is-${token.status}`
-    if (!token.playable) span.classList.add("is-display-only")
+    span.className = "transcription-token"
     span.textContent = token.text
     span.dataset.index = token.index
+    this.applyTokenState(span, token)
     return span
+  }
+
+  applyTokenState(element, token) {
+    element.classList.remove("is-past", "is-future", "is-current")
+    element.classList.add(`is-${token.status}`)
   }
 
   renderReport(report) {
@@ -338,7 +400,7 @@ export default class extends Controller {
     this.reportBodyTarget.innerHTML = `
       <p><strong>${escapeHtml(title)}</strong></p>
       <p>${report.correct} characters · ${accuracy}% first attempt · ${seconds}s · score ${report.score}</p>
-      <p>Speed bonus: +${report.speedBonus}. Unsupported characters skipped automatically: ${report.unsupported}.</p>
+      <p>Speed bonus: +${report.speedBonus}. Punctuation and spacing are removed from the exercise before scoring.</p>
       ${rows ? `<h3>Characters to review</h3><ul>${rows}</ul>` : "<p>No difficult characters were recorded in this run.</p>"}
     `
   }
@@ -360,7 +422,6 @@ export default class extends Controller {
     const saved = JSON.parse(localStorage.getItem("fanya.transcription.appearance") || "{}")
     if (saved.past) this.pastColorTarget.value = saved.past
     if (saved.future) this.futureColorTarget.value = saved.future
-    if (saved.unsupported) this.unsupportedColorTarget.value = saved.unsupported
     if (typeof saved.fade === "boolean") this.fadeTarget.checked = saved.fade
     this.applyAppearance()
   }
@@ -369,7 +430,6 @@ export default class extends Controller {
     localStorage.setItem("fanya.transcription.appearance", JSON.stringify({
       past: this.pastColorTarget.value,
       future: this.futureColorTarget.value,
-      unsupported: this.unsupportedColorTarget.value,
       fade: this.fadeTarget.checked,
     }))
   }
@@ -377,7 +437,6 @@ export default class extends Controller {
   applyAppearance() {
     this.element.style.setProperty("--transcription-past", this.pastColorTarget.value)
     this.element.style.setProperty("--transcription-future", this.futureColorTarget.value)
-    this.element.style.setProperty("--transcription-unsupported", this.unsupportedColorTarget.value)
     this.element.classList.toggle("transcription-no-fade", !this.fadeTarget.checked)
   }
 }

@@ -6,10 +6,24 @@ export function graphemes(text) {
   return Array.from(text)
 }
 
-export function isPlayableCharacter(token) {
-  const codepoints = Array.from(token)
-  if (codepoints.length !== 1) return false
-  return /^[\p{Letter}\p{Number}\p{Symbol}\p{Mark}]$/u.test(token)
+// Transcription uses the same practical idea as the Corpus Viewer's
+// "no punctuation" display: punctuation and spacing are not exercise tokens at
+// all.  Everything else is left to the learner's input method.  In particular,
+// the browser/system IME is never second-guessed by a database support check.
+export function isPracticeToken(token) {
+  const value = token.toString()
+  if (!value) return false
+  if (/^[\p{Punctuation}\p{Separator}\p{Control}]+$/u.test(value)) return false
+  if (/^\s+$/u.test(value)) return false
+  return true
+}
+
+export function practiceGraphemes(text) {
+  return graphemes(text).filter((token) => isPracticeToken(token))
+}
+
+export function stripPracticePunctuation(text) {
+  return practiceGraphemes(text).join("")
 }
 
 export function fingerprint(text) {
@@ -27,33 +41,31 @@ export class SessionEngine {
       hard: false,
       zen: false,
       variantMode: "canonical",
-      supported: () => true,
       equivalents: (token) => [token.canonical],
       display: (canonical) => canonical,
       ...options,
     }
-    this.tokens = graphemes(text).map((canonical, index) => {
-      const display = this.options.display(canonical)
-      const playable = isPlayableCharacter(canonical)
-      return {
-        canonical,
-        text: display,
-        index,
-        playable,
-        supported: !playable || this.options.supported(display),
-        status: "future",
-        attempts: 0,
-        skipped: false,
-        startedAt: null,
-        completedAt: null,
-        durationMs: null,
-      }
-    })
+
+    // Do the expensive segmentation exactly once.  The previous implementation
+    // retained punctuation/spacing and then asked every render whether each
+    // token was playable/supported.  Long texts do not need that work.
+    this.tokens = practiceGraphemes(text).map((canonical, index) => ({
+      canonical,
+      text: this.options.display(canonical),
+      index,
+      status: "future",
+      attempts: 0,
+      skipped: false,
+      startedAt: null,
+      completedAt: null,
+      durationMs: null,
+    }))
+
     this.score = 0
     this.correct = 0
     this.startedAt = performance.now()
     this.completedAt = null
-    this.currentIndex = this.findNextPlayable(-1)
+    this.currentIndex = this.tokens.length > 0 ? 0 : null
     this.markCurrent()
   }
 
@@ -88,25 +100,10 @@ export class SessionEngine {
   }
 
   advance() {
-    this.currentIndex = this.findNextPlayable(this.currentIndex)
+    const next = this.currentIndex === null ? null : this.currentIndex + 1
+    this.currentIndex = next !== null && next < this.tokens.length ? next : null
     if (this.currentIndex === null) this.completedAt = performance.now()
     else this.markCurrent()
-  }
-
-  findNextPlayable(afterIndex) {
-    for (let index = afterIndex + 1; index < this.tokens.length; index += 1) {
-      const token = this.tokens[index]
-      if (!token.playable) {
-        token.status = "past"
-        continue
-      }
-      if (!token.supported) {
-        token.status = "unsupported"
-        continue
-      }
-      return index
-    }
-    return null
   }
 
   markCurrent() {
@@ -119,8 +116,7 @@ export class SessionEngine {
   elapsedMs() { return (this.completedAt || performance.now()) - this.startedAt }
 
   report() {
-    const attempted = this.tokens.filter((token) => token.playable && token.supported && (token.completedAt || token.attempts > 0))
-    const unsupported = this.tokens.filter((token) => token.playable && !token.supported)
+    const attempted = this.tokens.filter((token) => token.completedAt || token.attempts > 0)
     const elapsedMinutes = Math.max(this.elapsedMs() / 60000, 1 / 60)
     const speedBonus = Math.floor((this.correct / elapsedMinutes) / 20)
     const firstTry = attempted.filter((token) => !token.skipped && token.attempts === 1).length
@@ -135,7 +131,6 @@ export class SessionEngine {
       correct: this.correct,
       firstTry,
       attempted: attempted.length,
-      unsupported: unsupported.length,
       elapsedMs: this.elapsedMs(),
       difficult,
     }
@@ -148,7 +143,13 @@ function difficulty(token) {
 
 export class YourInputMethodAdapter {
   constructor(onCommit) { this.onCommit = onCommit }
-  handleInput(value) { graphemes(value).forEach((token) => this.onCommit(token)) }
+
+  // Spaces/punctuation are controls for many IMEs and are never answers in the
+  // exercise.  Ignore them if a browser happens to expose them as committed
+  // input; compare every other committed grapheme directly with the target.
+  handleInput(value) {
+    practiceGraphemes(value).forEach((token) => this.onCommit(token))
+  }
 }
 
 // Browser-side helper backed by the RIME dictionaries already imported into
