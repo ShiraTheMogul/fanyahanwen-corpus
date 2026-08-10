@@ -5,6 +5,10 @@
   --transcription-token-size: clamp(2rem, 6vw, 4rem);
 }
 
+.transcription-setup {
+  margin-top: 1.25rem;
+}
+
 .transcription-setup label,
 .transcription-setup textarea,
 .transcription-setup input[type="text"] {
@@ -27,7 +31,7 @@
 }
 
 .transcription-stage {
-  margin: 1.4rem 0;
+  margin: 1rem 0;
   min-height: 8rem;
   border: 1px solid rgba(127, 127, 127, 0.35);
   border-radius: 0.8rem;
@@ -49,14 +53,14 @@
   display: flex;
   align-items: center;
   width: max-content;
-  transform: translateX(var(--transcription-offset, 0));
-  transition: transform 160ms ease-out;
+  transform: translateX(0);
+  transition: transform 180ms ease-out;
   will-change: transform;
 }
 
 .transcription-focus-track.is-vertical {
   flex-direction: column;
-  transform: translateY(var(--transcription-offset, 0));
+  transform: translateY(0);
 }
 
 .transcription-token {
@@ -162,6 +166,31 @@
   font-family: var(--han-font-stack);
 }
 
+.transcription-candidates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  min-height: 0.25rem;
+  margin-top: 0.55rem;
+}
+
+.transcription-candidate {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.45rem;
+}
+
+.transcription-candidate-glyph {
+  font-family: var(--han-font-stack);
+  font-size: 1.5rem;
+}
+
+.transcription-candidate-number {
+  opacity: 0.65;
+  font-size: 0.8rem;
+}
+
 .transcription-stage.is-wrong {
   animation: transcription-wrong 150ms linear 1;
 }
@@ -179,9 +208,20 @@
   border-radius: 0.75rem;
 }
 
-
 .transcription-focus-viewport.is-vertical {
   width: min(100%, 10rem);
   height: calc(var(--transcription-window) * 1.65 * var(--transcription-token-size));
   max-height: 70vh;
+}
+
+.transcription-rime-options {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  width: auto;
+  margin: 0;
+}
+
+.transcription-candidates:empty {
+  display: none;
 }

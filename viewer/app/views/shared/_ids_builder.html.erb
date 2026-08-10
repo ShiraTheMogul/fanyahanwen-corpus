@@ -1,0 +1,89 @@
+<%
+  compact = local_assigns.fetch(:compact, false)
+  show_palette = local_assigns.fetch(:show_palette, true)
+  show_search = local_assigns.fetch(:show_search, false)
+  palette_open = local_assigns.fetch(:palette_open, false)
+  search_url = local_assigns.fetch(:search_url, "/characters/structure")
+  change_action = local_assigns[:change_action].to_s
+  groups = show_palette ? Ids::DifficultComponents.groups : []
+%>
+
+<div class="ids-shared-builder<%= ' ids-shared-builder--compact' if compact %>"
+     data-controller="ids-constructor"
+     data-ids-constructor-search-url-value="<%= search_url %>"
+     <%= %(data-action="#{change_action}").html_safe if change_action.present? %>>
+  <div class="ids-constructor-toolbar" aria-label="<%= t("ids_search.constructor.operators_aria") %>">
+    <% ["⿰", "⿱", "⿲", "⿳", "⿴", "⿵", "⿶", "⿷", "⿸", "⿹", "⿺", "⿻", "⿼", "⿽", "⿾", "⿿", "㇯"].each do |operator| %>
+      <button type="button" class="ids-operator" data-action="ids-constructor#insertOperator" data-operator="<%= operator %>"><%= operator %></button>
+    <% end %>
+  </div>
+
+  <div class="ids-component-entry">
+    <label><%= t("ids_search.constructor.component_label") %>
+      <input type="text" maxlength="64" inputmode="text" data-ids-constructor-target="component" placeholder="氵">
+    </label>
+    <button type="button" data-action="ids-constructor#insertComponent"><%= t("ids_search.constructor.add_component") %></button>
+  </div>
+
+  <% if show_palette %>
+    <details class="ids-difficult-components" <%= "open" if palette_open %>>
+      <summary><%= t("ids_search.constructor.hard_to_input_summary") %></summary>
+      <p class="muted"><%= t("ids_search.constructor.hard_to_input_help") %></p>
+
+      <div class="ids-difficult-stroke-counts" role="tablist" aria-label="<%= t("ids_search.constructor.stroke_count_aria") %>">
+        <% groups.each_with_index do |group, index| %>
+          <button type="button"
+                  class="ids-difficult-count<%= ' is-active' if index.zero? %>"
+                  role="tab"
+                  aria-selected="<%= index.zero? %>"
+                  data-action="ids-constructor#showDifficultGroup"
+                  data-group="<%= group[:stroke_count] %>"><%= group[:stroke_count] %></button>
+        <% end %>
+      </div>
+
+      <div class="ids-difficult-groups">
+        <% groups.each_with_index do |group, index| %>
+          <section class="ids-difficult-group"
+                   data-ids-constructor-target="difficultGroup"
+                   data-group="<%= group[:stroke_count] %>"
+                   <%= "hidden" unless index.zero? %>>
+            <% group[:classes].each do |stroke_class| %>
+              <% next if stroke_class[:glyphs].empty? %>
+              <% stroke_label = t("ids_search.first_strokes.#{stroke_class[:key]}") %>
+              <div class="ids-difficult-row">
+                <div class="ids-difficult-label">
+                  <strong><%= stroke_label %></strong>
+                  <span><% unless stroke_label == stroke_class[:han] %><%= stroke_class[:han] %> <% end %><%= stroke_class[:representative] %></span>
+                </div>
+                <div class="ids-difficult-glyphs">
+                  <% stroke_class[:glyphs].each do |glyph| %>
+                    <button type="button"
+                            class="ids-difficult-glyph"
+                            title="<%= t("ids_search.constructor.component_title", codepoint: glyph.ord.to_s(16).upcase, strokes: group[:stroke_count], stroke_class: stroke_label, han: stroke_class[:han]) %>"
+                            data-action="ids-constructor#insertDifficultComponent"
+                            data-component="<%= glyph %>"><%= glyph %></button>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+          </section>
+        <% end %>
+      </div>
+    </details>
+  <% end %>
+
+  <div class="ids-tree" data-ids-constructor-target="tree" aria-live="polite"></div>
+
+  <p class="ids-expression-row">
+    <strong><%= t("ids_search.ids_label") %>:</strong>
+    <code data-ids-constructor-target="expression">?</code>
+  </p>
+
+  <div class="ids-constructor-actions">
+    <button type="button" data-action="ids-constructor#undo"><%= t("ids_search.constructor.undo") %></button>
+    <button type="button" data-action="ids-constructor#clear"><%= t("ids_search.constructor.clear") %></button>
+    <% if show_search %>
+      <button type="button" data-action="ids-constructor#search"><%= t("ids_search.constructor.search_structure") %></button>
+    <% end %>
+  </div>
+</div>

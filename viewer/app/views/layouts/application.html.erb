@@ -17,6 +17,7 @@
     <%= stylesheet_link_tag "grammar", "data-turbo-track": "reload" if controller_name.in?(%w[grammar atlas tickets]) %>
     <%= stylesheet_link_tag "atlas", "data-turbo-track": "reload" if controller_name.in?(%w[atlas tickets]) %>
     <%= stylesheet_link_tag "xiangqi", "data-turbo-track": "reload" if controller_name == "xiangqi" %>
+    <%= stylesheet_link_tag "character_learning", "data-turbo-track": "reload" %>
 
     <%= render "layouts/dynamic_fonts" %>
 	<%= render "layouts/xiangqi_fonts" if controller_name == "xiangqi" %>
@@ -33,7 +34,7 @@
 	  <% _han_stack = HanFonts.stack_for(_han_font_key) %>
 
 		  <body
-		    data-controller="han-font-bootstrap rightbar-layout"
+		    data-controller="han-font-bootstrap rightbar-layout<%= ' transcription-launcher' if controller_name == 'corpus_viewer' %>"
 	    class="han-font-scope-<%= _han_scope %>"
 	    data-han-font-key="<%= _han_font_key %>"
 	    data-han-font-family="<%= _han_family %>"
@@ -64,11 +65,31 @@
         </div>
 
         <div class="site-header-center">
-          <%= form_with url: characters_path, method: :get, local: true, class: "site-search" do %>
-            <label class="sr-only" for="query"><%= t("site.search.label") %></label>
-            <%= text_field_tag :query, params[:query], placeholder: t("site.search.placeholder"), class: "site-search-input" %>
-            <%= submit_tag t("site.search.submit"), class: "site-search-submit" %>
-          <% end %>
+          <div class="site-search-with-compose">
+            <%= form_with url: characters_path, method: :get, local: true, class: "site-search" do %>
+              <label class="sr-only" for="query"><%= t("site.search.label") %></label>
+              <%= text_field_tag :query, params[:query], placeholder: t("site.search.placeholder"), class: "site-search-input" %>
+              <%= submit_tag t("site.search.submit"), class: "site-search-submit" %>
+            <% end %>
+
+            <details class="site-ids-quick-compose">
+              <summary class="site-ids-quick-compose__toggle" title="<%= t('ids_search.constructor.title') %>">
+                <span class="site-ids-quick-compose__han">組字</span>
+                <span class="site-ids-quick-compose__english">Compose</span>
+              </summary>
+              <div class="site-ids-quick-compose__panel">
+                <%= render "shared/ids_builder",
+                           compact: true,
+                           show_palette: true,
+                           palette_open: true,
+                           show_search: true,
+                           search_url: "/characters/structure" %>
+                <p class="site-ids-quick-compose__more">
+                  <%= link_to t("ids_search.dictionary_link"), "/characters/structure" %>
+                </p>
+              </div>
+            </details>
+          </div>
         </div>
 
 	        <div class="site-header-right">

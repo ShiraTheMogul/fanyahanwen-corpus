@@ -2,11 +2,13 @@
 
 <p><%= t("fun.introduction") %></p>
 
-<h2>Transcription practice</h2>
-<p>
-  <%= link_to "Practice a Literary Chinese text", transcription_path, class: "site-nav-link" %>
-  with a scrolling focus view or a full-text cursor. Use Your input method; RIME schemas plug into the same session engine.
-</p>
+<h2>Character learning</h2>
+<ul>
+  <li><a href="/fun/transcription">Transcription practice</a> — type through a text with your normal IME or the imported RIME dictionaries.</li>
+  <li><a href="/fun/deconstruction">Character deconstruction</a> — look at a character and build an accepted IDS analysis.</li>
+  <li><a href="/fun/components">Component lookup practice</a> — learn total strokes → first stroke → component.</li>
+  <li><a href="/fun/make-a-character">Make a character</a> — freely build IDS structures and see which encoded characters they match.</li>
+</ul>
 
 <h2>
   <% if show_han_ornament? %><%= t("fun.xuanji.name_han") %> <% end %><%= link_to translated_interface_label("fun.xuanji.name", ornament_key: "fun.xuanji.name_han"), xuanji_path, class: "site-nav-link" %>

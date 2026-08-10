@@ -9,6 +9,7 @@ const ARITY = {
 
 export default class extends Controller {
   static targets = ["tree", "expression", "component", "difficultGroup"]
+  static values = { searchUrl: String }
 
   connect() {
     this.root = this.emptyNode()
@@ -21,14 +22,12 @@ export default class extends Controller {
     const operator = event.currentTarget.dataset.operator
     const arity = ARITY[operator]
     if (!arity) return
-
     this.mutateSelected({ token: operator, children: Array.from({ length: arity }, () => this.emptyNode()) })
   }
 
   insertComponent() {
     const value = this.componentTarget.value.trim()
     if (!value) return
-
     const token = this.componentToken(value)
     if (!token) return
     this.mutateSelected({ token, children: [] })
@@ -39,7 +38,6 @@ export default class extends Controller {
   insertDifficultComponent(event) {
     const token = this.componentToken(event.currentTarget.dataset.component || "")
     if (!token) return
-
     this.mutateSelected({ token, children: [] })
   }
 
@@ -48,7 +46,6 @@ export default class extends Controller {
     this.difficultGroupTargets.forEach((element) => {
       element.hidden = element.dataset.group !== group
     })
-
     this.element.querySelectorAll(".ids-difficult-count").forEach((button) => {
       const active = button.dataset.group === group
       button.classList.toggle("is-active", active)
@@ -64,7 +61,6 @@ export default class extends Controller {
   undo() {
     const previous = this.history.pop()
     if (!previous) return
-
     this.root = previous.root
     this.selectedPath = previous.selectedPath
     this.render()
@@ -79,11 +75,11 @@ export default class extends Controller {
 
   search() {
     const expression = this.serialize(this.root)
-    if (!expression || expression.includes("?")) return
-
-    const url = new URL(window.location.href)
+    if (!expression) return
+    const destination = this.hasSearchUrlValue ? this.searchUrlValue : window.location.href
+    const url = new URL(destination, window.location.origin)
     url.searchParams.set("q", expression)
-    url.searchParams.set("mode", "fuzzy")
+    url.searchParams.set("mode", expression.includes("?") ? "fuzzy" : "exact")
     window.location.assign(url.toString())
   }
 
@@ -95,16 +91,11 @@ export default class extends Controller {
   }
 
   pushHistory() {
-    this.history.push({
-      root: structuredClone(this.root),
-      selectedPath: [...this.selectedPath],
-    })
+    this.history.push({ root: structuredClone(this.root), selectedPath: [...this.selectedPath] })
     if (this.history.length > 100) this.history.shift()
   }
 
-  emptyNode() {
-    return { token: null, children: [] }
-  }
+  emptyNode() { return { token: null, children: [] } }
 
   componentToken(value) {
     if (value.startsWith("&") && value.endsWith(";")) return value
@@ -115,13 +106,10 @@ export default class extends Controller {
     return Array.from(value)[0] || null
   }
 
-  nodeAt(root, path) {
-    return path.reduce((node, index) => node.children[index], root)
-  }
+  nodeAt(root, path) { return path.reduce((node, index) => node.children[index], root) }
 
   replaceAt(root, path, replacement) {
     if (path.length === 0) return replacement
-
     const copy = structuredClone(root)
     const parent = this.nodeAt(copy, path.slice(0, -1))
     parent.children[path[path.length - 1]] = replacement
@@ -144,13 +132,17 @@ export default class extends Controller {
 
   render() {
     this.treeTarget.replaceChildren(this.renderNode(this.root, []))
-    this.expressionTarget.textContent = this.serialize(this.root)
+    const expression = this.serialize(this.root)
+    this.expressionTarget.textContent = expression
+    this.element.dispatchEvent(new CustomEvent("ids-constructor:changed", {
+      bubbles: true,
+      detail: { expression },
+    }))
   }
 
   renderNode(node, path) {
     const wrapper = document.createElement("div")
     wrapper.className = "ids-tree-node"
-
     const button = document.createElement("button")
     button.type = "button"
     button.className = "ids-tree-token"
@@ -166,7 +158,6 @@ export default class extends Controller {
       node.children.forEach((child, index) => children.append(this.renderNode(child, [...path, index])))
       wrapper.append(children)
     }
-
     return wrapper
   }
 }

@@ -1,0 +1,38 @@
+<div class="character-learning-game"
+     data-controller="component-game"
+     data-component-game-rounds-value="<%= json_escape(@rounds.to_json) %>">
+  <header class="character-learning-game__header">
+    <div>
+      <h1>Component lookup practice</h1>
+      <p>Practice the same two facts used by the hard-to-input component palette: total stroke count, then first stroke.</p>
+    </div>
+    <div class="character-learning-game__score" data-component-game-target="score"></div>
+  </header>
+
+  <section class="character-learning-prompt">
+    <div class="character-learning-prompt__glyph" data-component-game-target="glyph"></div>
+    <div data-component-game-target="codepoint"></div>
+  </section>
+
+  <fieldset class="component-game-choice">
+    <legend>1. Total stroke count</legend>
+    <% @stroke_counts.each do |stroke_count| %>
+      <button type="button" data-action="component-game#chooseStrokeCount" data-value="<%= stroke_count %>"><%= stroke_count %></button>
+    <% end %>
+  </fieldset>
+
+  <fieldset class="component-game-choice">
+    <legend>2. First stroke</legend>
+    <% @stroke_classes.each do |stroke_class| %>
+      <button type="button" data-action="component-game#chooseStrokeClass" data-value="<%= stroke_class[:key] %>">
+        <strong><%= stroke_class[:han] %></strong> <%= stroke_class[:representative] %> · <%= stroke_class[:english] %>
+      </button>
+    <% end %>
+  </fieldset>
+
+  <div class="character-learning-game__actions">
+    <button type="button" data-action="component-game#check">Check</button>
+    <button type="button" data-action="component-game#skip">Skip</button>
+    <span data-component-game-target="status" aria-live="polite"></span>
+  </div>
+</div>

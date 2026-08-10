@@ -113,6 +113,17 @@ Rails.application.routes.draw do
 	post "/fun/xuanji/sync_colors", to: "xuanji#sync_colors", as: :xuanji_sync_colors
 	post "/fun/xuanji/phoneticize", to: "xuanji#phoneticize", as: :xuanji_phoneticize
 	get "/fun/transcription", to: "transcription#show", as: :transcription
+	get "/fun/deconstruction",
+		to: "character_games#deconstruction",
+		as: :character_deconstruction
+
+	get "/fun/components",
+		to: "character_games#components",
+		as: :character_components
+
+	get "/fun/make-a-character",
+		to: "character_games#construction",
+		as: :character_construction
 	
 	get "/xiangqi", to: "xiangqi#show"
 	post "/xiangqi/theme", to: "xiangqi#theme"

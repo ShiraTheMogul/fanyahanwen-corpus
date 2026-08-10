@@ -42,7 +42,16 @@ class TranscriptionController < ApplicationController
     path = Rails.root.join("config", "rime_schemas.yml")
     return [] unless path.file?
 
-    YAML.safe_load_file(path, aliases: false).fetch("schemas", [])
+    schemas = YAML.safe_load_file(path, aliases: false).fetch("schemas", [])
+    available = CharacterInputCode
+      .where(system_id: schemas.map { |schema| schema["schema_id"] })
+      .where.not(kind: "auxiliary")
+      .distinct
+      .pluck(:system_id)
+
+    schemas
+      .select { |schema| available.include?(schema["schema_id"]) }
+      .map { |schema| schema.merge("browser_available" => true) }
   rescue Psych::SyntaxError
     []
   end

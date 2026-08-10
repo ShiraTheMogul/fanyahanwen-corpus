@@ -7,11 +7,63 @@
   <h1>Transcription practice</h1>
 
   <p>
-    Type the highlighted character using <strong>Your input method</strong>. Han characters, Kana, Hangul, encoded numerals, and other character symbols can all be practised; punctuation and unsupported characters remain visible but are not scored.
-    The same session state powers the scrolling and full-text views.
+    Type the highlighted character using your normal browser/system input method. Cangjie 5 and Wubi86 can also be used as optional dictionary-backed code helpers.
+    Han characters, Kana, Hangul, encoded numerals, and other character symbols can all be practised; punctuation remains visible but is not scored.
   </p>
 
-  <details class="transcription-setup" open>
+  <div class="transcription-stage" data-transcription-target="stage">
+    <div class="transcription-focus-viewport">
+      <div class="transcription-focus-track" data-transcription-target="track"></div>
+    </div>
+
+    <div class="transcription-full-text" data-transcription-target="fullText" hidden></div>
+  </div>
+
+  <div class="transcription-input-row">
+    <label for="transcription-input">Input</label>
+    <input id="transcription-input"
+           type="text"
+           autocomplete="off"
+           autocapitalize="off"
+           spellcheck="false"
+           data-transcription-target="input"
+           data-action="compositionstart->transcription#compositionStart compositionend->transcription#compositionEnd input->transcription#input keydown->transcription#keydown">
+
+    <select aria-label="Input method"
+            data-transcription-target="inputMethod"
+            data-action="change->transcription#inputMethodChanged">
+      <option value="native">Your input method</option>
+      <% if @rime_schemas.any? %>
+        <optgroup label="Optional code helpers (RIME dictionary data)">
+          <% @rime_schemas.each do |schema| %>
+            <option value="rime-data:<%= schema.fetch("schema_id") %>"><%= schema.fetch("label") %> code helper</option>
+          <% end %>
+        </optgroup>
+      <% end %>
+    </select>
+
+    <label class="transcription-rime-options" data-transcription-target="rimeOptions" hidden>
+      <input type="checkbox"
+             data-transcription-target="showCandidates"
+             data-action="change->transcription#revealCandidatesChanged">
+      Reveal candidates
+    </label>
+
+    <button type="button" data-transcription-target="skipButton" data-action="transcription#skip">Skip (-10)</button>
+    <span data-transcription-target="score"></span>
+  </div>
+
+  <div class="transcription-candidates" data-transcription-target="candidates" aria-live="polite"></div>
+  <p class="transcription-status" data-transcription-target="status" aria-live="polite"></p>
+
+  <section class="transcription-report" data-transcription-target="report" hidden>
+    <h2>Learning report</h2>
+    <div data-transcription-target="reportBody"></div>
+    <button type="button" data-action="transcription#practiceDifficult">Practice difficult characters</button>
+    <button type="button" data-action="transcription#restart">Try again</button>
+  </section>
+
+  <details class="transcription-setup">
     <summary>Exercise settings</summary>
 
     <label for="transcription-title">Text name</label>
@@ -50,18 +102,6 @@
           <option value="scramble">Variant Scramble</option>
         </select>
       </label>
-
-      <label>
-        Input
-        <select aria-label="Input method">
-          <option>Your input method</option>
-          <optgroup label="RIME schemas (runtime adapter)">
-            <% @rime_schemas.each do |schema| %>
-              <option value="rime:<%= schema.fetch("schema_id") %>" disabled><%= schema.fetch("label") %></option>
-            <% end %>
-          </optgroup>
-        </select>
-      </label>
     </div>
 
     <fieldset>
@@ -78,36 +118,6 @@
       <label><input type="checkbox" checked data-transcription-target="fade" data-action="transcription#settingsChanged"> Fade past/future text</label>
     </fieldset>
 
-    <button type="button" data-action="transcription#start">Start / restart</button>
+    <button type="button" data-action="transcription#start">Apply settings / restart</button>
   </details>
-
-  <div class="transcription-stage" data-transcription-target="stage">
-    <div class="transcription-focus-viewport">
-      <div class="transcription-focus-track" data-transcription-target="track"></div>
-    </div>
-
-    <div class="transcription-full-text" data-transcription-target="fullText" hidden></div>
-  </div>
-
-  <div class="transcription-input-row">
-    <label for="transcription-input">Your input method</label>
-    <input id="transcription-input"
-           type="text"
-           autocomplete="off"
-           autocapitalize="off"
-           spellcheck="false"
-           data-transcription-target="input"
-           data-action="input->transcription#input">
-    <button type="button" data-transcription-target="skipButton" data-action="transcription#skip">Skip (-10)</button>
-    <span data-transcription-target="score"></span>
-  </div>
-
-  <p class="transcription-status" data-transcription-target="status" aria-live="polite"></p>
-
-  <section class="transcription-report" data-transcription-target="report" hidden>
-    <h2>Learning report</h2>
-    <div data-transcription-target="reportBody"></div>
-    <button type="button" data-action="transcription#practiceDifficult">Practice difficult characters</button>
-    <button type="button" data-action="transcription#restart">Try again</button>
-  </section>
 </div>

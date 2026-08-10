@@ -9,10 +9,6 @@ export function graphemes(text) {
 export function isPlayableCharacter(token) {
   const codepoints = Array.from(token)
   if (codepoints.length !== 1) return false
-
-  // The practice engine is script-neutral. Letters cover Han/Kana/Hangul,
-  // numbers cover Suzhou/counting-rod forms, and symbols cover encoded CJK
-  // strokes/components used by IDS data. Punctuation remains display-only.
   return /^[\p{Letter}\p{Number}\p{Symbol}\p{Mark}]$/u.test(token)
 }
 
@@ -38,19 +34,20 @@ export class SessionEngine {
     }
     this.tokens = graphemes(text).map((canonical, index) => {
       const display = this.options.display(canonical)
+      const playable = isPlayableCharacter(canonical)
       return {
-      canonical,
-      text: display,
-      index,
-      playable: isPlayableCharacter(canonical),
-      supported: !isPlayableCharacter(canonical) || this.options.supported(display),
-      status: "future",
-      attempts: 0,
-      skipped: false,
-      startedAt: null,
-      completedAt: null,
-      durationMs: null,
-    }
+        canonical,
+        text: display,
+        index,
+        playable,
+        supported: !playable || this.options.supported(display),
+        status: "future",
+        attempts: 0,
+        skipped: false,
+        startedAt: null,
+        completedAt: null,
+        durationMs: null,
+      }
     })
     this.score = 0
     this.correct = 0
@@ -60,14 +57,11 @@ export class SessionEngine {
     this.markCurrent()
   }
 
-  get current() {
-    return this.currentIndex === null ? null : this.tokens[this.currentIndex]
-  }
+  get current() { return this.currentIndex === null ? null : this.tokens[this.currentIndex] }
 
   submit(value) {
     const token = this.current
     if (!token) return { type: "complete" }
-
     token.attempts += 1
     const accepted = this.options.equivalents(token)
     if (!accepted.includes(value)) return { type: "incorrect", token }
@@ -84,7 +78,6 @@ export class SessionEngine {
   skip() {
     const token = this.current
     if (!token || this.options.hard) return { type: "blocked" }
-
     token.status = "past"
     token.skipped = true
     token.completedAt = performance.now()
@@ -96,11 +89,8 @@ export class SessionEngine {
 
   advance() {
     this.currentIndex = this.findNextPlayable(this.currentIndex)
-    if (this.currentIndex === null) {
-      this.completedAt = performance.now()
-    } else {
-      this.markCurrent()
-    }
+    if (this.currentIndex === null) this.completedAt = performance.now()
+    else this.markCurrent()
   }
 
   findNextPlayable(afterIndex) {
@@ -126,9 +116,7 @@ export class SessionEngine {
     token.startedAt = performance.now()
   }
 
-  elapsedMs() {
-    return (this.completedAt || performance.now()) - this.startedAt
-  }
+  elapsedMs() { return (this.completedAt || performance.now()) - this.startedAt }
 
   report() {
     const attempted = this.tokens.filter((token) => token.playable && token.supported && (token.completedAt || token.attempts > 0))
@@ -159,45 +147,115 @@ function difficulty(token) {
 }
 
 export class YourInputMethodAdapter {
-  constructor(onCommit) {
-    this.onCommit = onCommit
-  }
-
-  handleInput(value) {
-    graphemes(value).forEach((token) => this.onCommit(token))
-  }
+  constructor(onCommit) { this.onCommit = onCommit }
+  handleInput(value) { graphemes(value).forEach((token) => this.onCommit(token)) }
 }
 
-// A deliberately tiny boundary for the browser RIME runtime. The learning
-// engine only needs committed characters and a way to ask whether a target is
-// representable. The runtime itself remains RIME and can be replaced/upgraded
-// without changing SessionEngine or the views.
-export class RimeAdapter {
-  constructor(runtime, schemaId, onCommit) {
-    this.runtime = runtime
-    this.schemaId = schemaId
+// Browser-side helper backed by the RIME dictionaries already imported into
+// CharacterInputCode. This is deliberately not labelled as librime: Latin key
+// sequences are only a way to choose a Han character, and the transcription
+// engine scores the committed Han character, never the ASCII code itself.
+export class RimeDictionaryAdapter {
+  constructor({ systemId, endpoint = "/characters/input_codes.json", onCommit, onCandidates }) {
+    this.systemId = systemId
+    this.endpoint = endpoint
     this.onCommit = onCommit
-    this.session = null
+    this.onCandidates = onCandidates
+    this.candidates = []
+    this.abortController = null
+    this.cache = new Map()
+    this.timer = null
+    this.revealCandidates = false
   }
 
-  async connect() {
-    if (!this.runtime?.createSession) throw new Error("RIME browser runtime is unavailable")
-    this.session = await this.runtime.createSession({ schemaId: this.schemaId, onCommit: this.onCommit })
-    return this.session
+  setRevealCandidates(value) {
+    this.revealCandidates = Boolean(value)
+    if (!this.revealCandidates) {
+      window.clearTimeout(this.timer)
+      this.candidates = []
+      this.onCandidates([])
+    }
   }
 
-  async supports(character) {
-    if (!this.session?.supports) return true
-    return this.session.supports(character)
+  update(code) {
+    const query = code.trim()
+    if (!query || !this.revealCandidates) {
+      this.candidates = []
+      this.onCandidates([])
+      return
+    }
+
+    window.clearTimeout(this.timer)
+    this.timer = window.setTimeout(async () => {
+      const rows = await this.lookup(query, "prefix")
+      this.candidates = rows
+      this.onCandidates(rows, query)
+    }, 100)
   }
 
-  async key(event) {
-    if (!this.session?.key) return false
-    return this.session.key(event)
+  async commitCode(code) {
+    const query = code.trim()
+    if (!query) return { committed: false, reason: "empty" }
+
+    if (this.revealCandidates && this.candidates.length > 0) {
+      return { committed: this.choose(0), reason: "candidate" }
+    }
+
+    const rows = await this.lookup(query, "exact")
+    this.candidates = rows
+
+    if (rows.length === 1) {
+      this.onCommit(rows[0].character)
+      return { committed: true, reason: "unique" }
+    }
+
+    if (rows.length > 1) {
+      return { committed: false, reason: "ambiguous", count: rows.length }
+    }
+
+    return { committed: false, reason: "none" }
+  }
+
+  async lookup(query, match = "prefix") {
+    const cacheKey = `${match}:${query}`
+    if (this.cache.has(cacheKey)) return this.cache.get(cacheKey)
+
+    this.abortController?.abort()
+    this.abortController = new AbortController()
+    const url = new URL(this.endpoint, window.location.origin)
+    url.searchParams.set("system_id", this.systemId)
+    url.searchParams.set("q", query)
+    url.searchParams.set("match", match)
+    url.searchParams.set("limit", "12")
+
+    try {
+      const response = await fetch(url, {
+        headers: { Accept: "application/json" },
+        signal: this.abortController.signal,
+      })
+      if (!response.ok) throw new Error(`candidate lookup failed (${response.status})`)
+      const rows = await response.json()
+      this.cache.set(cacheKey, rows)
+      return rows
+    } catch (error) {
+      if (error.name === "AbortError") return []
+      this.candidates = []
+      this.onCandidates([], query, error)
+      return []
+    }
+  }
+
+  choose(index = 0) {
+    const candidate = this.candidates[index]
+    if (!candidate?.character) return false
+    this.onCommit(candidate.character)
+    return true
   }
 
   disconnect() {
-    this.session?.destroy?.()
-    this.session = null
+    window.clearTimeout(this.timer)
+    this.abortController?.abort()
+    this.abortController = null
+    this.candidates = []
   }
 }

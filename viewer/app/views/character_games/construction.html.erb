@@ -1,0 +1,22 @@
+<div class="character-maker"
+     data-controller="character-maker"
+     data-character-maker-search-url-value="/characters/structure.json">
+  <h1>Make a character</h1>
+  <p>
+    Build any Ideographic Description Sequence you like. As the structure takes shape,
+    this toy looks through the imported IDS data and shows characters that match it.
+  </p>
+
+  <%= render "shared/ids_builder",
+             compact: false,
+             show_palette: true,
+             show_search: false,
+             search_url: "/characters/structure",
+             change_action: "ids-constructor:changed->character-maker#constructorChanged" %>
+
+  <section class="character-maker__results" aria-live="polite">
+    <h2>What does it make?</h2>
+    <p class="muted" data-character-maker-target="status">Start adding an IDS operator or component.</p>
+    <div class="character-maker__matches" data-character-maker-target="matches"></div>
+  </section>
+</div>

@@ -1,0 +1,36 @@
+<div class="character-learning-game"
+     data-controller="ids-game"
+     data-ids-game-mode-value="<%= mode %>"
+     data-ids-game-rounds-value="<%= json_escape(@rounds.to_json) %>">
+  <header class="character-learning-game__header">
+    <div>
+      <h1><%= title %></h1>
+      <p><%= introduction %></p>
+    </div>
+    <div class="character-learning-game__score" data-ids-game-target="score"></div>
+  </header>
+
+  <section class="character-learning-prompt">
+    <div class="character-learning-prompt__glyph" data-ids-game-target="glyph"></div>
+    <div class="character-learning-prompt__instruction" data-ids-game-target="prompt"></div>
+    <div class="character-learning-prompt__components" data-ids-game-target="components"></div>
+  </section>
+
+  <div class="character-learning-game__actions character-learning-game__actions--primary">
+    <button type="button" data-action="ids-game#check">Check structure</button>
+    <button type="button" data-action="ids-game#skip">Skip</button>
+    <span data-ids-game-target="status" aria-live="polite"></span>
+  </div>
+
+  <%= render "shared/ids_builder",
+             compact: false,
+             show_palette: true,
+             show_search: false,
+             search_url: "/characters/structure",
+             change_action: "ids-constructor:changed->ids-game#constructorChanged" %>
+
+  <details class="character-learning-help">
+    <summary>How this teaches dictionary lookup</summary>
+    <p>IDS is prefix notation: choose the layout first, then fill its slots from left-to-right or top-to-bottom. The hard-to-input palette uses total stroke count and first stroke (橫、豎、撇、點、折), the same lookup skill used by the structure search.</p>
+  </details>
+</div>

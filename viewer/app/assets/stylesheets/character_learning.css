@@ -1,0 +1,288 @@
+/* Shared character-learning UI: header IDS constructor, IDS games, and the
+   dictionary's compact IDS readout. */
+
+.character-ids-deconstructions code {
+  font-family: var(--han-font-stack);
+  font-size: 1.35rem;
+  line-height: 1.5;
+}
+
+.site-search-with-compose {
+  display: flex;
+  align-items: stretch;
+  gap: 0.4rem;
+  position: relative;
+  min-width: 0;
+}
+
+.site-search-with-compose > .site-search {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.site-ids-quick-compose {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.site-ids-quick-compose__toggle {
+  box-sizing: border-box;
+  min-height: 100%;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  border: 1px solid buttonborder;
+  padding: 0.28rem 0.48rem;
+  cursor: pointer;
+  background: buttonface;
+  color: buttontext;
+  list-style: none;
+  white-space: nowrap;
+}
+
+.site-ids-quick-compose__toggle::-webkit-details-marker { display: none; }
+.site-ids-quick-compose__han { font-family: var(--han-font-stack); font-size: 1.05rem; }
+.site-ids-quick-compose__english { font-size: 0.78rem; opacity: 0.72; }
+
+.site-ids-quick-compose__panel {
+  position: absolute;
+  z-index: 120;
+  top: calc(100% + 0.45rem);
+  right: 0;
+  width: min(36rem, 88vw);
+  max-height: min(38rem, 75vh);
+  overflow: auto;
+  padding: 0.8rem;
+  border: 1px solid rgba(127, 127, 127, 0.45);
+  border-radius: 0.55rem;
+  background: Canvas;
+  color: CanvasText;
+  box-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.2);
+}
+
+.site-ids-quick-compose__more { margin: 0.6rem 0 0; }
+
+.ids-shared-builder .ids-constructor-toolbar,
+.ids-shared-builder .ids-component-entry,
+.ids-shared-builder .ids-constructor-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.ids-shared-builder .ids-constructor-toolbar { margin: 0 0 0.65rem; }
+.ids-shared-builder .ids-component-entry { margin-bottom: 0.65rem; }
+.ids-shared-builder .ids-tree { margin: 0.8rem 0; overflow-x: auto; }
+
+.ids-shared-builder .ids-tree-node {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  vertical-align: top;
+}
+
+.ids-shared-builder .ids-tree-children {
+  display: flex;
+  gap: 0.45rem;
+  align-items: flex-start;
+  padding-top: 0.3rem;
+  border-top: 1px solid rgba(127, 127, 127, 0.45);
+}
+
+.ids-shared-builder .ids-operator,
+.ids-shared-builder .ids-tree-token,
+.ids-shared-builder .ids-difficult-glyph {
+  font-family: var(--han-font-stack);
+}
+
+.ids-shared-builder .ids-operator,
+.ids-shared-builder .ids-tree-token {
+  min-width: 2.1rem;
+  min-height: 2.1rem;
+  font-size: 1.2rem;
+}
+
+.ids-shared-builder .ids-tree-token.is-selected {
+  outline: 3px solid currentColor;
+  outline-offset: 2px;
+}
+
+.ids-shared-builder .ids-expression-row code {
+  font-family: var(--han-font-stack);
+  font-size: 1.25rem;
+}
+
+.ids-shared-builder--compact .ids-tree-token,
+.ids-shared-builder--compact .ids-operator {
+  min-width: 1.9rem;
+  min-height: 1.9rem;
+  font-size: 1.05rem;
+}
+
+.ids-shared-builder .ids-difficult-components {
+  margin: 0.8rem 0;
+  border: 1px solid rgba(127, 127, 127, 0.3);
+  border-radius: 0.45rem;
+  padding: 0.55rem 0.7rem;
+}
+
+.ids-shared-builder .ids-difficult-stroke-counts,
+.ids-shared-builder .ids-difficult-glyphs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem;
+}
+
+.ids-shared-builder .ids-difficult-stroke-counts {
+  margin: 0.65rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(127, 127, 127, 0.3);
+}
+
+.ids-shared-builder .ids-difficult-count.is-active { outline: 2px solid currentColor; }
+.ids-shared-builder .ids-difficult-group[hidden] { display: none; }
+
+.ids-shared-builder .ids-difficult-row {
+  display: grid;
+  grid-template-columns: minmax(8rem, 10rem) 1fr;
+  gap: 0.6rem;
+  padding: 0.3rem 0;
+}
+
+.ids-shared-builder .ids-difficult-label { display: flex; flex-direction: column; }
+.ids-shared-builder .ids-difficult-glyph { min-width: 2rem; min-height: 2rem; font-size: 1.25rem; }
+
+.character-learning-game { max-width: 70rem; margin: 0 auto; }
+
+.character-learning-game__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.character-learning-game__score { white-space: nowrap; font-weight: 600; }
+
+.character-learning-prompt {
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px solid rgba(127, 127, 127, 0.35);
+  border-radius: 0.7rem;
+  text-align: center;
+}
+
+.character-learning-prompt__glyph {
+  font-family: var(--han-font-stack);
+  font-size: clamp(4rem, 13vw, 8rem);
+  line-height: 1.15;
+}
+
+.character-learning-prompt__components {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.65rem;
+}
+
+.character-learning-component-pill {
+  border: 1px solid rgba(127, 127, 127, 0.4);
+  border-radius: 0.4rem;
+  padding: 0.25rem 0.5rem;
+  font-family: var(--han-font-stack);
+  font-size: 1.7rem;
+}
+
+.character-learning-game__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+  margin: 0.9rem 0;
+}
+
+.component-game-choice {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.8rem 0;
+}
+
+.component-game-choice button.is-selected {
+  outline: 3px solid currentColor;
+  outline-offset: 1px;
+}
+
+.character-learning-help { margin-top: 1rem; }
+
+.corpus-transcription-launch { margin-left: 0.35rem; }
+
+@media (max-width: 700px) {
+  .site-ids-quick-compose__english { display: none; }
+  .site-ids-quick-compose__panel { right: -0.5rem; width: min(30rem, 92vw); }
+  .ids-shared-builder .ids-difficult-row { grid-template-columns: 1fr; }
+  .character-learning-game__header { flex-direction: column; }
+}
+
+/* Keep the deconstruction game's judgement controls visible before the long
+   component palette. The user can check/skip without scrolling to the bottom. */
+.character-learning-game__actions--primary {
+  margin: 0.65rem 0 0.8rem;
+  padding: 0.45rem 0;
+  border-top: 1px solid rgba(127, 127, 127, 0.2);
+  border-bottom: 1px solid rgba(127, 127, 127, 0.2);
+}
+
+/* The global Compose popover must contain the real hard-to-input lookup grid,
+   not a cut-down constructor. It has its own scroll area so the site header
+   does not grow with the palette. */
+.site-ids-quick-compose__panel .ids-difficult-components {
+  max-height: 24rem;
+  overflow: auto;
+}
+
+.site-ids-quick-compose__panel .ids-difficult-row {
+  grid-template-columns: minmax(6.5rem, 8rem) 1fr;
+}
+
+.character-maker {
+  max-width: 70rem;
+  margin: 0 auto;
+}
+
+.character-maker__results {
+  margin-top: 1rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid rgba(127, 127, 127, 0.3);
+}
+
+.character-maker__matches {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 0.65rem;
+}
+
+.character-maker-match {
+  display: grid;
+  grid-template-columns: 4rem 1fr;
+  gap: 0.7rem;
+  align-items: start;
+  padding: 0.65rem;
+  border: 1px solid rgba(127, 127, 127, 0.3);
+  border-radius: 0.55rem;
+}
+
+.character-maker-match__glyph {
+  font-family: var(--han-font-stack);
+  font-size: 3rem;
+  line-height: 1;
+  text-align: center;
+  text-decoration: none;
+}
+
+.character-maker-match__definition {
+  margin: 0.35rem 0 0;
+  line-height: 1.35;
+}
