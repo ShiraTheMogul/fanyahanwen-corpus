@@ -18,6 +18,21 @@
     <% end %>
   </div>
 
+  <div class="ids-tree" data-ids-constructor-target="tree" aria-live="polite"></div>
+
+  <p class="ids-expression-row">
+    <strong><%= t("ids_search.ids_label") %>:</strong>
+    <code data-ids-constructor-target="expression">?</code>
+  </p>
+
+  <div class="ids-constructor-actions">
+    <button type="button" data-action="ids-constructor#undo"><%= t("ids_search.constructor.undo") %></button>
+    <button type="button" data-action="ids-constructor#clear"><%= t("ids_search.constructor.clear") %></button>
+    <% if show_search %>
+      <button type="button" data-action="ids-constructor#search"><%= t("ids_search.constructor.search_structure") %></button>
+    <% end %>
+  </div>
+
   <div class="ids-component-entry">
     <label><%= t("ids_search.constructor.component_label") %>
       <input type="text" maxlength="64" inputmode="text" data-ids-constructor-target="component" placeholder="氵">
@@ -71,19 +86,4 @@
       </div>
     </details>
   <% end %>
-
-  <div class="ids-tree" data-ids-constructor-target="tree" aria-live="polite"></div>
-
-  <p class="ids-expression-row">
-    <strong><%= t("ids_search.ids_label") %>:</strong>
-    <code data-ids-constructor-target="expression">?</code>
-  </p>
-
-  <div class="ids-constructor-actions">
-    <button type="button" data-action="ids-constructor#undo"><%= t("ids_search.constructor.undo") %></button>
-    <button type="button" data-action="ids-constructor#clear"><%= t("ids_search.constructor.clear") %></button>
-    <% if show_search %>
-      <button type="button" data-action="ids-constructor#search"><%= t("ids_search.constructor.search_structure") %></button>
-    <% end %>
-  </div>
 </div>

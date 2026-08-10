@@ -286,3 +286,309 @@
   margin: 0.35rem 0 0;
   line-height: 1.35;
 }
+
+/* -------------------------------------------------------------------------
+   WYSIWYG IDS composition
+   -------------------------------------------------------------------------
+   IDS operators are spatial instructions.  The editor therefore draws the
+   slot geometry itself instead of presenting every operator as the same
+   generic parent-with-children tree.  Nested operators simply put another
+   grid inside a slot. */
+
+.ids-shared-builder .ids-constructor-toolbar {
+  gap: 0.42rem;
+}
+
+.ids-shared-builder .ids-operator {
+  position: relative;
+  width: 2.7rem;
+  height: 2.7rem;
+  min-width: 2.7rem;
+  min-height: 2.7rem;
+  padding: 0.22rem;
+  background: Canvas;
+  color: CanvasText;
+}
+
+.ids-shared-builder--compact .ids-operator {
+  width: 2.35rem;
+  height: 2.35rem;
+  min-width: 2.35rem;
+  min-height: 2.35rem;
+}
+
+.ids-operator-diagram {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border: 2px dashed color-mix(in srgb, currentColor 48%, transparent);
+}
+
+.ids-operator-diagram::before,
+.ids-operator-diagram::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  border-color: color-mix(in srgb, currentColor 48%, transparent);
+  border-style: dashed;
+}
+
+.ids-operator-diagram--left-right::before {
+  inset: 0 auto 0 50%;
+  border-width: 0 0 0 2px;
+}
+
+.ids-operator-diagram--left-middle-right::before,
+.ids-operator-diagram--left-middle-right::after {
+  inset: 0 auto 0 33.333%;
+  border-width: 0 0 0 2px;
+}
+.ids-operator-diagram--left-middle-right::after { left: 66.666%; }
+
+.ids-operator-diagram--top-bottom::before {
+  inset: 50% 0 auto 0;
+  border-width: 2px 0 0;
+}
+
+.ids-operator-diagram--top-middle-bottom::before,
+.ids-operator-diagram--top-middle-bottom::after {
+  inset: 33.333% 0 auto 0;
+  border-width: 2px 0 0;
+}
+.ids-operator-diagram--top-middle-bottom::after { top: 66.666%; }
+
+.ids-operator-diagram--surround::before { inset: 27%; border-width: 2px; }
+.ids-operator-diagram--surround-above::before { inset: 28% 25% 0; border-width: 2px 2px 0; }
+.ids-operator-diagram--surround-below::before { inset: 0 25% 28%; border-width: 0 2px 2px; }
+.ids-operator-diagram--surround-left::before { inset: 25% 0 25% 28%; border-width: 2px 0 2px 2px; }
+.ids-operator-diagram--surround-right::before { inset: 25% 28% 25% 0; border-width: 2px 2px 2px 0; }
+.ids-operator-diagram--surround-upper-left::before { inset: 28% 0 0 28%; border-width: 2px 0 0 2px; }
+.ids-operator-diagram--surround-upper-right::before { inset: 28% 28% 0 0; border-width: 2px 2px 0 0; }
+.ids-operator-diagram--surround-lower-left::before { inset: 0 0 28% 28%; border-width: 0 0 2px 2px; }
+.ids-operator-diagram--surround-lower-right::before { inset: 0 28% 28% 0; border-width: 0 2px 2px 0; }
+
+.ids-operator-diagram--overlay::before,
+.ids-operator-diagram--subtraction::before {
+  inset: 25%;
+  border-width: 2px;
+}
+
+.ids-operator-diagram--horizontal-reflection,
+.ids-operator-diagram--rotation,
+.ids-operator-diagram--subtraction {
+  display: grid;
+  place-items: center;
+}
+
+.ids-operator-diagram__mark {
+  position: relative;
+  z-index: 1;
+  font-family: sans-serif;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.ids-tree {
+  --ids-slot-size: clamp(3.2rem, 7vw, 5.2rem);
+}
+
+.ids-tree > .ids-tree-node {
+  min-width: min-content;
+}
+
+.ids-tree-node--operator {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.28rem;
+  vertical-align: top;
+}
+
+.ids-layout-selector {
+  align-self: flex-start;
+  min-width: 1.8rem;
+  min-height: 1.45rem;
+  padding: 0.05rem 0.28rem;
+  border: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+  background: Canvas;
+  color: CanvasText;
+  font-family: var(--han-font-stack);
+  font-size: 0.9rem;
+  line-height: 1.15;
+  opacity: 0.7;
+}
+
+.ids-layout-selector.is-selected {
+  outline: 3px solid currentColor;
+  outline-offset: 1px;
+  opacity: 1;
+}
+
+.ids-layout-frame {
+  position: relative;
+  display: grid;
+  box-sizing: border-box;
+  min-width: var(--ids-slot-size);
+  min-height: var(--ids-slot-size);
+  border: 2px dashed color-mix(in srgb, currentColor 42%, transparent);
+  background: color-mix(in srgb, Canvas 97%, CanvasText 3%);
+}
+
+.ids-layout-child {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-width: var(--ids-slot-size);
+  min-height: var(--ids-slot-size);
+  padding: 0.28rem;
+  box-sizing: border-box;
+}
+
+.ids-layout-child + .ids-layout-child {
+  border-color: color-mix(in srgb, currentColor 42%, transparent);
+  border-style: dashed;
+}
+
+.ids-tree-node--leaf {
+  display: grid;
+  place-items: center;
+}
+
+.ids-tree-slot {
+  min-width: calc(var(--ids-slot-size) * 0.62);
+  min-height: calc(var(--ids-slot-size) * 0.62);
+  padding: 0.2rem;
+  border: 1px solid color-mix(in srgb, currentColor 28%, transparent);
+  background: Canvas;
+  color: CanvasText;
+  font-family: var(--han-font-stack);
+  font-size: clamp(1.6rem, 4vw, 2.7rem);
+  line-height: 1;
+}
+
+.ids-tree-slot.is-selected {
+  outline: 3px solid #d58a00;
+  outline-offset: 2px;
+}
+
+/* Linear compositions. */
+.ids-layout-frame--left-right { grid-template-columns: repeat(2, minmax(var(--ids-slot-size), 1fr)); }
+.ids-layout-frame--left-right > .ids-layout-child--2 { border-left-width: 2px; }
+
+.ids-layout-frame--left-middle-right { grid-template-columns: repeat(3, minmax(var(--ids-slot-size), 1fr)); }
+.ids-layout-frame--left-middle-right > .ids-layout-child--2,
+.ids-layout-frame--left-middle-right > .ids-layout-child--3 { border-left-width: 2px; }
+
+.ids-layout-frame--top-bottom { grid-template-rows: repeat(2, minmax(var(--ids-slot-size), auto)); }
+.ids-layout-frame--top-bottom > .ids-layout-child--2 { border-top-width: 2px; }
+
+.ids-layout-frame--top-middle-bottom { grid-template-rows: repeat(3, minmax(var(--ids-slot-size), auto)); }
+.ids-layout-frame--top-middle-bottom > .ids-layout-child--2,
+.ids-layout-frame--top-middle-bottom > .ids-layout-child--3 { border-top-width: 2px; }
+
+/* Enclosures.  The first operand occupies the enclosing shelf/edge; the second
+   operand sits in the visually enclosed area.  This is deliberately schematic:
+   it teaches the IDS relation without pretending every enclosing component has
+   the same physical stroke geometry. */
+.ids-layout-frame--surround,
+.ids-layout-frame--surround-above,
+.ids-layout-frame--surround-below,
+.ids-layout-frame--surround-left,
+.ids-layout-frame--surround-right,
+.ids-layout-frame--surround-upper-left,
+.ids-layout-frame--surround-upper-right,
+.ids-layout-frame--surround-lower-left,
+.ids-layout-frame--surround-lower-right,
+.ids-layout-frame--overlay,
+.ids-layout-frame--subtraction {
+  grid-template-columns: repeat(3, minmax(calc(var(--ids-slot-size) * 0.55), 1fr));
+  grid-template-rows: repeat(3, minmax(calc(var(--ids-slot-size) * 0.55), auto));
+}
+
+.ids-layout-frame--surround > .ids-layout-child--1 { grid-area: 1 / 1 / 4 / 4; padding: 0.18rem; align-items: start; justify-items: start; }
+.ids-layout-frame--surround > .ids-layout-child--2 { grid-area: 2 / 2 / 3 / 3; z-index: 2; border-width: 2px; }
+
+.ids-layout-frame--surround-above > .ids-layout-child--1 { grid-area: 1 / 1 / 2 / 4; }
+.ids-layout-frame--surround-above > .ids-layout-child--2 { grid-area: 2 / 2 / 4 / 3; border-width: 0 2px 2px; }
+
+.ids-layout-frame--surround-below > .ids-layout-child--1 { grid-area: 3 / 1 / 4 / 4; }
+.ids-layout-frame--surround-below > .ids-layout-child--2 { grid-area: 1 / 2 / 3 / 3; border-width: 2px 2px 0; }
+
+.ids-layout-frame--surround-left > .ids-layout-child--1 { grid-area: 1 / 1 / 4 / 2; }
+.ids-layout-frame--surround-left > .ids-layout-child--2 { grid-area: 2 / 2 / 3 / 4; border-width: 2px 2px 2px 0; }
+
+.ids-layout-frame--surround-right > .ids-layout-child--1 { grid-area: 1 / 3 / 4 / 4; }
+.ids-layout-frame--surround-right > .ids-layout-child--2 { grid-area: 2 / 1 / 3 / 3; border-width: 2px 0 2px 2px; }
+
+.ids-layout-frame--surround-upper-left > .ids-layout-child--1 { grid-area: 1 / 1 / 2 / 4; }
+.ids-layout-frame--surround-upper-left > .ids-layout-child--1::after,
+.ids-layout-frame--surround-lower-left > .ids-layout-child--1::after,
+.ids-layout-frame--surround-upper-right > .ids-layout-child--1::after,
+.ids-layout-frame--surround-lower-right > .ids-layout-child--1::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  border-color: color-mix(in srgb, currentColor 42%, transparent);
+  border-style: dashed;
+}
+.ids-layout-frame--surround-upper-left > .ids-layout-child--1::after { left: 0; top: 100%; height: 200%; border-left-width: 2px; }
+.ids-layout-frame--surround-upper-left > .ids-layout-child--2 { grid-area: 2 / 2 / 4 / 4; border-width: 0; }
+
+.ids-layout-frame--surround-upper-right > .ids-layout-child--1 { grid-area: 1 / 1 / 2 / 4; }
+.ids-layout-frame--surround-upper-right > .ids-layout-child--1::after { right: 0; top: 100%; height: 200%; border-right-width: 2px; }
+.ids-layout-frame--surround-upper-right > .ids-layout-child--2 { grid-area: 2 / 1 / 4 / 3; border-width: 0; }
+
+.ids-layout-frame--surround-lower-left > .ids-layout-child--1 { grid-area: 3 / 1 / 4 / 4; }
+.ids-layout-frame--surround-lower-left > .ids-layout-child--1::after { left: 0; bottom: 100%; height: 200%; border-left-width: 2px; }
+.ids-layout-frame--surround-lower-left > .ids-layout-child--2 { grid-area: 1 / 2 / 3 / 4; border-width: 0; }
+
+.ids-layout-frame--surround-lower-right > .ids-layout-child--1 { grid-area: 3 / 1 / 4 / 4; }
+.ids-layout-frame--surround-lower-right > .ids-layout-child--1::after { right: 0; bottom: 100%; height: 200%; border-right-width: 2px; }
+.ids-layout-frame--surround-lower-right > .ids-layout-child--2 { grid-area: 1 / 1 / 3 / 3; border-width: 0; }
+
+.ids-layout-frame--overlay > .ids-layout-child,
+.ids-layout-frame--subtraction > .ids-layout-child {
+  grid-area: 1 / 1 / 4 / 4;
+}
+.ids-layout-frame--overlay > .ids-layout-child--1 { transform: translate(-8%, -8%); }
+.ids-layout-frame--overlay > .ids-layout-child--2 { transform: translate(8%, 8%); z-index: 2; border-width: 2px; }
+.ids-layout-frame--subtraction > .ids-layout-child--1 { z-index: 1; }
+.ids-layout-frame--subtraction > .ids-layout-child--2 { z-index: 2; transform: scale(0.62); border-width: 2px; }
+
+/* Unary transform operators keep one full-size operand but visibly mark the
+   transformation on the frame. */
+.ids-layout-frame--horizontal-reflection,
+.ids-layout-frame--rotation {
+  grid-template-columns: minmax(var(--ids-slot-size), 1fr);
+  grid-template-rows: minmax(var(--ids-slot-size), auto);
+}
+.ids-layout-frame--horizontal-reflection::after,
+.ids-layout-frame--rotation::after {
+  position: absolute;
+  right: 0.2rem;
+  bottom: 0.1rem;
+  padding: 0.05rem 0.15rem;
+  background: Canvas;
+  font-family: sans-serif;
+  font-size: 1rem;
+  opacity: 0.72;
+}
+.ids-layout-frame--horizontal-reflection::after { content: "↔"; }
+.ids-layout-frame--rotation::after { content: "↻"; }
+
+.site-ids-quick-compose__panel .ids-tree {
+  --ids-slot-size: 3.2rem;
+}
+
+@media (max-width: 700px) {
+  .ids-tree { --ids-slot-size: 2.8rem; }
+  .ids-shared-builder .ids-operator {
+    width: 2.35rem;
+    height: 2.35rem;
+    min-width: 2.35rem;
+    min-height: 2.35rem;
+  }
+}

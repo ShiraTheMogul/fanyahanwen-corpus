@@ -1,10 +1,23 @@
 import { Controller } from "@hotwired/stimulus"
 
-const ARITY = {
-  "⿾": 1, "⿿": 1,
-  "⿲": 3, "⿳": 3,
-  "⿰": 2, "⿱": 2, "⿴": 2, "⿵": 2, "⿶": 2, "⿷": 2,
-  "⿸": 2, "⿹": 2, "⿺": 2, "⿻": 2, "⿼": 2, "⿽": 2, "㇯": 2,
+const OPERATOR_LAYOUT = {
+  "⿰": { arity: 2, layout: "left-right" },
+  "⿲": { arity: 3, layout: "left-middle-right" },
+  "⿱": { arity: 2, layout: "top-bottom" },
+  "⿳": { arity: 3, layout: "top-middle-bottom" },
+  "⿴": { arity: 2, layout: "surround" },
+  "⿵": { arity: 2, layout: "surround-above" },
+  "⿶": { arity: 2, layout: "surround-below" },
+  "⿷": { arity: 2, layout: "surround-left" },
+  "⿸": { arity: 2, layout: "surround-upper-left" },
+  "⿹": { arity: 2, layout: "surround-upper-right" },
+  "⿺": { arity: 2, layout: "surround-lower-left" },
+  "⿻": { arity: 2, layout: "overlay" },
+  "⿼": { arity: 2, layout: "surround-right" },
+  "⿽": { arity: 2, layout: "surround-lower-right" },
+  "⿾": { arity: 1, layout: "horizontal-reflection" },
+  "⿿": { arity: 1, layout: "rotation" },
+  "㇯": { arity: 2, layout: "subtraction" },
 }
 
 export default class extends Controller {
@@ -15,14 +28,15 @@ export default class extends Controller {
     this.root = this.emptyNode()
     this.selectedPath = []
     this.history = []
+    this.decorateOperatorButtons()
     this.render()
   }
 
   insertOperator(event) {
     const operator = event.currentTarget.dataset.operator
-    const arity = ARITY[operator]
-    if (!arity) return
-    this.mutateSelected({ token: operator, children: Array.from({ length: arity }, () => this.emptyNode()) })
+    const definition = OPERATOR_LAYOUT[operator]
+    if (!definition) return
+    this.mutateSelected({ token: operator, children: Array.from({ length: definition.arity }, () => this.emptyNode()) })
   }
 
   insertComponent() {
@@ -141,23 +155,85 @@ export default class extends Controller {
   }
 
   renderNode(node, path) {
+    const definition = OPERATOR_LAYOUT[node.token]
+    if (definition) return this.renderOperatorNode(node, path, definition)
+    return this.renderLeafNode(node, path)
+  }
+
+  renderLeafNode(node, path) {
     const wrapper = document.createElement("div")
-    wrapper.className = "ids-tree-node"
+    wrapper.className = "ids-tree-node ids-tree-node--leaf"
+
     const button = document.createElement("button")
     button.type = "button"
-    button.className = "ids-tree-token"
-    if (JSON.stringify(path) === JSON.stringify(this.selectedPath)) button.classList.add("is-selected")
+    button.className = "ids-tree-token ids-tree-slot"
+    if (this.samePath(path, this.selectedPath)) button.classList.add("is-selected")
     button.textContent = node.token || "?"
     button.dataset.path = JSON.stringify(path)
     button.dataset.action = "ids-constructor#select"
+    button.setAttribute("aria-label", node.token ? `Component ${node.token}` : "Empty IDS component slot")
     wrapper.append(button)
-
-    if (node.children.length > 0) {
-      const children = document.createElement("div")
-      children.className = "ids-tree-children"
-      node.children.forEach((child, index) => children.append(this.renderNode(child, [...path, index])))
-      wrapper.append(children)
-    }
     return wrapper
+  }
+
+  renderOperatorNode(node, path, definition) {
+    const wrapper = document.createElement("div")
+    wrapper.className = `ids-tree-node ids-tree-node--operator ids-layout ids-layout--${definition.layout}`
+    wrapper.dataset.operator = node.token
+
+    const selector = document.createElement("button")
+    selector.type = "button"
+    selector.className = "ids-layout-selector"
+    if (this.samePath(path, this.selectedPath)) selector.classList.add("is-selected")
+    selector.textContent = node.token
+    selector.title = `Select ${node.token} structure`
+    selector.dataset.path = JSON.stringify(path)
+    selector.dataset.action = "ids-constructor#select"
+    wrapper.append(selector)
+
+    const frame = document.createElement("div")
+    frame.className = `ids-layout-frame ids-layout-frame--${definition.layout}`
+    frame.setAttribute("role", "group")
+    frame.setAttribute("aria-label", `${node.token} IDS structure`)
+
+    node.children.forEach((child, index) => {
+      const slot = document.createElement("div")
+      slot.className = `ids-layout-child ids-layout-child--${index + 1}`
+      slot.dataset.slotIndex = index
+      slot.append(this.renderNode(child, [...path, index]))
+      frame.append(slot)
+    })
+
+    wrapper.append(frame)
+    return wrapper
+  }
+
+  decorateOperatorButtons() {
+    this.element.querySelectorAll(".ids-operator[data-operator]").forEach((button) => {
+      const operator = button.dataset.operator
+      const definition = OPERATOR_LAYOUT[operator]
+      if (!definition || button.querySelector(".ids-operator-diagram")) return
+
+      button.textContent = ""
+      button.classList.add(`ids-operator--${definition.layout}`)
+      button.title = operator
+      button.setAttribute("aria-label", operator)
+
+      const diagram = document.createElement("span")
+      diagram.className = `ids-operator-diagram ids-operator-diagram--${definition.layout}`
+      diagram.setAttribute("aria-hidden", "true")
+      button.append(diagram)
+
+      if (["horizontal-reflection", "rotation", "subtraction"].includes(definition.layout)) {
+        const mark = document.createElement("span")
+        mark.className = "ids-operator-diagram__mark"
+        mark.textContent = definition.layout === "horizontal-reflection" ? "↔" : definition.layout === "rotation" ? "↻" : "−"
+        diagram.append(mark)
+      }
+    })
+  }
+
+  samePath(left, right) {
+    return left.length === right.length && left.every((value, index) => value === right[index])
   }
 }
