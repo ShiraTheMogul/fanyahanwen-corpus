@@ -331,22 +331,43 @@
   <% end %>
 
   <h2><%= t("dictionary.character.properties") %></h2>
+
+  <%# Chengyu is derived dictionary content rather than a CharacterProperty row.
+      Load the full membership set once, then inject a dedicated Chengyu group
+      into the same Field Lens group list below. Display paging is client-side. %>
+  <% chengyu_memberships = nil %>
+  <% chengyu_rows = [] %>
+  <% if defined?(ChengyuForm) && ChengyuForm.table_exists? %>
+    <% chengyu_memberships = ChengyuData::CharacterMemberships.new(@character) %>
+    <% chengyu_rows = chengyu_memberships.rows %>
+  <% end %>
+
   <% hkcards_image_rendered = false %>
-  <% FieldLens.with_character_data(@grouped_properties, @character).each do |group_name, props| %>
+  <% field_lens_groups = FieldLens.with_character_data(@grouped_properties, @character).to_a %>
+  <% if chengyu_rows.any? %>
+    <% later_groups = ["Dictionary indices", "Encodings & mappings", "Ideographic Research Group (IRG) sources", "Other"] %>
+    <% insert_before = field_lens_groups.index { |name, _| later_groups.include?(name.to_s) } || field_lens_groups.length %>
+    <% field_lens_groups.insert(insert_before, ["Chengyu", []]) %>
+  <% end %>
+  <% field_lens_groups.each do |group_name, props| %>
     
 <% property_group_key = {
      "Strokes & radicals" => "dictionary.character.property_groups.strokes_radicals",
      "Pronunciation" => "dictionary.character.property_groups.pronunciation",
      "Input" => "dictionary.character.property_groups.input",
      "Education notes" => "dictionary.character.property_groups.education_notes",
+     "Chengyu" => nil,
      "Dictionary indices" => "dictionary.character.property_groups.dictionary_indices",
      "Encodings & mappings" => "dictionary.character.property_groups.encodings_mappings",
      "Ideographic Research Group (IRG) sources" => "dictionary.character.property_groups.irg_sources",
      "Other" => "dictionary.character.property_groups.other"
    }[group_name.to_s] %>
-<h3><%= property_group_key ? t(property_group_key) : group_name %></h3>
+<% group_heading = group_name == "Chengyu" ? "成語 Chengyu" : (property_group_key ? t(property_group_key) : group_name) %>
+<%= tag.h3(group_heading, id: (group_name == "Chengyu" ? "dictionary-chengyu" : nil)) %>
 
-<% if group_name == "Pronunciation" %>
+<% if group_name == "Chengyu" %>
+  <%= render partial: "chengyu_memberships", locals: { memberships: chengyu_memberships, rows: chengyu_rows } %>
+<% elsif group_name == "Pronunciation" %>
   <%= render partial: "pronunciation_sections", locals: { props: (props || []), character: @character } %>
 <% else %>
   <ul>

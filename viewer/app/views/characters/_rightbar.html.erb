@@ -1,6 +1,5 @@
-<%# Right sidebar: view options plus compact Chengyu membership lookup. %>
+<%# Right sidebar: dictionary view options only. Dictionary content belongs in the main Field Lens. %>
 <% content_for :rightbar do %>
   <h3><%= t("view_options.heading") %></h3>
   <%= render "shared/view_options_rightbar" %>
-  <%= render "characters/chengyu_memberships" if @character.present? && ChengyuForm.table_exists? %>
 <% end %>

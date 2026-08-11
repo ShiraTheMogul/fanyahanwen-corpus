@@ -1,52 +1,107 @@
-<% memberships = ChengyuData::CharacterMemberships.new(@character) %>
-<% rows = memberships.rows %>
+<%= stylesheet_link_tag "chengyu_games", "data-turbo-track": "reload" %>
 
-<% if rows.any? %>
-  <%= stylesheet_link_tag "chengyu_games", "data-turbo-track": "reload" %>
-  <section class="chengyu-character-memberships">
-    <h3>成語 Chengyu</h3>
-    <p class="muted">
-      This character appears in <%= number_with_delimiter(memberships.count) %> imported Chengyu <%= memberships.count == 1 ? "family" : "families" %>.
-    </p>
+<% total = memberships.count.to_i %>
 
-    <ol class="chengyu-character-memberships__list">
-      <% rows.each do |row| %>
-        <li>
-          <span class="chengyu-character-memberships__word"><%= view_text(row.chengyu.display_form) %></span>
-          <% if row.matching_form.present? && row.matching_form.form_text != row.chengyu.display_form %>
-            <span class="chengyu-character-memberships__variant">Contains this character in the attested form <%= view_text(row.matching_form.form_text) %>.</span>
-          <% end %>
+<div
+  class="chengyu-character-memberships"
+  data-controller="chengyu-memberships"
+  data-chengyu-memberships-default-size-value="20"
+  data-chengyu-memberships-character-value="<%= @character.chr %>"
+>
+  <p class="chengyu-character-memberships__summary">
+    This character appears in <%= number_with_delimiter(total) %> imported Chengyu <%= total == 1 ? "family" : "families" %>.
+  </p>
 
-          <% if row.languages.any? %>
-            <span>
-              <% row.languages.first(5).each do |tag| %>
-                <% label = ChengyuData::EntryPresenter::LANGUAGE_LABELS.fetch(tag.to_s, tag.to_s) %>
-                <span class="chengyu-language-badge"><%= label %></span>
-              <% end %>
-            </span>
-          <% end %>
+  <div class="chengyu-character-memberships__controls" data-chengyu-memberships-target="controls" hidden>
+    <span class="chengyu-character-memberships__controls-label">Display:</span>
+    <% [["20", "20"], ["50", "50"], ["100", "100"], ["Full list", "all"]].each do |label, size| %>
+      <button
+        type="button"
+        class="chengyu-character-memberships__size-button"
+        data-chengyu-memberships-target="sizeButton"
+        data-action="chengyu-memberships#setPageSize"
+        data-size="<%= size %>"
+        aria-pressed="false"
+      ><%= label %></button>
+    <% end %>
 
-          <% if row.sense.present? %>
-            <span class="chengyu-character-memberships__sense"><%= view_text(row.sense.plain_definition) %></span>
-          <% end %>
+    <button
+      type="button"
+      class="chengyu-character-memberships__download-button"
+      data-action="chengyu-memberships#downloadCsv"
+    >Download full CSV</button>
+  </div>
 
-          <span class="chengyu-character-memberships__study-links">
-            <%= link_to "Search corpus", row.corpus_search_url, target: "_blank", rel: "noopener" %>
-            <% row.corpus_contexts.each do |context| %>
-              <%= link_to "Source context — #{context[:label]}", context[:url], target: "_blank", rel: "noopener" %>
+  <nav
+    class="chengyu-character-memberships__pagination"
+    data-chengyu-memberships-target="pagination"
+    aria-label="Chengyu list pages"
+    hidden
+  >
+    <button
+      type="button"
+      data-chengyu-memberships-target="previous"
+      data-action="chengyu-memberships#previousPage"
+    >← Previous</button>
+    <span data-chengyu-memberships-target="status"></span>
+    <button
+      type="button"
+      data-chengyu-memberships-target="next"
+      data-action="chengyu-memberships#nextPage"
+    >Next →</button>
+  </nav>
+
+  <ol class="chengyu-character-memberships__list">
+    <% rows.each_with_index do |row, index| %>
+      <% contexts = row.corpus_contexts %>
+      <% sources = row.sources.select { |source| source.url.present? } %>
+      <% download_record = {
+           chengyu: row.chengyu.display_form,
+           matching_form: row.matching_form&.form_text,
+           languages: row.languages.map { |tag| ChengyuData::EntryPresenter::LANGUAGE_LABELS.fetch(tag.to_s, tag.to_s) },
+           definition: row.sense&.plain_definition,
+           corpus_search_url: row.corpus_search_url,
+           source_contexts: contexts.map { |context| { label: context[:label], url: context[:url] } },
+           wiktionary_sources: sources.map { |source| { site: source.site_label, url: source.url } }
+         } %>
+      <li
+        value="<%= index + 1 %>"
+        data-chengyu-memberships-target="row"
+        data-chengyu-memberships-record="<%= download_record.to_json %>"
+      >
+        <span class="chengyu-character-memberships__word"><%= view_text(row.chengyu.display_form) %></span>
+        <% if row.matching_form.present? && row.matching_form.form_text != row.chengyu.display_form %>
+          <span class="chengyu-character-memberships__variant">Contains this character in the attested form <%= view_text(row.matching_form.form_text) %>.</span>
+        <% end %>
+
+        <% if row.languages.any? %>
+          <span class="chengyu-character-memberships__languages">
+            <% row.languages.first(5).each do |tag| %>
+              <% label = ChengyuData::EntryPresenter::LANGUAGE_LABELS.fetch(tag.to_s, tag.to_s) %>
+              <span class="chengyu-language-badge"><%= label %></span>
             <% end %>
           </span>
+        <% end %>
 
-          <% if row.sources.any? %>
-            <span class="chengyu-character-memberships__sources">
-              <% row.sources.each do |source| %>
-                <% next if source.url.blank? %>
-                <%= link_to source.site_label, source.url, target: "_blank", rel: "noopener" %>
-              <% end %>
-            </span>
+        <% if row.sense.present? %>
+          <span class="chengyu-character-memberships__sense"><%= view_text(row.sense.plain_definition) %></span>
+        <% end %>
+
+        <span class="chengyu-character-memberships__study-links">
+          <%= link_to "Search corpus", row.corpus_search_url, target: "_blank", rel: "noopener" %>
+          <% contexts.each do |context| %>
+            <%= link_to "Source context — #{context[:label]}", context[:url], target: "_blank", rel: "noopener" %>
           <% end %>
-        </li>
-      <% end %>
-    </ol>
-  </section>
-<% end %>
+        </span>
+
+        <% if sources.any? %>
+          <span class="chengyu-character-memberships__sources">
+            <% sources.each do |source| %>
+              <%= link_to source.site_label, source.url, target: "_blank", rel: "noopener" %>
+            <% end %>
+          </span>
+        <% end %>
+      </li>
+    <% end %>
+  </ol>
+</div>

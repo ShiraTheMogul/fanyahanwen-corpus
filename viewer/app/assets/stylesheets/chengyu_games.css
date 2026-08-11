@@ -227,20 +227,21 @@
   padding-top: 0.45rem;
 }
 
-/* Dictionary rightbar: intentionally compact. It is a lookup aid, not a second
-   full Chengyu dictionary page. */
+/* Dictionary Field Lens: Chengyu membership is lexical content, not a
+   rightbar/view-option control. The complete list is rendered once; the user
+   chooses how much of it to display client-side. */
 .chengyu-character-memberships {
-  margin-top: 1rem;
-  padding: 0.65rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
 }
 
-.chengyu-character-memberships h3 {
-  margin-top: 0;
+.chengyu-character-memberships__summary {
+  margin: 0 0 0.7rem;
 }
 
 .chengyu-character-memberships__list {
-  list-style: none;
-  padding: 0;
+  padding-left: 2.2rem;
   margin: 0;
   display: grid;
   gap: 0.65rem;
@@ -301,10 +302,9 @@
 }
 
 .chengyu-character-memberships__list {
-  max-height: 38rem;
-  overflow-y: auto;
-  padding-right: 0.3rem;
-  scrollbar-gutter: stable;
+  max-height: none;
+  overflow: visible;
+  padding-right: 0;
 }
 
 .chengyu-character-memberships__list > li {
@@ -314,4 +314,70 @@
 
 .chengyu-character-memberships__list > li:last-child {
   border-bottom: 0;
+}
+
+
+.chengyu-character-memberships__languages {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin-left: 0.35rem;
+}
+
+.chengyu-character-memberships__controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0 0 0.8rem;
+}
+
+.chengyu-character-memberships__controls-label {
+  font-weight: 650;
+  margin-right: 0.15rem;
+}
+
+.chengyu-character-memberships__size-button.is-active {
+  font-weight: 700;
+  outline: 2px solid currentColor;
+  outline-offset: 1px;
+}
+
+.chengyu-character-memberships__download-button {
+  margin-left: 0.35rem;
+}
+
+.chengyu-character-memberships__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin: 0 0 0.85rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 16%, transparent);
+}
+
+.chengyu-character-memberships__pagination span {
+  min-width: 16rem;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.chengyu-character-memberships__pagination button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+@media (max-width: 700px) {
+  .chengyu-character-memberships__download-button {
+    margin-left: 0;
+  }
+
+  .chengyu-character-memberships__pagination span {
+    min-width: 0;
+    flex: 1 1 100%;
+    order: -1;
+    text-align: left;
+  }
 }

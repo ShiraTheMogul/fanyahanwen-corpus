@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_11_000000) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_11_010500) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.integer "blob_id", null: false
     t.datetime "created_at", null: false
@@ -133,6 +133,27 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_11_000000) do
     t.index ["chengyu_id"], name: "index_chengyu_attestations_on_chengyu_id"
     t.index ["site", "pageid"], name: "idx_chengyu_attestations_page"
     t.index ["source_attestation_id"], name: "idx_chengyu_attestations_source_id", unique: true
+  end
+
+  create_table "chengyu_corpus_occurrences", force: :cascade do |t|
+    t.integer "chengyu_form_id", null: false
+    t.integer "chengyu_id", null: false
+    t.integer "chengyu_provenance_id", null: false
+    t.string "corpus_document_id"
+    t.string "corpus_work_id"
+    t.datetime "created_at", null: false
+    t.string "document_path", null: false
+    t.string "document_title"
+    t.integer "end_offset", null: false
+    t.string "matched_text", null: false
+    t.integer "start_offset", null: false
+    t.datetime "updated_at", null: false
+    t.string "work_title"
+    t.index ["chengyu_form_id"], name: "index_chengyu_corpus_occurrences_on_chengyu_form_id"
+    t.index ["chengyu_id", "document_path", "start_offset", "end_offset"], name: "idx_chengyu_corpus_occurrence_unique", unique: true
+    t.index ["chengyu_id"], name: "index_chengyu_corpus_occurrences_on_chengyu_id"
+    t.index ["chengyu_provenance_id"], name: "index_chengyu_corpus_occurrences_on_chengyu_provenance_id"
+    t.index ["document_path", "start_offset"], name: "idx_chengyu_corpus_occurrence_document"
   end
 
   create_table "chengyu_etymologies", force: :cascade do |t|
@@ -591,6 +612,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_11_000000) do
   add_foreign_key "character_structures", "character_codepoints"
   add_foreign_key "chengyu_attestations", "chengyu_forms", on_delete: :cascade
   add_foreign_key "chengyu_attestations", "chengyus", on_delete: :cascade
+  add_foreign_key "chengyu_corpus_occurrences", "chengyu_forms", on_delete: :cascade
+  add_foreign_key "chengyu_corpus_occurrences", "chengyu_provenances", on_delete: :cascade
+  add_foreign_key "chengyu_corpus_occurrences", "chengyus", on_delete: :cascade
   add_foreign_key "chengyu_etymologies", "chengyu_forms", on_delete: :cascade
   add_foreign_key "chengyu_etymologies", "chengyus", on_delete: :cascade
   add_foreign_key "chengyu_form_characters", "character_codepoints"
