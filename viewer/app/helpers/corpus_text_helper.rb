@@ -5,6 +5,8 @@ module CorpusTextHelper
 
   def corpus_text_with_optional_ruby(text, allow_ruby: true)
   s = text.to_s
+  @__chengyu_text_marks = chengyu_text_marks_for(s)
+
   # Always render indexed spans so client-side annotations can map selections
   # back to corpus character offsets.
   if allow_ruby && ruby_enabled_in_session?
@@ -12,10 +14,70 @@ module CorpusTextHelper
   else
     corpus_text_without_ruby_indexed(s)
   end
+ensure
+  @__chengyu_text_marks = nil
 end
 
 private
 
+
+
+  def chengyu_text_marks_for(display_text)
+    return {} unless defined?(@active_text_target_path) && @active_text_target_path.present?
+    return {} unless defined?(ChengyuForm) && ChengyuForm.table_exists? && ChengyuForm.exists?
+
+    raw = defined?(@raw_body) ? @raw_body.to_s : display_text.to_s
+    offsets_compatible = raw.each_char.count == display_text.to_s.each_char.count
+    # Possible-usage matching can use the displayed script. Confirmed source
+    # offsets, however, were derived from the stored corpus text, so only apply
+    # them when script conversion has preserved one display character per source
+    # character.
+    source_text = offsets_compatible ? raw : display_text.to_s
+
+    source_view = !defined?(@display_translation) || @display_translation.blank?
+    source_view &&= !defined?(@display_annotation_system) || @display_annotation_system.blank?
+
+    if source_view && offsets_compatible && defined?(@work_folder_view) && @work_folder_view && defined?(@work_document_paths)
+      return ChengyuData::TextHighlights.new(
+        text: source_text,
+        document_paths: @work_document_paths,
+        corpus_root: Rails.configuration.x.corpus_root
+      ).marks
+    end
+
+    confirmed_path = nil
+    if source_view && offsets_compatible && defined?(@source_rel_path) && @active_text_target_path.to_s == @source_rel_path.to_s
+      confirmed_path = @source_rel_path
+    end
+
+    ChengyuData::TextHighlights.new(text: source_text, document_path: confirmed_path).marks
+  rescue ActiveRecord::StatementInvalid, NameError
+    {}
+  end
+
+  def chengyu_classes_and_attributes(index, classes)
+    mark = @__chengyu_text_marks&.fetch(index, nil)
+    return [classes, ""] unless mark
+
+    possible = mark[:possible].present?
+    confirmed = mark[:confirmed].present?
+    classes << "chengyu-possible-use" if possible
+    classes << "chengyu-confirmed-source" if confirmed
+
+    attributes = []
+    if mark[:anchor_id].present?
+      attributes << %(id="#{ERB::Util.html_escape(mark[:anchor_id])}")
+    end
+
+    title = if confirmed
+      "Recorded Chengyu source context: #{Array(mark[:confirmed]).join(' / ')}"
+    elsif possible
+      "Known Chengyu form occurs here: #{mark[:possible].to_a.join(' / ')}"
+    end
+    attributes << %(title="#{ERB::Util.html_escape(title)}") if title.present?
+
+    [classes, attributes.empty? ? "" : " #{attributes.join(' ')}"]
+  end
 
   def ruby_enabled_in_session?
     v = session[:ruby_enabled]
@@ -179,8 +241,9 @@ def corpus_text_without_ruby_indexed(text)
     classes = ["cch"]
     classes << "note-bracket" if opener || closer
     classes << "kanbun-annotation-mark" if kanbun_annotation_mark?(ch)
+    classes, chengyu_attributes = chengyu_classes_and_attributes(idx, classes)
 
-    buf.safe_concat(%(<span class="#{classes.join(" ")}" data-corpus-idx="#{idx}">).html_safe)
+    buf.safe_concat(%(<span class="#{classes.join(" ")}" data-corpus-idx="#{idx}"#{chengyu_attributes}>).html_safe)
     buf << ERB::Util.html_escape(ch)
     buf.safe_concat("</span>".html_safe)
 
@@ -217,19 +280,20 @@ def corpus_text_with_ruby_indexed(text)
     classes = ["cch"]
     classes << "note-bracket" if opener || closer
     classes << "kanbun-annotation-mark" if kanbun_annotation_mark?(ch)
+    classes, chengyu_attributes = chengyu_classes_and_attributes(idx, classes)
 
     reading = readings[ch]
     if reading.present?
       buf.safe_concat(%(<ruby class="#{ruby_class}">).html_safe)
 
-      buf.safe_concat(%(<span class="#{classes.join(" ")}" data-corpus-idx="#{idx}">).html_safe)
+      buf.safe_concat(%(<span class="#{classes.join(" ")}" data-corpus-idx="#{idx}"#{chengyu_attributes}>).html_safe)
       buf << ERB::Util.html_escape(ch)
       buf.safe_concat("</span>".html_safe)
       buf.safe_concat("<rt>".html_safe)
       buf << ERB::Util.html_escape(reading)
       buf.safe_concat("</rt></ruby>".html_safe)
     else
-      buf.safe_concat(%(<span class="#{classes.join(" ")}" data-corpus-idx="#{idx}">).html_safe)
+      buf.safe_concat(%(<span class="#{classes.join(" ")}" data-corpus-idx="#{idx}"#{chengyu_attributes}>).html_safe)
       buf << ERB::Util.html_escape(ch)
       buf.safe_concat("</span>".html_safe)
     end

@@ -1,0 +1,110 @@
+<%= stylesheet_link_tag "chengyu_games", "data-turbo-track": "reload" %>
+
+<div class="chengyu-jielong"
+     data-controller="chengyu-jielong"
+     data-chengyu-jielong-start-url-value="/fun/chengyu-jielong/start"
+     data-chengyu-jielong-turn-url-value="/fun/chengyu-jielong/turn"
+     data-chengyu-jielong-alternatives-url-value="/fun/chengyu-jielong/alternatives">
+  <header class="chengyu-jielong__header">
+    <div>
+      <h1>成語接龍 Chengyu Jielong</h1>
+      <p>
+        Type a Chengyu beginning with the final Han character of the previous one.
+        Answers are checked against the imported Wiktionary Chengyu families, so an attested variant cannot be reused as a different answer.
+      </p>
+    </div>
+    <div class="chengyu-jielong__score" data-chengyu-jielong-target="score">Score 0</div>
+  </header>
+
+  <% unless @chengyu_ready %>
+    <div class="chengyu-jielong__notice">
+      <strong>Chengyu data has not been imported yet.</strong>
+      Run the database migration and <code>bin/rails chengyu:import</code> before starting a round.
+    </div>
+  <% end %>
+
+  <details class="chengyu-jielong__settings" open>
+    <summary>Game settings</summary>
+    <div class="chengyu-jielong__settings-grid">
+      <label>
+        Mode
+        <select data-chengyu-jielong-target="mode" data-action="change->chengyu-jielong#modeChanged">
+          <option value="standard">Standard — four-character, scored, no repeats</option>
+          <option value="hard">Hard — difficult junctions and longer compounds, no repeats</option>
+          <option value="zen">禪 Zen — practice, repeats allowed, no score</option>
+        </select>
+      </label>
+
+      <label>
+        Computer
+        <select data-chengyu-jielong-target="opponent">
+          <option value="adaptive">Adaptive</option>
+          <option value="random">Random</option>
+        </select>
+      </label>
+    </div>
+    <p class="muted">
+      Standard currently has <%= number_with_delimiter(@standard_count) %> families in its four-Han-character pool.
+      Hard can draw from <%= number_with_delimiter(@hard_count) %> families, including longer and punctuated compounds.
+      There is no timer.
+    </p>
+  </details>
+
+  <div class="chengyu-jielong__actions">
+    <button type="button" data-action="chengyu-jielong#start" data-chengyu-jielong-target="startButton" <%= "disabled" unless @chengyu_ready %>>Start / new round</button>
+    <button type="button" data-action="chengyu-jielong#forfeit" data-chengyu-jielong-target="forfeitButton" disabled>Forfeit / reset</button>
+    <button type="button" data-action="chengyu-jielong#hint" data-chengyu-jielong-target="hintButton" hidden disabled>Zen hint</button>
+  </div>
+
+  <section class="chengyu-jielong__board" data-chengyu-jielong-target="board" hidden>
+    <div class="chengyu-jielong__current">
+      <div class="chengyu-jielong__turn-label">Computer</div>
+      <div class="chengyu-jielong-card" data-chengyu-jielong-target="currentCard"></div>
+    </div>
+
+    <div class="chengyu-jielong__requirement">
+      Your Chengyu must begin with
+      <strong class="chengyu-jielong__required-character" data-chengyu-jielong-target="requiredCharacter">—</strong>
+    </div>
+
+    <form class="chengyu-jielong__answer" data-action="submit->chengyu-jielong#submit">
+      <label for="chengyu-jielong-answer">Your answer</label>
+      <div class="chengyu-jielong__answer-row">
+        <input id="chengyu-jielong-answer"
+               type="text"
+               lang="zh-Hant"
+               autocomplete="off"
+               autocapitalize="off"
+               spellcheck="false"
+               data-chengyu-jielong-target="answer"
+               data-action="input->chengyu-jielong#answerChanged"
+               placeholder="自由輸入成語">
+        <button type="submit" data-chengyu-jielong-target="submitButton">Play</button>
+      </div>
+      <p class="muted">Use your normal browser/system IME. This field does not suggest valid answers.</p>
+    </form>
+  </section>
+
+  <div class="chengyu-jielong__status" role="status" aria-live="polite" data-chengyu-jielong-target="status"></div>
+
+  <section class="chengyu-jielong__missing" data-chengyu-jielong-target="missingPanel" hidden>
+    <p>
+      This spelling is not in the imported Chengyu corpus. If it is a real Chengyu that the Wiktionary harvest missed, you can submit it for review.
+    </p>
+    <button type="button" data-action="chengyu-jielong#reportMissing" data-chengyu-jielong-target="reportButton">Report missing Chengyu</button>
+    <div data-chengyu-jielong-target="reportStatus"></div>
+  </section>
+
+  <section class="chengyu-jielong__alternatives" data-chengyu-jielong-target="alternativesPanel" hidden>
+    <h2 data-chengyu-jielong-target="alternativesHeading">Possible continuations</h2>
+    <p class="muted" data-chengyu-jielong-target="alternativesExplanation"></p>
+    <div class="chengyu-jielong__alternative-cards" data-chengyu-jielong-target="alternatives"></div>
+  </section>
+
+  <section class="chengyu-jielong__history">
+    <h2>Chain</h2>
+    <div class="chengyu-jielong__chain" data-chengyu-jielong-target="chain">
+      <p class="muted">Start a round to begin the chain.</p>
+    </div>
+  </section>
+</div>

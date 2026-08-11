@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_09_125600) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_11_000000) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.integer "blob_id", null: false
     t.datetime "created_at", null: false
@@ -105,6 +105,226 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_09_125600) do
     t.index ["character_codepoint_id", "system"], name: "idx_character_structures_character_system"
     t.index ["character_codepoint_id"], name: "index_character_structures_on_character_codepoint_id"
     t.index ["system", "normalized_expression"], name: "idx_character_structures_expression"
+  end
+
+  create_table "chengyu_attestations", force: :cascade do |t|
+    t.string "attestation_kind"
+    t.json "categories", default: [], null: false
+    t.integer "chengyu_form_id", null: false
+    t.integer "chengyu_id", null: false
+    t.datetime "created_at", null: false
+    t.string "entry_language_source"
+    t.string "entry_language_tag"
+    t.boolean "has_definition_evidence", default: false, null: false
+    t.string "page_title", null: false
+    t.bigint "pageid", null: false
+    t.bigint "revision_id"
+    t.string "revision_sha1"
+    t.datetime "revision_timestamp"
+    t.string "site", null: false
+    t.string "source_attestation_id", null: false
+    t.json "source_categories", default: [], null: false
+    t.json "source_gaps", default: [], null: false
+    t.json "source_keys", default: [], null: false
+    t.datetime "updated_at", null: false
+    t.text "url"
+    t.index ["chengyu_form_id"], name: "index_chengyu_attestations_on_chengyu_form_id"
+    t.index ["chengyu_id", "entry_language_tag"], name: "idx_chengyu_attestations_family_lang"
+    t.index ["chengyu_id"], name: "index_chengyu_attestations_on_chengyu_id"
+    t.index ["site", "pageid"], name: "idx_chengyu_attestations_page"
+    t.index ["source_attestation_id"], name: "idx_chengyu_attestations_source_id", unique: true
+  end
+
+  create_table "chengyu_etymologies", force: :cascade do |t|
+    t.integer "chengyu_form_id", null: false
+    t.integer "chengyu_id", null: false
+    t.datetime "created_at", null: false
+    t.string "definition_language_tag"
+    t.string "entry_language_tag"
+    t.string "heading_path"
+    t.string "page_title", null: false
+    t.bigint "pageid", null: false
+    t.text "plain_text"
+    t.text "raw_wikitext"
+    t.string "site", null: false
+    t.string "source_etymology_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chengyu_form_id"], name: "index_chengyu_etymologies_on_chengyu_form_id"
+    t.index ["chengyu_id", "definition_language_tag"], name: "idx_chengyu_etymologies_family_lang"
+    t.index ["chengyu_id"], name: "index_chengyu_etymologies_on_chengyu_id"
+    t.index ["source_etymology_id"], name: "idx_chengyu_etymologies_source_id", unique: true
+  end
+
+  create_table "chengyu_form_characters", force: :cascade do |t|
+    t.integer "character_codepoint_id", null: false
+    t.integer "chengyu_form_id", null: false
+    t.datetime "created_at", null: false
+    t.string "glyph", null: false
+    t.integer "position", null: false
+    t.datetime "updated_at", null: false
+    t.index ["character_codepoint_id", "chengyu_form_id"], name: "idx_chengyu_form_chars_lookup"
+    t.index ["character_codepoint_id"], name: "index_chengyu_form_characters_on_character_codepoint_id"
+    t.index ["chengyu_form_id", "position"], name: "idx_chengyu_form_chars_position", unique: true
+    t.index ["chengyu_form_id"], name: "index_chengyu_form_characters_on_chengyu_form_id"
+  end
+
+  create_table "chengyu_form_relations", force: :cascade do |t|
+    t.string "cause"
+    t.integer "chengyu_id", null: false
+    t.datetime "created_at", null: false
+    t.string "merge_policy"
+    t.bigint "pageid"
+    t.text "raw_evidence"
+    t.string "relation_type", null: false
+    t.string "site"
+    t.integer "source_form_id", null: false
+    t.string "source_relation_id", null: false
+    t.string "source_template"
+    t.integer "target_form_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chengyu_id"], name: "index_chengyu_form_relations_on_chengyu_id"
+    t.index ["source_form_id", "target_form_id"], name: "idx_chengyu_form_relations_pair"
+    t.index ["source_form_id"], name: "index_chengyu_form_relations_on_source_form_id"
+    t.index ["source_relation_id"], name: "idx_chengyu_form_relations_source_id", unique: true
+    t.index ["target_form_id"], name: "index_chengyu_form_relations_on_target_form_id"
+  end
+
+  create_table "chengyu_forms", force: :cascade do |t|
+    t.integer "chengyu_id", null: false
+    t.integer "codepoint_length", null: false
+    t.boolean "contains_punctuation", default: false, null: false
+    t.datetime "created_at", null: false
+    t.integer "first_character_codepoint_id"
+    t.string "form_text", null: false
+    t.string "game_key", null: false
+    t.integer "han_character_count", null: false
+    t.boolean "is_display_form", default: false, null: false
+    t.boolean "is_strict_han", default: false, null: false
+    t.integer "last_character_codepoint_id"
+    t.json "metadata", default: {}, null: false
+    t.string "script_class", null: false
+    t.string "source_form_id", null: false
+    t.json "statuses", default: [], null: false
+    t.datetime "updated_at", null: false
+    t.index ["chengyu_id", "is_display_form"], name: "idx_chengyu_forms_family_display"
+    t.index ["chengyu_id"], name: "index_chengyu_forms_on_chengyu_id"
+    t.index ["first_character_codepoint_id", "han_character_count"], name: "idx_chengyu_forms_first_han_count"
+    t.index ["first_character_codepoint_id"], name: "index_chengyu_forms_on_first_character_codepoint_id"
+    t.index ["form_text"], name: "index_chengyu_forms_on_form_text"
+    t.index ["game_key"], name: "index_chengyu_forms_on_game_key"
+    t.index ["last_character_codepoint_id", "han_character_count"], name: "idx_chengyu_forms_last_han_count"
+    t.index ["last_character_codepoint_id"], name: "index_chengyu_forms_on_last_character_codepoint_id"
+    t.index ["source_form_id"], name: "index_chengyu_forms_on_source_form_id", unique: true
+  end
+
+  create_table "chengyu_imports", force: :cascade do |t|
+    t.json "counts", default: {}, null: false
+    t.datetime "created_at", null: false
+    t.string "fingerprint", null: false
+    t.datetime "imported_at", null: false
+    t.json "source_manifest", default: {}, null: false
+    t.string "source_path"
+    t.datetime "updated_at", null: false
+    t.index ["fingerprint"], name: "index_chengyu_imports_on_fingerprint", unique: true
+  end
+
+  create_table "chengyu_provenances", force: :cascade do |t|
+    t.integer "chengyu_form_id", null: false
+    t.integer "chengyu_id", null: false
+    t.datetime "created_at", null: false
+    t.string "page_title", null: false
+    t.bigint "pageid", null: false
+    t.string "site", null: false
+    t.string "source_category"
+    t.string "source_provenance_id", null: false
+    t.string "source_title"
+    t.datetime "updated_at", null: false
+    t.text "url"
+    t.index ["chengyu_form_id"], name: "index_chengyu_provenances_on_chengyu_form_id"
+    t.index ["chengyu_id", "source_category"], name: "idx_chengyu_provenances_family_category"
+    t.index ["chengyu_id"], name: "index_chengyu_provenances_on_chengyu_id"
+    t.index ["source_provenance_id"], name: "idx_chengyu_provenances_source_id", unique: true
+  end
+
+  create_table "chengyu_readings", force: :cascade do |t|
+    t.integer "chengyu_form_id", null: false
+    t.integer "chengyu_id", null: false
+    t.datetime "created_at", null: false
+    t.string "language_label"
+    t.string "language_tag"
+    t.string "page_title"
+    t.bigint "pageid"
+    t.text "reading", null: false
+    t.string "site"
+    t.string "source_reading_id", null: false
+    t.string "source_template"
+    t.string "source_type_code"
+    t.string "system"
+    t.string "system_label"
+    t.datetime "updated_at", null: false
+    t.text "url"
+    t.index ["chengyu_form_id", "system"], name: "idx_chengyu_readings_form_system"
+    t.index ["chengyu_form_id"], name: "index_chengyu_readings_on_chengyu_form_id"
+    t.index ["chengyu_id", "language_tag"], name: "idx_chengyu_readings_family_lang"
+    t.index ["chengyu_id"], name: "index_chengyu_readings_on_chengyu_id"
+    t.index ["source_reading_id"], name: "idx_chengyu_readings_source_id", unique: true
+  end
+
+  create_table "chengyu_semantic_relations", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "merge_policy"
+    t.string "page_title"
+    t.bigint "pageid"
+    t.text "raw_definition"
+    t.string "relation_language"
+    t.string "relation_type", null: false
+    t.string "site"
+    t.integer "source_chengyu_id", null: false
+    t.integer "source_form_id", null: false
+    t.string "source_relation_id", null: false
+    t.string "source_template"
+    t.integer "target_chengyu_id"
+    t.integer "target_form_id"
+    t.string "target_text", null: false
+    t.datetime "updated_at", null: false
+    t.index ["source_chengyu_id", "relation_type"], name: "idx_chengyu_semantic_relations_source"
+    t.index ["source_chengyu_id"], name: "index_chengyu_semantic_relations_on_source_chengyu_id"
+    t.index ["source_form_id"], name: "index_chengyu_semantic_relations_on_source_form_id"
+    t.index ["source_relation_id"], name: "idx_chengyu_semantic_relations_source_id", unique: true
+    t.index ["target_chengyu_id"], name: "idx_chengyu_semantic_relations_target"
+    t.index ["target_chengyu_id"], name: "index_chengyu_semantic_relations_on_target_chengyu_id"
+    t.index ["target_form_id"], name: "index_chengyu_semantic_relations_on_target_form_id"
+  end
+
+  create_table "chengyu_senses", force: :cascade do |t|
+    t.integer "chengyu_form_id", null: false
+    t.integer "chengyu_id", null: false
+    t.datetime "created_at", null: false
+    t.string "definition_language_tag"
+    t.string "entry_language_tag"
+    t.string "heading_path"
+    t.string "page_title", null: false
+    t.bigint "pageid", null: false
+    t.text "plain_definition", null: false
+    t.text "raw_definition"
+    t.string "section_kind"
+    t.string "site", null: false
+    t.string "source_sense_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chengyu_form_id"], name: "index_chengyu_senses_on_chengyu_form_id"
+    t.index ["chengyu_id", "definition_language_tag"], name: "idx_chengyu_senses_family_def_lang"
+    t.index ["chengyu_id"], name: "index_chengyu_senses_on_chengyu_id"
+    t.index ["source_sense_id"], name: "idx_chengyu_senses_source_id", unique: true
+  end
+
+  create_table "chengyus", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "display_form", null: false
+    t.json "metadata", default: {}, null: false
+    t.string "source_family_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["display_form"], name: "index_chengyus_on_display_form"
+    t.index ["source_family_id"], name: "index_chengyus_on_source_family_id", unique: true
   end
 
   create_table "daily_readings", force: :cascade do |t|
@@ -369,6 +589,28 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_09_125600) do
   add_foreign_key "character_properties", "character_codepoints"
   add_foreign_key "character_structure_components", "character_structures"
   add_foreign_key "character_structures", "character_codepoints"
+  add_foreign_key "chengyu_attestations", "chengyu_forms", on_delete: :cascade
+  add_foreign_key "chengyu_attestations", "chengyus", on_delete: :cascade
+  add_foreign_key "chengyu_etymologies", "chengyu_forms", on_delete: :cascade
+  add_foreign_key "chengyu_etymologies", "chengyus", on_delete: :cascade
+  add_foreign_key "chengyu_form_characters", "character_codepoints"
+  add_foreign_key "chengyu_form_characters", "chengyu_forms", on_delete: :cascade
+  add_foreign_key "chengyu_form_relations", "chengyu_forms", column: "source_form_id", on_delete: :cascade
+  add_foreign_key "chengyu_form_relations", "chengyu_forms", column: "target_form_id", on_delete: :cascade
+  add_foreign_key "chengyu_form_relations", "chengyus", on_delete: :cascade
+  add_foreign_key "chengyu_forms", "character_codepoints", column: "first_character_codepoint_id"
+  add_foreign_key "chengyu_forms", "character_codepoints", column: "last_character_codepoint_id"
+  add_foreign_key "chengyu_forms", "chengyus", on_delete: :cascade
+  add_foreign_key "chengyu_provenances", "chengyu_forms", on_delete: :cascade
+  add_foreign_key "chengyu_provenances", "chengyus", on_delete: :cascade
+  add_foreign_key "chengyu_readings", "chengyu_forms", on_delete: :cascade
+  add_foreign_key "chengyu_readings", "chengyus", on_delete: :cascade
+  add_foreign_key "chengyu_semantic_relations", "chengyu_forms", column: "source_form_id", on_delete: :cascade
+  add_foreign_key "chengyu_semantic_relations", "chengyu_forms", column: "target_form_id", on_delete: :nullify
+  add_foreign_key "chengyu_semantic_relations", "chengyus", column: "source_chengyu_id", on_delete: :cascade
+  add_foreign_key "chengyu_semantic_relations", "chengyus", column: "target_chengyu_id", on_delete: :nullify
+  add_foreign_key "chengyu_senses", "chengyu_forms", on_delete: :cascade
+  add_foreign_key "chengyu_senses", "chengyus", on_delete: :cascade
   add_foreign_key "dictionary_entries", "dictionary_sections"
   add_foreign_key "dictionary_entries", "dictionary_works"
   add_foreign_key "dictionary_entry_characters", "character_codepoints"

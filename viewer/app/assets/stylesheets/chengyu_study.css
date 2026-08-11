@@ -1,0 +1,54 @@
+/* Chengyu study layer for corpus reading.
+   Yellow = a structured provenance record has been mapped back to this work and
+   the form was found at this exact corpus offset.
+   Aqua = a known Chengyu form occurs here; this is a usage-discovery aid and
+   does not claim that the writer intended the idiomatic sense. */
+
+.corpus-textflow .cch.chengyu-confirmed-source {
+  background: #ffe36e;
+  color: #111 !important;
+  border-radius: 0.12em;
+  scroll-margin: 7rem;
+}
+
+.corpus-textflow.show-chengyu-usages .cch.chengyu-possible-use:not(.chengyu-confirmed-source) {
+  background: #8de8ef;
+  color: #111 !important;
+  border-radius: 0.12em;
+}
+
+.chengyu-highlight-options {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.chengyu-highlight-legend {
+  display: grid;
+  gap: 0.3rem;
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.chengyu-highlight-legend__item {
+  display: flex;
+  gap: 0.45rem;
+  align-items: flex-start;
+}
+
+.chengyu-highlight-swatch {
+  display: inline-block;
+  width: 1.1rem;
+  height: 1.1rem;
+  flex: 0 0 1.1rem;
+  margin-top: 0.05rem;
+  border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
+  border-radius: 0.18rem;
+}
+
+.chengyu-highlight-swatch--confirmed {
+  background: #ffe36e;
+}
+
+.chengyu-highlight-swatch--possible {
+  background: #8de8ef;
+}

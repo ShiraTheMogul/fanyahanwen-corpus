@@ -124,6 +124,19 @@ Rails.application.routes.draw do
 	get "/fun/make-a-character",
 		to: "character_games#construction",
 		as: :character_construction
+		
+	get  "/fun/chengyu-jielong",
+		 to: "chengyu_games#jielong",
+		 as: :chengyu_jielong
+
+	post "/fun/chengyu-jielong/start",
+		 to: "chengyu_games#start"
+
+	post "/fun/chengyu-jielong/turn",
+		 to: "chengyu_games#turn"
+
+	post "/fun/chengyu-jielong/alternatives",
+		 to: "chengyu_games#alternatives"
 	
 	get "/xiangqi", to: "xiangqi#show"
 	post "/xiangqi/theme", to: "xiangqi#theme"

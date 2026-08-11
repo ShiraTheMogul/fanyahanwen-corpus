@@ -1,3 +1,5 @@
+<%= stylesheet_link_tag "chengyu_study", "data-turbo-track": "reload" %>
+
 <%# Right sidebar for the corpus viewer.
     Reuses the dictionary's view options form and adds viewer-only toggles.
 %>
@@ -67,6 +69,28 @@
              data-corpus-rightbar-target="rubyOnDemand"
              data-action="change->corpus-rightbar#change">
     </div>
+
+    <% if defined?(ChengyuForm) && ChengyuForm.table_exists? && ChengyuForm.exists? %>
+      <div class="rightbar-row rightbar-row-stack chengyu-highlight-options" data-controller="chengyu-highlights">
+        <div class="rightbar-inline">
+          <label for="cv_chengyu_usages">Highlight Chengyu usages</label>
+          <input id="cv_chengyu_usages"
+                 type="checkbox"
+                 data-chengyu-highlights-target="toggle"
+                 data-action="change->chengyu-highlights#change">
+        </div>
+        <div class="chengyu-highlight-legend">
+          <span class="chengyu-highlight-legend__item">
+            <span class="chengyu-highlight-swatch chengyu-highlight-swatch--confirmed" aria-hidden="true"></span>
+            <span><strong>Recorded source context.</strong> Structured Chengyu provenance points to this work and the form occurs here.</span>
+          </span>
+          <span class="chengyu-highlight-legend__item">
+            <span class="chengyu-highlight-swatch chengyu-highlight-swatch--possible" aria-hidden="true"></span>
+            <span><strong>Known Chengyu form.</strong> The construction occurs here; this does not claim that the writer intended the idiomatic sense.</span>
+          </span>
+        </div>
+      </div>
+    <% end %>
     <p class="rightbar-note">
       <%= t("corpus_viewer.rightbar.client_side_note") %>
     </p>
