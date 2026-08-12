@@ -3,6 +3,8 @@
 require "digest"
 
 module CorpusSearchHelper
+  FOLDER_BROWSER_PAGE_SIZE = 100
+
   # Renders the visible snippet while highlighting each matched term. Exact
   # searches receive one mark; proximity and OR searches use term_matches.
   def corpus_search_snippet(hit)
@@ -23,8 +25,14 @@ module CorpusSearchHelper
     render_highlighted_text(visible, merge_ranges(ranges))
   end
 
-  # Building the small folder tree in one helper avoids one recursive partial
-  # render (and one development-log line) per node while keeping the same HTML.
+  # Render only the branch the user is actively browsing. The previous helper
+  # recursively emitted the complete corpus tree into the HTML and merely hid
+  # closed branches. With thousands of corpus folders that produced multi-MB
+  # pages even before a search was run.
+  #
+  # Closed branches submit the existing GET form with +browse_folder+; the
+  # controller treats that as navigation, not a search. No extra route or
+  # client-side data API is required.
   def corpus_search_folder_tree(folder_tree, query)
     safe_join(Array(folder_tree&.roots).map { |node| corpus_search_folder_node(node, query, 0) })
   end
@@ -172,9 +180,12 @@ module CorpusSearchHelper
   end
 
   def corpus_search_folder_branch_open?(node, query)
-    selected = query.include_folders + query.exclude_folders
     path = node["path"].to_s
-    selected.any? { |candidate| candidate == path || candidate.start_with?("#{path}/") }
+    browser_path, = corpus_search_folder_browser_state
+    return true if browser_path == path || browser_path.start_with?("#{path}/")
+
+    selected = query.include_folders + query.exclude_folders
+    selected.any? { |candidate| candidate.start_with?("#{path}/") }
   end
 
   def corpus_search_folder_role_summary(node)
@@ -204,12 +215,17 @@ module CorpusSearchHelper
       ])
     end
 
-    branch = if children.any?
+    branch = if children.any? && branch_open
+      visible_children, browser_meta = corpus_search_visible_folder_children(node, query)
+      contents = []
+      toolbar = corpus_search_folder_browser_toolbar(node, browser_meta)
+      contents << toolbar if toolbar
+      contents.concat(visible_children.map { |child| corpus_search_folder_node(child, query, level + 1) })
+
       tag.div(
-        safe_join(children.map { |child| corpus_search_folder_node(child, query, level + 1) }),
+        safe_join(contents),
         class: "corpus-search-folder-children",
         role: "group",
-        hidden: !branch_open,
         data: { corpus_search_folder_children: true }
       )
     end
@@ -218,7 +234,7 @@ module CorpusSearchHelper
       safe_join([row, branch].compact),
       class: "corpus-search-folder-node",
       role: "treeitem",
-      aria: { expanded: branch_open },
+      aria: { expanded: children.any? ? branch_open : nil },
       style: "--corpus-folder-depth: #{level}",
       data: {
         corpus_search_folder_node: true,
@@ -230,16 +246,152 @@ module CorpusSearchHelper
   def corpus_search_folder_toggle(node, children, branch_open)
     return tag.span("", class: "corpus-search-folder-toggle-spacer", aria: { hidden: true }) if children.empty?
 
+    if branch_open
+      return tag.button(
+        tag.span("▸", aria: { hidden: true }),
+        type: "button",
+        class: "corpus-search-folder-toggle",
+        aria: {
+          expanded: true,
+          label: t("corpus_search.actions.toggle_folder", folder: node["name"])
+        },
+        data: { action: "corpus-search-form#toggleFolderBranch" }
+      )
+    end
+
     tag.button(
       tag.span("▸", aria: { hidden: true }),
-      type: "button",
+      type: "submit",
+      formmethod: "get",
+      formaction: corpus_search_path,
+      name: "browse_folder",
+      value: corpus_search_folder_browser_value(node.fetch("path"), 1),
       class: "corpus-search-folder-toggle",
       aria: {
-        expanded: branch_open,
+        expanded: false,
         label: t("corpus_search.actions.toggle_folder", folder: node["name"])
-      },
-      data: { action: "corpus-search-form#toggleFolderBranch" }
+      }
     )
+  end
+
+  def corpus_search_visible_folder_children(node, query)
+    children = Array(node["children"])
+    path = node.fetch("path").to_s
+    browser_path, page = corpus_search_folder_browser_state
+    active_paths = corpus_search_folder_active_paths(query)
+
+    # Ancestors only need to render the child/children that lead to the active
+    # branch. This is what prevents a 44,000-child directory from being emitted
+    # just because one descendant is selected.
+    unless browser_path == path
+      chain = children.select do |child|
+        child_path = child["path"].to_s
+        active_paths.any? { |candidate| candidate == child_path || candidate.start_with?("#{child_path}/") }
+      end
+      return [chain, nil]
+    end
+
+    filter = params[:folder_filter_path].to_s == path ? params[:folder_filter].to_s.strip.downcase : ""
+    filtered = if filter.empty?
+      children
+    else
+      children.select do |child|
+        [child["name"], child["path"]].compact.join(" ").downcase.include?(filter)
+      end
+    end
+
+    total_pages = [(filtered.length.to_f / FOLDER_BROWSER_PAGE_SIZE).ceil, 1].max
+    page = [[page, 1].max, total_pages].min
+    offset = (page - 1) * FOLDER_BROWSER_PAGE_SIZE
+    visible = filtered.slice(offset, FOLDER_BROWSER_PAGE_SIZE) || []
+
+    # Keep already-selected descendant chains visible even when they fall
+    # outside the current filter/page.
+    selected_chain = children.select do |child|
+      child_path = child["path"].to_s
+      (query.include_folders + query.exclude_folders).any? do |candidate|
+        candidate == child_path || candidate.start_with?("#{child_path}/")
+      end
+    end
+    visible = (visible + selected_chain).uniq { |child| child["path"].to_s }
+
+    [visible, { path: path, page: page, total_pages: total_pages, filter: filter, total: filtered.length }]
+  end
+
+  def corpus_search_folder_browser_toolbar(node, meta)
+    return nil unless meta
+
+    path = meta.fetch(:path)
+    controls = []
+    controls << hidden_field_tag(:folder_filter_path, path)
+    controls << search_field_tag(
+      :folder_filter,
+      params[:folder_filter_path].to_s == path ? params[:folder_filter] : nil,
+      placeholder: t("corpus_search.form.folder_filter", default: "Filter this folder"),
+      class: "corpus-search-input corpus-search-folder-filter",
+      autocomplete: "off"
+    )
+    controls << tag.button(
+      t("corpus_search.actions.filter_folder", default: "Filter"),
+      type: "submit",
+      formmethod: "get",
+      formaction: corpus_search_path,
+      name: "browse_folder",
+      value: corpus_search_folder_browser_value(path, 1),
+      class: "corpus-search-button corpus-search-button-secondary"
+    )
+
+    if meta.fetch(:total_pages) > 1
+      page = meta.fetch(:page)
+      total_pages = meta.fetch(:total_pages)
+      controls << tag.button(
+        "←",
+        type: "submit",
+        formmethod: "get",
+        formaction: corpus_search_path,
+        name: "browse_folder",
+        value: corpus_search_folder_browser_value(path, page - 1),
+        disabled: page <= 1,
+        aria: { label: t("corpus_search.pagination.previous") },
+        class: "corpus-search-icon-button"
+      )
+      controls << tag.span(t("corpus_search.pagination.page_of", page: page, pages: total_pages), class: "corpus-search-folder-page")
+      controls << tag.button(
+        "→",
+        type: "submit",
+        formmethod: "get",
+        formaction: corpus_search_path,
+        name: "browse_folder",
+        value: corpus_search_folder_browser_value(path, page + 1),
+        disabled: page >= total_pages,
+        aria: { label: t("corpus_search.pagination.next") },
+        class: "corpus-search-icon-button"
+      )
+    end
+
+    tag.div(
+      safe_join(controls),
+      class: "corpus-search-folder-browser",
+      role: "group",
+      aria: { label: t("corpus_search.form.browse_folder", folder: node["name"], default: "Browse %{folder}") }
+    )
+  end
+
+  def corpus_search_folder_active_paths(query)
+    browser_path, = corpus_search_folder_browser_state
+    ([browser_path] + query.include_folders + query.exclude_folders).map(&:to_s).reject(&:blank?).uniq
+  end
+
+  def corpus_search_folder_browser_state
+    raw = params[:browse_folder].to_s
+    match = raw.match(/\A(\d+):(.*)\z/m)
+    return ["", 1] unless match
+
+    [match[2].to_s, [match[1].to_i, 1].max]
+  end
+
+  def corpus_search_folder_browser_value(path, page)
+    "#{[page.to_i, 1].max}:#{path}"
   end
 
   def corpus_search_folder_include_choice(node, query, path, input_id)

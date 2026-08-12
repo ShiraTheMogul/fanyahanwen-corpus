@@ -29,13 +29,27 @@ module CorpusSearch
 
       positions = []
       last_start = chars.length - accepted.length
+      first_forms = accepted.first
+      pattern_length = accepted.length
       index = 0
 
+      # The old implementation allocated an Enumerable block for every possible
+      # start position, even when the first source character could not possibly
+      # match. Corpus searches routinely examine millions of positions, so that
+      # became hundreds of millions of allocations. Gate on the first unit, then
+      # use a simple while loop for the rare positions that remain candidates.
       while index <= last_start
-        matched = accepted.each_with_index.all? do |forms, offset|
-          forms.include?(chars[index + offset])
+        unless first_forms.include?(chars[index])
+          index += 1
+          next
         end
-        positions << index if matched
+
+        offset = 1
+        while offset < pattern_length && accepted[offset].include?(chars[index + offset])
+          offset += 1
+        end
+
+        positions << index if offset == pattern_length
         index += 1
       end
 

@@ -2483,3 +2483,24 @@ body.rightbar-collapsed .rightbar {
 .corpus-search-workspace-tab.is-disabled:hover {
   background: transparent;
 }
+
+/* Server-bounded corpus search branch navigation. */
+.corpus-search-folder-browser {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 4px;
+}
+
+.corpus-search-folder-browser .corpus-search-folder-filter {
+  flex: 1 1 12rem;
+  min-width: 8rem;
+}
+
+.corpus-search-folder-page {
+  white-space: nowrap;
+  font-size: 0.9rem;
+  color: #586273;
+}

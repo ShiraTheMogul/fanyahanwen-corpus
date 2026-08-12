@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_11_010500) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_11_200400) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.integer "blob_id", null: false
     t.datetime "created_at", null: false
@@ -55,6 +55,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_11_010500) do
     t.index ["character_codepoint_id", "system_id", "code", "kind", "source"], name: "idx_character_input_codes_unique_source_code", unique: true
     t.index ["character_codepoint_id"], name: "index_character_input_codes_on_character_codepoint_id"
     t.index ["system_id", "code"], name: "idx_character_input_codes_lookup"
+    t.index ["system_id", "kind"], name: "idx_character_input_codes_system_kind"
   end
 
   create_table "character_properties", force: :cascade do |t|
@@ -81,6 +82,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_11_010500) do
     t.datetime "updated_at", null: false
     t.index ["character_structure_id", "preorder_index"], name: "idx_character_structure_components_position", unique: true
     t.index ["character_structure_id"], name: "index_character_structure_components_on_character_structure_id"
+    t.index ["component", "character_structure_id"], name: "idx_structure_components_component_structure"
     t.index ["component"], name: "index_character_structure_components_on_component"
     t.index ["component_codepoint"], name: "index_character_structure_components_on_component_codepoint"
   end

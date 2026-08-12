@@ -3,6 +3,8 @@
 require "set"
 
 class CorpusFs
+  DirectoryPage = Struct.new(:items, :page, :per_page, :raw_total, :total_pages, keyword_init: true)
+
   REPLACEMENT_CHARACTER = "\uFFFD"
 
   def initialize(root:, logger: default_logger)
@@ -45,20 +47,74 @@ class CorpusFs
     abs.is_a?(String) && File.file?(abs)
   end
 
-  # List only directories + .txt files
+  # List only directories + .txt files.
+  #
+  # Keep the filesystem check to one stat per non-text entry. The old version
+  # called File.directory? once while filtering and then again while
+  # partitioning, which doubled the metadata I/O cost on very large folders.
   def list_dir(abs)
     return [] unless directory?(abs)
 
-    entries = Dir.children(abs)
-    entries.reject! { |name| name.start_with?(".") }
+    dirs = []
+    files = []
 
-    entries.select! do |name|
-      full = File.join(abs, name)
-      File.directory?(full) || name.downcase.end_with?(".txt")
+    Dir.each_child(abs) do |name|
+      next if name.start_with?(".")
+
+      if name.downcase.end_with?(".txt")
+        files << name
+      elsif File.directory?(File.join(abs, name))
+        dirs << name
+      end
     end
 
-    dirs, files = entries.partition { |name| File.directory?(File.join(abs, name)) }
-    (dirs.sort + files.sort)
+    dirs.sort!
+    files.sort!
+    dirs + files
+  end
+
+  # Large corpus directories should never stat tens of thousands of children
+  # just to render one browser page. Pagination is based on the sorted raw
+  # directory entries, then only the current slice is classified. This bounds
+  # filesystem metadata calls to +per_page+ instead of the full directory size.
+  def list_dir_page(abs, page:, per_page:)
+    return DirectoryPage.new(items: [], page: 1, per_page: per_page, raw_total: 0, total_pages: 1) unless directory?(abs)
+
+    page = [page.to_i, 1].max
+    per_page = [[per_page.to_i, 1].max, 500].min
+    entries = Dir.children(abs).reject { |name| name.start_with?(".") }.sort
+    raw_total = entries.length
+    total_pages = [(raw_total.to_f / per_page).ceil, 1].max
+    page = [page, total_pages].min
+    slice = entries.slice((page - 1) * per_page, per_page) || []
+
+    items = slice.select do |name|
+      name.downcase.end_with?(".txt") || File.directory?(File.join(abs, name))
+    end
+
+    DirectoryPage.new(
+      items: items,
+      page: page,
+      per_page: per_page,
+      raw_total: raw_total,
+      total_pages: total_pages
+    )
+  end
+
+  # Stop counting as soon as the threshold is crossed. Large directories only
+  # pay for threshold + 1 names here; the paginated read below then performs the
+  # one full name listing needed for sorting.
+  def more_than_entries?(abs, threshold)
+    return false unless directory?(abs)
+
+    count = 0
+    Dir.each_child(abs) do |name|
+      next if name.start_with?(".")
+
+      count += 1
+      return true if count > threshold.to_i
+    end
+    false
   end
 
   def read_text(abs)

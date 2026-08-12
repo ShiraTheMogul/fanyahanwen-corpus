@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "fileutils"
 require "json"
 require "pathname"
 
@@ -10,17 +11,40 @@ module DailyReadings
   # Compilation folders can move while the Mao number remains stable. The
   # resolver therefore accepts an existing stored path, but repairs a stale one
   # by reading the Mao identifiers in the Shijing metadata sidecars.
+  #
+  # Building that Mao -> path map requires walking hundreds of metadata files.
+  # It is derived catalogue data, so persist it under storage instead of
+  # rebuilding it inside a web request whenever a stored DailyReading path is
+  # stale. Run `.refresh_cache!` after moving/recompiling Shijing corpus files.
   class ShijingPathResolver
     DEFAULT_SHIJING_ROOT_REL = "中國漢文/clean/周朝/東周/戰國時代/周/詩經"
+    CACHE_VERSION = 1
+    CACHE_FILENAME = "shijing_paths_v1.json"
+
+    class << self
+      def refresh_cache!(corpus_root: Rails.configuration.x.corpus_root,
+                         shijing_root_relative: DEFAULT_SHIJING_ROOT_REL,
+                         cache_root: Rails.root.join("storage", "daily_readings"),
+                         logger: Rails.logger)
+        new(
+          corpus_root: corpus_root,
+          shijing_root_relative: shijing_root_relative,
+          cache_root: cache_root,
+          logger: logger
+        ).refresh_cache!
+      end
+    end
 
     def initialize(corpus_root: Rails.configuration.x.corpus_root,
                    shijing_root_relative: DEFAULT_SHIJING_ROOT_REL,
+                   cache_root: Rails.root.join("storage", "daily_readings"),
                    logger: Rails.logger)
       @corpus_root = Pathname(File.realpath(corpus_root.to_s))
       @shijing_root_relative = normalize_relative(shijing_root_relative)
       raise ArgumentError, "Shijing root must be a safe relative path" unless @shijing_root_relative
 
       @shijing_root = absolute_path_for(@shijing_root_relative)
+      @cache_root = Pathname(cache_root.to_s).expand_path
       @logger = logger
       @paths_by_mao = nil
     end
@@ -44,10 +68,62 @@ module DailyReadings
       stored_full_path
     end
 
+    # Explicit maintenance hook. The generated file is disposable deployment
+    # data, not repository source data.
+    def refresh_cache!
+      @paths_by_mao = build_path_index
+      write_path_cache(@paths_by_mao)
+      @paths_by_mao
+    end
+
     private
 
     def paths_by_mao
-      @paths_by_mao ||= build_path_index
+      @paths_by_mao ||= load_path_cache || refresh_cache!
+    end
+
+    def cache_path
+      @cache_root.join(CACHE_FILENAME)
+    end
+
+    def load_path_cache
+      path = cache_path
+      return nil unless path.file?
+
+      payload = JSON.parse(path.read(encoding: "UTF-8"))
+      return nil unless payload.is_a?(Hash)
+      return nil unless payload["version"].to_i == CACHE_VERSION
+      return nil unless payload["shijing_root_relative"].to_s == @shijing_root_relative
+      return nil unless payload["paths"].is_a?(Hash)
+
+      payload["paths"].each_with_object({}) do |(mao_no, relative_path), index|
+        number = positive_integer(mao_no)
+        normalized = normalize_relative(relative_path)
+        index[number] = normalized if number && normalized
+      end
+    rescue JSON::ParserError, SystemCallError, EncodingError => error
+      log_warning("could not read path cache: #{error.class}: #{error.message}")
+      nil
+    end
+
+    def write_path_cache(index)
+      path = cache_path
+      FileUtils.mkdir_p(path.dirname)
+      tmp_path = path.dirname.join(".#{path.basename}.#{$$}.#{Thread.current.object_id}.tmp")
+      payload = {
+        "version" => CACHE_VERSION,
+        "shijing_root_relative" => @shijing_root_relative,
+        "paths" => index.transform_keys(&:to_s)
+      }
+
+      tmp_path.write(JSON.generate(payload), encoding: "UTF-8")
+      File.rename(tmp_path, path)
+      path
+    rescue SystemCallError => error
+      log_warning("could not write path cache: #{error.class}: #{error.message}")
+      nil
+    ensure
+      FileUtils.rm_f(tmp_path) if defined?(tmp_path) && tmp_path
     end
 
     def build_path_index

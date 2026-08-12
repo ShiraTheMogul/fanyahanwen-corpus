@@ -43,11 +43,20 @@ class TranscriptionController < ApplicationController
     return [] unless path.file?
 
     schemas = YAML.safe_load_file(path, aliases: false).fetch("schemas", [])
-    available = CharacterInputCode
-      .where(system_id: schemas.map { |schema| schema["schema_id"] })
-      .where.not(kind: "auxiliary")
-      .distinct
-      .pluck(:system_id)
+    schema_ids = schemas.filter_map { |schema| schema["schema_id"].presence }
+
+    # The previous DISTINCT query scanned all matching CharacterInputCode rows;
+    # the performance sweep measured that single query at ~8 seconds. We only
+    # need a yes/no answer for a handful of configured schemas. `exists?` can
+    # stop on the first matching row, and the performance migration adds an
+    # index shaped for this lookup. Keeping this uncached means a fresh import is
+    # visible immediately.
+    available = schema_ids.select do |schema_id|
+      CharacterInputCode
+        .where(system_id: schema_id)
+        .where.not(kind: "auxiliary")
+        .exists?
+    end
 
     schemas
       .select { |schema| available.include?(schema["schema_id"]) }

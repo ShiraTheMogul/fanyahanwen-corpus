@@ -26,15 +26,22 @@ module Ids
       query_operators = query_tree ? Parser.operators(query_tree) : Parser.tokens(normalized).select { |token| Parser::OPERATORS.include?(token) }
       return [] if query_leaves.empty?
 
+      # Ask Active Record to merge the already-scoped CharacterStructure relation
+      # into the join instead of joining `character_structures` and then adding a
+      # second `id IN (SELECT id FROM character_structures ...)` constraint. The
+      # latter produced a very expensive SQLite plan in the performance sweep.
+      #
+      # pluck also returns only the IDs we need; `.count.keys` asked SQLite to
+      # materialise the grouped counts back into a Ruby Hash even though the count
+      # itself is used only for ORDER BY.
       candidate_ids = CharacterStructureComponent
                       .joins(:character_structure)
-                      .where(character_structures: { system: "ids", id: @scope.select(:id) })
+                      .merge(@scope)
                       .where(component: query_leaves.uniq)
                       .group(:character_structure_id)
                       .order(Arel.sql("COUNT(*) DESC"))
                       .limit(candidate_limit)
-                      .count
-                      .keys
+                      .pluck(:character_structure_id)
 
       structures = @scope.where(id: candidate_ids).includes(:character_codepoint, :components)
       query_top = query_tree && Parser.top_operator(query_tree)

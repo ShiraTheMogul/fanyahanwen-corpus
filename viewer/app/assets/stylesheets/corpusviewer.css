@@ -1471,3 +1471,54 @@ html.cv-annotations-off .corpus-textflow .ne-ambiguous-character {
   background: #705b12;
   color: #fff8d6;
 }
+
+/* Bounded directory/work navigation for very large corpus collections. */
+.corpus-pagination {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 14px 0;
+}
+
+.corpus-pagination a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
+  min-height: 2rem;
+  border: 1px solid #bbb;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.corpus-work-index {
+  max-width: 72rem;
+}
+
+.corpus-work-index__metadata {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 4px 12px;
+  margin: 12px 0 18px;
+}
+
+.corpus-work-index__metadata dt {
+  font-weight: 700;
+}
+
+.corpus-work-index__metadata dd {
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 640px) {
+  .corpus-work-index__metadata {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+
+  .corpus-work-index__metadata dd {
+    margin-bottom: 8px;
+  }
+}

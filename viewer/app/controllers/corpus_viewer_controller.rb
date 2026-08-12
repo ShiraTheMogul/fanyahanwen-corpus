@@ -7,6 +7,11 @@ class CorpusViewerController < ApplicationController
 
   ANNOTATION_SYSTEM_FOLDERS = %w[kanbun hanmun hanvan].freeze
   ROOT_HIDDEN_ENTRIES = %w[scripts].freeze
+  DIRECTORY_PAGINATION_THRESHOLD = 1_000
+  DIRECTORY_PAGE_SIZE = 200
+  WORK_INLINE_DOCUMENT_LIMIT = 20
+  WORK_INLINE_BYTE_LIMIT = 512 * 1024
+  WORK_PAGE_SIZE = 100
 
   def show
     root = Rails.configuration.x.corpus_root
@@ -23,14 +28,45 @@ class CorpusViewerController < ApplicationController
 
     if fs.directory?(@abs_path)
       metadata_store = CorpusMetadataStore.new(root: root, fs: fs)
-      if metadata_store.work_folder?(@rel_path)
-        load_work_folder_view(fs: fs, metadata_store: metadata_store)
+      work_listing = CorpusWorkListing.new(
+        root: root,
+        fs: fs,
+        metadata_store: metadata_store,
+        rel_path: @rel_path
+      )
+
+      if work_listing.work_folder?
+        unless work_listing.inline_renderable?(
+          document_limit: WORK_INLINE_DOCUMENT_LIMIT,
+          byte_limit: WORK_INLINE_BYTE_LIMIT
+        )
+          load_work_folder_index(fs: fs, metadata_store: metadata_store, work_listing: work_listing)
+        else
+          document_paths = work_listing.page(
+            page: 1,
+            per_page: WORK_INLINE_DOCUMENT_LIMIT
+          ).paths
+          load_work_folder_view(
+            fs: fs,
+            metadata_store: metadata_store,
+            document_paths: document_paths
+          )
+        end
         render :show, formats: [:html]
         return
       end
 
       @kind = :dir
-      @children = fs.list_dir(@abs_path)
+      if fs.more_than_entries?(@abs_path, DIRECTORY_PAGINATION_THRESHOLD)
+        @directory_page = fs.list_dir_page(
+          @abs_path,
+          page: params[:page],
+          per_page: DIRECTORY_PAGE_SIZE
+        )
+        @children = @directory_page.items
+      else
+        @children = fs.list_dir(@abs_path)
+      end
       @children -= ROOT_HIDDEN_ENTRIES if @rel_path.blank?
 
       if @rel_path.blank?
@@ -108,7 +144,18 @@ class CorpusViewerController < ApplicationController
 
   private
 
-  def load_work_folder_view(fs:, metadata_store:)
+
+  def load_work_folder_index(fs:, metadata_store:, work_listing:)
+    @kind = :work_index
+    @work_folder_view = true
+    @source_rel_path = @rel_path
+    @source_abs_path = @abs_path
+    @meta = metadata_store.display_entries_for_path(@rel_path)
+    @work_page = work_listing.page(page: params[:page], per_page: WORK_PAGE_SIZE)
+    @work_document_paths = @work_page.paths
+  end
+
+  def load_work_folder_view(fs:, metadata_store:, document_paths:)
     @kind = :file
     @work_folder_view = true
     @source_rel_path = @rel_path
@@ -122,7 +169,7 @@ class CorpusViewerController < ApplicationController
     @metadata_json_text = @metadata_rel_path.present? ? fs.read_text(fs.resolve(@metadata_rel_path)) : ""
     @metadata_edit_values = metadata_store.editable_metadata_values_for_path(@rel_path)
 
-    @work_document_paths = metadata_store.document_paths_for_work_folder(@rel_path)
+    @work_document_paths = document_paths
     bodies = @work_document_paths.filter_map do |document_path|
       raw = fs.read_text(fs.resolve(document_path))
       body = body_from_text(raw)

@@ -11,7 +11,7 @@ class CorpusSearchController < ApplicationController
   def index
     @search_scope = search_scope
     @query = CorpusSearch::Query.from_params(params)
-    @searched = @query.requested? && targeted_search?
+    @searched = @query.requested? && targeted_search? && params[:browse_folder].blank?
     @result_page = nil
     @live_query_url = live_query_url(@query) if @query.valid?
     @manifest = CorpusSearch::Manifest.load_for_query(query: @query) if @searched && @query.valid?
