@@ -2,6 +2,7 @@
 
 require "digest"
 require "json"
+require "thread"
 
 # Discover available Han-script fonts from app/assets/fonts and expose them
 # to the UI (rightbar) and to a dynamic @font-face injector in the layout.
@@ -135,13 +136,38 @@ module HanFonts
     :all
   end
 
-def faces
-    return discover_faces if defined?(Rails) && Rails.env.development?
-    @faces ||= discover_faces
+  # Development used to rediscover the complete font directory on every call.
+  # A normal layout asks for faces several times, so that multiplied filesystem
+  # work (especially on WSL /mnt/c). Keep hot-reload behaviour with a short TTL
+  # while making repeated calls in the same request effectively free.
+  DEVELOPMENT_DISCOVERY_TTL = [ENV.fetch("HAN_FONTS_DISCOVERY_TTL", "30").to_f, 0.0].max
+
+  def faces
+    return @faces ||= discover_faces unless defined?(Rails) && Rails.env.development?
+
+    now = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+    if @faces && @faces_discovered_at && DEVELOPMENT_DISCOVERY_TTL.positive? &&
+       (now - @faces_discovered_at) < DEVELOPMENT_DISCOVERY_TTL
+      return @faces
+    end
+
+    (@faces_mutex ||= Mutex.new).synchronize do
+      now = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+      if @faces && @faces_discovered_at && DEVELOPMENT_DISCOVERY_TTL.positive? &&
+         (now - @faces_discovered_at) < DEVELOPMENT_DISCOVERY_TTL
+        return @faces
+      end
+
+      @faces = discover_faces
+      @faces_discovered_at = now
+    end
+
+    @faces
   end
 
   def refresh!
     @faces = discover_faces
+    @faces_discovered_at = Process.clock_gettime(Process::CLOCK_MONOTONIC)
     @credits_paths = nil
     @coverage_cache = nil
   end

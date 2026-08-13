@@ -99,36 +99,20 @@ module CorpusSearch
         value
       end
 
+      # Only static, file-backed mappings belong in the process-wide graph.
+      # VariantMapping is database-backed and potentially large; loading every
+      # row just to expand one or two query characters made development search
+      # rebuild tens of thousands of edges after Rails reloads. Instance-level
+      # lookup below follows only the indexed rows connected to the query.
       def build_graph(level)
         graph = Hash.new { |hash, character| hash[character] = [] }
         seen = Set.new
 
-        add_variant_mapping_edges(graph, seen)
         add_opencc_edges(graph, seen) if level == "broad"
 
         graph.each_value(&:freeze)
         graph.default_proc = nil
         graph.freeze
-      end
-
-      def add_variant_mapping_edges(graph, seen)
-        return unless variant_mapping_available?
-
-        VariantMapping.unscoped.pluck(:base_codepoint, :variant_codepoint, :source).each do |base_cp, variant_cp, source|
-          next unless valid_codepoint?(base_cp) && valid_codepoint?(variant_cp)
-
-          source_code = source.to_s.match?(/Zetian|則天/i) ? "zetian_script" : "taiwan_moe"
-          add_edge(
-            graph,
-            seen,
-            [base_cp].pack("U"),
-            [variant_cp].pack("U"),
-            source: source_code,
-            detail: source.to_s.presence
-          )
-        end
-      rescue ActiveRecord::StatementInvalid, ActiveRecord::NoDatabaseError
-        nil
       end
 
       def add_opencc_edges(graph, seen)
@@ -227,6 +211,9 @@ module CorpusSearch
       @graph = self.class.graph_for(@level)
       @forms_cache = {}
       @path_cache = {}
+      @variant_edges = Hash.new { |hash, unit| hash[unit] = [] }
+      @variant_edges_loaded = Set.new
+      @variant_edge_keys = Set.new
     end
 
     def exact?
@@ -236,7 +223,7 @@ module CorpusSearch
     def forms_for(character)
       unit = character.to_s
       return Set.new.freeze if unit.empty?
-      return Set[unit].freeze if exact? || !@graph.key?(unit)
+      return Set[unit].freeze if exact?
 
       @forms_cache[unit] ||= connected_component(unit).freeze
     end
@@ -269,19 +256,106 @@ module CorpusSearch
 
     def connected_component(start)
       visited = Set[start]
-      queue = [start]
+      frontier = [start]
 
-      until queue.empty?
-        current = queue.shift
-        Array(@graph[current]).each do |edge|
-          next if visited.include?(edge.to)
+      until frontier.empty?
+        load_variant_edges_for(frontier)
+        next_frontier = []
 
-          visited << edge.to
-          queue << edge.to
+        frontier.each do |current|
+          edges_for(current).each do |edge|
+            next if visited.include?(edge.to)
+
+            visited << edge.to
+            next_frontier << edge.to
+          end
         end
+
+        frontier = next_frontier
       end
 
       visited
+    end
+
+    # Variant mappings are indexed in both directions. Search terms normally
+    # contain only a handful of distinct characters, so expand one BFS layer at
+    # a time with two indexed IN queries instead of plucking the whole table.
+    # This preserves transitive equivalence while keeping query count bounded by
+    # family depth rather than family size.
+    def load_variant_edges_for(characters)
+      units = Array(characters).map(&:to_s).select { |unit| unit.each_char.count == 1 }
+        .reject { |unit| @variant_edges_loaded.include?(unit) }.uniq
+      return if units.empty?
+
+      unless variant_mapping_available?
+        @variant_edges_loaded.merge(units)
+        return
+      end
+
+      codepoints = units.map(&:ord)
+      rows = []
+      codepoints.each_slice(500) do |slice|
+        rows.concat(
+          VariantMapping.unscoped
+            .where(base_codepoint: slice)
+            .pluck(:base_codepoint, :variant_codepoint, :source)
+        )
+        rows.concat(
+          VariantMapping.unscoped
+            .where(variant_codepoint: slice)
+            .pluck(:base_codepoint, :variant_codepoint, :source)
+        )
+      end
+
+      rows.each do |base_codepoint, variant_codepoint, source|
+        add_variant_edge(base_codepoint, variant_codepoint, source)
+      end
+      @variant_edges_loaded.merge(units)
+    rescue ActiveRecord::StatementInvalid, ActiveRecord::NoDatabaseError
+      @variant_edges_loaded.merge(units) if defined?(units)
+    end
+
+    def add_variant_edge(base_codepoint, variant_codepoint, source)
+      base = codepoint_character(base_codepoint)
+      variant = codepoint_character(variant_codepoint)
+      return unless base && variant && base != variant
+
+      source_code = variant_source_code(source)
+      key = [base, variant, source_code, source.to_s]
+      return if @variant_edge_keys.include?(key)
+
+      @variant_edge_keys << key
+      detail = source.to_s.presence
+      @variant_edges[base] << Edge.new(from: base, to: variant, source: source_code, detail: detail)
+      @variant_edges[variant] << Edge.new(from: variant, to: base, source: source_code, detail: detail)
+    end
+
+    def edges_for(character)
+      unit = character.to_s
+      return [] if unit.empty? || exact?
+
+      dynamic = @variant_edges[unit]
+      return dynamic if @level != "broad" || !@graph.key?(unit)
+
+      dynamic + Array(@graph[unit])
+    end
+
+    def codepoint_character(value)
+      [Integer(value)].pack("U")
+    rescue ArgumentError, RangeError, TypeError
+      nil
+    end
+
+    def variant_source_code(source)
+      source.to_s.match?(/Zetian|則天/i) ? "zetian_script" : "taiwan_moe"
+    end
+
+    def variant_mapping_available?
+      return @variant_mapping_available if defined?(@variant_mapping_available)
+
+      @variant_mapping_available = defined?(VariantMapping) && VariantMapping.table_exists?
+    rescue ActiveRecord::StatementInvalid, ActiveRecord::NoDatabaseError
+      @variant_mapping_available = false
     end
 
     def shortest_path(start, target)
@@ -290,14 +364,17 @@ module CorpusSearch
       return @path_cache[cache_key] = nil unless forms_for(start).include?(target)
 
       queue = [start]
+      cursor = 0
       previous = { start => nil }
       previous_edge = {}
 
-      until queue.empty?
-        current = queue.shift
+      while cursor < queue.length
+        current = queue[cursor]
+        cursor += 1
         break if current == target
 
-        Array(@graph[current]).each do |edge|
+        load_variant_edges_for([current]) unless @variant_edges_loaded.include?(current)
+        edges_for(current).each do |edge|
           next if previous.key?(edge.to)
 
           previous[edge.to] = current

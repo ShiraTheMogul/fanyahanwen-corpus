@@ -29,4 +29,12 @@ class CorpusViewerControllerTest < ActiveSupport::TestCase
 ", body
   end
 
+  test "hidden root entries are not public corpus viewer paths" do
+    controller = CorpusViewerController.new
+
+    assert controller.send(:hidden_root_entry?, "scripts")
+    assert controller.send(:hidden_root_entry?, "scripts/variant_forms/resources/file.txt")
+    assert_not controller.send(:hidden_root_entry?, "中國漢文/clean/作品/file.txt")
+  end
+
 end

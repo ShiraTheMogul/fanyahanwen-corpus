@@ -43,4 +43,17 @@ class CorpusSearchCharacterEquivalenceRegistryTest < ActiveSupport::TestCase
     assert_equal "驗", explanation.fetch("mapping_path").first
     assert_equal "験", explanation.fetch("mapping_path").last
   end
+  test "common matching follows transitive variant links without a global graph" do
+    VariantMapping.delete_all
+    VariantMapping.create!(base_codepoint: "甲".ord, variant_codepoint: "由".ord, source: "moe_taiwan_moe")
+    VariantMapping.create!(base_codepoint: "由".ord, variant_codepoint: "申".ord, source: "moe_taiwan_moe")
+    CorpusSearch::CharacterEquivalenceRegistry.reset_cache!
+
+    registry = CorpusSearch::CharacterEquivalenceRegistry.new(level: "common")
+
+    assert_equal Set["甲", "由", "申"], registry.forms_for("甲")
+    assert registry.equivalent?("甲", "申")
+    assert_equal ["甲", "由", "申"], registry.explanation(query_character: "甲", source_character: "申").fetch("mapping_path")
+  end
+
 end

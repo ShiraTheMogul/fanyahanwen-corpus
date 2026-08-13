@@ -99,16 +99,30 @@ def floatish(value: Any) -> float:
 
 
 def load_last_inventory(staging_root: Path) -> Path:
-    state_path = staging_root / "_state" / "last_inventory.json"
-    payload = json.loads(state_path.read_text(encoding="utf-8"))
-    output = Path(payload["output_dir"])
-    if not output.is_absolute():
-        output = (staging_root / output).resolve()
     required = ["corpus_works.csv", "codh_matches.csv", "kanripo_matches.csv", "nijl_matches.csv"]
-    missing = [name for name in required if not (output / name).exists()]
-    if missing:
-        raise RuntimeError(f"Inventory is missing required reports: {', '.join(missing)}")
-    return output
+    state_path = staging_root / "_state" / "last_inventory.json"
+    if state_path.is_file():
+        try:
+            payload = json.loads(state_path.read_text(encoding="utf-8"))
+            output = Path(payload["output_dir"])
+            if not output.is_absolute():
+                output = (staging_root / output).resolve()
+            if all((output / name).is_file() for name in required):
+                return output
+        except Exception:
+            pass
+
+    # A lost convenience pointer must not force another deep corpus scan. Reuse the
+    # newest completed inventory that still has the required source reports.
+    candidates = sorted(
+        [path for path in (staging_root / "_inventory").glob("*") if path.is_dir()],
+        key=lambda path: path.name,
+        reverse=True,
+    )
+    for output in candidates:
+        if all((output / name).is_file() for name in required):
+            return output
+    raise FileNotFoundError(f"No completed inventory with required reports found under {staging_root / '_inventory'}")
 
 
 def exact_title_index(corpus_rows: list[dict[str, str]]) -> dict[str, list[dict[str, str]]]:
@@ -118,6 +132,14 @@ def exact_title_index(corpus_rows: list[dict[str, str]]) -> dict[str, list[dict[
         if norm:
             index.setdefault(norm, []).append(row)
     return index
+
+
+def has_primary_count_data(corpus_rows: list[dict[str, str]]) -> bool:
+    return bool(corpus_rows and "primary_text_file_count" in corpus_rows[0])
+
+
+def row_has_primary_text(row: dict[str, str]) -> bool:
+    return intish(row.get("primary_text_file_count")) > 0
 
 
 def build_ud(output: Path, refined: Path, corpus_rows: list[dict[str, str]]) -> list[dict[str, Any]]:
@@ -134,6 +156,9 @@ def build_ud(output: Path, refined: Path, corpus_rows: list[dict[str, str]]) -> 
                 note = "Kyoto KR6c0023 is 姚秦天竺三藏鳩摩羅什譯. Similarly named PALCC translations/commentaries are not interchangeable with this exact source."
             else:
                 note = "Kyoto KR6c0127 is 姚秦天竺三藏鳩摩羅什譯. The fuzzy 摩訶般若波羅蜜經 hit is a different work."
+        elif exact and has_primary_count_data(corpus_rows) and not any(row_has_primary_text(row) for row in exact):
+            action = "FILL_MISSING_PRIMARY_TEXT_AND_ANNOTATE"
+            note = "Exact PALCC metadata record exists, but the deep inventory found no primary text files. Reuse the existing work record/IDs and add source text before attaching annotation."
         elif exact:
             action = "ANNOTATE_EXISTING_WORK"
             note = ""
@@ -305,14 +330,24 @@ def build_codh(staging_root: Path, output: Path, refined: Path) -> tuple[list[di
     return rows, segments
 
 
-def build_kanripo(output: Path, refined: Path) -> Counter[str]:
+def build_kanripo(output: Path, refined: Path, corpus_rows: list[dict[str, str]]) -> Counter[str]:
     rows = read_csv(output / "kanripo_matches.csv")
+    primary_by_path = {row.get("path", ""): intish(row.get("primary_text_file_count")) for row in corpus_rows}
+    primary_counts_known = has_primary_count_data(corpus_rows)
     for row in rows:
         status = row.get("match_status", "")
         title = row.get("source_title", "")
         score = floatish(row.get("match_score"))
+        candidate_paths = [part.strip() for part in row.get("candidate_paths", "").split(" | ") if part.strip()]
+        candidate_primary = [primary_by_path.get(path, 0) for path in candidate_paths]
+        row["candidate_primary_text_file_counts"] = " | ".join(str(value) for value in candidate_primary)
+        row["all_exact_candidates_metadata_only"] = int(
+            bool(primary_counts_known and candidate_paths and candidate_primary and all(value == 0 for value in candidate_primary))
+        )
         if not title or status == "source_title_missing":
             queue = "TITLE_UNRESOLVED"
+        elif status in {"exact_title", "exact_title_ambiguous"} and row["all_exact_candidates_metadata_only"]:
+            queue = "FILL_MISSING_PRIMARY_TEXT"
         elif status in {"exact_title", "exact_title_ambiguous"}:
             queue = "DOWNLOAD_FOR_WITNESS_COMPARE"
         elif status in {"strong_title_match", "review_title_match"}:
@@ -328,9 +363,11 @@ def build_kanripo(output: Path, refined: Path) -> Counter[str]:
     fields = [
         "source_id","source_title","source_author","source_period","source_catalog_label","source_url","refined_queue",
         "match_status","match_score","palcc_title","palcc_path","candidate_count","candidate_titles","candidate_paths",
+        "candidate_primary_text_file_counts","all_exact_candidates_metadata_only",
     ]
     mapping = {
         "DOWNLOAD_FOR_WITNESS_COMPARE": "kanripo_existing_title_witnesses.csv",
+        "FILL_MISSING_PRIMARY_TEXT": "kanripo_fill_missing_primary_text.csv",
         "TITLE_FAMILY_REVIEW": "kanripo_title_review.csv",
         "PROBABLE_NEW_WORK": "kanripo_probable_new_works.csv",
         "TITLE_UNRESOLVED": "kanripo_unresolved_titles.csv",
@@ -341,6 +378,7 @@ def build_kanripo(output: Path, refined: Path) -> Counter[str]:
         write_csv(refined / filename, subset, fields)
     id_files = {
         "DOWNLOAD_FOR_WITNESS_COMPARE": "kanripo_existing_ids.txt",
+        "FILL_MISSING_PRIMARY_TEXT": "kanripo_fill_missing_primary_ids.txt",
         "TITLE_FAMILY_REVIEW": "kanripo_review_ids.txt",
         "PROBABLE_NEW_WORK": "kanripo_probable_new_ids.txt",
     }
@@ -384,6 +422,7 @@ def build_nijl(staging_root: Path, output: Path, refined: Path) -> Counter[str]:
         "source_id","source_id_kind","refined_source_title","project_title_hint","project","source_url","group","codh_linked",
         "codh_work_id","codh_category","codh_authors","codh_publication","codh_print_ms","refined_queue",
         "match_status","match_score","palcc_title","palcc_path","candidate_count","candidate_titles","candidate_paths",
+        "candidate_primary_text_file_counts","all_exact_candidates_metadata_only",
     ]
     mapping = {
         "DOWNLOAD_FOR_WITNESS_COMPARE": "nijl_existing_title_witnesses.csv",
@@ -415,7 +454,7 @@ def main() -> int:
     corpus_rows = read_csv(output / "corpus_works.csv")
     ud_rows = build_ud(output, refined, corpus_rows)
     codh_rows, segments = build_codh(staging_root, output, refined)
-    kanripo_counts = build_kanripo(output, refined)
+    kanripo_counts = build_kanripo(output, refined, corpus_rows)
     nijl_counts = build_nijl(staging_root, output, refined)
 
     summary = {
@@ -424,6 +463,7 @@ def main() -> int:
         "ud": {
             "targets": len(ud_rows),
             "existing_annotation_targets": sum(row["action"].startswith("ANNOTATE_EXISTING") for row in ud_rows),
+            "fill_missing_primary_and_annotate": sum(row["action"] == "FILL_MISSING_PRIMARY_TEXT_AND_ANNOTATE" for row in ud_rows),
             "new_work_from_ud": sum(row["action"] == "NEW_WORK_FROM_UD" for row in ud_rows),
         },
         "codh": {
@@ -447,6 +487,7 @@ def main() -> int:
         "UD",
         f"  Alignment targets: {len(ud_rows):,}",
         f"  Existing-work/chapter annotation targets: {summary['ud']['existing_annotation_targets']:,}",
+        f"  Metadata-only targets needing text + annotation: {summary['ud']['fill_missing_primary_and_annotate']:,}",
         f"  New exact source works from UD: {summary['ud']['new_work_from_ud']:,}",
         "",
         "CODH",
@@ -457,6 +498,7 @@ def main() -> int:
         "",
         "KANRIPO",
         f"  Exact-title witness downloads: {kanripo_counts['DOWNLOAD_FOR_WITNESS_COMPARE']:,}",
+        f"  Exact-title metadata-only works needing primary text: {kanripo_counts['FILL_MISSING_PRIMARY_TEXT']:,}",
         f"  Title-family review: {kanripo_counts['TITLE_FAMILY_REVIEW']:,}",
         f"  Probable new works: {kanripo_counts['PROBABLE_NEW_WORK']:,}",
         f"  Title unresolved: {kanripo_counts['TITLE_UNRESOLVED']:,}",

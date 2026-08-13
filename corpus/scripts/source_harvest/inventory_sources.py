@@ -209,6 +209,7 @@ class CorpusWork:
     source_urls: set[str] = field(default_factory=set)
     aliases: set[str] = field(default_factory=set)
     evidence_files: set[str] = field(default_factory=set)
+    primary_text_files: set[str] = field(default_factory=set)
 
     def add_aliases(self, *values: str) -> None:
         self.aliases.update(title_aliases(*values))
@@ -351,7 +352,9 @@ def load_corpus_works(repo_root: Path, deep: bool = True) -> list[CorpusWork]:
         source_url = header.get("SOURCE_URL", "")
         if source_url:
             work.source_urls.add(source_url)
-        work.evidence_files.add(text_path.relative_to(repo_root).as_posix())
+        rel_text = text_path.relative_to(repo_root).as_posix()
+        work.evidence_files.add(rel_text)
+        work.primary_text_files.add(rel_text)
         accepted_text_count += 1
         if text_count % 2000 == 0:
             log(f"Corpus deep scan: {text_count:,} text files inspected; {len(works):,} work records")
@@ -445,6 +448,8 @@ class Matcher:
             "candidate_count": 0,
             "candidate_titles": "",
             "candidate_paths": "",
+            "palcc_primary_text_file_count": 0,
+            "candidate_primary_text_file_counts": "",
         }
 
     def _result(self, status: str, score: float, candidates: list[CorpusWork]) -> dict[str, Any]:
@@ -459,6 +464,8 @@ class Matcher:
             "candidate_count": len(candidates),
             "candidate_titles": " | ".join(work.title for work in candidates),
             "candidate_paths": " | ".join(work.path for work in candidates),
+            "palcc_primary_text_file_count": len(first.primary_text_files) if first else 0,
+            "candidate_primary_text_file_counts": " | ".join(str(len(work.primary_text_files)) for work in candidates),
         }
 
 
@@ -933,7 +940,7 @@ COMMON_FIELDS = [
     "source", "source_id", "source_id_kind", "source_title", "source_author", "source_period", "source_catalog_label", "source_url",
     "classification", "has_text_payload", "text_han_ratio", "match_status", "match_score",
     "palcc_title", "palcc_path", "palcc_work_id", "palcc_corpus_root", "candidate_count",
-    "candidate_titles", "candidate_paths", "text_files", "tag_files", "publication", "group",
+    "candidate_titles", "candidate_paths", "palcc_primary_text_file_count", "candidate_primary_text_file_counts", "text_files", "tag_files", "publication", "group",
     "project", "codh_linked", "treebank_commit", "treebank_sentences", "treebank_tokens",
 ]
 
@@ -961,13 +968,14 @@ def write_reports(output_dir: Path, works: list[CorpusWork], source_rows: dict[s
             "aliases": " | ".join(sorted(work.aliases)),
             "source_urls": " | ".join(sorted(work.source_urls)),
             "evidence_file_count": len(work.evidence_files),
+            "primary_text_file_count": len(work.primary_text_files),
         }
         for work in works
     ]
     write_csv(
         output_dir / "corpus_works.csv",
         corpus_rows,
-        ["work_id", "corpus_root", "title", "display_title", "author", "path", "aliases", "source_urls", "evidence_file_count"],
+        ["work_id", "corpus_root", "title", "display_title", "author", "path", "aliases", "source_urls", "evidence_file_count", "primary_text_file_count"],
     )
 
     all_rows: list[dict[str, Any]] = []

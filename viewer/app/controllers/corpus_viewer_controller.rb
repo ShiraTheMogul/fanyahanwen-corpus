@@ -23,6 +23,11 @@ class CorpusViewerController < ApplicationController
     request.format = :html
 
     @rel_path = params[:path].to_s
+    if hidden_root_entry?(@rel_path)
+      render plain: "Not found", status: :not_found
+      return
+    end
+
     @abs_path = fs.resolve(@rel_path)
     @requested_annotation_system = normalized_annotation_system_param(params[:annotation_system].presence || params[:tradition])
 
@@ -222,6 +227,11 @@ class CorpusViewerController < ApplicationController
     return LABEL_MAP[normalized] if LABEL_MAP.key?(normalized)
 
     normalized.downcase.split("_").map(&:capitalize).join(" ")
+  end
+
+  def hidden_root_entry?(rel_path)
+    first_segment = rel_path.to_s.tr("\\", "/").sub(%r{\A/+}, "").split("/", 2).first.to_s
+    ROOT_HIDDEN_ENTRIES.include?(first_segment)
   end
 
   def normalized_annotation_system_param(value)
