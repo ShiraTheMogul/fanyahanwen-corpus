@@ -16,13 +16,32 @@ module CorpusSearch
     DEFAULT_SKIP_DIRS = %w[.git .svn node_modules tmp log storage bak vendor].freeze
     VERSION = 8
     CACHE_PATH = "manifest.json.gz"
+    QUERY_CACHE_VERSION = 1
+    QUERY_CACHE_META_PATH = "manifest-query-v1.json.gz"
+    QUERY_CACHE_DIRECTORY = "manifest-query-v1"
+    QUERY_DOCUMENT_FIELDS = %w[
+      id work_id path folder_path document_role canonical_parent_path
+      title work author date_text nation corpus_root macro_region period polity region
+      year_start year_end size searchable_body searchable_characters body_fingerprint fingerprint
+    ].freeze
+    FILTER_FIELDS = %w[nation polity period region author].freeze
     FRONT_MATTER_READ_BYTES = 65_536
 
     class CacheMissing < StandardError; end
     class IncompleteScan < StandardError; end
     class InvalidUtf8Document < StandardError; end
 
-    attr_reader :documents, :generated_at, :scan_issues
+    attr_reader :generated_at, :scan_issues
+
+    # Full-manifest access remains available for maintenance callers. Query-time
+    # manifests keep only their requested role slices in memory; asking for
+    # #documents explicitly falls back to the administrator-built full cache.
+    def documents
+      return @documents if @documents
+
+      load_full_documents_for_compatibility!
+      @documents
+    end
 
     def self.load(root: Rails.configuration.x.corpus_root, cache_store: CacheStore.new, refresh: false, force: false)
       manifest = new(root: root, cache_store: cache_store)
@@ -35,19 +54,25 @@ module CorpusSearch
     end
 
     def self.load_for_query(query:, root: Rails.configuration.x.corpus_root, cache_store: CacheStore.new, refresh: false)
-      # A web request must never build any manifest, including a supposedly
-      # "targeted" one. The administrator-built full manifest already contains
-      # every document needed for folder filtering; Runner#candidate_documents
-      # applies include/exclude folders in memory.
-      #
-      # This also avoids two serious failure modes seen on WSL/OneDrive:
-      #   * selecting a large root folder synchronously walked hundreds of
-      #     thousands of files and held the request open for tens of minutes;
-      #   * concurrent requests attempted to write the same scoped cache file.
-      #
-      # `query` and `refresh` remain in the signature for compatibility with
-      # callers, but refreshes belong to maintenance tasks, never page loads.
-      new(root: root, cache_store: cache_store).load_cached!
+      # Web requests read prebuilt role slices instead of parsing and filtering
+      # the complete ~500k-document manifest. Refreshes remain maintenance-only.
+      manifest = new(root: root, cache_store: cache_store)
+      roles = manifest.send(:normalized_roles, query.respond_to?(:document_roles) ? query.document_roles : nil)
+      manifest.load_query_cache!(roles: roles)
+    end
+
+    # Build query-role caches from the existing administrator manifest without
+    # touching the corpus filesystem. Useful immediately after deploying a cache
+    # format change; normal rebuild_manifest runs create these automatically.
+    def self.rebuild_query_caches!(root: Rails.configuration.x.corpus_root, cache_store: CacheStore.new)
+      manifest = new(root: root, cache_store: cache_store).load_cached!
+      manifest.send(
+        :write_query_role_caches!,
+        manifest.documents,
+        generated_at: manifest.generated_at,
+        term_index_fingerprint: manifest.term_index_fingerprint
+      )
+      manifest
     end
 
 
@@ -55,6 +80,8 @@ module CorpusSearch
       @root = File.realpath(root.to_s)
       @cache_store = cache_store
       @documents = []
+      @query_documents = nil
+      @loaded_query_roles = nil
       @documents_by_id = nil
       @progress_every = integer_env("CORPUS_SEARCH_PROGRESS_EVERY", 500)
       @dir_progress_every = integer_env("CORPUS_SEARCH_DIR_PROGRESS_EVERY", 1_000)
@@ -90,6 +117,40 @@ module CorpusSearch
       end
     end
 
+    def load_query_cache!(roles:)
+      selected_roles = normalized_roles(roles)
+      meta = @cache_store.read_json(QUERY_CACHE_META_PATH, freeze: true)
+      unless query_cache_meta_current?(meta)
+        raise CacheMissing, query_cache_missing_message
+      end
+
+      generation = meta["generation"].to_s
+      role_paths = meta["roles"]
+      query_documents = []
+
+      selected_roles.each do |role|
+        relative_path = role_paths[role].to_s
+        raise CacheMissing, query_cache_missing_message if relative_path.empty?
+
+        payload = @cache_store.read_json(relative_path, freeze: true)
+        unless query_role_payload_current?(payload, generation: generation, role: role)
+          raise CacheMissing, query_cache_missing_message
+        end
+        query_documents.concat(Array(payload["documents"]))
+      end
+
+      @generated_at = meta["manifest_generated_at"].to_s
+      @stored_term_index_fingerprint = meta["term_index_fingerprint"].to_s
+      @term_index_fingerprint = nil
+      @query_documents = query_documents.freeze
+      @loaded_query_roles = selected_roles.freeze
+      @documents = nil
+      @documents_by_id = nil
+      @default_search_documents = nil
+      progress("query manifest loaded from role cache: #{@query_documents.length} documents (#{selected_roles.join(', ')})")
+      self
+    end
+
     def refresh!(force: false)
       progress("manifest scan starting at #{@root}")
       cached = force ? nil : @cache_store.read_json(CACHE_PATH, freeze: true)
@@ -113,17 +174,22 @@ module CorpusSearch
       }
 
       @cache_store.write_json(CACHE_PATH, payload)
+      write_query_role_caches!(
+        scanned,
+        generated_at: payload["generated_at"],
+        term_index_fingerprint: payload["term_index_fingerprint"]
+      )
       load_from_payload(payload)
       progress("manifest scan complete: #{@documents.length} documents")
       self
     end
 
     def document(id)
-      # Most search and export operations only iterate the manifest. Building a
-      # second 494,000-entry Hash eagerly wastes hundreds of megabytes in those
-      # processes. Construct the lookup table only for callers that actually ask
-      # for a document by ID.
-      @documents_by_id ||= @documents.index_by { |doc| doc["id"].to_s }
+      # Most search and export operations only iterate the manifest. Build a
+      # lookup table lazily, and prefer the already-small query slice when one is
+      # loaded.
+      source = @documents || @query_documents || documents
+      @documents_by_id ||= source.index_by { |doc| doc["id"].to_s }
       @documents_by_id[id.to_s]
     end
 
@@ -132,25 +198,53 @@ module CorpusSearch
       roles = normalized_roles(filters["document_roles"])
       include_folders = normalized_paths(filters["include_folders"])
       exclude_folders = normalized_paths(filters["exclude_folders"])
+      active_filters = FILTER_FIELDS.filter_map do |field|
+        value = filters[field].to_s
+        [field, value] unless value.empty?
+      end
+      year_filter_requested = filters["year_start"].present? || filters["year_end"].present?
+      from_year = integer_or_nil(filters["year_start"])
+      to_year = integer_or_nil(filters["year_end"])
 
-      @documents.select do |doc|
-        role = doc["document_role"].presence || DocumentRole.classify(doc["path"])
-        next false unless roles.include?(role)
-        next false unless DocumentRole.searchable?(role)
-        next false if doc["searchable_body"] == false || doc["size"].to_i.zero?
-        next false unless included_folder?(doc, include_folders)
-        next false if excluded_folder?(doc, exclude_folders)
+      source = @query_documents || documents
+      role_filter_needed = !query_roles_exact?(roles)
 
-        match_filter?(doc, "nation", filters["nation"]) &&
-          match_filter?(doc, "polity", filters["polity"]) &&
-          match_filter?(doc, "period", filters["period"]) &&
-          match_filter?(doc, "region", filters["region"]) &&
-          match_filter?(doc, "author", filters["author"]) &&
-          match_year_filter?(doc, filters["year_start"], filters["year_end"])
+      # The common targeted-search case is now O(1): load_for_query already
+      # selected the requested role slice and there are no scope predicates.
+      if !role_filter_needed && include_folders.empty? && exclude_folders.empty? &&
+         active_filters.empty? && !year_filter_requested
+        return source
+      end
+
+      role_lookup = role_filter_needed ? roles.to_h { |role| [role, true] } : nil
+
+      source.select do |doc|
+        if role_filter_needed
+          role = doc["document_role"].to_s
+          role = DocumentRole.classify(doc["path"]) if role.empty?
+          next false unless role_lookup.key?(role)
+        end
+
+        path = doc["path"].to_s
+        next false if include_folders.any? && !path_in_folders?(path, include_folders)
+        next false if exclude_folders.any? && path_in_folders?(path, exclude_folders)
+        next false unless active_filters.all? { |field, value| doc[field].to_s.include?(value) }
+
+        if year_filter_requested
+          start_year = doc["year_start"]
+          end_year = doc["year_end"] || start_year
+          next false if start_year.nil? && end_year.nil?
+          next false if from_year && end_year && end_year < from_year
+          next false if to_year && start_year && start_year > to_year
+        end
+
+        true
       end
     end
 
     def default_search_documents
+      return @query_documents if query_roles_exact?(DocumentRole::DEFAULT_ROLES)
+
       @default_search_documents ||= filtered("document_roles" => DocumentRole::DEFAULT_ROLES)
     end
 
@@ -159,6 +253,117 @@ module CorpusSearch
     end
 
     private
+
+    def write_query_role_caches!(documents, generated_at:, term_index_fingerprint:)
+      previous_meta = @cache_store.read_json(QUERY_CACHE_META_PATH, freeze: true)
+      previous_generation = previous_meta.is_a?(Hash) ? previous_meta["generation"].to_s : ""
+      generation = Digest::SHA256.hexdigest(
+        [VERSION, generated_at, term_index_fingerprint].join("\0")
+      )[0, 20]
+
+      grouped = DocumentRole::SEARCHABLE_ROLES.to_h { |role| [role, []] }
+      Array(documents).each do |doc|
+        role = doc["document_role"].to_s
+        next unless grouped.key?(role)
+        next if doc["searchable_body"] == false || doc["size"].to_i.zero?
+
+        grouped[role] << compact_query_document(doc)
+      end
+
+      role_paths = {}
+      grouped.each do |role, role_documents|
+        relative_path = File.join(QUERY_CACHE_DIRECTORY, generation, "#{role}.json.gz")
+        @cache_store.write_json(
+          relative_path,
+          {
+            "version" => QUERY_CACHE_VERSION,
+            "root" => @root,
+            "generation" => generation,
+            "role" => role,
+            "documents" => role_documents
+          }
+        )
+        role_paths[role] = relative_path
+      end
+
+      @cache_store.write_json(
+        QUERY_CACHE_META_PATH,
+        {
+          "version" => QUERY_CACHE_VERSION,
+          "manifest_version" => VERSION,
+          "root" => @root,
+          "generation" => generation,
+          "manifest_generated_at" => generated_at.to_s,
+          "term_index_fingerprint" => term_index_fingerprint.to_s,
+          "roles" => role_paths
+        }
+      )
+
+      cleanup_query_cache_generations!(keep: [generation, previous_generation].reject(&:empty?))
+      progress("query manifest role caches built: #{grouped.sum { |_role, rows| rows.length }} documents")
+    end
+
+    def compact_query_document(doc)
+      QUERY_DOCUMENT_FIELDS.each_with_object({}) do |field, output|
+        output[field] = doc[field] if doc.key?(field)
+      end
+    end
+
+    def cleanup_query_cache_generations!(keep:)
+      directory = @cache_store.absolute(QUERY_CACHE_DIRECTORY)
+      return unless directory.directory?
+
+      directory.children.each do |child|
+        next unless child.directory?
+        next if keep.include?(child.basename.to_s)
+
+        FileUtils.rm_rf(child)
+      end
+    rescue Errno::ENOENT, Errno::EACCES, Errno::EIO
+      nil
+    end
+
+    def query_cache_meta_current?(payload)
+      payload.is_a?(Hash) &&
+        payload["version"].to_i == QUERY_CACHE_VERSION &&
+        payload["manifest_version"].to_i == VERSION &&
+        payload["root"].to_s == @root &&
+        payload["generation"].present? &&
+        payload["roles"].is_a?(Hash)
+    end
+
+    def query_role_payload_current?(payload, generation:, role:)
+      payload.is_a?(Hash) &&
+        payload["version"].to_i == QUERY_CACHE_VERSION &&
+        payload["root"].to_s == @root &&
+        payload["generation"].to_s == generation.to_s &&
+        payload["role"].to_s == role.to_s &&
+        payload["documents"].is_a?(Array)
+    end
+
+    def query_cache_missing_message
+      "The corpus search query cache has not been built for this manifest. " \
+        "Run bin/rails runner 'CorpusSearch::Manifest.rebuild_query_caches!' as a maintenance command."
+    end
+
+    def query_roles_exact?(roles)
+      return false unless @query_documents && @loaded_query_roles
+
+      @loaded_query_roles.sort == Array(roles).sort
+    end
+
+    def load_full_documents_for_compatibility!
+      cached = @cache_store.read_json(CACHE_PATH, freeze: true)
+      unless cache_current?(cached)
+        raise CacheMissing, "The corpus search manifest has not been built. Run bin/rails corpus_search:rebuild_manifest as a maintenance command."
+      end
+
+      @documents = Array(cached["documents"])
+    end
+
+    def path_in_folders?(path, folders)
+      folders.any? { |folder| path == folder || path.start_with?("#{folder}/") }
+    end
 
     def scan_documents(cached_documents: nil)
       cached_by_path = Array(cached_documents).index_by { |doc| doc["path"].to_s }
@@ -387,6 +592,8 @@ module CorpusSearch
     def load_from_payload(payload)
       @generated_at = payload["generated_at"].to_s
       @documents = Array(payload["documents"])
+      @query_documents = nil
+      @loaded_query_roles = nil
       @documents_by_id = nil
       @default_search_documents = nil
       @stored_term_index_fingerprint = payload["term_index_fingerprint"].to_s
