@@ -1,0 +1,119 @@
+﻿<section class="measurement-converter" data-controller="measurement-converter">
+  <style>
+    .measurement-converter { margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid #bbb; }
+    .measurement-converter__intro { max-width: 58rem; }
+    .measurement-converter__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 0.8rem 1rem; align-items: end; }
+    .measurement-converter__field label { display: block; font-weight: 600; margin-bottom: 0.2rem; }
+    .measurement-converter__field select,
+    .measurement-converter__field input[type="text"] { width: 100%; box-sizing: border-box; }
+    .measurement-converter__toolbar { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; margin: 0.6rem 0; }
+    .measurement-converter__unit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); gap: 0.55rem; }
+    .measurement-converter__unit { border: 1px solid #d2d2d2; border-radius: 0.35rem; padding: 0.55rem; }
+    .measurement-converter__unit label { display: flex; gap: 0.45rem; align-items: baseline; }
+    .measurement-converter__unit select { width: 100%; margin-top: 0.35rem; }
+    .measurement-converter__authority { display: block; margin-top: 0.25rem; opacity: 0.78; }
+    .measurement-converter__note { margin: 0.55rem 0; padding: 0.55rem 0.7rem; border-left: 3px solid #999; }
+    .measurement-converter__result { margin: 1rem 0; padding: 0.9rem; border: 1px solid #bbb; border-radius: 0.4rem; }
+    .measurement-converter__result-main { font-size: 1.35rem; margin-bottom: 0.25rem; }
+    .measurement-converter__result-subtitle { margin-top: 0.15rem; opacity: 0.78; }
+    .measurement-converter__error { font-weight: 600; }
+    .measurement-converter__reference { margin-bottom: 1rem; }
+    .measurement-converter__reference blockquote { margin: 0.35rem 0 0 1rem; }
+    .measurement-converter__reference-group { margin-top: 1rem; }
+    .measurement-converter__correspondence { white-space: pre-wrap; overflow-wrap: anywhere; }
+    .measurement-converter details { margin-top: 0.8rem; }
+    .measurement-converter summary { cursor: pointer; font-weight: 600; }
+    .measurement-converter__subtle { opacity: 0.78; }
+    .measurement-converter__grammar { margin: 0.4rem 0 0.9rem; }
+    .measurement-converter__table-wrap { overflow-x: auto; margin-top: 0.45rem; }
+    .measurement-converter__table { width: 100%; border-collapse: collapse; min-width: 34rem; }
+    .measurement-converter__table th,
+    .measurement-converter__table td { text-align: left; vertical-align: top; padding: 0.4rem 0.5rem; border-bottom: 1px solid #ddd; }
+    .measurement-converter__table th { font-weight: 600; }
+    .measurement-converter__equivalent { white-space: nowrap; }
+    .measurement-converter__advanced { margin-top: 1rem; padding-top: 0.15rem; }
+  </style>
+
+  <h2>Historical measurement converter</h2>
+  <p class="measurement-converter__intro">
+    Enter a historical Chinese measurement or a modern one. The converter will express the same quantity using the Chinese standard you choose and show modern equivalents where an exact scale is known.
+  </p>
+
+  <script type="application/json" data-measurement-converter-target="catalogue"><%= raw(json_escape(catalogue.to_json)) %></script>
+
+  <div class="measurement-converter__grid">
+    <div class="measurement-converter__field">
+      <label for="measurement-category">Measure</label>
+      <select id="measurement-category" data-measurement-converter-target="category" data-action="change->measurement-converter#categoryChanged"></select>
+    </div>
+
+    <div class="measurement-converter__field">
+      <label for="measurement-period">Period</label>
+      <select id="measurement-period" data-measurement-converter-target="period" data-action="change->measurement-converter#periodChanged"></select>
+    </div>
+
+    <div class="measurement-converter__field">
+      <label for="measurement-standard">Standard</label>
+      <select id="measurement-standard" data-measurement-converter-target="standard" data-action="change->measurement-converter#standardChanged"></select>
+    </div>
+  </div>
+
+  <p class="measurement-converter__toolbar">
+    <label>
+      <input type="checkbox" checked data-measurement-converter-target="limitPeriod" data-action="change->measurement-converter#periodLimitChanged">
+      Only show definitions and sources for this period
+    </label>
+  </p>
+
+  <div class="measurement-converter__grid">
+    <div class="measurement-converter__field">
+      <label for="measurement-input">Measurement</label>
+      <input id="measurement-input" type="text" placeholder="八尺三寸 · 5ft7 · 5′7″ · 1m75" data-measurement-converter-target="input" data-action="input->measurement-converter#calculate">
+    </div>
+
+    <div class="measurement-converter__field">
+      <label for="measurement-source-unit">If you enter only a number, treat it as:</label>
+      <select id="measurement-source-unit" data-measurement-converter-target="sourceUnit" data-action="change->measurement-converter#calculate"></select>
+    </div>
+  </div>
+
+  <p class="measurement-converter__grammar measurement-converter__subtle">
+    Chinese measurements work much like “8 ft 4 in”: number, then unit. 八尺四寸 = 8尺4寸. Spaces are optional. 5ft7, 5′7″, and 1m75 are accepted too. Common Pinyin, Jyutping, and Taiwanese spellings are also accepted.
+  </p>
+
+  <div class="measurement-converter__result" data-measurement-converter-target="result" aria-live="polite">
+    <p class="measurement-converter__subtle">Enter a measurement above.</p>
+  </div>
+
+  <div class="measurement-converter__advanced">
+    <details>
+      <summary>More Chinese units</summary>
+      <p class="measurement-converter__subtle">Choose which equivalent Chinese units appear in the table. If a unit has more than one definition for this period, you can choose the one you want here.</p>
+      <div class="measurement-converter__toolbar">
+        <button type="button" data-action="measurement-converter#selectAllUnits">All</button>
+        <button type="button" data-action="measurement-converter#clearUnits">Clear</button>
+      </div>
+      <div class="measurement-converter__unit-grid" data-measurement-converter-target="units"></div>
+    </details>
+
+    <details>
+      <summary>Choose modern and other comparison units</summary>
+      <div class="measurement-converter__toolbar">
+        <button type="button" data-action="measurement-converter#selectAllComparisons">All</button>
+        <button type="button" data-action="measurement-converter#clearComparisons">Clear</button>
+      </div>
+      <div data-measurement-converter-target="comparisons"></div>
+    </details>
+
+    <details>
+      <summary>Copyable conversion</summary>
+      <p class="measurement-converter__subtle">Includes the sources used for this result.</p>
+      <pre class="measurement-converter__correspondence" data-measurement-converter-target="correspondence"></pre>
+    </details>
+
+    <details id="measurement-references">
+      <summary data-measurement-converter-target="sourcesSummary">Sources</summary>
+      <div data-measurement-converter-target="references"></div>
+    </details>
+  </div>
+</section>
