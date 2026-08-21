@@ -1,0 +1,56 @@
+﻿<%# Directory ordering controls. Kept outside the large corpus viewer template so ordering can evolve independently. %>
+<%= form_with url: request.path, method: :get, local: true, class: "corpus-sort-controls" do %>
+  <div class="corpus-sort-controls__field">
+    <label for="corpus_sort"><%= t("corpus_viewer.sorting.label", default: "Order") %></label>
+    <select id="corpus_sort" name="sort" class="corpus-sort-controls__select">
+      <% if @corpus_period_sort_available %>
+        <option value="period" <%= "selected" if @corpus_sort_mode == "period" %>>
+          <%= t("corpus_viewer.sorting.period", default: "Period") %>
+        </option>
+      <% end %>
+      <option value="pc" <%= "selected" if @corpus_sort_mode == "pc" %>>
+        <%= t("corpus_viewer.sorting.pc", default: "PC default") %>
+      </option>
+      <option value="pronunciation" <%= "selected" if @corpus_sort_mode == "pronunciation" %>>
+        <%= t("corpus_viewer.sorting.pronunciation", default: "Pronunciation") %> — <%= @corpus_sort_pronunciation_label %>
+      </option>
+      <optgroup label="<%= t("corpus_viewer.sorting.structure", default: "Structure input") %>">
+        <option value="cangjie" <%= "selected" if @corpus_sort_mode == "cangjie" %>>Cangjie 5</option>
+        <option value="wubi" <%= "selected" if @corpus_sort_mode == "wubi" %>>Wubi 86</option>
+        <option value="four_corner" <%= "selected" if @corpus_sort_mode == "four_corner" %>>
+          <%= t("corpus_viewer.sorting.four_corner", default: "Four-corner") %>
+        </option>
+      </optgroup>
+      <option value="kangxi" <%= "selected" if @corpus_sort_mode == "kangxi" %>>
+        <%= t("corpus_viewer.sorting.kangxi", default: "Kangxi radical") %>
+      </option>
+      <option value="stroke_count" <%= "selected" if @corpus_sort_mode == "stroke_count" %>>
+        <%= t("corpus_viewer.sorting.stroke_count", default: "Stroke count") %>
+      </option>
+      <option value="yes"
+              <%= "selected" if @corpus_sort_mode == "yes" %>
+              <%= "disabled" unless @corpus_yes_sort_available %>>
+        <%= t("corpus_viewer.sorting.yes", default: "YES order") %><%= " — data not installed" unless @corpus_yes_sort_available %>
+      </option>
+      <option value="frequency" <%= "selected" if @corpus_sort_mode == "frequency" %>>
+        <%= t("corpus_viewer.sorting.frequency", default: "Frequency (Unihan kHanyuPinlu)") %>
+      </option>
+    </select>
+  </div>
+
+  <div class="corpus-sort-controls__qianziwen">
+    <%= hidden_field_tag :qianziwen_first, "0" %>
+    <%= check_box_tag :qianziwen_first, "1", @corpus_qianziwen_first, id: "corpus_qianziwen_first" %>
+    <label for="corpus_qianziwen_first">
+      <%= t("corpus_viewer.sorting.qianziwen_first", default: "千字文 first") %>
+    </label>
+  </div>
+
+  <div class="corpus-sort-controls__grid-view">
+    <%= hidden_field_tag :grid_view, "0" %>
+    <%= check_box_tag :grid_view, "1", @corpus_grid_view, id: "corpus_grid_view" %>
+    <label for="corpus_grid_view"><%= t("corpus_viewer.sorting.grid_view", default: "Grid") %></label>
+  </div>
+
+  <%= submit_tag t("common.actions.apply", default: "Apply"), class: "corpus-sort-controls__apply" %>
+<% end %>

@@ -1,0 +1,733 @@
+﻿/* Site-wide colour theme and Corpus Viewer ordering controls. */
+
+/* The document is a three-part vertical frame: header, page, footer.
+   Keeping that geometry here removes the need for offsets and also makes
+   short pages end with the footer at the viewport bottom. */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+html {
+  min-height: 100%;
+}
+
+body {
+  display: flex;
+  min-height: 100vh;
+  min-height: 100dvh;
+  flex-direction: column;
+}
+
+body > .site-header {
+  position: sticky;
+  top: 0;
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body > .page-shell {
+  flex: 1 0 auto;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+body > .site-footer {
+  flex: 0 0 auto;
+  margin-top: 0;
+}
+
+.site-header-inner {
+  box-sizing: border-box;
+  grid-template-columns: max-content minmax(28rem, 1fr) max-content;
+  grid-template-areas: "left center right";
+  gap: 0.75rem 1rem;
+  width: 100%;
+  padding: 10px 16px;
+}
+
+.site-header-center {
+  width: 100%;
+  min-width: 0;
+  justify-content: stretch;
+}
+
+.site-search-with-compose,
+.site-search-with-compose > .site-search {
+  width: 100%;
+  min-width: 0;
+}
+
+/* Give the dictionary query the flexible middle of the header. On a wide
+   desktop it expands to show the full instructional placeholder instead of
+   being squeezed between two 1fr side columns. */
+.site-search-input {
+  min-width: 18rem;
+}
+
+/* Give every compact header control one physical height. The Compose
+   <summary> previously stretched taller than its neighbours. */
+.site-header {
+  --site-header-control-height: 2.25rem;
+}
+
+.site-search-input,
+.site-search-submit,
+.site-ids-quick-compose__toggle,
+.site-theme-switcher__button,
+.site-locale-select,
+.site-locale-submit {
+  box-sizing: border-box;
+  height: var(--site-header-control-height);
+  min-height: var(--site-header-control-height);
+  max-height: var(--site-header-control-height);
+  margin-block: 0;
+}
+
+.site-search-input {
+  padding-block: 0;
+}
+
+.site-search-submit,
+.site-ids-quick-compose__toggle,
+.site-theme-switcher__button,
+.site-locale-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: 0;
+}
+
+.site-ids-quick-compose {
+  align-self: center;
+}
+
+/* Keep the theme switch immediately to the left of the language selector. */
+.site-header-right {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.45rem;
+}
+
+.site-locale-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin: 0;
+}
+
+.site-theme-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.22rem;
+  width: fit-content;
+  flex: 0 0 auto;
+}
+
+.site-theme-switcher__button {
+  min-width: 2.1rem;
+  padding: 0.18rem 0.45rem;
+  border: 1px solid #c9c9c9;
+  border-radius: 5px;
+  background: #fff;
+  color: #222;
+  cursor: pointer;
+  font: inherit;
+  line-height: 1.25;
+}
+
+.site-theme-switcher__button[aria-pressed="true"] {
+  border-color: #555;
+  box-shadow: inset 0 0 0 1px #555;
+  font-weight: 700;
+}
+
+/* The directory page is one flow. Corpus Viewer and its ordering controls
+   form a single compact heading strip, followed by one breadcrumb/path bar.
+   The old bold path line is the same information as the breadcrumbs, so hide
+   that duplicate presentation. */
+.corpus-directory-page {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 0;
+}
+
+.corpus-directory-page > * {
+  order: 2;
+  flex: 1 1 100%;
+  min-width: 0;
+}
+
+.corpus-directory-page > h1:first-of-type {
+  order: 0;
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 0.32rem 0.55rem 0.36rem;
+  border: 1px solid #dedede;
+  border-right: 0;
+  border-radius: 6px 0 0 6px;
+  background: #fafafa;
+  line-height: 1.15;
+}
+
+.corpus-directory-page > .corpus-sort-controls {
+  order: 1;
+  /* Fill the rest of the heading row so its right edge aligns exactly with
+     the breadcrumb/path box below. The controls themselves remain compact
+     and left-aligned inside that shared strip. */
+  flex: 1 1 auto;
+  align-self: stretch;
+}
+
+.corpus-directory-page > .crumbs {
+  order: 2;
+  box-sizing: border-box;
+  margin: 0.7rem 0 0.85rem;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid #dedede;
+  border-radius: 6px;
+  background: #fafafa;
+}
+
+.corpus-directory-page.has-path > .crumbs + p {
+  display: none;
+}
+
+.corpus-directory-page:not(.has-path) > .crumbs {
+  display: none;
+}
+
+.corpus-directory-page:not(.has-path) > .crumbs + p {
+  box-sizing: border-box;
+  margin: 0.7rem 0 0.85rem;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid #dedede;
+  border-radius: 6px;
+  background: #fafafa;
+}
+
+.corpus-sort-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.38rem 0.52rem;
+  margin: 0;
+  padding: 0.34rem 0.45rem;
+  border: 1px solid #dedede;
+  border-radius: 0 6px 6px 0;
+  background: #fafafa;
+  font-size: 0.9rem;
+}
+
+.corpus-sort-controls__field,
+.corpus-sort-controls__qianziwen,
+.corpus-sort-controls__grid-view {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32rem;
+}
+
+.corpus-sort-controls__field label,
+.corpus-sort-controls__qianziwen label,
+.corpus-sort-controls__grid-view label {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.corpus-sort-controls__select,
+.corpus-sort-controls__apply {
+  font: inherit;
+}
+
+.corpus-sort-controls__select {
+  width: clamp(12rem, 22vw, 18rem);
+  max-width: 100%;
+  padding: 0.2rem 0.32rem;
+}
+
+.corpus-sort-controls__apply {
+  padding: 0.22rem 0.48rem;
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  background: #fff;
+  cursor: pointer;
+}
+
+/* A plain list is the default browsing view. */
+.corpus-directory-page .corpus-list {
+  display: block;
+  margin: 0.45rem 0 1rem;
+  padding-left: 1.5rem;
+  list-style: disc;
+  line-height: 1.65;
+}
+
+.corpus-directory-page .corpus-list li {
+  margin: 0.16rem 0;
+}
+
+/* Grid is an explicit display preference in the ordering strip. */
+.corpus-directory-page.is-grid-view .corpus-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+  gap: 0.42rem;
+  padding: 0;
+  list-style: none;
+  line-height: 1.35;
+}
+
+.corpus-directory-page.is-grid-view .corpus-list li {
+  min-width: 0;
+  margin: 0;
+}
+
+.corpus-directory-page.is-grid-view .corpus-list a {
+  display: flex;
+  min-height: 3.25rem;
+  height: 100%;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  padding: 0.48rem 0.58rem;
+  border: 1px solid #dedede;
+  border-radius: 6px;
+  background: #fff;
+  text-align: center;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.corpus-directory-page.is-grid-view .corpus-list a:hover,
+.corpus-directory-page.is-grid-view .corpus-list a:focus-visible {
+  border-color: currentColor;
+  background: #f7f7f7;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+@media (max-width: 1500px) {
+  .site-header-inner {
+    grid-template-columns: minmax(0, 1fr) max-content;
+    grid-template-areas:
+      "left left"
+      "center right";
+  }
+
+  .site-search-input {
+    min-width: 16rem;
+  }
+}
+
+@media (max-width: 860px) {
+  .corpus-directory-page > h1:first-of-type,
+  .corpus-directory-page > .corpus-sort-controls {
+    flex-basis: 100%;
+  }
+
+  .corpus-directory-page > h1:first-of-type {
+    border-right: 1px solid #dedede;
+    border-bottom: 0;
+    border-radius: 6px 6px 0 0;
+  }
+
+  .corpus-sort-controls {
+    border-radius: 0 0 6px 6px;
+  }
+
+  .corpus-sort-controls__field {
+    flex: 1 1 100%;
+  }
+
+  .corpus-sort-controls__select {
+    flex: 1 1 auto;
+    width: auto;
+    min-width: 0;
+    max-width: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .site-header-inner {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "left"
+      "center"
+      "right";
+  }
+
+  .site-search-input {
+    min-width: 0;
+  }
+
+  .site-header-right {
+    justify-content: flex-start;
+  }
+}
+
+/*
+  Site dark mode deliberately leaves .corpus-viewbox theme classes alone.
+  The reader already has its own Light/Bamboo/Dark paper setting; this layer
+  darkens the surrounding application chrome without taking that choice away.
+*/
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --site-bg: #111315;
+  --site-surface: #181b1f;
+  --site-surface-2: #20242a;
+  --site-border: #3a4149;
+  --site-text: #e7e9ec;
+  --site-muted: #b0b7c0;
+  --site-link: #9bc3ff;
+  --site-control: #20242a;
+  --site-control-hover: #292e35;
+
+  --cv-toolbar-bg: var(--site-surface-2);
+  --cv-toolbar-fg: var(--site-text);
+  --cv-panel-bg: var(--site-surface);
+
+  background: var(--site-bg);
+}
+
+html[data-theme="dark"] body {
+  background: var(--site-bg);
+  color: var(--site-text);
+}
+
+html[data-theme="dark"] a {
+  color: var(--site-link);
+}
+
+html[data-theme="dark"] .site-header,
+html[data-theme="dark"] .site-footer,
+html[data-theme="dark"] .site-rightbar,
+html[data-theme="dark"] .rightbar,
+html[data-theme="dark"] .rightbar-section,
+html[data-theme="dark"] .rightbar-group,
+html[data-theme="dark"] .rightbar-box {
+  background: var(--site-surface);
+  color: var(--site-text);
+  border-color: var(--site-border);
+}
+
+html[data-theme="dark"] .site-title-link,
+html[data-theme="dark"] .site-nav-link,
+html[data-theme="dark"] .lunar-date,
+html[data-theme="dark"] .rightbar-summary,
+html[data-theme="dark"] .rightbar-note {
+  color: var(--site-text);
+}
+
+html[data-theme="dark"] .rightbar-note,
+html[data-theme="dark"] .muted,
+html[data-theme="dark"] .site-footer {
+  color: var(--site-muted);
+}
+
+html[data-theme="dark"] input,
+html[data-theme="dark"] select,
+html[data-theme="dark"] textarea,
+html[data-theme="dark"] button,
+html[data-theme="dark"] .site-search-input,
+html[data-theme="dark"] .site-search-submit,
+html[data-theme="dark"] .rightbar-select,
+html[data-theme="dark"] .rightbar-input,
+html[data-theme="dark"] .rightbar-btn,
+html[data-theme="dark"] .rightbar-apply,
+html[data-theme="dark"] .rightbar-toggle {
+  background: var(--site-control);
+  color: var(--site-text);
+  border-color: var(--site-border);
+}
+
+html[data-theme="dark"] button:hover,
+html[data-theme="dark"] .site-search-submit:hover,
+html[data-theme="dark"] .rightbar-btn:hover,
+html[data-theme="dark"] .rightbar-toggle:hover {
+  background: var(--site-control-hover);
+}
+
+html[data-theme="dark"] input::placeholder,
+html[data-theme="dark"] textarea::placeholder {
+  color: #858d97;
+}
+
+html[data-theme="dark"] table,
+html[data-theme="dark"] th,
+html[data-theme="dark"] td {
+  border-color: var(--site-border);
+}
+
+html[data-theme="dark"] th {
+  background: var(--site-surface-2);
+  color: var(--site-text);
+}
+
+html[data-theme="dark"] pre,
+html[data-theme="dark"] code {
+  background: var(--site-surface-2);
+  color: var(--site-text);
+}
+
+html[data-theme="dark"] details,
+html[data-theme="dark"] summary {
+  border-color: var(--site-border);
+}
+
+html[data-theme="dark"] .site-ids-quick-compose__panel,
+html[data-theme="dark"] .pronun-section,
+html[data-theme="dark"] .pronun-card,
+html[data-theme="dark"] .character-card,
+html[data-theme="dark"] .dictionary-card,
+html[data-theme="dark"] .tool-card,
+html[data-theme="dark"] .corpus-root-activity,
+html[data-theme="dark"] .corpus-work-index__metadata,
+html[data-theme="dark"] .cv-text-edit-panel,
+html[data-theme="dark"] .cv-submission-panel,
+html[data-theme="dark"] .cv-submission-page-card,
+html[data-theme="dark"] .cv-annotate-popover {
+  background: var(--site-surface);
+  color: var(--site-text);
+  border-color: var(--site-border);
+}
+
+html[data-theme="dark"] .corpus-directory-page > h1:first-of-type,
+html[data-theme="dark"] .corpus-directory-page > .crumbs,
+html[data-theme="dark"] .corpus-directory-page:not(.has-path) > .crumbs + p,
+html[data-theme="dark"] .corpus-sort-controls {
+  background: var(--site-surface);
+  color: var(--site-text);
+  border-color: var(--site-border);
+}
+
+html[data-theme="dark"] .corpus-sort-controls__select,
+html[data-theme="dark"] .corpus-sort-controls__apply,
+html[data-theme="dark"] .site-theme-switcher__button {
+  background: var(--site-control);
+  color: var(--site-text);
+  border-color: var(--site-border);
+}
+
+html[data-theme="dark"] .site-theme-switcher__button[aria-pressed="true"] {
+  border-color: #c5cad0;
+  box-shadow: inset 0 0 0 1px #c5cad0;
+}
+
+html[data-theme="dark"] .corpus-directory-page.is-grid-view .corpus-list a {
+  background: var(--site-surface);
+  color: var(--site-link);
+  border-color: var(--site-border);
+}
+
+html[data-theme="dark"] .corpus-directory-page.is-grid-view .corpus-list a:hover,
+html[data-theme="dark"] .corpus-directory-page.is-grid-view .corpus-list a:focus-visible {
+  background: var(--site-surface-2);
+}
+
+html[data-theme="dark"] .corpus-activity-count,
+html[data-theme="dark"] .corpus-activity-work,
+html[data-theme="dark"] .corpus-activity-meta,
+html[data-theme="dark"] .corpus-activity-audit-meta,
+html[data-theme="dark"] .corpus-activity-explanation,
+html[data-theme="dark"] .corpus-activity-total,
+html[data-theme="dark"] .corpus-activity-pagination [aria-disabled="true"] {
+  color: var(--site-muted);
+}
+
+html[data-theme="dark"] .corpus-activity-flow-item + .corpus-activity-flow-item::before {
+  color: var(--site-muted);
+}
+
+html[data-theme="dark"] .corpus-activity-tab.is-active {
+  background: var(--site-surface-2);
+  color: var(--site-text);
+  border-color: var(--site-border);
+}
+
+html[data-theme="dark"] .corpus-search-rule,
+html[data-theme="dark"] .corpus-search-hint,
+html[data-theme="dark"] .corpus-search-meta,
+html[data-theme="dark"] .corpus-search-path,
+html[data-theme="dark"] .corpus-search-folder-exclude-choice,
+html[data-theme="dark"] .corpus-search-matched-alternatives,
+html[data-theme="dark"] .corpus-search-analysis-metric span,
+html[data-theme="dark"] .corpus-search-comparison-effects dt,
+html[data-theme="dark"] .corpus-search-reproducibility-record dt,
+html[data-theme="dark"] .corpus-search-advanced-stat-list dt,
+html[data-theme="dark"] .grammar-entry-tile-context,
+html[data-theme="dark"] .grammar-entry-tile-pronunciation,
+html[data-theme="dark"] .grammar-entry-tile-emphasis,
+html[data-theme="dark"] .grammar-entry-expand-cue,
+html[data-theme="dark"] .grammar-use-panel-kicker,
+html[data-theme="dark"] .grammar-entry-classification dt,
+html[data-theme="dark"] .grammar-breadcrumbs,
+html[data-theme="dark"] .grammar-index-group-heading,
+html[data-theme="dark"] .grammar-index-group-heading--radical {
+  color: var(--site-muted);
+}
+
+html[data-theme="dark"] hr {
+  border-color: var(--site-border);
+}
+
+@media (max-width: 760px) {
+  .corpus-sort-controls {
+    align-items: stretch;
+  }
+
+  .corpus-sort-controls__field {
+    flex: 1 1 100%;
+  }
+
+  .corpus-sort-controls__select {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+}
+
+/* Major light surfaces elsewhere in the application. The aim here is to make
+   the site chrome genuinely dark while leaving purpose-specific reading/game
+   palettes in control of their own content. */
+html[data-theme="dark"] .site-locale-select option,
+html[data-theme="dark"] .xuanji-gridwrap,
+html[data-theme="dark"] .daily-shijing-card,
+html[data-theme="dark"] .daily-reading,
+html[data-theme="dark"] .daily-reading-mao,
+html[data-theme="dark"] .daily-reading-excerpt,
+html[data-theme="dark"] .rightbar-credits pre,
+html[data-theme="dark"] .corpus-activity-panel,
+html[data-theme="dark"] .corpus-root-activity-summary,
+html[data-theme="dark"] .corpus-search-form,
+html[data-theme="dark"] .corpus-search-mode-switch,
+html[data-theme="dark"] .corpus-search-filters,
+html[data-theme="dark"] .corpus-search-query-details,
+html[data-theme="dark"] .corpus-search-summary,
+html[data-theme="dark"] .corpus-search-result,
+html[data-theme="dark"] .corpus-search-folder-fieldset,
+html[data-theme="dark"] .corpus-search-folder-tree,
+html[data-theme="dark"] .corpus-search-equivalence-details,
+html[data-theme="dark"] .corpus-search-analysis-chart,
+html[data-theme="dark"] .corpus-search-analysis-card,
+html[data-theme="dark"] .corpus-search-analysis-table-section,
+html[data-theme="dark"] .corpus-search-analysis-concentration,
+html[data-theme="dark"] .corpus-search-analysis-download-note,
+html[data-theme="dark"] .corpus-search-comparison-result,
+html[data-theme="dark"] .corpus-search-research-text,
+html[data-theme="dark"] .corpus-search-advanced-analysis > header,
+html[data-theme="dark"] .corpus-search-advanced-summary-card,
+html[data-theme="dark"] .corpus-search-duplicate-audit,
+html[data-theme="dark"] .corpus-search-full-intro,
+html[data-theme="dark"] .corpus-search-email-option,
+html[data-theme="dark"] .corpus-search-progress-widget,
+html[data-theme="dark"] .corpus-search-progress-mini,
+html[data-theme="dark"] .grammar-filter-form,
+html[data-theme="dark"] .grammar-id-tool,
+html[data-theme="dark"] .grammar-submission,
+html[data-theme="dark"] .grammar-entry-tile,
+html[data-theme="dark"] .grammar-use-panel,
+html[data-theme="dark"] .grammar-id-result,
+html[data-theme="dark"] .grammar-technical,
+html[data-theme="dark"] .grammar-corpus-quote,
+html[data-theme="dark"] .grammar-character-frame,
+html[data-theme="dark"] .grammar-component-frame,
+html[data-theme="dark"] .grammar-notice,
+html[data-theme="dark"] .grammar-preview-banner,
+html[data-theme="dark"] .grammar-licence,
+html[data-theme="dark"] .grammar-submission-panel,
+html[data-theme="dark"] .grammar-snippet-tools,
+html[data-theme="dark"] .tb-alert,
+html[data-theme="dark"] .tb-match-tile,
+html[data-theme="dark"] .tb-match-drop,
+html[data-theme="dark"] .tb-match-layout-cards .tb-match-card-front,
+html[data-theme="dark"] .tb-match-layout-cards .tb-match-card-drop,
+html[data-theme="dark"] .tb-arrange-slot,
+html[data-theme="dark"] .tb-arrange-tile,
+html[data-theme="dark"] .tb-gapdrag-drop,
+html[data-theme="dark"] .tb-gapdrag-tile,
+html[data-theme="dark"] .corpus-reader,
+html[data-theme="dark"] .cv-panel,
+html[data-theme="dark"] .cv-card,
+html[data-theme="dark"] .cv-pre,
+html[data-theme="dark"] .corpus-annot-menu,
+html[data-theme="dark"] .cv-annotate-popover,
+html[data-theme="dark"] .cv-user-notes-panel,
+html[data-theme="dark"] .cv-annotation-ticket-card,
+html[data-theme="dark"] .cv-annotation-preview-card,
+html[data-theme="dark"] .cv-annotation-ticket-editor-card,
+html[data-theme="dark"] .corpus-segmented-control,
+html[data-theme="dark"] .cv-companion-materials,
+html[data-theme="dark"] .cv-companion-card {
+  background: var(--site-surface);
+  color: var(--site-text);
+  border-color: var(--site-border);
+}
+
+html[data-theme="dark"] .corpus-search-analysis-runtime,
+html[data-theme="dark"] .corpus-search-analysis-metric,
+html[data-theme="dark"] .corpus-search-analysis-measure,
+html[data-theme="dark"] .corpus-search-analysis-measure-option,
+html[data-theme="dark"] .corpus-search-comparison-effects dl > div,
+html[data-theme="dark"] .corpus-search-reproducibility-record > div,
+html[data-theme="dark"] .corpus-search-advanced-stat-list > div,
+html[data-theme="dark"] .corpus-search-analysis-table th,
+html[data-theme="dark"] .grammar-chip,
+html[data-theme="dark"] .grammar-status,
+html[data-theme="dark"] .cv-annotation-preview-card,
+html[data-theme="dark"] .cv-annotation-ticket-editor-card {
+  background: var(--site-surface-2);
+  color: var(--site-text);
+  border-color: var(--site-border);
+}
+
+html[data-theme="dark"] .daily-reading-link,
+html[data-theme="dark"] .grammar-btn-secondary,
+html[data-theme="dark"] .corpus-btn,
+html[data-theme="dark"] .corpus-annot-menu button,
+html[data-theme="dark"] .cv-actions button {
+  background: var(--site-control);
+  color: var(--site-text);
+  border-color: var(--site-border);
+}
+
+html[data-theme="dark"] .grammar-filter-form select,
+html[data-theme="dark"] .grammar-id-form input,
+html[data-theme="dark"] .grammar-id-form select,
+html[data-theme="dark"] .grammar-submission input,
+html[data-theme="dark"] .grammar-submission select,
+html[data-theme="dark"] .grammar-submission textarea,
+html[data-theme="dark"] .grammar-citation,
+html[data-theme="dark"] .tb-select,
+html[data-theme="dark"] .tb-gapfill-input,
+html[data-theme="dark"] .tb-gapfill-select,
+html[data-theme="dark"] .cv-field input[type="text"],
+html[data-theme="dark"] .cv-field input[type="email"],
+html[data-theme="dark"] .cv-field textarea,
+html[data-theme="dark"] .cv-annotation-preview-controls input,
+html[data-theme="dark"] .cv-annotation-preview-controls select,
+html[data-theme="dark"] .cv-annotation-preview-note-editor textarea {
+  background: var(--site-control);
+  color: var(--site-text);
+  border-color: var(--site-border);
+}
+
+html[data-theme="dark"] .xuanji-rect {
+  fill: var(--site-surface);
+  stroke: var(--site-border);
+}
+
+/* Keep the Corpus Viewer's reader-paper theme independent of the site theme. */
+html[data-theme="dark"] .corpus-viewbox.theme-light {
+  background: #ffffff;
+  color: #111111;
+}
+
+html[data-theme="dark"] .corpus-viewbox.theme-bamboo {
+  color: #1b1b16;
+}

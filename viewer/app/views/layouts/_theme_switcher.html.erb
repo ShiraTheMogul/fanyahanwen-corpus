@@ -1,0 +1,24 @@
+﻿<div class="site-theme-switcher"
+     role="group"
+     aria-label="<%= t("site.theme.aria_label", default: "Colour theme") %>">
+  <button type="button"
+          class="site-theme-switcher__button"
+          title="<%= t("site.theme.light", default: "Light mode") %>"
+          aria-label="<%= t("site.theme.light", default: "Light mode") %>"
+          aria-pressed="false"
+          data-site-theme-target="button"
+          data-site-theme-theme-param="light"
+          data-action="site-theme#select">
+    <span aria-hidden="true">陽</span>
+  </button>
+  <button type="button"
+          class="site-theme-switcher__button"
+          title="<%= t("site.theme.dark", default: "Dark mode") %>"
+          aria-label="<%= t("site.theme.dark", default: "Dark mode") %>"
+          aria-pressed="false"
+          data-site-theme-target="button"
+          data-site-theme-theme-param="dark"
+          data-action="site-theme#select">
+    <span aria-hidden="true">陰</span>
+  </button>
+</div>

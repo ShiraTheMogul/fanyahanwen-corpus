@@ -19,31 +19,45 @@
     <%= stylesheet_link_tag "xiangqi", "data-turbo-track": "reload" if controller_name == "xiangqi" %>
     <%= stylesheet_link_tag "character_learning", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "tools", "data-turbo-track": "reload" if controller_name == "tools" %>
+    <%= stylesheet_link_tag "theme", "data-turbo-track": "reload" %>
 
     <%= render "layouts/dynamic_fonts" %>
 	<%= render "layouts/xiangqi_fonts" if controller_name == "xiangqi" %>
 
+    <%# Non-visual JSON belongs in the document head. Keeping it out of the
+        body also guarantees that the site header is the first rendered body
+        box and can sit flush against the viewport top. %>
+    <%= render "layouts/javascript_translations" %>
+
+    <script nonce="<%= content_security_policy_nonce %>">
+      (() => {
+        try {
+          const stored = window.localStorage.getItem("fanya-site-theme")
+          const theme = stored === "dark" ? "dark" : "light"
+          document.documentElement.dataset.theme = theme
+          document.documentElement.style.colorScheme = theme
+        } catch (_error) {
+          document.documentElement.dataset.theme = "light"
+        }
+      })()
+    </script>
+    <%# Compute body attributes inside <head> so <body> can begin immediately after it. %>
+    <% _han_font_key = (session[:han_font].presence || HanFonts.default_key).to_s.strip.downcase.tr(" ", "_") %>
+    <% _han_scope = (session[:han_font_scope].presence || :all).to_s.strip.downcase.tr(" ", "_") %>
+    <% _han_scope = %w[all headwords].include?(_han_scope) ? _han_scope : "all" %>
+    <% _han_warn = session.key?(:han_font_warn_missing) ? (session[:han_font_warn_missing] == true) : true %>
+    <% _han_family = HanFonts.family_for(_han_font_key) %>
+    <% _han_stack = HanFonts.stack_for(_han_font_key) %>
+
     <%= javascript_importmap_tags %>
-  </head>
-
-
-	  <% _han_font_key = (session[:han_font].presence || HanFonts.default_key).to_s.strip.downcase.tr(" ", "_") %>
-  <% _han_scope = (session[:han_font_scope].presence || :all).to_s.strip.downcase.tr(" ", "_") %>
-  <% _han_scope = %w[all headwords].include?(_han_scope) ? _han_scope : "all" %>
-  <% _han_warn = session.key?(:han_font_warn_missing) ? (session[:han_font_warn_missing] == true) : true %>
-	  <% _han_family = HanFonts.family_for(_han_font_key) %>
-	  <% _han_stack = HanFonts.stack_for(_han_font_key) %>
-
-		  <body
-		    data-controller="han-font-bootstrap rightbar-layout<%= ' transcription-launcher' if controller_name == 'corpus_viewer' %>"
+  </head><body
+		    data-controller="han-font-bootstrap rightbar-layout site-theme<%= ' transcription-launcher' if controller_name == 'corpus_viewer' %>"
 	    class="han-font-scope-<%= _han_scope %>"
 	    data-han-font-key="<%= _han_font_key %>"
 	    data-han-font-family="<%= _han_family %>"
 	    data-han-font-primary="<%= _han_family %>"
 	    data-han-font-stack="<%= _han_stack %>"
 	    data-han-font-warn-missing="<%= _han_warn ? "1" : "0" %>">
-    <%= render "layouts/javascript_translations" %>
-
     <header class="site-header">
       <div class="site-header-inner">
         <div class="site-header-left">
@@ -93,23 +107,24 @@
           </div>
         </div>
 
-	        <div class="site-header-right">
-              <%= render "layouts/locale_switcher" if InterfaceLocales.selector_visible? %>
+        <div class="site-header-right">
+          <%= render "layouts/theme_switcher" %>
+          <%= render "layouts/locale_switcher" if InterfaceLocales.selector_visible? %>
 
-	          <%# Only show the options toggle when a rightbar is actually present on the page. %>
-	          <% if content_for?(:rightbar) %>
-	            <button
-	              type="button"
-	              class="rightbar-toggle"
-	              data-action="rightbar-layout#toggle"
-	              aria-label="<%= t("site.options.toggle_aria") %>"
-	            >
-	              <%= t("site.options.button") %>
-	            </button>
-	          <% end %>
+          <%# Only show the options toggle when a rightbar is actually present on the page. %>
+          <% if content_for?(:rightbar) %>
+            <button
+              type="button"
+              class="rightbar-toggle"
+              data-action="rightbar-layout#toggle"
+              aria-label="<%= t("site.options.toggle_aria") %>"
+            >
+              <%= t("site.options.button") %>
+            </button>
+          <% end %>
 
-	          <span class="lunar-date"><%= lunar_today_string %></span>
-	        </div>
+          <span class="lunar-date"><%= lunar_today_string %></span>
+        </div>
 
 	      </div>
 	    </header>
@@ -126,7 +141,14 @@
             <%= render "tools/measurement_converter", catalogue: HistoricalMeasurements.catalogue %>
           </div>
         <% else %>
-          <%= yield %>
+          <% if controller_name == "corpus_viewer" && @kind == :dir %>
+            <div class="corpus-directory-page<%= ' has-path' if @rel_path.present? %><%= ' is-grid-view' if @corpus_grid_view %>">
+              <%= render "corpus_viewer/sort_controls" %>
+              <%= yield %>
+            </div>
+          <% else %>
+            <%= yield %>
+          <% end %>
         <% end %>
       </main>
 
@@ -141,5 +163,4 @@
 	
 	<%= render "shared/site_footer" %>
     <%= render "corpus_search/full_search_progress" %>
-  </body>
-</html>
+  </body></html>

@@ -52,7 +52,11 @@ class CorpusFs
   # Keep the filesystem check to one stat per non-text entry. The old version
   # called File.directory? once while filtering and then again while
   # partitioning, which doubled the metadata I/O cost on very large folders.
-  def list_dir(abs)
+  #
+  # sorter is deliberately an object with prepare/key methods. prepare receives
+  # the whole visible name set once, so character-order implementations can
+  # bulk-load their lookup data instead of making one database query per name.
+  def list_dir(abs, sorter: nil, entry_filter: nil)
     return [] unless directory?(abs)
 
     dirs = []
@@ -60,6 +64,8 @@ class CorpusFs
 
     Dir.each_child(abs) do |name|
       next if name.start_with?(".")
+      next if hidden_listing_name?(name)
+      next if entry_filter && !entry_filter.call(name)
 
       if name.downcase.end_with?(".txt")
         files << name
@@ -68,8 +74,15 @@ class CorpusFs
       end
     end
 
-    dirs.sort!
-    files.sort!
+    if sorter
+      sorter.prepare(dirs + files)
+      dirs.sort_by! { |name| sorter.key(name) }
+      files.sort_by! { |name| sorter.key(name) }
+    else
+      dirs.sort!
+      files.sort!
+    end
+
     dirs + files
   end
 
@@ -77,12 +90,28 @@ class CorpusFs
   # just to render one browser page. Pagination is based on the sorted raw
   # directory entries, then only the current slice is classified. This bounds
   # filesystem metadata calls to +per_page+ instead of the full directory size.
-  def list_dir_page(abs, page:, per_page:)
+  #
+  # A custom sorter still receives all *names* before pagination, because a
+  # globally correct alphabetical/character order cannot be produced by sorting
+  # each page independently. It does not cause per-entry filesystem metadata
+  # reads; classification remains limited to the page slice.
+  def list_dir_page(abs, page:, per_page:, sorter: nil, entry_filter: nil)
     return DirectoryPage.new(items: [], page: 1, per_page: per_page, raw_total: 0, total_pages: 1) unless directory?(abs)
 
     page = [page.to_i, 1].max
     per_page = [[per_page.to_i, 1].max, 500].min
-    entries = Dir.children(abs).reject { |name| name.start_with?(".") }.sort
+    entries = Dir.children(abs).reject do |name|
+      name.start_with?(".") || hidden_listing_name?(name)
+    end
+    entries.select! { |name| entry_filter.call(name) } if entry_filter
+
+    if sorter
+      sorter.prepare(entries)
+      entries.sort_by! { |name| sorter.key(name) }
+    else
+      entries.sort!
+    end
+
     raw_total = entries.length
     total_pages = [(raw_total.to_f / per_page).ceil, 1].max
     page = [page, total_pages].min
@@ -104,12 +133,14 @@ class CorpusFs
   # Stop counting as soon as the threshold is crossed. Large directories only
   # pay for threshold + 1 names here; the paginated read below then performs the
   # one full name listing needed for sorting.
-  def more_than_entries?(abs, threshold)
+  def more_than_entries?(abs, threshold, entry_filter: nil)
     return false unless directory?(abs)
 
     count = 0
     Dir.each_child(abs) do |name|
       next if name.start_with?(".")
+      next if hidden_listing_name?(name)
+      next if entry_filter && !entry_filter.call(name)
 
       count += 1
       return true if count > threshold.to_i
@@ -129,6 +160,13 @@ class CorpusFs
   end
 
   private
+
+  # Raw source dumps are repository provenance/staging material, not public
+  # Corpus Viewer entries. Match the directory name exactly and
+  # case-insensitively; raw.txt remains an ordinary visible text file.
+  def hidden_listing_name?(name)
+    name.to_s.casecmp("raw").zero?
+  end
 
   def warn_invalid_utf8(abs)
     first_warning = @warning_mutex.synchronize { @warned_invalid_utf8_paths.add?(abs) }

@@ -6,7 +6,6 @@ class CorpusViewerController < ApplicationController
   helper HomeHelper
 
   ANNOTATION_SYSTEM_FOLDERS = %w[kanbun hanmun hanvan].freeze
-  ROOT_HIDDEN_ENTRIES = %w[scripts].freeze
   DIRECTORY_PAGINATION_THRESHOLD = 1_000
   DIRECTORY_PAGE_SIZE = 200
   WORK_INLINE_DOCUMENT_LIMIT = 20
@@ -23,7 +22,7 @@ class CorpusViewerController < ApplicationController
     request.format = :html
 
     @rel_path = params[:path].to_s
-    if hidden_root_entry?(@rel_path)
+    if hidden_corpus_path?(@rel_path)
       render plain: "Not found", status: :not_found
       return
     end
@@ -62,17 +61,63 @@ class CorpusViewerController < ApplicationController
       end
 
       @kind = :dir
-      if fs.more_than_entries?(@abs_path, DIRECTORY_PAGINATION_THRESHOLD)
+
+      if params.key?(:grid_view)
+        session[:corpus_directory_grid_view] = params[:grid_view].to_s == "1"
+      end
+      @corpus_grid_view = session[:corpus_directory_grid_view] == true
+
+      sort_preferences = directory_sort_preferences
+      if params.key?(:sort) || params.key?(:qianziwen_first)
+        sort_preferences.delete(@rel_path)
+        sort_preferences[@rel_path] = {
+          "sort" => params[:sort].to_s,
+          "qianziwen_first" => params[:qianziwen_first].to_s
+        }
+        sort_preferences.shift while sort_preferences.length > 8
+        session[:corpus_directory_sort] = sort_preferences
+      end
+      saved_sort = sort_preferences.fetch(@rel_path, {})
+
+      ordering = CorpusEntryOrdering.new(
+        requested_mode: params.key?(:sort) ? params[:sort] : saved_sort["sort"],
+        qianziwen_first: params.key?(:qianziwen_first) ? params[:qianziwen_first] : saved_sort["qianziwen_first"],
+        pronunciation_source: session[:ruby_source],
+        context_path: @rel_path
+      )
+
+      # The absolute corpus root contains generated indexes and maintenance
+      # directories alongside public regional collections. Filter those names
+      # before the ordering object sees them, so housekeeping entries cannot
+      # influence period detection or character-key comparison.
+      entry_filter = @rel_path.blank? ? ->(name) { public_root_entry?(name) } : nil
+
+      if fs.more_than_entries?(
+        @abs_path,
+        DIRECTORY_PAGINATION_THRESHOLD,
+        entry_filter: entry_filter
+      )
         @directory_page = fs.list_dir_page(
           @abs_path,
           page: params[:page],
-          per_page: DIRECTORY_PAGE_SIZE
+          per_page: DIRECTORY_PAGE_SIZE,
+          sorter: ordering,
+          entry_filter: entry_filter
         )
         @children = @directory_page.items
       else
-        @children = fs.list_dir(@abs_path)
+        @children = fs.list_dir(
+          @abs_path,
+          sorter: ordering,
+          entry_filter: entry_filter
+        )
       end
-      @children -= ROOT_HIDDEN_ENTRIES if @rel_path.blank?
+
+      @corpus_sort_mode = ordering.effective_mode
+      @corpus_period_sort_available = ordering.period_available?
+      @corpus_qianziwen_first = ordering.qianziwen_first?
+      @corpus_yes_sort_available = ordering.yes_available?
+      @corpus_sort_pronunciation_label = ordering.pronunciation_label
 
       if @rel_path.blank?
         @corpus_activity = CorpusActivity::Snapshot.new
@@ -149,6 +194,11 @@ class CorpusViewerController < ApplicationController
 
   private
 
+
+  def directory_sort_preferences
+    raw = session[:corpus_directory_sort]
+    raw.is_a?(Hash) ? raw : {}
+  end
 
   def load_work_folder_index(fs:, metadata_store:, work_listing:)
     @kind = :work_index
@@ -229,9 +279,23 @@ class CorpusViewerController < ApplicationController
     normalized.downcase.split("_").map(&:capitalize).join(" ")
   end
 
-  def hidden_root_entry?(rel_path)
-    first_segment = rel_path.to_s.tr("\\", "/").sub(%r{\A/+}, "").split("/", 2).first.to_s
-    ROOT_HIDDEN_ENTRIES.include?(first_segment)
+  def hidden_corpus_path?(rel_path)
+    segments = rel_path
+      .to_s
+      .gsub(/%2F/i, "/")
+      .tr("\\", "/")
+      .sub(%r{\A/+}, "")
+      .split("/")
+      .reject(&:empty?)
+
+    return false if segments.empty?
+    return true if segments.any? { |segment| segment.casecmp("raw").zero? }
+
+    !public_root_entry?(segments.first)
+  end
+
+  def public_root_entry?(name)
+    name.to_s.match?(/\p{Han}/)
   end
 
   def normalized_annotation_system_param(value)
