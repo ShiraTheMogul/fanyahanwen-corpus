@@ -1,4 +1,4 @@
-import { Controller } from "@hotwired/stimulus"
+﻿import { Controller } from "@hotwired/stimulus"
 import { t } from "i18n"
 
 // Client-side view controls for the corpus reader. Client-side is used as it allows for instant changes. This makes the site run a bit faster!
@@ -656,6 +656,10 @@ export default class extends Controller {
     this.viewboxTarget.classList.remove("theme-light", "theme-bamboo", "theme-dark")
     this.viewboxTarget.classList.add(`theme-${(theme || "bamboo")}`)
 
+    // Sibling UI (metadata + toolbar) needs to know when the reader itself is dark.
+    // Keep this separate from the viewbox theme classes so reader layout/flow is untouched.
+    this.element.classList.toggle("reader-theme-dark", (theme || "bamboo") === "dark")
+
     // Font size via CSS variable.
     if (Number.isFinite(fontSizePx)) {
       this.viewboxTarget.style.setProperty("--cv-font-size", `${fontSizePx}px`)
@@ -670,7 +674,9 @@ export default class extends Controller {
     // Buttons are optional targets.
     if (this.hasVerticalBtnTarget) {
       this.verticalBtnTarget.setAttribute("aria-pressed", vertical ? "true" : "false")
-      if (translationMode) this.verticalBtnTarget.textContent = vertical ? t("corpus_reader.orientation.vertical") : t("corpus_reader.orientation.horizontal")
+      const verticalLabel = this.verticalBtnTarget.dataset.verticalLabel || t("corpus_reader.orientation.vertical").replace(/^Orientation:\s*/i, "")
+      const horizontalLabel = this.verticalBtnTarget.dataset.horizontalLabel || t("corpus_reader.orientation.horizontal").replace(/^Orientation:\s*/i, "")
+      this.verticalBtnTarget.textContent = vertical ? verticalLabel : horizontalLabel
     }
     if (this.hasThemeBtnTarget) {
       this.themeBtnTarget.setAttribute("aria-pressed", "true")

@@ -1,4 +1,4 @@
-<h1><%= t("corpus_viewer.title") %></h1>
+﻿<h1><%= t("corpus_viewer.title") %></h1>
 
 <p class="crumbs">
   <% if @rel_path.present? %>
@@ -193,61 +193,10 @@
     <% end %>
   </ul>
 
-  <% if @directory_page&.total_pages.to_i > 1 %>
-    <nav class="corpus-pagination" aria-label="<%= t("corpus_viewer.pagination.directory_aria", default: "Directory pages") %>">
-      <% if @directory_page.page > 1 %>
-        <%= link_to "←", corpus_viewer_path(@rel_path.split("/"), format: nil, page: @directory_page.page - 1), aria: { label: t("corpus_search.pagination.previous") } %>
-      <% end %>
-      <span><%= t("corpus_search.pagination.page_of", page: @directory_page.page, pages: @directory_page.total_pages) %></span>
-      <% if @directory_page.page < @directory_page.total_pages %>
-        <%= link_to "→", corpus_viewer_path(@rel_path.split("/"), format: nil, page: @directory_page.page + 1), aria: { label: t("corpus_search.pagination.next") } %>
-      <% end %>
-    </nav>
-  <% end %>
-
   <% if root_activity_available %>
       </div>
     </div>
   <% end %>
-
-<% elsif @kind == :work_index %>
-  <% meta_hash = @meta.respond_to?(:to_h) ? @meta.to_h : {} %>
-  <section class="corpus-work-index">
-    <h2><%= meta_hash["Work"].presence || meta_hash["Title"].presence || File.basename(@rel_path.to_s) %></h2>
-
-    <% if @meta.present? %>
-      <dl class="corpus-work-index__metadata">
-        <% @meta.each do |label, value| %>
-          <dt><%= label %></dt>
-          <dd><%= value %></dd>
-        <% end %>
-      </dl>
-    <% end %>
-
-    <p><%= t(
-      "corpus_viewer.large_work.explanation",
-      count: @work_page.total,
-      default: "This work contains %{count} documents. Open an individual document to read it; large works are not concatenated into one HTML response."
-    ) %></p>
-
-    <ul class="corpus-list">
-      <% @work_document_paths.each do |document_path| %>
-        <li><%= link_to File.basename(document_path), corpus_viewer_path(document_path.split("/"), format: nil) %></li>
-      <% end %>
-    </ul>
-
-    <% if @work_page.total_pages > 1 %>
-      <nav class="corpus-pagination" aria-label="<%= t("corpus_viewer.pagination.work_aria", default: "Work document pages") %>">
-        <% if @work_page.page > 1 %>
-          <%= link_to "←", corpus_viewer_path(@rel_path.split("/"), format: nil, page: @work_page.page - 1), aria: { label: t("corpus_search.pagination.previous") } %>
-        <% end %>
-        <span><%= t("corpus_search.pagination.page_of", page: @work_page.page, pages: @work_page.total_pages) %></span>
-        <% if @work_page.page < @work_page.total_pages %>
-          <%= link_to "→", corpus_viewer_path(@rel_path.split("/"), format: nil, page: @work_page.page + 1), aria: { label: t("corpus_search.pagination.next") } %>
-        <% end %>
-      </nav>
-    <% end %>
-  </section>
 
 <% elsif @kind == :file %>
   <%= render "rightbar" %>
@@ -256,7 +205,9 @@
   meta_hash = (defined?(@meta) && @meta.respond_to?(:to_h)) ? @meta.to_h : {}
 
   meta_work       = meta_hash["Work"].to_s.strip
-  meta_author     = meta_hash["Author"].to_s.strip
+  metadata_edit_values = (defined?(@metadata_edit_values) && @metadata_edit_values.respond_to?(:[])) ? @metadata_edit_values : {}
+  meta_author     = metadata_edit_values["authors"].to_s.strip
+  meta_author     = meta_hash["Author"].to_s.strip if meta_author.blank?
   meta_ws_cats    = meta_hash["Ws Categories"].to_s.strip
   meta_page_title = meta_hash["Page title"].to_s.strip # to derive wikisource links
 
@@ -328,8 +279,10 @@
               class="corpus-btn"
               data-action="corpus-reader#toggleVertical"
               data-corpus-reader-target="verticalBtn"
+              data-vertical-label="<%= t("corpus_viewer.toolbar.vertical") %>"
+              data-horizontal-label="<%= t("view_options.ruby.horizontal") %>"
               aria-pressed="false">
-        <%= @display_translation.present? ? t("corpus_viewer.toolbar.orientation_horizontal") : t("corpus_viewer.toolbar.vertical") %>
+        <%= @display_translation.present? ? t("view_options.ruby.horizontal") : t("corpus_viewer.toolbar.vertical") %>
       </button>
 
       <% unless @display_translation.present? %>

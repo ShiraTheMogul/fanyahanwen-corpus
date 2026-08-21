@@ -1,4 +1,4 @@
-.corpus-list { line-height: 1.8; }
+﻿.corpus-list { line-height: 1.8; }
 
 /*
   Corpus reader styling
@@ -46,7 +46,7 @@
   flex-wrap: wrap;
   gap: 10px;
   align-items: center;
-  margin-left: 0;
+  margin-left: auto;
 }
 
 @media (max-width: 900px) {
@@ -295,6 +295,65 @@
 .corpus-viewbox.theme-bamboo { --cv-rule-color: rgba(0,0,0,0.14); }
 .corpus-viewbox.theme-dark { --cv-rule-color: rgba(255,255,255,0.10); }
 
+
+/* Reader dark-theme siblings.
+   The metadata panel sits outside .corpus-viewbox, so its inline white background
+   otherwise survives while the surrounding reader is dark. */
+.corpus-reader.reader-theme-dark .corpus-metabox {
+  background: #171a1e !important;
+  color: #eef1f4;
+  border-color: rgba(255,255,255,0.20) !important;
+  color-scheme: dark;
+}
+
+.corpus-reader.reader-theme-dark .corpus-metabox a {
+  color: #9dccff;
+}
+
+/* In dark mode, weight alone is a weak state cue. Give pressed toggle buttons
+   a shallow physical depression while leaving the reader/viewbox dimensions alone. */
+.corpus-reader.reader-theme-dark .corpus-toolbar .corpus-btn[aria-pressed="true"]:not([data-corpus-reader-target~="themeBtn"]) {
+  background: rgba(0,0,0,0.34);
+  border-color: rgba(255,255,255,0.42);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.62), 0 1px 0 rgba(255,255,255,0.06);
+  transform: translateY(1px);
+}
+
+/* Theme is a cycle control whose label already names its state; do not present it
+   as a binary pressed toggle. */
+.corpus-reader.reader-theme-dark [data-corpus-reader-target~="themeBtn"] {
+  font-weight: inherit;
+}
+
+
+/* The punctuation dialog is also a sibling of .corpus-viewbox. The older
+   .theme-dark descendant selectors cannot reach it, so mirror those dark
+   styles from the reader's explicit dark-state class. */
+.corpus-reader.reader-theme-dark .corpus-punct-panel {
+  background: rgba(20,20,20,0.98);
+  border-color: rgba(255,255,255,0.18);
+  color: #eee;
+  color-scheme: dark;
+}
+
+.corpus-reader.reader-theme-dark .corpus-punct-panel .corpus-btn-ghost {
+  border-color: rgba(255,255,255,0.25);
+  color: #eee;
+}
+
+.corpus-reader.reader-theme-dark .corpus-punct-panel .corpus-fieldset {
+  border-color: rgba(255,255,255,0.16);
+}
+
+.corpus-reader.reader-theme-dark .corpus-punct-panel .preset-box {
+  background: rgba(255,255,255,0.06);
+}
+
+.corpus-reader.reader-theme-dark .corpus-punct-panel .corpus-btn-primary {
+  background: #f3f3f3;
+  color: #111;
+  border-color: #f3f3f3;
+}
 
 /* Breadcrumb spacing */
 .crumbs { margin: 6px 0 12px; }
@@ -1470,55 +1529,4 @@ html.cv-annotations-off .corpus-textflow .ne-ambiguous-character {
 .corpus-viewbox.theme-dark .corpus-textflow .cch.corpus-search-hit {
   background: #705b12;
   color: #fff8d6;
-}
-
-/* Bounded directory/work navigation for very large corpus collections. */
-.corpus-pagination {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 14px 0;
-}
-
-.corpus-pagination a {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 2rem;
-  min-height: 2rem;
-  border: 1px solid #bbb;
-  border-radius: 5px;
-  text-decoration: none;
-}
-
-.corpus-work-index {
-  max-width: 72rem;
-}
-
-.corpus-work-index__metadata {
-  display: grid;
-  grid-template-columns: max-content minmax(0, 1fr);
-  gap: 4px 12px;
-  margin: 12px 0 18px;
-}
-
-.corpus-work-index__metadata dt {
-  font-weight: 700;
-}
-
-.corpus-work-index__metadata dd {
-  margin: 0;
-  min-width: 0;
-  overflow-wrap: anywhere;
-}
-
-@media (max-width: 640px) {
-  .corpus-work-index__metadata {
-    grid-template-columns: 1fr;
-    gap: 2px;
-  }
-
-  .corpus-work-index__metadata dd {
-    margin-bottom: 8px;
-  }
 }
