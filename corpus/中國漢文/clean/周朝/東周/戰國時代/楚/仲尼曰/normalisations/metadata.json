@@ -1,13 +1,203 @@
-{
+﻿{
   "schema_version": 1,
-  "title": "normalisations",
   "corpus_root": "中國漢文",
-  "documents": [
+  "macro_region": "中國",
+  "period": "戰國時代",
+  "polity": "楚",
+  "title": "仲尼曰",
+  "work_base_title": "仲尼曰",
+  "date_label": "戰國中早期（約公元前400年至公元前350年）",
+  "year_start": -400,
+  "year_end": -350,
+  "dating_status": "安大簡整批經專家鑑定及竹簡樣品年代檢測；《仲尼曰》收於《安徽大學藏戰國竹簡（二）》",
+  "authors": [],
+  "subject": "Kong, Qiu 孔丘",
+  "editors": [
+    "Huang, Deguan 黃德寬",
+    "Xu, Zaiguo 徐在國"
+  ],
+  "contributors": [
     {
-      "file": "仲尼曰.txt",
-      "path": "中國漢文/clean/周朝/東周/戰國時代/楚/仲尼曰/normalisations/仲尼曰.txt",
-      "document_id": 492294
+      "name": "Kong, Qiu 孔丘",
+      "role": "attributed_speaker"
+    },
+    {
+      "name": "安徽大學漢字發展與應用研究中心",
+      "role": "edition_compiler_and_custodian"
+    },
+    {
+      "name": "Huang, Deguan 黃德寬",
+      "role": "chief_editor; final_review_and_revision"
+    },
+    {
+      "name": "Xu, Zaiguo 徐在國",
+      "role": "chief_editor; edition_lead; transcription; 仲尼曰_annotation"
+    },
+    {
+      "name": "Li, Penghui 李鵬輝",
+      "role": "bamboo_strip_arrangement; character_table_compilation"
+    },
+    {
+      "name": "Zhou, Xiang 周翔",
+      "role": "colour_plate_preparation; manuscript_discussion; bamboo_strip_conservation"
+    },
+    {
+      "name": "Jiang, Weinan 蔣偉男",
+      "role": "colour_plate_preparation; manuscript_discussion; bamboo_strip_conservation"
+    },
+    {
+      "name": "Li, Jiahao 李家浩",
+      "role": "manuscript_review"
+    },
+    {
+      "name": "Gu, Wangle 顧王樂",
+      "role": "textual_verification; bibliography_supplementation; manuscript_discussion; publication_preparation"
+    },
+    {
+      "name": "Cheng, Yan 程燕",
+      "role": "manuscript_discussion; acquisition_support; bamboo_strip_conservation"
+    },
+    {
+      "name": "Hao, Shihong 郝士宏",
+      "role": "manuscript_discussion"
+    },
+    {
+      "name": "Yuan, Jinping 袁金平",
+      "role": "manuscript_discussion"
+    },
+    {
+      "name": "Liu, Gang 劉剛",
+      "role": "manuscript_discussion; bamboo_strip_conservation"
+    },
+    {
+      "name": "Xia, Dazhao 夏大兆",
+      "role": "manuscript_discussion"
+    },
+    {
+      "name": "Jia, Lianxiang 賈連翔",
+      "role": "colour_plate_photography"
+    },
+    {
+      "name": "Zheng, Linqing 鄭林慶",
+      "role": "colour_plate_photography"
+    },
+    {
+      "name": "Pan, Yang 潘揚",
+      "role": "bamboo_strip_conservation"
+    },
+    {
+      "name": "Chen, Dan 陳丹",
+      "role": "acquisition_support; bamboo_strip_conservation"
+    },
+    {
+      "name": "Chen, Shiqing 陳世慶",
+      "role": "acquisition_support"
+    },
+    {
+      "name": "Liu, Zhimei 劉志梅",
+      "role": "acquisition_support"
+    },
+    {
+      "name": "Zhang, Zhenqian 張振謙",
+      "role": "acquisition_support"
+    },
+    {
+      "name": "Wu, Guosheng 吳國昇",
+      "role": "acquisition_support"
+    },
+    {
+      "name": "Wang, Baocheng 王保成",
+      "role": "acquisition_support"
+    },
+    {
+      "name": "Quinlan718",
+      "role": "Wikisource_uploader",
+      "url": "https://zh.wikisource.org/w/index.php?title=User:Quinlan718&action=edit&redlink=1"
     }
   ],
-  "work_id": 214903
+  "publisher": "中西書局",
+  "publication_year": 2022,
+  "identifiers": [
+    {
+      "scheme": "ISBN",
+      "value": "9787547519431"
+    }
+  ],
+  "categories": [
+    "戰國",
+    "楚簡",
+    "出土文獻",
+    "儒家",
+    "孔子語錄"
+  ],
+  "source_categories": [
+    "戰國"
+  ],
+  "rights": {
+    "ancient_text": "public_domain",
+    "wikisource_text": "CC BY-SA",
+    "note": "Wikisource states that its site text is provided under a Creative Commons Attribution-ShareAlike licence; the fixed revision is retained for reproducibility."
+  },
+  "is_compilation": false,
+  "known_commentaries": [],
+  "work_id": 214903,
+  "edition": "《安徽大學藏戰國竹簡（二）》／Wikisource「整理版」正規化轉錄",
+  "edition_label": "Wikisource 整理版（正規化）",
+  "material_type": "戰國楚簡正規化轉錄",
+  "reconstruction": "Wikisource 整理版正規化",
+  "reconstruction_scope": "依 Wikisource「整理版」呈現通行字形、讀法與標點；語料庫未另作新的文字正規化。",
+  "reconstruction_basis": "Wikisource fixed revision 2638661「整理版」；對應同頁「原版」及《安徽大學藏戰國竹簡（二）》整理成果。",
+  "source_work_id": 214902,
+  "source_document_id": 492295,
+  "sources": [
+    {
+      "kind": "critical_edition",
+      "citation": "Huang, Deguan 黃德寬, & Xu, Zaiguo 徐在國 (Eds.). (2022). 安徽大學藏戰國竹簡（二）. 中西書局.",
+      "note": "安徽大學漢字發展與應用研究中心編；徐在國負責釋文及《仲尼曰》注釋。"
+    },
+    {
+      "kind": "digital_normalisation",
+      "citation": "Quinlan718 (Uploader). (2026, January 2). 安徽大學藏戰國竹簡/仲尼曰 [整理版]. 維基文庫. Retrieved August 22, 2026. (Revision 2638661).",
+      "url": "https://zh.wikisource.org/w/index.php?title=安徽大學藏戰國竹簡/仲尼曰&oldid=2638661",
+      "live_url": "https://zh.wikisource.org/wiki/安徽大學藏戰國竹簡/仲尼曰",
+      "revision_id": 2638661,
+      "revision_time_label": "2026年1月2日 (五) 11:02",
+      "uploader": "Quinlan718",
+      "section": "整理版",
+      "retrieved_on": "2026-08-22"
+    },
+    {
+      "kind": "publication_record",
+      "citation": "清華大學出土文獻研究與保護中心. (2022, August 16). 新書｜《安徽大學藏戰國竹簡（二）》.",
+      "url": "https://www.ctwx.tsinghua.edu.cn/info/1072/2874.htm"
+    },
+    {
+      "kind": "dating_record",
+      "citation": "安徽大學. (2025, December 1). 央視新聞頻道、中文國際頻道同步報道「安徽大學藏戰國竹簡」最新研究成果.",
+      "url": "https://www.ahu.edu.cn/_t992/2025/1201/c15058a379024/page.htm"
+    }
+  ],
+  "transcription_status": "Wikisource「整理版」正規化轉錄；保留其整理讀法與標點，並以原版 document_id 492295 為來源關聯。",
+  "notes": [
+    "此檔為來源頁既有「整理版」，不是語料庫後製的新校改。",
+    "Quinlan718 依 Wikisource 修訂史記錄為該頁上傳者；此處僅據此記作 uploader，不推定其他未明示的編輯角色。",
+    "來源關聯：work_id 214902 / document_id 492295（原版）。"
+  ],
+  "documents": [
+    {
+      "document_id": 492294,
+      "file": "仲尼曰.txt",
+      "path": "中國漢文/clean/周朝/東周/戰國時代/楚/仲尼曰/normalisations/仲尼曰.txt",
+      "title": "仲尼曰",
+      "sequence": 1,
+      "body_start_line": 1,
+      "source_url": "https://zh.wikisource.org/w/index.php?title=安徽大學藏戰國竹簡/仲尼曰&oldid=2638661",
+      "source_live_url": "https://zh.wikisource.org/wiki/安徽大學藏戰國竹簡/仲尼曰",
+      "source_revision_id": 2638661,
+      "source_revision_time_label": "2026年1月2日 (五) 11:02",
+      "source_uploader": "Quinlan718",
+      "source_section": "整理版",
+      "source_document_id": 492295
+    }
+  ]
 }
