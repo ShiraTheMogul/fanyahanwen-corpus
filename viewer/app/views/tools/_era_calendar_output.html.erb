@@ -1,0 +1,168 @@
+﻿<%= turbo_frame_tag "era_calendar_out" do %>
+  <style>
+    .era-calendar-result { min-width: 0; }
+    .era-calendar-table-wrap { overflow-x: auto; max-width: 100%; }
+    .era-calendar-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    .era-calendar-table th,
+    .era-calendar-table td { text-align: left; padding: .45em; vertical-align: top; border-bottom: 1px solid #ccc; overflow-wrap: anywhere; word-break: break-word; }
+    .era-calendar-table th { border-bottom-color: currentColor; }
+    .era-calendar-table details { max-width: 100%; }
+    .era-calendar-table details > summary { cursor: pointer; }
+    .era-calendar-source-note { display: block; white-space: normal; overflow-wrap: anywhere; word-break: break-word; max-width: 100%; }
+    .era-calendar-secondary { opacity: .78; }
+    .era-calendar-ruler + .era-calendar-ruler { margin-top: .55em; }
+    .era-calendar-ruler__names { line-height: 1.35; }
+    .era-calendar-ruler__other { display: block; margin-top: .12em; }
+    .era-calendar-context-line + .era-calendar-context-line { margin-top: .12em; }
+  </style>
+
+  <% if result["error"].present? %>
+    <div class="tool-output" role="alert"><%= result["error"] %></div>
+  <% elsif result["direction"] == "absolute_to_era" %>
+    <div class="era-calendar-result">
+      <p><strong><%= result["absolute_year_label"] %></strong></p>
+      <% matches = Array(result["matches"]) %>
+      <% if matches.empty? %>
+        <p>No era authority in the selected context covers this year.</p>
+      <% else %>
+        <div class="era-calendar-table-wrap">
+          <table class="era-calendar-table">
+            <thead>
+              <tr>
+                <th style="width:14%;">Era expression</th>
+                <th style="width:20%;">Country / polity</th>
+                <th style="width:23%;">Ruler</th>
+                <th style="width:13%;">Use interval</th>
+                <th style="width:30%;">Authority</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% matches.each do |match| %>
+                <tr>
+                  <td>
+                    <strong><%= match["expression"] %></strong>
+                    <% era_rendering = match["label"].to_s.strip %>
+                    <% if era_rendering.present? && !era_rendering.match?(/\p{Han}/) %>
+                      <div><small class="era-calendar-secondary"><%= era_rendering %></small></div>
+                    <% end %>
+                    <% if match["adopted_from_foreign"] %><div><small>foreign era adopted locally</small></div><% end %>
+                  </td>
+                  <td>
+                    <% if match["country_display"].present? %>
+                      <div class="era-calendar-context-line"><%= match["country_display"] %></div>
+                    <% end %>
+                    <% polity_displays = Array(match["polity_displays"]).presence || [match["polity_display"]].compact %>
+                    <% polity_displays.each do |display| %>
+                      <div class="era-calendar-context-line"><%= display %></div>
+                    <% end %>
+                  </td>
+                  <td><%= render "tools/era_calendar_rulers", rulers: match["rulers"] %></td>
+                  <td>
+                    <%= [match["use_start_year"], match["use_end_year"]].compact.join("–") %>
+                    <% if match["epoch_start_year"] && match["epoch_start_year"] != match["use_start_year"] %>
+                      <div><small>year-one epoch: <%= match["epoch_start_year"] %></small></div>
+                    <% end %>
+                  </td>
+                  <td>
+                    <% if match["source_url"].present? %>
+                      <%= link_to(match["source_display"] || match["source"], match["source_url"], target: "_blank", rel: "noopener noreferrer") %>
+                    <% else %>
+                      <%= match["source_display"] || match["source"] %>
+                    <% end %>
+                    <% if match["source_note"].present? %>
+                      <details>
+                        <summary>Source note</summary>
+                        <small class="era-calendar-source-note"><%= match["source_note"] %></small>
+                      </details>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <% resolution = result["resolution"] %>
+    <% candidates = Array(result["candidates"]) %>
+    <div class="era-calendar-result">
+      <% if resolution.present? %>
+        <p>
+          <strong><%= resolution["year_start"].to_i.negative? ? "#{resolution['year_start'].to_i.abs} BCE" : "#{resolution['year_start']} CE" %></strong>
+          <% if resolution["authority_name"].present? %>
+            — <%= resolution["authority_name"] %>
+            <% if resolution["authority_kind"].present? %>(<%= resolution["authority_kind"] %>)<% end %>
+          <% end %>
+        </p>
+        <% if Array(resolution["rulers"]).any? %>
+          <div style="margin:.35em 0 .6em 0;">
+            <strong>Ruler:</strong>
+            <%= render "tools/era_calendar_rulers", rulers: resolution["rulers"] %>
+          </div>
+        <% end %>
+        <p><small>Confidence: <%= resolution["confidence"] %> · Source: <%= resolution["source"] %></small></p>
+      <% else %>
+        <p>No single historical year could be resolved from this expression and context.</p>
+      <% end %>
+
+      <% if candidates.any? %>
+        <details <%= "open" if resolution.blank? || candidates.length > 1 %>>
+          <summary>Matching era authorities (<%= candidates.length %>)</summary>
+          <div class="era-calendar-table-wrap" style="margin-top:.5em;">
+            <table class="era-calendar-table">
+              <thead>
+                <tr>
+                  <th style="width:13%;">Era</th>
+                  <th style="width:10%;">Computed year</th>
+                  <th style="width:18%;">Context</th>
+                  <th style="width:22%;">Ruler</th>
+                  <th style="width:12%;">Use interval</th>
+                  <th style="width:25%;">Status / source</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% candidates.each do |candidate| %>
+                  <tr>
+                    <td>
+                      <strong><%= candidate["matched_name"] || candidate["label"] %></strong>
+                      <% candidate_rendering = candidate["label"].to_s.strip %>
+                      <% if candidate_rendering.present? && !candidate_rendering.match?(/\p{Han}/) %>
+                        <div><small class="era-calendar-secondary"><%= candidate_rendering %></small></div>
+                      <% end %>
+                    </td>
+                    <td><%= candidate["absolute_year"] %></td>
+                    <td>
+                      <% if candidate["country_display"].present? %><div><%= candidate["country_display"] %></div><% end %>
+                      <% (Array(candidate["polity_displays"]).presence || [candidate["polity_display"]].compact).each do |display| %>
+                        <div><%= display %></div>
+                      <% end %>
+                    </td>
+                    <td><%= render "tools/era_calendar_rulers", rulers: candidate["rulers"] %></td>
+                    <td><%= [candidate["local_use_start_year"] || candidate["start_year"], candidate["local_use_end_year"] || candidate["end_year"]].compact.join("–") %></td>
+                    <td>
+                      <%= candidate["within_use"] ? "valid" : "outside recorded use" %>
+                      <% if candidate["source_url"].present? %>
+                        · <%= link_to(candidate["source_display"] || candidate["source"], candidate["source_url"], target: "_blank", rel: "noopener noreferrer") %>
+                      <% else %>
+                        · <%= candidate["source_display"] || candidate["source"] %>
+                      <% end %>
+                      <% if candidate["source_note"].present? %>
+                        <details>
+                          <summary>Source note</summary>
+                          <small class="era-calendar-source-note"><%= candidate["source_note"] %></small>
+                        </details>
+                      <% end %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </details>
+      <% elsif !result["authority_available"] %>
+        <p><small>Historical authority caches are unavailable. Run the authority maintenance task before testing era names.</small></p>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

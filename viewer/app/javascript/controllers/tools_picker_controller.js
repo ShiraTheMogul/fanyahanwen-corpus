@@ -8,6 +8,7 @@ export default class extends Controller {
     this.panels = new Map()
     this.boundPopState = () => this.openFromLocation(false)
 
+    this.removeLegacyEraCalendarInjection()
     this.prepareLegacyTools()
     this.prepareMeasurementConverter()
     this.buildChooser()
@@ -19,6 +20,14 @@ export default class extends Controller {
 
   disconnect() {
     window.removeEventListener("popstate", this.boundPopState)
+  }
+
+  // v5/v5.8 briefly manufactured the era converter after Turbo load. Remove
+  // those obsolete nodes if an old Turbo snapshot is restored; the current
+  // converter is server-rendered and has neither of these IDs.
+  removeLegacyEraCalendarInjection() {
+    document.getElementById("era-calendar-converter")?.remove()
+    document.getElementById("era-calendar-converter-card")?.remove()
   }
 
   prepareLegacyTools() {
@@ -67,6 +76,7 @@ export default class extends Controller {
       ["cantonese_out", "cantonese"],
       ["cangjie_out", "character-data"],
       ["anki_enrich_out", "anki"],
+      ["era_calendar_out", "era-calendar"],
       ["lunar_out", "lunar-calendar"],
       ["numerals_out", "numerals"]
     ]
@@ -114,6 +124,7 @@ export default class extends Controller {
       "historical-measurements",
       "character-data",
       "numerals",
+      "era-calendar",
       "lunar-calendar",
       "mandarin",
       "cantonese",

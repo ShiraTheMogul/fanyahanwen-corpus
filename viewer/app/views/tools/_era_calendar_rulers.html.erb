@@ -1,0 +1,31 @@
+﻿<% rows = Array(rulers) %>
+<% if rows.empty? %>
+  <span class="era-calendar-secondary">—</span>
+<% else %>
+  <% rows.each do |ruler| %>
+    <div class="era-calendar-ruler">
+      <div class="era-calendar-ruler__names">
+        <% if ruler["source_url"].present? %>
+          <strong><%= link_to(ruler["han_name"].presence || ruler["english_label"], ruler["source_url"], target: "_blank", rel: "noopener noreferrer") %></strong>
+        <% else %>
+          <strong><%= ruler["han_name"].presence || ruler["english_label"] %></strong>
+        <% end %>
+        <% if ruler["english_label"].present? && ruler["english_label"] != ruler["han_name"] %>
+          (<%= ruler["english_label"] %>)
+        <% end %>
+        <% other_names = Array(ruler["han_names"]).reject { |name| name == ruler["han_name"] }.first(2) %>
+        <% if other_names.any? %>
+          <small class="era-calendar-ruler__other era-calendar-secondary"><%= other_names.join(" · ") %></small>
+        <% end %>
+      </div>
+      <% if ruler["reign_start_year"].present? || ruler["reign_end_year"].present? %>
+        <small class="era-calendar-secondary">
+          reign: <%= [ruler["reign_start_year"], ruler["reign_end_year"]].compact.join("–") %>
+        </small>
+      <% end %>
+      <% if ruler["confidence"] == "inferred_from_cbdb_succession" %>
+        <small class="era-calendar-ruler__other era-calendar-secondary">ruler inferred conservatively from CBDB succession chronology</small>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

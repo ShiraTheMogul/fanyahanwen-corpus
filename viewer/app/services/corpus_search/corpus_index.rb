@@ -7,14 +7,15 @@ module CorpusSearch
   # the prepared cache and never aggregate 494,000 manifest rows or traverse the
   # corpus filesystem.
   class CorpusIndex
-    VERSION = 1
-    CACHE_PATH = "corpus_index-v1.json.gz"
+    VERSION = 2
+    CACHE_PATH = "corpus_index-v2.json.gz"
     FACET_FIELDS = %w[
       corpus_root
       macro_region
       polity
       period
       region
+      categories
       document_role
     ].freeze
 
@@ -74,10 +75,10 @@ module CorpusSearch
       FACET_FIELDS.to_h do |field|
         counts = Hash.new(0)
         documents.each do |document|
-          value = document[field].to_s.strip
-          next if value.empty?
-
-          counts[value] += 1
+          values = document[field].is_a?(Array) ? document[field] : [document[field]]
+          values.map { |value| value.to_s.strip }.reject(&:empty?).uniq.each do |value|
+            counts[value] += 1
+          end
         end
         [field, counts.sort_by { |value, count| [-count, value] }.to_h]
       end

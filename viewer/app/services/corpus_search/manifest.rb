@@ -14,17 +14,23 @@ module CorpusSearch
   # files safely, filter them, and notice changes.
   class Manifest
     DEFAULT_SKIP_DIRS = %w[.git .svn node_modules tmp log storage bak vendor].freeze
-    VERSION = 8
+    VERSION = 9
     CACHE_PATH = "manifest.json.gz"
-    QUERY_CACHE_VERSION = 1
-    QUERY_CACHE_META_PATH = "manifest-query-v1.json.gz"
-    QUERY_CACHE_DIRECTORY = "manifest-query-v1"
+    QUERY_CACHE_VERSION = 2
+    QUERY_CACHE_META_PATH = "manifest-query-v2.json.gz"
+    QUERY_CACHE_DIRECTORY = "manifest-query-v2"
     QUERY_DOCUMENT_FIELDS = %w[
       id work_id path folder_path document_role canonical_parent_path
       title work author date_text nation corpus_root macro_region period polity region
-      year_start year_end size searchable_body searchable_characters body_fingerprint fingerprint
+      category categories
+      year_start year_end date_resolution_source era_id era_name era_year era_dynasty
+      compilation_work_id compilation_title compilation_period compilation_polity compilation_date_text
+      compilation_year_start compilation_year_end
+      compilation_date_resolution_source compilation_era_id compilation_era_name
+      compilation_era_year compilation_era_dynasty
+      size searchable_body searchable_characters body_fingerprint fingerprint
     ].freeze
-    FILTER_FIELDS = %w[nation polity period region author].freeze
+    FILTER_FIELDS = %w[nation polity period region author categories].freeze
     FRONT_MATTER_READ_BYTES = 65_536
 
     class CacheMissing < StandardError; end
@@ -75,7 +81,6 @@ module CorpusSearch
       manifest
     end
 
-
     def initialize(root:, cache_store: CacheStore.new)
       @root = File.realpath(root.to_s)
       @cache_store = cache_store
@@ -92,7 +97,6 @@ module CorpusSearch
       @scan_issues = []
       @metadata_store = CorpusMetadataStore.new(root: @root)
     end
-
 
     def load_cached!
       cached = @cache_store.read_json(CACHE_PATH, freeze: true)
@@ -161,7 +165,8 @@ module CorpusSearch
       incomplete = @scan_issues.any? { |issue| %w[unreadable_directory unreadable_entry unreadable_file].include?(issue.fetch("kind")) }
       if incomplete && ENV["ALLOW_INCOMPLETE_MANIFEST"].to_s != "1"
         raise IncompleteScan,
-          "Manifest scan was incomplete and the existing cache was preserved. "           "Review #{issue_report}. Re-run after filesystem access stabilises."
+          "Manifest scan was incomplete and the existing cache was preserved. " \
+          "Review #{issue_report}. Re-run after filesystem access stabilises."
       end
 
       payload = {
@@ -228,7 +233,7 @@ module CorpusSearch
         path = doc["path"].to_s
         next false if include_folders.any? && !path_in_folders?(path, include_folders)
         next false if exclude_folders.any? && path_in_folders?(path, exclude_folders)
-        next false unless active_filters.all? { |field, value| doc[field].to_s.include?(value) }
+        next false unless active_filters.all? { |field, value| filter_value_matches?(doc[field], value) }
 
         if year_filter_requested
           start_year = doc["year_start"]
@@ -375,8 +380,8 @@ module CorpusSearch
         relative_path = relative_path_for(absolute_path)
 
         stat = File.stat(absolute_path)
-        metadata_path = @metadata_store.metadata_path_for(relative_path)
-        fingerprint = fingerprint_for(stat, metadata_path)
+        metadata_paths = @metadata_store.metadata_dependency_paths_for(relative_path)
+        fingerprint = fingerprint_for(stat, metadata_paths)
         cached = cached_by_path[relative_path]
 
         document = if cached && cached["fingerprint"] == fingerprint && cached.key?("searchable_body")
@@ -482,6 +487,33 @@ module CorpusSearch
 
       role = DocumentRole.classify(relative_path)
       body_stats = searchable_body_stats(absolute_path)
+      categories = Array(merged["categories"]).map(&:to_s).map(&:strip).reject(&:empty?).uniq
+
+      year_start = integer_or_nil(merged["year_start"])
+      year_end = integer_or_nil(merged["year_end"])
+      work_resolution = resolve_historical_date(
+        date_text: merged["date_text"],
+        period: merged["period"],
+        polity: merged["polity"],
+        only_if_missing: year_start.nil? && year_end.nil?
+      )
+      if work_resolution
+        year_start = work_resolution.year_start
+        year_end = work_resolution.year_end
+      end
+
+      compilation_year_start = integer_or_nil(merged["compilation_year_start"])
+      compilation_year_end = integer_or_nil(merged["compilation_year_end"])
+      compilation_resolution = resolve_historical_date(
+        date_text: merged["compilation_date_text"],
+        period: merged["compilation_period"].presence || merged["period"],
+        polity: merged["compilation_polity"].presence || merged["polity"],
+        only_if_missing: compilation_year_start.nil? && compilation_year_end.nil?
+      )
+      if compilation_resolution
+        compilation_year_start = compilation_resolution.year_start
+        compilation_year_end = compilation_resolution.year_end
+      end
 
       {
         "id" => merged["document_id"].presence&.to_s || stable_id(relative_path),
@@ -500,9 +532,28 @@ module CorpusSearch
         "period" => merged["period"].to_s,
         "polity" => merged["polity"].to_s,
         "region" => merged["region"].to_s,
-        "category" => merged["category"].to_s,
-        "year_start" => integer_or_nil(merged["year_start"]),
-        "year_end" => integer_or_nil(merged["year_end"]),
+        # `category` remains for compatibility. `categories` is authoritative.
+        "category" => merged["category"].presence || categories.join("; "),
+        "categories" => categories,
+        "year_start" => year_start,
+        "year_end" => year_end,
+        "date_resolution_source" => work_resolution&.source.to_s.presence,
+        "era_id" => work_resolution&.era_id,
+        "era_name" => work_resolution&.era_name.to_s.presence,
+        "era_year" => work_resolution&.era_year,
+        "era_dynasty" => work_resolution&.dynasty.to_s.presence,
+        "compilation_work_id" => merged["compilation_work_id"].presence&.to_s,
+        "compilation_title" => merged["compilation_title"].to_s,
+        "compilation_period" => merged["compilation_period"].to_s,
+        "compilation_polity" => merged["compilation_polity"].to_s,
+        "compilation_date_text" => merged["compilation_date_text"].to_s,
+        "compilation_year_start" => compilation_year_start,
+        "compilation_year_end" => compilation_year_end,
+        "compilation_date_resolution_source" => compilation_resolution&.source.to_s.presence,
+        "compilation_era_id" => compilation_resolution&.era_id,
+        "compilation_era_name" => compilation_resolution&.era_name.to_s.presence,
+        "compilation_era_year" => compilation_resolution&.era_year,
+        "compilation_era_dynasty" => compilation_resolution&.dynasty.to_s.presence,
         "size" => stat.size,
         "mtime" => stat.mtime.to_f,
         "searchable_body" => body_stats.fetch("searchable_body"),
@@ -511,7 +562,6 @@ module CorpusSearch
         "fingerprint" => fingerprint
       }
     end
-
 
     # A corpus document must contain at least one searchable character after
     # punctuation/whitespace normalisation. Physically non-empty punctuation-only
@@ -529,6 +579,24 @@ module CorpusSearch
         "searchable_characters" => normalized.units.length,
         "body_fingerprint" => Digest::SHA256.hexdigest(body)
       }
+    end
+
+    def resolve_historical_date(date_text:, period:, polity:, only_if_missing:)
+      return nil unless only_if_missing
+      return nil if date_text.to_s.strip.empty?
+
+      historical_date_resolver.resolve(
+        date_text: date_text,
+        period: period,
+        polity: polity
+      )
+    rescue StandardError => e
+      progress("historical date resolution skipped: #{e.class}: #{e.message}") if @debug_dirs
+      nil
+    end
+
+    def historical_date_resolver
+      @historical_date_resolver ||= CbdbHistoricalDateResolver.default
     end
 
     def record_scan_issue(kind, path, error = nil)
@@ -579,12 +647,16 @@ module CorpusSearch
       Digest::SHA256.hexdigest(relative_path).first(24)
     end
 
-    def fingerprint_for(stat, metadata_path = nil)
-      metadata_fingerprint = if metadata_path && File.file?(metadata_path)
-        metadata_stat = File.stat(metadata_path)
-        ":metadata=#{metadata_stat.size}:#{metadata_stat.mtime.to_f}"
-      else
+    def fingerprint_for(stat, metadata_paths = nil)
+      dependencies = Array(metadata_paths).compact.select { |path| File.file?(path) }.sort_by(&:to_s)
+      metadata_fingerprint = if dependencies.empty?
         ":metadata=none"
+      else
+        dependency_state = dependencies.map do |path|
+          metadata_stat = File.stat(path)
+          "#{path}:#{metadata_stat.size}:#{metadata_stat.mtime.to_f}"
+        end.join("|")
+        ":metadata=#{Digest::SHA256.hexdigest(dependency_state)}"
       end
       "#{stat.size}:#{stat.mtime.to_f}#{metadata_fingerprint}"
     end
@@ -663,7 +735,11 @@ module CorpusSearch
     def match_filter?(doc, key, value)
       return true if value.blank?
 
-      doc[key].to_s.include?(value)
+      filter_value_matches?(doc[key], value)
+    end
+
+    def filter_value_matches?(stored, value)
+      Array(stored).any? { |entry| entry.to_s.include?(value.to_s) }
     end
 
     def match_year_filter?(doc, from, to)

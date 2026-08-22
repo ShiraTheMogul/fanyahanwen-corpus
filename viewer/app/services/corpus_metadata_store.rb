@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+﻿# frozen_string_literal: true
 
 require "json"
 require "pathname"
@@ -111,6 +111,43 @@ class CorpusMetadataStore
     read_json(path)
   end
 
+  # Metadata files that can change the searchable representation of a document.
+  # Parent compilation dates are deliberately separate from child-work dates, but
+  # they still belong in the manifest record. Including both files in the cache
+  # fingerprint means editing a compilation date invalidates its child rows.
+  def metadata_dependency_paths_for(rel_path)
+    primary = metadata_path_for(rel_path)
+    return [] unless primary
+
+    [primary, compilation_metadata_path_for(primary)].compact.uniq
+  end
+
+  # Return the explicitly linked enclosing compilation above the current work.
+  # The current work keeps its own chronology; these fields preserve the
+  # separate date of the compilation that contains it. A directory ancestor is
+  # not enough evidence by itself: the child must name the compilation in
+  # `contained_in`, or the compilation must list the child work_id in `worklist`.
+  def compilation_context_for_path(rel_path)
+    current_metadata_path = metadata_path_for(rel_path)
+    return {} unless current_metadata_path
+
+    compilation_path = compilation_metadata_path_for(current_metadata_path)
+    return {} unless compilation_path
+
+    metadata = read_json(compilation_path)
+    {
+      "compilation_work_id" => integer_or_nil(metadata["work_id"]),
+      "compilation_title" => first_present(metadata["work_base_title"], metadata["title"]),
+      "compilation_period" => metadata["period"].to_s,
+      "compilation_polity" => metadata["polity"].to_s,
+      "compilation_date_text" => metadata["date_label"].to_s,
+      "compilation_year_start" => integer_or_nil(metadata["year_start"] || metadata["year"]),
+      "compilation_year_end" => integer_or_nil(metadata["year_end"] || metadata["year"])
+    }
+  rescue SecurityError, SystemCallError, JSON::ParserError
+    {}
+  end
+
   def work_folder?(rel_path)
     path = metadata_path_for(rel_path)
     return false unless path
@@ -185,6 +222,8 @@ class CorpusMetadataStore
   def search_metadata_for_path(rel_path)
     metadata = document_metadata_for_path(rel_path)
     path_metadata = metadata_from_path(rel_path)
+    categories = Array(metadata["categories"]).map(&:to_s).map(&:strip).reject(&:blank?).uniq
+    compilation = compilation_context_for_path(rel_path)
 
     {
       "work_id" => integer_or_nil(metadata["work_id"]),
@@ -199,10 +238,12 @@ class CorpusMetadataStore
       "period" => metadata["period"].to_s,
       "polity" => metadata["polity"].to_s,
       "region" => metadata["region"].to_s,
-      "category" => Array(metadata["categories"]).join("; "),
+      # Keep the legacy joined scalar while every new index consumes the array.
+      "category" => categories.join("; "),
+      "categories" => categories,
       "year_start" => integer_or_nil(metadata["year_start"] || metadata["year"]),
       "year_end" => integer_or_nil(metadata["year_end"] || metadata["year"])
-    }
+    }.merge(compilation)
   end
 
   def display_entries_for_path(rel_path)
@@ -234,10 +275,46 @@ class CorpusMetadataStore
 
   private
 
+  def compilation_metadata_path_for(current_metadata_path)
+    current_metadata = read_json(current_metadata_path)
+    child_work_id = integer_or_nil(current_metadata["work_id"])
+    declared_parent_ids = Array(current_metadata["contained_in"]).filter_map do |relation|
+      next unless relation.is_a?(Hash)
+
+      integer_or_nil(relation["work_id"])
+    end.uniq
+
+    dir = Pathname(current_metadata_path).dirname.parent
+    while dir == @root || dir.to_s.start_with?(@root.to_s + File::SEPARATOR)
+      candidate = dir.join("metadata.json")
+      if candidate.file?
+        metadata = read_json(candidate)
+        if truthy_metadata_value?(metadata["is_compilation"])
+          candidate_work_id = integer_or_nil(metadata["work_id"])
+          child_listed = child_work_id && Array(metadata["worklist"]).any? do |entry|
+            entry.is_a?(Hash) && integer_or_nil(entry["work_id"]) == child_work_id
+          end
+          parent_declared = candidate_work_id && declared_parent_ids.include?(candidate_work_id)
+          return candidate if parent_declared || child_listed
+        end
+      end
+
+      break if dir == @root
+      dir = dir.parent
+    end
+
+    nil
+  end
+
   def read_json(path)
     key = path.to_s
     @cache.fetch(key) do
-      @cache[key] = JSON.parse(path.read(encoding: "UTF-8"))
+      raw = path.binread.force_encoding(Encoding::UTF_8)
+      raise JSON::ParserError, "invalid UTF-8" unless raw.valid_encoding?
+
+      # Corpus metadata may be UTF-8 with BOM. Ruby's JSON parser does not
+      # consume U+FEFF itself, so remove only the leading encoding marker.
+      @cache[key] = JSON.parse(raw.sub(/\A\uFEFF/, ""))
     rescue JSON::ParserError => e
       @logger&.warn("[corpus_metadata_store] invalid JSON #{relative_display(path)}: #{e.message}")
       @cache[key] = {}
@@ -308,6 +385,10 @@ class CorpusMetadataStore
 
   def blank_value?(value)
     value.nil? || value == false || (value.respond_to?(:empty?) && value.empty?) || value.to_s.strip.empty?
+  end
+
+  def truthy_metadata_value?(value)
+    value == true || value.to_s.strip.casecmp("true").zero? || value.to_s == "1"
   end
 
   def integer_or_nil(value)

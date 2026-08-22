@@ -1,0 +1,79 @@
+﻿<h2><%= t("tools.era_calendar.title", default: "Era / regnal calendar converter") %></h2>
+<p>
+  <%= t(
+    "tools.era_calendar.description",
+    default: "Convert historical era names and ruler regnal years using the same authority resolver used for corpus metadata. Conversion is year-level; use the lunar calendar tool for lunisolar month/day conversion."
+  ) %>
+</p>
+
+<%= form_with url: tools_lunar_path, method: :post, data: { turbo_frame: "era_calendar_out" } do %>
+  <%= hidden_field_tag :calendar, "era" %>
+
+  <p style="display:flex; gap:1em; flex-wrap:wrap; align-items:end;">
+    <label>
+      <%= t("tools.era_calendar.direction", default: "Direction") %><%= t("tools.common.label_separator") %>
+      <%= select_tag :direction,
+                     options_for_select([
+                       [t("tools.era_calendar.forward", default: "Era / regnal year → absolute year"), "era_to_absolute"],
+                       [t("tools.era_calendar.reverse", default: "Absolute year → era names"), "absolute_to_era"]
+                     ], "era_to_absolute") %>
+    </label>
+
+    <label>
+      <%= t("tools.era_calendar.country", default: "Country") %><%= t("tools.common.label_separator") %>
+      <%= select_tag :country,
+                     options_for_select([
+                       [t("tools.era_calendar.country_any", default: "Any / infer from expression"), ""],
+                       ["China", "China"],
+                       ["Japan", "Japan"],
+                       ["Korea", "Korea"],
+                       ["Vietnam", "Vietnam"]
+                     ], "") %>
+    </label>
+  </p>
+
+  <p>
+    <label style="display:block;">
+      <%= t("tools.era_calendar.input", default: "Era / regnal expression or absolute year") %><%= t("tools.common.label_separator") %>
+      <%= text_field_tag :input,
+                         nil,
+                         list: "era-calendar-examples",
+                         autocomplete: "off",
+                         style: "width:100%; box-sizing:border-box;",
+                         placeholder: t("tools.era_calendar.placeholder", default: "太平天國癸好三年 · 昭和十年 · 開國五百三年 · 1853") %>
+    </label>
+    <datalist id="era-calendar-examples">
+      <option value="永昌三年"></option>
+      <option value="大順三年"></option>
+      <option value="太平天國癸好三年"></option>
+      <option value="昭和十年"></option>
+      <option value="開國五百三年"></option>
+      <option value="孝徳天皇三年"></option>
+      <option value="1853"></option>
+    </datalist>
+  </p>
+
+  <p style="display:flex; gap:1em; flex-wrap:wrap;">
+    <label style="flex:1 1 14rem; min-width:0;">
+      <%= t("tools.era_calendar.polity", default: "Polity (optional)") %><%= t("tools.common.label_separator") %>
+      <%= text_field_tag :polity,
+                         nil,
+                         style: "width:100%; box-sizing:border-box;",
+                         placeholder: t("tools.era_calendar.polity_placeholder", default: "大西 · 大順 · 朝鮮王朝") %>
+    </label>
+
+    <label style="flex:1 1 14rem; min-width:0;">
+      <%= t("tools.era_calendar.period", default: "Period / dynasty (optional)") %><%= t("tools.common.label_separator") %>
+      <%= text_field_tag :period,
+                         nil,
+                         style: "width:100%; box-sizing:border-box;",
+                         placeholder: t("tools.era_calendar.period_placeholder", default: "唐 · 江戶時代 · 阮朝") %>
+    </label>
+  </p>
+
+  <p><button type="submit"><%= t("tools.common.convert") %></button></p>
+<% end %>
+
+<%= turbo_frame_tag "era_calendar_out" do %>
+  <pre class="tool-output"></pre>
+<% end %>

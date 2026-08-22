@@ -1,4 +1,4 @@
-~$*
+﻿~$*
 *.tmp
 *.temp
 ~$*.xls*
@@ -50,6 +50,11 @@ hanwen_corpus_viewer_development
 *.sqlite3-journal
 *.sqlite3-wal
 *.sqlite3-shm
+
+# CBDB releases are runtime authority data. The manifest maintenance task checks
+# Hugging Face for updates and keeps these files out of repository history.
+/viewer/data/cbdb_*.json
+/viewer/data/.cbdb-*
 
 /viewer/log/
 /viewer/tmp/

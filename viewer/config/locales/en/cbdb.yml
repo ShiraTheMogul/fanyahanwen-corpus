@@ -1,0 +1,19 @@
+en:
+  javascript:
+    corpus_annotations:
+      toggles:
+        auto_on: 'Auto annotations: On'
+        auto_off: 'Auto annotations: Off'
+      auto:
+        toggle_hint: 'Show or hide automatic authority-based person, place, and office annotations.'
+        click_hint: 'Automatic authority annotation — click for details or to report a mismatch.'
+        heading: 'Automatic annotation'
+        confidence: 'Confidence: %{value}'
+        candidates: 'Possible authority records'
+        source: 'Authority sources'
+        report: 'Report incorrect match'
+        reporting: 'Sending…'
+        reported: 'Reported. This match is hidden on this device.'
+        error: 'Could not send ticket: %{message}'
+        high: 'high'
+        possible: 'possible'
