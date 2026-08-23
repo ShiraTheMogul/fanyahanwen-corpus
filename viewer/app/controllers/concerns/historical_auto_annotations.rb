@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+﻿# frozen_string_literal: true
 
 # Extends the existing GET /corpus_annotations endpoint with ?auto=1 while
 # leaving the manual .annotations.json workflow untouched.
@@ -24,11 +24,22 @@ module HistoricalAutoAnnotations
       detailed.to_s.strip.empty? ? search_value : detailed
     end
 
-    raw = fs.read_text(target_absolute)
-    body = CorpusSearch::DocumentReader.parse(raw).body.to_s
-    result = CbdbAutoAnnotator.call(
+    body = if fs.directory?(source_absolute)
+      metadata_store.document_paths_for_work_folder(source_path).filter_map do |document_path|
+        document_absolute = fs.resolve(document_path)
+        next unless fs.file?(document_absolute)
+
+        CorpusSearch::DocumentReader.parse(fs.read_text(document_absolute)).body.to_s.presence
+      rescue Errno::ENOENT, SecurityError
+        nil
+      end.join("\n\n")
+    else
+      CorpusSearch::DocumentReader.parse(fs.read_text(target_absolute)).body.to_s
+    end
+    result = HistoricalAutoAnnotationCache.fetch(
       text: body,
       metadata: merged_metadata,
+      cache_identity: "#{source_path}\0#{target_path}",
       store: HistoricalAuthorityStore.default
     )
 
@@ -36,11 +47,15 @@ module HistoricalAutoAnnotations
       version: 1,
       items: result.items,
       context: result.context,
-      authority: result.authority
+      authority: result.authority,
+      cached: result.cached
     }
   rescue SecurityError
     render json: { error: "Bad path" }, status: :bad_request
   rescue Errno::ENOENT
     render json: { version: 1, items: [], context: {}, authority: {} }
+  rescue StandardError => e
+    Rails.logger.warn("[authority] automatic annotation request failed: #{e.class}: #{e.message}")
+    render json: { error: "Automatic historical annotations are temporarily unavailable." }, status: :unprocessable_entity
   end
 end

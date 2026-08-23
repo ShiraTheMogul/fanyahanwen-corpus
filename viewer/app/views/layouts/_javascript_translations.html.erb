@@ -1,5 +1,9 @@
 <%
-  javascript_catalogue = I18n.t("javascript", default: {})
+  source_catalogue = I18n.with_locale(InterfaceLocales::SOURCE) do
+    I18n.t("javascript", default: {})
+  end
+  localized_catalogue = I18n.t("javascript", default: {})
+  javascript_catalogue = source_catalogue.to_h.deep_merge(localized_catalogue.to_h)
   javascript_payload = {
     locale: I18n.locale.to_s,
     translations: javascript_catalogue

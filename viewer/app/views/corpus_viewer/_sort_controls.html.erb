@@ -1,56 +1,154 @@
-﻿<%# Directory ordering controls. Kept outside the large corpus viewer template so ordering can evolve independently. %>
-<%= form_with url: request.path, method: :get, local: true, class: "corpus-sort-controls" do %>
-  <div class="corpus-sort-controls__field">
-    <label for="corpus_sort"><%= t("corpus_viewer.sorting.label", default: "Order") %></label>
-    <select id="corpus_sort" name="sort" class="corpus-sort-controls__select">
-      <% if @corpus_period_sort_available %>
-        <option value="period" <%= "selected" if @corpus_sort_mode == "period" %>>
-          <%= t("corpus_viewer.sorting.period", default: "Period") %>
+﻿<%# Corpus Viewer browse/search controls. Work-title search belongs to the root viewer. %>
+<% if @rel_path.blank? %>
+  <style>
+    .corpus-work-search {
+      margin: .55rem 0 .8rem;
+      padding: .55rem .65rem;
+      border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+      border-radius: .35rem;
+      background: color-mix(in srgb, currentColor 2%, transparent);
+    }
+    .corpus-work-search__form { display: flex; gap: .55rem; flex-wrap: wrap; align-items: center; }
+    .corpus-work-search__query { flex: 1 1 20rem; min-width: 12rem; }
+    .corpus-work-search__query > span { display: block; font-weight: 700; margin-bottom: .2rem; }
+    .corpus-work-search__query input { width: 100%; box-sizing: border-box; }
+    .corpus-work-search__options { display: flex; gap: .7rem; flex-wrap: wrap; align-items: center; }
+    .corpus-work-search__back { margin-top: .45rem; font-size: .92rem; }
+  </style>
+  <section class="corpus-work-search" aria-label="<%= t('corpus_viewer.work_search.aria_label', default: 'Work search') %>">
+    <%= form_with url: corpus_viewer_path(format: nil), method: :get, local: true, class: "corpus-work-search__form" do %>
+      <label class="corpus-work-search__query" for="catalogue_q">
+        <span><%= t("corpus_viewer.work_search.label", default: "Search works") %></span>
+        <%= text_field_tag :catalogue_q,
+                           @catalogue_query,
+                           id: "catalogue_q",
+                           placeholder: t("corpus_viewer.work_search.placeholder", default: "Work title") %>
+      </label>
+
+      <div class="corpus-work-search__options">
+        <label>
+          <%= radio_button_tag :catalogue_order, "asc", @catalogue_order != "desc", id: "catalogue_order_asc" %>
+          <%= t("corpus_viewer.work_search.earliest_first", default: "Earliest first") %>
+        </label>
+        <label>
+          <%= radio_button_tag :catalogue_order, "desc", @catalogue_order == "desc", id: "catalogue_order_desc" %>
+          <%= t("corpus_viewer.work_search.latest_first", default: "Latest first") %>
+        </label>
+        <label>
+          <%= hidden_field_tag :catalogue_geography, "0" %>
+          <%= check_box_tag :catalogue_geography, "1", @catalogue_geography == true, id: "catalogue_geography" %>
+          <%= t("corpus_viewer.work_search.group_geography", default: "Group by geography") %>
+        </label>
+      </div>
+
+      <%= submit_tag t("corpus_viewer.work_search.submit", default: "Search"), class: "corpus-btn corpus-btn-primary" %>
+    <% end %>
+
+    <% if @catalogue_search_active %>
+      <div class="corpus-work-search__back">
+        <%= link_to t("corpus_viewer.work_search.back_to_browse", default: "Return to folder browsing"), corpus_viewer_path(format: nil) %>
+      </div>
+    <% end %>
+  </section>
+<% end %>
+
+<% unless @catalogue_search_active || @work_folder_view %>
+  <%= form_with url: request.path, method: :get, local: true, class: "corpus-sort-controls" do %>
+    <div class="corpus-sort-controls__field">
+      <label for="corpus_sort"><%= t("corpus_viewer.sorting.label", default: "Order") %></label>
+      <select id="corpus_sort" name="sort" class="corpus-sort-controls__select">
+        <% if @corpus_period_sort_available %>
+          <option value="period" <%= "selected" if @corpus_sort_mode == "period" %>>
+            <%= t("corpus_viewer.sorting.period", default: "Period") %>
+          </option>
+        <% end %>
+        <option value="pc" <%= "selected" if @corpus_sort_mode == "pc" %>>
+          <%= t("corpus_viewer.sorting.pc", default: "PC default") %>
         </option>
-      <% end %>
-      <option value="pc" <%= "selected" if @corpus_sort_mode == "pc" %>>
-        <%= t("corpus_viewer.sorting.pc", default: "PC default") %>
-      </option>
-      <option value="pronunciation" <%= "selected" if @corpus_sort_mode == "pronunciation" %>>
-        <%= t("corpus_viewer.sorting.pronunciation", default: "Pronunciation") %> — <%= @corpus_sort_pronunciation_label %>
-      </option>
-      <optgroup label="<%= t("corpus_viewer.sorting.structure", default: "Structure input") %>">
-        <option value="cangjie" <%= "selected" if @corpus_sort_mode == "cangjie" %>>Cangjie 5</option>
-        <option value="wubi" <%= "selected" if @corpus_sort_mode == "wubi" %>>Wubi 86</option>
-        <option value="four_corner" <%= "selected" if @corpus_sort_mode == "four_corner" %>>
-          <%= t("corpus_viewer.sorting.four_corner", default: "Four-corner") %>
+        <option value="pronunciation" <%= "selected" if @corpus_sort_mode == "pronunciation" %>>
+          <%= t("corpus_viewer.sorting.pronunciation", default: "Pronunciation") %> — <%= @corpus_sort_pronunciation_label %>
         </option>
-      </optgroup>
-      <option value="kangxi" <%= "selected" if @corpus_sort_mode == "kangxi" %>>
-        <%= t("corpus_viewer.sorting.kangxi", default: "Kangxi radical") %>
-      </option>
-      <option value="stroke_count" <%= "selected" if @corpus_sort_mode == "stroke_count" %>>
-        <%= t("corpus_viewer.sorting.stroke_count", default: "Stroke count") %>
-      </option>
-      <option value="yes"
-              <%= "selected" if @corpus_sort_mode == "yes" %>
-              <%= "disabled" unless @corpus_yes_sort_available %>>
-        <%= t("corpus_viewer.sorting.yes", default: "YES order") %><%= " — data not installed" unless @corpus_yes_sort_available %>
-      </option>
-      <option value="frequency" <%= "selected" if @corpus_sort_mode == "frequency" %>>
-        <%= t("corpus_viewer.sorting.frequency", default: "Frequency (Unihan kHanyuPinlu)") %>
-      </option>
-    </select>
-  </div>
+        <optgroup label="<%= t("corpus_viewer.sorting.structure", default: "Structure input") %>">
+          <option value="cangjie" <%= "selected" if @corpus_sort_mode == "cangjie" %>>Cangjie 5</option>
+          <option value="wubi" <%= "selected" if @corpus_sort_mode == "wubi" %>>Wubi 86</option>
+          <option value="four_corner" <%= "selected" if @corpus_sort_mode == "four_corner" %>>
+            <%= t("corpus_viewer.sorting.four_corner", default: "Four-corner") %>
+          </option>
+        </optgroup>
+        <option value="kangxi" <%= "selected" if @corpus_sort_mode == "kangxi" %>>
+          <%= t("corpus_viewer.sorting.kangxi", default: "Kangxi radical") %>
+        </option>
+        <option value="stroke_count" <%= "selected" if @corpus_sort_mode == "stroke_count" %>>
+          <%= t("corpus_viewer.sorting.stroke_count", default: "Stroke count") %>
+        </option>
+        <option value="yes"
+                <%= "selected" if @corpus_sort_mode == "yes" %>
+                <%= "disabled" unless @corpus_yes_sort_available %>>
+          <%= t("corpus_viewer.sorting.yes", default: "YES order") %><%= " — #{t('corpus_viewer.sorting.data_not_installed', default: 'data not installed')}" unless @corpus_yes_sort_available %>
+        </option>
+        <option value="frequency" <%= "selected" if @corpus_sort_mode == "frequency" %>>
+          <%= t("corpus_viewer.sorting.frequency", default: "Frequency (Unihan kHanyuPinlu)") %>
+        </option>
+      </select>
+    </div>
 
-  <div class="corpus-sort-controls__qianziwen">
-    <%= hidden_field_tag :qianziwen_first, "0" %>
-    <%= check_box_tag :qianziwen_first, "1", @corpus_qianziwen_first, id: "corpus_qianziwen_first" %>
-    <label for="corpus_qianziwen_first">
-      <%= t("corpus_viewer.sorting.qianziwen_first", default: "千字文 first") %>
-    </label>
-  </div>
+    <div class="corpus-sort-controls__qianziwen">
+      <%= hidden_field_tag :qianziwen_first, "0" %>
+      <%= check_box_tag :qianziwen_first, "1", @corpus_qianziwen_first, id: "corpus_qianziwen_first" %>
+      <label for="corpus_qianziwen_first">
+        <%= t("corpus_viewer.sorting.qianziwen_first", default: "千字文 first") %>
+      </label>
+    </div>
 
-  <div class="corpus-sort-controls__grid-view">
-    <%= hidden_field_tag :grid_view, "0" %>
-    <%= check_box_tag :grid_view, "1", @corpus_grid_view, id: "corpus_grid_view" %>
-    <label for="corpus_grid_view"><%= t("corpus_viewer.sorting.grid_view", default: "Grid") %></label>
-  </div>
+    <div class="corpus-sort-controls__grid-view">
+      <%= hidden_field_tag :grid_view, "0" %>
+      <%= check_box_tag :grid_view, "1", @corpus_grid_view, id: "corpus_grid_view" %>
+      <label for="corpus_grid_view"><%= t("corpus_viewer.sorting.grid_view", default: "Grid") %></label>
+    </div>
 
-  <%= submit_tag t("common.actions.apply", default: "Apply"), class: "corpus-sort-controls__apply" %>
+    <%= submit_tag t("common.actions.apply", default: "Apply"), class: "corpus-sort-controls__apply" %>
+  <% end %>
+<% end %>
+
+
+<% if @directory_page && @directory_page.total_pages.to_i > 1 %>
+  <style>
+    .corpus-path-pagination-row { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; }
+    .corpus-path-pagination-row > strong { min-width: 0; overflow-wrap: anywhere; }
+    .corpus-directory-pagination { display: inline-flex; align-items: center; gap: .35rem; flex-wrap: wrap; margin-inline-start: auto; }
+    .corpus-directory-pagination__link, .corpus-directory-pagination__count { padding: .25rem .45rem; border: 1px solid color-mix(in srgb, currentColor 22%, transparent); border-radius: .3rem; text-decoration: none; line-height: 1.2; }
+    .corpus-directory-pagination__count { border-color: transparent; white-space: nowrap; }
+    .corpus-directory-pagination .is-disabled { opacity: .4; }
+    @media (max-width: 700px) {
+      .corpus-directory-pagination { margin-inline-start: 0; }
+    }
+  </style>
+  <% current = @directory_page.page.to_i %>
+  <% last = @directory_page.total_pages.to_i %>
+  <% base_query = request.query_parameters.except("page") %>
+  <% page_href = ->(number) { "#{request.path}?#{base_query.merge("page" => number).to_query}" } %>
+  <span class="corpus-directory-pagination"
+        data-corpus-directory-pagination
+        role="navigation"
+        aria-label="<%= t('corpus_viewer.directory_pagination.aria_label', default: 'Directory pages') %>">
+    <% if current > 1 %>
+      <%= link_to t("corpus_viewer.directory_pagination.first", default: "First"), page_href.call(1), rel: "first", class: "corpus-directory-pagination__link" %>
+      <%= link_to t("corpus_viewer.directory_pagination.previous", default: "Previous"), page_href.call(current - 1), rel: "prev", class: "corpus-directory-pagination__link" %>
+    <% else %>
+      <span class="corpus-directory-pagination__link is-disabled"><%= t("corpus_viewer.directory_pagination.first", default: "First") %></span>
+      <span class="corpus-directory-pagination__link is-disabled"><%= t("corpus_viewer.directory_pagination.previous", default: "Previous") %></span>
+    <% end %>
+
+    <span class="corpus-directory-pagination__count">
+      <%= t("corpus_viewer.directory_pagination.page_status", page: current, pages: last, default: "%{page} / %{pages}") %>
+    </span>
+
+    <% if current < last %>
+      <%= link_to t("corpus_viewer.directory_pagination.next", default: "Next"), page_href.call(current + 1), rel: "next", class: "corpus-directory-pagination__link" %>
+      <%= link_to t("corpus_viewer.directory_pagination.last", default: "Last"), page_href.call(last), rel: "last", class: "corpus-directory-pagination__link" %>
+    <% else %>
+      <span class="corpus-directory-pagination__link is-disabled"><%= t("corpus_viewer.directory_pagination.next", default: "Next") %></span>
+      <span class="corpus-directory-pagination__link is-disabled"><%= t("corpus_viewer.directory_pagination.last", default: "Last") %></span>
+    <% end %>
+  </span>
 <% end %>

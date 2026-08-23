@@ -1,4 +1,4 @@
-# Pin npm packages by running ./bin/importmap
+﻿# Pin npm packages by running ./bin/importmap
 
 pin "application"
 pin "i18n", to: "i18n.js"
@@ -10,3 +10,6 @@ pin "controllers", to: "controllers/index.js"
 pin "controllers/index", to: "controllers/index.js"
 pin_all_from "app/javascript/controllers", under: "controllers"
 pin "era_calendar_tool", to: "era_calendar_tool.js"
+pin "site_search_mode", to: "site_search_mode.js"
+pin "author_authority_link", to: "author_authority_link.js"
+pin "corpus_directory_pagination", to: "corpus_directory_pagination.js"

@@ -1,0 +1,80 @@
+﻿<style>
+.authority-shell{max-width:72rem;margin:0 auto;padding:1rem}.authority-grid{display:grid;grid-template-columns:minmax(10rem,14rem) minmax(0,1fr);gap:.45rem 1rem}.authority-grid dt{font-weight:700}.authority-grid dd{margin:0}.authority-list{columns:2;column-gap:2rem}.authority-list li{break-inside:avoid;margin-bottom:.25rem}.authority-source-box{border:1px solid color-mix(in srgb,currentColor 22%,transparent);padding:.8rem;border-radius:.4rem;margin-top:1rem}.authority-works li{margin:.4rem 0}.authority-work-role{font-size:.9em;opacity:.75}@media(max-width:700px){.authority-grid{grid-template-columns:1fr}.authority-grid dd{margin-bottom:.6rem}.authority-list{columns:1}}
+</style>
+<div class="authority-shell">
+  <% year_text = ->(value) do
+       number = value.to_i
+       number.negative? ? t("authority.search.year_bce", year: number.abs) : t("authority.search.year_ce", year: number)
+     end %>
+  <% range_text = ->(values) { Array(values).compact.map { |year| year_text.call(year) }.uniq.join("–") } %>
+  <% role_text = ->(role) { t("authority.roles.#{role}", default: role.to_s.tr("_", " ").split.map(&:capitalize).join(" ")) } %>
+
+  <p><a href="/authors">← <%= t("authority.show.back") %></a></p>
+  <h1><%= @person["label"] %><% if @person["romanized"].present? %> <small><%= @person["romanized"] %></small><% end %></h1>
+
+  <dl class="authority-grid">
+    <% if @person["date_label"].present? || @person["year_start"] || @person["year_end"] %><dt><%= t("authority.show.dates") %></dt><dd><%= @person["date_label"].presence || range_text.call([@person["year_start"], @person["year_end"]]) %></dd><% end %>
+    <% if @person["polity"].present? %><dt><%= t("authority.show.polity") %></dt><dd><%= @person["polity"] %></dd><% end %>
+    <% if @person["country"].present? %><dt><%= t("authority.show.country") %></dt><dd><%= @person["country"] %></dd><% end %>
+    <% if @person["roles"].present? %><dt><%= t("authority.show.roles") %></dt><dd><%= @person["roles"].map { |role| role_text.call(role) }.join("; ") %></dd><% end %>
+  </dl>
+
+  <% if @person["names"].present? %>
+    <h2><%= t("authority.show.names") %></h2>
+    <ul class="authority-list">
+      <% @person["names"].each do |name| %>
+        <li><%= name["name"] %><%= " (#{t('authority.show.primary')})" if name["primary"] %><%= " · #{name['type_code']}" if name["type_code"].present? %><%= " · #{name['derivation']}" if name["explicit"] == false && name["derivation"].present? %></li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <% if @person["places"].present? %>
+    <h2><%= t("authority.show.places") %></h2>
+    <ul class="authority-list"><% @person["places"].each do |place| %><li><% if place.is_a?(Hash) %><%= place["label"] %><%= " (#{range_text.call(place['years'])})" if Array(place["years"]).any? %><% else %><%= place %><% end %></li><% end %></ul>
+  <% end %>
+
+  <% if @person["offices"].present? %>
+    <h2><%= t("authority.show.offices") %></h2>
+    <ul class="authority-list"><% @person["offices"].each do |office| %><li><%= office["label"] %><%= " (#{range_text.call(office['years'])})" if Array(office["years"]).any? %></li><% end %></ul>
+  <% end %>
+
+  <% if @person["corpus_only"] == true && @related_candidates&.candidates&.present? %>
+    <h2><%= t("authority.show.possible_historical_matches") %></h2>
+    <p><%= t("authority.show.possible_historical_matches_note") %></p>
+    <ul>
+      <% @related_candidates.candidates.first(8).each do |candidate| %>
+        <% label = candidate["label"].presence || candidate["local_label"].presence || candidate["id"] %>
+        <li><a href="/authors/<%= ERB::Util.url_encode(candidate["authority_source"].to_s) %>/<%= ERB::Util.url_encode(candidate["id"].to_s) %>"><%= label %></a><% if candidate["romanized"].present? %> — <%= candidate["romanized"] %><% end %></li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <% if @corpus_contributions.present? %>
+    <h2><%= t("authority.show.corpus_contributions") %></h2>
+    <ul class="authority-works">
+      <% @corpus_contributions.each do |work| %>
+        <li>
+          <%= link_to work["display_title"], corpus_viewer_path(work["folder_path"].to_s.split("/"), format: nil) %>
+          <% if work["date_text"].present? %> — <%= work["date_text"] %><% elsif work["period"].present? %> — <%= work["period"] %><% end %>
+          <% if work["credit_roles"].present? %><div class="authority-work-role"><%= work["credit_roles"].map { |role| role_text.call(role) }.join(" · ") %></div><% end %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <div class="authority-source-box">
+    <strong><%= t("authority.show.sources") %></strong>
+    <% if @person["source_citations"].present? %><ul><% @person["source_citations"].each do |citation| %><li><%= citation %></li><% end %></ul><% end %>
+    <p><%= t("authority.show.record_source") %>: <%= @person["authority_label"] %> · <code><%= @person["source"] %>:<%= @person["id"] %></code></p>
+    <% if @person["chronology_confidence"].present? %><p><%= t("authority.show.chronology") %>: <%= @person["chronology_confidence"] %></p><% end %>
+    <% if @person["authority_license"].present? %><p><%= t("authority.show.licence") %>: <%= @person["authority_license"] %></p><% end %>
+    <% if @person["source_url"].present? %>
+      <% if @person["source_url"].to_s.match?(%r{\Ahttps?://}i) %>
+        <p><a href="<%= @person["source_url"] %>" target="_blank" rel="noopener noreferrer"><%= t("authority.show.open_source") %></a></p>
+      <% else %>
+        <p><%= t("authority.show.repository_source") %>: <code><%= @person["source_url"] %></code></p>
+      <% end %>
+    <% end %>
+    <p><%= t("authority.show.correction_note") %></p>
+  </div>
+</div>

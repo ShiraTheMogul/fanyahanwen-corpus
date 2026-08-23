@@ -1,0 +1,26 @@
+﻿<% folder_segments = row["folder_path"].to_s.split("/").reject(&:empty?) %>
+<% open_url = corpus_viewer_path(folder_segments, format: nil) %>
+<% chronology = if row["date_text"].present?
+                  row["date_text"]
+                elsif row["year_start"].present?
+                  start_year = row["year_start"].to_i
+                  end_year = row["year_end"].presence&.to_i
+                  year_label = ->(year) { year.negative? ? "#{year.abs} BCE" : "#{year} CE" }
+                  end_year && end_year != start_year ? "#{year_label.call(start_year)}–#{year_label.call(end_year)}" : year_label.call(start_year)
+                end %>
+
+<li class="corpus-title-search__result">
+  <h3><%= link_to row["title"], open_url %></h3>
+  <p class="corpus-title-search__meta">
+    <% [row["author"], chronology, row["period"], row["polity"], row["region"]].compact.each do |value| %>
+      <span><%= value %></span>
+    <% end %>
+  </p>
+  <% if row["matched_form"].present? && (row["matched_form"] != row["title"] || row["match_kind"] == "variant_normalised") %>
+    <p class="corpus-title-search__match">
+      <%= t("corpus_search.title_search.matched_as", default: "Matched as") %>:
+      <%= row["matched_form"] %>
+      · <%= t("corpus_search.title_search.match_kinds.#{row["match_kind"]}", default: row["match_kind"].tr("_", " ")) %>
+    </p>
+  <% end %>
+</li>

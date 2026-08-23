@@ -1,0 +1,77 @@
+﻿<style>
+.authority-shell{max-width:72rem;margin:0 auto;padding:1rem}.authority-card{border:1px solid color-mix(in srgb,currentColor 22%,transparent);border-radius:.45rem;padding:.8rem 1rem;margin:.7rem 0}.authority-card h2{margin:.1rem 0 .35rem}.authority-meta{font-size:.92rem;opacity:.82}.authority-source{font-size:.86rem;opacity:.72;margin-top:.35rem}.authority-warning{border-left:.3rem solid currentColor;padding:.5rem .8rem;background:color-mix(in srgb,currentColor 5%,transparent)}
+</style>
+<div class="authority-shell">
+  <% role_text = ->(role) { t("authority.roles.#{role}", default: role.to_s.tr("_", " ").split.map(&:capitalize).join(" ")) } %>
+  <% year_text = ->(value) do
+       number = value.to_i
+       number.negative? ? t("authority.search.year_bce", year: number.abs) : t("authority.search.year_ce", year: number)
+     end %>
+
+  <h1><%= t("authority.search.title") %></h1>
+  <p><%= t("authority.search.explanation") %></p>
+
+  <%= form_with url: request.path, method: :get, local: true, style: "display:flex;gap:.5rem;flex-wrap:wrap;align-items:end;margin:.8rem 0 1rem" do %>
+    <label style="flex:1 1 18rem">
+      <span><%= t("authority.search.name") %></span>
+      <%= text_field_tag :name,
+                         params[:name],
+                         placeholder: t("authority.search.placeholder"),
+                         style: "display:block;width:100%;box-sizing:border-box;padding:.45rem" %>
+    </label>
+    <%= submit_tag t("authority.search.submit"), class: "corpus-btn corpus-btn-primary" %>
+  <% end %>
+
+  <% if @source_path.present? %>
+    <p><strong><%= t("authority.search.corpus_source") %>:</strong> <code><%= @source_path %></code></p>
+  <% end %>
+  <% if @author_values.present? %>
+    <p><strong><%= t("authority.search.recorded_author") %>:</strong> <%= @author_values.join("; ") %></p>
+  <% elsif @source_path.present? && !@author_error.present? %>
+    <p class="authority-warning"><%= t("authority.search.no_recorded_author") %></p>
+  <% end %>
+  <% if @author_error.present? %><p class="authority-warning"><%= @author_error %></p><% end %>
+
+  <% search_performed = @author_values.present? %>
+  <% if search_performed && !@author_error.present? %>
+    <% if @corpus_people.present? %>
+      <h2><%= t("authority.search.in_corpus") %></h2>
+      <% @corpus_people.each do |person| %>
+        <article class="authority-card">
+          <h2><a href="/authors/corpus/<%= ERB::Util.url_encode(person["name_key"].to_s) %>"><%= person["name"] %></a></h2>
+          <div class="authority-meta"><%= t("authority.search.corpus_credits", count: person["work_count"]) %><% if person["roles"].present? %> · <%= person["roles"].map { |role| role_text.call(role) }.join(" · ") %><% end %></div>
+        </article>
+      <% end %>
+    <% end %>
+
+    <% authority = @candidate_set.authority || {} %>
+    <% cbdb_lookup_ready = authority["cbdb_lookup_available"] == true %>
+    <% authority_ready = cbdb_lookup_ready || authority["historical_available"] %>
+    <% if authority_ready && @candidate_set.candidates.present? %>
+      <h2><%= t("authority.search.historical_matches") %></h2>
+      <p><%= t("authority.search.candidates", count: @candidate_set.candidates.length) %></p>
+      <% @candidate_set.candidates.each do |candidate| %>
+        <% label = candidate["label"].presence || candidate["local_label"].presence || candidate["id"] %>
+        <article class="authority-card">
+          <h2><a href="/authors/<%= ERB::Util.url_encode(candidate["authority_source"].to_s) %>/<%= ERB::Util.url_encode(candidate["id"].to_s) %>"><%= label %></a></h2>
+          <div class="authority-meta">
+            <% details = [] %>
+            <% details << candidate["romanized"] if candidate["romanized"].present? %>
+            <% if candidate["year_start"] || candidate["year_end"] %>
+              <% details << [candidate["year_start"], candidate["year_end"]].compact.map { |year| year_text.call(year) }.uniq.join("–") %>
+            <% end %>
+            <% details << t("authority.search.confidence", value: candidate["confidence"].presence || t("authority.search.possible")) %>
+            <%= details.join(" · ") %>
+          </div>
+        </article>
+      <% end %>
+    <% elsif !authority_ready %>
+      <p class="authority-warning"><%= authority["cbdb_available"] ? t("authority.search.cbdb_index_missing") : t("authority.search.authority_unavailable") %></p>
+    <% end %>
+
+    <% if @corpus_people.blank? && @candidate_set.candidates.blank? %>
+      <% searched_name = @candidate_set.query_names.join(", ").presence || @author_values.join(", ") %>
+      <p><%= t("authority.search.no_candidate", name: searched_name) %></p>
+    <% end %>
+  <% end %>
+</div>

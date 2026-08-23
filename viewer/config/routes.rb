@@ -29,6 +29,10 @@ Rails.application.routes.draw do
 	  get  "/corpus/search/prepared/:id/download", to: "corpus_search#download", as: :download_prepared_corpus_search
 	  post "/corpus/search/prepared/:id/cancel", to: "corpus_search#cancel", as: :cancel_prepared_corpus_search
 	
+	# author pages
+	get "/authors", to: "authors#index", as: :authors
+	get "/authors/:source/:id", to: "authors#show", as: :author
+	
 	get "/corpus_viewer(/*path)", to: "corpus_viewer#show", as: :corpus_viewer, format: false # stop a silly attempt to output a txt file
 	
 	# corpus annotation stuff

@@ -1,0 +1,111 @@
+﻿<% content_for :title, t("corpus_search.title_search.title", default: "Work title search") %>
+
+<style>
+  .corpus-title-search { max-width: 78rem; }
+  .corpus-title-search__head { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:.75rem 1rem; }
+  .corpus-title-search__form { display:grid; gap:.85rem; margin:1rem 0 1.25rem; padding:1rem; border:1px solid #d8dce2; border-radius:12px; }
+  .corpus-title-search__query { display:grid; gap:.35rem; font-weight:650; }
+  .corpus-title-search__query input { box-sizing:border-box; width:100%; min-height:44px; padding:.45rem .6rem; font:inherit; font-size:1.08rem; }
+  .corpus-title-search__controls { display:flex; flex-wrap:wrap; gap:.75rem 1rem; align-items:end; }
+  .corpus-title-search__controls label { display:grid; gap:.25rem; font-weight:600; }
+  .corpus-title-search__controls select { min-height:36px; }
+  .corpus-title-search__note { margin:.4rem 0; opacity:.78; line-height:1.45; }
+  .corpus-title-search__group { margin:1.5rem 0 2rem; }
+  .corpus-title-search__group > h2 { margin-bottom:.65rem; padding-bottom:.3rem; border-bottom:1px solid #d8dce2; }
+  .corpus-title-search__results { display:grid; gap:.7rem; margin:0; padding:0; list-style:none; }
+  .corpus-title-search__result { padding:.8rem .9rem; border:1px solid #d8dce2; border-radius:9px; }
+  .corpus-title-search__result h3 { margin:0 0 .32rem; font-size:1.08rem; }
+  .corpus-title-search__meta { display:flex; flex-wrap:wrap; gap:.2rem .8rem; margin:0; opacity:.78; font-size:.9rem; }
+  .corpus-title-search__match { margin:.35rem 0 0; font-size:.86rem; opacity:.72; }
+  .corpus-title-search__error { padding:.75rem .9rem; border-left:4px solid #a62929; }
+  html[data-theme="dark"] .corpus-title-search__form,
+  html[data-theme="dark"] .corpus-title-search__result { background:var(--site-surface); border-color:var(--site-border); }
+  html[data-theme="dark"] .corpus-title-search__group > h2 { border-color:var(--site-border); }
+</style>
+
+<div class="corpus-title-search">
+  <div class="corpus-title-search__head">
+    <h1><%= t("corpus_search.title_search.title", default: "Work title search") %></h1>
+    <%= link_to t("corpus_search.title_search.full_text_link", default: "Full-text corpus search"), corpus_search_path %>
+  </div>
+
+  <p class="corpus-title-search__note">
+    <%= t(
+      "corpus_search.title_search.explanation",
+      default: "Matching checks exact title, exact base title, prefix, contains, then controlled character-variant forms. Geography and chronology control result order separately. Displayed titles are never rewritten."
+    ) %>
+  </p>
+
+  <%= form_with url: corpus_search_path, method: :get, local: true, class: "corpus-title-search__form" do %>
+    <label class="corpus-title-search__query">
+      <span><%= t("corpus_search.title_search.query", default: "Title") %></span>
+      <%= text_field_tag :title_q,
+                         @title_query,
+                         autofocus: true,
+                         autocomplete: "off",
+                         maxlength: 120,
+                         placeholder: t("corpus_search.title_search.placeholder", default: "論語 · 漢書 · 古事記…") %>
+    </label>
+
+    <div class="corpus-title-search__controls">
+      <label>
+        <span><%= t("corpus_search.title_search.geography", default: "Geography") %></span>
+        <%= select_tag :title_group,
+                       options_for_select([
+                         [t("corpus_search.title_search.group_geography", default: "Group by geography"), "geography"],
+                         [t("corpus_search.title_search.no_grouping", default: "No geographical grouping"), "none"]
+                       ], @title_group_geography ? "geography" : "none") %>
+      </label>
+
+      <label>
+        <span><%= t("corpus_search.title_search.chronology", default: "Chronology") %></span>
+        <%= select_tag :title_order,
+                       options_for_select([
+                         [t("corpus_search.title_search.earliest_first", default: "Earliest first"), "asc"],
+                         [t("corpus_search.title_search.latest_first", default: "Latest first"), "desc"]
+                       ], @title_chronology) %>
+      </label>
+
+      <%= submit_tag t("corpus_search.title_search.search", default: "Search titles"), class: "corpus-search-button" %>
+    </div>
+  <% end %>
+
+  <% if @title_search_error.present? %>
+    <p class="corpus-title-search__error"><%= @title_search_error %></p>
+  <% elsif @title_query.present? %>
+    <p class="corpus-title-search__note">
+      <%= t(
+        "corpus_search.title_search.summary",
+        default: "%{count} matching works shown from a work-level index of %{total} works.",
+        count: @title_results.length,
+        total: @title_index_work_count || 0
+      ) %>
+      <% if @title_results.length >= CorpusTitleSearch::TITLE_RESULT_LIMIT %>
+        <%= t("corpus_search.title_search.limit_note", default: "Refine the title if the work you need is not visible.") %>
+      <% end %>
+    </p>
+
+    <% if @title_results.empty? %>
+      <p><%= t("corpus_search.title_search.none", default: "No work titles matched this query.") %></p>
+    <% elsif @title_group_geography %>
+      <% @title_groups.each do |group, rows| %>
+        <section class="corpus-title-search__group">
+          <h2><%= group %> <small>(<%= rows.length %>)</small></h2>
+          <ol class="corpus-title-search__results">
+            <% rows.each do |row| %>
+              <%= render "corpus_search/title_result", row: row %>
+            <% end %>
+          </ol>
+        </section>
+      <% end %>
+    <% else %>
+      <section class="corpus-title-search__group">
+        <ol class="corpus-title-search__results">
+          <% @title_results.each do |row| %>
+            <%= render "corpus_search/title_result", row: row %>
+          <% end %>
+        </ol>
+      </section>
+    <% end %>
+  <% end %>
+</div>

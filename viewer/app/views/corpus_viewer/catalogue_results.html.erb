@@ -1,0 +1,97 @@
+﻿<h1><%= t("corpus_viewer.title") %></h1>
+<p class="crumbs"></p>
+<p><strong><%= t("corpus_viewer.root") %></strong></p>
+
+<style>
+  .corpus-work-results { max-width: 74rem; margin: 0 auto; }
+  .corpus-work-results__summary { margin: .2rem 0 1rem; opacity: .82; }
+  .corpus-work-results__timeline { list-style: none; padding: 0; margin: 0; }
+  .corpus-work-results__group { margin: 1.2rem 0; }
+  .corpus-work-results__group > h2 { font-size: 1.05rem; margin: 0 0 .45rem; }
+  .corpus-work-results__item { display: grid; grid-template-columns: minmax(7rem, 10rem) minmax(0, 1fr); gap: .8rem; padding: .55rem 0; border-bottom: 1px solid color-mix(in srgb, currentColor 14%, transparent); }
+  .corpus-work-results__date { opacity: .75; font-variant-numeric: tabular-nums; }
+  .corpus-work-results__title { font-size: 1.08rem; }
+  .corpus-work-results__meta { margin-top: .15rem; font-size: .9rem; opacity: .78; }
+  .corpus-work-results__error { border: 1px solid currentColor; border-radius: .4rem; padding: .75rem; }
+  .corpus-work-results__pages { display: flex; gap: .45rem; flex-wrap: wrap; justify-content: center; align-items: center; margin: 1.25rem 0; }
+  .corpus-work-results__pages .is-disabled { opacity: .42; }
+  @media (max-width: 600px) { .corpus-work-results__item { grid-template-columns: 1fr; gap: .15rem; } }
+</style>
+
+<div class="corpus-work-results">
+  <% if @catalogue_error.present? %>
+    <p class="corpus-work-results__error">
+      <strong><%= t("corpus_viewer.work_search.cache_unavailable", default: "Work-title index unavailable.") %></strong>
+      <%= t("corpus_viewer.work_search.cache_hint", default: "Run bin/rails corpus_catalogue:rebuild, then search again.") %>
+    </p>
+  <% else %>
+    <p class="corpus-work-results__summary">
+      <%= t("corpus_viewer.work_search.results_count",
+            count: @catalogue_page.total,
+            query: @catalogue_query,
+            default: "%{count} works matching “%{query}”.") %>
+      <%= t("corpus_viewer.work_search.page_status",
+            page: @catalogue_page.page,
+            pages: @catalogue_page.total_pages,
+            default: "Page %{page} of %{pages}.") %>
+    </p>
+
+    <% geography_key = ->(row) { row["macro_region"].presence || row["corpus_root"].presence || row["nation"].presence || t("corpus_viewer.work_search.other_geography", default: "Other") } %>
+    <% groups = @catalogue_geography ? @catalogue_page.items.group_by { |row| geography_key.call(row) } : { nil => @catalogue_page.items } %>
+
+    <% groups.each do |geography, rows| %>
+      <section class="corpus-work-results__group">
+        <% if geography.present? %><h2><%= geography %></h2><% end %>
+        <ol class="corpus-work-results__timeline">
+          <% rows.each do |row| %>
+            <% ys = row["year_start"] %>
+            <% ye = row["year_end"] %>
+            <% year_label = if ys.nil? && ye.nil?
+                 row["date_text"].presence || row["period"].presence || row["polity"].presence || t("corpus_viewer.work_search.date_unknown", default: "Date unknown")
+               elsif ys == ye || ye.nil?
+                 ys.to_i < 0 ? t("corpus_viewer.work_search.year_bce", year: ys.to_i.abs, default: "%{year} BCE") : t("corpus_viewer.work_search.year_ce", year: ys, default: "%{year} CE")
+               else
+                 left = ys.to_i < 0 ? t("corpus_viewer.work_search.year_bce", year: ys.to_i.abs, default: "%{year} BCE") : t("corpus_viewer.work_search.year_ce", year: ys, default: "%{year} CE")
+                 right = ye.to_i < 0 ? t("corpus_viewer.work_search.year_bce", year: ye.to_i.abs, default: "%{year} BCE") : t("corpus_viewer.work_search.year_ce", year: ye, default: "%{year} CE")
+                 "#{left}–#{right}"
+               end %>
+            <li class="corpus-work-results__item">
+              <div class="corpus-work-results__date"><%= year_label %></div>
+              <div>
+                <div class="corpus-work-results__title">
+                  <%= link_to row["display_title"], corpus_viewer_path(row["folder_path"].to_s.split("/"), format: nil) %>
+                </div>
+                <% context = [row["author"], row["period"], row["polity"], row["region"]].select(&:present?).uniq %>
+                <% if context.any? %><div class="corpus-work-results__meta"><%= context.join(" · ") %></div><% end %>
+              </div>
+            </li>
+          <% end %>
+        </ol>
+      </section>
+    <% end %>
+
+    <% if @catalogue_page.total_pages > 1 %>
+      <% base_params = request.query_parameters.except("page") %>
+      <% page_href = ->(number) { "#{request.path}?#{base_params.merge("page" => number).to_query}" } %>
+      <% page = @catalogue_page.page %>
+      <% last = @catalogue_page.total_pages %>
+      <nav class="corpus-work-results__pages" aria-label="<%= t('corpus_viewer.work_search.pagination_aria', default: 'Work search pages') %>">
+        <% if page > 1 %>
+          <%= link_to t("corpus_viewer.work_search.first", default: "First"), page_href.call(1) %>
+          <%= link_to t("corpus_viewer.work_search.previous", default: "Previous"), page_href.call(page - 1) %>
+        <% else %>
+          <span class="is-disabled"><%= t("corpus_viewer.work_search.first", default: "First") %></span>
+          <span class="is-disabled"><%= t("corpus_viewer.work_search.previous", default: "Previous") %></span>
+        <% end %>
+        <span><%= page %> / <%= last %></span>
+        <% if page < last %>
+          <%= link_to t("corpus_viewer.work_search.next", default: "Next"), page_href.call(page + 1) %>
+          <%= link_to t("corpus_viewer.work_search.last", default: "Last"), page_href.call(last) %>
+        <% else %>
+          <span class="is-disabled"><%= t("corpus_viewer.work_search.next", default: "Next") %></span>
+          <span class="is-disabled"><%= t("corpus_viewer.work_search.last", default: "Last") %></span>
+        <% end %>
+      </nav>
+    <% end %>
+  <% end %>
+</div>
