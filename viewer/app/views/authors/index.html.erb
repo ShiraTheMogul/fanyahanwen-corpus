@@ -45,8 +45,7 @@
     <% end %>
 
     <% authority = @candidate_set.authority || {} %>
-    <% cbdb_lookup_ready = authority["cbdb_lookup_available"] == true %>
-    <% authority_ready = cbdb_lookup_ready || authority["historical_available"] %>
+    <% authority_ready = authority["cbdb_available"] == true || authority["historical_available"] == true %>
     <% if authority_ready && @candidate_set.candidates.present? %>
       <h2><%= t("authority.search.historical_matches") %></h2>
       <p><%= t("authority.search.candidates", count: @candidate_set.candidates.length) %></p>
@@ -66,7 +65,7 @@
         </article>
       <% end %>
     <% elsif !authority_ready %>
-      <p class="authority-warning"><%= authority["cbdb_available"] ? t("authority.search.cbdb_index_missing") : t("authority.search.authority_unavailable") %></p>
+      <p class="authority-warning"><%= t("authority.search.authority_unavailable") %></p>
     <% end %>
 
     <% if @corpus_people.blank? && @candidate_set.candidates.blank? %>

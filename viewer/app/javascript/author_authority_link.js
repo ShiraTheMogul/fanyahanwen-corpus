@@ -1,12 +1,18 @@
 ﻿import { t } from "i18n"
 
+function ui(key, fallback, variables = {}) {
+  const value = t(key, variables)
+  if (value !== key) return value
+  return fallback.replace(/%\{([^}]+)\}/g, (match, name) => (Object.prototype.hasOwnProperty.call(variables, name) ? String(variables[name]) : match))
+}
+
 function ensureFindAuthorsNavigation() {
   const nav = document.querySelector(".site-nav")
   if (!nav || nav.querySelector("[data-find-authors-nav]")) return
 
   const link = document.createElement("a")
   link.href = "/authors"
-  link.textContent = t("find_authors.nav")
+  link.textContent = ui("find_authors.nav", "Find Authors")
   link.className = "site-nav-link"
   link.dataset.findAuthorsNav = "1"
 
@@ -58,7 +64,7 @@ function linkResolvedAuthors(item, payload) {
     const link = document.createElement("a")
     link.href = profileUrl(candidate)
     link.textContent = author
-    link.title = t("find_authors.open_profile", { name: candidate.label || author })
+    link.title = ui("find_authors.open_profile", "Open %{name}", { name: candidate.label || author })
     item.appendChild(link)
   })
 }

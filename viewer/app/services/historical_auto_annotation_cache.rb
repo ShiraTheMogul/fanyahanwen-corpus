@@ -10,8 +10,8 @@ require "pathname"
 # edits to a work or an authority rebuild naturally produce a different entry.
 # Local user suppressions remain browser-side and are deliberately not cached.
 class HistoricalAutoAnnotationCache
-  VERSION = 1
-  CACHE_DIRECTORY = "authority_annotations/v1"
+  VERSION = 2
+  CACHE_DIRECTORY = "authority_annotations/v2"
 
   Result = Data.define(:items, :context, :authority, :cached)
 

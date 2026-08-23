@@ -45,23 +45,29 @@ class AuthorsController < ApplicationController
 
   def author_link_payload
     matches = @author_values.map do |name|
-      set = safe_find_candidates(names: [name], metadata: @metadata)
-      candidate = direct_candidate(set.candidates)
+      # Corpus Viewer links should be dependable even when external authority
+      # data are missing, stale, or ambiguous. Every recorded corpus author gets
+      # a corpus-native person page first; that page can then present any CBDB or
+      # historical matches with their evidence.
       corpus_person = @repository.corpus_profile(name)
-      profile = if candidate
-        {
-          "source" => candidate["authority_source"].to_s,
-          "id" => candidate["id"].to_s,
-          "label" => candidate["label"].to_s.presence || candidate["local_label"].to_s.presence || name,
-          "confidence" => candidate["confidence"].to_s
-        }
-      elsif corpus_person
+      profile = if corpus_person
         {
           "source" => "corpus",
           "id" => corpus_person["id"].to_s,
           "label" => corpus_person["label"].to_s,
           "confidence" => "corpus_credit"
         }
+      else
+        set = safe_find_candidates(names: [name], metadata: @metadata)
+        candidate = direct_candidate(set.candidates)
+        if candidate
+          {
+            "source" => candidate["authority_source"].to_s,
+            "id" => candidate["id"].to_s,
+            "label" => candidate["label"].to_s.presence || candidate["local_label"].to_s.presence || name,
+            "confidence" => candidate["confidence"].to_s
+          }
+        end
       end
       { "name" => name, "profile" => profile }.compact
     end

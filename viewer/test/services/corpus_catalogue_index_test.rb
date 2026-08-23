@@ -143,6 +143,34 @@ class CorpusCatalogueIndexTest < ActiveSupport::TestCase
     assert profile.fetch("name").include?("司馬遷")
   end
 
+  test "equivalent Han credit names collapse into one corpus person" do
+    write_work("中國漢文/clean/周朝/論語", work_id: 301, title: "論語", year: -450, author: "孔丘")
+    write_work(
+      "中國漢文/clean/周朝/仲尼曰", work_id: 302, title: "仲尼曰", year: -400,
+      contributors: [{ "name" => "Kong, Qiu 孔丘", "role" => "attributed_speaker" }]
+    )
+
+    index = build_index
+    people = index.people_matching(query: "孔丘")
+
+    assert_equal 1, people.length
+    assert_equal "孔丘", people.first.fetch("name_key")
+    assert_equal 2, people.first.fetch("work_count")
+    assert_equal ["attributed_speaker", "author"], people.first.fetch("roles").sort
+    assert_equal "Kong, Qiu 孔丘", people.first.fetch("name")
+  end
+
+  test "pre-Qin display period is normalised to Zhou for catalogue chronology" do
+    write_work("中國漢文/clean/周朝/先秦甲", work_id: 311, title: "先秦甲", year: nil, period: "先秦")
+    write_work("中國漢文/clean/秦朝/秦乙", work_id: 312, title: "秦乙", year: nil, period: "秦朝")
+
+    index = build_index
+    rows = index.timeline(order: "asc", geography: false).items
+
+    assert_equal %w[先秦甲 秦乙], rows.map { |row| row.fetch("display_title") }
+    assert_equal "周朝", rows.first.fetch("period")
+  end
+
   private
 
   def build_index

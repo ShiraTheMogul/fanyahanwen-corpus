@@ -75,4 +75,30 @@ class HistoricalPersonRepositoryTest < ActiveSupport::TestCase
     end
   end
 
+  test "person candidate lookup queries CBDB directly and does not depend on automatic annotation" do
+    Dir.mktmpdir do |directory|
+      path = Pathname(directory).join("cbdb.sqlite3")
+      db = SQLite3::Database.new(path.to_s)
+      db.execute("CREATE TABLE BIOG_MAIN (c_personid INTEGER PRIMARY KEY, c_name_chn TEXT, c_name TEXT, c_birthyear INTEGER, c_deathyear INTEGER)")
+      db.execute("CREATE TABLE ALTNAME_DATA (c_personid INTEGER, c_alt_name_chn TEXT, c_alt_name_type_code INTEGER)")
+      db.execute("INSERT INTO BIOG_MAIN VALUES (551, '孔丘', 'Kong Qiu', -551, -479)")
+      db.execute("INSERT INTO ALTNAME_DATA VALUES (551, '孔子', 0)")
+      db.close
+
+      store = HistoricalAuthorityStore.new(
+        cbdb_path: path, cbdb_release: {}, lookup_path: nil, historical_path: nil,
+        cache_store: CorpusSearch::CacheStore.new(root: Pathname(directory).join("cache")), logger: nil
+      )
+      repository = HistoricalPersonRepository.new(store: store)
+
+      CbdbAutoAnnotator.stub(:call, ->(**) { raise "author lookup must not call the text annotator" }) do
+        candidates = repository.find_candidates(names: ["孔丘"], metadata: { "period" => "周朝" }).candidates
+        assert_equal 1, candidates.length
+        assert_equal "551", candidates.first.fetch("id")
+        assert_equal "cbdb", candidates.first.fetch("authority_source")
+        assert_equal "high", candidates.first.fetch("confidence")
+      end
+    end
+  end
+
 end

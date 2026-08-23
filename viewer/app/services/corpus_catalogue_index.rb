@@ -15,8 +15,8 @@ require "time"
 # tree, so metadata-only works are discoverable even when they have no searchable
 # document body. Web requests query the resulting compact SQLite file.
 class CorpusCatalogueIndex
-  VERSION = 5
-  DB_PATH = "work-catalogue-v5.sqlite3"
+  VERSION = 6
+  DB_PATH = "work-catalogue-v6.sqlite3"
   DEFAULT_PER_PAGE = 100
   MAX_PER_PAGE = 250
   SKIP_DIRECTORIES = %w[
@@ -24,6 +24,10 @@ class CorpusCatalogueIndex
     normalisation normalisations normalization normalizations
     annotation annotations kanbun hanmun hanvan
   ].freeze
+
+  PERIOD_ALIASES = {
+    "先秦" => "周朝"
+  }.freeze
 
   class CacheMissing < StandardError; end
 
@@ -213,37 +217,25 @@ class CorpusCatalogueIndex
     text = query.to_s.strip
     return [] if text.empty?
 
-    key = text.unicode_normalize(:nfkc).downcase
-    latin_key = key.gsub(/\p{Han}+/, " ").gsub(/[^\p{L}\p{N}]+/u, " ").strip
-    contains = "%#{escape_like(text)}%"
-    key_contains = "%#{escape_like(key)}%"
-    latin_contains = "%#{escape_like(latin_key)}%"
+    search_keys = person_name_keys(text)
+    return [] if search_keys.empty?
+
     chosen_limit = [[Integer(limit), 1].max, 200].min
-    with_database(readonly: true) do |db|
-      rows = db.execute(<<~SQL, [text, key, latin_key, contains, key_contains, latin_contains, text, key, latin_key, chosen_limit])
-        SELECT display_name, name_key, COUNT(DISTINCT work_key) AS work_count,
-               GROUP_CONCAT(DISTINCT role) AS roles
+    like_values = search_keys.map { |key| "%#{escape_like(key)}%" }
+    exact_placeholders = (["?"] * search_keys.length).join(",")
+    like_clause = (["name_key LIKE ? ESCAPE '\\'"] * like_values.length).join(" OR ")
+    rows = with_database(readonly: true) do |db|
+      db.execute(<<~SQL, [*search_keys, *like_values, chosen_limit * 100])
+        SELECT work_key, display_name, name_key, role
         FROM work_people
-        WHERE display_name = ? OR name_key = ? OR name_key = ?
-           OR display_name LIKE ? ESCAPE '\\'
-           OR name_key LIKE ? ESCAPE '\\'
-           OR name_key LIKE ? ESCAPE '\\'
-        GROUP BY display_name, name_key
-        ORDER BY CASE WHEN display_name = ? OR name_key = ? OR name_key = ? THEN 0 ELSE 1 END,
-                 work_count DESC, display_name
+        WHERE name_key IN (#{exact_placeholders})
+           OR #{like_clause}
+        ORDER BY display_name, work_key, role
         LIMIT ?
       SQL
-      rows.group_by { |row| row["display_name"].to_s }.map do |name, grouped|
-        keys = grouped.map { |row| row["name_key"].to_s }.reject(&:empty?).uniq
-        preferred_key = keys.min_by { |candidate| [candidate.match?(/\p{Han}/) ? 0 : 1, candidate.length, candidate] }
-        {
-          "name" => name,
-          "name_key" => preferred_key.to_s,
-          "work_count" => grouped.map { |row| row["work_count"].to_i }.max.to_i,
-          "roles" => grouped.flat_map { |row| row["roles"].to_s.split(",") }.map(&:strip).reject(&:empty?).uniq
-        }
-      end.sort_by { |row| [-row["work_count"], row["name"]] }.first(chosen_limit)
     end
+
+    grouped_people(rows).sort_by { |row| [-row["work_count"], row["name"]] }.first(chosen_limit)
   rescue ArgumentError, TypeError, SQLite3::Exception
     []
   end
@@ -255,26 +247,17 @@ class CorpusCatalogueIndex
     placeholders = (["?"] * keys.length).join(",")
     rows = with_database(readonly: true) do |db|
       db.execute(<<~SQL, keys)
-        SELECT display_name, name_key, COUNT(DISTINCT work_key) AS work_count,
-               GROUP_CONCAT(DISTINCT role) AS roles
+        SELECT work_key, display_name, name_key, role
         FROM work_people
         WHERE name_key IN (#{placeholders})
-        GROUP BY display_name, name_key
-        ORDER BY work_count DESC, display_name
+        ORDER BY display_name, work_key, role
       SQL
     end
     return nil if rows.empty?
 
-    chosen_name = rows.first["display_name"].to_s
-    grouped = rows.select { |row| row["display_name"].to_s == chosen_name }
-    keys = grouped.map { |row| row["name_key"].to_s }.reject(&:empty?).uniq
-    preferred_key = keys.min_by { |candidate| [candidate.match?(/\p{Han}/) ? 0 : 1, candidate.length, candidate] }
-    {
-      "name" => chosen_name,
-      "name_key" => preferred_key.to_s,
-      "work_count" => grouped.map { |row| row["work_count"].to_i }.max.to_i,
-      "roles" => grouped.flat_map { |row| row["roles"].to_s.split(",") }.map(&:strip).reject(&:empty?).uniq
-    }
+    wanted = canonical_person_key(name)
+    people = grouped_people(rows)
+    people.find { |person| person["name_key"] == wanted } || people.first
   rescue SQLite3::Exception
     nil
   end
@@ -361,7 +344,8 @@ class CorpusCatalogueIndex
 
     start_year ||= end_year
     end_year ||= start_year
-    sort_year = start_year || inferred_period_start(metadata, folder)
+    period = canonical_period(metadata["period"])
+    sort_year = start_year || inferred_period_start(metadata.merge("period" => period), folder)
     categories = (Array(metadata["categories"]) + Array(metadata["source_categories"]))
       .map(&:to_s).map(&:strip).reject(&:empty?).uniq
 
@@ -376,7 +360,7 @@ class CorpusCatalogueIndex
       "nation" => metadata["nation"].to_s.presence || metadata["corpus_root"].to_s.presence,
       "corpus_root" => metadata["corpus_root"].to_s.presence,
       "macro_region" => metadata["macro_region"].to_s.presence,
-      "period" => metadata["period"].to_s.presence,
+      "period" => period.presence,
       "polity" => metadata["polity"].to_s.presence,
       "region" => metadata["region"].to_s.presence,
       "year_start" => start_year,
@@ -440,9 +424,44 @@ class CorpusCatalogueIndex
     end.uniq
   end
 
+  def canonical_period(value)
+    label = value.to_s.strip
+    PERIOD_ALIASES.fetch(label, label)
+  end
+
+  def canonical_person_key(value)
+    text = value.to_s.strip
+    han = text.scan(/\p{Han}{2,16}/).first
+    return han if han.present?
+
+    text.unicode_normalize(:nfkc).downcase.gsub(/[^\p{L}\p{N}]+/u, " ").strip
+  end
+
+  def preferred_person_name(values)
+    names = Array(values).map(&:to_s).map(&:strip).reject(&:empty?).uniq
+    names.min_by do |name|
+      has_han = name.match?(/\p{Han}/)
+      has_latin = name.match?(/[A-Za-z]/)
+      [has_han && has_latin ? 0 : has_han ? 1 : 2, -name.length, name]
+    end.to_s
+  end
+
+  def grouped_people(rows)
+    Array(rows).group_by { |row| canonical_person_key(row["display_name"]) }.filter_map do |identity_key, group|
+      next if identity_key.blank?
+
+      {
+        "name" => preferred_person_name(group.map { |row| row["display_name"] }),
+        "name_key" => identity_key,
+        "work_count" => group.map { |row| row["work_key"].to_s }.reject(&:empty?).uniq.length,
+        "roles" => group.map { |row| row["role"].to_s }.reject(&:empty?).uniq
+      }
+    end
+  end
+
   def inferred_period_start(metadata, folder)
     labels = [metadata["period"], metadata["polity"], *folder.to_s.split("/").reverse]
-      .map(&:to_s).map(&:strip).reject(&:empty?).uniq
+      .map { |label| canonical_period(label) }.map(&:strip).reject(&:empty?).uniq
 
     regional = CorpusEntryOrdering::REGIONAL_PERIOD_START.find do |prefix, _values|
       folder.to_s.include?(prefix)

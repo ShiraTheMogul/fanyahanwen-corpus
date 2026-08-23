@@ -5,6 +5,12 @@ const SUPPRESSION_PREFIX = "corpus.authority.suppressed.v1:"
 const STYLE_ID = "authority-auto-annotations-style"
 const MANUAL_CLASSES = ["ne-title", "ne-person", "ne-place", "ne-office", "ne-ambiguous-character"]
 
+function ui(key, fallback, variables = {}) {
+  const value = t(key, variables)
+  if (value !== key) return value
+  return fallback.replace(/%\{([^}]+)\}/g, (match, name) => (Object.prototype.hasOwnProperty.call(variables, name) ? String(variables[name]) : match))
+}
+
 function enabledByDefault() {
   try {
     const value = window.localStorage.getItem(STORAGE_KEY)
@@ -156,11 +162,19 @@ function setButtonState(reader, state, detail = "") {
     error: "authority_auto.error"
   }[state] || "authority_auto.ready"
 
-  const hiddenSuffix = hidden ? t("authority_auto.hidden_suffix", { count: hidden }) : ""
-  button.textContent = `${t(key, { count })}${hiddenSuffix}`
+  const fallbacks = {
+    "authority_auto.off": "Annotations: off",
+    "authority_auto.loading": "Annotations: loading…",
+    "authority_auto.ready": "Annotations: %{count}",
+    "authority_auto.empty": "Annotations: 0",
+    "authority_auto.unavailable": "Annotations: unavailable",
+    "authority_auto.error": "Annotations: error"
+  }
+  const hiddenSuffix = hidden ? ui("authority_auto.hidden_suffix", " (%{count} hidden)", { count: hidden }) : ""
+  button.textContent = `${ui(key, fallbacks[key] || "Annotations: %{count}", { count })}${hiddenSuffix}`
   button.dataset.state = state
   button.setAttribute("aria-pressed", reader._authorityAutoEnabled === true ? "true" : "false")
-  button.title = detail || t("authority_auto.title")
+  button.title = detail || ui("authority_auto.title", "Show historical people, places, and offices found in this text")
 }
 
 function authorityAvailable(payload) {
@@ -172,21 +186,21 @@ function authorityAvailable(payload) {
 function authorityUnavailableReason(payload) {
   const authority = payload && payload.authority && typeof payload.authority === "object" ? payload.authority : {}
   if (authority.cbdb_available === true && authority.cbdb_lookup_available !== true && authority.historical_available !== true) {
-    return t("authority_auto.cbdb_index_missing")
+    return ui("authority_auto.cbdb_index_missing", "CBDB is installed, but its name index is missing or stale. Run bin/rails authority:ensure_ready, then reload this page.")
   }
-  return t("authority_auto.indexes_missing")
+  return ui("authority_auto.indexes_missing", "Historical authority indexes are not installed or current. Run bin/rails authority:ensure_ready, then reload this page.")
 }
 
 async function loadAuto(reader) {
   const target = readerPath(reader, "data-corpus-annotations-path-value")
   if (!target) {
-    setButtonState(reader, "unavailable", t("authority_auto.no_target"))
+    setButtonState(reader, "unavailable", ui("authority_auto.no_target", "This reader has no annotation target path."))
     return
   }
 
   const requestId = Number(reader._authorityAutoRequestId || 0) + 1
   reader._authorityAutoRequestId = requestId
-  setButtonState(reader, "loading", t("authority_auto.loading_detail"))
+  setButtonState(reader, "loading", ui("authority_auto.loading_detail", "Loading historical matches…"))
 
   const url = new URL("/corpus_annotations", window.location.origin)
   url.searchParams.set("auto", "1")
@@ -209,14 +223,20 @@ async function loadAuto(reader) {
     if (!authorityAvailable(data)) {
       setButtonState(reader, "unavailable", authorityUnavailableReason(data))
     } else if (items.length === 0) {
-      setButtonState(reader, "empty", t(data.cached ? "authority_auto.no_matches_cached" : "authority_auto.no_matches"))
+      setButtonState(reader, "empty", ui(data.cached ? "authority_auto.no_matches_cached" : "authority_auto.no_matches", data.cached ? "No historical matches were found in this text (cached)." : "No historical matches were found in this text."))
     } else {
-      setButtonState(reader, "ready", t(items.length === 1 ? (data.cached ? "authority_auto.match_one_cached" : "authority_auto.match_one") : (data.cached ? "authority_auto.matches_cached" : "authority_auto.matches"), { count: items.length }))
+      const statusKey = items.length === 1
+        ? (data.cached ? "authority_auto.match_one_cached" : "authority_auto.match_one")
+        : (data.cached ? "authority_auto.matches_cached" : "authority_auto.matches")
+      const statusFallback = items.length === 1
+        ? (data.cached ? "1 historical annotation (cached). Click it for sources." : "1 historical annotation. Click it for sources.")
+        : (data.cached ? "%{count} historical annotations (cached). Click one for sources." : "%{count} historical annotations. Click one for sources.")
+      setButtonState(reader, "ready", ui(statusKey, statusFallback, { count: items.length }))
     }
   } catch (error) {
     if (reader._authorityAutoRequestId !== requestId || reader._authorityAutoEnabled !== true) return
     clearAuto(reader, { forget: true })
-    setButtonState(reader, "error", t("authority_auto.failed", { message: error.message || error }))
+    setButtonState(reader, "error", ui("authority_auto.failed", "Historical annotations failed: %{message}", { message: error.message || error }))
     console.warn("[authority-auto-annotations] load failed", error)
   }
 }
@@ -235,8 +255,8 @@ function formatYears(start, end) {
     const n = Number(year)
     if (!Number.isFinite(n)) return ""
     return n < 0
-      ? t("authority_auto.year_bce", { year: Math.abs(n) })
-      : t("authority_auto.year_ce", { year: n })
+      ? ui("authority_auto.year_bce", "%{year} BCE", { year: Math.abs(n) })
+      : ui("authority_auto.year_ce", "%{year} CE", { year: n })
   }
   if (start == null && end == null) return ""
   if (start == null || end == null || Number(start) === Number(end)) return fmt(start == null ? end : start)
@@ -252,9 +272,9 @@ function authorUrl(candidate) {
 }
 
 function candidateLine(candidate) {
-  const label = candidate.label || candidate.local_label || candidate.romanized || candidate.id || t("authority_auto.authority_record")
+  const label = candidate.label || candidate.local_label || candidate.romanized || candidate.id || ui("authority_auto.authority_record", "Historical record")
   const years = formatYears(candidate.year_start, candidate.year_end)
-  const source = candidate.source_label || candidate.authority_source || t("authority_auto.authority")
+  const source = candidate.source_label || candidate.authority_source || ui("authority_auto.authority", "Source")
   const derivation = candidate.explicit === false && candidate.derivation ? ` · ${candidate.derivation}` : ""
   const reference = candidate.source_reference ? `<div><small>${escapeHtml(candidate.source_reference)}</small></div>` : ""
   const href = authorUrl(candidate)
@@ -269,8 +289,8 @@ async function reportIncorrect(reader, item, statusEl) {
       .filter((url) => /^https?:\/\//i.test(url))
   ))
   const form = new FormData()
-  form.append("title", t("authority_auto.report_title"))
-  form.append("summary", t("authority_auto.report_summary", { text: item.text, kind: item.kind }))
+  form.append("title", ui("authority_auto.report_title", "Incorrect historical annotation"))
+  form.append("summary", ui("authority_auto.report_summary", "Historical annotation marked “%{text}” as %{kind}; this match is incorrect.", { text: item.text, kind: item.kind }))
   form.append("reasoning", JSON.stringify({
     text: item.text, kind: item.kind, start: item.start, end: item.end,
     confidence: item.confidence, authority_source: item.authority_source,
@@ -280,14 +300,14 @@ async function reportIncorrect(reader, item, statusEl) {
   form.append("target_ref", `corpus_viewer/${sourcePath(reader)}#authority-auto-${item.start}-${item.end}`)
   form.append("evidence_links", JSON.stringify(candidateUrls))
 
-  statusEl.textContent = t("authority_auto.sending")
+  statusEl.textContent = ui("authority_auto.sending", "Sending report…")
   try {
     const response = await fetch("/api/tickets", { method: "POST", headers: { "Accept": "application/json" }, body: form })
     const data = await response.json().catch(() => null)
     if (!response.ok || !data || data.ok !== true) throw new Error((data && data.error) || `HTTP ${response.status}`)
-    statusEl.textContent = data.ticket_key ? t("authority_auto.sent_with_key", { id: data.ticket_id || t("authority_auto.ticket_created"), key: data.ticket_key }) : t("authority_auto.sent", { id: data.ticket_id || t("authority_auto.ticket_created") })
+    statusEl.textContent = data.ticket_key ? ui("authority_auto.sent_with_key", "Report sent: %{id}. Key: %{key}", { id: data.ticket_id || ui("authority_auto.ticket_created", "ticket created"), key: data.ticket_key }) : ui("authority_auto.sent", "Report sent: %{id}.", { id: data.ticket_id || ui("authority_auto.ticket_created", "ticket created") })
   } catch (error) {
-    statusEl.textContent = t("authority_auto.send_failed", { message: error.message || error })
+    statusEl.textContent = ui("authority_auto.send_failed", "Could not send report: %{message}", { message: error.message || error })
   }
 }
 
@@ -297,13 +317,14 @@ function showPopover(reader, item, anchor) {
   popover.className = "authority-auto-popover"
   const candidates = Array(item.candidates || [])
   const kindKey = ["person", "place", "office"].includes(String(item.kind)) ? `authority_auto.kind_${item.kind}` : "authority_auto.kind_person"
+  const kindFallback = { person: "person", place: "place", office: "office" }[String(item.kind)] || "person"
   popover.innerHTML = `
-    <div><strong>${escapeHtml(item.text)}</strong> · ${escapeHtml(t(kindKey))} · ${escapeHtml(item.confidence || t("authority_auto.possible"))}</div>
+    <div><strong>${escapeHtml(item.text)}</strong> · ${escapeHtml(ui(kindKey, kindFallback))} · ${escapeHtml(item.confidence || ui("authority_auto.possible", "possible"))}</div>
     <ul>${candidates.slice(0, 8).map(candidateLine).join("")}</ul>
     <div class="authority-auto-actions">
-      <button type="button" class="corpus-btn" data-authority-hide>${escapeHtml(t("authority_auto.hide"))}</button>
-      <button type="button" class="corpus-btn" data-authority-report>${escapeHtml(t("authority_auto.report"))}</button>
-      <button type="button" class="corpus-btn" data-authority-close>${escapeHtml(t("authority_auto.close"))}</button>
+      <button type="button" class="corpus-btn" data-authority-hide>${escapeHtml(ui("authority_auto.hide", "Hide this match locally"))}</button>
+      <button type="button" class="corpus-btn" data-authority-report>${escapeHtml(ui("authority_auto.report", "Report incorrect"))}</button>
+      <button type="button" class="corpus-btn" data-authority-close>${escapeHtml(ui("authority_auto.close", "Close"))}</button>
     </div>
     <div class="authority-auto-status" aria-live="polite"></div>`
   document.body.appendChild(popover)
@@ -394,7 +415,7 @@ function addToggle(reader) {
     closePopover()
     if (!reader._authorityAutoEnabled) {
       clearAuto(reader)
-      setButtonState(reader, "off", t("authority_auto.disabled"))
+      setButtonState(reader, "off", ui("authority_auto.disabled", "Historical annotations are disabled. Click to enable them."))
     } else {
       await loadAuto(reader)
     }

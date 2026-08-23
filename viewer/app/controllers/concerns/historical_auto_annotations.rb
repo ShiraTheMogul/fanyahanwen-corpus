@@ -56,6 +56,6 @@ module HistoricalAutoAnnotations
     render json: { version: 1, items: [], context: {}, authority: {} }
   rescue StandardError => e
     Rails.logger.warn("[authority] automatic annotation request failed: #{e.class}: #{e.message}")
-    render json: { error: "Automatic historical annotations are temporarily unavailable." }, status: :unprocessable_entity
+    render json: { error: "Historical annotations are temporarily unavailable." }, status: :unprocessable_entity
   end
 end

@@ -16,26 +16,29 @@ class HistoricalPersonRepository
 
   def find_candidates(names:, metadata: {})
     queries = Array(names).flat_map { |value| han_name_fragments(value) }.uniq
-    candidates = queries.flat_map do |name|
-      result = CbdbAutoAnnotator.call(text: name, metadata: metadata, store: @store)
-      result.items.flat_map do |item|
-        next [] unless item[:kind].to_s == "person" || item["kind"].to_s == "person"
-        next [] unless item_start(item).zero? && item_end(item) == name.each_char.count
+    return CandidateSet.new(query_names: [], candidates: [], authority: authority_metadata) if queries.empty?
 
-        Array(item[:candidates] || item["candidates"]).map do |candidate|
-          candidate.to_h.stringify_keys.merge("matched_query" => name, "confidence" => (item[:confidence] || item["confidence"]).to_s)
-        end
+    candidates = []
+    @store.with_database do |db|
+      queries.each do |query|
+        equivalent_names = authority_name_forms(query)
+        candidates.concat(cbdb_person_candidates(db, query, equivalent_names)) if @store.cbdb_available?
+        candidates.concat(historical_person_candidates(db, query, equivalent_names)) if @store.historical_available?
       end
-    end
+    end if @store.available?
 
-    deduped = candidates.uniq { |candidate| [candidate["authority_source"], candidate["id"]] }
+    candidates = candidates
+      .uniq { |candidate| [candidate["authority_source"], candidate["id"]] }
       .sort_by { |candidate| [candidate["confidence"] == "high" ? 0 : 1, candidate["authority_source"].to_s, candidate["id"].to_s] }
 
     CandidateSet.new(
       query_names: queries,
-      candidates: deduped,
+      candidates: candidates,
       authority: authority_metadata
     )
+  rescue StandardError => e
+    Rails.logger&.warn("[authority] person lookup failed: #{e.class}: #{e.message}") if defined?(Rails)
+    CandidateSet.new(query_names: queries || [], candidates: [], authority: authority_metadata)
   end
 
   def fetch(source:, id:)
@@ -90,14 +93,129 @@ class HistoricalPersonRepository
 
   private
 
+  def authority_name_forms(name)
+    source = name.to_s.strip
+    return [] if source.empty?
+
+    options = source.each_char.map { |character| AuthorityHanVariantRegistry.instance.forms_for(character).to_a.sort }
+    forms = [source]
+    source_chars = source.each_char.to_a
+    options.each_with_index do |character_forms, index|
+      character_forms.each do |replacement|
+        next if replacement == source_chars[index]
+        chars = source_chars.dup
+        chars[index] = replacement
+        forms << chars.join
+      end
+    end
+    forms.uniq.first(64)
+  rescue StandardError
+    [source]
+  end
+
+  def cbdb_person_candidates(db, matched_query, names)
+    return [] unless table_exists?(db, "cbdb", "BIOG_MAIN")
+
+    biog_columns = table_columns(db, "cbdb", "BIOG_MAIN")
+    id_column = choose_column(biog_columns, %w[c_personid person_id])
+    name_column = choose_column(biog_columns, %w[c_name_chn c_name_ch name_chn])
+    return [] unless id_column && name_column
+
+    ids = []
+    placeholders = (["?"] * names.length).join(",")
+    db.execute(
+      "SELECT #{quote_identifier(id_column)} AS person_id, #{quote_identifier(name_column)} AS matched_name FROM cbdb.BIOG_MAIN WHERE #{quote_identifier(name_column)} IN (#{placeholders})",
+      names
+    ).each { |row| ids << [row["person_id"].to_s, row["matched_name"].to_s, true] }
+
+    if table_exists?(db, "cbdb", "ALTNAME_DATA")
+      alt_columns = table_columns(db, "cbdb", "ALTNAME_DATA")
+      alt_person = choose_column(alt_columns, %w[c_personid person_id])
+      alt_name = choose_column(alt_columns, %w[c_alt_name_chn c_altname_chn c_name_chn alt_name_chn])
+      if alt_person && alt_name
+        db.execute(
+          "SELECT #{quote_identifier(alt_person)} AS person_id, #{quote_identifier(alt_name)} AS matched_name FROM cbdb.ALTNAME_DATA WHERE #{quote_identifier(alt_name)} IN (#{placeholders})",
+          names
+        ).each { |row| ids << [row["person_id"].to_s, row["matched_name"].to_s, false] }
+      end
+    end
+
+    ids.uniq { |id, _name, _primary| id }.filter_map do |person_id, matched_name, primary|
+      person = fetch_cbdb(db, person_id)
+      next unless person
+
+      {
+        "id" => person_id,
+        "label" => person["label"],
+        "local_label" => person["label"],
+        "romanized" => person["romanized"],
+        "year_start" => person["year_start"],
+        "year_end" => person["year_end"],
+        "polity" => person["polity"],
+        "places" => person["places"],
+        "offices" => person["offices"],
+        "authority_source" => "cbdb",
+        "source_label" => person["authority_label"],
+        "source_url" => person["source_url"],
+        "matched_query" => matched_query,
+        "matched_name" => matched_name,
+        "confidence" => primary && matched_name == matched_query ? "high" : "possible"
+      }.compact
+    end
+  end
+
+  def historical_person_candidates(db, matched_query, names)
+    return [] unless table_exists?(db, "historical", "names") && table_exists?(db, "historical", "people")
+
+    placeholders = (["?"] * names.length).join(",")
+    rows = db.execute(<<~SQL, names)
+      SELECT n.source, n.entity_id, n.name_chn, n.primary_name, n.explicit_name,
+             p.label, p.local_label, p.romanized, p.year_start, p.year_end,
+             p.polity, p.places, p.roles, p.source_url
+      FROM historical.names n
+      JOIN historical.people p ON p.source = n.source AND p.entity_id = n.entity_id
+      WHERE n.name_chn IN (#{placeholders})
+      ORDER BY n.explicit_name DESC, n.primary_name DESC, n.source, n.entity_id
+    SQL
+
+    rows.map do |row|
+      exact = row["name_chn"].to_s == matched_query
+      explicit = row["explicit_name"].to_i == 1
+      {
+        "id" => row["entity_id"].to_s,
+        "label" => row["label"].to_s.presence || row["name_chn"].to_s,
+        "local_label" => row["local_label"].to_s.presence,
+        "romanized" => row["romanized"].to_s.presence,
+        "year_start" => integer_or_nil(row["year_start"]),
+        "year_end" => integer_or_nil(row["year_end"]),
+        "polity" => row["polity"].to_s.presence,
+        "places" => split_values(row["places"]),
+        "roles" => split_values(row["roles"]),
+        "authority_source" => row["source"].to_s,
+        "source_label" => historical_source_label(row["source"]),
+        "source_url" => row["source_url"].to_s.presence,
+        "matched_query" => matched_query,
+        "matched_name" => row["name_chn"].to_s,
+        "confidence" => explicit && exact ? "high" : "possible"
+      }.compact
+    end
+  end
+
   def authority_metadata
-    metadata = @store.metadata.to_h.stringify_keys
+    metadata = begin
+      @store.metadata.to_h.stringify_keys
+    rescue StandardError => e
+      Rails.logger&.warn("[authority] person metadata summary unavailable: #{e.class}: #{e.message}") if defined?(Rails)
+      {}
+    end
+
     metadata.merge(
+      "cbdb_available" => (@store.respond_to?(:cbdb_available?) && @store.cbdb_available?),
       "cbdb_lookup_available" => (@store.respond_to?(:lookup_available?) && @store.lookup_available?),
       "historical_available" => (@store.respond_to?(:historical_available?) && @store.historical_available?)
     )
   rescue StandardError
-    {}
+    metadata || {}
   end
 
   def fetch_historical(db, source, id)
