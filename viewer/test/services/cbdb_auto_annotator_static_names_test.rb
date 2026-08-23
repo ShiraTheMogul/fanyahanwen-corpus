@@ -47,6 +47,35 @@ class CbdbAutoAnnotatorStaticNamesTest < ActiveSupport::TestCase
           derivation TEXT NOT NULL,
           PRIMARY KEY (prefix, name_chn, source, entity_id)
         );
+        CREATE TABLE historical.clans (
+          source TEXT NOT NULL,
+          entity_id TEXT NOT NULL,
+          country TEXT,
+          label TEXT,
+          period_labels TEXT,
+          chronology_confidence TEXT,
+          source_url TEXT,
+          source_citations TEXT,
+          PRIMARY KEY (source, entity_id)
+        );
+        CREATE TABLE historical.clan_names (
+          prefix TEXT NOT NULL,
+          name_length INTEGER NOT NULL,
+          name_chn TEXT NOT NULL,
+          source TEXT NOT NULL,
+          entity_id TEXT NOT NULL,
+          primary_name INTEGER NOT NULL DEFAULT 0,
+          explicit_name INTEGER NOT NULL DEFAULT 0,
+          derivation TEXT NOT NULL,
+          PRIMARY KEY (prefix, name_chn, source, entity_id)
+        );
+        CREATE TABLE historical.clan_members (
+          clan_source TEXT NOT NULL,
+          clan_id TEXT NOT NULL,
+          person_source TEXT NOT NULL,
+          person_id TEXT NOT NULL,
+          PRIMARY KEY (clan_source, clan_id, person_source, person_id)
+        );
       SQL
     end
 
@@ -63,6 +92,20 @@ class CbdbAutoAnnotatorStaticNamesTest < ActiveSupport::TestCase
           [prefix, length, authority_name, source, id, index.zero? ? 1 : 0]
         )
       end
+    end
+
+    def add_clan(name, id: "clan:#{name}", source: CbdbAutoAnnotatorStaticNames::HIGH_ANTIQUITY_AUTHORITY_SOURCE,
+      chronology_confidence: CbdbAutoAnnotatorStaticNames::HIGH_ANTIQUITY_CHRONOLOGY_CONFIDENCE, period_labels: "五帝傳說")
+      @db.execute(
+        "INSERT INTO historical.clans (source, entity_id, country, label, period_labels, chronology_confidence) VALUES (?, ?, ?, ?, ?, ?)",
+        [source, id, "China", name, period_labels, chronology_confidence]
+      )
+      length = name.each_char.count
+      prefix = name.each_char.take([2, length].min).join
+      @db.execute(
+        "INSERT INTO historical.clan_names (prefix, name_length, name_chn, source, entity_id, primary_name, explicit_name, derivation) VALUES (?, ?, ?, ?, ?, 1, 1, 'fixture_explicit')",
+        [prefix, length, name, source, id]
+      )
     end
 
     def available? = true
@@ -199,6 +242,62 @@ class CbdbAutoAnnotatorStaticNamesTest < ActiveSupport::TestCase
     )
 
     refute result.items.any? { |item| item.fetch("text") == "子" }
+  ensure
+    store&.close
+  end
+
+  test "explicit high-antiquity 氏 records are annotated as clans" do
+    store = HistoricalFixtureStore.new
+    store.add_clan("有虞氏", period_labels: "五帝傳說; 有虞世系")
+
+    result = CbdbAutoAnnotator.call(
+      text: "有虞氏始見典制。",
+      metadata: { "corpus_root" => "中國漢文", "period" => "先秦" },
+      store: store
+    )
+
+    item = result.items.find { |row| row.fetch("text") == "有虞氏" }
+    assert item
+    assert_equal "clan", item.fetch("kind")
+    assert_equal "有虞氏", item.fetch("candidates").first.fetch("label")
+  ensure
+    store&.close
+  end
+
+  test "氏 syntax makes an explicit clan beat a homographic person record" do
+    store = HistoricalFixtureStore.new
+    source = CbdbAutoAnnotatorStaticNames::HIGH_ANTIQUITY_AUTHORITY_SOURCE
+    confidence = CbdbAutoAnnotatorStaticNames::HIGH_ANTIQUITY_CHRONOLOGY_CONFIDENCE
+    store.add_person("燧人氏", source: source, chronology_confidence: confidence)
+    store.add_clan("燧人氏", source: source, chronology_confidence: confidence, period_labels: "三皇傳說")
+
+    result = CbdbAutoAnnotator.call(
+      text: "燧人氏曰。",
+      metadata: { "corpus_root" => "中國漢文", "period" => "先秦" },
+      store: store
+    )
+
+    item = result.items.find { |row| row.fetch("text") == "燧人氏" }
+    assert item
+    assert_equal "clan", item.fetch("kind")
+  ensure
+    store&.close
+  end
+
+  test "氏 does not create a clan without a curated clan authority record" do
+    store = HistoricalFixtureStore.new
+    store.add_person("孔氏", year_start: -600, year_end: -400)
+
+    result = CbdbAutoAnnotator.call(
+      text: "孔氏曰。",
+      metadata: { "corpus_root" => "中國漢文", "period" => "春秋" },
+      store: store
+    )
+
+    item = result.items.find { |row| row.fetch("text") == "孔氏" }
+    assert item
+    assert_equal "person", item.fetch("kind")
+    refute result.items.any? { |row| row.fetch("kind") == "clan" }
   ensure
     store&.close
   end

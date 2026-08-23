@@ -79,6 +79,7 @@ function ensureStyle() {
     .ne-auto-authority { cursor: help; text-underline-offset: .14em; text-decoration-skip-ink: none; text-decoration-thickness: 2px; }
     .corpus-textflow.is-vertical .ne-auto-authority { text-underline-position: under; }
     .ne-auto-person { text-decoration-line: underline; text-decoration-style: solid; text-decoration-color: var(--ne-person, currentColor); }
+    .ne-auto-clan { text-decoration-line: underline; text-decoration-style: dashed; text-decoration-color: var(--ne-clan, var(--ne-person, currentColor)); }
     .ne-auto-place { text-decoration-line: underline; text-decoration-style: double; text-decoration-color: var(--ne-place, currentColor); }
     .ne-auto-office { text-decoration-line: underline; text-decoration-style: dotted; text-decoration-color: var(--ne-office, currentColor); }
     .ne-auto-possible { text-decoration-thickness: 1.5px; opacity: .96; }
@@ -111,7 +112,7 @@ function manuallyAnnotated(span) {
 
 function removeAutoMarks(reader) {
   spans(reader).forEach((span) => {
-    span.classList.remove("ne-auto-authority", "ne-auto-person", "ne-auto-place", "ne-auto-office", "ne-auto-possible")
+    span.classList.remove("ne-auto-authority", "ne-auto-person", "ne-auto-clan", "ne-auto-place", "ne-auto-office", "ne-auto-possible")
     span.removeAttribute("data-authority-auto-index")
   })
 }
@@ -158,7 +159,7 @@ function applyItems(reader, items, { remember = true } = {}) {
       return
     }
 
-    const kind = ["person", "place", "office"].includes(String(item.kind)) ? String(item.kind) : "person"
+    const kind = ["person", "clan", "place", "office"].includes(String(item.kind)) ? String(item.kind) : "person"
     itemSpans.forEach((span) => {
       span.classList.add("ne-auto-authority", `ne-auto-${kind}`)
       if (item.confidence !== "high") span.classList.add("ne-auto-possible")
@@ -213,7 +214,7 @@ function setButtonState(reader, state, detail = "") {
   button.dataset.authorityFoundCount = String(found)
   button.dataset.authorityVisibleCount = String(count)
   button.setAttribute("aria-pressed", reader._authorityAutoEnabled === true ? "true" : "false")
-  button.title = [detail, visibilityDetail(stats)].filter(Boolean).join(" ") || ui("authority_auto.title", "Show historical people, places, and offices found in this text")
+  button.title = [detail, visibilityDetail(stats)].filter(Boolean).join(" ") || ui("authority_auto.title", "Show historical people, clans, places, and offices found in this text")
 }
 
 function authorityAvailable(payload) {
@@ -363,8 +364,8 @@ function showPopover(reader, item, anchor) {
   const popover = document.createElement("div")
   popover.className = "authority-auto-popover"
   const candidates = asArray(item.candidates)
-  const kindKey = ["person", "place", "office"].includes(String(item.kind)) ? `authority_auto.kind_${item.kind}` : "authority_auto.kind_person"
-  const kindFallback = { person: "person", place: "place", office: "office" }[String(item.kind)] || "person"
+  const kindKey = ["person", "clan", "place", "office"].includes(String(item.kind)) ? `authority_auto.kind_${item.kind}` : "authority_auto.kind_person"
+  const kindFallback = { person: "person", clan: "clan", place: "place", office: "office" }[String(item.kind)] || "person"
   popover.innerHTML = `
     <div><strong>${escapeHtml(item.text)}</strong> · ${escapeHtml(ui(kindKey, kindFallback))} · ${escapeHtml(item.confidence || ui("authority_auto.possible", "possible"))}</div>
     <ul>${candidates.slice(0, 8).map(candidateLine).join("")}</ul>

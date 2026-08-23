@@ -1,7 +1,7 @@
 ﻿# frozen_string_literal: true
 
 # Keep homographic authority records separated by entity kind until overlap
-# resolution. The base annotator previously merged a person/place/office sharing
+# resolution. The base annotator previously merged a person/clan/place/office sharing
 # the same written name into one candidate list, so the displayed kind depended
 # on whichever candidate happened to sort first.
 module CbdbAutoAnnotatorKindResolution
@@ -60,7 +60,9 @@ module CbdbAutoAnnotatorKindResolution
       groups.each do |(name, kind), raw_candidates|
         next unless name == matched_name
 
-        syntax_bonus = if kind == "person" && respond_to?(:person_speech_syntax_bonus, true)
+        syntax_bonus = if respond_to?(:authority_kind_syntax_bonus, true)
+          authority_kind_syntax_bonus(kind, index, length)
+        elsif kind == "person" && respond_to?(:person_speech_syntax_bonus, true)
           person_speech_syntax_bonus(index, length)
         else
           0

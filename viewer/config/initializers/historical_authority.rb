@@ -6,6 +6,10 @@
 # explicit and testable.
 Rails.application.config.to_prepare do
   HistoricalAuthorityIndex.prepend(HistoricalAuthorityIndexStaticNames) unless HistoricalAuthorityIndex < HistoricalAuthorityIndexStaticNames
+  # Materialized date/ca must sit inside HistoricalMetadataDating. HistoricalMetadataDating
+  # calls super first; seeing baked numeric bounds there lets it skip the authority
+  # resolver entirely for maintained metadata.
+  CorpusMetadataStore.prepend(CorpusMetadataMaterializedDating) unless CorpusMetadataStore < CorpusMetadataMaterializedDating
   CorpusMetadataStore.prepend(HistoricalMetadataDating) unless CorpusMetadataStore < HistoricalMetadataDating
   CorpusSearch::Manifest.prepend(CorpusSearch::ManifestHistoricalExtension) unless CorpusSearch::Manifest < CorpusSearch::ManifestHistoricalExtension
   CorpusSearch::Manifest.prepend(CorpusSearch::ManifestIncrementalExtension) unless CorpusSearch::Manifest < CorpusSearch::ManifestIncrementalExtension

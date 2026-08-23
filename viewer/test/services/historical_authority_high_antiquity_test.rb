@@ -16,7 +16,7 @@ class HistoricalAuthorityHighAntiquityTest < ActiveSupport::TestCase
     assert_includes workbook.sheets, "Sources"
 
     headers = workbook.sheet("People").row(1).map(&:to_s)
-    %w[person_id name_han aliases chronology_confidence source_ids source_citations].each do |header|
+    %w[person_id name_han aliases chronology_confidence source_ids source_citations clans].each do |header|
       assert_includes headers, header
     end
 
@@ -73,10 +73,39 @@ class HistoricalAuthorityHighAntiquityTest < ActiveSupport::TestCase
       assert_equal "西周", guiman.fetch("polity")
       assert_match(/陳杞世家/, guiman.fetch("source_citations"))
 
+      clan = db.get_first_row("SELECT * FROM clans WHERE source = ? AND entity_id = ?", [source, "clan:有虞氏"])
+      assert clan
+      assert_equal "有虞氏", clan.fetch("label")
+      assert_match(/五帝傳說|有虞世系/, clan.fetch("period_labels"))
+      assert_match(/Sima, Qian 司馬遷/, clan.fetch("source_citations"))
+
+      clan_names = db.execute(
+        "SELECT name_chn FROM clan_names WHERE source = ? AND entity_id = ? AND explicit_name = 1",
+        [source, "clan:有虞氏"]
+      ).map { |row| row.fetch("name_chn") }
+      assert_includes clan_names, "有虞氏"
+
+      members = db.execute(
+        "SELECT person_id FROM clan_members WHERE clan_source = ? AND clan_id = ? ORDER BY person_id",
+        [source, "clan:有虞氏"]
+      ).map { |row| row.fetch("person_id") }
+      assert_includes members, "shun"
+      assert_includes members, "qiongchan"
+
+      xia_members = db.execute(
+        "SELECT person_id FROM clan_members WHERE clan_source = ? AND clan_id = ? ORDER BY person_id",
+        [source, "clan:有夏氏"]
+      ).map { |row| row.fetch("person_id") }
+      assert_includes xia_members, "gun"
+      assert_includes xia_members, "yu"
+
       metadata = db.execute("SELECT key, value FROM metadata").to_h
       path = Rails.root.join("data", "three_sovereigns_five_emperors.xlsx")
       assert_equal "three_sovereigns_five_emperors.xlsx", metadata.fetch("high_antiquity_filename")
       assert_equal Digest::SHA256.file(path).hexdigest, metadata.fetch("high_antiquity_sha256")
+      assert_equal HistoricalAuthorityIndexStaticNames::AUTHORITY_SCHEMA_REVISION, metadata.fetch("authority_schema_revision")
+      assert_operator metadata.fetch("clans").to_i, :>=, 5
+      assert_operator metadata.fetch("clan_memberships").to_i, :>=, 10
       assert_includes %w[shang_people.xlsx shang_xia.xlsx], metadata.fetch("supplementary_filename")
     ensure
       db&.close

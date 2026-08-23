@@ -11,6 +11,7 @@ module CbdbAutoAnnotatorStaticNames
   SINGLE_CHARACTER_CLUSTER_MAX_OCCURRENCES = 4
   PERSON_SPEECH_FOLLOWERS = %w[曰 云 謂 谓 問 问 對 对 告 言 語 语 答 命 使 召].freeze
   PERSON_SPEECH_SYNTAX_BONUS = 18
+  CLAN_SUFFIX_SYNTAX_BONUS = 26
   SINGLE_CHARACTER_FOLLOWERS = PERSON_SPEECH_FOLLOWERS
   SINGLE_CHARACTER_PRECEDERS = %w[爾 尔 命 召 呼 帝 唐 虞].freeze
 
@@ -100,6 +101,7 @@ module CbdbAutoAnnotatorStaticNames
         source_attempts += 1
         begin
           matches.concat(historical_matches(prefixes)) if prefixes.any?
+          matches.concat(historical_clan_matches(prefixes)) if prefixes.any?
           matches.concat(single_character_diviner_matches)
           merge_single_character_candidates!(one_character_candidates, historical_single_character_candidates)
           source_successes += 1
@@ -142,6 +144,64 @@ module CbdbAutoAnnotatorStaticNames
       end
     end
     build_multi_matches(hydrated)
+  end
+
+  # Curated 氏 forms are indexed as clan entities in their own tables. The
+  # annotator never infers a clan merely because arbitrary text happens to end
+  # in 氏; the workbook must explicitly supply the clan authority record.
+  def historical_clan_matches(prefixes)
+    return [] unless historical_clan_tables_available?
+
+    rows = []
+    expanded_prefixes(prefixes).each_slice(CbdbAutoAnnotator::PREFIX_BATCH_SIZE) do |slice|
+      placeholders = (["?"] * slice.length).join(",")
+      rows.concat(@db.execute(<<~SQL, slice))
+        SELECT n.name_chn, n.name_length, n.source, n.entity_id,
+               n.primary_name, n.explicit_name, n.derivation,
+               c.country, c.label, c.period_labels, c.chronology_confidence,
+               c.source_url, c.source_citations
+        FROM historical.clan_names n
+        JOIN historical.clans c
+          ON c.source = n.source AND c.entity_id = n.entity_id
+        WHERE n.prefix IN (#{placeholders}) AND n.name_length >= 2
+      SQL
+    end
+
+    rows.filter_map do |row|
+      candidate = clan_candidate(row)
+      next unless candidate
+      row.to_h.merge("candidate" => candidate, "kind" => "clan")
+    end.then { |values| build_multi_matches(values) }
+  rescue StandardError => e
+    log_source_failure("historical clans", e)
+    []
+  end
+
+  def historical_clan_tables_available?
+    table_exists?("historical", "clans") && table_exists?("historical", "clan_names")
+  rescue StandardError
+    false
+  end
+
+  def clan_candidate(row)
+    explicit = row["explicit_name"].to_i == 1
+    score = contextual_score(nil, nil, country: row["country"], explicit: explicit)
+    {
+      id: row["entity_id"].to_s,
+      label: row["label"].to_s.presence || row["name_chn"].to_s,
+      kind: "clan",
+      country: row["country"].to_s.presence,
+      period: row["period_labels"].to_s.presence,
+      primary: row["primary_name"].to_i == 1,
+      explicit: explicit,
+      derivation: row["derivation"].to_s,
+      authority_source: row["source"].to_s,
+      source_label: source_label(row["source"]),
+      source_url: row["source_url"].to_s.presence,
+      source_reference: first_source_reference(row["source_citations"]),
+      chronology_confidence: row["chronology_confidence"].to_s.presence,
+      score: score
+    }.compact
   end
 
   # One-character historical names need stricter evidence than ordinary names.
@@ -340,9 +400,22 @@ module CbdbAutoAnnotatorStaticNames
   # 對/告/言/語/答 should beat a homographic place or office interpretation.
   # This is an occurrence-level score adjustment only; it cannot resurrect an
   # undated person rejected by the temporal gate.
+  def authority_kind_syntax_bonus(kind, start_index, length)
+    case kind.to_s
+    when "person" then person_speech_syntax_bonus(start_index, length)
+    when "clan" then clan_suffix_syntax_bonus(start_index, length)
+    else 0
+    end
+  end
+
   def person_speech_syntax_bonus(start_index, length)
     following = nearest_name_context_character(start_index + length, 1)
     PERSON_SPEECH_FOLLOWERS.include?(following) ? PERSON_SPEECH_SYNTAX_BONUS : 0
+  end
+
+  def clan_suffix_syntax_bonus(start_index, length)
+    literal = @chars[start_index, length].to_a.join
+    literal.end_with?("氏") ? CLAN_SUFFIX_SYNTAX_BONUS : 0
   end
 
   def nearest_name_context_character(index, direction)
@@ -545,7 +618,7 @@ module CbdbAutoAnnotatorStaticNames
   end
 
   # Once a span is securely recognized as a date, do not simultaneously present
-  # an automatic person/place/office interpretation for the same characters.
+  # an automatic person/clan/place/office interpretation for the same characters.
   def resolve_overlaps(matches)
     resolved = super
     dates = Array(@context && @context["regnal_dates"])

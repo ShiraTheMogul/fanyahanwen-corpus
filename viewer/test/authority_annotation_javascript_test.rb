@@ -71,6 +71,13 @@ class AuthorityAnnotationJavascriptTest < ActiveSupport::TestCase
       const stats = context.applyItems(reader, [{ start: 1, end: 3, kind: "person", text: "孔子", confidence: "high" }])
       if (stats.found !== 1 || stats.applied !== 1) throw new Error(JSON.stringify(stats))
       if (!reader._spans[1].classList.contains("ne-auto-person")) throw new Error("person class was not applied")
+
+      const clanStats = context.applyItems(reader, [{ start: 0, end: 3, kind: "clan", text: "有虞氏", confidence: "high" }])
+      if (clanStats.found !== 1 || clanStats.applied !== 1) throw new Error(JSON.stringify(clanStats))
+      if (!reader._spans[0].classList.contains("ne-auto-clan")) throw new Error("clan class was not applied")
+      if (reader._spans[0].classList.contains("ne-auto-person")) throw new Error("clan fell back to person styling")
+      if (!source.includes('clan: "clan"')) throw new Error("clan popover label is missing")
+      if (!source.includes(".ne-auto-clan")) throw new Error("clan CSS is missing")
     JS
 
     path = Rails.root.join("app/javascript/authority_auto_annotations.js")

@@ -9,8 +9,9 @@
 # directly editable without turning corpus metadata into an authority database.
 module HistoricalAuthorityIndexStaticNames
   HIGH_ANTIQUITY_SOURCE = "fanya_high_antiquity"
+  AUTHORITY_SCHEMA_REVISION = "high-antiquity-clans-v1"
   HIGH_ANTIQUITY_REQUIRED_HEADERS = (HistoricalAuthorityIndex::REQUIRED_HEADERS + %w[
-    chronology_confidence source_ids
+    chronology_confidence source_ids clans
   ]).uniq.freeze
 
   # Migration support for the clearer workbook name. A ZIP overlay cannot delete
@@ -35,6 +36,8 @@ module HistoricalAuthorityIndexStaticNames
   def source_fingerprint(snapshot)
     digest = Digest::SHA256.new
     digest << "historical-authority-v#{HistoricalAuthorityIndex::VERSION}\0"
+    digest << AUTHORITY_SCHEMA_REVISION
+    digest << "\0"
     if HistoricalAuthorityIndex::SUPPLEMENTARY_SOURCE_PATH.file?
       digest << Digest::SHA256.file(HistoricalAuthorityIndex::SUPPLEMENTARY_SOURCE_PATH).hexdigest
     else
@@ -65,6 +68,7 @@ module HistoricalAuthorityIndexStaticNames
   def import_supplementary!(db, expander, counts)
     require "roo"
 
+    ensure_clan_schema!(db)
     import_shang_xia_workbook!(db, expander, counts) if HistoricalAuthorityIndex::SUPPLEMENTARY_SOURCE_PATH.file?
     import_high_antiquity_workbook!(db, expander, counts) if high_antiquity_source_path.file?
   end
@@ -118,6 +122,16 @@ module HistoricalAuthorityIndexStaticNames
     raise "three_sovereigns_five_emperors.xlsx is missing People sheet" unless workbook.sheets.include?("People")
 
     sources = workbook_sources(workbook)
+    clans = Hash.new do |hash, name|
+      hash[name] = {
+        member_ids: [],
+        period_labels: [],
+        chronology_confidences: [],
+        source_urls: [],
+        source_citations: []
+      }
+    end
+
     each_people_sheet_row(workbook, "People", HIGH_ANTIQUITY_REQUIRED_HEADERS) do |row, row_number|
       person_id = normalize_identifier(row["person_id"])
       name_han = cell_text(row["name_han"])
@@ -151,9 +165,125 @@ module HistoricalAuthorityIndexStaticNames
 
       explicit_names = [name_han, *split_aliases(row["aliases"])].uniq
       insert_person_names!(db, HIGH_ANTIQUITY_SOURCE, person_id, explicit_names, name_han, expander, counts)
+      collect_high_antiquity_clans!(clans, row, person_id, source_rows, citations)
     end
+
+    import_high_antiquity_clans!(db, expander, clans, counts)
   ensure
     workbook&.close rescue nil
+  end
+
+  def ensure_clan_schema!(db)
+    db.execute_batch <<~SQL
+      CREATE TABLE IF NOT EXISTS clans (
+        source TEXT NOT NULL,
+        entity_id TEXT NOT NULL,
+        country TEXT,
+        label TEXT,
+        period_labels TEXT,
+        chronology_confidence TEXT,
+        source_url TEXT,
+        source_citations TEXT,
+        PRIMARY KEY (source, entity_id)
+      ) WITHOUT ROWID;
+
+      CREATE TABLE IF NOT EXISTS clan_names (
+        prefix TEXT NOT NULL,
+        name_length INTEGER NOT NULL,
+        name_chn TEXT NOT NULL,
+        source TEXT NOT NULL,
+        entity_id TEXT NOT NULL,
+        primary_name INTEGER NOT NULL DEFAULT 0,
+        explicit_name INTEGER NOT NULL DEFAULT 0,
+        derivation TEXT NOT NULL,
+        PRIMARY KEY (prefix, name_chn, source, entity_id)
+      ) WITHOUT ROWID;
+
+      CREATE INDEX IF NOT EXISTS clan_names_by_exact ON clan_names(name_chn, name_length);
+
+      CREATE TABLE IF NOT EXISTS clan_members (
+        clan_source TEXT NOT NULL,
+        clan_id TEXT NOT NULL,
+        person_source TEXT NOT NULL,
+        person_id TEXT NOT NULL,
+        PRIMARY KEY (clan_source, clan_id, person_source, person_id)
+      ) WITHOUT ROWID;
+    SQL
+  end
+
+  # The People sheet is the editable source of clan membership. 氏 values are
+  # stored as their own authority entities; they are not aliases, places, or
+  # polities. Multiple people can point to the same clan without duplicating the
+  # clan record in the disposable SQLite index.
+  def collect_high_antiquity_clans!(clans, row, person_id, source_rows, citations)
+    split_authority_values(row["clans"]).each do |clan_name|
+      next unless han_name?(clan_name)
+
+      record = clans[clan_name]
+      record[:member_ids] << person_id
+      record[:period_labels] << cell_text(row["period"])
+      record[:chronology_confidences] << cell_text(row["chronology_confidence"])
+      record[:source_urls].concat(source_rows.filter_map { |source| source["url"].to_s.strip.presence })
+      record[:source_citations].concat(citations.to_s.lines.map(&:strip).reject(&:empty?))
+    end
+  end
+
+  def import_high_antiquity_clans!(db, expander, clans, counts)
+    clans.each do |clan_name, record|
+      clan_id = "clan:#{clan_name}"
+      period_labels = record[:period_labels].map(&:to_s).map(&:strip).reject(&:empty?).uniq.join("; ").presence
+      chronology_confidence = record[:chronology_confidences].map(&:to_s).map(&:strip).reject(&:empty?).uniq.join("; ").presence
+      source_url = record[:source_urls].map(&:to_s).map(&:strip).reject(&:empty?).uniq.first
+      source_citations = record[:source_citations].map(&:to_s).map(&:strip).reject(&:empty?).uniq.join("\n").presence
+
+      db.execute(
+        <<~SQL,
+          INSERT OR REPLACE INTO clans (
+            source, entity_id, country, label, period_labels, chronology_confidence,
+            source_url, source_citations
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        SQL
+        [
+          HIGH_ANTIQUITY_SOURCE, clan_id, "China", clan_name, period_labels, chronology_confidence,
+          source_url, source_citations
+        ]
+      )
+      counts["clans"] += 1
+      counts["high_antiquity_clans"] += 1
+
+      insert_clan_names!(db, HIGH_ANTIQUITY_SOURCE, clan_id, [clan_name], clan_name, expander, counts)
+      record[:member_ids].map(&:to_s).reject(&:empty?).uniq.each do |person_id|
+        db.execute(
+          "INSERT OR REPLACE INTO clan_members (clan_source, clan_id, person_source, person_id) VALUES (?, ?, ?, ?)",
+          [HIGH_ANTIQUITY_SOURCE, clan_id, HIGH_ANTIQUITY_SOURCE, person_id]
+        )
+        counts["clan_memberships"] += 1
+      end
+    end
+  end
+
+  def insert_clan_names!(db, source, entity_id, names, primary_name, expander, counts)
+    expanded_name_records(names, primary_name, expander).each do |record|
+      name = record.fetch(:name).to_s
+      length = name.each_char.count
+      next if length < 2
+
+      prefix = name.each_char.take(2).join
+      db.execute(
+        <<~SQL,
+          INSERT OR REPLACE INTO clan_names (
+            prefix, name_length, name_chn, source, entity_id,
+            primary_name, explicit_name, derivation
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        SQL
+        [
+          prefix, length, name, source, entity_id,
+          record[:primary] ? 1 : 0, record[:explicit] ? 1 : 0, record.fetch(:derivation).to_s
+        ]
+      )
+      counts["names"] += 1
+      counts["clan_names"] += 1
+    end
   end
 
   def each_people_sheet_row(workbook, sheet_name, required_headers)
@@ -249,6 +379,7 @@ module HistoricalAuthorityIndexStaticNames
     values = {
       "version" => HistoricalAuthorityIndex::VERSION.to_s,
       "fingerprint" => fingerprint,
+      "authority_schema_revision" => AUTHORITY_SCHEMA_REVISION,
       "built_at_utc" => Time.now.utc.iso8601,
       "supplementary_filename" => HistoricalAuthorityIndex::SUPPLEMENTARY_SOURCE_PATH.file? ? HistoricalAuthorityIndex::SUPPLEMENTARY_SOURCE_PATH.basename.to_s : "",
       "supplementary_sha256" => HistoricalAuthorityIndex::SUPPLEMENTARY_SOURCE_PATH.file? ? Digest::SHA256.file(HistoricalAuthorityIndex::SUPPLEMENTARY_SOURCE_PATH).hexdigest : "",

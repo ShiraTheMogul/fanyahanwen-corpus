@@ -70,6 +70,32 @@ class CbdbAutoAnnotatorKindResolutionTest < ActiveSupport::TestCase
     end
   end
 
+  test "氏 suffix makes a clan beat a homographic person on the same span" do
+    annotator = CbdbAutoAnnotator.allocate
+    annotator.instance_variable_set(:@chars, "燧人氏曰".each_char.to_a)
+    annotator.instance_variable_set(:@prefix_cache, {})
+    annotator.instance_variable_set(:@equivalence, IdentityEquivalence.new)
+    annotator.instance_variable_set(:@context, {})
+
+    rows = [
+      {
+        "name_chn" => "燧人氏",
+        "kind" => "person",
+        "candidate" => candidate("person-1", "person", score: 90)
+      },
+      {
+        "name_chn" => "燧人氏",
+        "kind" => "clan",
+        "candidate" => candidate("clan-1", "clan", score: 90)
+      }
+    ]
+
+    resolved = annotator.send(:resolve_overlaps, annotator.send(:build_multi_matches, rows))
+    assert_equal 1, resolved.length
+    assert_equal "clan", resolved.first[:kind]
+    assert_equal ["clan-1"], resolved.first[:candidates].map { |candidate| candidate[:id] }
+  end
+
   test "speech bonus does not apply across a sentence boundary" do
     annotator = CbdbAutoAnnotator.allocate
     annotator.instance_variable_set(:@chars, "王安。曰".each_char.to_a)
