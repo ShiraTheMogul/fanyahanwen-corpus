@@ -42,6 +42,59 @@ class CbdbAutoAnnotatorKindResolutionTest < ActiveSupport::TestCase
     assert_equal ["person-1"], resolved.first[:candidates].map { |candidate| candidate[:id] }
   end
 
+  test "name-like syntax after an authority span can make a person beat a stronger homographic place" do
+    %w[曰 謂 問 告 命 使 召].each do |follower|
+      annotator = CbdbAutoAnnotator.allocate
+      annotator.instance_variable_set(:@chars, "王安#{follower}".each_char.to_a)
+      annotator.instance_variable_set(:@prefix_cache, {})
+      annotator.instance_variable_set(:@equivalence, IdentityEquivalence.new)
+      annotator.instance_variable_set(:@context, {})
+
+      rows = [
+        {
+          "name_chn" => "王安",
+          "kind" => "place",
+          "candidate" => candidate("place-1", "place", score: 94)
+        },
+        {
+          "name_chn" => "王安",
+          "kind" => "person",
+          "candidate" => candidate("person-1", "person", score: 82)
+        }
+      ]
+
+      resolved = annotator.send(:resolve_overlaps, annotator.send(:build_multi_matches, rows))
+      assert_equal 1, resolved.length, follower
+      assert_equal "person", resolved.first[:kind], follower
+      assert_operator resolved.first[:score], :>, 94, follower
+    end
+  end
+
+  test "speech bonus does not apply across a sentence boundary" do
+    annotator = CbdbAutoAnnotator.allocate
+    annotator.instance_variable_set(:@chars, "王安。曰".each_char.to_a)
+    annotator.instance_variable_set(:@prefix_cache, {})
+    annotator.instance_variable_set(:@equivalence, IdentityEquivalence.new)
+    annotator.instance_variable_set(:@context, {})
+
+    rows = [
+      {
+        "name_chn" => "王安",
+        "kind" => "place",
+        "candidate" => candidate("place-1", "place", score: 94)
+      },
+      {
+        "name_chn" => "王安",
+        "kind" => "person",
+        "candidate" => candidate("person-1", "person", score: 82)
+      }
+    ]
+
+    resolved = annotator.send(:resolve_overlaps, annotator.send(:build_multi_matches, rows))
+    assert_equal 1, resolved.length
+    assert_equal "place", resolved.first[:kind]
+  end
+
   test "one failing authority source does not disable successful annotations from another source" do
     store = Struct.new(:metadata) do
       def available? = true
@@ -77,11 +130,11 @@ class CbdbAutoAnnotatorKindResolutionTest < ActiveSupport::TestCase
 
   private
 
-  def candidate(id, kind)
+  def candidate(id, kind, score: 90)
     {
       id: id,
       kind: kind,
-      score: 90,
+      score: score,
       primary: true,
       explicit: true,
       derivation: "test",

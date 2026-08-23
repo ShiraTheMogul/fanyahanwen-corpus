@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+﻿# frozen_string_literal: true
 
 # Keep homographic authority records separated by entity kind until overlap
 # resolution. The base annotator previously merged a person/place/office sharing
@@ -60,7 +60,17 @@ module CbdbAutoAnnotatorKindResolution
       groups.each do |(name, kind), raw_candidates|
         next unless name == matched_name
 
+        syntax_bonus = if kind == "person" && respond_to?(:person_speech_syntax_bonus, true)
+          person_speech_syntax_bonus(index, length)
+        else
+          0
+        end
+
         candidates = raw_candidates
+          .map do |candidate|
+            next candidate if syntax_bonus.zero?
+            candidate.merge(score: candidate.fetch(:score) + syntax_bonus)
+          end
           .uniq { |candidate| [candidate[:authority_source], candidate[:id], candidate[:derivation]] }
           .sort_by { |candidate| candidate_sort_key(candidate) }
         next if candidates.empty?

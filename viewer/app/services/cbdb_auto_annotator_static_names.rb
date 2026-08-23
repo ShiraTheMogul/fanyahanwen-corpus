@@ -9,8 +9,19 @@ module CbdbAutoAnnotatorStaticNames
   SINGLE_CHARACTER_MAX_CANDIDATES = 6
   SINGLE_CHARACTER_CLUSTER_DISTANCE = 14
   SINGLE_CHARACTER_CLUSTER_MAX_OCCURRENCES = 4
-  SINGLE_CHARACTER_FOLLOWERS = %w[曰 云 謂 谓 問 问 對 对 告].freeze
-  SINGLE_CHARACTER_PRECEDERS = %w[爾 尔 命 召 呼].freeze
+  PERSON_SPEECH_FOLLOWERS = %w[曰 云 謂 谓 問 问 對 对 告 言 語 语 答 命 使 召].freeze
+  PERSON_SPEECH_SYNTAX_BONUS = 18
+  SINGLE_CHARACTER_FOLLOWERS = PERSON_SPEECH_FOLLOWERS
+  SINGLE_CHARACTER_PRECEDERS = %w[爾 尔 命 召 呼 帝 唐 虞].freeze
+
+  # Received high-antiquity figures are curated in data/three_sovereigns_five_emperors.xlsx.
+  # They deliberately carry no invented birth/reign years.  The authority data
+  # marks them with a broad chronology class, which gives the future-person gate
+  # only a conservative upper bound before the Shang-period boundary.
+  HIGH_ANTIQUITY_AUTHORITY_SOURCE = "fanya_high_antiquity"
+  HIGH_ANTIQUITY_CHRONOLOGY_CONFIDENCE = "traditional_high_antiquity"
+  HIGH_ANTIQUITY_SOURCE_PRIORITY = 5
+  HIGH_ANTIQUITY_LATEST_YEAR = -1600
 
   PERIOD_RANGES = [
     [%w[東寧 东宁 明鄭 明郑 鄭氏 郑氏 東都 东都], 1661, 1683],
@@ -185,12 +196,13 @@ module CbdbAutoAnnotatorStaticNames
     end
 
     rows.group_by { |row| row["name_chn"].to_s }.each_with_object({}) do |(name, name_rows), output|
+      candidates = name_rows.filter_map { |row| historical_candidate(row) }
       if authority_row_count(name_rows) > SINGLE_CHARACTER_MAX_CANDIDATES
-        output[name] = :ambiguous
+        curated = candidates.select { |candidate| high_antiquity_authority_candidate?(candidate) }
+        output[name] = curated.any? ? specific_single_character_candidates(curated) : :ambiguous
         next
       end
 
-      candidates = name_rows.filter_map { |row| historical_candidate(row) }
       output[name] = specific_single_character_candidates(candidates)
     end
   end
@@ -218,7 +230,13 @@ module CbdbAutoAnnotatorStaticNames
   def merge_single_character_candidates!(target, source)
     source.to_h.each do |name, candidates|
       if candidates == :ambiguous || target[name] == :ambiguous
-        target[name] = :ambiguous
+        combined = [*Array(target[name]), *Array(candidates)]
+        curated = combined.select { |candidate| high_antiquity_authority_candidate?(candidate) }
+        if curated.any?
+          target[name] = specific_single_character_candidates(curated)
+        else
+          target[name] = :ambiguous
+        end
         next
       end
 
@@ -312,16 +330,27 @@ module CbdbAutoAnnotatorStaticNames
   end
 
   def single_character_name_syntax?(index)
-    previous = nearest_nonspace_character(index - 1, -1)
-    following = nearest_nonspace_character(index + 1, 1)
+    previous = nearest_name_context_character(index - 1, -1)
+    following = nearest_name_context_character(index + 1, 1)
     SINGLE_CHARACTER_FOLLOWERS.include?(following) || SINGLE_CHARACTER_PRECEDERS.include?(previous)
   end
 
-  def nearest_nonspace_character(index, direction)
+  # Speech verbs are unusually useful local evidence in Literary Chinese.  A
+  # chronologically plausible authority name immediately before 曰/云/謂/問/
+  # 對/告/言/語/答 should beat a homographic place or office interpretation.
+  # This is an occurrence-level score adjustment only; it cannot resurrect an
+  # undated person rejected by the temporal gate.
+  def person_speech_syntax_bonus(start_index, length)
+    following = nearest_name_context_character(start_index + length, 1)
+    PERSON_SPEECH_FOLLOWERS.include?(following) ? PERSON_SPEECH_SYNTAX_BONUS : 0
+  end
+
+  def nearest_name_context_character(index, direction)
     cursor = index
     while cursor >= 0 && cursor < @chars.length
       character = @chars[cursor].to_s
-      return character unless character.match?(/\s/)
+      return nil if character.match?(/[。！？!?；;\n\r]/)
+      return character unless character.match?(/[\s，,、：:「」『』“”‘’]/)
       cursor += direction
     end
     nil
@@ -425,6 +454,10 @@ module CbdbAutoAnnotatorStaticNames
     return nil unless range
     return nil if impossible_future_person?(range)
 
+    # An open high-antiquity bound exists solely for the future-person gate.
+    # Do not turn that conservative boundary into a displayed/ranking date.
+    return candidate if range[:open_start]
+
     year = representative_year(range[:start], range[:end])
     year ? candidate.merge(representative_year: year) : candidate
   end
@@ -436,7 +469,19 @@ module CbdbAutoAnnotatorStaticNames
       return { start: personal_start || personal_end, end: personal_end || personal_start }
     end
 
+    # The curated high-antiquity authority deliberately records tradition, not
+    # fictitious reign dates.  Give those records only an open upper bound for
+    # the future-person gate and never expose -1600 as a life or reign year.
+    if high_antiquity_authority_candidate?(candidate)
+      return { start: nil, end: HIGH_ANTIQUITY_LATEST_YEAR, open_start: true }
+    end
+
     annotation_range_for_value(candidate[:polity])
+  end
+
+  def high_antiquity_authority_candidate?(candidate)
+    candidate.to_h[:authority_source].to_s == HIGH_ANTIQUITY_AUTHORITY_SOURCE ||
+      candidate.to_h[:chronology_confidence].to_s == HIGH_ANTIQUITY_CHRONOLOGY_CONFIDENCE
   end
 
   # A text can cite people who lived earlier. It cannot name someone whose
@@ -445,7 +490,7 @@ module CbdbAutoAnnotatorStaticNames
   # are absent; it is never used to overwrite a known lifespan/floruit range.
   def impossible_future_person?(candidate_range)
     latest_text_year = annotation_integer(@context && @context["year_end"])
-    earliest_person_year = annotation_integer(candidate_range && candidate_range[:start])
+    earliest_person_year = annotation_integer(candidate_range && (candidate_range[:start] || candidate_range[:end]))
     latest_text_year && earliest_person_year && earliest_person_year > latest_text_year
   end
 
@@ -481,10 +526,18 @@ module CbdbAutoAnnotatorStaticNames
     nil
   end
 
+  def source_label(source)
+    return "Fanya curated high-antiquity authority" if source.to_s == HIGH_ANTIQUITY_AUTHORITY_SOURCE
+
+    super
+  end
+
   # Date proximity breaks ties between otherwise equally scored people without
-  # replacing the existing source/primary-name priorities.
+  # replacing the existing source/primary-name priorities.  Curated high-
+  # antiquity records outrank accidental homographs from general databases.
   def candidate_sort_key(candidate)
     base = super
+    base[3] = -HIGH_ANTIQUITY_SOURCE_PRIORITY if high_antiquity_authority_candidate?(candidate)
     centre = context_representative_year
     candidate_year = annotation_integer(candidate[:representative_year])
     distance = centre && candidate_year ? (candidate_year - centre).abs : 1_000_000
