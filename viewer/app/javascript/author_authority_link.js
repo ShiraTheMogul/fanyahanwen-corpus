@@ -6,6 +6,10 @@ function ui(key, fallback, variables = {}) {
   return fallback.replace(/%\{([^}]+)\}/g, (match, name) => (Object.prototype.hasOwnProperty.call(variables, name) ? String(variables[name]) : match))
 }
 
+function asArray(value) {
+  return Array.isArray(value) ? value : []
+}
+
 function ensureFindAuthorsNavigation() {
   const nav = document.querySelector(".site-nav")
   if (!nav || nav.querySelector("[data-find-authors-nav]")) return
@@ -23,8 +27,11 @@ function ensureFindAuthorsNavigation() {
   else nav.appendChild(link)
 }
 
-function readerSourcePath() {
-  const reader = document.querySelector(".corpus-reader[data-corpus-annotations-source-path-value]")
+function corpusReader() {
+  return document.querySelector(".corpus-reader[data-corpus-annotations-source-path-value]")
+}
+
+function readerSourcePath(reader = corpusReader()) {
   if (!reader) return ""
   return reader.getAttribute("data-corpus-annotations-source-path-value") || ""
 }
@@ -41,13 +48,31 @@ function profileUrl(candidate) {
   return `/authors/${encodeURIComponent(candidate.source)}/${encodeURIComponent(candidate.id)}`
 }
 
+function fallbackSearchUrl(author, row = null) {
+  const supplied = String(row && row.search_url || "")
+  if (supplied.startsWith("/authors")) return supplied
+  return `/authors?name=${encodeURIComponent(author)}`
+}
+
+function appendAuthorLink(item, author, row) {
+  const candidate = row && row.profile
+  const link = document.createElement("a")
+  if (candidate && candidate.source && candidate.id) {
+    link.href = profileUrl(candidate)
+    link.title = ui("find_authors.open_profile", "Open %{name}", { name: candidate.label || author })
+  } else {
+    link.href = fallbackSearchUrl(author, row)
+    link.title = ui("find_authors.search_name", "Find historical matches for %{name}", { name: author })
+  }
+  link.textContent = author
+  item.appendChild(link)
+}
+
 function linkResolvedAuthors(item, payload) {
-  const authors = Array(payload.authors || []).map(String).filter(Boolean)
+  const authors = asArray(payload.authors).map(String).filter(Boolean)
   if (!authors.length || !item) return
 
-  const matches = new Map(Array(payload.matches || []).map((row) => [String(row.name || ""), row.profile || null]))
-  if (!authors.some((author) => matches.get(author))) return
-
+  const matches = new Map(asArray(payload.matches).map((row) => [String(row.name || ""), row || {}]))
   const strong = item.querySelector("strong")
   if (!strong) return
   while (strong.nextSibling) strong.nextSibling.remove()
@@ -55,35 +80,33 @@ function linkResolvedAuthors(item, payload) {
 
   authors.forEach((author, index) => {
     if (index > 0) item.appendChild(document.createTextNode("; "))
-    const candidate = matches.get(author)
-    if (!candidate || !candidate.source || !candidate.id) {
-      item.appendChild(document.createTextNode(author))
-      return
-    }
-
-    const link = document.createElement("a")
-    link.href = profileUrl(candidate)
-    link.textContent = author
-    link.title = ui("find_authors.open_profile", "Open %{name}", { name: candidate.label || author })
-    item.appendChild(link)
+    appendAuthorLink(item, author, matches.get(author) || null)
   })
 }
 
 async function linkCorpusAuthors() {
-  const sourcePath = readerSourcePath()
-  if (!sourcePath) return
+  const reader = corpusReader()
+  const sourcePath = readerSourcePath(reader)
+  if (!reader || !sourcePath) return
+
+  // application.js can execute after DOM readiness and Turbo can emit a load for
+  // the same DOM immediately afterwards. Mark the in-flight path before fetch so
+  // those two boot paths cannot issue duplicate /authors.json requests.
+  if (reader._authorAuthorityLinkPath === sourcePath) return
+  reader._authorAuthorityLinkPath = sourcePath
 
   const url = new URL("/authors.json", window.location.origin)
   url.searchParams.set("path", sourcePath)
   try {
     const response = await fetch(url.toString(), { headers: { "Accept": "application/json" } })
-    if (!response.ok) return
+    if (!response.ok) throw new Error(`HTTP ${response.status}`)
     const payload = await response.json()
-    const authors = Array(payload.authors || []).map(String).filter(Boolean)
+    const authors = asArray(payload.authors).map(String).filter(Boolean)
     if (!authors.length) return
     linkResolvedAuthors(authorMetaItem(authors), payload)
-  } catch (_) {
-    // Failure to resolve a profile must never obstruct reading the corpus text.
+  } catch (error) {
+    reader._authorAuthorityLinkPath = null
+    console.warn("[author-authority-link] lookup failed", error)
   }
 }
 

@@ -191,6 +191,7 @@ class CorpusAnnotationsController < ApplicationController
       cache_identity: "#{source_path}\0#{target_path}",
       store: HistoricalAuthorityStore.default
     )
+    log_automatic_historical_annotation_result(target_path, result)
 
     {
       version: 1,
@@ -199,6 +200,27 @@ class CorpusAnnotationsController < ApplicationController
       authority: result.authority,
       cached: result.cached
     }
+  end
+
+  def log_automatic_historical_annotation_result(target_path, result)
+    return unless Rails.env.development? || ENV["AUTHORITY_ANNOTATION_LOG"].to_s == "1"
+
+    Rails.logger.info(automatic_historical_annotation_log_line(target_path, result))
+  rescue StandardError => e
+    Rails.logger.debug("[authority] auto annotation diagnostic log skipped: #{e.class}: #{e.message}")
+  end
+
+  def automatic_historical_annotation_log_line(target_path, result)
+    items = Array(result.items)
+    preview = items.first(16).map do |item|
+      data = item.respond_to?(:stringify_keys) ? item.stringify_keys : item.to_h.stringify_keys
+      text = data["text"].to_s.gsub(/\s+/, " ")[0, 24]
+      "#{text}[#{data['kind']}:#{data['start']}-#{data['end']}:#{data['confidence']}:#{data['authority_source']}]"
+    end
+    preview << "+#{items.length - 16} more" if items.length > 16
+
+    "[authority] auto annotations path=#{target_path.inspect} cached=#{result.cached} " \
+      "matches=#{items.length} items=#{preview.join(', ')}"
   end
 
   def automatic_historical_annotation_text(fs:, metadata_store:, target_absolute:, source_path:, source_absolute:)

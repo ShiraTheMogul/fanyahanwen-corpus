@@ -78,4 +78,19 @@ class CorpusAnnotationsControllerTest < ActionController::TestCase
     assert_not payload.key?("auto_items")
     assert_not payload.key?("auto_authority")
   end
+  test "automatic annotation diagnostic line names the matches and their offsets" do
+    result = HistoricalAutoAnnotationCache::Result.new(
+      items: [{
+        "start" => 42, "end" => 44, "kind" => "person", "text" => "孔子",
+        "confidence" => "high", "authority_source" => "cbdb"
+      }],
+      context: {}, authority: {}, cached: true
+    )
+
+    line = @controller.send(:automatic_historical_annotation_log_line, @relative_path, result)
+    assert_includes line, "matches=1"
+    assert_includes line, "孔子[person:42-44:high:cbdb]"
+    assert_includes line, "cached=true"
+  end
+
 end

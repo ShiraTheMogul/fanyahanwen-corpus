@@ -45,10 +45,10 @@ class AuthorsController < ApplicationController
 
   def author_link_payload
     matches = @author_values.map do |name|
-      # Corpus Viewer links should be dependable even when external authority
-      # data are missing, stale, or ambiguous. Every recorded corpus author gets
-      # a corpus-native person page first; that page can then present any CBDB or
-      # historical matches with their evidence.
+      # Prefer the corpus-native profile because corpus authorship is an explicit
+      # repository fact. If that catalogue is stale or an external identity is
+      # ambiguous, still return a Find Authors destination so the header never
+      # degenerates into unexplained plain text.
       corpus_person = @repository.corpus_profile(name)
       profile = if corpus_person
         {
@@ -69,18 +69,24 @@ class AuthorsController < ApplicationController
           }
         end
       end
-      { "name" => name, "profile" => profile }.compact
+      {
+        "name" => name,
+        "profile" => profile,
+        "search_url" => authors_path(name: name)
+      }.compact
     end
 
-    {
+    payload = {
       "authors" => @author_values,
       "matches" => matches
     }
+    log_author_link_payload(payload)
+    payload
   end
 
   # A Corpus Viewer name becomes a direct profile link only when the resolver has
-  # one defensible destination. Ambiguous identity suggestions remain plain text
-  # and can still be investigated from Find Authors.
+  # one defensible destination. Ambiguous identities go to Find Authors, where
+  # all candidates and their evidence remain visible to the reader.
   def direct_candidate(candidates)
     rows = Array(candidates)
     high = rows.select { |candidate| candidate["confidence"].to_s == "high" }
@@ -88,6 +94,23 @@ class AuthorsController < ApplicationController
     return rows.first if rows.length == 1
 
     nil
+  end
+
+  def log_author_link_payload(payload)
+    return unless Rails.env.development? || ENV["AUTHORITY_ANNOTATION_LOG"].to_s == "1"
+
+    rows = Array(payload["matches"])
+    summary = rows.map do |row|
+      profile = row["profile"]
+      if profile
+        "#{row['name']}=>#{profile['source']}:#{profile['id']}"
+      else
+        "#{row['name']}=>search"
+      end
+    end
+    Rails.logger.info("[authority] author links path=#{@source_path.inspect} #{summary.join(', ')}")
+  rescue StandardError => e
+    Rails.logger.debug("[authority] author-link diagnostic log skipped: #{e.class}: #{e.message}")
   end
 
   def render_index_error(message, status)

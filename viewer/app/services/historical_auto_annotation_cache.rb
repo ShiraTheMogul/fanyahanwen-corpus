@@ -14,8 +14,8 @@ class HistoricalAutoAnnotationCache
   # Bump it whenever matching behaviour changes in a way which could make an
   # existing positive or empty result stale. A stale empty cache entry can hide
   # an annotator fix completely, because the annotator is never called again.
-  VERSION = 4
-  CACHE_DIRECTORY = "authority_annotations/v4"
+  VERSION = 5
+  CACHE_DIRECTORY = "authority_annotations/v5"
 
   Result = Data.define(:items, :context, :authority, :cached)
 

@@ -11,6 +11,10 @@ function ui(key, fallback, variables = {}) {
   return fallback.replace(/%\{([^}]+)\}/g, (match, name) => (Object.prototype.hasOwnProperty.call(variables, name) ? String(variables[name]) : match))
 }
 
+function asArray(value) {
+  return Array.isArray(value) ? value : []
+}
+
 function enabledByDefault() {
   try {
     const value = window.localStorage.getItem(STORAGE_KEY)
@@ -72,11 +76,12 @@ function ensureStyle() {
   const style = document.createElement("style")
   style.id = STYLE_ID
   style.textContent = `
-    .ne-auto-authority { cursor: help; text-underline-offset: .14em; }
+    .ne-auto-authority { cursor: help; text-underline-offset: .14em; text-decoration-skip-ink: none; text-decoration-thickness: 2px; }
+    .corpus-textflow.is-vertical .ne-auto-authority { text-underline-position: under; }
     .ne-auto-person { text-decoration-line: underline; text-decoration-style: solid; text-decoration-color: var(--ne-person, currentColor); }
     .ne-auto-place { text-decoration-line: underline; text-decoration-style: double; text-decoration-color: var(--ne-place, currentColor); }
     .ne-auto-office { text-decoration-line: underline; text-decoration-style: dotted; text-decoration-color: var(--ne-office, currentColor); }
-    .ne-auto-possible { text-decoration-thickness: 1px; opacity: .94; }
+    .ne-auto-possible { text-decoration-thickness: 1.5px; opacity: .96; }
     .authority-auto-popover { position: fixed; z-index: 10020; max-width: min(36rem, calc(100vw - 24px)); max-height: min(32rem, calc(100vh - 24px)); overflow: auto; padding: .8rem; border: 1px solid currentColor; border-radius: .45rem; background: var(--body-bg, Canvas); color: var(--body-fg, CanvasText); box-shadow: 0 .35rem 1.25rem rgba(0,0,0,.25); }
     .authority-auto-popover ul { margin: .5rem 0; padding-left: 1.25rem; }
     .authority-auto-popover small { opacity: .78; }
@@ -116,27 +121,42 @@ function clearAuto(reader, { forget = false } = {}) {
   if (forget) {
     reader._authorityAutoItems = []
     reader._authorityAutoPayload = null
+    reader._authorityAutoApplyStats = null
   }
 }
 
 function applyItems(reader, items, { remember = true } = {}) {
   removeAutoMarks(reader)
-  if (remember) reader._authorityAutoItems = Array(items)
-  const current = Array(reader._authorityAutoItems || [])
+  if (remember) reader._authorityAutoItems = asArray(items)
+  const current = asArray(reader._authorityAutoItems)
   const byIndex = new Map(spans(reader).map((span) => [Number(span.getAttribute("data-corpus-idx")), span]))
+  const stats = { found: current.length, applied: 0, suppressed: 0, manual: 0, missing: 0, invalid: 0 }
 
   current.forEach((item, itemIndex) => {
     const start = Number(item.start)
     const end = Number(item.end)
-    if (!Number.isFinite(start) || !Number.isFinite(end) || end <= start) return
-    if (suppressedLocally(reader, item)) return
+    if (!Number.isFinite(start) || !Number.isFinite(end) || end <= start) {
+      stats.invalid += 1
+      return
+    }
+    if (suppressedLocally(reader, item)) {
+      stats.suppressed += 1
+      return
+    }
 
     const itemSpans = []
     for (let index = start; index < end; index += 1) {
       const span = byIndex.get(index)
       if (span) itemSpans.push(span)
     }
-    if (!itemSpans.length || itemSpans.some(manuallyAnnotated)) return
+    if (itemSpans.length !== end - start) {
+      stats.missing += 1
+      return
+    }
+    if (itemSpans.some(manuallyAnnotated)) {
+      stats.manual += 1
+      return
+    }
 
     const kind = ["person", "place", "office"].includes(String(item.kind)) ? String(item.kind) : "person"
     itemSpans.forEach((span) => {
@@ -144,15 +164,31 @@ function applyItems(reader, items, { remember = true } = {}) {
       if (item.confidence !== "high") span.classList.add("ne-auto-possible")
       span.setAttribute("data-authority-auto-index", String(itemIndex))
     })
+    stats.applied += 1
   })
+
+  reader._authorityAutoApplyStats = stats
+  return stats
+}
+
+function visibilityDetail(stats) {
+  if (!stats || stats.found === stats.applied) return ""
+  const reasons = []
+  if (stats.suppressed) reasons.push(`${stats.suppressed} hidden locally`)
+  if (stats.manual) reasons.push(`${stats.manual} covered by manual annotation`)
+  if (stats.missing) reasons.push(`${stats.missing} could not map to displayed character offsets`)
+  if (stats.invalid) reasons.push(`${stats.invalid} had invalid offsets`)
+  return `${stats.found} found; ${stats.applied} visible${reasons.length ? ` (${reasons.join(", ")})` : ""}.`
 }
 
 function setButtonState(reader, state, detail = "") {
   const button = reader.querySelector("[data-authority-auto-toggle]")
   if (!button) return
 
-  const hidden = suppressionSet(reader).size
-  const count = Array(reader._authorityAutoItems || []).length
+  const stats = reader._authorityAutoApplyStats
+  const found = Number.isFinite(stats?.found) ? stats.found : asArray(reader._authorityAutoItems).length
+  const count = state === "ready" && Number.isFinite(stats?.applied) ? stats.applied : found
+  const hidden = Number.isFinite(stats?.suppressed) ? stats.suppressed : suppressionSet(reader).size
   const key = {
     off: "authority_auto.off",
     loading: "authority_auto.loading",
@@ -170,11 +206,14 @@ function setButtonState(reader, state, detail = "") {
     "authority_auto.unavailable": "Annotations: unavailable",
     "authority_auto.error": "Annotations: error"
   }
+  const visibilitySuffix = state === "ready" && found !== count ? `/${found}` : ""
   const hiddenSuffix = hidden ? ui("authority_auto.hidden_suffix", " (%{count} hidden)", { count: hidden }) : ""
-  button.textContent = `${ui(key, fallbacks[key] || "Annotations: %{count}", { count })}${hiddenSuffix}`
+  button.textContent = `${ui(key, fallbacks[key] || "Annotations: %{count}", { count })}${visibilitySuffix}${hiddenSuffix}`
   button.dataset.state = state
+  button.dataset.authorityFoundCount = String(found)
+  button.dataset.authorityVisibleCount = String(count)
   button.setAttribute("aria-pressed", reader._authorityAutoEnabled === true ? "true" : "false")
-  button.title = detail || ui("authority_auto.title", "Show historical people, places, and offices found in this text")
+  button.title = [detail, visibilityDetail(stats)].filter(Boolean).join(" ") || ui("authority_auto.title", "Show historical people, places, and offices found in this text")
 }
 
 function authorityAvailable(payload) {
@@ -217,8 +256,15 @@ async function loadAuto(reader) {
     }
 
     reader._authorityAutoPayload = data
-    const items = Array(data.items || [])
-    applyItems(reader, items)
+    const items = asArray(data.items)
+    const stats = applyItems(reader, items)
+
+    console.debug("[authority-auto-annotations] result", {
+      path: target,
+      cached: data.cached === true,
+      stats,
+      items: items.map((item) => ({ text: item.text, kind: item.kind, start: item.start, end: item.end, confidence: item.confidence }))
+    })
 
     if (!authorityAvailable(data)) {
       setButtonState(reader, "unavailable", authorityUnavailableReason(data))
@@ -243,7 +289,8 @@ async function loadAuto(reader) {
 
 function reapplyCached(reader) {
   if (reader._authorityAutoEnabled !== true || !Array.isArray(reader._authorityAutoItems)) return
-  applyItems(reader, reader._authorityAutoItems, { remember: false })
+  const stats = applyItems(reader, reader._authorityAutoItems, { remember: false })
+  setButtonState(reader, stats.found ? "ready" : "empty")
 }
 
 function closePopover() {
@@ -315,7 +362,7 @@ function showPopover(reader, item, anchor) {
   closePopover()
   const popover = document.createElement("div")
   popover.className = "authority-auto-popover"
-  const candidates = Array(item.candidates || [])
+  const candidates = asArray(item.candidates)
   const kindKey = ["person", "place", "office"].includes(String(item.kind)) ? `authority_auto.kind_${item.kind}` : "authority_auto.kind_person"
   const kindFallback = { person: "person", place: "place", office: "office" }[String(item.kind)] || "person"
   popover.innerHTML = `
@@ -341,7 +388,6 @@ function showPopover(reader, item, anchor) {
     suppressionSet(reader).add(itemSuppressionId(item))
     saveSuppressions(reader)
     reapplyCached(reader)
-    setButtonState(reader, Array(reader._authorityAutoItems || []).length ? "ready" : "empty")
     closePopover()
   })
   popover.querySelector("[data-authority-report]")?.addEventListener("click", () => reportIncorrect(reader, item, status))
@@ -405,7 +451,6 @@ function addToggle(reader) {
       suppressionSet(reader).clear()
       saveSuppressions(reader)
       reapplyCached(reader)
-      setButtonState(reader, Array(reader._authorityAutoItems || []).length ? "ready" : "empty")
       return
     }
 
