@@ -29,6 +29,16 @@
       "id": "taiping_primary_wikisource",
       "citation": "太平天國原刊文獻，如《詔西洋番弟》《天條書》《欽定前遺詔聖書》，所署太平天國紀年。",
       "url": "https://zh.wikisource.org/zh-hant/%E8%A9%94%E8%A5%BF%E6%B4%8B%E7%95%AA%E5%BC%9F"
+    },
+    {
+      "id": "sinica_mingzheng_taiwan",
+      "citation": "中央研究院人文社會科學研究中心地理資訊科學研究專題中心. (n.d.). 明鄭時期臺灣行政疆域圖. 臺灣歷史文化地圖. Retrieved August 23, 2026, from https://thcts.sinica.edu.tw/themes/rb02.php",
+      "url": "https://thcts.sinica.edu.tw/themes/rb02.php"
+    },
+    {
+      "id": "ncl_zheng_keshuang_2003",
+      "citation": "Zhang, Ziwen 張子文. (2003). 鄭克塽. In 國家圖書館 (Ed.), 臺灣歷史人物小傳—明清暨日治時期. 臺灣記憶.",
+      "url": "https://tm.ncl.edu.tw/article?lang=chn&u=016_002_0000009440"
     }
   ],
   "eras": [
@@ -38,16 +48,29 @@
       "country": "China",
       "origin_country": "China",
       "label": "大順",
-      "han_names": ["大順", "大顺"],
+      "han_names": [
+        "大順",
+        "大顺"
+      ],
       "start_year": 1644,
       "end_year": 1647,
       "epoch_start_year": 1644,
       "local_use_start_year": 1644,
       "local_use_end_year": 1647,
-      "polities": ["大西"],
-      "ruler_names": ["張獻忠", "张献忠", "孫可望", "孙可望"],
+      "polities": [
+        "大西"
+      ],
+      "ruler_names": [
+        "張獻忠",
+        "张献忠",
+        "孫可望",
+        "孙可望"
+      ],
       "source_url": "https://zh.wikisource.org/zh-hant/%E6%98%8E%E5%8F%B2/%E5%8D%B7309",
-      "source_ids": ["mingshi_309", "li_chongzhi_2001"],
+      "source_ids": [
+        "mingshi_309",
+        "li_chongzhi_2001"
+      ],
       "source_note": "《明史》卷309記張獻忠於崇禎十七年（1644）據成都後僭號大西國王、改元大順，並將即位繫於冬十一月。後來大西餘部仍沿用大順紀年，至1647年孫可望去大西國號及大順年號。部分後世資料將起點概括為1644年八月；本索引只作年級換算，故元年仍為1644。傳稱「義武」的異名有爭議，李崇智認為可能為「興武」之誤，故不列作自動匹配別名。"
     },
     {
@@ -56,16 +79,27 @@
       "country": "China",
       "origin_country": "China",
       "label": "永昌",
-      "han_names": ["永昌"],
+      "han_names": [
+        "永昌"
+      ],
       "start_year": 1644,
       "end_year": 1645,
       "epoch_start_year": 1644,
       "local_use_start_year": 1644,
       "local_use_end_year": 1645,
-      "polities": ["大順"],
-      "ruler_names": ["李自成", "李自晟"],
+      "polities": [
+        "大順"
+      ],
+      "ruler_names": [
+        "李自成",
+        "李自晟"
+      ],
       "source_url": "https://ctext.org/wiki.pl?chapter=586538&if=en",
-      "source_ids": ["mingshi_309", "ctext_yongchang_dashun", "li_chongzhi_2001"],
+      "source_ids": [
+        "mingshi_309",
+        "ctext_yongchang_dashun",
+        "li_chongzhi_2001"
+      ],
       "source_note": "《明史》卷309載崇禎十七年正月庚寅朔李自成於西安稱王，國號大順，改元永昌。中央大順政權通常以1644—1645為主要使用期。"
     },
     {
@@ -74,17 +108,72 @@
       "country": "China",
       "origin_country": "China",
       "label": "永昌",
-      "han_names": ["永昌"],
+      "han_names": [
+        "永昌"
+      ],
       "start_year": 1644,
       "end_year": 1664,
       "epoch_start_year": 1644,
       "local_use_start_year": 1646,
       "local_use_end_year": 1664,
-      "polities": ["大順餘部", "大顺余部"],
-      "ruler_names": ["李自敬", "李過", "李过", "李來亨", "李来亨"],
+      "polities": [
+        "大順餘部",
+        "大顺余部"
+      ],
+      "ruler_names": [
+        "李自敬",
+        "李過",
+        "李过",
+        "李來亨",
+        "李来亨"
+      ],
       "source_url": "https://ctext.org/datawiki.pl?if=gb&remap=gb&res=674285",
-      "source_ids": ["ctext_yongchang_dashun", "li_chongzhi_2001"],
+      "source_ids": [
+        "ctext_yongchang_dashun",
+        "li_chongzhi_2001"
+      ],
       "source_note": "大順中央政權覆亡後仍有餘部沿用永昌紀年。中國哲學書電子化計劃所彙史料記李自敬沿用至1646年、李過至1649年、李來亨至1664年。此記錄保留原1644年曆元而把1646—1664視作續用區間。"
+    },
+    {
+      "id": "china-zheng-yongli-continuation",
+      "source": "fanya_curated_era",
+      "country": "China",
+      "origin_country": "China",
+      "label": "永曆",
+      "han_names": [
+        "永曆",
+        "永历"
+      ],
+      "start_year": 1647,
+      "end_year": 1683,
+      "epoch_start_year": 1647,
+      "local_use_start_year": 1661,
+      "local_use_end_year": 1683,
+      "polities": [
+        "明鄭",
+        "明郑",
+        "鄭氏",
+        "郑氏",
+        "東都",
+        "东都",
+        "東寧",
+        "东宁",
+        "Kingdom of Tungning"
+      ],
+      "ruler_names": [
+        "鄭成功",
+        "郑成功",
+        "鄭經",
+        "郑经",
+        "鄭克塽",
+        "郑克塽"
+      ],
+      "source_url": "https://thcts.sinica.edu.tw/themes/rb02.php",
+      "source_ids": [
+        "sinica_mingzheng_taiwan",
+        "ncl_zheng_keshuang_2003"
+      ],
+      "source_note": "明鄭在臺沿用南明永曆紀年而不重新起算。中央研究院臺灣歷史文化地圖記永曆十五年為1661、永曆十八年為1664；國家圖書館臺灣記憶所收張子文〈鄭克塽〉記永曆三十七年即清康熙二十二年（1683）。因此本條保留1647為曆元，並把1661—1683標作明鄭／東寧在臺的本地使用區間。"
     },
     {
       "id": "china-taiping-tianguo-main",
@@ -92,16 +181,31 @@
       "country": "China",
       "origin_country": "China",
       "label": "太平天國",
-      "han_names": ["太平天國", "太平天囯", "太平天国"],
+      "han_names": [
+        "太平天國",
+        "太平天囯",
+        "太平天国"
+      ],
       "start_year": 1851,
       "end_year": 1864,
       "epoch_start_year": 1851,
       "local_use_start_year": 1851,
       "local_use_end_year": 1864,
-      "polities": ["太平天國", "太平天国"],
-      "ruler_names": ["洪秀全", "洪天貴福", "洪天贵福"],
+      "polities": [
+        "太平天國",
+        "太平天国"
+      ],
+      "ruler_names": [
+        "洪秀全",
+        "洪天貴福",
+        "洪天贵福"
+      ],
       "source_url": "https://zh.wikisource.org/zh-hant/%E8%A9%94%E8%A5%BF%E6%B4%8B%E7%95%AA%E5%BC%9F",
-      "source_ids": ["luo_ergang_taiping", "ncl_taiping_publications", "taiping_primary_wikisource"],
+      "source_ids": [
+        "luo_ergang_taiping",
+        "ncl_taiping_publications",
+        "taiping_primary_wikisource"
+      ],
       "source_note": "太平天國本身以國號紀年：1851為元年，1852為二年，1853為三年。原刊常寫作「太平天囯」，並把干支中的亥、丑、卯分別避改為開、好、榮，例如1853年文獻署「太平天國癸好三年」。一般以1864年天京陷落為主政權紀年終點。《清史稿》所記「建元天德」與太平天國自身刊刻材料不合，因此「天德」不作太平天國自動別名。"
     },
     {
@@ -110,16 +214,27 @@
       "country": "China",
       "origin_country": "China",
       "label": "太平天國",
-      "han_names": ["太平天國", "太平天囯", "太平天国"],
+      "han_names": [
+        "太平天國",
+        "太平天囯",
+        "太平天国"
+      ],
       "start_year": 1851,
       "end_year": 1869,
       "epoch_start_year": 1851,
       "local_use_start_year": 1865,
       "local_use_end_year": 1869,
-      "polities": ["太平天國餘部", "太平軍餘部", "太平天国余部"],
+      "polities": [
+        "太平天國餘部",
+        "太平軍餘部",
+        "太平天国余部"
+      ],
       "ruler_names": [],
       "source_url": "https://zh.wikipedia.org/wiki/%E5%A4%AA%E5%B9%B3%E5%A4%A9%E5%9C%8B_(%E7%B4%80%E5%B9%B4)",
-      "source_ids": ["luo_ergang_taiping", "li_chongzhi_2001"],
+      "source_ids": [
+        "luo_ergang_taiping",
+        "li_chongzhi_2001"
+      ],
       "source_note": "1864年後仍有太平軍餘部延續國號紀年。研究中亦有把紀年延至1868年的說法，且袁大魁有使用至太平天國十九年（1869）的記錄。本條只表示續用，不等同於認定1865—1869存在一個完整延續的中央政權。"
     }
   ]

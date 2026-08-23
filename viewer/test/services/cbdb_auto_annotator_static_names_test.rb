@@ -99,10 +99,10 @@ class CbdbAutoAnnotatorStaticNamesTest < ActiveSupport::TestCase
     store&.close
   end
 
-  test "two different specific one-character names in close proximity can disambiguate each other" do
+  test "two different dated one-character names in close proximity can disambiguate each other" do
     store = HistoricalFixtureStore.new
-    store.add_person("堯")
-    store.add_person("舜")
+    store.add_person("堯", year_start: -2300, year_end: -2200)
+    store.add_person("舜", year_start: -2300, year_end: -2100)
 
     result = CbdbAutoAnnotator.call(
       text: "古稱堯與舜，二人相承。",
@@ -116,9 +116,9 @@ class CbdbAutoAnnotatorStaticNamesTest < ActiveSupport::TestCase
     store&.close
   end
 
-  test "an ambiguous one-character authority graph is not promoted merely because it precedes 曰" do
+  test "an ambiguous dated one-character authority graph is not promoted merely because it precedes 曰" do
     store = HistoricalFixtureStore.new
-    8.times { |index| store.add_person("子", id: "zi-#{index}") }
+    8.times { |index| store.add_person("子", id: "zi-#{index}", year_start: -700, year_end: -400) }
 
     result = CbdbAutoAnnotator.call(
       text: "子曰：學而時習之。",
@@ -131,9 +131,9 @@ class CbdbAutoAnnotatorStaticNamesTest < ActiveSupport::TestCase
     store&.close
   end
 
-  test "an isolated one-character authority name without name-like context stays unannotated" do
+  test "an isolated dated one-character authority name without name-like context stays unannotated" do
     store = HistoricalFixtureStore.new
-    store.add_person("堯")
+    store.add_person("堯", year_start: -2300, year_end: -2200)
 
     result = CbdbAutoAnnotator.call(
       text: "山高而堯遠，未足以定其所指。",

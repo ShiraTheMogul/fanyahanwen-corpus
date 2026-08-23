@@ -1,6 +1,7 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 import "authority_auto_annotations"
+import "authority_date_annotations"
 import "era_calendar_tool"
 import "author_authority_link"
 import "corpus_directory_pagination"

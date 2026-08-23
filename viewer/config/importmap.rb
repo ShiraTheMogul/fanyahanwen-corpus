@@ -3,6 +3,7 @@
 pin "application"
 pin "i18n", to: "i18n.js"
 pin "authority_auto_annotations", to: "authority_auto_annotations.js"
+pin "authority_date_annotations", to: "authority_date_annotations.js"
 pin "@hotwired/turbo-rails", to: "turbo.min.js"
 pin "@hotwired/stimulus", to: "stimulus.min.js"
 pin "@hotwired/stimulus-loading", to: "stimulus-loading.js"
