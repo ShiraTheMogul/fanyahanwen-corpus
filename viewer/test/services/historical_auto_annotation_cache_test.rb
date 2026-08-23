@@ -10,6 +10,11 @@ class HistoricalAutoAnnotationCacheTest < ActiveSupport::TestCase
     def historical_available? = false
   end
 
+  UnavailableStore = Struct.new(:metadata) do
+    def lookup_available? = false
+    def historical_available? = false
+  end
+
   setup do
     @directory = Pathname.new(Dir.mktmpdir("authority-annotation-cache"))
     @cache_store = CorpusSearch::CacheStore.new(root: @directory.join("cache"))
@@ -83,5 +88,59 @@ class HistoricalAutoAnnotationCacheTest < ActiveSupport::TestCase
 
       assert_equal 4, calls
     end
+  end
+
+  test "partial results are returned but never persisted" do
+    calls = 0
+    fake_result = Struct.new(:items, :context, :authority).new(
+      [{ "start" => 0, "end" => 2, "kind" => "person", "text" => "孔子" }],
+      {},
+      { "annotation_partial" => true, "annotation_failed_sources" => ["historical"] }
+    )
+
+    CbdbAutoAnnotator.stub(:call, lambda { |**_arguments|
+      calls += 1
+      fake_result
+    }) do
+      2.times do
+        result = HistoricalAutoAnnotationCache.fetch(
+          text: "孔子曰",
+          metadata: { "period" => "春秋" },
+          cache_identity: "中國漢文/部分結果.txt",
+          store: @store,
+          cache_store: @cache_store
+        )
+        assert_equal false, result.cached
+        assert_equal true, result.authority.fetch("annotation_partial")
+      end
+    end
+
+    assert_equal 2, calls
+  end
+
+  test "an unavailable authority layer cannot become a cached zero-match result" do
+    calls = 0
+    store = UnavailableStore.new({ "release" => "test-authority-v1", "cbdb_available" => true })
+    fake_result = Struct.new(:items, :context, :authority).new([], {}, {})
+
+    CbdbAutoAnnotator.stub(:call, lambda { |**_arguments|
+      calls += 1
+      fake_result
+    }) do
+      2.times do
+        result = HistoricalAutoAnnotationCache.fetch(
+          text: "孔子曰",
+          metadata: { "period" => "春秋" },
+          cache_identity: "中國漢文/不可用.txt",
+          store: store,
+          cache_store: @cache_store
+        )
+        assert_equal false, result.cached
+        assert_equal false, result.authority.fetch("cbdb_lookup_available")
+        assert_equal false, result.authority.fetch("historical_available")
+      end
+    end
+
+    assert_equal 2, calls
   end
 end

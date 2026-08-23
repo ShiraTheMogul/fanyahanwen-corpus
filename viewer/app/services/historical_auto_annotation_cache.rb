@@ -10,8 +10,12 @@ require "pathname"
 # edits to a work or an authority rebuild naturally produce a different entry.
 # Local user suppressions remain browser-side and are deliberately not cached.
 class HistoricalAutoAnnotationCache
-  VERSION = 2
-  CACHE_DIRECTORY = "authority_annotations/v2"
+  # This version describes annotation *semantics*, not merely the JSON shape.
+  # Bump it whenever matching behaviour changes in a way which could make an
+  # existing positive or empty result stale. A stale empty cache entry can hide
+  # an annotator fix completely, because the annotator is never called again.
+  VERSION = 4
+  CACHE_DIRECTORY = "authority_annotations/v4"
 
   Result = Data.define(:items, :context, :authority, :cached)
 
@@ -53,7 +57,11 @@ class HistoricalAutoAnnotationCache
       "context" => result.context,
       "authority" => authority
     }
-    @cache_store.write_json(path, payload)
+
+    # A partial authority query is useful for the current request, but it is not
+    # a stable fact about the text. Likewise an unavailable authority layer must
+    # not become a durable "0 matches" result. Both states are retried next time.
+    @cache_store.write_json(path, payload) if cacheable?(authority)
 
     Result.new(
       items: result.items,
@@ -74,6 +82,14 @@ class HistoricalAutoAnnotationCache
     )
   rescue StandardError
     metadata || {}
+  end
+
+  def cacheable?(authority)
+    data = authority.to_h.stringify_keys
+    usable_source = data["cbdb_lookup_available"] == true || data["historical_available"] == true
+    usable_source && data["annotation_partial"] != true
+  rescue StandardError
+    false
   end
 
   def cache_key(text:, metadata:)

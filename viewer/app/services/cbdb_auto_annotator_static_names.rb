@@ -19,7 +19,7 @@ module CbdbAutoAnnotatorStaticNames
   def call
     @context = temporal_context
     authority = safe_authority_metadata
-    return Result.new(items: [], context: @context, authority: authority) unless @store.available?
+    return CbdbAutoAnnotator::Result.new(items: [], context: @context, authority: authority) unless @store.available?
 
     matches = []
     source_attempts = 0
@@ -64,7 +64,7 @@ module CbdbAutoAnnotatorStaticNames
       "annotation_partial" => failures.any?,
       "annotation_failed_sources" => failures.map(&:first)
     )
-    Result.new(
+    CbdbAutoAnnotator::Result.new(
       items: resolve_overlaps(matches).map { |match| public_item(match) },
       context: @context,
       authority: authority

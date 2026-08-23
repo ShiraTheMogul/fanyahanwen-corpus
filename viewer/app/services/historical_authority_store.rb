@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+﻿# frozen_string_literal: true
 
 require "digest"
 require "json"
@@ -45,6 +45,8 @@ class HistoricalAuthorityStore
     return @lookup_available = false unless cbdb_available?
 
     metadata = CbdbLookupIndex.metadata(cache_store: @cache_store, index_path: @lookup_path)
+    return @lookup_available = false unless metadata["version"].to_i == CbdbLookupIndex::VERSION
+
     source_sha = metadata["source_sha256"].to_s
     local_sha = @cbdb_release["sha256"].to_s
     if !source_sha.empty? && !local_sha.empty? && source_sha == local_sha
@@ -70,8 +72,12 @@ class HistoricalAuthorityStore
     @historical_available = false
   end
 
+  # The raw CBDB database cannot answer automatic name lookups by itself. The
+  # annotator needs either the verified CBDB pointer index or the supplementary
+  # historical index. Treating a bare CBDB file as "available" caused the
+  # request path to look healthy while having no searchable source attached.
   def available?
-    cbdb_available? || historical_available?
+    lookup_available? || historical_available?
   end
 
   def with_database

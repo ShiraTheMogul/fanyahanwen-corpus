@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+﻿# frozen_string_literal: true
 
 require "digest"
 require "fileutils"
@@ -10,7 +10,10 @@ require "time"
 # this cache stores only the Han name, entity kind, entity id and primary/alias
 # flag needed to find relevant source rows quickly during annotation.
 class CbdbLookupIndex
-  VERSION = 1
+  # VERSION describes the on-disk SQLite schema, not the CBDB release. Bump it
+  # whenever columns/indexes change so an older disposable cache cannot be
+  # mistaken for a current one merely because it points at the same CBDB file.
+  VERSION = 2
   CACHE_PATH = "cbdb-lookup-v1.sqlite3"
 
   Result = Data.define(:status, :path, :source_sha256, :counts, :message) do
@@ -187,7 +190,11 @@ class CbdbLookupIndex
 
       length = name.each_char.count
       prefix = name.each_char.take([2, length].min).join
-      statement.execute(prefix, length, name, kind, entity_id, primary ? 1 : 0).close
+      # SQLite3::ResultSet#close finalizes the prepared statement itself.
+      # This statement is intentionally reused for every authority name, so
+      # consume the INSERT with execute! and close the statement only once
+      # after the import transaction finishes.
+      statement.execute!(prefix, length, name, kind, entity_id, primary ? 1 : 0)
       counts["names"] += 1 # pointer-attempt count; INSERT OR IGNORE handles duplicate rows
       counts["#{kind}_names"] += 1
     end

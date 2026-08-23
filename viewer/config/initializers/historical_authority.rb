@@ -1,8 +1,9 @@
 ﻿# frozen_string_literal: true
 
-# Rails reload-safe integration points. Keeping these as prepend modules means
-# the authority layer can enrich existing metadata/annotation APIs without a
-# parallel route or a duplicate corpus reader.
+# Rails reload-safe integration points for authority-backed domain services.
+# HTTP request dispatch stays in the controller which owns the route; keeping
+# controller actions out of this prepend chain makes the active endpoint
+# explicit and testable.
 Rails.application.config.to_prepare do
   HistoricalAuthorityIndex.prepend(HistoricalAuthorityIndexStaticNames) unless HistoricalAuthorityIndex < HistoricalAuthorityIndexStaticNames
   CorpusMetadataStore.prepend(HistoricalMetadataDating) unless CorpusMetadataStore < HistoricalMetadataDating
@@ -11,7 +12,6 @@ Rails.application.config.to_prepare do
   HistoricalDateResolver.prepend(HistoricalDateResolverStaticNames) unless HistoricalDateResolver < HistoricalDateResolverStaticNames
   CbdbAutoAnnotator.prepend(CbdbAutoAnnotatorStaticNames) unless CbdbAutoAnnotator < CbdbAutoAnnotatorStaticNames
   CbdbAutoAnnotator.prepend(CbdbAutoAnnotatorKindResolution) unless CbdbAutoAnnotator < CbdbAutoAnnotatorKindResolution
-  CorpusAnnotationsController.prepend(HistoricalAutoAnnotations) unless CorpusAnnotationsController < HistoricalAutoAnnotations
   EraCalendarConverter.prepend(EraCalendarStaticNames) unless EraCalendarConverter < EraCalendarStaticNames
   ToolsController.prepend(EraCalendarTools) unless ToolsController < EraCalendarTools
 end

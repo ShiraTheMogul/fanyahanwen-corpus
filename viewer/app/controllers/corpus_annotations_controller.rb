@@ -4,16 +4,27 @@ class CorpusAnnotationsController < ApplicationController
   protect_from_forgery with: :exception
 
   def show
+    if params[:auto].to_s == "1"
+      render json: automatic_historical_annotation_payload
+      return
+    end
+
     store = store_for_request
     data = store.read
-    data.merge!(automatic_annotation_payload) if params[:auto].to_s == "1"
     render json: data
   rescue SecurityError
     render json: { error: "Bad path" }, status: :bad_request
   rescue Errno::ENOENT
-    data = { version: 1, items: [], updated_at: nil }
-    data.merge!(automatic_annotation_payload) if params[:auto].to_s == "1"
-    render json: data
+    if params[:auto].to_s == "1"
+      render json: { version: 1, items: [], context: {}, authority: {}, cached: false }
+    else
+      render json: { version: 1, items: [], updated_at: nil }
+    end
+  rescue StandardError => e
+    raise unless params[:auto].to_s == "1"
+
+    Rails.logger.warn("[authority] automatic annotation request failed: #{e.class}: #{e.message}")
+    render json: { error: "Historical annotations are temporarily unavailable." }, status: :unprocessable_entity
   end
 
   # POST /corpus_annotations
@@ -144,86 +155,69 @@ class CorpusAnnotationsController < ApplicationController
 
   private
 
-  def automatic_annotation_payload
-    target_path = params[:auto_path].to_s.strip.sub(%r{\A/+}, "").presence || params[:path].to_s
-    source_path = params[:source_path].to_s.strip.sub(%r{\A/+}, "").presence || target_path
-    return empty_automatic_annotation_payload if target_path.blank? || source_path.blank?
+  # The automatic reader annotations are deliberately handled by the controller
+  # that owns GET /corpus_annotations. Earlier versions also prepended a concern
+  # over this action and kept a second, incompatible response implementation in
+  # the controller. That made the actual endpoint depend on Rails ancestor order.
+  def automatic_historical_annotation_payload
+    target_path = normalized_corpus_path(params[:path])
+    source_path = normalized_corpus_path(params[:source_path]).presence || target_path
+    raise SecurityError, "target path is missing" if target_path.blank?
 
     fs = CorpusFs.new(root: corpus_root)
+    target_absolute = fs.resolve(target_path)
+    source_absolute = fs.resolve(source_path)
+    raise SecurityError, "target is not a corpus file" unless fs.file?(target_absolute)
+    raise SecurityError, "source is not a corpus work/file" unless fs.file?(source_absolute) || fs.directory?(source_absolute)
+
     metadata_store = CorpusMetadataStore.new(root: corpus_root, fs: fs)
-    text = automatic_annotation_text(fs, metadata_store, target_path)
-    return empty_automatic_annotation_payload if text.blank?
-
-    metadata = metadata_store.search_metadata_for_path(source_path)
-    metadata = automatic_annotation_period_context(metadata, source_path)
-    result = CbdbAutoAnnotator.call(text: text, metadata: metadata)
-    {
-      "auto_items" => result.items,
-      "auto_context" => result.context,
-      "auto_truncated" => result.truncated,
-      "auto_authority" => result.authority_metadata.slice(
-        "source_filename",
-        "source_generated_at_utc",
-        "source_sha256",
-        "lookup_built_at_utc",
-        "retrieved_on",
-        "source_citation",
-        "source_url",
-        "source_license",
-        "supplementary_filename",
-        "supplementary_sha256",
-        "supplementary_built_at_utc",
-        "supplementary_equivalence_version",
-        "supplementary_people",
-        "supplementary_names",
-        "supplementary_source_path"
-      )
-    }
-  rescue SecurityError, Errno::ENOENT, JSON::ParserError, SystemCallError => e
-    Rails.logger&.warn("[authority] automatic annotation request skipped: #{e.class}: #{e.message}")
-    empty_automatic_annotation_payload
-  end
-
-  def automatic_annotation_period_context(metadata, source_path)
-    return metadata if metadata["period"].present?
-
-    document = metadata.merge(
-      "path" => source_path.to_s,
-      "folder_path" => File.dirname(source_path.to_s)
-    )
-    period_ids = Atlas::Periodisation.default.period_ids_for_document(document)
-    return metadata if period_ids.empty?
-
-    metadata.merge("period" => period_ids.last.to_s)
-  rescue Atlas::Periodisation::Invalid, JSON::ParserError, SystemCallError => e
-    Rails.logger&.warn("[authority] Atlas period fallback skipped: #{e.class}: #{e.message}")
-    metadata
-  end
-
-  def automatic_annotation_text(fs, metadata_store, rel_path)
-    absolute = fs.resolve(rel_path)
-    if fs.file?(absolute)
-      return CorpusSearch::DocumentReader.parse(fs.read_text(absolute)).body
+    detailed_metadata = metadata_store.document_metadata_for_path(source_path)
+    search_metadata = metadata_store.search_metadata_for_path(source_path)
+    metadata = detailed_metadata.merge(search_metadata) do |_key, detailed, search_value|
+      detailed.to_s.strip.empty? ? search_value : detailed
     end
 
-    return "" unless fs.directory?(absolute)
+    body = automatic_historical_annotation_text(
+      fs: fs,
+      metadata_store: metadata_store,
+      target_absolute: target_absolute,
+      source_path: source_path,
+      source_absolute: source_absolute
+    )
 
-    metadata_store.document_paths_for_work_folder(rel_path).filter_map do |document_path|
-      raw = fs.read_text(fs.resolve(document_path))
-      body = CorpusSearch::DocumentReader.parse(raw).body
-      body.presence
+    result = HistoricalAutoAnnotationCache.fetch(
+      text: body,
+      metadata: metadata,
+      cache_identity: "#{source_path}\0#{target_path}",
+      store: HistoricalAuthorityStore.default
+    )
+
+    {
+      version: 1,
+      items: result.items,
+      context: result.context,
+      authority: result.authority,
+      cached: result.cached
+    }
+  end
+
+  def automatic_historical_annotation_text(fs:, metadata_store:, target_absolute:, source_path:, source_absolute:)
+    unless fs.directory?(source_absolute)
+      return CorpusSearch::DocumentReader.parse(fs.read_text(target_absolute)).body.to_s
+    end
+
+    metadata_store.document_paths_for_work_folder(source_path).filter_map do |document_path|
+      document_absolute = fs.resolve(document_path)
+      next unless fs.file?(document_absolute)
+
+      CorpusSearch::DocumentReader.parse(fs.read_text(document_absolute)).body.to_s.presence
     rescue Errno::ENOENT, SecurityError
       nil
     end.join("\n\n")
   end
 
-  def empty_automatic_annotation_payload
-    {
-      "auto_items" => [],
-      "auto_context" => {},
-      "auto_truncated" => false,
-      "auto_authority" => {}
-    }
+  def normalized_corpus_path(value)
+    value.to_s.tr("\\", "/").sub(%r{\A/+}, "")
   end
 
   def annotation_payload_from_params
