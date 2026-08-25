@@ -1,6 +1,38 @@
-en:
+﻿en:
   home:
     title: 卷首 Home
+    discovery:
+      title: 泛亞漢文語料庫 Fanya Hanwen Corpus
+      introduction: Find a Literary Chinese text by title, region, or author.
+      title_search:
+        label: Search by Title
+        placeholder: Enter a work title, e.g. 論語
+        submit: Search
+      browse:
+        heading: Browse the corpus
+        region: Browse by Region
+        region_description: Explore the corpus through its geographic and historical collections.
+        author: Browse by Author
+        author_description: Find people recorded in the corpus and open the works credited to them.
+        author_search_label: Search by author
+        author_search_placeholder: Search an author, e.g. 司馬遷
+        author_search_submit: Find
+      activity_heading: Latest texts and edits
+      daily_heading: Read something now
+      results:
+        heading: Title search results
+        unavailable: The title index is unavailable.
+        unavailable_hint: Rebuild the work catalogue and try again.
+        count: '%{count} works matching “%{query}”.'
+        none: 'No works matched “%{query}”.'
+        date_unknown: Date unknown
+        year_bce: '%{year} BCE'
+        year_ce: '%{year} CE'
+        other_geography: Other
+        pagination_aria: Title search pages
+        previous: Previous
+        next: Next
+        page_status: '%{page} / %{pages}'
     hero:
       daily_reading_aria: Today's Shijing reading
       summary: Welcome to Fanya Hanwen Corpus 泛亞漢文語料庫, a Literary Chinese corpus containing over twice as much text as Siku

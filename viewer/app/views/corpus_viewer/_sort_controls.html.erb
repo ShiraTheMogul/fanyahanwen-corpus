@@ -1,58 +1,4 @@
-﻿<%# Corpus Viewer browse/search controls. Work-title search belongs to the root viewer. %>
-<% if @rel_path.blank? %>
-  <style>
-    .corpus-work-search {
-      margin: .55rem 0 .8rem;
-      padding: .55rem .65rem;
-      border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
-      border-radius: .35rem;
-      background: color-mix(in srgb, currentColor 2%, transparent);
-    }
-    .corpus-work-search__form { display: flex; gap: .55rem; flex-wrap: wrap; align-items: center; }
-    .corpus-work-search__query { flex: 1 1 20rem; min-width: 12rem; }
-    .corpus-work-search__query > span { display: block; font-weight: 700; margin-bottom: .2rem; }
-    .corpus-work-search__query input { width: 100%; box-sizing: border-box; }
-    .corpus-work-search__options { display: flex; gap: .7rem; flex-wrap: wrap; align-items: center; }
-    .corpus-work-search__back { margin-top: .45rem; font-size: .92rem; }
-  </style>
-  <section class="corpus-work-search" aria-label="<%= t('corpus_viewer.work_search.aria_label', default: 'Work search') %>">
-    <%= form_with url: corpus_viewer_path(format: nil), method: :get, local: true, class: "corpus-work-search__form" do %>
-      <label class="corpus-work-search__query" for="catalogue_q">
-        <span><%= t("corpus_viewer.work_search.label", default: "Search works") %></span>
-        <%= text_field_tag :catalogue_q,
-                           @catalogue_query,
-                           id: "catalogue_q",
-                           placeholder: t("corpus_viewer.work_search.placeholder", default: "Work title") %>
-      </label>
-
-      <div class="corpus-work-search__options">
-        <label>
-          <%= radio_button_tag :catalogue_order, "asc", @catalogue_order != "desc", id: "catalogue_order_asc" %>
-          <%= t("corpus_viewer.work_search.earliest_first", default: "Earliest first") %>
-        </label>
-        <label>
-          <%= radio_button_tag :catalogue_order, "desc", @catalogue_order == "desc", id: "catalogue_order_desc" %>
-          <%= t("corpus_viewer.work_search.latest_first", default: "Latest first") %>
-        </label>
-        <label>
-          <%= hidden_field_tag :catalogue_geography, "0" %>
-          <%= check_box_tag :catalogue_geography, "1", @catalogue_geography == true, id: "catalogue_geography" %>
-          <%= t("corpus_viewer.work_search.group_geography", default: "Group by geography") %>
-        </label>
-      </div>
-
-      <%= submit_tag t("corpus_viewer.work_search.submit", default: "Search"), class: "corpus-btn corpus-btn-primary" %>
-    <% end %>
-
-    <% if @catalogue_search_active %>
-      <div class="corpus-work-search__back">
-        <%= link_to t("corpus_viewer.work_search.back_to_browse", default: "Return to folder browsing"), corpus_viewer_path(format: nil) %>
-      </div>
-    <% end %>
-  </section>
-<% end %>
-
-<% unless @catalogue_search_active || @work_folder_view %>
+﻿<% unless @work_folder_view %>
   <%= form_with url: request.path, method: :get, local: true, class: "corpus-sort-controls" do %>
     <div class="corpus-sort-controls__field">
       <label for="corpus_sort"><%= t("corpus_viewer.sorting.label", default: "Order") %></label>
@@ -109,7 +55,6 @@
     <%= submit_tag t("common.actions.apply", default: "Apply"), class: "corpus-sort-controls__apply" %>
   <% end %>
 <% end %>
-
 
 <% if @directory_page && @directory_page.total_pages.to_i > 1 %>
   <style>

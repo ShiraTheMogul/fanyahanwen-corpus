@@ -1,174 +1,400 @@
-<h1><%= t("home.title") %></h1>
+﻿<style>
+  .corpus-home {
+    max-width: 76rem;
+    margin: 0 auto;
+  }
 
-<div class="home-hero">
-  <div class="home-hero-right" aria-label="<%= t("home.hero.daily_reading_aria") %>">
-    <%= render "shared/daily_shijing_widget" %>
+  .corpus-home__primary {
+    min-width: 0;
+  }
+
+  .corpus-home__intro {
+    max-width: 48rem;
+    margin: 0 0 1.4rem;
+    font-size: 1.05rem;
+  }
+
+  .corpus-home__search {
+    margin: 1rem 0 1.35rem;
+    padding: 1rem;
+    border: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+    border-radius: .7rem;
+    background: color-mix(in srgb, currentColor 3%, transparent);
+  }
+
+  .corpus-home__search-label {
+    display: block;
+    margin-bottom: .45rem;
+    font-weight: 700;
+    font-size: 1.08rem;
+  }
+
+  .corpus-home__search-row {
+    display: flex;
+    gap: .55rem;
+    align-items: stretch;
+  }
+
+  .corpus-home__search-input {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: .72rem .8rem;
+    border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+    border-radius: .4rem;
+    font: inherit;
+    background: Canvas;
+    color: CanvasText;
+  }
+
+  .corpus-home__search-submit {
+    padding: .72rem 1.05rem;
+    white-space: nowrap;
+  }
+
+  .corpus-home__content-grid {
+    position: relative;
+    margin: 0 0 1.8rem;
+  }
+
+  .corpus-home__browse-panel > h2,
+  .corpus-home__daily > h2 {
+    margin-top: 0;
+  }
+
+  .corpus-home__browse {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .9rem;
+    margin: 0;
+  }
+
+  .corpus-home__browse-card {
+    display: block;
+    min-height: 9.5rem;
+    padding: 1.15rem 1.2rem;
+    border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+    border-radius: .7rem;
+    color: inherit;
+    text-decoration: none;
+    background: color-mix(in srgb, currentColor 2%, transparent);
+  }
+
+  a.corpus-home__browse-card:hover,
+  a.corpus-home__browse-card:focus-visible,
+  .corpus-home__browse-card--author:focus-within {
+    border-color: color-mix(in srgb, currentColor 55%, transparent);
+    background: color-mix(in srgb, currentColor 6%, transparent);
+  }
+
+  .corpus-home__browse-title {
+    display: block;
+    margin-bottom: .35rem;
+    font-size: 1.35rem;
+    font-weight: 700;
+  }
+
+  .corpus-home__browse-description {
+    display: block;
+    line-height: 1.5;
+    opacity: .82;
+  }
+
+  .corpus-home__browse-card--author .corpus-home__browse-title {
+    display: inline-block;
+  }
+
+  .corpus-home__author-search {
+    display: flex;
+    gap: .45rem;
+    margin-top: .85rem;
+  }
+
+  .corpus-home__author-search-input {
+    min-width: 0;
+    flex: 1 1 auto;
+    padding: .55rem .65rem;
+    border: 1px solid color-mix(in srgb, currentColor 28%, transparent);
+    border-radius: .4rem;
+    font: inherit;
+    background: Canvas;
+    color: CanvasText;
+  }
+
+  .corpus-home__author-search-submit {
+    flex: 0 0 auto;
+    padding: .55rem .75rem;
+    white-space: nowrap;
+  }
+
+  .corpus-home__section {
+    margin: 1.8rem 0;
+  }
+
+  .corpus-home__section > h2 {
+    margin-bottom: .7rem;
+  }
+
+  .corpus-home__results-summary {
+    margin: .25rem 0 .9rem;
+    opacity: .82;
+  }
+
+  .corpus-home__result-group {
+    margin: 1rem 0 1.35rem;
+  }
+
+  .corpus-home__result-group > h3 {
+    margin: 0 0 .35rem;
+    font-size: 1.02rem;
+  }
+
+  .corpus-home__result-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+  }
+
+  .corpus-home__result {
+    display: grid;
+    grid-template-columns: minmax(7rem, 10rem) minmax(0, 1fr);
+    gap: .8rem;
+    padding: .6rem 0;
+    border-bottom: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+  }
+
+  .corpus-home__result-date {
+    opacity: .72;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .corpus-home__result-title {
+    font-size: 1.07rem;
+  }
+
+  .corpus-home__result-meta {
+    margin-top: .15rem;
+    font-size: .9rem;
+    opacity: .76;
+  }
+
+  .corpus-home__error {
+    padding: .8rem 1rem;
+    border: 1px solid currentColor;
+    border-radius: .5rem;
+  }
+
+  .corpus-home__pages {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .6rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+
+  .corpus-home__pages .is-disabled {
+    opacity: .4;
+  }
+
+  .corpus-home__reading-rail {
+    min-width: 0;
+  }
+
+  .corpus-home__daily {
+    margin: 0;
+    min-width: 0;
+  }
+
+  /* On a genuinely wide desktop, use the otherwise-empty right margin as a
+     reading rail. Browse keeps its full width; poem/reading widgets can stack
+     down this rail later without becoming a third Browse card. */
+  @media (min-width: 1728px) {
+    .corpus-home__reading-rail {
+      position: absolute;
+      left: calc(100% + 1rem);
+      top: 0;
+      width: clamp(15rem, calc(50vw - 39rem), 20rem);
+    }
+  }
+
+  @media (max-width: 1727px) {
+    .corpus-home__reading-rail {
+      max-width: 34rem;
+      margin-top: 1.8rem;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .corpus-home__browse {
+      grid-template-columns: 1fr;
+    }
+
+    .corpus-home__search-row,
+    .corpus-home__author-search {
+      flex-direction: column;
+    }
+
+    .corpus-home__result {
+      grid-template-columns: 1fr;
+      gap: .18rem;
+    }
+  }
+</style>
+
+<div class="corpus-home">
+  <h1><%= t("home.discovery.title", default: "Fanya Hanwen Corpus") %></h1>
+  <p class="corpus-home__intro"><%= t("home.discovery.introduction", default: "Find a Literary Chinese text by title, region, or author.") %></p>
+
+  <div class="corpus-home__primary">
+    <section class="corpus-home__search" aria-labelledby="corpus-home-title-search">
+      <%= form_with url: root_path, method: :get, local: true do %>
+        <label id="corpus-home-title-search" class="corpus-home__search-label" for="catalogue_q">
+          <%= t("home.discovery.title_search.label", default: "Search by Title") %>
+        </label>
+        <div class="corpus-home__search-row">
+          <%= text_field_tag :catalogue_q,
+                             params[:catalogue_q],
+                             id: "catalogue_q",
+                             class: "corpus-home__search-input",
+                             placeholder: t("home.discovery.title_search.placeholder", default: "Enter a work title, e.g. 論語") %>
+          <%= submit_tag t("home.discovery.title_search.submit", default: "Search"),
+                         class: "corpus-btn corpus-btn-primary corpus-home__search-submit" %>
+        </div>
+      <% end %>
+    </section>
   </div>
-  <div class="home-hero-left">
-    <p><%= t("home.hero.summary") %></p>
-  </div>
-</div>
 
-<h2><%= t("home.introduction.heading") %></h2>
-<p><%= t("home.introduction.body") %></p>
+  <div class="corpus-home__content-grid">
+    <div class="corpus-home__primary">
+      <section class="corpus-home__browse-panel" aria-labelledby="corpus-home-browse-heading">
+        <h2 id="corpus-home-browse-heading"><%= t("home.discovery.browse.heading", default: "Browse the corpus") %></h2>
+        <div class="corpus-home__browse">
+          <%= link_to corpus_viewer_path, class: "corpus-home__browse-card" do %>
+            <span class="corpus-home__browse-title"><%= t("home.discovery.browse.region", default: "Browse by Region") %></span>
+            <span class="corpus-home__browse-description"><%= t("home.discovery.browse.region_description", default: "Explore the corpus through its geographic and historical collections.") %></span>
+          <% end %>
 
-<h2>
-  <%= t("home.corpus_viewer.heading") %>
-  <%= link_to t("home.corpus_viewer.link"), corpus_viewer_path %>
-</h2>
-<%= render "corpus_activity" %>
-<p><%= t("home.corpus_viewer.introduction") %></p>
-<p><%= t("home.corpus_viewer.includes") %></p>
-<ul>
-  <% t("home.corpus_viewer.features").each_value do |feature| %>
-    <li><%= feature %></li>
+          <article class="corpus-home__browse-card corpus-home__browse-card--author">
+            <%= link_to t("home.discovery.browse.author", default: "Browse by Author"),
+                        authors_path,
+                        class: "corpus-home__browse-title" %>
+            <span class="corpus-home__browse-description"><%= t("home.discovery.browse.author_description", default: "Find people recorded in the corpus and open the works credited to them.") %></span>
+
+            <%= form_with url: authors_path, method: :get, local: true, class: "corpus-home__author-search" do %>
+              <label class="sr-only" for="home_author_name"><%= t("home.discovery.browse.author_search_label", default: "Search by author") %></label>
+              <%= text_field_tag :name,
+                                 nil,
+                                 id: "home_author_name",
+                                 class: "corpus-home__author-search-input",
+                                 placeholder: t("home.discovery.browse.author_search_placeholder", default: "Search an author, e.g. 司馬遷") %>
+              <%= submit_tag t("home.discovery.browse.author_search_submit", default: "Find"),
+                             class: "corpus-btn corpus-home__author-search-submit" %>
+            <% end %>
+          </article>
+        </div>
+      </section>
+
+      <%# Search results and activity stay in the main discovery column. %>
+
+  <% if params[:catalogue_q].present? %>
+    <section class="corpus-home__section" aria-labelledby="corpus-home-results-heading">
+      <h2 id="corpus-home-results-heading"><%= t("home.discovery.results.heading", default: "Title search results") %></h2>
+
+      <% if @catalogue_error.present? %>
+        <p class="corpus-home__error">
+          <strong><%= t("home.discovery.results.unavailable", default: "The title index is unavailable.") %></strong>
+          <%= t("home.discovery.results.unavailable_hint", default: "Rebuild the work catalogue and try again.") %>
+        </p>
+      <% else %>
+        <p class="corpus-home__results-summary">
+          <%= t("home.discovery.results.count",
+                count: @catalogue_page.total,
+                query: @catalogue_query,
+                default: "%{count} works matching “%{query}”.") %>
+        </p>
+
+        <%
+          date_label_for = lambda do |row|
+            ys = row["year_start"]
+            ye = row["year_end"]
+            if ys.nil? && ye.nil?
+              row["date_text"].presence || row["period"].presence || row["polity"].presence || t("home.discovery.results.date_unknown", default: "Date unknown")
+            elsif ys == ye || ye.nil?
+              ys.to_i < 0 ? t("home.discovery.results.year_bce", year: ys.to_i.abs, default: "%{year} BCE") : t("home.discovery.results.year_ce", year: ys, default: "%{year} CE")
+            else
+              left = ys.to_i < 0 ? t("home.discovery.results.year_bce", year: ys.to_i.abs, default: "%{year} BCE") : t("home.discovery.results.year_ce", year: ys, default: "%{year} CE")
+              right = ye.to_i < 0 ? t("home.discovery.results.year_bce", year: ye.to_i.abs, default: "%{year} BCE") : t("home.discovery.results.year_ce", year: ye, default: "%{year} CE")
+              "#{left}–#{right}"
+            end
+          end
+          geography_key = lambda do |row|
+            row["macro_region"].presence || row["corpus_root"].presence || row["nation"].presence || t("home.discovery.results.other_geography", default: "Other")
+          end
+          result_groups = @catalogue_page.items.group_by { |row| geography_key.call(row) }
+        %>
+
+        <% if @catalogue_page.items.empty? %>
+          <p><%= t("home.discovery.results.none", query: @catalogue_query, default: "No works matched “%{query}”.") %></p>
+        <% else %>
+          <% result_groups.each do |geography, rows| %>
+            <section class="corpus-home__result-group">
+              <h3><%= geography %></h3>
+              <ol class="corpus-home__result-list">
+                <% rows.each do |row| %>
+                  <li class="corpus-home__result">
+                    <div class="corpus-home__result-date"><%= date_label_for.call(row) %></div>
+                    <div>
+                      <div class="corpus-home__result-title">
+                        <%= link_to row["display_title"], corpus_viewer_path(row["folder_path"].to_s.split("/"), format: nil) %>
+                      </div>
+                      <% context = [row["author"], row["period"], row["polity"], row["region"]].select(&:present?).uniq %>
+                      <% if context.any? %>
+                        <div class="corpus-home__result-meta"><%= context.join(" · ") %></div>
+                      <% end %>
+                    </div>
+                  </li>
+                <% end %>
+              </ol>
+            </section>
+          <% end %>
+        <% end %>
+
+        <% if @catalogue_page.total_pages > 1 %>
+          <% base_params = request.query_parameters.except("page") %>
+          <% page_href = ->(number) { "#{root_path}?#{base_params.merge("page" => number).to_query}" } %>
+          <% page = @catalogue_page.page %>
+          <% last = @catalogue_page.total_pages %>
+          <nav class="corpus-home__pages" aria-label="<%= t('home.discovery.results.pagination_aria', default: 'Title search pages') %>">
+            <% if page > 1 %>
+              <%= link_to t("home.discovery.results.previous", default: "Previous"), page_href.call(page - 1), rel: "prev" %>
+            <% else %>
+              <span class="is-disabled"><%= t("home.discovery.results.previous", default: "Previous") %></span>
+            <% end %>
+            <span><%= t("home.discovery.results.page_status", page: page, pages: last, default: "%{page} / %{pages}") %></span>
+            <% if page < last %>
+              <%= link_to t("home.discovery.results.next", default: "Next"), page_href.call(page + 1), rel: "next" %>
+            <% else %>
+              <span class="is-disabled"><%= t("home.discovery.results.next", default: "Next") %></span>
+            <% end %>
+          </nav>
+        <% end %>
+      <% end %>
+    </section>
   <% end %>
-</ul>
 
-<h2><%= t("home.dictionary.heading") %></h2>
-<p><%= t("home.dictionary.overview") %></p>
-<p><%= t("home.dictionary.sources") %></p>
-<p><%= t("home.dictionary.planned_intro") %></p>
-<%= render "dictionary_wishlist" %>
-<p><%= t("home.dictionary.wider_scope") %></p>
-
-<h2><%= t("home.submission.heading") %></h2>
-<div data-controller="corpus-submission-ticket"
-     data-corpus-submission-ticket-source-value="homepage"
-     data-corpus-submission-ticket-parent-path-value=""
-     data-corpus-submission-ticket-lock-parent-path-value="false">
-  <p><%= t("home.submission.introduction") %></p>
-  <p>
-    <button type="button" class="corpus-btn corpus-btn-primary" data-action="corpus-submission-ticket#toggle">
-      <%= t("home.submission.open_button") %>
-    </button>
-  </p>
-
-  <div class="cv-text-edit-panel cv-submission-panel hidden" data-corpus-submission-ticket-target="panel">
-    <h3 style="margin-top: 0;"><%= t("corpus_viewer.directory_submission.heading") %></h3>
-    <p class="cv-hint">
-      <%= t("home.submission.path_hint_html",
-            first_path: tag.code("越南漢文/clean"),
-            second_path: tag.code("越南漢文/clean/皇黎一統志")) %>
-    </p>
-
-    <form data-action="submit->corpus-submission-ticket#submit">
-      <div class="cv-form-row">
-        <label><%= t("corpus_viewer.directory_submission.parent_directory") %></label>
-        <input type="text" class="cv-input cv-mono" placeholder="<%= t("home.submission.parent_path_placeholder") %>" data-corpus-submission-ticket-target="parentPath" />
-      </div>
-      <div class="cv-form-row">
-        <label><%= t("corpus_viewer.directory_submission.work_folder") %></label>
-        <input type="text" class="cv-input" data-corpus-submission-ticket-target="workFolder" />
-      </div>
-      <div class="cv-form-row">
-        <label><%= t("corpus_viewer.directory_submission.ticket_title") %></label>
-        <input type="text" class="cv-input" value="<%= t("corpus_viewer.directory_submission.default_ticket_title") %>" data-corpus-submission-ticket-target="title" />
-      </div>
-      <div class="cv-form-row">
-        <label><%= t("corpus_viewer.directory_submission.short_summary") %></label>
-        <input type="text" class="cv-input" data-corpus-submission-ticket-target="summary" />
-      </div>
-      <div class="cv-form-row">
-        <label><%= t("corpus_viewer.directory_submission.content_role") %></label>
-        <select class="cv-input" data-corpus-submission-ticket-target="textType">
-          <option value="source"><%= t("corpus_viewer.directory_submission.roles.source") %></option>
-          <option value="kanbun"><%= t("corpus_viewer.directory_submission.roles.kanbun") %></option>
-          <option value="hanmun"><%= t("corpus_viewer.directory_submission.roles.hanmun") %></option>
-          <option value="hanvan"><%= t("corpus_viewer.directory_submission.roles.hanvan") %></option>
-        </select>
-      </div>
-      <div class="cv-form-row">
-        <label><%= t("corpus_viewer.directory_submission.metadata_fields.nation") %></label>
-        <input type="text" class="cv-input" data-corpus-submission-ticket-target="nation" />
-      </div>
-      <div class="cv-form-row">
-        <label><%= t("corpus_viewer.directory_submission.metadata_fields.work_title") %></label>
-        <input type="text" class="cv-input" data-corpus-submission-ticket-target="workTitle" />
-      </div>
-      <div class="cv-form-row">
-        <label><%= t("corpus_viewer.directory_submission.metadata_fields.author") %></label>
-        <input type="text" class="cv-input" data-corpus-submission-ticket-target="author" />
-      </div>
-      <div class="cv-form-row">
-        <label><%= t("corpus_viewer.directory_submission.metadata_fields.source") %></label>
-        <input type="text" class="cv-input" placeholder="<%= t("corpus_viewer.directory_submission.source_placeholder") %>" data-corpus-submission-ticket-target="sourceCitation" />
-      </div>
-      <div class="cv-form-row">
-        <label><%= t("corpus_viewer.directory_submission.metadata_fields.url") %></label>
-        <input type="url" class="cv-input" placeholder="<%= t("corpus_viewer.directory_submission.url_placeholder") %>" data-corpus-submission-ticket-target="url" />
-      </div>
-      <div class="cv-form-row">
-        <label><%= t("corpus_viewer.directory_submission.context_and_rights") %></label>
-        <textarea class="cv-textarea" rows="4" placeholder="<%= t("corpus_viewer.directory_submission.context_placeholder") %>" data-corpus-submission-ticket-target="contextDetails"></textarea>
-      </div>
-      <div class="cv-form-row">
-        <label><%= t("corpus_viewer.directory_submission.reference_files") %></label>
-        <input type="file" class="cv-input" multiple data-corpus-submission-ticket-target="uploads" />
-        <div class="cv-hint"><%= t("corpus_viewer.directory_submission.reference_files_hint") %></div>
-      </div>
-      <div class="cv-form-row">
-        <label><%= t("corpus_viewer.directory_submission.page_setup") %></label>
-        <select class="cv-input" data-corpus-submission-ticket-target="pageMode" data-action="change->corpus-submission-ticket#togglePageMode">
-          <option value="single"><%= t("corpus_viewer.directory_submission.single_file") %></option>
-          <option value="multi"><%= t("corpus_viewer.directory_submission.multiple_files") %></option>
-        </select>
-      </div>
-      <div data-corpus-submission-ticket-target="singleFields">
-        <div class="cv-form-row">
-          <label><%= t("corpus_viewer.directory_submission.file_name") %></label>
-          <input type="text" class="cv-input" placeholder="<%= t("corpus_viewer.directory_submission.file_name_placeholder") %>" data-corpus-submission-ticket-target="fileName" />
-        </div>
-        <div class="cv-form-row">
-          <label><%= t("corpus_viewer.directory_submission.metadata_fields.page_title") %></label>
-          <input type="text" class="cv-input" data-corpus-submission-ticket-target="pageTitle" />
-        </div>
-        <div class="cv-form-row">
-          <label><%= t("corpus_viewer.directory_submission.text_body") %></label>
-          <textarea class="cv-textarea cv-mono" rows="16" data-corpus-submission-ticket-target="body"></textarea>
-        </div>
-      </div>
-      <div data-corpus-submission-ticket-target="multiFields" hidden>
-        <div class="cv-form-row">
-          <label><%= t("corpus_viewer.directory_submission.pages") %></label>
-          <div data-corpus-submission-ticket-target="pagesList"></div>
-        </div>
-        <div class="cv-form-actions">
-          <button type="button" class="corpus-btn" data-action="corpus-submission-ticket#addPage"><%= t("common.actions.add_page") %></button>
-        </div>
-        <p class="cv-hint"><%= t("corpus_viewer.directory_submission.pages_hint_html") %></p>
-      </div>
-      <%= render "corpus_viewer/ticket_optional_fields",
-                 stimulus_controller: "corpus-submission-ticket",
-                 include_uploads: false %>
-      <div class="cv-form-actions">
-        <button type="submit" class="corpus-btn corpus-btn-primary"><%= t("common.actions.submit_ticket") %></button>
-        <button type="button" class="corpus-btn" data-action="corpus-submission-ticket#toggle"><%= t("common.actions.close") %></button>
-      </div>
-    </form>
-
-    <div class="cv-ticket-result">
-      <div class="cv-ticket-status" data-corpus-submission-ticket-target="status"></div>
-      <div class="cv-ticket-kv">
-        <div><strong><%= t("common.tickets.ticket_id") %></strong> <span data-corpus-submission-ticket-target="ticketId"></span></div>
-        <div>
-          <strong><%= t("common.tickets.ticket_key") %></strong>
-          <code data-corpus-submission-ticket-target="ticketKey"></code>
-          <button type="button" class="corpus-btn" data-corpus-submission-ticket-target="copyKeyBtn" data-action="corpus-submission-ticket#copyKey"><%= t("common.actions.copy") %></button>
-          <button type="button" class="corpus-btn" data-corpus-submission-ticket-target="downloadKeyBtn" data-action="corpus-submission-ticket#downloadKey" hidden><%= t("common.actions.download_txt") %></button>
-        </div>
-      </div>
+      <section class="corpus-home__section" aria-labelledby="corpus-home-activity-heading">
+        <h2 id="corpus-home-activity-heading"><%= t("home.discovery.activity_heading", default: "Latest texts and edits") %></h2>
+        <%= render "corpus_activity" %>
+      </section>
     </div>
+
+    <aside class="corpus-home__reading-rail" aria-label="<%= t('home.discovery.daily_heading', default: 'Read something now') %>">
+      <section class="corpus-home__section corpus-home__daily" aria-labelledby="corpus-home-daily-heading">
+        <h2 id="corpus-home-daily-heading"><%= t("home.discovery.daily_heading", default: "Read something now") %></h2>
+        <%= render "shared/daily_shijing_widget" %>
+      </section>
+      <%# Future poem/reading widgets can stack here without narrowing Browse. %>
+    </aside>
   </div>
 </div>
-
-<h2><%= t("home.future_plans.heading") %></h2>
-<p><%= t("home.future_plans.body") %></p>
-
-<h2><%= t("home.publications.heading") %></h2>
-<p><%= t("home.publications.introduction") %></p>
-<%= render "publications" %>
-
-<h2><%= t("home.references.heading") %></h2>
-<p><%= t("home.references.introduction") %></p>
-<%= render "references" %>

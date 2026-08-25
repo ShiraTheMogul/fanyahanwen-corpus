@@ -1,100 +1,349 @@
+﻿<style>
+  <%# The reader toolbar now exposes maintenance/contribution actions. Reading
+      controls remain in the DOM as controller targets, but the rightbar owns
+      their visible UI. This avoids duplicating state-handling code. %>
+  .corpus-toolbar [data-action*="corpus-reader#toggleVertical"],
+  .corpus-toolbar [data-action*="corpus-reader#cycleTheme"],
+  .corpus-toolbar [data-action*="corpus-reader#cyclePunctPreset"],
+  .corpus-toolbar [data-action*="corpus-reader#togglePunctMenu"],
+  .corpus-toolbar [data-action*="corpus-reader#toggleJudou"],
+  .corpus-toolbar [data-action*="corpus-annotations#toggleNotes"],
+  .corpus-toolbar [data-action*="corpus-annotations#openColorSettings"] {
+    display: none !important;
+  }
+
+  /* Once reading controls move into the rightbar there is no reason for the
+     maintenance controls to float at the far edge of an otherwise empty bar. */
+  .corpus-toolbar {
+    justify-content: flex-start !important;
+  }
+
+  .corpus-toolbar > .corpus-toolbar-spacer {
+    display: none !important;
+  }
+
+  .corpus-toolbar > .corpus-toolbar-editing {
+    margin-left: 0 !important;
+    justify-content: flex-start !important;
+  }
+
+  @media (max-width: 900px) {
+    .corpus-toolbar > .corpus-toolbar-editing {
+      width: auto !important;
+    }
+  }
+
+  .rightbar-action {
+    width: 100%;
+    text-align: left;
+  }
+
+  .rightbar-status {
+    font-size: .88rem;
+    opacity: .72;
+  }
+
+  .rightbar-explanation {
+    margin: .35rem 0 0;
+    font-size: .88rem;
+    line-height: 1.4;
+    opacity: .78;
+  }
+
+  .corpus-judou-fieldset .corpus-judou-fieldset__hint {
+    margin-top: .35rem;
+    font-size: .9em;
+    opacity: .75;
+  }
+</style>
+
 <%= stylesheet_link_tag "chengyu_study", "data-turbo-track": "reload" %>
 
-<%# Right sidebar for the corpus viewer.
-    Reuses the dictionary's view options form and adds viewer-only toggles.
-%>
-
+<%# Corpus Viewer reader settings. Keep this partial reader-specific: the
+    Dictionary has a separate rightbar and should be free to evolve independently. %>
 <% content_for :rightbar do %>
-  <h3><%= t("corpus_viewer.rightbar.heading") %></h3>
-  <details class="rightbar-section rightbar-group" open data-controller="corpus-rightbar">
-    <summary class="rightbar-summary"><strong><%= t("corpus_viewer.rightbar.group") %></strong></summary>
+  <h3><%= t("corpus_viewer.rightbar.reader_heading", default: "Reader settings") %></h3>
 
-    <div class="rightbar-row">
-      <label for="cv_theme"><%= t("corpus_viewer.rightbar.reader_theme") %></label>
-      <select id="cv_theme" class="rightbar-select"
-              data-corpus-rightbar-target="theme"
-              data-action="change->corpus-rightbar#change">
-        <option value="light"><%= t("corpus_viewer.rightbar.themes.light") %></option>
-        <option value="bamboo"><%= t("corpus_viewer.rightbar.themes.bamboo") %></option>
-        <option value="dark"><%= t("corpus_viewer.rightbar.themes.dark") %></option>
-      </select>
-    </div>
+  <div data-controller="corpus-rightbar"
+       data-judou-heading="<%= t('corpus_viewer.rightbar.judou_heading', default: '句讀 Judou') %>"
+       data-judou-toggle-label="<%= t('corpus_viewer.rightbar.judou_toggle', default: 'Enable 句讀 display') %>"
+       data-judou-hint="<%= t('corpus_viewer.rightbar.judou_hint', default: 'Controls the text’s 句讀 punctuation and underlining layer.') %>"
+       data-auto-annotation-error="<%= t('corpus_viewer.rightbar.auto_annotation_error', default: 'Automatic annotations could not be loaded. Manual corpus annotations are stored separately and remain available.') %>">
+    <details class="rightbar-section rightbar-group" open>
+      <summary class="rightbar-summary"><strong><%= t("corpus_viewer.rightbar.reading", default: "Reading") %></strong></summary>
 
-    <div class="rightbar-row">
-      <label for="cv_vertical"><%= t("corpus_viewer.rightbar.vertical_text") %></label>
-      <input id="cv_vertical" type="checkbox"
-             data-corpus-rightbar-target="vertical"
-             data-action="change->corpus-rightbar#change">
-    </div>
-
-    <div class="rightbar-row">
-      <label for="cv_vflow"><%= t("corpus_viewer.rightbar.vertical_flow") %></label>
-      <select id="cv_vflow" class="rightbar-select"
-              data-corpus-rightbar-target="vflow"
-              data-action="change->corpus-rightbar#change">
-        <option value="rl"><%= t("corpus_viewer.rightbar.flows.right_to_left") %></option>
-        <option value="lr"><%= t("corpus_viewer.rightbar.flows.left_to_right") %></option>
-      </select>
-    </div>
-
-    <div class="rightbar-row rightbar-row-stack">
-      <label><%= t("corpus_viewer.rightbar.font_size") %></label>
-      <div class="rightbar-inline">
-        <button type="button" class="rightbar-btn" data-size="16" data-action="click->corpus-rightbar#setSize"> <%= t("corpus_viewer.rightbar.sizes.small") %></button>
-        <button type="button" class="rightbar-btn" data-size="20" data-action="click->corpus-rightbar#setSize"> <%= t("corpus_viewer.rightbar.sizes.medium") %></button>
-        <button type="button" class="rightbar-btn" data-size="24" data-action="click->corpus-rightbar#setSize"> <%= t("corpus_viewer.rightbar.sizes.large") %></button>
+      <div class="rightbar-row">
+        <label for="cv_theme"><%= t("corpus_viewer.rightbar.reader_background", default: "Reader background") %></label>
+        <select id="cv_theme" class="rightbar-select"
+                data-corpus-rightbar-target="theme"
+                data-action="change->corpus-rightbar#change">
+          <option value="light"><%= t("corpus_viewer.rightbar.themes.light") %></option>
+          <option value="bamboo"><%= t("corpus_viewer.rightbar.themes.bamboo") %></option>
+          <option value="dark"><%= t("corpus_viewer.rightbar.themes.dark") %></option>
+        </select>
       </div>
-      <div class="rightbar-inline">
-        <input id="cv_fontsize" type="number" min="10" max="72" step="1"
-               class="rightbar-input"
-               inputmode="numeric"
-               aria-label="<%= t("corpus_viewer.rightbar.font_size_aria") %>"
-               data-corpus-rightbar-target="fontsize"
-               data-action="input->corpus-rightbar#change">
-        <span class="rightbar-unit">px</span>
+
+      <div class="rightbar-row">
+        <label for="cv_vertical"><%= t("corpus_viewer.rightbar.vertical_text") %></label>
+        <input id="cv_vertical" type="checkbox"
+               data-corpus-rightbar-target="vertical"
+               data-action="change->corpus-rightbar#change">
       </div>
-    </div>
+
+      <div class="rightbar-row">
+        <label for="cv_vflow"><%= t("corpus_viewer.rightbar.vertical_flow") %></label>
+        <select id="cv_vflow" class="rightbar-select"
+                data-corpus-rightbar-target="vflow"
+                data-action="change->corpus-rightbar#change">
+          <option value="rl"><%= t("corpus_viewer.rightbar.flows.right_to_left") %></option>
+          <option value="lr"><%= t("corpus_viewer.rightbar.flows.left_to_right") %></option>
+        </select>
+      </div>
+
+      <div class="rightbar-row rightbar-row-stack">
+        <label><%= t("corpus_viewer.rightbar.font_size") %></label>
+        <div class="rightbar-inline">
+          <button type="button" class="rightbar-btn" data-size="16" data-action="click->corpus-rightbar#setSize"><%= t("corpus_viewer.rightbar.sizes.small") %></button>
+          <button type="button" class="rightbar-btn" data-size="20" data-action="click->corpus-rightbar#setSize"><%= t("corpus_viewer.rightbar.sizes.medium") %></button>
+          <button type="button" class="rightbar-btn" data-size="24" data-action="click->corpus-rightbar#setSize"><%= t("corpus_viewer.rightbar.sizes.large") %></button>
+        </div>
+        <div class="rightbar-inline">
+          <input id="cv_fontsize" type="number" min="10" max="72" step="1"
+                 class="rightbar-input"
+                 inputmode="numeric"
+                 aria-label="<%= t("corpus_viewer.rightbar.font_size_aria") %>"
+                 data-corpus-rightbar-target="fontsize"
+                 data-action="input->corpus-rightbar#change">
+          <span class="rightbar-unit">px</span>
+        </div>
+      </div>
+    </details>
+
+    <details class="rightbar-section rightbar-group">
+      <summary class="rightbar-summary"><strong><%= t("corpus_viewer.rightbar.text_display", default: "Text display") %></strong></summary>
+
+      <%= form_with url: preferences_path, method: :post, local: true,
+            data: {
+              controller: "preferences",
+              action: "submit->preferences#submit change->preferences#autosubmit",
+              preferences_current_mandarin_scheme_value: "",
+              preferences_current_cantonese_scheme_value: "",
+              preferences_current_ruby_enabled_value: "",
+              preferences_current_ruby_source_value: "",
+              preferences_current_ruby_orientation_value: "",
+              preferences_current_ruby_side_value: "",
+              preferences_current_ruby_token_value: "",
+              preferences_current_script_mode_value: (session[:script_mode] || :original).to_s,
+              preferences_current_han_font_value: (session[:han_font] || HanFonts.default_key).to_s,
+              preferences_current_han_font_scope_value: "",
+              preferences_current_han_font_warn_missing_value: ""
+            } do %>
+        <%= hidden_field_tag :return_to, request.fullpath %>
+
+        <div class="rightbar-row">
+          <label for="script_mode"><%= t("view_options.script.convert_text") %></label>
+          <%= select_tag :script_mode,
+                options_for_select(
+                  [[t("view_options.script.original"), "original"],
+                   [t("view_options.script.traditional"), "traditional"],
+                   [t("view_options.script.simplified"), "simplified"]],
+                  (session[:script_mode] || :original).to_s
+                ),
+                class: "rightbar-select" %>
+        </div>
+
+        <div class="rightbar-row">
+          <label for="han_font"><%= t("view_options.font.han_font") %></label>
+          <%= select_tag :han_font,
+                options_for_select(HanFonts.choices, (session[:han_font] || HanFonts.default_key).to_s),
+                class: "rightbar-select" %>
+        </div>
+      <% end %>
+    </details>
+
+    <% unless @display_translation.present? %>
+      <details class="rightbar-section rightbar-group" open>
+        <summary class="rightbar-summary"><strong><%= t("corpus_viewer.rightbar.punctuation", default: "Punctuation") %></strong></summary>
+
+        <div class="rightbar-row">
+          <span><%= t("corpus_viewer.rightbar.punctuation_current", default: "Current preset") %></span>
+          <span class="rightbar-status" data-corpus-rightbar-target="punctStatus">—</span>
+        </div>
+
+        <div class="rightbar-row rightbar-row-stack">
+          <button type="button"
+                  class="rightbar-btn rightbar-action"
+                  data-corpus-rightbar-target="punctOpen"
+                  data-action="click->corpus-rightbar#openPunctuation">
+            <%= t("corpus_viewer.rightbar.punctuation_settings", default: "Punctuation and 句讀 settings…") %>
+          </button>
+          <p class="rightbar-explanation"><%= t("corpus_viewer.rightbar.punctuation_hint", default: "Quotation marks, punctuation style, repetition marks, and 句讀 are configured together.") %></p>
+        </div>
+      </details>
+    <% end %>
+
+    <details class="rightbar-section rightbar-group">
+      <summary class="rightbar-summary"><strong><%= t("corpus_viewer.rightbar.pronunciation", default: "Pronunciation") %></strong></summary>
+
+      <div class="rightbar-row">
+        <label for="cv_ruby_ondemand"><%= t("corpus_viewer.rightbar.on_demand_ruby", default: "Show pronunciation on right-click") %></label>
+        <input id="cv_ruby_ondemand" type="checkbox"
+               data-corpus-rightbar-target="rubyOnDemand"
+               data-action="change->corpus-rightbar#change">
+      </div>
+
+      <% ruby_groups = ViewOptions.ruby_source_groups %>
+      <% current_ruby_key = (session[:ruby_source] || :mandarin).to_s %>
+      <% current_ruby_family = PronunciationRegistry.ruby_family_for_source(current_ruby_key) || ruby_groups.first&.dig(:key) %>
+
+      <%= form_with url: preferences_path, method: :post, local: true,
+            data: {
+              controller: "preferences",
+              action: "submit->preferences#submit change->preferences#autosubmit",
+              preferences_current_mandarin_scheme_value: "",
+              preferences_current_cantonese_scheme_value: "",
+              preferences_current_ruby_enabled_value: (session[:ruby_enabled] == true ? "1" : "0"),
+              preferences_current_ruby_source_value: current_ruby_key,
+              preferences_current_ruby_orientation_value: (session[:ruby_orientation] || :horizontal).to_s,
+              preferences_current_ruby_side_value: (session[:ruby_side] || :right).to_s,
+              preferences_current_ruby_token_value: (session[:ruby_token] || "").to_s,
+              preferences_current_script_mode_value: "",
+              preferences_current_han_font_value: "",
+              preferences_current_han_font_scope_value: "",
+              preferences_current_han_font_warn_missing_value: ""
+            } do %>
+        <%= hidden_field_tag :return_to, request.fullpath %>
+
+        <div id="ruby_section"
+             data-controller="ruby-source"
+             data-ruby-source-groups-value="<%= h(ruby_groups.to_json) %>"
+             data-ruby-source-current-value="<%= h(current_ruby_key) %>">
+          <div class="rightbar-row">
+            <label for="ruby_family"><%= t("view_options.ruby.reading_family") %></label>
+            <%= select_tag :ruby_family,
+                  options_for_select(ruby_groups.map { |group| [group[:label], group[:key]] }, current_ruby_family),
+                  class: "rightbar-select",
+                  data: { ruby_source_target: "family", action: "change->ruby-source#changeFamily" } %>
+          </div>
+
+          <div class="rightbar-row">
+            <label for="ruby_source_choice"><%= t("view_options.ruby.variety_system") %></label>
+            <%= select_tag :ruby_source_choice,
+                  "".html_safe,
+                  class: "rightbar-select",
+                  data: { ruby_source_target: "source", action: "change->ruby-source#changeSource" } %>
+          </div>
+
+          <%= hidden_field_tag :ruby_source, current_ruby_key, data: { ruby_source_target: "hidden" } %>
+        </div>
+
+        <div class="rightbar-row">
+          <label for="ruby_enabled"><%= t("view_options.ruby.show_all") %></label>
+          <%= hidden_field_tag :ruby_enabled, "0", id: "ruby_enabled_hidden" %>
+          <%= check_box_tag :ruby_enabled, "1",
+                (session[:ruby_enabled] == true || session[:ruby_enabled].to_s == "1" || session[:ruby_enabled].to_s == "true") %>
+        </div>
+
+        <details class="rightbar-credits">
+          <summary><%= t("corpus_viewer.rightbar.ruby_advanced", default: "Advanced ruby layout") %></summary>
+
+          <% ruby_tokens = (ruby_reading_tokens_for(current_ruby_source) rescue []) %>
+          <% if ruby_tokens.size > 1 %>
+            <div class="rightbar-row">
+              <label for="ruby_token"><%= t("view_options.ruby.token") %></label>
+              <%= select_tag :ruby_token,
+                    options_for_select([[t("view_options.ruby.auto_first"), ""]] + ruby_tokens.map { |token| [token, token] }, (session[:ruby_token] || "").to_s),
+                    class: "rightbar-select" %>
+            </div>
+          <% else %>
+            <%= hidden_field_tag :ruby_token, "" %>
+          <% end %>
+
+          <div class="rightbar-row">
+            <label for="ruby_orientation"><%= t("view_options.ruby.layout") %></label>
+            <%= select_tag :ruby_orientation,
+                  options_for_select([[t("view_options.ruby.horizontal"), "horizontal"], [t("view_options.ruby.vertical_side"), "verticalside"]], (session[:ruby_orientation] || :horizontal).to_s),
+                  class: "rightbar-select" %>
+          </div>
+
+          <div class="rightbar-row">
+            <label for="ruby_side"><%= t("view_options.ruby.side") %></label>
+            <%= select_tag :ruby_side,
+                  options_for_select([[t("view_options.ruby.right"), "right"], [t("view_options.ruby.left"), "left"]], (session[:ruby_side] || :right).to_s),
+                  class: "rightbar-select" %>
+          </div>
+        </details>
+      <% end %>
+    </details>
+
+  <details class="rightbar-section rightbar-group" open>
+    <summary class="rightbar-summary"><strong><%= t("corpus_viewer.rightbar.annotations", default: "Annotations") %></strong></summary>
+
+    <% unless @display_translation.present? %>
+      <div class="rightbar-row rightbar-row-stack">
+        <strong><%= t("corpus_viewer.rightbar.manual_annotations", default: "Corpus annotations") %></strong>
+        <p class="rightbar-explanation"><%= t("corpus_viewer.rightbar.manual_annotations_hint", default: "Reviewed/manual annotations are stored with the corpus and mark titles, people, places, offices, ambiguous characters, and attached notes.") %></p>
+
+        <button type="button"
+                class="rightbar-btn rightbar-action"
+                data-corpus-rightbar-target="annotationColors"
+                data-action="click->corpus-rightbar#openAnnotationColors">
+          <%= t("corpus_viewer.rightbar.annotation_colours", default: "Annotation colours…") %>
+        </button>
+        <p class="rightbar-explanation"><%= t("corpus_viewer.rightbar.annotation_colours_hint", default: "Choose the underline colours for titles, people, places, offices, and note markers, including colour-vision presets.") %></p>
+      </div>
+
+      <div class="rightbar-row rightbar-row-stack">
+        <strong><%= t("corpus_viewer.rightbar.automatic_annotations", default: "Automatic annotations") %></strong>
+        <button type="button"
+                class="rightbar-btn rightbar-action"
+                data-corpus-rightbar-target="autoAnnotations"
+                data-action="click->corpus-rightbar#toggleAutoAnnotations">
+          <%= t("corpus_viewer.rightbar.automatic_annotations_toggle", default: "Toggle automatic annotations") %>
+        </button>
+        <span class="rightbar-status" data-corpus-rightbar-target="autoAnnotationStatus">—</span>
+        <p class="rightbar-explanation"><%= t("corpus_viewer.rightbar.automatic_annotations_hint", default: "Automatic suggestions are a separate display layer; they do not replace the corpus’s reviewed/manual annotations.") %></p>
+        <p class="rightbar-explanation rightbar-error-note"
+           data-corpus-rightbar-target="autoAnnotationMessage"
+           hidden></p>
+      </div>
+    <% end %>
 
     <div class="rightbar-row">
-      <label for="cv_strip"><%= t("corpus_viewer.rightbar.remove_punctuation") %></label>
-      <input id="cv_strip" type="checkbox"
-             data-corpus-rightbar-target="strip"
-             data-action="change->corpus-rightbar#change">
+      <label for="cv_reader_notes"><%= @display_translation.present? ? t("corpus_viewer.rightbar.footnotes", default: "Show footnotes") : t("corpus_viewer.rightbar.notes", default: "Show notes") %></label>
+      <input id="cv_reader_notes"
+             type="checkbox"
+             data-corpus-rightbar-target="notes"
+             data-action="change->corpus-rightbar#toggleNotes">
     </div>
 
-
-    <div class="rightbar-row">
-      <label for="cv_ruby_ondemand"><%= t("corpus_viewer.rightbar.right_click_ruby") %></label>
-      <input id="cv_ruby_ondemand" type="checkbox"
-             data-corpus-rightbar-target="rubyOnDemand"
-             data-action="change->corpus-rightbar#change">
-    </div>
-
-    <% if defined?(ChengyuForm) && ChengyuForm.table_exists? && ChengyuForm.exists? %>
+    <% if !@display_translation.present? && defined?(ChengyuForm) && ChengyuForm.table_exists? && ChengyuForm.exists? %>
       <div class="rightbar-row rightbar-row-stack chengyu-highlight-options" data-controller="chengyu-highlights">
         <div class="rightbar-inline">
-          <label for="cv_chengyu_usages">Highlight Chengyu usages</label>
+          <label for="cv_chengyu_usages"><%= t("corpus_viewer.rightbar.chengyu_usages", default: "Highlight Chengyu usages") %></label>
           <input id="cv_chengyu_usages"
                  type="checkbox"
                  data-chengyu-highlights-target="toggle"
                  data-action="change->chengyu-highlights#change">
         </div>
-        <div class="chengyu-highlight-legend">
-          <span class="chengyu-highlight-legend__item">
-            <span class="chengyu-highlight-swatch chengyu-highlight-swatch--confirmed" aria-hidden="true"></span>
-            <span><strong>Recorded source context.</strong> Structured Chengyu provenance points to this work and the form occurs here.</span>
-          </span>
-          <span class="chengyu-highlight-legend__item">
-            <span class="chengyu-highlight-swatch chengyu-highlight-swatch--possible" aria-hidden="true"></span>
-            <span><strong>Known Chengyu form.</strong> The construction occurs here; this does not claim that the writer intended the idiomatic sense.</span>
-          </span>
-        </div>
+
+        <details class="rightbar-credits">
+          <summary><%= t("corpus_viewer.rightbar.chengyu_legend", default: "How highlighting works") %></summary>
+          <div class="chengyu-highlight-legend">
+            <span class="chengyu-highlight-legend__item">
+              <span class="chengyu-highlight-swatch chengyu-highlight-swatch--confirmed" aria-hidden="true"></span>
+              <span><strong><%= t("corpus_viewer.rightbar.chengyu_recorded_heading", default: "Recorded source context.") %></strong> <%= t("corpus_viewer.rightbar.chengyu_recorded_body", default: "Structured Chengyu provenance points to this work and the form occurs here.") %></span>
+            </span>
+            <span class="chengyu-highlight-legend__item">
+              <span class="chengyu-highlight-swatch chengyu-highlight-swatch--possible" aria-hidden="true"></span>
+              <span><strong><%= t("corpus_viewer.rightbar.chengyu_known_heading", default: "Known Chengyu form.") %></strong> <%= t("corpus_viewer.rightbar.chengyu_known_body", default: "The construction occurs here; this does not claim that the writer intended the idiomatic sense.") %></span>
+            </span>
+          </div>
+        </details>
       </div>
     <% end %>
-    <p class="rightbar-note">
-      <%= t("corpus_viewer.rightbar.client_side_note") %>
-    </p>
   </details>
+  </div>
 
-  <%= render "shared/view_options_rightbar" %>
+  <p class="rightbar-note"><%= t("corpus_viewer.rightbar.auto_apply_note", default: "Reader changes apply automatically.") %></p>
 <% end %>

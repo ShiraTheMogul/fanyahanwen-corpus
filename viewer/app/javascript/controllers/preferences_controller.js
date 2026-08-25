@@ -1,8 +1,8 @@
 import { Controller } from "@hotwired/stimulus"
 
-// Handles the rightbar "Apply" without forcing a full reload when the only
-// change is font-related. For other preference changes (ruby/conversion/etc.)
-// we still reload so server-rendered content updates.
+// Handles reader/dictionary preferences without forcing a full reload when the
+// changed preference can be applied in the browser. Server-rendered changes
+// (ruby wrapping and script conversion) still reload the current page.
 export default class extends Controller {
   static values = {
     currentMandarinScheme: String,
@@ -47,37 +47,32 @@ export default class extends Controller {
       .then((data) => {
         if (!data?.ok) return
 
-				// Apply font changes instantly.
-				if (data.han_font_stack) {
-					document.documentElement.style.setProperty("--han-font-stack", data.han_font_stack)
-					document.body.dataset.hanFontStack = data.han_font_stack
-				}
-				if (data.han_font_primary) {
-					document.documentElement.style.setProperty("--han-font-primary", `"${data.han_font_primary}"`)
-					document.body.dataset.hanFontPrimary = data.han_font_primary
-				}
+        // Apply font changes instantly.
+        if (data.han_font_stack) {
+          document.documentElement.style.setProperty("--han-font-stack", data.han_font_stack)
+          document.body.dataset.hanFontStack = data.han_font_stack
+        }
+        if (data.han_font_primary) {
+          document.documentElement.style.setProperty("--han-font-primary", `"${data.han_font_primary}"`)
+          document.body.dataset.hanFontPrimary = data.han_font_primary
+        }
 
-        // Scope class on <body>
         if (data.han_font_scope) {
           document.body.classList.remove("han-font-scope-all", "han-font-scope-headwords")
           document.body.classList.add(`han-font-scope-${data.han_font_scope}`)
           document.body.dataset.hanFontScope = data.han_font_scope
         }
 
-        // For tooltip/headword warning logic.
         if (data.han_font_key) document.body.dataset.hanFontKey = data.han_font_key
         if (data.han_font_family) document.body.dataset.hanFontFamily = data.han_font_family
         if (typeof data.han_font_warn_missing !== "undefined") {
           document.body.dataset.hanFontWarnMissing = data.han_font_warn_missing ? "1" : "0"
         }
 
-        // Let any glyph-guard widgets re-check against the new font.
         window.dispatchEvent(new CustomEvent("han-font-changed", { detail: data }))
 
-        // Update our "current" snapshot so the next submit compares correctly.
         this._setValuesFromSnapshot(next)
 
-        // Optional UI note.
         const msg = document.getElementById("han-font-message")
         if (msg) {
           msg.textContent = data.notice || ""
@@ -85,7 +80,6 @@ export default class extends Controller {
         }
 
         if (needsReload) {
-          // Let the page re-render ruby / conversion / etc.
           window.location.href = fd.get("return_to") || window.location.href
         }
       })
@@ -95,37 +89,27 @@ export default class extends Controller {
   }
 
   autosubmit() {
-    // Debounced autosubmit for end users: changing an option applies it without
-    // needing to click "Apply". Font-only changes stay client-side; server
-    // dependent changes will reload (see _needsReload).
     clearTimeout(this._autosubmitTimer)
     this._autosubmitTimer = setTimeout(() => {
-      // requestSubmit triggers our submit handler.
       if (this.element?.requestSubmit) this.element.requestSubmit()
     }, 200)
   }
 
   _needsReload(curr, next) {
-    // Some preferences change server-rendered HTML (ruby wrapping, script conversion).
-    // If the change does not affect the current view, we can avoid a reload.
-
     const forceServerKeys = [
       "mandarin_scheme",
       "cantonese_scheme",
       "script_mode",
-      // "Show all ruby" toggles whether the page is pre-wrapped in <ruby>.
       "ruby_enabled",
     ]
 
-    if (forceServerKeys.some((k) => (curr[k] || "") !== (next[k] || ""))) return true
+    if (forceServerKeys.some((key) => (curr[key] || "") !== (next[key] || ""))) return true
 
     const showAllNext = (next.ruby_enabled || "0") === "1"
 
-    // Ruby sub-options only need a reload when "Show all ruby" is ON,
-    // because that's when the page is actually pre-wrapped in ruby markup.
     if (showAllNext) {
       const rubyKeys = ["ruby_source", "ruby_orientation", "ruby_side", "ruby_token"]
-      if (rubyKeys.some((k) => (curr[k] || "") !== (next[k] || ""))) return true
+      if (rubyKeys.some((key) => (curr[key] || "") !== (next[key] || ""))) return true
     }
 
     return false
@@ -149,14 +133,18 @@ export default class extends Controller {
 
   _snapshotFromForm(form) {
     const get = (name) => {
-      const el = form.querySelector(`[name="${CSS.escape(name)}"]`)
-      if (!el) return ""
+      const selector = `[name="${CSS.escape(name)}"]`
+      const elements = Array.from(form.querySelectorAll(selector))
+      if (elements.length === 0) return ""
 
-      if (el.type === "checkbox") {
-        return el.checked ? "1" : "0"
-      }
+      // Rails check_box helpers emit a hidden "0" input immediately before the
+      // checkbox. Looking up only the first matching element therefore reads
+      // the hidden field forever. Prefer the real checkbox when one exists.
+      const checkbox = elements.find((element) => element.type === "checkbox")
+      if (checkbox) return checkbox.checked ? "1" : "0"
 
-      return (el.value || "").toString()
+      const element = elements.find((candidate) => candidate.type !== "hidden") || elements[elements.length - 1]
+      return (element?.value || "").toString()
     }
 
     return {
@@ -174,17 +162,17 @@ export default class extends Controller {
     }
   }
 
-  _setValuesFromSnapshot(s) {
-    this.currentMandarinSchemeValue = s.mandarin_scheme
-    this.currentCantoneseSchemeValue = s.cantonese_scheme
-    this.currentRubyEnabledValue = s.ruby_enabled
-    this.currentRubySourceValue = s.ruby_source
-    this.currentRubyOrientationValue = s.ruby_orientation
-    this.currentRubySideValue = s.ruby_side
-    this.currentRubyTokenValue = s.ruby_token
-    this.currentScriptModeValue = s.script_mode
-    this.currentHanFontValue = s.han_font
-    this.currentHanFontScopeValue = s.han_font_scope
-    this.currentHanFontWarnMissingValue = s.han_font_warn_missing
+  _setValuesFromSnapshot(snapshot) {
+    this.currentMandarinSchemeValue = snapshot.mandarin_scheme
+    this.currentCantoneseSchemeValue = snapshot.cantonese_scheme
+    this.currentRubyEnabledValue = snapshot.ruby_enabled
+    this.currentRubySourceValue = snapshot.ruby_source
+    this.currentRubyOrientationValue = snapshot.ruby_orientation
+    this.currentRubySideValue = snapshot.ruby_side
+    this.currentRubyTokenValue = snapshot.ruby_token
+    this.currentScriptModeValue = snapshot.script_mode
+    this.currentHanFontValue = snapshot.han_font
+    this.currentHanFontScopeValue = snapshot.han_font_scope
+    this.currentHanFontWarnMissingValue = snapshot.han_font_warn_missing
   }
 }
