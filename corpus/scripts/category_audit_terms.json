@@ -1,0 +1,1693 @@
+﻿{
+  "version": 2,
+  "purpose": "Candidate discovery for manual category audit. Mention hits and inherited source categories are evidence for review; the audit never changes metadata or automatically assigns/removes categories.",
+  "matching": "Exact Unicode substring aliases, longest configured alias first. No script conversion or fuzzy matching.",
+  "groups": [
+    {
+      "tradition": "Confucianism",
+      "entries": [
+        {
+          "label": "孔子",
+          "kind": "figure",
+          "aliases": [
+            "孔子",
+            "孔丘",
+            "仲尼",
+            "尼父",
+            "宣尼"
+          ],
+          "scope": "high-confidence figure names/titles",
+          "note": "夫子 is deliberately excluded because it is too generic."
+        },
+        {
+          "label": "孟子",
+          "kind": "figure",
+          "aliases": [
+            "孟子",
+            "孟軻"
+          ],
+          "scope": "high-confidence figure names",
+          "note": ""
+        },
+        {
+          "label": "荀子",
+          "kind": "figure",
+          "aliases": [
+            "荀子",
+            "荀況",
+            "荀卿",
+            "孫卿"
+          ],
+          "scope": "high-confidence figure names/titles",
+          "note": ""
+        },
+        {
+          "label": "曾子",
+          "kind": "figure",
+          "aliases": [
+            "曾子",
+            "曾參"
+          ],
+          "scope": "high-confidence figure names",
+          "note": ""
+        },
+        {
+          "label": "顏回",
+          "kind": "figure",
+          "aliases": [
+            "顏回",
+            "顏淵"
+          ],
+          "scope": "high-confidence figure names",
+          "note": ""
+        },
+        {
+          "label": "子思",
+          "kind": "figure",
+          "aliases": [
+            "子思",
+            "孔伋"
+          ],
+          "scope": "high-confidence figure names",
+          "note": ""
+        },
+        {
+          "label": "董仲舒",
+          "kind": "figure",
+          "aliases": [
+            "董仲舒"
+          ],
+          "scope": "high-confidence figure name",
+          "note": ""
+        },
+        {
+          "label": "韓愈",
+          "kind": "figure",
+          "aliases": [
+            "韓愈",
+            "韓退之"
+          ],
+          "scope": "high-confidence figure names",
+          "note": "Useful for later Confucian revival material, but a hit does not by itself make a work Confucian."
+        },
+        {
+          "label": "周敦頤",
+          "kind": "figure",
+          "aliases": [
+            "周敦頤",
+            "周濂溪"
+          ],
+          "scope": "high-confidence figure names",
+          "note": ""
+        },
+        {
+          "label": "程顥",
+          "kind": "figure",
+          "aliases": [
+            "程顥"
+          ],
+          "scope": "high-confidence figure name",
+          "note": ""
+        },
+        {
+          "label": "程頤",
+          "kind": "figure",
+          "aliases": [
+            "程頤"
+          ],
+          "scope": "high-confidence figure name",
+          "note": ""
+        },
+        {
+          "label": "朱熹",
+          "kind": "figure",
+          "aliases": [
+            "朱熹",
+            "朱子",
+            "晦庵"
+          ],
+          "scope": "strong figure names/titles",
+          "note": "朱子 is useful in later scholarly texts but should still be checked in context."
+        },
+        {
+          "label": "陸九淵",
+          "kind": "figure",
+          "aliases": [
+            "陸九淵",
+            "陸象山"
+          ],
+          "scope": "high-confidence figure names",
+          "note": ""
+        },
+        {
+          "label": "王守仁",
+          "kind": "figure",
+          "aliases": [
+            "王守仁",
+            "王陽明",
+            "陽明先生"
+          ],
+          "scope": "strong figure names/titles",
+          "note": ""
+        },
+        {
+          "label": "儒家",
+          "kind": "vocabulary",
+          "aliases": [
+            "儒家"
+          ],
+          "scope": "direct tradition vocabulary",
+          "note": ""
+        },
+        {
+          "label": "儒學",
+          "kind": "vocabulary",
+          "aliases": [
+            "儒學",
+            "儒学"
+          ],
+          "scope": "direct tradition vocabulary",
+          "note": ""
+        },
+        {
+          "label": "理學",
+          "kind": "vocabulary",
+          "aliases": [
+            "理學",
+            "理学"
+          ],
+          "scope": "school/tradition vocabulary",
+          "note": ""
+        },
+        {
+          "label": "性理學",
+          "kind": "vocabulary",
+          "aliases": [
+            "性理學",
+            "性理学"
+          ],
+          "scope": "school/tradition vocabulary",
+          "note": ""
+        },
+        {
+          "label": "心學",
+          "kind": "vocabulary",
+          "aliases": [
+            "心學",
+            "心学"
+          ],
+          "scope": "school/tradition vocabulary",
+          "note": ""
+        },
+        {
+          "label": "道學",
+          "kind": "vocabulary",
+          "aliases": [
+            "道學",
+            "道学"
+          ],
+          "scope": "school/tradition vocabulary",
+          "note": "Potentially ambiguous outside Song–Ming intellectual contexts; review snippets before assignment."
+        },
+        {
+          "label": "經學",
+          "kind": "vocabulary",
+          "aliases": [
+            "經學",
+            "経学"
+          ],
+          "scope": "broad scholarly vocabulary",
+          "note": "Useful diagnostic term, but broader than Confucianism as a modern category."
+        }
+      ]
+    },
+    {
+      "tradition": "Daoism",
+      "entries": [
+        {
+          "label": "老子",
+          "kind": "figure",
+          "aliases": [
+            "老子",
+            "老聃",
+            "李耳",
+            "太上老君",
+            "老君"
+          ],
+          "scope": "strong figure/deity names",
+          "note": "The aliases intentionally follow traditional identifications used in Daoist texts."
+        },
+        {
+          "label": "莊子",
+          "kind": "figure",
+          "aliases": [
+            "莊子",
+            "莊周",
+            "南華真人"
+          ],
+          "scope": "strong figure names/titles",
+          "note": ""
+        },
+        {
+          "label": "列子",
+          "kind": "figure",
+          "aliases": [
+            "列子",
+            "列禦寇"
+          ],
+          "scope": "strong figure names",
+          "note": ""
+        },
+        {
+          "label": "張道陵",
+          "kind": "figure",
+          "aliases": [
+            "張道陵",
+            "張天師"
+          ],
+          "scope": "strong figure names/titles",
+          "note": ""
+        },
+        {
+          "label": "葛洪",
+          "kind": "figure",
+          "aliases": [
+            "葛洪",
+            "抱朴子"
+          ],
+          "scope": "strong figure names/titles",
+          "note": "抱朴子 may denote the work as well as the authorial persona; inspect context."
+        },
+        {
+          "label": "陶弘景",
+          "kind": "figure",
+          "aliases": [
+            "陶弘景"
+          ],
+          "scope": "high-confidence figure name",
+          "note": ""
+        },
+        {
+          "label": "寇謙之",
+          "kind": "figure",
+          "aliases": [
+            "寇謙之"
+          ],
+          "scope": "high-confidence figure name",
+          "note": ""
+        },
+        {
+          "label": "陸修靜",
+          "kind": "figure",
+          "aliases": [
+            "陸修靜"
+          ],
+          "scope": "high-confidence figure name",
+          "note": ""
+        },
+        {
+          "label": "司馬承禎",
+          "kind": "figure",
+          "aliases": [
+            "司馬承禎"
+          ],
+          "scope": "high-confidence figure name",
+          "note": ""
+        },
+        {
+          "label": "呂洞賓",
+          "kind": "figure",
+          "aliases": [
+            "呂洞賓",
+            "呂祖"
+          ],
+          "scope": "strong figure names/titles",
+          "note": ""
+        },
+        {
+          "label": "王重陽",
+          "kind": "figure",
+          "aliases": [
+            "王重陽",
+            "王喆"
+          ],
+          "scope": "strong figure names",
+          "note": ""
+        },
+        {
+          "label": "丘處機",
+          "kind": "figure",
+          "aliases": [
+            "丘處機",
+            "長春真人"
+          ],
+          "scope": "strong figure names/titles",
+          "note": ""
+        },
+        {
+          "label": "張三丰",
+          "kind": "figure",
+          "aliases": [
+            "張三丰",
+            "張三峰"
+          ],
+          "scope": "strong figure-name variants",
+          "note": ""
+        },
+        {
+          "label": "道教",
+          "kind": "vocabulary",
+          "aliases": [
+            "道教"
+          ],
+          "scope": "direct tradition vocabulary",
+          "note": ""
+        },
+        {
+          "label": "道士",
+          "kind": "vocabulary",
+          "aliases": [
+            "道士"
+          ],
+          "scope": "direct practitioner vocabulary",
+          "note": ""
+        },
+        {
+          "label": "道觀",
+          "kind": "vocabulary",
+          "aliases": [
+            "道觀",
+            "道观"
+          ],
+          "scope": "direct institutional vocabulary",
+          "note": ""
+        },
+        {
+          "label": "符籙",
+          "kind": "vocabulary",
+          "aliases": [
+            "符籙",
+            "符箓"
+          ],
+          "scope": "ritual/technical vocabulary",
+          "note": ""
+        },
+        {
+          "label": "齋醮",
+          "kind": "vocabulary",
+          "aliases": [
+            "齋醮",
+            "斋醮"
+          ],
+          "scope": "ritual vocabulary",
+          "note": ""
+        },
+        {
+          "label": "內丹",
+          "kind": "vocabulary",
+          "aliases": [
+            "內丹",
+            "内丹"
+          ],
+          "scope": "technical vocabulary",
+          "note": ""
+        },
+        {
+          "label": "外丹",
+          "kind": "vocabulary",
+          "aliases": [
+            "外丹"
+          ],
+          "scope": "technical vocabulary",
+          "note": ""
+        },
+        {
+          "label": "三清",
+          "kind": "vocabulary",
+          "aliases": [
+            "三清"
+          ],
+          "scope": "strong Daoist theological vocabulary",
+          "note": ""
+        },
+        {
+          "label": "天師道",
+          "kind": "vocabulary",
+          "aliases": [
+            "天師道",
+            "天师道"
+          ],
+          "scope": "school/tradition vocabulary",
+          "note": ""
+        },
+        {
+          "label": "全真教",
+          "kind": "vocabulary",
+          "aliases": [
+            "全真教",
+            "全真道"
+          ],
+          "scope": "school/tradition vocabulary",
+          "note": ""
+        },
+        {
+          "label": "正一道",
+          "kind": "vocabulary",
+          "aliases": [
+            "正一道"
+          ],
+          "scope": "school/tradition vocabulary",
+          "note": ""
+        }
+      ]
+    },
+    {
+      "tradition": "Buddhism",
+      "entries": [
+        {
+          "label": "釋迦牟尼",
+          "kind": "figure",
+          "aliases": [
+            "釋迦牟尼",
+            "釋迦",
+            "牟尼",
+            "能仁"
+          ],
+          "scope": "strong names/epithets for the Buddha",
+          "note": "佛 alone is excluded because it is too broad for a figure counter."
+        },
+        {
+          "label": "阿彌陀佛",
+          "kind": "figure",
+          "aliases": [
+            "阿彌陀佛",
+            "阿彌陀",
+            "彌陀"
+          ],
+          "scope": "strong Buddha names",
+          "note": ""
+        },
+        {
+          "label": "觀世音",
+          "kind": "figure",
+          "aliases": [
+            "觀世音",
+            "觀音",
+            "觀自在"
+          ],
+          "scope": "strong bodhisattva names",
+          "note": ""
+        },
+        {
+          "label": "文殊師利",
+          "kind": "figure",
+          "aliases": [
+            "文殊師利",
+            "文殊"
+          ],
+          "scope": "strong bodhisattva names",
+          "note": ""
+        },
+        {
+          "label": "普賢",
+          "kind": "figure",
+          "aliases": [
+            "普賢菩薩",
+            "普賢"
+          ],
+          "scope": "strong bodhisattva names",
+          "note": ""
+        },
+        {
+          "label": "彌勒",
+          "kind": "figure",
+          "aliases": [
+            "彌勒佛",
+            "彌勒"
+          ],
+          "scope": "strong Buddha/bodhisattva names",
+          "note": ""
+        },
+        {
+          "label": "地藏",
+          "kind": "figure",
+          "aliases": [
+            "地藏菩薩",
+            "地藏"
+          ],
+          "scope": "strong bodhisattva names",
+          "note": ""
+        },
+        {
+          "label": "龍樹",
+          "kind": "figure",
+          "aliases": [
+            "龍樹菩薩",
+            "龍樹"
+          ],
+          "scope": "strong figure names",
+          "note": ""
+        },
+        {
+          "label": "菩提達摩",
+          "kind": "figure",
+          "aliases": [
+            "菩提達摩",
+            "達摩"
+          ],
+          "scope": "strong figure names",
+          "note": "達摩 can occur in transliterated compounds; inspect context."
+        },
+        {
+          "label": "鳩摩羅什",
+          "kind": "figure",
+          "aliases": [
+            "鳩摩羅什",
+            "羅什"
+          ],
+          "scope": "strong figure names",
+          "note": ""
+        },
+        {
+          "label": "玄奘",
+          "kind": "figure",
+          "aliases": [
+            "玄奘",
+            "三藏法師玄奘"
+          ],
+          "scope": "strong figure names/titles",
+          "note": ""
+        },
+        {
+          "label": "慧遠",
+          "kind": "figure",
+          "aliases": [
+            "慧遠"
+          ],
+          "scope": "figure name; medium ambiguity",
+          "note": "Multiple monks bore this name, so the hit is useful for discovery but may need disambiguation."
+        },
+        {
+          "label": "智顗",
+          "kind": "figure",
+          "aliases": [
+            "智顗",
+            "智者大師"
+          ],
+          "scope": "strong figure names/titles",
+          "note": ""
+        },
+        {
+          "label": "吉藏",
+          "kind": "figure",
+          "aliases": [
+            "吉藏"
+          ],
+          "scope": "high-confidence figure name",
+          "note": ""
+        },
+        {
+          "label": "慧能",
+          "kind": "figure",
+          "aliases": [
+            "慧能",
+            "惠能",
+            "六祖"
+          ],
+          "scope": "strong figure names/titles",
+          "note": "六祖 can be used without the personal name; inspect context."
+        },
+        {
+          "label": "法藏",
+          "kind": "figure",
+          "aliases": [
+            "法藏"
+          ],
+          "scope": "figure name; medium ambiguity",
+          "note": "Can also occur as an ordinary Buddhist lexical expression; inspect context."
+        },
+        {
+          "label": "宗密",
+          "kind": "figure",
+          "aliases": [
+            "宗密",
+            "圭峰宗密"
+          ],
+          "scope": "high-confidence figure name",
+          "note": ""
+        },
+        {
+          "label": "佛教",
+          "kind": "vocabulary",
+          "aliases": [
+            "佛教"
+          ],
+          "scope": "direct tradition vocabulary",
+          "note": ""
+        },
+        {
+          "label": "佛法",
+          "kind": "vocabulary",
+          "aliases": [
+            "佛法"
+          ],
+          "scope": "direct tradition vocabulary",
+          "note": ""
+        },
+        {
+          "label": "佛經",
+          "kind": "vocabulary",
+          "aliases": [
+            "佛經",
+            "佛経"
+          ],
+          "scope": "direct textual vocabulary",
+          "note": ""
+        },
+        {
+          "label": "菩薩",
+          "kind": "vocabulary",
+          "aliases": [
+            "菩薩"
+          ],
+          "scope": "strong Buddhist vocabulary",
+          "note": ""
+        },
+        {
+          "label": "沙門",
+          "kind": "vocabulary",
+          "aliases": [
+            "沙門"
+          ],
+          "scope": "strong Buddhist practitioner vocabulary",
+          "note": ""
+        },
+        {
+          "label": "比丘",
+          "kind": "vocabulary",
+          "aliases": [
+            "比丘"
+          ],
+          "scope": "strong Buddhist monastic vocabulary",
+          "note": ""
+        },
+        {
+          "label": "比丘尼",
+          "kind": "vocabulary",
+          "aliases": [
+            "比丘尼"
+          ],
+          "scope": "strong Buddhist monastic vocabulary",
+          "note": ""
+        },
+        {
+          "label": "般若",
+          "kind": "vocabulary",
+          "aliases": [
+            "般若"
+          ],
+          "scope": "strong Buddhist technical vocabulary",
+          "note": ""
+        },
+        {
+          "label": "涅槃",
+          "kind": "vocabulary",
+          "aliases": [
+            "涅槃"
+          ],
+          "scope": "strong Buddhist technical vocabulary",
+          "note": ""
+        },
+        {
+          "label": "禪宗",
+          "kind": "vocabulary",
+          "aliases": [
+            "禪宗",
+            "禅宗"
+          ],
+          "scope": "school/tradition vocabulary",
+          "note": ""
+        },
+        {
+          "label": "淨土",
+          "kind": "vocabulary",
+          "aliases": [
+            "淨土",
+            "浄土",
+            "净土"
+          ],
+          "scope": "strong Buddhist vocabulary",
+          "note": ""
+        },
+        {
+          "label": "三寶",
+          "kind": "vocabulary",
+          "aliases": [
+            "三寶",
+            "三宝"
+          ],
+          "scope": "Buddhist diagnostic vocabulary",
+          "note": "三寶 also has non-Buddhist uses; use the context sheet before assigning."
+        }
+      ]
+    },
+    {
+      "tradition": "Christianity",
+      "entries": [
+        {
+          "label": "耶穌基督",
+          "kind": "figure",
+          "aliases": [
+            "耶穌基督",
+            "耶穌",
+            "耶稣基督",
+            "耶稣"
+          ],
+          "scope": "high-confidence figure names",
+          "note": ""
+        },
+        {
+          "label": "彌施訶",
+          "kind": "figure",
+          "aliases": [
+            "彌施訶",
+            "弥施诃"
+          ],
+          "scope": "Jingjiao/Christian title",
+          "note": "Historical Sinitic transcription of Messiah; useful for Tang Jingjiao material."
+        },
+        {
+          "label": "瑪利亞",
+          "kind": "figure",
+          "aliases": [
+            "瑪利亞",
+            "馬利亞",
+            "玛利亚",
+            "马利亚"
+          ],
+          "scope": "strong figure-name variants",
+          "note": ""
+        },
+        {
+          "label": "彼得",
+          "kind": "figure",
+          "aliases": [
+            "伯多祿",
+            "伯多禄",
+            "彼得"
+          ],
+          "scope": "Christian figure names; terminology varies by confession/period",
+          "note": ""
+        },
+        {
+          "label": "保祿",
+          "kind": "figure",
+          "aliases": [
+            "保祿",
+            "保禄",
+            "保羅",
+            "保罗"
+          ],
+          "scope": "Christian figure names; terminology varies by confession/period",
+          "note": ""
+        },
+        {
+          "label": "利瑪竇",
+          "kind": "figure",
+          "aliases": [
+            "利瑪竇",
+            "利玛窦"
+          ],
+          "scope": "high-confidence missionary name",
+          "note": ""
+        },
+        {
+          "label": "徐光啟",
+          "kind": "figure",
+          "aliases": [
+            "徐光啟",
+            "徐光启"
+          ],
+          "scope": "Christian-associated historical figure",
+          "note": "A mention does not by itself make the text Christian; Xu Guangqi appears in many other contexts."
+        },
+        {
+          "label": "艾儒略",
+          "kind": "figure",
+          "aliases": [
+            "艾儒略"
+          ],
+          "scope": "high-confidence missionary name",
+          "note": ""
+        },
+        {
+          "label": "湯若望",
+          "kind": "figure",
+          "aliases": [
+            "湯若望",
+            "汤若望"
+          ],
+          "scope": "high-confidence missionary name",
+          "note": ""
+        },
+        {
+          "label": "南懷仁",
+          "kind": "figure",
+          "aliases": [
+            "南懷仁",
+            "南怀仁"
+          ],
+          "scope": "high-confidence missionary name",
+          "note": ""
+        },
+        {
+          "label": "馬禮遜",
+          "kind": "figure",
+          "aliases": [
+            "馬禮遜",
+            "马礼逊"
+          ],
+          "scope": "high-confidence missionary name",
+          "note": ""
+        },
+        {
+          "label": "景教",
+          "kind": "vocabulary",
+          "aliases": [
+            "景教",
+            "大秦景教"
+          ],
+          "scope": "direct historical Christian vocabulary",
+          "note": ""
+        },
+        {
+          "label": "天主教",
+          "kind": "vocabulary",
+          "aliases": [
+            "天主教"
+          ],
+          "scope": "direct tradition vocabulary",
+          "note": ""
+        },
+        {
+          "label": "基督教",
+          "kind": "vocabulary",
+          "aliases": [
+            "基督教"
+          ],
+          "scope": "direct tradition vocabulary",
+          "note": ""
+        },
+        {
+          "label": "天主",
+          "kind": "vocabulary",
+          "aliases": [
+            "天主"
+          ],
+          "scope": "strong Christian vocabulary in late-imperial/modern contexts",
+          "note": "Review early or unusual contexts before assignment."
+        },
+        {
+          "label": "十字架",
+          "kind": "vocabulary",
+          "aliases": [
+            "十字架"
+          ],
+          "scope": "strong Christian vocabulary",
+          "note": ""
+        },
+        {
+          "label": "福音",
+          "kind": "vocabulary",
+          "aliases": [
+            "福音"
+          ],
+          "scope": "strong Christian vocabulary in Christian-era texts",
+          "note": "The ordinary lexical sense “good news” is possible; inspect context."
+        },
+        {
+          "label": "聖經",
+          "kind": "vocabulary",
+          "aliases": [
+            "聖經",
+            "圣经"
+          ],
+          "scope": "strong Christian textual vocabulary",
+          "note": ""
+        },
+        {
+          "label": "新約",
+          "kind": "vocabulary",
+          "aliases": [
+            "新約",
+            "新约"
+          ],
+          "scope": "strong Christian textual vocabulary",
+          "note": ""
+        },
+        {
+          "label": "舊約",
+          "kind": "vocabulary",
+          "aliases": [
+            "舊約",
+            "旧约"
+          ],
+          "scope": "strong Christian textual vocabulary",
+          "note": ""
+        },
+        {
+          "label": "教會",
+          "kind": "vocabulary",
+          "aliases": [
+            "教會",
+            "教会"
+          ],
+          "scope": "Christian institutional vocabulary; medium ambiguity",
+          "note": ""
+        },
+        {
+          "label": "彌撒",
+          "kind": "vocabulary",
+          "aliases": [
+            "彌撒",
+            "弥撒"
+          ],
+          "scope": "strong Catholic liturgical vocabulary",
+          "note": ""
+        }
+      ]
+    },
+    {
+      "tradition": "Shinto / Japanese religion",
+      "entries": [
+        {
+          "label": "天照大神",
+          "kind": "figure",
+          "aliases": [
+            "天照大神",
+            "天照大御神",
+            "天照皇大神"
+          ],
+          "scope": "strong Shinto/kami figure names",
+          "note": ""
+        },
+        {
+          "label": "素戔嗚尊",
+          "kind": "figure",
+          "aliases": [
+            "素戔嗚尊",
+            "須佐之男命",
+            "须佐之男命"
+          ],
+          "scope": "strong Shinto/kami figure-name variants",
+          "note": ""
+        },
+        {
+          "label": "大國主命",
+          "kind": "figure",
+          "aliases": [
+            "大國主命",
+            "大国主命",
+            "大己貴命",
+            "大己贵命"
+          ],
+          "scope": "strong Shinto/kami figure-name variants",
+          "note": ""
+        },
+        {
+          "label": "巫覡",
+          "kind": "vocabulary",
+          "aliases": [
+            "巫覡"
+          ],
+          "scope": "pan-East-Asian ritual vocabulary; context needed",
+          "note": "Worksheet evidence defines ritual mediums dealing with ghosts/spirits and deities; this is not uniquely Shinto."
+        },
+        {
+          "label": "巫女",
+          "kind": "vocabulary",
+          "aliases": [
+            "巫女"
+          ],
+          "scope": "Japanese/Shinto-relevant but historically broader",
+          "note": "Worksheet and Kokugakuin evidence distinguish possessed/oracular women from modern shrine-assistant usage."
+        },
+        {
+          "label": "覡巫",
+          "kind": "vocabulary",
+          "aliases": [
+            "覡巫"
+          ],
+          "scope": "pan-East-Asian ritual vocabulary; context needed",
+          "note": ""
+        },
+        {
+          "label": "覡女",
+          "kind": "vocabulary",
+          "aliases": [
+            "覡女"
+          ],
+          "scope": "Ryukyuan/Japanese-region ritual vocabulary; context needed",
+          "note": ""
+        },
+        {
+          "label": "祝女",
+          "kind": "vocabulary",
+          "aliases": [
+            "祝女"
+          ],
+          "scope": "Ryukyuan sacred-office vocabulary",
+          "note": ""
+        },
+        {
+          "label": "神婆",
+          "kind": "vocabulary",
+          "aliases": [
+            "神婆"
+          ],
+          "scope": "medium vocabulary; context needed",
+          "note": ""
+        },
+        {
+          "label": "招魂通語",
+          "kind": "vocabulary",
+          "aliases": [
+            "招魂通語"
+          ],
+          "scope": "strong ritual phrase from Ryukyuan corpus evidence",
+          "note": ""
+        },
+        {
+          "label": "招魂",
+          "kind": "vocabulary",
+          "aliases": [
+            "招魂"
+          ],
+          "scope": "pan-East-Asian ritual vocabulary; context needed",
+          "note": ""
+        },
+        {
+          "label": "為諸鬼所持奪其魂魄",
+          "kind": "vocabulary",
+          "aliases": [
+            "為諸鬼所持奪其魂魄"
+          ],
+          "scope": "strong possession phrase; Buddhist source evidence",
+          "note": "Useful as possession evidence, not as uniquely Shinto terminology."
+        },
+        {
+          "label": "為鬼所持",
+          "kind": "vocabulary",
+          "aliases": [
+            "為鬼所持"
+          ],
+          "scope": "strong possession phrase; pan-East-Asian",
+          "note": "Worksheet calls this extremely strong ordinary Literary Chinese for visible possession."
+        },
+        {
+          "label": "神託",
+          "kind": "vocabulary",
+          "aliases": [
+            "神託"
+          ],
+          "scope": "oracle/message vocabulary; Japanese/Ryukyuan relevance",
+          "note": ""
+        },
+        {
+          "label": "神諭",
+          "kind": "vocabulary",
+          "aliases": [
+            "神諭"
+          ],
+          "scope": "oracle/message vocabulary; broader religious use",
+          "note": ""
+        },
+        {
+          "label": "託宣",
+          "kind": "vocabulary",
+          "aliases": [
+            "託宣"
+          ],
+          "scope": "Japanese oracle vocabulary",
+          "note": "Kokugakuin evidence links it to divine messages through possession and sometimes dream revelation."
+        },
+        {
+          "label": "神懸り／神憑り",
+          "kind": "vocabulary",
+          "aliases": [
+            "神懸り",
+            "神憑り",
+            "神懸",
+            "神憑"
+          ],
+          "scope": "specifically Japanese possession vocabulary",
+          "note": "Useful conceptual evidence; a Literary Chinese occurrence still needs register/context review."
+        },
+        {
+          "label": "依代",
+          "kind": "vocabulary",
+          "aliases": [
+            "依代"
+          ],
+          "scope": "specifically Japanese religious vocabulary",
+          "note": "A locus/object/person inhabited by a kami; use as a strong candidate signal."
+        },
+        {
+          "label": "神體",
+          "kind": "vocabulary",
+          "aliases": [
+            "神體",
+            "神体"
+          ],
+          "scope": "specifically Japanese religious vocabulary",
+          "note": ""
+        },
+        {
+          "label": "齋戒沐浴",
+          "kind": "vocabulary",
+          "aliases": [
+            "齋戒沐浴",
+            "斎戒沐浴"
+          ],
+          "scope": "pan-East-Asian ritual purification vocabulary; context needed",
+          "note": ""
+        },
+        {
+          "label": "污穢",
+          "kind": "vocabulary",
+          "aliases": [
+            "污穢",
+            "汚穢"
+          ],
+          "scope": "ritual pollution vocabulary; broader than Shinto",
+          "note": ""
+        },
+        {
+          "label": "凶穢",
+          "kind": "vocabulary",
+          "aliases": [
+            "凶穢"
+          ],
+          "scope": "ritual pollution/inauspiciousness vocabulary; context needed",
+          "note": ""
+        },
+        {
+          "label": "穢",
+          "kind": "vocabulary",
+          "aliases": [
+            "穢",
+            "穢れ"
+          ],
+          "scope": "Japanese/Shinto-relevant pollution vocabulary; broad semantic risk",
+          "note": "Worksheet explicitly warns against treating this automatically as Christian “sin.”"
+        },
+        {
+          "label": "祓禳",
+          "kind": "vocabulary",
+          "aliases": [
+            "祓禳"
+          ],
+          "scope": "pan-East-Asian apotropaic ritual vocabulary",
+          "note": "Keep distinct from specifically Japanese 祓."
+        },
+        {
+          "label": "祓",
+          "kind": "vocabulary",
+          "aliases": [
+            "祓"
+          ],
+          "scope": "specifically Japanese/Shinto purification vocabulary",
+          "note": "Configured phrase matching is longest-first, so 祓 inside 祓禳 is not double-counted."
+        },
+        {
+          "label": "禊",
+          "kind": "vocabulary",
+          "aliases": [
+            "禊"
+          ],
+          "scope": "specifically Japanese purification-by-ablution vocabulary",
+          "note": ""
+        },
+        {
+          "label": "攘除妖氣",
+          "kind": "vocabulary",
+          "aliases": [
+            "攘除妖氣",
+            "攘除妖気"
+          ],
+          "scope": "descriptive apotropaic phrase; pan-East-Asian",
+          "note": "Describes expelling malign influence without assuming a formal Shinto rite."
+        },
+        {
+          "label": "祈禱",
+          "kind": "vocabulary",
+          "aliases": [
+            "祈禱",
+            "祈祷"
+          ],
+          "scope": "broad prayer/supplication vocabulary; context needed",
+          "note": ""
+        },
+        {
+          "label": "祝文",
+          "kind": "vocabulary",
+          "aliases": [
+            "祝文"
+          ],
+          "scope": "broad written ritual-prayer vocabulary",
+          "note": ""
+        },
+        {
+          "label": "祝詞",
+          "kind": "vocabulary",
+          "aliases": [
+            "祝詞"
+          ],
+          "scope": "strong specifically Japanese/Shinto liturgical vocabulary",
+          "note": "Worksheet identifies this as especially useful when the Japanese religious setting matters."
+        },
+        {
+          "label": "神樂",
+          "kind": "vocabulary",
+          "aliases": [
+            "神樂",
+            "神楽"
+          ],
+          "scope": "strong specifically Japanese/Shinto performance vocabulary",
+          "note": ""
+        },
+        {
+          "label": "神歌",
+          "kind": "vocabulary",
+          "aliases": [
+            "神歌"
+          ],
+          "scope": "sacred/ritual song vocabulary; Japanese/Ryukyuan relevance",
+          "note": ""
+        },
+        {
+          "label": "祭品",
+          "kind": "vocabulary",
+          "aliases": [
+            "祭品"
+          ],
+          "scope": "broad ritual-offering vocabulary; context needed",
+          "note": ""
+        },
+        {
+          "label": "神酒",
+          "kind": "vocabulary",
+          "aliases": [
+            "神酒"
+          ],
+          "scope": "Japanese/Ryukyuan ritual-offering vocabulary",
+          "note": ""
+        },
+        {
+          "label": "神前",
+          "kind": "vocabulary",
+          "aliases": [
+            "神前"
+          ],
+          "scope": "broad deity-presence vocabulary; context needed",
+          "note": ""
+        },
+        {
+          "label": "靈前",
+          "kind": "vocabulary",
+          "aliases": [
+            "靈前",
+            "霊前"
+          ],
+          "scope": "mortuary/spirit-rite vocabulary; context needed",
+          "note": ""
+        },
+        {
+          "label": "幽魂",
+          "kind": "vocabulary",
+          "aliases": [
+            "幽魂"
+          ],
+          "scope": "departed-spirit vocabulary; broad religious use",
+          "note": ""
+        },
+        {
+          "label": "安魂",
+          "kind": "vocabulary",
+          "aliases": [
+            "安魂"
+          ],
+          "scope": "funerary spirit-pacification vocabulary",
+          "note": "Worksheet corpus evidence directly associates this with burial of exposed bones."
+        },
+        {
+          "label": "神靈",
+          "kind": "vocabulary",
+          "aliases": [
+            "神靈",
+            "神霊"
+          ],
+          "scope": "broad numinous-spirit vocabulary; context needed",
+          "note": ""
+        },
+        {
+          "label": "魂魄",
+          "kind": "vocabulary",
+          "aliases": [
+            "魂魄"
+          ],
+          "scope": "pan-Sinitic psychophysical vocabulary; very broad",
+          "note": "Can occur in medical, Buddhist, Daoist, ritual, and secular discussions."
+        },
+        {
+          "label": "御守札",
+          "kind": "vocabulary",
+          "aliases": [
+            "御守札"
+          ],
+          "scope": "strong Japanese shrine/protective-talisman vocabulary",
+          "note": ""
+        },
+        {
+          "label": "神主",
+          "kind": "vocabulary",
+          "aliases": [
+            "神主"
+          ],
+          "scope": "high-risk Japanese/religious vocabulary",
+          "note": "Worksheet warning: Japanese can mean shrine priest, while a corpus passage uses it for a mortuary spirit tablet. Never infer a category from this term alone."
+        },
+        {
+          "label": "鎮魂",
+          "kind": "vocabulary",
+          "aliases": [
+            "鎮魂"
+          ],
+          "scope": "Japanese spirit-settling vocabulary",
+          "note": "Worksheet warns not to collapse this into funerary 安魂; Honda gives a specialised soul-stabilising interpretation."
+        },
+        {
+          "label": "歸神",
+          "kind": "vocabulary",
+          "aliases": [
+            "歸神",
+            "帰神"
+          ],
+          "scope": "Honda/modern Japanese spiritual vocabulary",
+          "note": ""
+        },
+        {
+          "label": "幽齋",
+          "kind": "vocabulary",
+          "aliases": [
+            "幽齋",
+            "幽斎"
+          ],
+          "scope": "Honda/modern Japanese spiritual vocabulary",
+          "note": ""
+        },
+        {
+          "label": "顯齋",
+          "kind": "vocabulary",
+          "aliases": [
+            "顯齋",
+            "顕斎"
+          ],
+          "scope": "Honda/modern Japanese spiritual vocabulary",
+          "note": ""
+        },
+        {
+          "label": "荒魂",
+          "kind": "vocabulary",
+          "aliases": [
+            "荒魂"
+          ],
+          "scope": "strong Shinto/Honda spirit-aspect vocabulary",
+          "note": ""
+        },
+        {
+          "label": "和魂",
+          "kind": "vocabulary",
+          "aliases": [
+            "和魂"
+          ],
+          "scope": "strong Shinto/Honda spirit-aspect vocabulary",
+          "note": ""
+        },
+        {
+          "label": "奇魂",
+          "kind": "vocabulary",
+          "aliases": [
+            "奇魂"
+          ],
+          "scope": "strong Shinto/Honda spirit-aspect vocabulary",
+          "note": ""
+        },
+        {
+          "label": "幸魂",
+          "kind": "vocabulary",
+          "aliases": [
+            "幸魂"
+          ],
+          "scope": "strong Shinto/Honda spirit-aspect vocabulary",
+          "note": ""
+        },
+        {
+          "label": "直靈",
+          "kind": "vocabulary",
+          "aliases": [
+            "直靈",
+            "直霊"
+          ],
+          "scope": "Honda spirit-theory vocabulary",
+          "note": ""
+        },
+        {
+          "label": "審神者",
+          "kind": "vocabulary",
+          "aliases": [
+            "審神者"
+          ],
+          "scope": "Honda/Japanese spirit-discernment vocabulary",
+          "note": ""
+        },
+        {
+          "label": "妖魅",
+          "kind": "vocabulary",
+          "aliases": [
+            "妖魅"
+          ],
+          "scope": "broader uncanny-spirit vocabulary; Honda relevance",
+          "note": ""
+        },
+        {
+          "label": "御靈／御魂",
+          "kind": "vocabulary",
+          "aliases": [
+            "御靈",
+            "御霊",
+            "御魂"
+          ],
+          "scope": "Japanese spirit vocabulary; semantic ambiguity",
+          "note": "Kokugakuin distinguishes general honorific tama usage from the specialised dangerous/calaminous goryō sense of 御靈/御霊."
+        },
+        {
+          "label": "祟",
+          "kind": "vocabulary",
+          "aliases": [
+            "祟",
+            "祟り"
+          ],
+          "scope": "Japanese/Shinto-relevant supernatural-affliction vocabulary",
+          "note": "Worksheet warns that this is not simply a generic equivalent of “curse.”"
+        }
+      ]
+    },
+    {
+      "tradition": "Islam",
+      "entries": [
+        {
+          "label": "穆罕默德",
+          "kind": "figure",
+          "aliases": [
+            "穆罕默德"
+          ],
+          "scope": "modern/high-confidence figure name",
+          "note": ""
+        },
+        {
+          "label": "伊斯蘭教",
+          "kind": "vocabulary",
+          "aliases": [
+            "伊斯蘭教",
+            "伊斯兰教"
+          ],
+          "scope": "direct tradition vocabulary",
+          "note": ""
+        },
+        {
+          "label": "回教",
+          "kind": "vocabulary",
+          "aliases": [
+            "回教"
+          ],
+          "scope": "historical/modern tradition vocabulary",
+          "note": ""
+        },
+        {
+          "label": "清真教",
+          "kind": "vocabulary",
+          "aliases": [
+            "清真教"
+          ],
+          "scope": "historical tradition vocabulary",
+          "note": ""
+        },
+        {
+          "label": "清真寺",
+          "kind": "vocabulary",
+          "aliases": [
+            "清真寺"
+          ],
+          "scope": "strong institutional vocabulary",
+          "note": ""
+        },
+        {
+          "label": "古蘭經",
+          "kind": "vocabulary",
+          "aliases": [
+            "古蘭經",
+            "古兰经"
+          ],
+          "scope": "strong textual vocabulary",
+          "note": ""
+        }
+      ]
+    },
+    {
+      "tradition": "Manichaeism",
+      "entries": [
+        {
+          "label": "摩尼",
+          "kind": "figure",
+          "aliases": [
+            "摩尼"
+          ],
+          "scope": "figure name; medium ambiguity",
+          "note": "摩尼 can also occur in Buddhist transliteration/lexicon contexts, so inspect snippets."
+        },
+        {
+          "label": "摩尼教",
+          "kind": "vocabulary",
+          "aliases": [
+            "摩尼教"
+          ],
+          "scope": "direct tradition vocabulary",
+          "note": ""
+        },
+        {
+          "label": "明教",
+          "kind": "vocabulary",
+          "aliases": [
+            "明教"
+          ],
+          "scope": "historical Manichaean vocabulary; medium ambiguity",
+          "note": "Can have broader literal uses, so it is a candidate signal only."
+        }
+      ]
+    },
+    {
+      "tradition": "Zoroastrianism",
+      "entries": [
+        {
+          "label": "祆教",
+          "kind": "vocabulary",
+          "aliases": [
+            "祆教",
+            "火祆教"
+          ],
+          "scope": "direct tradition vocabulary",
+          "note": ""
+        },
+        {
+          "label": "祆祠",
+          "kind": "vocabulary",
+          "aliases": [
+            "祆祠"
+          ],
+          "scope": "strong institutional vocabulary",
+          "note": ""
+        }
+      ]
+    },
+    {
+      "tradition": "Judaism",
+      "entries": [
+        {
+          "label": "猶太教",
+          "kind": "vocabulary",
+          "aliases": [
+            "猶太教",
+            "犹太教"
+          ],
+          "scope": "direct tradition vocabulary",
+          "note": ""
+        },
+        {
+          "label": "猶太",
+          "kind": "vocabulary",
+          "aliases": [
+            "猶太",
+            "犹太"
+          ],
+          "scope": "ethnoreligious candidate vocabulary",
+          "note": "May identify people/geography without indicating a religious text; review context."
+        }
+      ]
+    }
+  ],
+  "source_category_review_rules": [
+    {
+      "name": "completion_percentage",
+      "classification": "maintenance",
+      "action": "review_remove",
+      "pattern": "^\\d{1,3}%$",
+      "note": "Source-wiki completion percentages such as 25%, 50%, and 75% describe transcription maintenance, not a work subject or genre."
+    },
+    {
+      "name": "public_domain_or_licence_status",
+      "classification": "maintenance",
+      "action": "review_remove",
+      "pattern": "^(?:PD-old(?:-.+)?|.*公有領域.*|.*公共領域.*)$",
+      "note": "Copyright/public-domain state belongs in provenance or rights metadata, not a browsable content category."
+    },
+    {
+      "name": "date_or_date_mention",
+      "classification": "metadata_redundant",
+      "action": "review_remove_if_date_metadata_confirmed",
+      "pattern": "^(?:\\d{3,4}年(?:\\s*[（(]提及[)）])?|中華民國.+年(?:.*)?|民國.+年(?:.*)?|宣統.+年(?:.*)?)$",
+      "note": "Date-like source categories can be checked against canonical date metadata and removed from category assignments once that metadata is confirmed."
+    },
+    {
+      "name": "category_namespace_leak",
+      "classification": "normalization",
+      "action": "normalize_then_review",
+      "pattern": "^(?:分類|分类|Category):",
+      "note": "The MediaWiki category namespace has leaked into the stored label. The audit exposes the suffix separately as a possible normalized category candidate."
+    },
+    {
+      "name": "wiki_maintenance_state",
+      "classification": "maintenance",
+      "action": "review_remove",
+      "pattern": "^(?:(?:分類|分类|Category):)?(?:待完之篇|待譯之篇|待译之篇|求驗|求验|求詳|求详|待新之篇|未用之事|既失之版|未廣佈之版|未广布之版|空商賈之錄|空商贾之录|闕段之文|缺段之文|闕實體棨信|缺实体.*|闕.*|缺.*)$",
+      "note": "Source-wiki workflow or missing-content state. Keep for audit provenance if useful, but review for removal from corpus content categorisation."
+    },
+    {
+      "name": "software_or_version_technical",
+      "classification": "maintenance",
+      "action": "review_remove",
+      "pattern": "^(?:(?:分類|分类|Category):)?.*(?:爪哇版|基石版|啟者|启者|快照|測版|测版|伺服端|服务器|教育版|攜帶版|携带版|資囊|资囊|數錄|数录|History模|Al version).*$",
+      "note": "Technical/version category inherited from a software-oriented source. Review before treating it as literary subject metadata."
+    }
+  ]
+}

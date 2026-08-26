@@ -49,4 +49,57 @@ namespace :corpus_metadata_dates do
     puts "Reports: #{result.report_dir}"
     puts "Rebuild the corpus manifest after applying changes: bin/rails corpus_search:rebuild_manifest" if apply
   end
+  desc "Audit safe rows from a completed dates.tsv checkpoint without rescanning corpus texts"
+  task checkpoint_audit: :environment do
+    run_metadata_date_checkpoint(apply: false)
+  end
+
+  desc "Apply safe rows from a completed dates.tsv checkpoint; self-regnal rows remain deferred"
+  task checkpoint_apply: :environment do
+    run_metadata_date_checkpoint(apply: true)
+  end
+
+  def run_metadata_date_checkpoint(apply:)
+    root = Pathname(Rails.configuration.x.corpus_root).realpath
+    report = metadata_date_checkpoint_report
+    result = CorpusMetadataDateCheckpointApplier.new(
+      root: root,
+      report_path: report,
+      apply: apply,
+      progress_every: Integer(ENV.fetch("PROGRESS_EVERY", "5000")),
+      path_filter: ENV["PATH_FILTER"],
+      report_root: ENV["REPORT_ROOT"]
+    ).run!
+
+    mode = apply ? "CHECKPOINT APPLY" : "CHECKPOINT AUDIT"
+    puts "#{mode}: #{result.rows} report rows read."
+    puts "  safe candidates:          #{result.eligible}"
+    puts "  would write:              #{result.would_write}" unless apply
+    puts "  written:                  #{result.written}" if apply
+    puts "  already chronologized:    #{result.already_chronologized}"
+    puts "  self-regnal deferred:     #{result.deferred_self_regnal}"
+    puts "  author/path rejected:     #{result.author_path_rejected}"
+    puts "  author/path unknown:      #{result.author_path_unknown}"
+    puts "  folder ca overrides:      #{result.folder_overrides}"
+    puts "  folder/report conflicts:  #{result.folder_conflicts}"
+    puts "  period metadata repairs:  #{result.period_repairs}"
+    puts "  polity metadata repairs:  #{result.polity_repairs}"
+    puts "  folder repair unknown:    #{result.folder_repair_unknown}"
+    puts "  stale report rows:        #{result.stale}"
+    puts "  missing metadata:         #{result.missing}"
+    puts "  errors:                   #{result.errors}"
+    puts "Review: #{result.report_dir}"
+    puts "Rebuild the corpus manifest after applying changes: bin/rails corpus_search:rebuild_manifest" if apply
+  end
+
+  def metadata_date_checkpoint_report
+    explicit = ENV["REPORT"].to_s.strip
+    return Pathname(explicit).expand_path if explicit.present?
+
+    reports = Dir.glob(Rails.root.join("tmp", "corpus_metadata_auto_dates", "*", "dates.tsv").to_s).sort
+    raise "No completed dates.tsv report found; set REPORT=/path/to/dates.tsv" if reports.empty?
+
+    Pathname(reports.last)
+  end
+
 end

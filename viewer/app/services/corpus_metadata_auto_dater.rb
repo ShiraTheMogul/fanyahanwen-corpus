@@ -150,12 +150,12 @@ class CorpusMetadataAutoDater
         counters["dated"] += 1
       elsif metadata["ca"].to_s.strip.empty?
         if author_names(metadata).any?
-          if (author = author_circa(metadata))
+          if (author = author_circa(metadata, metadata_path))
             metadata["ca"] = format_circa(author.fetch(:start), author.fetch(:end))
             evidence = author
             counters["circa_author"] += 1
           end
-        elsif (polity = polity_circa(metadata))
+        elsif (polity = polity_circa(metadata, metadata_path))
           metadata["ca"] = format_circa(polity.fetch(:start), polity.fetch(:end))
           evidence = polity
           counters["circa_polity"] += 1
@@ -381,7 +381,7 @@ class CorpusMetadataAutoDater
     best
   end
 
-  def author_circa(metadata)
+  def author_circa(metadata, metadata_path = nil)
     names = author_names(metadata)
     return nil if names.empty?
 
@@ -392,7 +392,7 @@ class CorpusMetadataAutoDater
       end
       high = dated.select { |candidate| candidate["confidence"].to_s == "high" }
       pool = high.any? ? high : dated
-      pool = pool.select { |candidate| person_candidate_compatible?(candidate, metadata) }
+      pool = pool.select { |candidate| person_candidate_compatible?(candidate, metadata, metadata_path) }
       next unless pool.one?
 
       candidate = pool.first
@@ -417,18 +417,41 @@ class CorpusMetadataAutoDater
     }
   end
 
-  def person_candidate_compatible?(candidate, metadata)
+  def person_candidate_compatible?(candidate, metadata, metadata_path = nil)
+    if (path_context = path_chronology_context(metadata_path))
+      candidate_start = integer_or_nil(candidate["year_start"] || candidate["year_end"])
+      candidate_end = integer_or_nil(candidate["year_end"] || candidate["year_start"])
+      if candidate_start && candidate_end
+        left, right = [candidate_start, candidate_end].minmax
+        return false unless ranges_overlap?(left, right, path_context[:start], path_context[:end])
+      end
+    end
+
     candidate_polity = candidate["polity"].to_s.strip
     return true if candidate_polity.empty?
 
     values = [metadata["polity"], metadata["period"]].map(&:to_s).reject(&:empty?)
+    values.concat(path_context_values(metadata_path))
+    values.uniq!
     return true if values.empty?
 
     candidate_forms = normalized_polity_forms(candidate_polity)
     values.any? { |value| (candidate_forms & normalized_polity_forms(value)).any? }
   end
 
-  def polity_circa(metadata)
+  def polity_circa(metadata, metadata_path = nil)
+    # The corpus folder hierarchy is already curated chronologically.  Use it
+    # first when it provides a known interval; metadata fields are frequently
+    # broader labels copied from source categories.
+    if (path_context = path_chronology_context(metadata_path))
+      return {
+        kind: "polity_ca",
+        start: path_context[:start],
+        end: path_context[:end],
+        polity: path_context[:label]
+      }
+    end
+
     [metadata["polity"], metadata["period"]].each do |value|
       range = period_range_for_value(value)
       next unless range
@@ -465,6 +488,51 @@ class CorpusMetadataAutoDater
       return [start_year, end_year] if Array(labels).any? { |label| forms.include?(label.to_s) }
     end
     nil
+  end
+
+  def path_chronology_context(metadata_path)
+    context = nil
+    labels = []
+
+    path_context_values(metadata_path).each do |value|
+      range = period_range_for_value(value)
+      next unless range
+
+      if context.nil?
+        context = { start: range[0], end: range[1] }
+        labels << value
+        next
+      end
+
+      start_year = [context[:start], range[0]].max
+      end_year = [context[:end], range[1]].min
+      next if start_year > end_year
+
+      context = { start: start_year, end: end_year }
+      labels << value
+    end
+
+    return nil unless context
+
+    context.merge(label: labels.join("/"))
+  end
+
+  def path_context_values(metadata_path)
+    return [] unless metadata_path
+
+    parts = relative(metadata_path).split("/")
+    clean_index = parts.index("clean")
+    return [] unless clean_index
+
+    # Exclude the work folder and metadata.json itself.  The remaining path
+    # components are the corpus's already-curated chronological hierarchy.
+    Array(parts[(clean_index + 1)...-2]).reject(&:empty?)
+  rescue ArgumentError
+    []
+  end
+
+  def ranges_overlap?(left_start, left_end, right_start, right_end)
+    left_start <= right_end && right_start <= left_end
   end
 
   def normalized_polity_forms(value)
