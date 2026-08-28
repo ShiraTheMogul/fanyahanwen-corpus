@@ -70,12 +70,14 @@ module CorpusSearch
     def per_page = @presentation_options.per_page
     def requested? = @requested
     def exact? = @search_definition.exact?
+    def regex? = @search_definition.regex?
+    def single_term? = @search_definition.single_term?
     def proximity? = @search_definition.proximity?
     def alternatives? = @search_definition.alternatives?
     def multi_term? = @search_definition.multi_term?
     def ignore_punctuation? = @search_definition.ignore_punctuation?
 
-    def term_a = exact? ? query_text : terms[0].to_s
+    def term_a = single_term? ? query_text : terms[0].to_s
     def term_b = proximity? ? terms[1].to_s : ""
     def distance = maximum_span
 
@@ -87,6 +89,14 @@ module CorpusSearch
       list = []
       if exact?
         list << I18n.t("corpus_search.errors.enter_sequence") if normalized_units(query_text).empty?
+      elsif regex?
+        list << I18n.t("corpus_search.errors.enter_regex") if query_text.empty?
+        if query_text.each_char.count > SearchDefinition::MAX_REGEX_LENGTH
+          list << I18n.t("corpus_search.errors.regex_too_long", max: SearchDefinition::MAX_REGEX_LENGTH)
+        elsif query_text.present?
+          regex_error = RegexPattern.validation_error(query_text)
+          list << I18n.t("corpus_search.errors.invalid_regex", message: regex_error) if regex_error
+        end
       elsif proximity?
         list << I18n.t("corpus_search.errors.enter_two_terms") if terms.length < 2
         list << I18n.t("corpus_search.errors.too_many_terms", max: SearchDefinition::MAX_PROXIMITY_TERMS) if terms.length > SearchDefinition::MAX_PROXIMITY_TERMS
@@ -95,7 +105,9 @@ module CorpusSearch
         list << I18n.t("corpus_search.errors.too_many_alternatives", max: SearchDefinition::MAX_ALTERNATIVE_TERMS) if terms.length > SearchDefinition::MAX_ALTERNATIVE_TERMS
       end
 
-      list << I18n.t("corpus_search.errors.term_too_long", max: 80) if effective_terms.any? { |term| term.each_char.count > 80 }
+      unless regex?
+        list << I18n.t("corpus_search.errors.term_too_long", max: 80) if effective_terms.any? { |term| term.each_char.count > 80 }
+      end
       list
     end
 
@@ -105,7 +117,7 @@ module CorpusSearch
 
     def to_h
       {
-        "version" => 7,
+        "version" => 8,
         "definition" => @search_definition.to_h,
         "presentation" => @presentation_options.to_h.except("page")
       }
@@ -113,7 +125,7 @@ module CorpusSearch
 
     def cache_key
       payload = {
-        "version" => 7,
+        "version" => 8,
         "definition" => @search_definition.to_h
       }
       CacheStore.hash_key(JSON.generate(payload))
@@ -137,7 +149,7 @@ module CorpusSearch
       pairs = []
       pairs << ["mode", mode]
 
-      if exact?
+      if single_term?
         pairs << ["q", query_text]
       else
         terms.each { |term| pairs << ["terms[]", term] }

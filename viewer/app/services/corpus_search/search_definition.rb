@@ -4,14 +4,15 @@ module CorpusSearch
   # Immutable search meaning. Pagination and snippet presentation live in
   # PresentationOptions so display changes do not redefine a match.
   class SearchDefinition
-    SCHEMA_VERSION = 7
-    MODES = %w[exact proximity alternatives].freeze
+    SCHEMA_VERSION = 8
+    MODES = %w[exact regex proximity alternatives].freeze
     ORDERS = %w[any entered].freeze
     PUNCTUATION_MODES = NormalizedText::PUNCTUATION_MODES
     CHARACTER_EQUIVALENCE_LEVELS = CharacterEquivalenceRegistry::LEVELS
     MAX_MULTI_TERMS = 10
     MAX_PROXIMITY_TERMS = MAX_MULTI_TERMS
     MAX_ALTERNATIVE_TERMS = MAX_MULTI_TERMS
+    MAX_REGEX_LENGTH = 1_000
 
     attr_reader :mode, :query_text, :terms, :maximum_span, :order,
                 :punctuation, :character_equivalence, :metadata_filters,
@@ -22,12 +23,23 @@ module CorpusSearch
                    metadata_filters: {}, document_roles: nil,
                    include_folders: nil, exclude_folders: nil, deduplicate_exact_bodies: false)
       @mode = MODES.include?(mode.to_s) ? mode.to_s : "exact"
-      @query_text = query_text.to_s.strip
+      raw_query_text = query_text.to_s
+      # Leading/trailing whitespace can be meaningful regular-expression syntax.
+      # Exact-sequence input keeps its existing user-friendly trimming behaviour.
+      @query_text = regex? ? raw_query_text : raw_query_text.strip
       @terms = normalize_terms(terms).freeze
       @maximum_span = clamp_integer(maximum_span, default: 200, min: 1, max: 5_000)
       @order = ORDERS.include?(order.to_s) ? order.to_s : "any"
       @punctuation = PUNCTUATION_MODES.include?(punctuation.to_s) ? punctuation.to_s : "ignore"
-      @character_equivalence = CHARACTER_EQUIVALENCE_LEVELS.include?(character_equivalence.to_s) ? character_equivalence.to_s : "common"
+
+      # Regex syntax contains characters such as brackets, escapes, and ranges.
+      # Expanding individual Han forms inside that syntax would change the
+      # expression itself. Regex therefore always searches the exact normalized
+      # character stream; variant-aware searches remain available in the other
+      # three modes.
+      requested_equivalence = CHARACTER_EQUIVALENCE_LEVELS.include?(character_equivalence.to_s) ? character_equivalence.to_s : "common"
+      @character_equivalence = regex? ? "exact" : requested_equivalence
+
       @metadata_filters = normalize_metadata_filters(metadata_filters).freeze
       @document_roles = normalize_roles(document_roles).freeze
       @include_folders = normalize_paths(include_folders).freeze
@@ -37,14 +49,16 @@ module CorpusSearch
     end
 
     def exact? = @mode == "exact"
+    def regex? = @mode == "regex"
     def proximity? = @mode == "proximity"
     def alternatives? = @mode == "alternatives"
+    def single_term? = exact? || regex?
     def multi_term? = proximity? || alternatives?
     def ignore_punctuation? = @punctuation == "ignore"
     def deduplicate_exact_bodies? = @deduplicate_exact_bodies
 
     def effective_terms
-      exact? ? [@query_text] : @terms
+      single_term? ? [@query_text] : @terms
     end
 
     def manifest_filters
@@ -59,7 +73,7 @@ module CorpusSearch
       {
         "schema_version" => SCHEMA_VERSION,
         "mode" => @mode,
-        "query_text" => exact? ? @query_text : nil,
+        "query_text" => single_term? ? @query_text : nil,
         "terms" => multi_term? ? @terms : nil,
         "proximity" => proximity? ? {
           "maximum_span" => @maximum_span,

@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+﻿# frozen_string_literal: true
 
 require "set"
 
@@ -13,8 +13,9 @@ module CorpusSearch
     Match = Data.define(:search_start, :search_end, :term_matches)
     TermMatch = Data.define(:term_index, :search_start, :search_end)
 
-    def initialize(searchable_units:, term_patterns: nil, term_units: nil, maximum_span:, order: "any")
-      @searchable_units = searchable_units
+    def initialize(searchable: nil, searchable_units: nil, term_patterns: nil, term_units: nil, maximum_span:, order: "any")
+      @searchable = searchable
+      @searchable_units = searchable&.units || searchable_units
       @term_patterns = normalize_patterns(term_patterns || term_units)
       @maximum_span = maximum_span.to_i
       @order = order.to_s == "entered" ? "entered" : "any"
@@ -77,7 +78,7 @@ module CorpusSearch
     end
 
     def entered_order_matches
-      positions_by_term = @term_patterns.map { |pattern| SearchText.positions_of_pattern(@searchable_units, pattern) }
+      positions_by_term = @term_patterns.map { |pattern| positions_for(pattern) }
       return [] if positions_by_term.any?(&:empty?)
 
       results = []
@@ -135,8 +136,13 @@ module CorpusSearch
       end
 
       grouped.values.each do |group|
-        group[:positions] = SearchText.positions_of_pattern(@searchable_units, group[:pattern])
+        group[:positions] = positions_for(group[:pattern])
       end
+    end
+
+    def positions_for(pattern)
+      source = @searchable || @searchable_units
+      SearchText.positions_of_pattern(source, pattern)
     end
 
     def requirements_met?(counts, required)

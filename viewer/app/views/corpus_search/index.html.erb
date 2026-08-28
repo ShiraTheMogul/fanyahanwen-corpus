@@ -1,4 +1,4 @@
-<h1><%= t("corpus_search.title") %></h1>
+﻿<h1><%= t("corpus_search.title") %></h1>
 
 <p class="corpus-search-note"><%= t("corpus_search.introduction") %></p>
 
@@ -25,42 +25,46 @@
               data: {
                 controller: "corpus-search-form",
                 corpus_search_form_max_terms_value: CorpusSearch::SearchDefinition::MAX_MULTI_TERMS,
+                corpus_search_form_regex_max_length_value: CorpusSearch::SearchDefinition::MAX_REGEX_LENGTH,
                 corpus_search_form_term_placeholder_value: t("corpus_search.placeholders.term", number: "__NUMBER__")
               } do %>
   <%= hidden_field_tag :search_scope, @search_scope %>
   <%= hidden_field_tag :mode, @query.mode, data: { corpus_search_form_target: "mode" } %>
 
   <div class="corpus-search-mode-switch" role="group" aria-label="<%= t("corpus_search.form.mode") %>">
-    <% ["exact", "proximity", "alternatives"].each do |mode| %>
+    <% ["exact", "regex", "proximity", "alternatives"].each do |mode| %>
       <button type="button"
               class="corpus-search-mode-button"
               data-corpus-search-form-target="modeButton"
               data-mode="<%= mode %>"
               data-action="corpus-search-form#selectMode"
               aria-pressed="<%= @query.mode == mode %>">
-        <%= t("corpus_search.modes.#{mode}") %>
+        <%= t("corpus_search.modes.#{mode}", default: (mode == "regex" ? "Regular expression" : mode.humanize)) %>
       </button>
     <% end %>
   </div>
 
   <section class="corpus-search-primary-panel"
            data-corpus-search-form-target="exactPanel"
-           <%= "hidden" unless @query.exact? %>>
+           <%= "hidden" unless @query.single_term? %>>
     <label class="corpus-search-wide-label">
       <span><%= t("corpus_search.form.search_text") %></span>
       <%= text_field_tag :q,
                          @query.query_text,
                          class: "corpus-search-input corpus-search-query-input",
-                         maxlength: 80,
+                         maxlength: (@query.regex? ? CorpusSearch::SearchDefinition::MAX_REGEX_LENGTH : 80),
                          placeholder: t("corpus_search.placeholders.sequence"),
-                         disabled: !@query.exact?,
+                         disabled: !@query.single_term?,
                          data: { corpus_search_form_target: "exactInput" } %>
     </label>
+    <p class="corpus-search-hint"
+       data-corpus-search-form-target="regexHint"
+       <%= "hidden" unless @query.regex? %>><%= t("corpus_search.form.regex_hint", default: "Ruby regular-expression syntax is used. The expression is compiled once and reused across files. Character-equivalence expansion is disabled in this mode; punctuation handling still follows the option below.") %></p>
   </section>
 
   <section class="corpus-search-primary-panel"
            data-corpus-search-form-target="termsPanel"
-           <%= "hidden" if @query.exact? %>>
+           <%= "hidden" if @query.single_term? %>>
     <p class="corpus-search-field-heading"
        data-corpus-search-form-target="proximityHeading"
        <%= "hidden" unless @query.proximity? %>><%= t("corpus_search.form.find_all_terms") %></p>
@@ -82,7 +86,7 @@
                              class: "corpus-search-input",
                              maxlength: 80,
                              placeholder: t("corpus_search.placeholders.term", number: index + 1),
-                             disabled: @query.exact?,
+                             disabled: @query.single_term?,
                              data: { corpus_search_form_target: "multiTermInput", corpus_search_term_input: true } %>
           <button type="button"
                   class="corpus-search-icon-button"
@@ -182,6 +186,7 @@
       <%= select_tag :characters,
                      options_for_select(character_options, @query.character_equivalence),
                      class: "corpus-search-input corpus-search-character-select",
+                     disabled: @query.regex?,
                      data: {
                        corpus_search_form_target: "characterMatching",
                        action: "change->corpus-search-form#updateCharacterHint"
@@ -327,7 +332,7 @@
     <details id="query-details" class="corpus-search-query-details">
       <summary><%= t("corpus_search.query_details.heading") %></summary>
       <dl>
-        <div><dt><%= t("corpus_search.query_details.mode") %></dt><dd><%= t("corpus_search.modes.#{@query.mode}") %></dd></div>
+        <div><dt><%= t("corpus_search.query_details.mode") %></dt><dd><%= t("corpus_search.modes.#{@query.mode}", default: (@query.regex? ? "Regular expression" : @query.mode.humanize)) %></dd></div>
         <div><dt><%= t("corpus_search.query_details.query") %></dt><dd><code><%= @query.display_label %></code></dd></div>
         <div><dt><%= t("corpus_search.query_details.punctuation") %></dt><dd><%= t("corpus_search.punctuation.#{@query.punctuation}") %></dd></div>
         <div><dt><%= t("corpus_search.query_details.character_matching") %></dt><dd><%= t("corpus_search.characters.#{@query.character_equivalence}") %></dd></div>

@@ -5,6 +5,7 @@ export default class extends Controller {
     "mode",
     "modeButton",
     "exactPanel",
+    "regexHint",
     "termsPanel",
     "exactInput",
     "multiTermInput",
@@ -23,10 +24,12 @@ export default class extends Controller {
 
   static values = {
     maxTerms: { type: Number, default: 10 },
+    regexMaxLength: { type: Number, default: 1000 },
     termPlaceholder: String
   }
 
   connect() {
+    this.characterMatchingBeforeRegex = null
     this.applyMode(this.modeTarget.value || "exact")
     this.renumberTerms()
     this.updateCharacterHint()
@@ -92,27 +95,56 @@ export default class extends Controller {
   }
 
   applyMode(mode) {
-    const selected = ["proximity", "alternatives"].includes(mode) ? mode : "exact"
+    const selected = ["regex", "proximity", "alternatives"].includes(mode) ? mode : "exact"
     const exact = selected === "exact"
+    const regex = selected === "regex"
+    const single = exact || regex
     const proximity = selected === "proximity"
     const alternatives = selected === "alternatives"
 
     this.modeTarget.value = selected
-    this.exactPanelTarget.hidden = !exact
-    this.termsPanelTarget.hidden = exact
+    this.exactPanelTarget.hidden = !single
+    if (this.hasRegexHintTarget) this.regexHintTarget.hidden = !regex
+    this.termsPanelTarget.hidden = single
     this.proximityHeadingTarget.hidden = !proximity
     this.alternativesHeadingTarget.hidden = !alternatives
     this.alternativesHintTarget.hidden = !alternatives
     this.proximityOptionsTarget.hidden = !proximity
 
-    this.exactInputTargets.forEach((input) => { input.disabled = !exact })
-    this.multiTermInputTargets.forEach((input) => { input.disabled = exact })
+    this.exactInputTargets.forEach((input) => {
+      input.disabled = !single
+      input.maxLength = regex ? this.regexMaxLengthValue : 80
+    })
+    this.multiTermInputTargets.forEach((input) => { input.disabled = single })
     this.proximityInputTargets.forEach((input) => { input.disabled = !proximity })
+
+    this.updateCharacterMatchingForMode(regex)
 
     this.modeButtonTargets.forEach((button) => {
       const active = button.dataset.mode === selected
       button.setAttribute("aria-pressed", active ? "true" : "false")
     })
+  }
+
+  updateCharacterMatchingForMode(regex) {
+    if (!this.hasCharacterMatchingTarget) return
+
+    const select = this.characterMatchingTarget
+    if (regex) {
+      if (select.value !== "exact" && this.characterMatchingBeforeRegex === null) {
+        this.characterMatchingBeforeRegex = select.value
+      }
+      select.value = "exact"
+      select.disabled = true
+    } else {
+      select.disabled = false
+      if (this.characterMatchingBeforeRegex !== null) {
+        select.value = this.characterMatchingBeforeRegex
+        this.characterMatchingBeforeRegex = null
+      }
+    }
+
+    this.updateCharacterHint()
   }
 
   renumberTerms() {

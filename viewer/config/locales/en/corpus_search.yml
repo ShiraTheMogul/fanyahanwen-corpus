@@ -1,4 +1,4 @@
-en:
+﻿en:
   corpus_search:
     title: Corpus Search
     introduction: Search corpus body text directly. Metadata headers never produce hits or counts.
@@ -30,6 +30,7 @@ en:
       find_all_terms: Find all terms within one passage
       find_any_term: Find any of these terms
       alternatives_hint: Terms are joined with OR. A result is returned when any entered term occurs.
+      regex_hint: Ruby regular-expression syntax is used. The expression is compiled once and reused across files. Character-equivalence expansion is disabled in this mode; punctuation handling still follows the option below.
       maximum_span: Maximum span
       order: Order
       ignore_punctuation: Ignore punctuation and spacing
@@ -58,6 +59,7 @@ en:
       folder_scope: Folder scope
     modes:
       exact: Exact sequence
+      regex: Regular expression
       proximity: Proximity
       alternatives: Alternatives (OR)
     orders:
@@ -290,6 +292,9 @@ en:
       queued: The large search has been queued. You can keep using the site while it runs.
     errors:
       enter_sequence: Enter an exact sequence to search for.
+      enter_regex: Enter a regular expression to search for.
+      invalid_regex: 'Invalid regular expression: %{message}'
+      regex_too_long: Regular expressions cannot be longer than %{max} characters.
       enter_two_terms: Enter at least two terms for a proximity search.
       enter_two_alternatives: Enter at least two alternatives for an OR search.
       term_too_long: Search terms cannot be longer than %{max} characters.

@@ -118,7 +118,7 @@ module CorpusSearch
     end
 
     def matched_terms(hits)
-      if @query.exact?
+      if @query.single_term?
         hits.any? ? [@query.query_text] : []
       else
         hits.flat_map { |hit| Array(hit["term_matches"]).map { |match| match["term"].to_s } }

@@ -3,9 +3,10 @@
 require "set"
 
 module CorpusSearch
-  # Performs exact-sequence, alternative (OR), and multi-term proximity searches
-  # over corpus bodies. Every body comes from DocumentReader, so metadata can
-  # never produce a hit or enter a statistical denominator.
+  # Performs exact-sequence, regular-expression, alternative (OR), and
+  # multi-term proximity searches over corpus bodies. Every body comes from
+  # DocumentReader, so metadata can never produce a hit or enter a statistical
+  # denominator.
   class Runner
     DEFAULT_INTERACTIVE_LIMIT = 1_000
     DEFAULT_INTERACTIVE_SCAN_LIMIT = 1_000
@@ -13,6 +14,7 @@ module CorpusSearch
     MAX_INDEX_EQUIVALENTS = 12
     DEFAULT_DIRECT_SCAN_SCOPE_LIMIT = 5_000
     DEFAULT_CACHE_CHECKPOINT_EVERY = 10_000
+    RAW_PREFILTER_ANCHORS_PER_TERM = 4
 
     ScanResult = Data.define(:hits, :searchable_characters, :body_fingerprint)
     DocumentStats = Data.define(:searchable_characters, :body_fingerprint)
@@ -67,7 +69,6 @@ module CorpusSearch
           hits = hits.first(max_hits)
           break
         end
-
       end
 
       hits = sort_hits(hits)
@@ -169,7 +170,7 @@ module CorpusSearch
 
         if all_documents_are_candidates || candidate_ids.include?(doc["id"])
           if hits.nil?
-            scan = scan_document(doc)
+            scan = scan_document(doc, require_stats: true)
             hits = scan.hits
             searchable_characters = scan.searchable_characters
             body_fingerprint = scan.body_fingerprint
@@ -258,6 +259,13 @@ module CorpusSearch
       return @candidate_documents if defined?(@candidate_documents)
 
       docs = scoped_documents
+
+      # An arbitrary regular expression has no generally safe literal anchor.
+      # Treat every document in scope as a candidate and let the bounded
+      # interactive scan / background full search control how much work occurs.
+      # This preserves correctness for constructs such as alternation, lookaround,
+      # character classes, and optional prefixes.
+      return @candidate_documents = docs if @query.regex?
 
       # A bounded scope is cheaper to read directly than a global index is to
       # decompress and parse. The audit found a 40-document scope spending nearly
@@ -440,18 +448,62 @@ module CorpusSearch
     end
 
     def query_patterns
-      @query_patterns ||= @query.effective_terms.map do |term|
-        CharacterPattern.build(
-          term,
-          punctuation: @query.punctuation,
-          registry: @equivalence_registry
-        )
+      @query_patterns ||= begin
+        if @query.regex?
+          []
+        else
+          @query.effective_terms.map do |term|
+            CharacterPattern.build(
+              term,
+              punctuation: @query.punctuation,
+              registry: @equivalence_registry
+            )
+          end
+        end
       end
     end
 
-    def scan_document(doc)
+    def regex_pattern
+      @regex_pattern ||= RegexPattern.new(@query.query_text)
+    end
+
+    def scan_document(doc, require_stats: false)
       document = DocumentReader.read(fs: @fs, path: doc["path"])
       body = document.body
+
+      # Before allocating the normalized character arrays, ask a much cheaper
+      # bounded necessary-condition question on the body string itself. A few
+      # query character classes are checked with String#include?, which stays in
+      # Ruby's native string engine. A false answer proves there can be no hit,
+      # so an interactive search can move to
+      # the next file without normalization, Bloom construction, or hit objects.
+      # Full analysis still requests searchable-character statistics for every
+      # document, so require_stats keeps its denominator exact.
+      unless raw_body_could_match?(body)
+        unless require_stats
+          return ScanResult.new(
+            hits: [],
+            searchable_characters: nil,
+            body_fingerprint: document.body_fingerprint
+          )
+        end
+
+        searchable = NormalizedText.build(body, punctuation: @query.punctuation)
+        searchable_characters = searchable.units.length
+        document_stats_cache.write(
+          doc,
+          punctuation: @query.punctuation,
+          searchable_characters: searchable_characters,
+          body_fingerprint: document.body_fingerprint,
+          character_bloom: CharacterBloom.build(body)
+        )
+        return ScanResult.new(
+          hits: [],
+          searchable_characters: searchable_characters,
+          body_fingerprint: document.body_fingerprint
+        )
+      end
+
       searchable = NormalizedText.build(body, punctuation: @query.punctuation)
       searchable_characters = searchable.units.length
       document_stats_cache.write(
@@ -459,7 +511,11 @@ module CorpusSearch
         punctuation: @query.punctuation,
         searchable_characters: searchable_characters,
         body_fingerprint: document.body_fingerprint,
-        character_bloom: CharacterBloom.build(body)
+        # Regex candidate selection cannot use the character Bloom filter. Do
+        # not build one during a regex scan merely as a side effect; this keeps
+        # the hot path focused on the requested search. Existing cached Bloom
+        # data is preserved by DocumentStatsCache when the fingerprint matches.
+        character_bloom: @query.regex? ? nil : CharacterBloom.build(body)
       )
       hits = search_loaded_document(doc, body, searchable)
       ScanResult.new(
@@ -469,6 +525,60 @@ module CorpusSearch
       )
     rescue Errno::ENOENT, SecurityError
       ScanResult.new(hits: [], searchable_characters: 0, body_fingerprint: nil)
+    end
+
+    # Raw-body necessary-condition prefilter. This is deliberately bounded: a
+    # long query must not turn into dozens of full-string presence scans before
+    # the real matcher even starts. We test at most four character classes from
+    # each term, preferring characters with low corpus frequency when the small
+    # FrequencySnapshot is available. A missing anchor proves the term cannot
+    # occur; a present anchor proves nothing and the normal matcher still checks
+    # the complete query.
+    #
+    # Exact and proximity searches require every term to remain possible. OR
+    # searches need only one possible term. Regex syntax is arbitrary, so regex
+    # bypasses this prefilter entirely.
+    def raw_body_could_match?(body)
+      return true if @query.regex?
+
+      presence_cache = {}
+      possible = lambda do |pattern|
+        raw_prefilter_anchor_classes(pattern).all? do |forms|
+          signature = forms.to_a.sort.join("\u0001")
+          presence_cache.fetch(signature) do
+            presence_cache[signature] = forms.any? { |form| body.include?(form.to_s) }
+          end
+        end
+      end
+
+      if @query.alternatives?
+        query_patterns.any? { |pattern| possible.call(pattern) }
+      else
+        query_patterns.all? { |pattern| possible.call(pattern) }
+      end
+    end
+
+    def raw_prefilter_anchor_classes(pattern)
+      @raw_prefilter_anchor_classes ||= {}
+      @raw_prefilter_anchor_classes[pattern.signature] ||= begin
+        seen = {}
+        candidates = pattern.allowed_units.each_with_index.filter_map do |forms, index|
+          signature = forms.to_a.sort.join("\u0001")
+          next if signature.empty? || seen[signature]
+
+          seen[signature] = true
+          known = forms.filter_map do |form|
+            key = form.to_s
+            frequency_counts[key] if frequency_counts.key?(key)
+          end
+          [forms, index, known]
+        end
+
+        candidates.sort_by! do |forms, index, known|
+          [known.empty? ? 1 : 0, known.sum, forms.length, index]
+        end
+        candidates.first(RAW_PREFILTER_ANCHORS_PER_TERM).map(&:first).freeze
+      end
     end
 
     def document_stats(doc)
@@ -490,7 +600,7 @@ module CorpusSearch
         punctuation: @query.punctuation,
         searchable_characters: searchable_characters,
         body_fingerprint: document.body_fingerprint,
-        character_bloom: CharacterBloom.build(document.body)
+        character_bloom: @query.regex? ? nil : CharacterBloom.build(document.body)
       )
       DocumentStats.new(
         searchable_characters: searchable_characters,
@@ -505,7 +615,9 @@ module CorpusSearch
     end
 
     def search_loaded_document(doc, body, searchable)
-      if @query.proximity?
+      if @query.regex?
+        regex_hits(doc, body, searchable)
+      elsif @query.proximity?
         proximity_hits(doc, body, searchable)
       elsif @query.alternatives?
         alternative_hits(doc, body, searchable)
@@ -514,11 +626,28 @@ module CorpusSearch
       end
     end
 
+    def regex_hits(doc, body, searchable)
+      regex_pattern.ranges_in(searchable).filter_map do |search_start, search_end|
+        original_range = searchable.original_range(search_start, search_end)
+        next unless original_range
+
+        build_hit(
+          doc,
+          body,
+          start_offset: original_range[0],
+          end_offset: original_range[1],
+          search_start_offset: search_start,
+          search_end_offset: search_end,
+          equivalence_matches: []
+        )
+      end
+    end
+
     def exact_hits(doc, body, searchable)
       pattern = query_patterns.first
       return [] if pattern.nil? || pattern.empty?
 
-      pattern.positions_in(searchable.units).filter_map do |search_position|
+      pattern.positions_in(searchable).filter_map do |search_position|
         original_range = searchable.original_range(search_position, search_position + pattern.length)
         next unless original_range
 
@@ -545,7 +674,7 @@ module CorpusSearch
       query_patterns.each_with_index do |pattern, term_index|
         next if pattern.empty?
 
-        pattern.positions_in(searchable.units).each do |search_position|
+        pattern.positions_in(searchable).each do |search_position|
           search_end = search_position + pattern.length
           original_range = searchable.original_range(search_position, search_end)
           next unless original_range
@@ -597,7 +726,7 @@ module CorpusSearch
       return [] if patterns.any?(&:empty?)
 
       matches = ProximityMatcher.new(
-        searchable_units: searchable.units,
+        searchable: searchable,
         term_patterns: patterns.map(&:allowed_units),
         maximum_span: @query.maximum_span,
         order: @query.order
@@ -699,7 +828,6 @@ module CorpusSearch
     def occurrence_key(doc, start_offset, end_offset, search_start_offset, search_end_offset)
       [doc["id"], start_offset, end_offset, search_start_offset, search_end_offset].join(":")
     end
-
 
     def skip_duplicate_body?(body_fingerprint, seen)
       return false unless @query.deduplicate_exact_bodies?

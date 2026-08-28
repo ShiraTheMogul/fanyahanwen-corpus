@@ -539,9 +539,7 @@ module CorpusSearch
         include_zip: false,
         exclude: [path.basename.to_s]
       )
-      path.write(rows.map { |row| "#{row.fetch("sha256")}  #{row.fetch("path")}" }.join("
-") + "
-")
+      path.write(rows.map { |row| "#{row.fetch("sha256")}  #{row.fetch("path")}" }.join("\n") + "\n")
     end
 
     def artifact_rows(output_dir, include_zip:, exclude: [])
@@ -627,7 +625,6 @@ module CorpusSearch
       }
     end
 
-
     def matched_forms(hit)
       source_characters = hit["matched_text"].to_s.each_char.to_a
       matches = Array(hit["term_matches"])
@@ -671,7 +668,7 @@ module CorpusSearch
         when "mode"
           @query.mode
         when "query_text"
-          @query.exact? ? @query.query_text : nil
+          @query.single_term? ? @query.query_text : nil
         when "terms"
           @query.multi_term? ? JSON.generate(@query.terms) : nil
         when "maximum_span"
@@ -721,7 +718,7 @@ module CorpusSearch
     end
 
     def flashcard_row(hit)
-      target = if @query.exact?
+      target = if @query.single_term?
         @query.query_text
       elsif @query.alternatives?
         @query.terms.join(" OR ")
@@ -818,8 +815,7 @@ module CorpusSearch
 
     def write_research_readme(path, analysis_result, corpus_snapshot:)
       comparison_note = if @prepared_search.comparison
-        "comparison.csv          Reproducible two-scope comparison definition.
-"
+        "comparison.csv          Reproducible two-scope comparison definition.\n"
       else
         ""
       end
