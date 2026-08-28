@@ -1,0 +1,1034 @@
+﻿{
+  "version": 7,
+  "purpose": "Plan category-to-metadata migration without writing corpus metadata. Categories are normalized to Traditional Chinese for comparison; the original category remains visible in the review workbook only.",
+  "person_author_ratio": 0.8,
+  "person_author_min_matches": 3,
+  "traditionalization_ambiguous_chars": [],
+  "traditionalization_forced_chars": {},
+  "safe_remove_rules": [
+    {
+      "name": "transcription_percentage",
+      "action": "delete_transcription_percentage",
+      "confidence": "safe",
+      "pattern": "^\\d{1,3}%$",
+      "note": "Wikisource transcription percentages are stale workflow state and are not reliable enough to retain."
+    },
+    {
+      "name": "public_domain_marker",
+      "action": "delete_public_domain_category",
+      "confidence": "safe",
+      "pattern": "^PD-old(?:-.+)?$",
+      "note": "The corpus makes its own public-domain determination; inherited PD-old categories are redundant."
+    },
+    {
+      "name": "public_domain_label_zh",
+      "action": "delete_public_domain_category",
+      "confidence": "safe",
+      "pattern": "(?:公有領域|公有领域|公共領域|公共领域)",
+      "note": "Inherited public-domain labels are licensing/provenance state, not content taxonomy; the corpus makes its own public-domain determination."
+    },
+    {
+      "name": "wiki_workflow_state",
+      "action": "delete_source_workflow_category",
+      "confidence": "safe",
+      "pattern": "^(?:待完之篇|待譯之篇|待译之篇|求驗|求验|求詳|求详|待新之篇|未用之事|既失之版|未廣佈之版|未广布之版|空商賈之錄|空商贾之录|闕段之文|缺段之文|闕實體棨信|缺实体.*)$",
+      "note": "Source-wiki maintenance state is not content taxonomy."
+    },
+    {
+      "name": "unknown_ai_version_outlier",
+      "action": "delete_source_technical_outlier",
+      "confidence": "safe",
+      "pattern": "^Al version未知的版本$",
+      "note": "Isolated malformed technical category; no literary or metadata value has been identified."
+    },
+    {
+      "name": "wiki_page_maintenance_labels",
+      "action": "delete_source_workflow_category",
+      "confidence": "safe",
+      "pattern": "^(?:校訂不足的頁面|校订不足的页面|需要清理的頁面|需要清理的页面|需要拆分的頁面|需要拆分的页面|含有受損文件鏈接的頁面|含有受损文件链接的页面|大中華地區有版權爭議的頁面|大中华地区有版权争议的页面)$",
+      "note": "Source-wiki page maintenance/licensing state is not content taxonomy."
+    },
+    {
+      "name": "ai_initial_punctuation_note",
+      "action": "delete_source_technical_outlier",
+      "confidence": "safe",
+      "pattern": "^(?:初始標點是人工智能程序創建|初始标点是人工智能程序创建)$",
+      "note": "Processing/provenance note about machine-generated punctuation; it should not be a content category."
+    },
+    {
+      "name": "inherited_license_marker",
+      "action": "delete_public_domain_category",
+      "confidence": "safe",
+      "pattern": "^(?:PD-|Not-PD-).+$",
+      "note": "Inherited Wikisource licence/status categories are not content taxonomy. The corpus makes its own public-domain determination for each text."
+    },
+    {
+      "name": "source_disambiguation_marker",
+      "action": "delete_source_workflow_category",
+      "confidence": "safe",
+      "pattern": "^(?:消歧義|消歧义)$",
+      "note": "Source-wiki disambiguation state is not content taxonomy."
+    },
+    {
+      "name": "representative_work_editorial",
+      "action": "delete_source_workflow_category",
+      "confidence": "safe",
+      "pattern": "^代表作品$",
+      "note": "Source-side editorial selection (“representative work”) is not content taxonomy."
+    }
+  ],
+  "scoped_keep_rules": [
+    {
+      "name": "minecraft_technical_taxonomy",
+      "pattern": "(?:爪哇版|基石版|基岩版|啟者|启者|快照|測版|测版|伺服端|服务器|教育版|攜帶版|携带版|資囊|资囊|數錄|数录|History模)",
+      "work_scope_pattern": "(?:Minecraft|我的世界|當個創世神|当个创世神|礦藝大典|矿艺大典|爪哇版|基岩版|基石版)",
+      "note": "Keep Minecraft-specific organisation inside the Minecraft corpus scope; hide it from ordinary corpus browsing instead of deleting it."
+    },
+    {
+      "name": "minecraft_section_taxonomy",
+      "pattern": ".+",
+      "work_scope_pattern": "(?:礦藝大典|矿艺大典)",
+      "note": "Keep source taxonomy inside the Minecraft/礦藝大典 section and hide it from unrelated corpus browsing.",
+      "review_outside_scope": false
+    },
+    {
+      "name": "asdc_oracle_bone_source_taxonomy",
+      "pattern": "^(?:雨|告|用|王貞|祝貞|史貞|隊貞|師貞)$",
+      "work_scope_pattern": "(?:inscription\\.asdc\\.sinica\\.edu\\.tw|先秦甲骨金文簡牘詞彙資料庫|ASDC｜|合集[0-9]|新收NA)",
+      "note": "Preserve these source-specific oracle-bone/ASDC classification labels for research and scope them to the excavated-text/inscriptional browse context. Their technical semantics should be mapped separately before any global ontology promotion.",
+      "review_outside_scope": true
+    }
+  ],
+  "tradition_labels": [
+    "儒家",
+    "儒學",
+    "道教",
+    "佛教",
+    "基督教",
+    "新教",
+    "天主教",
+    "東正教",
+    "景教",
+    "猶太教",
+    "伊斯蘭教",
+    "神道"
+  ],
+  "category_normalizations": {
+    "銘刻": "銘",
+    "銘文": "銘",
+    "道教典籍": "道教",
+    "佛教典籍": "佛教",
+    "儒家典籍": "儒家",
+    "基督教典籍": "基督教",
+    "佛教論著": [
+      "佛教",
+      "論著"
+    ],
+    "佛教咒語": [
+      "佛教",
+      "咒語"
+    ],
+    "道教論著": [
+      "道教",
+      "論著"
+    ],
+    "道教咒語": [
+      "道教",
+      "咒語"
+    ],
+    "基督教新教": "新教",
+    "基督新教": "新教",
+    "詩": "漢詩",
+    "樂府詩": "樂府",
+    "五言古": "五言古詩",
+    "七言古": "七言古詩",
+    "五言律": "五言律詩",
+    "七言律": "七言律詩",
+    "五言絕": "五言絕句",
+    "七言絕": "七言絕句"
+  },
+  "material_categories": {
+    "龜甲": "龜甲",
+    "兕骨": "兕骨",
+    "金文": "金",
+    "金": "金",
+    "竹簡": "竹簡",
+    "木牘": "木牘",
+    "帛": "帛",
+    "帛書": "帛",
+    "石": "石",
+    "紙": "紙",
+    "紙本": "紙"
+  },
+  "material_review_categories": {
+    "簡牘": "竹簡 / 木牘（待辨）",
+    "甲骨文": "龜甲 / 骨（待辨）"
+  },
+  "taxonomy_edges": [
+    {
+      "domain": "宗教",
+      "child": "天主教",
+      "parent": "基督教",
+      "note": "基督教 is the corpus umbrella; 天主教 remains a distinct child tradition."
+    },
+    {
+      "domain": "宗教",
+      "child": "新教",
+      "parent": "基督教",
+      "note": "Use 新教 for Protestant traditions under the 基督教 umbrella."
+    },
+    {
+      "domain": "宗教",
+      "child": "東正教",
+      "parent": "基督教",
+      "note": "Eastern Orthodox Christianity."
+    },
+    {
+      "domain": "宗教",
+      "child": "景教",
+      "parent": "基督教",
+      "note": "Church of the East/Nestorian material is grouped under the Christian umbrella while retaining its historical label."
+    },
+    {
+      "domain": "宗教",
+      "child": "基督教",
+      "parent": "亞伯拉罕諸教",
+      "note": "Higher-level browsing umbrella."
+    },
+    {
+      "domain": "宗教",
+      "child": "猶太教",
+      "parent": "亞伯拉罕諸教",
+      "note": "Higher-level browsing umbrella."
+    },
+    {
+      "domain": "宗教",
+      "child": "伊斯蘭教",
+      "parent": "亞伯拉罕諸教",
+      "note": "Higher-level browsing umbrella."
+    },
+    {
+      "domain": "漢詩",
+      "child": "五言律詩",
+      "parent": "律詩",
+      "note": "Poem-form hierarchy; parent categories need not be copied onto each work."
+    },
+    {
+      "domain": "漢詩",
+      "child": "七言律詩",
+      "parent": "律詩",
+      "note": "Poem-form hierarchy."
+    },
+    {
+      "domain": "漢詩",
+      "child": "排律",
+      "parent": "律詩",
+      "note": "Poem-form hierarchy."
+    },
+    {
+      "domain": "漢詩",
+      "child": "五言絕句",
+      "parent": "絕句",
+      "note": "Poem-form hierarchy."
+    },
+    {
+      "domain": "漢詩",
+      "child": "七言絕句",
+      "parent": "絕句",
+      "note": "Poem-form hierarchy."
+    },
+    {
+      "domain": "漢詩",
+      "child": "律詩",
+      "parent": "近體詩",
+      "note": "Poem-form hierarchy."
+    },
+    {
+      "domain": "漢詩",
+      "child": "絕句",
+      "parent": "近體詩",
+      "note": "Poem-form hierarchy."
+    },
+    {
+      "domain": "漢詩",
+      "child": "近體詩",
+      "parent": "漢詩",
+      "note": "Cross-regional mother-category for Literary Chinese poetry."
+    },
+    {
+      "domain": "漢詩",
+      "child": "古體詩",
+      "parent": "漢詩",
+      "note": "Cross-regional mother-category for Literary Chinese poetry."
+    },
+    {
+      "domain": "漢詩",
+      "child": "樂府",
+      "parent": "漢詩",
+      "note": "Retain as meaningful literary form/category."
+    },
+    {
+      "domain": "漢詩",
+      "child": "歌行",
+      "parent": "古體詩",
+      "note": "Retain specific form while inheriting higher levels."
+    },
+    {
+      "domain": "銘",
+      "child": "墓誌銘",
+      "parent": "銘",
+      "note": "Retain subtype distinction."
+    },
+    {
+      "domain": "銘",
+      "child": "碑銘",
+      "parent": "銘",
+      "note": "Retain subtype distinction."
+    },
+    {
+      "domain": "銘",
+      "child": "壙銘",
+      "parent": "銘",
+      "note": "Retain subtype distinction."
+    },
+    {
+      "domain": "銘",
+      "child": "神道碑銘",
+      "parent": "碑銘",
+      "note": "Retain subtype distinction."
+    },
+    {
+      "domain": "銘",
+      "child": "塔銘",
+      "parent": "銘",
+      "note": "Retain subtype distinction."
+    },
+    {
+      "domain": "銘",
+      "child": "肖像銘",
+      "parent": "銘",
+      "note": "Retain subtype distinction."
+    },
+    {
+      "domain": "漢詩",
+      "child": "五言古詩",
+      "parent": "古體詩",
+      "note": "Preserve line-length subtype under old-style poetry."
+    },
+    {
+      "domain": "漢詩",
+      "child": "七言古詩",
+      "parent": "古體詩",
+      "note": "Preserve line-length subtype under old-style poetry."
+    },
+    {
+      "domain": "漢詩",
+      "child": "雜言詩",
+      "parent": "古體詩",
+      "note": "Mixed-line old-style verse."
+    },
+    {
+      "domain": "漢詩",
+      "child": "五言詩",
+      "parent": "漢詩",
+      "note": "Line-length category; form may be 古體 or 近體 and should remain separately discoverable."
+    },
+    {
+      "domain": "漢詩",
+      "child": "七言詩",
+      "parent": "漢詩",
+      "note": "Line-length category; form may be 古體 or 近體 and should remain separately discoverable."
+    },
+    {
+      "domain": "漢詩",
+      "child": "古詩",
+      "parent": "古體詩",
+      "note": "Source category usually indicates old-style poetry; keep the label while inheriting 古體詩."
+    },
+    {
+      "domain": "漢詩",
+      "child": "風",
+      "parent": "漢詩",
+      "note": "Ancient 詩 genre/mode; in 《詩經》, collection structure supplies the regional subsection separately."
+    },
+    {
+      "domain": "漢詩",
+      "child": "雅",
+      "parent": "漢詩",
+      "note": "Ancient 詩 genre/mode; 小雅 and 大雅 remain collection sections."
+    },
+    {
+      "domain": "漢詩",
+      "child": "頌",
+      "parent": "漢詩",
+      "note": "Ancient hymnic/panegyric genre; 周頌、魯頌、商頌 remain collection sections."
+    },
+    {
+      "domain": "漢詩",
+      "child": "笙詩",
+      "parent": "漢詩",
+      "note": "Traditional class of 《詩經》 pieces transmitted without surviving lyrics in the received text."
+    },
+    {
+      "domain": "漢詩",
+      "child": "五言排律",
+      "parent": "排律",
+      "note": "Line-length subtype of 排律."
+    },
+    {
+      "domain": "漢詩",
+      "child": "七言排律",
+      "parent": "排律",
+      "note": "Line-length subtype of 排律."
+    },
+    {
+      "domain": "漢詩",
+      "child": "送別詩",
+      "parent": "漢詩",
+      "note": "Thematic poetry category."
+    },
+    {
+      "domain": "漢詩",
+      "child": "詠春詩",
+      "parent": "漢詩",
+      "note": "Thematic poetry category."
+    },
+    {
+      "domain": "漢詩",
+      "child": "詠秋詩",
+      "parent": "漢詩",
+      "note": "Thematic poetry category."
+    },
+    {
+      "domain": "漢詩",
+      "child": "閨怨詩",
+      "parent": "漢詩",
+      "note": "Thematic poetry category."
+    },
+    {
+      "domain": "漢詩",
+      "child": "悼亡詩",
+      "parent": "漢詩",
+      "note": "Thematic poetry category."
+    },
+    {
+      "domain": "漢詩",
+      "child": "懷古詩",
+      "parent": "漢詩",
+      "note": "Thematic poetry category."
+    },
+    {
+      "domain": "漢詩",
+      "child": "邊塞詩",
+      "parent": "漢詩",
+      "note": "Thematic poetry category."
+    },
+    {
+      "domain": "漢詩",
+      "child": "琴詩",
+      "parent": "漢詩",
+      "note": "Thematic poetry category."
+    },
+    {
+      "domain": "漢詩",
+      "child": "竹枝詞",
+      "parent": "漢詩",
+      "note": "Verse/song form; preserve as a specific poetic category."
+    },
+    {
+      "domain": "書信",
+      "child": "書",
+      "parent": "書信",
+      "note": "Ancient epistolary genre label; preserve the historical leaf under the broader letter category."
+    },
+    {
+      "domain": "書信",
+      "child": "牋",
+      "parent": "書信",
+      "note": "Epistolary subtype/label; preserve the historical term."
+    },
+    {
+      "domain": "銘",
+      "child": "墓銘",
+      "parent": "銘",
+      "note": "Mortuary inscription subtype; preserve the source label unless a more specific 墓誌銘 identification is explicit."
+    },
+    {
+      "domain": "碑",
+      "child": "神道碑",
+      "parent": "碑",
+      "note": "Chinese funerary stele genre; this is unrelated to Japanese 神道 as a religion."
+    },
+    {
+      "domain": "漢詩",
+      "child": "六言絕句",
+      "parent": "絕句",
+      "note": "Six-character jueju form."
+    },
+    {
+      "domain": "漢詩",
+      "child": "五言聲詩",
+      "parent": "漢詩",
+      "note": "Specific form or thematic poetry category; retain the leaf and inherit 漢詩."
+    },
+    {
+      "domain": "漢詩",
+      "child": "三言詩",
+      "parent": "漢詩",
+      "note": "Specific form or thematic poetry category; retain the leaf and inherit 漢詩."
+    },
+    {
+      "domain": "漢詩",
+      "child": "四言詩",
+      "parent": "漢詩",
+      "note": "Specific form or thematic poetry category; retain the leaf and inherit 漢詩."
+    },
+    {
+      "domain": "漢詩",
+      "child": "六言詩",
+      "parent": "漢詩",
+      "note": "Specific form or thematic poetry category; retain the leaf and inherit 漢詩."
+    },
+    {
+      "domain": "漢詩",
+      "child": "酒詩",
+      "parent": "漢詩",
+      "note": "Specific form or thematic poetry category; retain the leaf and inherit 漢詩."
+    },
+    {
+      "domain": "漢詩",
+      "child": "茶詩",
+      "parent": "漢詩",
+      "note": "Specific form or thematic poetry category; retain the leaf and inherit 漢詩."
+    },
+    {
+      "domain": "漢詩",
+      "child": "山水詩",
+      "parent": "漢詩",
+      "note": "Specific form or thematic poetry category; retain the leaf and inherit 漢詩."
+    },
+    {
+      "domain": "漢詩",
+      "child": "隱逸詩",
+      "parent": "漢詩",
+      "note": "Specific form or thematic poetry category; retain the leaf and inherit 漢詩."
+    },
+    {
+      "domain": "漢詩",
+      "child": "遊仙詩",
+      "parent": "漢詩",
+      "note": "Specific form or thematic poetry category; retain the leaf and inherit 漢詩."
+    },
+    {
+      "domain": "漢詩",
+      "child": "遊俠詩",
+      "parent": "漢詩",
+      "note": "Specific form or thematic poetry category; retain the leaf and inherit 漢詩."
+    },
+    {
+      "domain": "漢詩",
+      "child": "懷鄉詩",
+      "parent": "漢詩",
+      "note": "Specific form or thematic poetry category; retain the leaf and inherit 漢詩."
+    },
+    {
+      "domain": "漢詩",
+      "child": "懷友詩",
+      "parent": "漢詩",
+      "note": "Specific form or thematic poetry category; retain the leaf and inherit 漢詩."
+    },
+    {
+      "domain": "漢詩",
+      "child": "琵琶詩",
+      "parent": "漢詩",
+      "note": "Specific form or thematic poetry category; retain the leaf and inherit 漢詩."
+    },
+    {
+      "domain": "漢詩",
+      "child": "回文詩",
+      "parent": "漢詩",
+      "note": "Specific form or thematic poetry category; retain the leaf and inherit 漢詩."
+    },
+    {
+      "domain": "漢詩",
+      "child": "離合詩",
+      "parent": "漢詩",
+      "note": "Specific form or thematic poetry category; retain the leaf and inherit 漢詩."
+    },
+    {
+      "domain": "漢詩",
+      "child": "寶塔詩",
+      "parent": "漢詩",
+      "note": "Specific form or thematic poetry category; retain the leaf and inherit 漢詩."
+    }
+  ],
+  "poetry_markers": [
+    "漢詩",
+    "詩",
+    "律詩",
+    "絕句",
+    "樂府",
+    "歌行",
+    "賦",
+    "詞",
+    "曲",
+    "風",
+    "雅",
+    "頌",
+    "笙詩"
+  ],
+  "special_category_sets": [
+    {
+      "name": "六藝",
+      "terms": [
+        "六藝",
+        "禮",
+        "樂",
+        "射",
+        "御",
+        "書",
+        "數"
+      ]
+    }
+  ],
+  "known_compilation_titles": [
+    "全上古三代秦漢三國六朝文",
+    "全唐文",
+    "全唐詩",
+    "千家詩",
+    "古文觀止",
+    "大正新脩大藏經",
+    "樂府詩集",
+    "正統道藏",
+    "漢魏六朝百三家集",
+    "花間集",
+    "鍾惺集",
+    "元遺山集",
+    "李于田詩集",
+    "明詞彙編",
+    "昌黎先生集",
+    "陶淵明集",
+    "柳河東全集",
+    "李清照詞全集",
+    "白氏長慶集",
+    "留菴文選",
+    "昭明文選",
+    "全三國文",
+    "東坡全集",
+    "震川文集",
+    "島噫詩",
+    "北郭園詩鈔",
+    "白香詞譜箋",
+    "古文辭類纂",
+    "說郛續",
+    "夷門廣牘",
+    "古書隱樓藏書",
+    "燕行錄",
+    "四庫全書"
+  ],
+  "animal_materials": {
+    "龜甲": {
+      "animal_name": "龜",
+      "taxon_candidate": "待辨",
+      "note": "Do not guess a turtle species from 龜甲 alone; retain species-level identification when a catalogue or zooarchaeological source provides it."
+    },
+    "兕骨": {
+      "animal_name": "兕",
+      "taxon_candidate": "Bubalus sp.（需來源核定）",
+      "note": "Retain 兕 as the historical identification. A modern taxon should be recorded only where supporting research identifies the animal securely."
+    }
+  },
+  "person_parenthetical_min_matches": 2,
+  "person_parenthetical_single_match_memberships": 20,
+  "person_parenthetical_author_min_matches": 2,
+  "period_phase_labels": [
+    "早期",
+    "中期",
+    "晚期",
+    "初期",
+    "前期",
+    "後期",
+    "早期或中期",
+    "中期或晚期",
+    "早中期",
+    "中晚期",
+    "不詳"
+  ],
+  "calendar_year_bases": {
+    "中華民國": 1911,
+    "中华民国": 1911,
+    "民國": 1911,
+    "民国": 1911
+  },
+  "source_periodisations": [
+    {
+      "name": "ASDC 先秦甲骨金文簡牘詞彙資料庫 periodisation",
+      "source_patterns": [
+        "inscription\\.asdc\\.sinica\\.edu\\.tw",
+        "先秦甲骨金文簡牘詞彙資料庫",
+        "ASDC｜"
+      ],
+      "phase_labels": [
+        "早期",
+        "中期",
+        "晚期",
+        "早期或中期",
+        "中期或晚期",
+        "早中期",
+        "中晚期"
+      ],
+      "unknown_phase_labels": [
+        "不詳"
+      ],
+      "note": "These labels are source-specific archaeological periodisation for oracle-bone, bronze and excavated-text records. Preserve the complete assertion in structured period metadata; standalone base/phase fragments are not ordinary taxonomy.",
+      "base_period_labels": [
+        "商",
+        "商代",
+        "西周",
+        "春秋",
+        "戰國",
+        "秦",
+        "秦代"
+      ],
+      "base_period_aliases": {
+        "商": "商代",
+        "商代": "商代",
+        "西周": "西周",
+        "春秋": "春秋",
+        "戰國": "戰國",
+        "秦": "秦代",
+        "秦代": "秦代"
+      }
+    }
+  ],
+  "person_parenthetical_repeat_min_matches": 2,
+  "traditionalization_phrase_overrides": {
+    "云南": "雲南",
+    "祥云": "祥雲",
+    "历史": "歷史",
+    "万历": "萬曆",
+    "乐府": "樂府",
+    "关系": "關係",
+    "小说": "小說",
+    "中医药": "中醫藥",
+    "中医": "中醫",
+    "武侠": "武俠",
+    "伪史": "偽史",
+    "开发": "開發",
+    "发布": "發布",
+    "默认": "默認",
+    "结构": "結構",
+    "机制": "機制",
+    "红石": "紅石",
+    "方块": "方塊",
+    "页面": "頁面",
+    "实体": "實體",
+    "数据": "數據",
+    "链接": "鏈接",
+    "受损": "受損",
+    "中国": "中國",
+    "中华": "中華",
+    "游戏": "遊戲",
+    "无尽藏": "無盡藏",
+    "墓志": "墓誌"
+  },
+  "controlled_taxonomy_labels": [
+    "出土文獻",
+    "佛經",
+    "中醫",
+    "期刊",
+    "筆記",
+    "青詞",
+    "序",
+    "記",
+    "疏",
+    "判",
+    "論",
+    "傳",
+    "墓表",
+    "碑",
+    "詔",
+    "表",
+    "祭文",
+    "贊",
+    "銘",
+    "狀",
+    "壽序",
+    "詞",
+    "賦",
+    "曲",
+    "詩話",
+    "咒語",
+    "論著",
+    "制",
+    "風",
+    "雅",
+    "頌",
+    "笙詩",
+    "跋",
+    "敍",
+    "敘",
+    "敕",
+    "檄",
+    "布告",
+    "宣言",
+    "冊文",
+    "國書",
+    "璽書",
+    "誄",
+    "演辭",
+    "誓師",
+    "評語",
+    "竹枝詞",
+    "議",
+    "引",
+    "題",
+    "啟",
+    "奏",
+    "行狀",
+    "哀辭",
+    "書信",
+    "對聯",
+    "說",
+    "奏疏",
+    "題詞",
+    "占辭",
+    "書法",
+    "古琴",
+    "植物",
+    "鳥蟲篆",
+    "頌詞",
+    "賀詞",
+    "通令",
+    "任命狀",
+    "書",
+    "牋",
+    "箴",
+    "神道碑",
+    "墓誌",
+    "墓銘",
+    "墓碣",
+    "奏摺",
+    "聯句",
+    "方志",
+    "地方志",
+    "書畫",
+    "古文",
+    "法律",
+    "小說",
+    "文言短篇小說",
+    "醫家",
+    "武術",
+    "實錄",
+    "家譜",
+    "登科錄",
+    "文集",
+    "詩集",
+    "總集",
+    "譜",
+    "雜編",
+    "五言聲詩",
+    "三言詩",
+    "四言詩",
+    "六言詩",
+    "六言絕句",
+    "酒詩",
+    "茶詩",
+    "山水詩",
+    "隱逸詩",
+    "遊仙詩",
+    "遊俠詩",
+    "懷鄉詩",
+    "懷友詩",
+    "琵琶詩",
+    "回文詩",
+    "離合詩",
+    "寶塔詩",
+    "偽古文"
+  ],
+  "book_grouping_labels": [
+    "宋四大書"
+  ],
+  "likely_compilation_title_patterns": [
+    "(?:全集|文集|詩集|詞集|總集|選集|彙編|匯編|道藏|詩選|文選)$",
+    ".{2,}集$",
+    "^全.+(?:詩|文)$"
+  ],
+  "compilation_title_exclusions": [
+    "集",
+    "文集",
+    "詩集",
+    "詞集",
+    "選集",
+    "總集"
+  ],
+  "shijing_structure": {
+    "name": "《詩經》 received collection structure",
+    "work_scope_pattern": "(?:^|/)詩經(?:/|$)",
+    "collection": "詩經",
+    "root_labels": [
+      "詩經"
+    ],
+    "sections": {
+      "國風": {
+        "path": "國風",
+        "genre": "風"
+      },
+      "周南": {
+        "path": "國風/周南",
+        "genre": "風"
+      },
+      "召南": {
+        "path": "國風/召南",
+        "genre": "風"
+      },
+      "邶風": {
+        "path": "國風/邶風",
+        "genre": "風"
+      },
+      "鄘風": {
+        "path": "國風/鄘風",
+        "genre": "風"
+      },
+      "衛風": {
+        "path": "國風/衛風",
+        "genre": "風"
+      },
+      "王風": {
+        "path": "國風/王風",
+        "genre": "風"
+      },
+      "鄭風": {
+        "path": "國風/鄭風",
+        "genre": "風"
+      },
+      "齊風": {
+        "path": "國風/齊風",
+        "genre": "風"
+      },
+      "魏風": {
+        "path": "國風/魏風",
+        "genre": "風"
+      },
+      "唐風": {
+        "path": "國風/唐風",
+        "genre": "風"
+      },
+      "秦風": {
+        "path": "國風/秦風",
+        "genre": "風"
+      },
+      "陳風": {
+        "path": "國風/陳風",
+        "genre": "風"
+      },
+      "檜風": {
+        "path": "國風/檜風",
+        "genre": "風"
+      },
+      "曹風": {
+        "path": "國風/曹風",
+        "genre": "風"
+      },
+      "豳風": {
+        "path": "國風/豳風",
+        "genre": "風"
+      },
+      "小雅": {
+        "path": "小雅",
+        "genre": "雅"
+      },
+      "大雅": {
+        "path": "大雅",
+        "genre": "雅"
+      },
+      "周頌": {
+        "path": "周頌",
+        "genre": "頌"
+      },
+      "魯頌": {
+        "path": "魯頌",
+        "genre": "頌"
+      },
+      "商頌": {
+        "path": "商頌",
+        "genre": "頌"
+      }
+    },
+    "group_pattern": "^.+之什$",
+    "note": "The corpus already carries received 《詩經》 organisation. Use 國風/小雅/大雅/周頌/魯頌/商頌 and their existing subdivisions only to infer the broad genre categories 風、雅、頌. Do not create parallel structure metadata; 什 remains structural."
+  },
+  "serial_publication_patterns": [
+    "(?:公報|公报)(?:\\s*[（(].+[)）])?$",
+    "(?:雜誌|杂志)(?:\\s*[（(].+[)）])?$",
+    "(?:民報|民报)(?:\\s*[（(].+[)）])?$"
+  ],
+  "serial_publication_generic_exclusions": [
+    "期刊",
+    "公報",
+    "雜誌",
+    "民報"
+  ],
+  "person_inference_exclusions": [
+    "礦藝",
+    "生態域",
+    "荔枝",
+    "詞話"
+  ],
+  "period_aliases": {
+    "商殷朝": "商朝",
+    "五代": "五代十國",
+    "後漢": "東漢"
+  },
+  "period_range_categories": [
+    {
+      "pattern": "^公元(?:618)(?:年)?[-—─~](?:公元)?907年?$",
+      "period": "唐朝"
+    },
+    {
+      "pattern": "^公元(?:960)(?:年)?[-—─~](?:公元)?1279年{1,2}$",
+      "period": "宋朝"
+    },
+    {
+      "pattern": "^公元(?:1368)(?:年)?[-—─~](?:公元)?1644年?$",
+      "period": "明朝"
+    },
+    {
+      "pattern": "^公元(?:1644)(?:年)?[-—─~](?:公元)?1911年{1,2}$",
+      "period": "清朝"
+    }
+  ],
+  "taxonomy_keep_patterns": [
+    {
+      "name": "thematic_yong_poetry",
+      "pattern": "^詠.{1,10}詩$",
+      "note": "A thematic 詠…詩 label is a meaningful poetry browse category; keep it under the 漢詩 taxonomy."
+    },
+    {
+      "name": "line_length_poetry",
+      "pattern": "^[三四五六七]言(?:聲)?詩$",
+      "note": "Line-length/form label for Literary Chinese poetry; keep as taxonomy."
+    }
+  ],
+  "origin_prefix_aliases": {
+    "清代": "清朝",
+    "明代": "明朝",
+    "唐代": "唐朝",
+    "宋代": "宋朝",
+    "元代": "元朝",
+    "漢代": "漢朝",
+    "汉代": "漢朝"
+  },
+  "authorial_compilation_patterns": [
+    {
+      "name": "全唐文 author-organized volumes",
+      "pattern": "^全唐文/卷\\d+$",
+      "note": "Wikisource 全唐文 volume categories are organized by author; infer authorship only when exactly one plausible personal-name category remains on the work."
+    },
+    {
+      "name": "全唐詩 author-organized volumes",
+      "pattern": "^全唐詩/卷\\d+$",
+      "note": "Wikisource 全唐詩 volume categories are organized by author; infer authorship only when exactly one plausible personal-name category remains on the work."
+    }
+  ]
+}

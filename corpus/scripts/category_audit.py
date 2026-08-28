@@ -31,6 +31,7 @@ class Work:
     region: str
     categories: tuple[str, ...]
     source_categories: tuple[str, ...]
+    is_compilation: bool
     documents: tuple[dict, ...]
 
 
@@ -222,6 +223,7 @@ def discover_works(corpus_root: Path, limit: int | None) -> tuple[list[Work], li
                 region=clean_text(metadata.get("region")),
                 categories=string_list(categories_value),
                 source_categories=string_list(source_categories_value),
+                is_compilation=bool(metadata.get("is_compilation")),
                 documents=document_rows,
             )
         )
@@ -742,6 +744,7 @@ def build_sheets(
         ("Distinct category labels across both", len(all_category_labels)),
         ("Curated category-work memberships", curated_memberships),
         ("Source category-work memberships", source_memberships),
+        ("Compilation/container works", sum(1 for work in works if work.is_compilation)),
         ("Document bodies scanned for mentions", scanned_documents),
         ("Work-term mention hits", len(mention_hits)),
         ("Raw term occurrences", total_occurrences),
@@ -1122,6 +1125,15 @@ def build_sheets(
                 work.region,
                 len(grouped_hits),
                 sum(hit.occurrences for hit in grouped_hits),
+                work.is_compilation,
+                len(work.documents),
+                len({doc for hit in grouped_hits for doc in hit.documents}),
+                (len({doc for hit in grouped_hits for doc in hit.documents}) / len(work.documents)) if work.documents else 0.0,
+                (
+                    "component-level evidence; do not classify the whole compilation from this hit alone"
+                    if work.is_compilation and len({doc for hit in grouped_hits for doc in hit.documents}) < len(work.documents)
+                    else ("compilation-wide evidence still requires review" if work.is_compilation else "")
+                ),
                 " | ".join(f"{label} ({count})" for label, count in matched_terms),
                 " | ".join(work.categories),
                 " | ".join(work.source_categories),
@@ -1143,6 +1155,11 @@ def build_sheets(
                 "Region",
                 "Distinct matched terms",
                 "Occurrences",
+                "Is compilation",
+                "Listed documents",
+                "Matching documents",
+                "Document coverage",
+                "Compilation caution",
                 "Matched terms",
                 "Curated categories",
                 "Source categories",
@@ -1150,8 +1167,8 @@ def build_sheets(
             ),
             rows=candidate_rows,
             row_count=len(candidate_rows),
-            widths=(24, 12, 36, 16, 18, 18, 18, 18, 22, 14, 68, 52, 64, 72),
-            wrap_columns=frozenset({0, 2, 10, 11, 12, 13}),
+            widths=(24, 12, 36, 16, 18, 18, 18, 18, 22, 14, 14, 16, 18, 18, 68, 68, 52, 64, 72),
+            wrap_columns=frozenset({0, 2, 14, 15, 16, 17, 18}),
         )
     )
 
@@ -1169,7 +1186,11 @@ def build_sheets(
         "Region",
         "Occurrences",
         "Matched aliases",
-        "Documents",
+        "Matching documents",
+        "Listed documents",
+        "Document coverage",
+        "Is compilation",
+        "Compilation caution",
         "First document",
         "First context",
         "Metadata path",
@@ -1201,6 +1222,14 @@ def build_sheets(
                     hit.occurrences,
                     aliases,
                     len(hit.documents),
+                    len(hit.work.documents),
+                    (len(hit.documents) / len(hit.work.documents)) if hit.work.documents else 0.0,
+                    hit.work.is_compilation,
+                    (
+                        "component-level evidence; do not classify the whole compilation from this hit alone"
+                        if hit.work.is_compilation and len(hit.documents) < len(hit.work.documents)
+                        else ("compilation-wide evidence still requires review" if hit.work.is_compilation else "")
+                    ),
                     hit.first_document,
                     hit.first_snippet,
                     hit.work.metadata_path.as_posix(),
@@ -1215,8 +1244,8 @@ def build_sheets(
                 headers=mention_headers,
                 rows=rows,
                 row_count=len(rows),
-                widths=(20, 12, 22, 24, 12, 34, 16, 18, 18, 18, 18, 12, 40, 12, 64, 72, 68, 52, 64, 70),
-                wrap_columns=frozenset({2, 3, 5, 12, 14, 15, 16, 17, 18, 19}),
+                widths=(20, 12, 22, 24, 12, 34, 16, 18, 18, 18, 18, 12, 40, 18, 16, 18, 14, 72, 64, 72, 68, 52, 64, 70),
+                wrap_columns=frozenset({2, 3, 5, 12, 17, 18, 19, 20, 21, 22, 23}),
             )
         )
 

@@ -11,6 +11,7 @@ class HistoricalDateResolver
   YEAR_EXPRESSION = /([^年]{1,48})年/
   MAX_ERA_NAME_LENGTH = 8
   MAX_RULER_NAME_LENGTH = 12
+  MINGUO_EPOCH_YEAR = 1911
   SEXAGENARY_SUFFIX = /[甲乙丙丁戊己庚辛壬癸][子丑好寅卯榮荣辰巳午未申酉戌亥開开]\z/
 
   COUNTRY_HINTS = {
@@ -145,6 +146,9 @@ class HistoricalDateResolver
     if (match = raw.match(/\A([+-]?\d{4})-\d{2}-\d{2}(?:T\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?(?:Z|[+-]\d{2}:?\d{2})?)?\z/))
       start_year = end_year = match[1].to_i
       source = "date_label_iso8601"
+    elsif (minguo = minguo_calendar_date(raw))
+      start_year = end_year = minguo.fetch(:year)
+      source = "date_label_minguo"
     elsif (range = historical_year_range(raw))
       start_year, end_year = range
       confidence = raw.match?(/\b(?:c\.?|ca\.?|circa)\b|[約约頃顷]/i) ? "approximate_label" : "explicit_label"
@@ -169,6 +173,24 @@ class HistoricalDateResolver
       confidence: confidence,
       candidates: []
     )
+  end
+
+  def minguo_calendar_date(value)
+    text = value.to_s.strip
+    numeral = "[#{Regexp.escape(NUMERAL_PATTERN)}]+"
+    match = text.match(
+      /\A(?:中華民國|中华民国|民國|民国)\s*(#{numeral})\s*年(?:\s*(#{numeral})\s*月(?:\s*(#{numeral})\s*日)?)?\z/
+    )
+    return nil unless match
+
+    ordinal = chinese_number(match[1])
+    month = chinese_number(match[2]) unless match[2].to_s.empty?
+    day = chinese_number(match[3]) unless match[3].to_s.empty?
+    return nil unless ordinal&.positive?
+    return nil if month && !month.between?(1, 12)
+    return nil if day && !day.between?(1, 31)
+
+    { year: MINGUO_EPOCH_YEAR + ordinal, month: month, day: day }.compact
   end
 
   def historical_year_range(value)

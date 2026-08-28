@@ -1684,10 +1684,17 @@
     },
     {
       "name": "software_or_version_technical",
+      "classification": "scoped_category",
+      "action": "keep_if_minecraft_scoped",
+      "pattern": "^(?:(?:分類|分类|Category):)?.*(?:爪哇版|基石版|啟者|启者|快照|測版|测版|伺服端|服务器|教育版|攜帶版|携带版|資囊|资囊|數錄|数录|History模|Al version).*$",
+      "note": "Technical/version labels are useful inside the Minecraft section. Keep them scoped there and hide them from ordinary corpus browsing; review only when they occur outside that scope."
+    },
+    {
+      "name": "unknown_ai_version_outlier",
       "classification": "maintenance",
       "action": "review_remove",
-      "pattern": "^(?:(?:分類|分类|Category):)?.*(?:爪哇版|基石版|啟者|启者|快照|測版|测版|伺服端|服务器|教育版|攜帶版|携带版|資囊|资囊|數錄|数录|History模|Al version).*$",
-      "note": "Technical/version category inherited from a software-oriented source. Review before treating it as literary subject metadata."
+      "pattern": "^(?:(?:分類|分类|Category):)?Al version未知的版本$",
+      "note": "Isolated malformed technical category; no useful literary or Minecraft taxonomy value has been identified."
     }
   ]
 }
