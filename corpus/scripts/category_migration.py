@@ -8,7 +8,11 @@ import dataclasses
 import datetime as dt
 import json
 import re
+import shutil
+import sqlite3
+import subprocess
 import sys
+import tempfile
 import unicodedata
 from pathlib import Path
 from typing import Iterable, Sequence
@@ -24,11 +28,15 @@ class Work:
     work_base_title: str
     aliases: tuple[str, ...]
     date_label: str
+    year_start: int | None
+    year_end: int | None
     period: str
     polity: str
     macro_region: str
     region: str
     medium: str
+    object_type: str
+    material: dict
     is_compilation: bool
     categories: tuple[str, ...]
     source_categories: tuple[str, ...]
@@ -124,12 +132,23 @@ class DateCategory:
 
 
 class Traditionalizer:
+    """Category/title normalizer backed by OpenCC.
+
+    OpenCC's phrase dictionaries are the authority for Simplified->Traditional
+    conversion.  The older Unihan kTraditionalVariant path remains available only
+    as an explicit compatibility fallback because kTraditionalVariant is a
+    variant relation, not a Simplified-Chinese conversion table.
+    """
+
     def __init__(
         self,
         mapping_path: Path | None,
         ambiguous: set[str],
         forced: dict[str, str],
         phrase_overrides: dict[str, str] | None = None,
+        *,
+        backend: str = "opencc",
+        opencc_config: str = "s2t.json",
     ) -> None:
         self.mapping: dict[str, str] = {}
         self.ambiguous = set(ambiguous)
@@ -142,11 +161,71 @@ class Traditionalizer:
             )
         )
         self.mapping_path = mapping_path
+        self.backend = backend
+        self.opencc_config = opencc_config
+        self.opencc = None
+        self.opencc_cli = ""
+        self.cache: dict[str, str] = {}
         self.loaded = False
-        if mapping_path is not None and mapping_path.is_file():
-            self._load(mapping_path)
 
-    def _load(self, path: Path) -> None:
+        if backend == "opencc":
+            self._load_opencc()
+        elif backend == "unihan":
+            if mapping_path is not None and mapping_path.is_file():
+                self._load_unihan(mapping_path)
+        else:
+            raise ValueError(f"unknown traditionalization backend: {backend}")
+
+    @property
+    def backend_name(self) -> str:
+        if self.backend == "opencc" and self.opencc is not None:
+            return f"OpenCC Python ({self.opencc_config})"
+        if self.backend == "opencc" and self.opencc_cli:
+            return f"OpenCC CLI ({self.opencc_config})"
+        if self.backend == "unihan":
+            return "Unihan kTraditionalVariant compatibility fallback"
+        return self.backend
+
+    def _load_opencc(self) -> None:
+        try:
+            import opencc  # type: ignore
+
+            self.opencc = opencc.OpenCC(self.opencc_config)
+            # Fail immediately if the config/resource path is invalid.
+            self.opencc.convert("汉字")
+            self.loaded = True
+            return
+        except (ImportError, ModuleNotFoundError):
+            self.opencc = None
+        except Exception as exc:
+            raise RuntimeError(f"OpenCC Python backend could not load {self.opencc_config}: {exc}") from exc
+
+        executable = shutil.which("opencc")
+        if executable:
+            self.opencc_cli = executable
+            # A real conversion test catches missing s2t.json resources early.
+            result = subprocess.run(
+                [executable, "-c", self.opencc_config],
+                input="汉字\n",
+                text=True,
+                capture_output=True,
+                encoding="utf-8",
+                errors="strict",
+            )
+            if result.returncode != 0:
+                raise RuntimeError(
+                    f"OpenCC CLI could not load {self.opencc_config}: {result.stderr.strip() or result.stdout.strip()}"
+                )
+            self.loaded = True
+            return
+
+        raise RuntimeError(
+            "OpenCC is required for category/title traditionalization. Install the Python package "
+            "(`pip install opencc`) or the OpenCC command-line program, then rerun. "
+            "Use --traditional-backend unihan only for an intentional compatibility test."
+        )
+
+    def _load_unihan(self, path: Path) -> None:
         candidates: dict[str, set[str]] = collections.defaultdict(set)
         with path.open("r", encoding="utf-8-sig", errors="strict") as handle:
             for line in handle:
@@ -164,9 +243,6 @@ class Traditionalizer:
                     except ValueError:
                         pass
         for source, targets in candidates.items():
-            # kTraditionalVariant is broader than a Simplified->Traditional table.
-            # If the source itself is a valid target (for example 家, 表, 志, 千),
-            # keep it: converting to 傢/錶/誌/韆 would be a semantic corruption.
             if source in targets:
                 continue
             if len(targets) == 1:
@@ -175,12 +251,80 @@ class Traditionalizer:
                 self.auto_ambiguous.add(source)
         self.loaded = True
 
+    def preload(self, values: Iterable[str]) -> None:
+        """Bulk-convert known corpus strings when only the OpenCC CLI is available.
+
+        This avoids launching one process for every category. JSON string literals
+        make embedded tabs/newlines safe while OpenCC converts the Han text inside
+        each line.
+        """
+        if self.backend != "opencc" or not self.opencc_cli:
+            return
+        pending = sorted(
+            {
+                unicodedata.normalize("NFC", str(value).strip())
+                for value in values
+                if str(value).strip() and unicodedata.normalize("NFC", str(value).strip()) not in self.cache
+            }
+        )
+        if not pending:
+            return
+        with tempfile.TemporaryDirectory(prefix="fanya-opencc-") as directory:
+            input_path = Path(directory) / "input.jsonl"
+            output_path = Path(directory) / "output.jsonl"
+            with input_path.open("w", encoding="utf-8") as handle:
+                for value in pending:
+                    handle.write(json.dumps(value, ensure_ascii=False) + "\n")
+            result = subprocess.run(
+                [self.opencc_cli, "-c", self.opencc_config, "-i", str(input_path), "-o", str(output_path)],
+                text=True,
+                capture_output=True,
+                encoding="utf-8",
+                errors="strict",
+            )
+            if result.returncode != 0:
+                raise RuntimeError(f"OpenCC batch conversion failed: {result.stderr.strip() or result.stdout.strip()}")
+            converted_lines = output_path.read_text(encoding="utf-8").splitlines()
+            if len(converted_lines) != len(pending):
+                raise RuntimeError(
+                    f"OpenCC batch conversion returned {len(converted_lines)} lines for {len(pending)} inputs"
+                )
+            for source, line in zip(pending, converted_lines):
+                try:
+                    self.cache[source] = json.loads(line)
+                except json.JSONDecodeError as exc:
+                    raise RuntimeError(f"OpenCC produced invalid JSON-line output for {source!r}: {line!r}") from exc
+
+    def _opencc_convert(self, value: str) -> str:
+        if value in self.cache:
+            return self.cache[value]
+        if self.opencc is not None:
+            converted = self.opencc.convert(value)
+            self.cache[value] = converted
+            return converted
+        if self.opencc_cli:
+            result = subprocess.run(
+                [self.opencc_cli, "-c", self.opencc_config],
+                input=value,
+                text=True,
+                capture_output=True,
+                encoding="utf-8",
+                errors="strict",
+            )
+            if result.returncode != 0:
+                raise RuntimeError(f"OpenCC conversion failed: {result.stderr.strip() or result.stdout.strip()}")
+            converted = result.stdout
+            self.cache[value] = converted
+            return converted
+        raise RuntimeError("OpenCC backend is not loaded")
+
     def normalize(self, text: str) -> tuple[str, tuple[str, ...]]:
         value = unicodedata.normalize("NFC", text.strip())
-        # Some Simplified graphs are also legitimate Traditional graphs (for example
-        # 云, 后, 面). Character-only conversion cannot resolve those safely. Apply
-        # small, explicit metadata-phrase conversions first, then use Unihan for the
-        # straightforward one-to-one graph changes.
+        if self.backend == "opencc":
+            return self._opencc_convert(value), ()
+
+        # Explicit compatibility fallback only.  Keep the old conservative
+        # behavior for reproducing older audit runs when requested.
         for source, target in self.phrase_overrides:
             value = value.replace(source, target)
         unresolved: list[str] = []
@@ -197,6 +341,432 @@ class Traditionalizer:
         return "".join(out), tuple(dict.fromkeys(unresolved))
 
 
+@dataclasses.dataclass(frozen=True)
+class CbdbPersonCandidate:
+    person_id: str
+    primary_name: str
+    matched_name: str
+    primary_match: bool
+    year_start: int | None
+    year_end: int | None
+
+
+@dataclasses.dataclass(frozen=True)
+class CbdbRoleEvidence:
+    person_id: str
+    primary_name: str
+    matched_name: str
+    text_title: str
+    role: str
+    role_label: str
+
+
+class CbdbAuthority:
+    """Read-only exact-name/text-role access to the local CBDB SQLite.
+
+    The Rails viewer already maintains CBDB under viewer/data.  This small Python
+    facade reuses that source for the migration planner; it does not download,
+    copy, or modify CBDB.
+    """
+
+    PERSON_ID_COLUMNS = ("c_personid", "person_id")
+    PERSON_NAME_COLUMNS = ("c_name_chn", "c_name_ch", "name_chn")
+    ALT_NAME_COLUMNS = ("c_alt_name_chn", "c_altname_chn", "c_name_chn", "alt_name_chn")
+    BIRTH_COLUMNS = ("c_birthyear", "birthyear")
+    DEATH_COLUMNS = ("c_deathyear", "deathyear")
+    FL_EARLIEST_COLUMNS = ("c_fl_earliest_year", "fl_earliest_year")
+    FL_LATEST_COLUMNS = ("c_fl_latest_year", "fl_latest_year")
+    INDEX_YEAR_COLUMNS = ("c_index_year", "index_year")
+    FIRST_YEAR_COLUMNS = ("c_firstyear", "firstyear")
+    LAST_YEAR_COLUMNS = ("c_lastyear", "lastyear")
+
+    def __init__(self, path: Path) -> None:
+        self.path = path.expanduser().resolve()
+        uri = self.path.as_uri() + "?mode=ro"
+        self.db = sqlite3.connect(uri, uri=True)
+        self.db.row_factory = sqlite3.Row
+        self.db.execute("PRAGMA query_only = ON")
+        self.person_cache: dict[str, tuple[CbdbPersonCandidate, ...]] = {}
+        self.text_role_cache: dict[str, tuple[tuple[str, str, str], ...]] = {}
+        self.tables = {
+            row[0]
+            for row in self.db.execute("SELECT name FROM sqlite_master WHERE type IN ('table','view')")
+        }
+        if "BIOG_MAIN" not in self.tables:
+            raise RuntimeError(f"CBDB BIOG_MAIN is missing: {self.path}")
+        self.biog_columns = self._table_columns("BIOG_MAIN")
+        self.person_id_col = self._choose(self.biog_columns, self.PERSON_ID_COLUMNS)
+        self.person_name_col = self._choose(self.biog_columns, self.PERSON_NAME_COLUMNS)
+        if not self.person_id_col or not self.person_name_col:
+            raise RuntimeError("CBDB BIOG_MAIN does not expose recognizable person id/name columns")
+        self.alt_columns = self._table_columns("ALTNAME_DATA") if "ALTNAME_DATA" in self.tables else []
+        self.alt_person_id_col = self._choose(self.alt_columns, self.PERSON_ID_COLUMNS)
+        self.alt_name_col = self._choose(self.alt_columns, self.ALT_NAME_COLUMNS)
+
+        self.biog_text_columns = self._table_columns("BIOG_TEXT_DATA") if "BIOG_TEXT_DATA" in self.tables else []
+        self.text_columns = self._table_columns("TEXT_CODES") if "TEXT_CODES" in self.tables else []
+        self.text_role_columns = self._table_columns("TEXT_ROLE_CODES") if "TEXT_ROLE_CODES" in self.tables else []
+        self.bt_person_col = self._choose(self.biog_text_columns, self.PERSON_ID_COLUMNS)
+        self.bt_text_col = self._choose(self.biog_text_columns, ("c_textid", "text_id"))
+        self.bt_role_col = self._choose(self.biog_text_columns, ("c_role_id", "role_id"))
+        self.text_id_col = self._choose(self.text_columns, ("c_textid", "text_id"))
+        self.text_title_chn_col = self._choose(self.text_columns, ("c_title_chn", "title_chn"))
+        self.text_title_col = self._choose(self.text_columns, ("c_title", "title"))
+        self.role_id_col = self._choose(self.text_role_columns, ("c_role_id", "role_id"))
+        self.role_chn_col = self._choose(self.text_role_columns, ("c_role_desc_chn", "role_desc_chn"))
+        self.role_en_col = self._choose(self.text_role_columns, ("c_role_desc", "role_desc"))
+
+    def close(self) -> None:
+        self.db.close()
+
+    def _table_columns(self, table: str) -> list[str]:
+        safe = table.replace('"', '""')
+        return [str(row[1]) for row in self.db.execute(f'PRAGMA table_info("{safe}")')]
+
+    @staticmethod
+    def _choose(columns: Sequence[str], candidates: Sequence[str]) -> str:
+        lookup = {column.lower(): column for column in columns}
+        for candidate in candidates:
+            if candidate.lower() in lookup:
+                return lookup[candidate.lower()]
+        return ""
+
+    @staticmethod
+    def _quote(value: str) -> str:
+        return '"' + value.replace('"', '""') + '"'
+
+    def _selected_expr(self, column: str, alias: str) -> str:
+        return f"{self._quote(column)} AS {self._quote(alias)}" if column else f"NULL AS {self._quote(alias)}"
+
+    def _person_select_sql(self, where_sql: str) -> str:
+        birth = self._choose(self.biog_columns, self.BIRTH_COLUMNS)
+        death = self._choose(self.biog_columns, self.DEATH_COLUMNS)
+        fl_first = self._choose(self.biog_columns, self.FL_EARLIEST_COLUMNS)
+        fl_last = self._choose(self.biog_columns, self.FL_LATEST_COLUMNS)
+        index_year = self._choose(self.biog_columns, self.INDEX_YEAR_COLUMNS)
+        first_year = self._choose(self.biog_columns, self.FIRST_YEAR_COLUMNS)
+        last_year = self._choose(self.biog_columns, self.LAST_YEAR_COLUMNS)
+        return (
+            "SELECT "
+            + ", ".join(
+                [
+                    self._selected_expr(self.person_id_col, "person_id"),
+                    self._selected_expr(self.person_name_col, "primary_name"),
+                    self._selected_expr(birth, "birth_year"),
+                    self._selected_expr(death, "death_year"),
+                    self._selected_expr(fl_first, "fl_earliest"),
+                    self._selected_expr(fl_last, "fl_latest"),
+                    self._selected_expr(index_year, "index_year"),
+                    self._selected_expr(first_year, "first_year"),
+                    self._selected_expr(last_year, "last_year"),
+                ]
+            )
+            + " FROM BIOG_MAIN WHERE "
+            + where_sql
+        )
+
+    @staticmethod
+    def _row_year(row: sqlite3.Row, keys: Sequence[str]) -> int | None:
+        for key in keys:
+            value = row[key]
+            if value is None or str(value).strip() == "":
+                continue
+            try:
+                return int(value)
+            except (TypeError, ValueError):
+                continue
+        return None
+
+    def _candidate_from_row(self, row: sqlite3.Row, matched_name: str, primary_match: bool) -> CbdbPersonCandidate:
+        return CbdbPersonCandidate(
+            person_id=str(row["person_id"]),
+            primary_name=clean_text(row["primary_name"]) or matched_name,
+            matched_name=matched_name,
+            primary_match=primary_match,
+            year_start=self._row_year(row, ("birth_year", "fl_earliest", "index_year", "first_year")),
+            year_end=self._row_year(row, ("death_year", "fl_latest", "index_year", "last_year")),
+        )
+
+    def resolve_labels(self, labels: Iterable[str]) -> dict[str, tuple[CbdbPersonCandidate, ...]]:
+        wanted = sorted({clean_text(label) for label in labels if clean_text(label)})
+        unresolved = [label for label in wanted if label not in self.person_cache]
+        for start in range(0, len(unresolved), 300):
+            chunk = unresolved[start : start + 300]
+            placeholders = ",".join("?" for _ in chunk)
+            rows_by_label: dict[str, dict[str, CbdbPersonCandidate]] = collections.defaultdict(dict)
+            sql = self._person_select_sql(f"{self._quote(self.person_name_col)} IN ({placeholders})")
+            for row in self.db.execute(sql, chunk):
+                matched = clean_text(row["primary_name"])
+                candidate = self._candidate_from_row(row, matched, True)
+                rows_by_label[matched][candidate.person_id] = candidate
+
+            if self.alt_person_id_col and self.alt_name_col:
+                alt_sql = (
+                    f"SELECT {self._quote(self.alt_person_id_col)} AS person_id, "
+                    f"{self._quote(self.alt_name_col)} AS matched_name FROM ALTNAME_DATA "
+                    f"WHERE {self._quote(self.alt_name_col)} IN ({placeholders})"
+                )
+                alt_rows = list(self.db.execute(alt_sql, chunk))
+                ids = sorted({str(row["person_id"]) for row in alt_rows if clean_text(row["person_id"])})
+                primary_rows: dict[str, sqlite3.Row] = {}
+                for id_start in range(0, len(ids), 300):
+                    id_chunk = ids[id_start : id_start + 300]
+                    id_ph = ",".join("?" for _ in id_chunk)
+                    person_sql = self._person_select_sql(f"{self._quote(self.person_id_col)} IN ({id_ph})")
+                    for row in self.db.execute(person_sql, id_chunk):
+                        primary_rows[str(row["person_id"])] = row
+                for alt in alt_rows:
+                    person_id = str(alt["person_id"])
+                    matched = clean_text(alt["matched_name"])
+                    primary = primary_rows.get(person_id)
+                    if primary is None:
+                        continue
+                    candidate = self._candidate_from_row(primary, matched, False)
+                    rows_by_label[matched].setdefault(candidate.person_id, candidate)
+
+            for label in chunk:
+                candidates = tuple(
+                    sorted(
+                        rows_by_label.get(label, {}).values(),
+                        key=lambda candidate: (
+                            0 if candidate.primary_match else 1,
+                            candidate.year_start if candidate.year_start is not None else 99999,
+                            candidate.person_id,
+                        ),
+                    )
+                )
+                self.person_cache[label] = candidates
+        return {label: self.person_cache.get(label, ()) for label in wanted if self.person_cache.get(label)}
+
+    @staticmethod
+    def contextual_candidates(candidates: Sequence[CbdbPersonCandidate], work: Work) -> tuple[CbdbPersonCandidate, ...]:
+        values = tuple(candidates)
+        if len(values) <= 1:
+            return values
+        work_start = work.year_start
+        work_end = work.year_end
+        if work_start is None and work_end is None:
+            primary = tuple(candidate for candidate in values if candidate.primary_match)
+            return primary if len(primary) == 1 else values
+        left = work_start if work_start is not None else work_end
+        right = work_end if work_end is not None else work_start
+        assert left is not None and right is not None
+        viable: list[CbdbPersonCandidate] = []
+        for candidate in values:
+            c_left = candidate.year_start if candidate.year_start is not None else candidate.year_end
+            c_right = candidate.year_end if candidate.year_end is not None else candidate.year_start
+            if c_left is None or c_right is None:
+                continue
+            if c_right >= left and c_left <= right:
+                viable.append(candidate)
+        if viable:
+            primary = [candidate for candidate in viable if candidate.primary_match]
+            if len(primary) == 1:
+                return tuple(primary)
+            return tuple(viable)
+        primary = tuple(candidate for candidate in values if candidate.primary_match)
+        return primary if len(primary) == 1 else values
+
+    @staticmethod
+    def normalize_role(role_chn: str, role_en: str) -> str:
+        """Preserve CBDB's intellectual-role distinctions where possible."""
+        cn = re.sub(r"\s+", "", clean_text(role_chn))
+        en = clean_text(role_en).lower()
+        if "author" in en or cn in {"作者", "著者", "撰者", "撰", "著", "作", "編著", "編著者", "撰著者"}:
+            return "author"
+        if "translator" in en or "translat" in en or "翻譯" in cn or "翻译" in cn or cn in {"譯者", "译者"}:
+            return "translator"
+        if "proofread" in en or "校對" in cn or "校对" in cn:
+            return "proofreader"
+        if "collat" in en or cn in {"校者", "校勘者", "校讎者", "校雠者"}:
+            return "collator"
+        if "annotat" in en or "註疏" in cn or "注疏" in cn:
+            return "annotator"
+        if "comment" in en or "註釋" in cn or "注释" in cn or "評點" in cn or "评点" in cn:
+            return "commentator"
+        if "editorial associate" in en or "編輯助理" in cn or "编辑助理" in cn:
+            return "editorial_associate"
+        if "compiler" in en or "編纂" in cn or "编纂" in cn:
+            return "compiler"
+        if "editor" in en or "編輯" in cn or "编辑" in cn:
+            return "editor"
+        if "publisher" in en or "出版者" in cn:
+            return "publisher"
+        if "donor" in en or "捐助" in cn:
+            return "donor"
+        return ""
+
+    def preload_text_roles(self, person_ids: Iterable[str]) -> None:
+        """Batch-load CBDB text-role rows to avoid one SQLite query per person."""
+        wanted = sorted({clean_text(value) for value in person_ids if clean_text(value)})
+        unresolved = [person_id for person_id in wanted if person_id not in self.text_role_cache]
+        if not unresolved:
+            return
+        required = (
+            self.bt_person_col,
+            self.bt_text_col,
+            self.bt_role_col,
+            self.text_id_col,
+            self.role_id_col,
+        )
+        if not all(required) or not self.text_title_chn_col:
+            for person_id in unresolved:
+                self.text_role_cache[person_id] = ()
+            return
+
+        def qualified(alias: str, column: str, output: str) -> str:
+            if not column:
+                return f"NULL AS {self._quote(output)}"
+            return f"{alias}.{self._quote(column)} AS {self._quote(output)}"
+
+        for start in range(0, len(unresolved), 300):
+            chunk = unresolved[start : start + 300]
+            placeholders = ",".join("?" for _ in chunk)
+            sql = f"""
+                SELECT
+                  {qualified('bt', self.bt_person_col, 'person_id')},
+                  {qualified('tc', self.text_title_chn_col, 'title_chn')},
+                  {qualified('tc', self.text_title_col, 'title_en')},
+                  {qualified('rc', self.role_chn_col, 'role_cn')},
+                  {qualified('rc', self.role_en_col, 'role_en')}
+                FROM BIOG_TEXT_DATA bt
+                JOIN TEXT_CODES tc ON tc.{self._quote(self.text_id_col)} = bt.{self._quote(self.bt_text_col)}
+                LEFT JOIN TEXT_ROLE_CODES rc ON rc.{self._quote(self.role_id_col)} = bt.{self._quote(self.bt_role_col)}
+                WHERE bt.{self._quote(self.bt_person_col)} IN ({placeholders})
+            """
+            rows_by_person: dict[str, list[tuple[str, str, str]]] = collections.defaultdict(list)
+            for row in self.db.execute(sql, chunk):
+                person_id = clean_text(row["person_id"])
+                title = clean_text(row["title_chn"])
+                role_cn = clean_text(row["role_cn"])
+                role_en = clean_text(row["role_en"])
+                role = self.normalize_role(role_cn, role_en)
+                if person_id and title and role:
+                    rows_by_person[person_id].append((title, role, role_cn or role_en))
+            for person_id in chunk:
+                self.text_role_cache[person_id] = tuple(rows_by_person.get(person_id, ()))
+
+    def _person_text_roles(self, person_id: str) -> tuple[tuple[str, str, str], ...]:
+        if person_id not in self.text_role_cache:
+            self.preload_text_roles([person_id])
+        return self.text_role_cache.get(person_id, ())
+
+    def role_evidence_for_work(
+        self,
+        label: str,
+        candidates: Sequence[CbdbPersonCandidate],
+        work: Work,
+        normalizer: Traditionalizer,
+    ) -> tuple[CbdbRoleEvidence, ...]:
+        # Exact CBDB person-to-text role evidence is stronger than a chronology
+        # overlap heuristic. A later edition or transcription can legitimately
+        # carry an old author's work, so test every namesake against CBDB's text
+        # relation first; dates are only useful when no text-role match exists.
+        candidate_people = tuple(candidates)
+        if not candidate_people:
+            return ()
+        title_values: set[str] = set()
+        for value in (work.title, work.work_base_title, *work.aliases):
+            if not value:
+                continue
+            clean, _suffixes = split_trailing_parentheticals(value)
+            for candidate_title in (value, clean):
+                if candidate_title:
+                    title_values.add(normalize_name(normalizer, candidate_title))
+        if not title_values:
+            return ()
+        matches: list[CbdbRoleEvidence] = []
+        for person in candidate_people:
+            for title, role, role_label in self._person_text_roles(person.person_id):
+                if normalize_name(normalizer, title) not in title_values:
+                    continue
+                matches.append(
+                    CbdbRoleEvidence(
+                        person_id=person.person_id,
+                        primary_name=person.primary_name,
+                        matched_name=label,
+                        text_title=title,
+                        role=role,
+                        role_label=role_label,
+                    )
+                )
+        return tuple(
+            dict.fromkeys(matches)
+        )
+
+
+def discover_cbdb_path(repo_root: Path, explicit: Path | None) -> Path | None:
+    if explicit is not None:
+        path = explicit.expanduser().resolve()
+        return path if path.is_file() else None
+    data_root = repo_root / "viewer" / "data"
+    candidates = [path for path in data_root.glob("cbdb*.sqlite3") if path.is_file()]
+    if not candidates:
+        return None
+    return max(candidates, key=lambda path: (path.name, path.stat().st_mtime))
+
+
+def traditionalization_prewarm_values(works: Sequence[Work]) -> set[str]:
+    values: set[str] = set()
+    for work in works:
+        for value in (
+            work.title,
+            work.work_base_title,
+            work.date_label,
+            work.period,
+            work.polity,
+            work.macro_region,
+            work.region,
+            work.medium,
+            *work.aliases,
+            *work.categories,
+            *work.source_categories,
+            *work.authors,
+            *work.editors,
+            *work.contributors,
+            *work.document_authors,
+            *work.sources,
+        ):
+            if value:
+                values.add(value)
+    return values
+
+
+def cbdb_candidate_category_labels(
+    works: Sequence[Work], normalizer: Traditionalizer, blocked_labels: set[str], rules: dict
+) -> set[str]:
+    controlled = rules.get("_controlled_taxonomy_nodes") or set()
+    known_compilations = {normalize_name(normalizer, value) for value in rules.get("known_compilation_titles") or []}
+    labels: set[str] = set()
+    for work in works:
+        for raw, _origin in unique_memberships(work):
+            canonical, _ = canonical_label(normalizer, raw)
+            if canonical in blocked_labels or canonical in controlled or canonical in known_compilations:
+                continue
+            if looks_like_person_label(canonical):
+                labels.add(canonical)
+    return labels
+
+
+def infer_cbdb_role_evidence(
+    works: Sequence[Work],
+    normalizer: Traditionalizer,
+    authority: CbdbAuthority,
+    cbdb_people: dict[str, tuple[CbdbPersonCandidate, ...]],
+) -> dict[tuple[Path, str], tuple[CbdbRoleEvidence, ...]]:
+    evidence: dict[tuple[Path, str], tuple[CbdbRoleEvidence, ...]] = {}
+    for work in works:
+        seen: set[str] = set()
+        for raw, _origin in unique_memberships(work):
+            canonical, _ = canonical_label(normalizer, raw)
+            if canonical in seen or canonical not in cbdb_people:
+                continue
+            seen.add(canonical)
+            matches = authority.role_evidence_for_work(canonical, cbdb_people[canonical], work, normalizer)
+            if matches:
+                evidence[(work.metadata_path, canonical)] = matches
+    return evidence
+
 def parse_args() -> argparse.Namespace:
     script_dir = Path(__file__).resolve().parent
     repo_root = script_dir.parent.parent
@@ -210,10 +780,32 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--corpus-root", type=Path, default=script_dir.parent)
     parser.add_argument("--rules", type=Path, default=script_dir / "category_migration_rules.json")
     parser.add_argument(
+        "--traditional-backend",
+        choices=("opencc", "unihan"),
+        default="opencc",
+        help="Simplified->Traditional normalizer (default: OpenCC; unihan is a compatibility fallback only).",
+    )
+    parser.add_argument(
+        "--opencc-config",
+        default="s2t.json",
+        help="OpenCC configuration used for category/title normalization (default: s2t.json).",
+    )
+    parser.add_argument(
         "--traditional-map",
         type=Path,
         default=repo_root / "viewer" / "resources" / "unihan" / "kTraditionalVariant.txt",
-        help="Unihan kTraditionalVariant mapping used for conservative category-label normalization.",
+        help="Legacy Unihan mapping used only with --traditional-backend unihan.",
+    )
+    parser.add_argument(
+        "--cbdb",
+        type=Path,
+        default=None,
+        help="Optional CBDB SQLite. By default the planner uses the newest viewer/data/cbdb*.sqlite3 if present.",
+    )
+    parser.add_argument(
+        "--no-cbdb",
+        action="store_true",
+        help="Disable CBDB person/text-role verification even when a local CBDB SQLite is available.",
     )
     parser.add_argument("--output", type=Path, default=Path.cwd() / "category_migration.xlsx")
     parser.add_argument("--skip-body-evidence", action="store_true")
@@ -274,6 +866,40 @@ def string_list(value: object) -> tuple[str, ...]:
     return tuple(result)
 
 
+def source_strings(value: object) -> tuple[str, ...]:
+    """Flatten legacy string sources and newer structured source objects for matching."""
+    if not isinstance(value, list):
+        return ()
+    seen: set[str] = set()
+    result: list[str] = []
+    for item in value:
+        if isinstance(item, str):
+            candidates = (item,)
+        elif isinstance(item, dict):
+            candidates = tuple(
+                clean_text(item.get(key))
+                for key in ("kind", "source", "source_label", "title", "name", "citation", "url", "license", "creator", "digital_editor")
+            )
+        else:
+            candidates = ()
+        for candidate in candidates:
+            text = clean_text(candidate)
+            if text and text not in seen:
+                seen.add(text)
+                result.append(text)
+    return tuple(result)
+
+
+def material_object(value: object) -> dict:
+    return dict(value) if isinstance(value, dict) else {}
+
+
+def compact_json(value: object) -> str:
+    if not value:
+        return ""
+    return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+
+
 def contributor_names(value: object) -> tuple[str, ...]:
     if not isinstance(value, list):
         return ()
@@ -300,6 +926,16 @@ def nested_document_authors(metadata: dict) -> tuple[str, ...]:
             if isinstance(document, dict):
                 names.extend(string_list(document.get("authors")))
     return tuple(dict.fromkeys(names))
+
+
+def integer_value(value: object) -> int | None:
+    text = clean_text(value)
+    if not re.fullmatch(r"-?\d+", text):
+        return None
+    try:
+        return int(text)
+    except (TypeError, ValueError):
+        return None
 
 
 def discover_works(corpus_root: Path, limit: int | None) -> tuple[list[Work], list[tuple[str, str]]]:
@@ -331,11 +967,15 @@ def discover_works(corpus_root: Path, limit: int | None) -> tuple[list[Work], li
                 work_base_title=clean_text(metadata.get("work_base_title")),
                 aliases=string_list(metadata.get("aliases")),
                 date_label=clean_text(metadata.get("date_label")),
+                year_start=integer_value(metadata.get("year_start") or metadata.get("year")),
+                year_end=integer_value(metadata.get("year_end") or metadata.get("year")),
                 period=clean_text(metadata.get("period")),
                 polity=clean_text(metadata.get("polity")),
                 macro_region=clean_text(metadata.get("macro_region")),
                 region=clean_text(metadata.get("region")),
                 medium=clean_text(metadata.get("medium")),
+                object_type=clean_text(metadata.get("object_type")),
+                material=material_object(metadata.get("material")),
                 is_compilation=bool(metadata.get("is_compilation")),
                 categories=string_list(metadata.get("categories")),
                 source_categories=string_list(metadata.get("source_categories")),
@@ -345,7 +985,7 @@ def discover_works(corpus_root: Path, limit: int | None) -> tuple[list[Work], li
                 document_authors=nested_document_authors(metadata),
                 contained_in=contained,
                 editions=editions,
-                sources=string_list(metadata.get("sources")),
+                sources=source_strings(metadata.get("sources")),
                 identifiers=identifiers,
                 documents=documents,
             )
@@ -411,7 +1051,7 @@ def parse_date_category(canonical: str, calendar_year_bases: dict[str, object] |
         value = value[: mention_match.start()].strip()
 
     number = r"(?:元|[〇零○一二三四五六七八九十百千兩两廿卅卌0-9]+)"
-    match = re.fullmatch(r"(\d{3,4})年(?:(\d{1,2})月)?(?:(\d{1,2})日)?", value)
+    match = re.fullmatch(r"(\d{1,4})年(?:(\d{1,2})月)?(?:(\d{1,2})日)?", value)
     if match:
         year = int(match.group(1))
         month = int(match.group(2)) if match.group(2) else None
@@ -1029,22 +1669,34 @@ def candidate_aliases_for_work(work: Work, normalizer: Traditionalizer, indexes:
     macro_regions = indexes["macro_regions"]
     regions = indexes["regions"]
     for raw, _origin in unique_memberships(work):
+        raw_surface = unicodedata.normalize("NFC", strip_namespace(raw))
         canonical, _ = canonical_label(normalizer, raw)
         date_cat = parse_date_category(canonical)
         if date_cat is not None and date_cat.is_mention:
             result[canonical].add(date_cat.source_label)
+            raw_date = re.sub(r"\s*[（(]提及[)）]\s*$", "", raw_surface).strip()
+            if raw_date:
+                result[canonical].add(raw_date)
             continue
         if canonical in people:
             result[canonical].add(canonical)
+            if raw_surface:
+                result[canonical].add(raw_surface)
             continue
         if canonical in periods:
             result[canonical].add(canonical)
+            if raw_surface:
+                result[canonical].add(raw_surface)
         p_candidate = polity_candidate(canonical, polities)
         if p_candidate:
             result[canonical].add(p_candidate)
             result[canonical].add(p_candidate + "朝")
+            if raw_surface:
+                result[canonical].add(raw_surface)
         if canonical in macro_regions or canonical in regions:
             result[canonical].add(canonical)
+            if raw_surface:
+                result[canonical].add(raw_surface)
     return result
 
 
@@ -1102,9 +1754,13 @@ def person_semantics(
     people: set[str],
     preamble_evidence: dict[tuple[Path, str], PreamblePersonEvidence] | None = None,
     authorial_compilation_evidence: dict[tuple[Path, str], str] | None = None,
+    body_evidence: dict[tuple[Path, str], Evidence] | None = None,
+    cbdb_people: dict[str, tuple[CbdbPersonCandidate, ...]] | None = None,
+    cbdb_role_evidence: dict[tuple[Path, str], tuple[CbdbRoleEvidence, ...]] | None = None,
 ) -> dict[str, dict[str, float | int | str]]:
     stats: dict[str, dict[str, int]] = collections.defaultdict(lambda: collections.Counter())
     preamble_roles: dict[str, collections.Counter[str]] = collections.defaultdict(collections.Counter)
+    cbdb_roles: dict[str, collections.Counter[str]] = collections.defaultdict(collections.Counter)
     for work in works:
         authors = {normalize_name(normalizer, value) for value in work.authors + work.document_authors}
         other_roles = {normalize_name(normalizer, value) for value in work.editors + work.contributors}
@@ -1130,19 +1786,57 @@ def person_semantics(
             if preamble and preamble.roles:
                 row["preamble_role_matches"] += 1
                 preamble_roles[canonical].update(preamble.roles)
+            body = (body_evidence or {}).get((work.metadata_path, canonical))
+            if body and body.occurrences:
+                row["body_mention_works"] += 1
+                row["body_occurrences"] += body.occurrences
+            direct_roles = (cbdb_role_evidence or {}).get((work.metadata_path, canonical), ())
+            if direct_roles:
+                row["cbdb_text_role_matches"] += 1
+                roles_this_work = {item.role for item in direct_roles if item.role}
+                if "author" in roles_this_work:
+                    row["cbdb_author_matches"] += 1
+                for role in roles_this_work:
+                    cbdb_roles[canonical][role] += 1
+
     output: dict[str, dict[str, float | int | str]] = {}
     for person, row in stats.items():
         denominator = row["works_with_authors"]
         ratio = row["author_matches"] / denominator if denominator else 0.0
+        body_ratio = row["body_mention_works"] / row["works"] if row["works"] else 0.0
         role_summary = ", ".join(
             f"{role}={count}" for role, count in preamble_roles.get(person, collections.Counter()).most_common()
         )
+        cbdb_role_summary = ", ".join(
+            f"{role}={count}" for role, count in cbdb_roles.get(person, collections.Counter()).most_common()
+        )
+        cbdb_candidate_count = len((cbdb_people or {}).get(person, ()))
+        cbdb_direct_author = int(row.get("cbdb_author_matches", 0))
+        cbdb_non_author_roles = sum(
+            count for role, count in cbdb_roles.get(person, collections.Counter()).items() if role != "author"
+        )
+
         if int(row.get("preamble_role_matches", 0)) > 0:
             semantic = "explicit contributor role in source-added document preamble"
+        elif (
+            cbdb_direct_author >= 2
+            and cbdb_non_author_roles == 0
+            and body_ratio <= 0.25
+        ) or (
+            int(row.get("works", 0)) <= 3
+            and cbdb_direct_author >= 1
+            and cbdb_non_author_roles == 0
+            and body_ratio <= 0.25
+        ):
+            semantic = "CBDB-verified author grouping"
+        elif cbdb_direct_author > 0:
+            semantic = "CBDB author evidence present; category behaviour still mixed/unresolved"
         elif int(row.get("authorial_compilation_matches", 0)) > 0:
             semantic = "author grouping in an author-organized source anthology"
         elif (row["author_matches"] >= 3 and ratio >= 0.8) or row["title_parenthetical_matches"] >= 2:
             semantic = "likely author grouping"
+        elif cbdb_candidate_count > 0:
+            semantic = "CBDB-confirmed personal name; source role unresolved"
         elif row["author_matches"] == 0 and row["title_parenthetical_matches"] == 0:
             semantic = "likely mention/topic or unresolved person role"
         else:
@@ -1150,11 +1844,13 @@ def person_semantics(
         output[person] = {
             **row,
             "author_ratio": ratio,
+            "body_mention_ratio": body_ratio,
             "preamble_roles": role_summary,
+            "cbdb_candidates": cbdb_candidate_count,
+            "cbdb_roles": cbdb_role_summary,
             "semantic": semantic,
         }
     return output
-
 
 def work_people(work: Work, normalizer: Traditionalizer) -> tuple[set[str], set[str]]:
     authors = {normalize_name(normalizer, value) for value in work.authors + work.document_authors}
@@ -1370,6 +2066,403 @@ def qualified_person_label(label: str, indexes: dict) -> tuple[str, str] | None:
     return (base, qualifier) if qualifier_is_context else None
 
 
+
+def species_name_key(normalizer: Traditionalizer, value: object) -> str:
+    """Normalize one taxonomic/common-name token for exact registry lookup.
+
+    OpenCC handles the Han portion of a full name, so a value such as
+    ``Mauremys mutica / 黄喉拟水龟 / Yellow pond turtle`` can be compared
+    against the Traditional-Chinese registry without touching the Latin or
+    English portions.  Punctuation/case normalization is deliberately small:
+    this is an exact-name registry, not fuzzy taxonomic inference.
+    """
+    text = clean_text(value)
+    if not text:
+        return ""
+    text = unicodedata.normalize("NFC", text)
+    text = normalizer.normalize(text)[0]
+    text = text.replace("’", "'").replace("–", "-").replace("—", "-")
+    text = re.sub(r"\s+", " ", text).strip()
+    return text.casefold()
+
+
+def species_name_tokens(value: object) -> list[tuple[str, str]]:
+    """Return labelled name tokens from material.species.
+
+    material.species may be the preferred object form or a legacy/full-name
+    string.  Slash/semicolon/pipe-separated full names are accepted so all of
+    these can converge on the same structure:
+
+      Mauremys mutica
+      黃喉擬水龜
+      Yellow pond turtle
+      Mauremys mutica / 黃喉擬水龜 / Yellow pond turtle
+    """
+    values: list[tuple[str, str]] = []
+    if isinstance(value, dict):
+        for field in (
+            "scientific_name",
+            "scientific_name_full",
+            "latin_name",
+            "common_name_zh",
+            "common_name_en",
+            "common_name",
+            "name",
+            "full_name",
+        ):
+            text = clean_text(value.get(field))
+            if text:
+                values.append((field, text))
+    else:
+        text = clean_text(value)
+        if text:
+            values.append(("species", text))
+
+    output: list[tuple[str, str]] = []
+    for field, text in values:
+        output.append((field, text))
+        for part in re.split(r"\s*(?:/|／|\||;|；)\s*", text):
+            part = part.strip()
+            if part and part != text:
+                output.append((field, part))
+    # Stable de-duplication keeps diagnostics readable.
+    return list(dict.fromkeys(output))
+
+
+def species_registry_rows(rules: dict) -> list[dict]:
+    return [row for row in (rules.get("animal_species_registry") or []) if isinstance(row, dict)]
+
+
+def species_registry_actions(work: Work, normalizer: Traditionalizer, rules: dict) -> list[Action]:
+    """Normalize an *existing* species identification; never invent one.
+
+    The registry is a vocabulary/authority aid.  Its archaeological-context
+    notes do not prove that a particular oracle bone belongs to that taxon.
+    A work therefore enters this function only through names already present in
+    material.species.  Broad material.animal values such as 牛、龜、鱉 are
+    intentionally ignored as species evidence.
+    """
+    species_value = work.material.get("species")
+    if not species_value:
+        return []
+
+    rows = species_registry_rows(rules)
+    if not rows:
+        return []
+
+    alias_index: dict[str, set[int]] = collections.defaultdict(set)
+    row_aliases: list[set[str]] = []
+    for index, row in enumerate(rows):
+        aliases: set[str] = set()
+        for field in ("scientific_name", "scientific_name_full", "common_name_zh", "common_name_en"):
+            key = species_name_key(normalizer, row.get(field))
+            if key:
+                aliases.add(key)
+        for alias in row.get("aliases") or []:
+            key = species_name_key(normalizer, alias)
+            if key:
+                aliases.add(key)
+        row_aliases.append(aliases)
+        for alias in aliases:
+            alias_index[alias].add(index)
+
+    tokens = species_name_tokens(species_value)
+    matched_rows: set[int] = set()
+    matched_fields: list[str] = []
+    for field, token in tokens:
+        indexes = alias_index.get(species_name_key(normalizer, token), set())
+        if indexes:
+            matched_rows.update(indexes)
+            matched_fields.append(f"{field}={token}")
+
+    if not matched_rows:
+        return []
+
+    if len(matched_rows) > 1:
+        candidates = [clean_text(rows[index].get("scientific_name")) for index in sorted(matched_rows)]
+        return [Action(
+            "species_identification_conflict",
+            "material.species",
+            " / ".join(value for value in candidates if value),
+            "review",
+            compact_json(species_value) if isinstance(species_value, dict) else clean_text(species_value),
+            "multiple species-registry names match the existing species value",
+            "The existing names point at more than one taxon. Resolve the specimen identification from its catalogue/zooarchaeological evidence before normalizing names.",
+        )]
+
+    index = next(iter(matched_rows))
+    row = rows[index]
+    aliases = row_aliases[index]
+
+    # If a structured record contains a scientific/common-name field that
+    # clearly names something outside the selected row, do not overwrite it.
+    if isinstance(species_value, dict):
+        contradictory: list[str] = []
+        for field in ("scientific_name", "scientific_name_full", "latin_name", "common_name_zh", "common_name_en"):
+            existing = clean_text(species_value.get(field))
+            if not existing:
+                continue
+            key = species_name_key(normalizer, existing)
+            if key not in aliases:
+                # Only call this a contradiction when it looks like a real name,
+                # not a free-text note accidentally stored alongside the fields.
+                if field.startswith("scientific") or field == "latin_name" or alias_index.get(key):
+                    contradictory.append(f"{field}={existing}")
+        if contradictory:
+            return [Action(
+                "species_identification_conflict",
+                "material.species",
+                clean_text(row.get("scientific_name")),
+                "review",
+                compact_json(species_value),
+                "registry match conflicts with another structured species-name field",
+                "Conflicting fields: " + " | ".join(contradictory) + ". Preserve the current identification until specimen-level evidence resolves it.",
+            )]
+
+    proposed: dict[str, object] = {}
+    for field in ("scientific_name", "common_name_zh", "common_name_en"):
+        value = clean_text(row.get(field))
+        if value:
+            proposed[field] = value
+    if isinstance(species_value, dict):
+        legacy_name_fields = {
+            "scientific_name", "scientific_name_full", "latin_name",
+            "common_name_zh", "common_name_en", "common_name", "name", "full_name",
+        }
+        for key, value in species_value.items():
+            if key not in legacy_name_fields:
+                proposed[key] = value
+
+    existing_display = compact_json(species_value) if isinstance(species_value, dict) else clean_text(species_value)
+    proposed_display = compact_json(proposed)
+    if isinstance(species_value, dict) and compact_json(species_value) == proposed_display:
+        return []
+
+    scientific_key = species_name_key(normalizer, row.get("scientific_name"))
+    scientific_match = any(
+        species_name_key(normalizer, token) in {scientific_key, species_name_key(normalizer, row.get("scientific_name_full"))}
+        for _field, token in tokens
+    )
+    full_name_input = not isinstance(species_value, dict) and bool(re.search(r"/|／|\||;|；", clean_text(species_value)))
+    action_name = "normalize_species_full_name" if full_name_input else "normalize_species_names"
+    status = clean_text(row.get("oracle_use_status"))
+    contexts = "、".join(clean_text(value) for value in (row.get("oracle_contexts") or row.get("archaeological_contexts") or []) if clean_text(value))
+    context_note = f" Registry context: {status}" + (f" ({contexts})" if contexts else "") + "." if status else ""
+
+    return [Action(
+        action_name,
+        "material.species",
+        proposed_display,
+        "safe" if scientific_match else "high",
+        existing_display,
+        "unique species-registry match: " + " | ".join(dict.fromkeys(matched_fields)),
+        "Normalize the existing taxon to scientific_name + Traditional-Chinese common_name_zh + English common_name_en. The registry standardizes names only; it is not specimen-level evidence for the identification." + context_note,
+    )]
+
+
+def material_profile_actions(work: Work, normalizer: Traditionalizer, rules: dict) -> list[Action]:
+    """Plan carrier/material metadata independently of category retention.
+
+    medium is the broad carrier/support (紙、骨、龜甲、金、竹、木、帛、石、數位...).
+    material stores object-specific detail, such as animal/anatomical source,
+    optional species identification, or a documented metal/alloy analysis.
+    A biological material can therefore preserve, when supported, fields such as:
+
+      material.species.scientific_name
+      material.species.common_name_zh
+      material.species.common_name_en
+
+    Species is optional: a catalogue saying only 牛 or 龜 must not be inflated
+    into a modern species identification. Epigraphic categories such as 甲骨文
+    and 金文 remain categories even when they also provide material evidence.
+    """
+    actions: list[Action] = []
+    categories = {canonical_label(normalizer, raw)[0] for raw, _origin in unique_memberships(work)}
+    edition_text = " ".join(existing_edition_labels(work, normalizer))
+    path_text = "\n".join(
+        value for value in (
+            work.metadata_path.as_posix(),
+            semantic_path_text(work.metadata_path),
+        ) if value
+    )
+    source_text = "\n".join(work.sources)
+    title_text = "\n".join(value for value in (work.title, work.work_base_title, edition_text) if value)
+    author_text = "\n".join(work.authors)
+    haystack = "\n".join(
+        value for value in (
+            path_text,
+            title_text,
+            work.object_type,
+            source_text,
+            author_text,
+        ) if value
+    )
+    current_medium = normalize_name(normalizer, work.medium) if work.medium else ""
+    legacy_digital_medium = bool(work.medium and work.medium.strip().lower() in {"digital", "born-digital", "born digital"})
+    profile_current_medium = normalize_name(normalizer, "數位") if legacy_digital_medium else current_medium
+    material_type = clean_text(work.material.get("type"))
+
+    def profile_matches(profile: dict) -> bool:
+        checks: list[bool] = []
+        for key, target in (
+            ("pattern", haystack),
+            ("path_pattern", path_text),
+            ("source_pattern", source_text),
+            ("title_pattern", title_text),
+            ("author_pattern", author_text),
+        ):
+            pattern = clean_text(profile.get(key))
+            if pattern:
+                checks.append(bool(re.search(pattern, target, flags=re.IGNORECASE)))
+        return bool(checks) and all(checks)
+
+    for profile in rules.get("material_source_profiles") or []:
+        if not isinstance(profile, dict):
+            continue
+        proposed = clean_text(profile.get("medium"))
+        if not proposed or not profile_matches(profile):
+            continue
+        proposed_norm = normalize_name(normalizer, proposed)
+        if profile_current_medium == proposed_norm:
+            break
+        if not work.medium:
+            actions.append(Action(
+                "promote_source_material_metadata",
+                "medium",
+                proposed,
+                "high",
+                "",
+                clean_text(profile.get("name")) or "configured source/witness material profile",
+                clean_text(profile.get("note")) or "The source/witness family identifies the carrier.",
+            ))
+        else:
+            actions.append(Action(
+                "source_material_metadata_conflict",
+                "medium",
+                proposed,
+                "review",
+                work.medium,
+                clean_text(profile.get("name")) or "configured source/witness material profile",
+                f"The source/witness profile proposes medium={proposed}, but structured medium already says {work.medium}. Review whether the two values describe different witnesses.",
+            ))
+        break
+
+    if legacy_digital_medium:
+        actions.append(Action(
+            "normalize_digital_medium",
+            "medium",
+            "數位",
+            "safe",
+            work.medium,
+            "legacy English digital-medium value",
+            "Use 數位 as the canonical corpus medium label for born-digital works.",
+        ))
+
+    if current_medium == normalize_name(normalizer, "金文"):
+        actions.append(Action(
+            "normalize_epigraphic_medium",
+            "medium",
+            "金",
+            "high",
+            work.medium,
+            "legacy medium value 金文 describes the inscription class, not the physical carrier",
+            "Keep 金文 in categories. Use medium=金 as the broad metal carrier; exact metal or alloy belongs in material.",
+        ))
+    elif current_medium == normalize_name(normalizer, "甲骨文"):
+        if material_type:
+            actions.append(Action(
+                "normalize_epigraphic_medium",
+                "medium",
+                material_type,
+                "high",
+                work.medium,
+                "material.type supplies the physical support behind legacy medium=甲骨文",
+                "Keep 甲骨文 in categories and use the identified physical support in medium.",
+            ))
+        else:
+            actions.append(Action(
+                "oracle_bone_material_review",
+                "medium + material",
+                "龜甲 / 骨（待辨）",
+                "review",
+                work.medium,
+                "legacy medium=甲骨文 does not identify turtle shell versus bone",
+                "Keep 甲骨文 as taxonomy. Resolve the physical carrier separately; do not infer animal or species without object-specific evidence. Species-level identifications belong under material.species.",
+            ))
+    elif current_medium == normalize_name(normalizer, "簡牘"):
+        if material_type in {"竹", "木", "竹簡", "木牘"}:
+            proposed = "竹" if material_type in {"竹", "竹簡"} else "木"
+            actions.append(Action(
+                "normalize_epigraphic_medium",
+                "medium",
+                proposed,
+                "high",
+                work.medium,
+                "material.type resolves legacy medium=簡牘",
+                "Keep any useful 簡牘/竹簡/木牘 classification separately from the physical support.",
+            ))
+        else:
+            actions.append(Action(
+                "slip_material_review",
+                "medium + material",
+                "竹 / 木（待辨）",
+                "review",
+                work.medium,
+                "legacy medium=簡牘 does not distinguish bamboo from wood",
+                "Resolve the support from catalogue or object metadata before migration.",
+            ))
+
+    if "金文" in categories and not work.medium:
+        actions.append(Action(
+            "promote_epigraphic_material_metadata",
+            "medium",
+            "金",
+            "high",
+            "",
+            "金文 category identifies a metal-inscription context",
+            "Keep 金文 as a category. 金 is intentionally broad; do not infer copper, bronze, iron, or an alloy recipe without object-specific evidence.",
+        ))
+    if "甲骨文" in categories and not work.medium:
+        if material_type:
+            proposed_medium = "竹" if material_type == "竹簡" else "木" if material_type == "木牘" else material_type
+            actions.append(Action(
+                "promote_oracle_bone_material_metadata",
+                "medium",
+                proposed_medium,
+                "high",
+                "",
+                "material.type already identifies the physical support",
+                "Keep 甲骨文 as taxonomy. Use the existing material identification for medium; preserve any animal/species/anatomical detail under material.",
+            ))
+        else:
+            actions.append(Action(
+                "oracle_bone_material_review",
+                "medium + material",
+                "龜甲 / 骨（待辨）",
+                "review",
+                "",
+                "甲骨文 category identifies the inscription class but not the support",
+                "Keep 甲骨文 as a category. Resolve turtle shell versus bone and biological source from catalogue/object evidence. If research reaches species level, record material.species.scientific_name plus Chinese and English common names.",
+            ))
+
+    bronze_patterns = [clean_text(value) for value in rules.get("bronze_material_patterns") or [] if clean_text(value)]
+    if bronze_patterns and any(re.search(pattern, haystack) for pattern in bronze_patterns):
+        if normalize_name(normalizer, material_type) != normalize_name(normalizer, "青銅"):
+            existing = compact_json(work.material)
+            actions.append(Action(
+                "promote_bronze_material_detail" if not material_type else "bronze_material_detail_conflict",
+                "material.type",
+                "青銅",
+                "high" if not material_type else "review",
+                existing,
+                "explicit 青銅/青銅器 wording in object/source metadata",
+                "Record 青銅 as the object material. Leave material.alloy unset unless a source identifies the actual alloy or analytical composition for this object.",
+            ))
+
+    actions.extend(species_registry_actions(work, normalizer, rules))
+    return actions
+
+
 def classify_membership(
     work: Work,
     raw: str,
@@ -1577,12 +2670,18 @@ def classify_membership(
         if animal_row:
             target_field = "medium + animal identification"
             animal_name = clean_text(animal_row.get("animal_name"))
+            animal_name_en = clean_text(animal_row.get("animal_common_name_en"))
             taxon = clean_text(animal_row.get("taxon_candidate"))
+            species_field = clean_text(animal_row.get("species_field"))
             proposed_display = f"medium={proposed_medium}"
             if animal_name:
                 proposed_display += f"; animal={animal_name}"
+            if animal_name_en:
+                proposed_display += f"; animal_en={animal_name_en}"
             if taxon:
                 proposed_display += f"; taxon={taxon}"
+            if species_field:
+                proposed_display += f"; species_field={species_field}"
             animal_note = " " + clean_text(animal_row.get("note"))
         if work.medium and normalize_name(normalizer, work.medium) == normalize_name(normalizer, proposed_medium):
             return [
@@ -1633,35 +2732,9 @@ def classify_membership(
             )
         ]
 
-    if canonical == "甲骨文":
-        combined = " | ".join((work.title, work.work_base_title, *work.categories, *work.source_categories, work.metadata_path.as_posix(), semantic_path_text(work.metadata_path)))
-        if "龜甲" in combined or "龟甲" in combined:
-            proposal = "medium=龜甲; animal=龜; taxon=待辨"
-            confidence = "high"
-            note = "Explicit turtle-shell evidence is present in title/category/path metadata. Record species only when a catalogue or zooarchaeological source supports it."
-        elif "兕骨" in combined:
-            proposal = "medium=兕骨; animal=兕; taxon=Bubalus sp.（需來源核定）"
-            confidence = "high"
-            note = "Explicit 兕骨 evidence is present; retain the historical animal label and record a scientific identification only with supporting evidence."
-        elif "牛肩胛骨" in combined or "牛骨" in combined:
-            proposal = "骨（具體動物待核）"
-            confidence = "review"
-            note = "Bovine bone evidence is present, but it must not be silently relabelled 兕骨. Record taxonomic identification separately when supported."
-        else:
-            proposal = "龜甲 / 骨（待辨）"
-            confidence = "review"
-            note = "甲骨文 alone does not identify the support. Distinguish turtle shell from bone before migration; preserve animal-species evidence where available."
-        return [
-            Action(
-                "oracle_bone_material_review",
-                "medium + animal identification",
-                proposal,
-                confidence,
-                work.medium,
-                "甲骨文 category",
-                note,
-            )
-        ]
+    # 甲骨文 is a meaningful epigraphic/script category. Physical-support
+    # inference is handled once per work by material_profile_actions so the
+    # category itself is not consumed as material metadata.
 
 
     shijing_action = shijing_structure_action(work, canonical, rules)
@@ -1715,6 +2788,29 @@ def classify_membership(
         ]
 
     if canonical in known_compilation_titles:
+        # A generic compilation label is redundant when this same work also has
+        # a more specific source path such as 全唐文/卷0649.  The path preserves
+        # the membership plus volume, so keeping a second plain 全唐文 decision
+        # only creates duplicate review work.
+        specific_memberships: list[str] = []
+        for other_raw, _other_origin in unique_memberships(work):
+            other_canonical, _ = canonical_label(normalizer, other_raw)
+            if other_canonical == canonical:
+                continue
+            parts = compilation_parts(other_canonical)
+            if parts is not None and parts[0] == canonical:
+                specific_memberships.append(other_canonical)
+        if specific_memberships:
+            return [Action(
+                "remove_compilation_category_subsumed",
+                "contained_in / compilation system",
+                canonical,
+                "safe",
+                "",
+                "more specific compilation membership on same work: " + " | ".join(specific_memberships[:4]),
+                "The specific compilation/volume path already preserves this membership. Remove the generic compilation category to avoid duplicate evidence.",
+            )]
+
         known_matches = indexes["titles"].get(canonical, [])
         known_compilations = [candidate for candidate in known_matches if candidate.is_compilation and candidate.metadata_path != work.metadata_path]
         if len(known_compilations) == 1:
@@ -1740,6 +2836,18 @@ def classify_membership(
                     "",
                     "configured compilation title resolves to one corpus compilation",
                     "The configured compilation label is direct membership evidence; use contained_in instead of retaining it as subject taxonomy.",
+                )
+            ]
+        if len(known_compilations) > 1:
+            return [
+                Action(
+                    "known_compilation_parent_ambiguity_review",
+                    "contained_in / compilation system",
+                    canonical,
+                    "review",
+                    "",
+                    f"configured compilation title resolves to {len(known_compilations)} marked corpus compilations",
+                    "Resolve the duplicate/edition-specific parent records once at compilation level. Do not reinterpret this label as subject taxonomy.",
                 )
             ]
         if known_matches and not known_compilations:
@@ -1887,6 +2995,45 @@ def classify_membership(
                     "The person's role is already structured.",
                 )
             ]
+        cbdb_direct = (indexes.get("cbdb_role_evidence") or {}).get((work.metadata_path, canonical), ())
+        if cbdb_direct:
+            role_set = {item.role for item in cbdb_direct if item.role}
+            evidence_bits = [
+                f"CBDB person {item.person_id} ({item.primary_name}); text {item.text_title}; role {item.role_label or item.role}"
+                for item in cbdb_direct[:4]
+            ]
+            if len(role_set) == 1:
+                role = next(iter(role_set))
+                target = "authors" if role == "author" else ("editors" if role == "editor" else "contributors")
+                proposed = canonical if role in {"author", "editor"} else f"{canonical}; role={role}"
+                if role == "author" and authors and canonical not in authors:
+                    return [Action(
+                        "cbdb_author_conflict_review",
+                        "authors",
+                        canonical,
+                        "review",
+                        " | ".join(work.authors + work.document_authors),
+                        "; ".join(evidence_bits),
+                        "CBDB directly links this person to the matching text as an author, but structured authorship already names someone else. Review the witness/title identity before changing metadata.",
+                    )]
+                return [Action(
+                    "promote_author_candidate" if role == "author" else "promote_contributor_role_candidate",
+                    target,
+                    proposed,
+                    "high",
+                    " | ".join(work.authors + work.editors + work.contributors),
+                    "; ".join(evidence_bits),
+                    "CBDB directly links the exact person and text title with this intellectual role. Remove the personal-name category after structuring the credit.",
+                )]
+            return [Action(
+                "cbdb_person_role_conflict_review",
+                "authors / contributors",
+                canonical,
+                "review",
+                " | ".join(work.authors + work.editors + work.contributors),
+                "; ".join(evidence_bits),
+                "CBDB links the person to the matching title with more than one role; preserve those intellectual roles explicitly instead of choosing one automatically.",
+            )]
         if preamble_evidence and preamble_evidence.roles:
             roles = list(preamble_evidence.roles)
             if len(roles) == 1:
@@ -1935,6 +3082,23 @@ def classify_membership(
             )
             or int(stats.get("title_parenthetical_matches", 0))
             >= int(rules.get("person_parenthetical_author_min_matches", 2))
+            or (
+                int(stats.get("cbdb_author_matches", 0)) >= 2
+                and not any(
+                    token and not token.startswith("author=")
+                    for token in clean_text(stats.get("cbdb_roles")).split(", ")
+                )
+                and float(stats.get("body_mention_ratio", 0.0)) <= 0.25
+            )
+            or (
+                int(stats.get("works", 0)) <= 3
+                and int(stats.get("cbdb_author_matches", 0)) >= 1
+                and not any(
+                    token and not token.startswith("author=")
+                    for token in clean_text(stats.get("cbdb_roles")).split(", ")
+                )
+                and float(stats.get("body_mention_ratio", 0.0)) <= 0.25
+            )
         )
         if not authors and likely_author:
             return [
@@ -1947,7 +3111,8 @@ def classify_membership(
                     (
                         f"person category behaves like an author grouping; structured-author ratio "
                         f"{float(stats.get('author_ratio', 0.0)):.1%}, title-parenthesis signals "
-                        f"{int(stats.get('title_parenthetical_matches', 0))}"
+                        f"{int(stats.get('title_parenthetical_matches', 0))}, CBDB direct author-title signals "
+                        f"{int(stats.get('cbdb_author_matches', 0))}"
                     ),
                     "Use category behaviour to fill missing authors, then remove the person category.",
                 )
@@ -2725,6 +3890,8 @@ def action_row(item: MembershipAction) -> tuple[object, ...]:
         work.macro_region,
         work.region,
         work.medium,
+        work.object_type,
+        compact_json(work.material),
         work.is_compilation,
         len(work.documents),
         item.body_occurrences,
@@ -2754,6 +3921,8 @@ def make_sheet(name: str, rows: list[tuple[object, ...]]) -> SheetSpec:
         "Macro region",
         "Region",
         "Medium",
+        "Object type",
+        "Material detail",
         "Is compilation",
         "Listed documents",
         "Body occurrences",
@@ -2769,8 +3938,8 @@ def make_sheet(name: str, rows: list[tuple[object, ...]]) -> SheetSpec:
         headers=headers,
         rows=rows,
         row_count=len(rows),
-        widths=(12, 34, 30, 48, 36, 36, 16, 12, 40, 18, 20, 18, 18, 18, 20, 14, 16, 18, 18, 18, 46, 58, 78, 78),
-        wrap_columns=frozenset({1, 2, 3, 4, 5, 8, 20, 21, 22, 23}),
+        widths=(12, 34, 30, 48, 36, 36, 16, 12, 40, 18, 20, 18, 18, 18, 20, 18, 48, 14, 16, 18, 18, 18, 46, 58, 78, 78),
+        wrap_columns=frozenset({1, 2, 3, 4, 5, 8, 16, 22, 23, 24, 25}),
     )
 
 
@@ -2794,6 +3963,16 @@ def build_sheets(
     category_origin_counts: dict[str, collections.Counter[str]] = collections.defaultdict(collections.Counter)
 
     for work in works:
+        for material_action in material_profile_actions(work, normalizer, rules):
+            all_actions.append(
+                MembershipAction(
+                    raw_category="",
+                    canonical_category="",
+                    origin="derived:material metadata",
+                    work=work,
+                    action=material_action,
+                )
+            )
         memberships = unique_memberships(work)
         existing_categories = {canonical_label(normalizer, raw)[0] for raw, _origin in memberships}
         shijing_genre, shijing_evidence = shijing_genre_for_work(work, rules)
@@ -2996,7 +4175,8 @@ def build_sheets(
             wrap_columns=frozenset({0, 1, 2, 5, 6, 7}),
         )
     )
-    subset("Material Review", lambda item: any(token in item.action.action for token in ("material", "oracle_bone")))
+    subset("Material Review", lambda item: any(token in item.action.action for token in ("material", "oracle_bone", "epigraphic_medium", "slip_material", "digital_medium", "species_")))
+    subset("Species Normalisation", lambda item: "species_" in item.action.action)
     subset("Oracle Bone Review", lambda item: item.action.action == "oracle_bone_material_review")
     subset(
         "Category Normalisation",
@@ -3085,17 +4265,23 @@ def build_sheets(
                 int(row.get("authorial_compilation_matches", 0)),
                 int(row.get("preamble_role_matches", 0)),
                 clean_text(row.get("preamble_roles")),
+                int(row.get("body_mention_works", 0)),
+                float(row.get("body_mention_ratio", 0.0)),
+                int(row.get("cbdb_candidates", 0)),
+                int(row.get("cbdb_text_role_matches", 0)),
+                int(row.get("cbdb_author_matches", 0)),
+                clean_text(row.get("cbdb_roles")),
                 clean_text(row.get("semantic")),
             )
         )
     sheets.append(
         SheetSpec(
             "People Semantics",
-            ("Person category", "Works", "Works with authors", "Author matches", "Author ratio", "Other role matches", "Title-parenthesis signals", "Authorial-anthology signals", "Preamble role signals", "Preamble roles", "Inferred category behaviour"),
+            ("Person category", "Works", "Works with authors", "Author matches", "Author ratio", "Other role matches", "Title-parenthesis signals", "Authorial-anthology signals", "Preamble role signals", "Preamble roles", "Body-mention works", "Body-mention ratio", "CBDB candidates", "CBDB text-role matches", "CBDB author matches", "CBDB roles", "Inferred category behaviour"),
             people_rows,
             len(people_rows),
-            widths=(28, 12, 20, 16, 14, 20, 22, 24, 20, 30, 48),
-            wrap_columns=frozenset({0, 9, 10}),
+            widths=(28, 12, 20, 16, 14, 20, 22, 24, 20, 30, 20, 18, 16, 22, 20, 30, 52),
+            wrap_columns=frozenset({0, 9, 15, 16}),
         )
     )
 
@@ -3173,6 +4359,8 @@ def build_sheets(
 
 def main() -> int:
     args = parse_args()
+    script_dir = Path(__file__).resolve().parent
+    repo_root = script_dir.parent.parent
     corpus_root = args.corpus_root.expanduser().resolve()
     rules_path = args.rules.expanduser().resolve()
     output = args.output.expanduser().resolve()
@@ -3197,18 +4385,68 @@ def main() -> int:
     forced = {str(key): str(value) for key, value in forced_value.items()} if isinstance(forced_value, dict) else {}
     phrase_value = rules.get("traditionalization_phrase_overrides") or {}
     phrases = {str(key): str(value) for key, value in phrase_value.items()} if isinstance(phrase_value, dict) else {}
-    normalizer = Traditionalizer(traditional_map, ambiguous, forced, phrases)
+    try:
+        normalizer = Traditionalizer(
+            traditional_map,
+            ambiguous,
+            forced,
+            phrases,
+            backend=args.traditional_backend,
+            opencc_config=args.opencc_config,
+        )
+    except Exception as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        return 2
     rules["_controlled_taxonomy_nodes"] = controlled_taxonomy_nodes(rules)
-    if not normalizer.loaded:
-        print(f"WARNING: Traditional mapping not loaded: {traditional_map}", file=sys.stderr)
 
     print(f"Corpus root: {corpus_root}", file=sys.stderr)
+    print(f"Traditionalization: {normalizer.backend_name}", file=sys.stderr)
     works, issues = discover_works(corpus_root, args.limit)
     print(f"Works: {len(works):,}", file=sys.stderr)
+    # OpenCC CLI installations are much faster when the corpus strings are
+    # converted in one batch. The Python binding ignores this call.
+    normalizer.preload(traditionalization_prewarm_values(works))
 
-    terms_path = Path(__file__).resolve().parent / "category_audit_terms.json"
+    terms_path = script_dir / "category_audit_terms.json"
     figure_names = figure_names_from_terms(terms_path, normalizer)
     blocked_person_labels = person_inference_blocked_labels(works, normalizer, rules)
+
+    cbdb_authority: CbdbAuthority | None = None
+    cbdb_people: dict[str, tuple[CbdbPersonCandidate, ...]] = {}
+    cbdb_role_evidence: dict[tuple[Path, str], tuple[CbdbRoleEvidence, ...]] = {}
+    if not args.no_cbdb:
+        cbdb_path = discover_cbdb_path(repo_root, args.cbdb)
+        if args.cbdb is not None and cbdb_path is None:
+            print(f"ERROR: --cbdb does not point to a readable SQLite file: {args.cbdb}", file=sys.stderr)
+            return 2
+        if cbdb_path is not None:
+            try:
+                cbdb_authority = CbdbAuthority(cbdb_path)
+                cbdb_labels = cbdb_candidate_category_labels(works, normalizer, blocked_person_labels, rules)
+                cbdb_people = cbdb_authority.resolve_labels(cbdb_labels)
+                figure_names.update(cbdb_people)
+                cbdb_authority.preload_text_roles(
+                    candidate.person_id
+                    for candidates in cbdb_people.values()
+                    for candidate in candidates
+                )
+                cbdb_role_evidence = infer_cbdb_role_evidence(works, normalizer, cbdb_authority, cbdb_people)
+                print(
+                    f"CBDB: {cbdb_path.name}; exact personal-name categories {len(cbdb_people):,}; "
+                    f"direct text-role matches {len(cbdb_role_evidence):,}",
+                    file=sys.stderr,
+                )
+            except Exception as exc:
+                print(f"ERROR: CBDB verification failed: {exc}", file=sys.stderr)
+                cbdb_authority.close() if cbdb_authority is not None else None
+                return 2
+        else:
+            print(
+                "WARNING: no local viewer/data/cbdb*.sqlite3 found; CBDB person/text-role verification is disabled. "
+                "From viewer/, run `bin/rails cbdb:refresh_and_build` to prepare it.",
+                file=sys.stderr,
+            )
+
     authorial_compilation_evidence = infer_authorial_compilation_people(
         works, normalizer, rules, blocked_person_labels
     )
@@ -3220,10 +4458,6 @@ def main() -> int:
         int(rules.get("person_parenthetical_single_match_memberships", 20)),
         blocked_person_labels,
     )
-    # Do not infer a person merely because the same bare parenthetical suffix is
-    # repeated. Form labels such as 七言絕句 can repeat in titles too. Category +
-    # title agreement (including role-marked names such as 竺法護譯) is the safer
-    # inference signal.
     figure_names.update(inferred_people)
 
     # Source-added preambles are metadata-like evidence, not body mentions. Scan
@@ -3243,14 +4477,13 @@ def main() -> int:
 
     indexes = build_indexes(works, normalizer, figure_names)
     indexes["authorial_compilation_evidence"] = authorial_compilation_evidence
+    indexes["cbdb_people"] = cbdb_people
+    indexes["cbdb_role_evidence"] = cbdb_role_evidence
     for alias, target in (rules.get("period_aliases") or {}).items():
         alias_norm = normalize_name(normalizer, alias)
         target_norm = normalize_name(normalizer, target)
         if target_norm in indexes["periods"]:
             indexes["periods"][alias_norm] = indexes["periods"][target_norm]
-    semantics = person_semantics(
-        works, normalizer, indexes["people"], preamble_evidence, authorial_compilation_evidence
-    )
 
     if args.skip_body_evidence:
         evidence: dict[tuple[Path, str], Evidence] = {}
@@ -3260,6 +4493,18 @@ def main() -> int:
             corpus_root, works, normalizer, indexes, args.progress_every
         )
         issues.extend(body_issues)
+
+    semantics = person_semantics(
+        works,
+        normalizer,
+        indexes["people"],
+        preamble_evidence,
+        authorial_compilation_evidence,
+        evidence,
+        cbdb_people,
+        cbdb_role_evidence,
+    )
+
     print(f"Body documents scanned: {scanned_documents:,}", file=sys.stderr)
     print(f"Document preambles scanned: {preamble_documents_scanned:,}", file=sys.stderr)
 
@@ -3281,6 +4526,8 @@ def main() -> int:
     write_xlsx(output, sheets, generated_at)
     print(f"Wrote: {output}", file=sys.stderr)
     print(f"Sheets: {len(sheets):,}", file=sys.stderr)
+    if cbdb_authority is not None:
+        cbdb_authority.close()
     return 0
 
 

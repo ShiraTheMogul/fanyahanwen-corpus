@@ -9,7 +9,7 @@
   "region": "殷墟",
   "title": "合集37986",
   "object_type": "甲骨",
-  "medium": "甲骨文",
+  "medium": "骨",
   "findspot": {
     "site": "殷墟"
   },
@@ -49,15 +49,24 @@
     "出土文獻"
   ],
   "sources": [
-	{
-		"kind": "inscription_record",
-		"url": "https://inscription.asdc.sinica.edu.tw",
-		"citation": "甲骨文合集"
-	},
-	{
-		"kind": "image_source",
-		"citation": "Wikimedia Commons, File:Heji 37986 Ganzhi table.jpg. Takashima, Ken'ichi (2015) A Little Primer of Chinese Oracle-bone Inscriptions with Some Exercises, Harrassowitz, pp. 2–4 ISBN: 978-3-447-19355-9.",
-		"url": "https://commons.wikimedia.org/wiki/File:Heji_37986_Ganzhi_table.jpg"
+    {
+      "kind": "inscription_record",
+      "url": "https://inscription.asdc.sinica.edu.tw",
+      "citation": "甲骨文合集"
+    },
+    {
+      "kind": "image_source",
+      "creator": "Todd, Gary Lee",
+      "creator_role": "photographer",
+      "digital_editor": "Kanguole",
+      "digital_editor_role": "rotated and cropped derivative",
+      "date": "2021-04-15",
+      "title": "Heji 37986 Ganzhi table.jpg",
+      "publisher": "Wikimedia Commons",
+      "license": "CC0 1.0 Universal",
+      "citation": "Todd, Gary Lee (Photographer), & Kanguole (Digital editor). (2021, April 15). Heji 37986 Ganzhi table.jpg [Photograph; rotated and cropped derivative]. Wikimedia Commons.",
+      "url": "https://commons.wikimedia.org/wiki/File:Heji_37986_Ganzhi_table.jpg",
+      "source_note": "The Commons description identifies the object as an ox scapula and cites Takashima, Ken'ichi (2015), pp. 2–4."
     }
   ],
   "is_compilation": false,
@@ -108,5 +117,21 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "material": {
+    "type": "骨",
+    "animal": "牛",
+    "animal_common_name_en": "ox",
+    "anatomical_element": "肩胛骨",
+    "anatomical_element_en": "scapula",
+    "evidence": [
+      {
+        "kind": "published_identification",
+        "citation": "Takashima, Ken'ichi. (2015). A little primer of Chinese oracle-bone inscriptions with some exercises (pp. 2–4). Harrassowitz. ISBN 978-3-447-19355-9; identification reproduced in the Wikimedia Commons file description for Heji 37986.",
+        "url": "https://commons.wikimedia.org/wiki/File:Heji_37986_Ganzhi_table.jpg",
+        "confidence": "explicit",
+        "note": "Commons describes Heji 37986 as an ox scapula; this supports 牛/肩胛骨 but does not identify a Bos species."
+      }
+    ]
+  }
 }

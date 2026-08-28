@@ -1,6 +1,6 @@
 ﻿{
-  "version": 7,
-  "purpose": "Plan category-to-metadata migration without writing corpus metadata. Categories are normalized to Traditional Chinese for comparison; the original category remains visible in the review workbook only.",
+  "version": 11,
+  "purpose": "Rules for converting inherited/curated source categories into structured metadata, mentions, compilation membership, material evidence, and genuine taxonomy. Simplified-to-Traditional normalization uses OpenCC s2t by default; Unihan remains an explicit diagnostic fallback only.",
   "person_author_ratio": 0.8,
   "person_author_min_matches": 3,
   "traditionalization_ambiguous_chars": [],
@@ -150,7 +150,6 @@
   "material_categories": {
     "龜甲": "龜甲",
     "兕骨": "兕骨",
-    "金文": "金",
     "金": "金",
     "竹簡": "竹簡",
     "木牘": "木牘",
@@ -158,11 +157,12 @@
     "帛書": "帛",
     "石": "石",
     "紙": "紙",
-    "紙本": "紙"
+    "紙本": "紙",
+    "數位": "數位",
+    "digital": "數位"
   },
   "material_review_categories": {
-    "簡牘": "竹簡 / 木牘（待辨）",
-    "甲骨文": "龜甲 / 骨（待辨）"
+    "簡牘": "竹簡 / 木牘（待辨）"
   },
   "taxonomy_edges": [
     {
@@ -629,15 +629,273 @@
   "animal_materials": {
     "龜甲": {
       "animal_name": "龜",
-      "taxon_candidate": "待辨",
-      "note": "Do not guess a turtle species from 龜甲 alone; retain species-level identification when a catalogue or zooarchaeological source provides it."
+      "animal_common_name_en": "turtle",
+      "species_field": "material.species",
+      "note": "Do not guess a turtle species from 龜甲 alone. Where zooarchaeological or catalogue research identifies a species, record material.species.scientific_name, common_name_zh, common_name_en, and the supporting evidence."
     },
     "兕骨": {
       "animal_name": "兕",
-      "taxon_candidate": "Bubalus sp.（需來源核定）",
-      "note": "Retain 兕 as the historical identification. A modern taxon should be recorded only where supporting research identifies the animal securely."
+      "animal_common_name_en": "historical identification: si",
+      "species_field": "material.species",
+      "note": "Retain 兕 as the historical identification. Do not force a modern species. Add material.species only where supporting research identifies the animal securely."
     }
   },
+  "animal_species_registry": [
+    {
+      "scientific_name": "Bos taurus",
+      "scientific_name_full": "Bos taurus Linnaeus, 1758",
+      "common_name_zh": "家牛",
+      "common_name_en": "Domestic cattle",
+      "animal": "牛",
+      "aliases": [
+        "普通牛",
+        "黃牛",
+        "domestic cow",
+        "cattle"
+      ],
+      "oracle_use_status": "confirmed",
+      "oracle_contexts": [
+        "陶寺與周家莊的龍山時代研究樣本"
+      ],
+      "sources": [
+        {
+          "citation": "Brunson, Katherine, Zhao, Xin, He, Nu, Dai, Xiangming, Rodrigues, Antonia, & Yang, Dongya. (2016). New insights into the origins of oracle bone divination: Ancient DNA from Late Neolithic Chinese bovines. Journal of Archaeological Science, 74, 35–44. https://doi.org/10.1016/j.jas.2016.08.008",
+          "url": "https://doi.org/10.1016/j.jas.2016.08.008",
+          "note": "Ancient DNA identifies domestic Bos taurus among the bovine oracle-bone raw materials studied from Taosi/Zhoujiazhuang."
+        }
+      ]
+    },
+    {
+      "scientific_name": "Bos primigenius",
+      "scientific_name_full": "Bos primigenius Bojanus, 1827",
+      "common_name_zh": "原牛",
+      "common_name_en": "Aurochs",
+      "animal": "牛",
+      "aliases": [
+        "wild aurochs",
+        "wild cattle"
+      ],
+      "oracle_use_status": "confirmed",
+      "oracle_contexts": [
+        "陶寺與周家莊的龍山時代研究樣本"
+      ],
+      "sources": [
+        {
+          "citation": "Brunson, Katherine, Zhao, Xin, He, Nu, Dai, Xiangming, Rodrigues, Antonia, & Yang, Dongya. (2016). New insights into the origins of oracle bone divination: Ancient DNA from Late Neolithic Chinese bovines. Journal of Archaeological Science, 74, 35–44. https://doi.org/10.1016/j.jas.2016.08.008",
+          "url": "https://doi.org/10.1016/j.jas.2016.08.008",
+          "note": "Ancient DNA provides the first confirmed aurochs scapulae used as oracle bones in China."
+        }
+      ]
+    },
+    {
+      "scientific_name": "Bubalus mephistopheles",
+      "scientific_name_full": "Bubalus mephistopheles Hopwood, 1925",
+      "common_name_zh": "聖水牛",
+      "common_name_en": "Short-horned water buffalo",
+      "animal": "水牛",
+      "aliases": [
+        "short horned water buffalo",
+        "Bubalus mephistopheles (Hopwood, 1925)"
+      ],
+      "oracle_use_status": "confirmed",
+      "archaeological_contexts": [
+        "周家莊（龍山時代；聖水牛存在並被利用）"
+      ],
+      "sources": [
+        {
+          "citation": "中央研究院歷史語言研究所歷史文物陳列館. (n.d.). 什麼叫做「甲骨文」？ Retrieved August 28, 2026, from https://museum.sinica.edu.tw/resources/item/63/",
+          "url": "https://museum.sinica.edu.tw/resources/item/63/",
+          "note": "史語所教學資源明確指出商代卜骨多用牛胛骨，並稱聖水牛肩胛骨為卜骨的重要來源；因此 Bubalus mephistopheles 應列為已確認的卜骨動物，不應因單一研究樣本未驗出而降格。"
+        },
+        {
+          "citation": "Pei, Xiaochen, Liang, Fawei, Cao, Yanpeng, & Zhang, Yunan. (2024). The dynamics of Bovini exploitation strategies on the Central Plains of China from the Middle Neolithic to the Bronze Age. Scientific Reports, 14, 29616. https://doi.org/10.1038/s41598-024-81065-y",
+          "url": "https://doi.org/10.1038/s41598-024-81065-y",
+          "note": "綜述指出晚商殷墟水牛進入祭祀／特權物品體系，並舉水牛肋骨製作卜骨為例。這是水牛作為卜骨原料的獨立證據。"
+        },
+        {
+          "citation": "Brunson, Katherine, Zhao, Xin, He, Nu, Dai, Xiangming, Rodrigues, Antonia, & Yang, Dongya. (2016). New insights into the origins of oracle bone divination: Ancient DNA from Late Neolithic Chinese bovines. Journal of Archaeological Science, 74, 35–44. https://doi.org/10.1016/j.jas.2016.08.008",
+          "url": "https://doi.org/10.1016/j.jas.2016.08.008",
+          "note": "古 DNA 證實周家莊存在並利用 Bubalus mephistopheles；該研究只說其抽樣的卜骨未驗出水牛，不是否定其他地點或其他研究中已確認的水牛卜骨。"
+        },
+        {
+          "citation": "Shan, Yuchen 單育辰. (2015). 說「兕」「象」——「甲骨文所見的動物」之六. 饒宗頤國學院院刊, 2, 41–53.",
+          "url": "https://jas.hkbu.edu.hk/content/dam/jas-assets/publications/bulletin-of-the-jao-tsung-i-academy-of-sinology/issue-2-may-2015/3.pdf",
+          "note": "論證甲骨文所見「兕」為水牛，並援引殷墟聖水牛遺存；這支持其在商代甲骨文化中的動物學與名物學背景。"
+        },
+        {
+          "citation": "Liang, Xue-Yuan, Liu, Xin-Meng, Lei, Xiao-Le, Hu, Qingbo, Guo, Xiaoning, Song, Shu, Yu, Chong, Yue, Haiyan, Wang, Yiwen, Zhang, Jiangyue, Zhou, Xu, Wang, Hua, Ma, Lijuan, Zhang, Hai, Mo, Linheng, Sun, Guoping, Liu, Li, Chen, Xingcan, Qin, Xiaoli, & Yu, He. (2026). Ancient mitogenomes reveal the genetic relationship among extinct and extant water buffaloes. iScience, 29(7), 116354. https://doi.org/10.1016/j.isci.2026.116354",
+          "url": "https://doi.org/10.1016/j.isci.2026.116354",
+          "note": "現代古基因組研究提供 Bubalus mephistopheles 的分類背景；物件級辨識仍應由具體考古或動物考古證據支持。"
+        }
+      ],
+      "oracle_contexts": [
+        "殷墟（商代卜骨；聖水牛肩胛骨）",
+        "殷墟（晚商；水牛肋骨卜骨）"
+      ]
+    },
+    {
+      "scientific_name": "Mauremys reevesii",
+      "scientific_name_full": "Mauremys reevesii (Gray, 1831)",
+      "common_name_zh": "草龜",
+      "common_name_en": "Chinese three-keeled pond turtle",
+      "animal": "龜",
+      "aliases": [
+        "中華草龜",
+        "烏龜",
+        "Reeves's turtle",
+        "Reeves’ turtle",
+        "Chinese pond turtle",
+        "Chinemys reevesii",
+        "Geoclemys reevesii"
+      ],
+      "oracle_use_status": "confirmed",
+      "oracle_contexts": [
+        "台家寺（商代卜甲）"
+      ],
+      "sources": [
+        {
+          "citation": "Ko, Jada 高穎彤. (2026, March 17). 從商代卜甲探討龜的若干問題 [Lecture]. Shandong University, Institute of Cultural Heritage. Lecture recap published March 26, 2026.",
+          "url": "https://rlesa.qd.sdu.edu.cn/info/1031/4972.htm",
+          "note": "The Taijiasi oracle-plastron assemblage is reported to include Mauremys reevesii, Mauremys sinensis, and Mauremys mutica."
+        },
+        {
+          "citation": "Keightley, David N. (1978). Sources of Shang history: The oracle-bone inscriptions of Bronze Age China (p. 9). University of California Press.",
+          "note": "Classic overview of Shang oracle-shell material; retain the publication's historical taxonomic context when consulting individual identifications."
+        }
+      ]
+    },
+    {
+      "scientific_name": "Mauremys sinensis",
+      "scientific_name_full": "Mauremys sinensis (Gray, 1834)",
+      "common_name_zh": "花龜",
+      "common_name_en": "Chinese striped-necked turtle",
+      "animal": "龜",
+      "aliases": [
+        "中華花龜",
+        "斑龜",
+        "Chinese stripe-necked turtle",
+        "Ocadia sinensis"
+      ],
+      "oracle_use_status": "confirmed",
+      "oracle_contexts": [
+        "台家寺（商代卜甲）"
+      ],
+      "sources": [
+        {
+          "citation": "Ko, Jada 高穎彤. (2026, March 17). 從商代卜甲探討龜的若干問題 [Lecture]. Shandong University, Institute of Cultural Heritage. Lecture recap published March 26, 2026.",
+          "url": "https://rlesa.qd.sdu.edu.cn/info/1031/4972.htm",
+          "note": "The Taijiasi oracle-plastron assemblage is reported to include Mauremys reevesii, Mauremys sinensis, and Mauremys mutica."
+        },
+        {
+          "citation": "Keightley, David N. (1978). Sources of Shang history: The oracle-bone inscriptions of Bronze Age China (p. 9). University of California Press.",
+          "note": "Classic overview of Shang oracle-shell material; older literature may use Ocadia sinensis or Testudo anyangensis."
+        }
+      ]
+    },
+    {
+      "scientific_name": "Mauremys mutica",
+      "scientific_name_full": "Mauremys mutica (Cantor, 1842)",
+      "common_name_zh": "黃喉擬水龜",
+      "common_name_en": "Yellow pond turtle",
+      "animal": "龜",
+      "aliases": [
+        "黃喉水龜",
+        "黃龜",
+        "柴棺龜",
+        "Asian yellow pond turtle",
+        "yellowpond turtle",
+        "Geoclemmys mutica"
+      ],
+      "oracle_use_status": "confirmed",
+      "oracle_contexts": [
+        "台家寺（商代卜甲；後期利用增加）"
+      ],
+      "sources": [
+        {
+          "citation": "Ko, Jada 高穎彤. (2026, March 17). 從商代卜甲探討龜的若干問題 [Lecture]. Shandong University, Institute of Cultural Heritage. Lecture recap published March 26, 2026.",
+          "url": "https://rlesa.qd.sdu.edu.cn/info/1031/4972.htm",
+          "note": "Reports Mauremys mutica among Taijiasi oracle plastrons and increased use as demand for turtle material intensified."
+        },
+        {
+          "citation": "National Taiwan Museum. (n.d.). 柴棺龜 (Mauremys mutica), specimen TMRT0013. Retrieved August 28, 2026, from https://collections.culture.tw/ntm_collectionsweb/collection.aspx?GID=04MAMI0EMB",
+          "url": "https://collections.culture.tw/ntm_collectionsweb/collection.aspx?GID=04MAMI0EMB",
+          "note": "Modern zoological name authority for Chinese/English aliases; not evidence for an archaeological oracle shell."
+        },
+        {
+          "citation": "National Center for Biotechnology Information. (n.d.). Mauremys mutica (Taxonomy ID 74926). NCBI Taxonomy. Retrieved August 28, 2026, from https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=74926&mode=Info",
+          "url": "https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=74926&mode=Info",
+          "note": "Current scientific-name authority; GenBank common name yellowpond turtle. Archaeological use is supported separately by the Taijiasi research."
+        }
+      ]
+    },
+    {
+      "scientific_name": "Pelodiscus sinensis",
+      "scientific_name_full": "Pelodiscus sinensis Wiegmann, 1835",
+      "common_name_zh": "鱉",
+      "common_name_en": "Chinese softshell turtle",
+      "animal": "鱉",
+      "aliases": [
+        "中華鱉",
+        "Chinese soft-shelled turtle",
+        "Trionyx sinensis",
+        "Pelodiscus sinensis (Wiegmann, 1835)",
+        "Pelodiscus sinensis (Wiegmann, 1834)",
+        "Trionyx sinensis Wiegmann, 1835"
+      ],
+      "oracle_use_status": "historical_attribution_pending_verification",
+      "oracle_contexts": [
+        "商代卜甲：使用者提供 Keightley 1978 p. 9 線索；待核對 Berry 附錄原文"
+      ],
+      "sources": [
+        {
+          "citation": "Keightley, David N. (1978). Sources of Shang history: The oracle-bone inscriptions of Bronze Age China (p. 9). University of California Press.",
+          "note": "User supplied this as part of Keightley’s Shang oracle-shell species discussion. Web-accessible secondary references to Berry’s Appendix I do not consistently enumerate Pelodiscus sinensis, so keep the historical oracle-use attribution provisional until the appendix/page is checked directly."
+        },
+        {
+          "citation": "Kunming Institute of Zoology. (n.d.). Pelodiscus sinensis 中华鳖. Yunnan Amphibian and Reptile Database. Retrieved August 28, 2026, from https://datacenter.kiz.ac.cn/DataBase/YNAmphibiaDetail/176",
+          "url": "https://datacenter.kiz.ac.cn/DataBase/YNAmphibiaDetail/176",
+          "note": "Modern zoological naming reference; not archaeological evidence."
+        },
+        {
+          "citation": "National Center for Biotechnology Information. (n.d.). Pelodiscus sinensis (Taxonomy ID 13735). NCBI Taxonomy. Retrieved August 28, 2026, from https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=13735&mode=Info",
+          "url": "https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=13735&mode=Info",
+          "note": "Modern taxonomic-name authority. NCBI records Pelodiscus sinensis Wiegmann, 1835, Chinese soft-shelled turtle, and historical Trionyx sinensis forms; this is not archaeological evidence."
+        }
+      ]
+    },
+    {
+      "scientific_name": "Manouria emys",
+      "scientific_name_full": "Manouria emys (Schlegel & Müller, 1844)",
+      "common_name_zh": "靴腳陸龜",
+      "common_name_en": "Asian forest tortoise",
+      "animal": "龜",
+      "aliases": [
+        "靴脚陆龟",
+        "Asian giant tortoise",
+        "Asian brown tortoise",
+        "brown tortoise",
+        "Testudo emys",
+        "Testudo emys Schlegel & Müller, 1844",
+        "Manouria emys (Schlegel and Müller, 1844)"
+      ],
+      "oracle_use_status": "reported",
+      "oracle_contexts": [
+        "商代刻辭卜甲（Berry 附錄，經後來研究引述）"
+      ],
+      "sources": [
+        {
+          "citation": "Allan, Sarah. (1991). The shape of the turtle: Myth, art, and cosmos in early China. State University of New York Press.",
+          "url": "https://georgehbalazs.com/wp-content/uploads/2019/01/Allan_1991_TheShapeOfTurtle_MythArtCosmosEarlyChina-1.pdf",
+          "note": "Cites Berry’s Appendix I in Keightley and identifies specific Shang inscribed shells as Geochylene (Testudo) emys, an older name for the taxon now placed in Manouria."
+        },
+        {
+          "citation": "National Center for Biotechnology Information. (n.d.). Manouria emys (Taxonomy ID 260614). NCBI Taxonomy. Retrieved August 28, 2026, from https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=260614&mode=Info",
+          "url": "https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=260614&mode=Info",
+          "note": "Modern taxonomy records Testudo emys as the basionym; nomenclatural year is reported inconsistently across authorities, so historical full-name variants are retained as aliases."
+        }
+      ]
+    }
+  ],
   "person_parenthetical_min_matches": 2,
   "person_parenthetical_single_match_memberships": 20,
   "person_parenthetical_author_min_matches": 2,
@@ -702,36 +960,6 @@
     }
   ],
   "person_parenthetical_repeat_min_matches": 2,
-  "traditionalization_phrase_overrides": {
-    "云南": "雲南",
-    "祥云": "祥雲",
-    "历史": "歷史",
-    "万历": "萬曆",
-    "乐府": "樂府",
-    "关系": "關係",
-    "小说": "小說",
-    "中医药": "中醫藥",
-    "中医": "中醫",
-    "武侠": "武俠",
-    "伪史": "偽史",
-    "开发": "開發",
-    "发布": "發布",
-    "默认": "默認",
-    "结构": "結構",
-    "机制": "機制",
-    "红石": "紅石",
-    "方块": "方塊",
-    "页面": "頁面",
-    "实体": "實體",
-    "数据": "數據",
-    "链接": "鏈接",
-    "受损": "受損",
-    "中国": "中國",
-    "中华": "中華",
-    "游戏": "遊戲",
-    "无尽藏": "無盡藏",
-    "墓志": "墓誌"
-  },
   "controlled_taxonomy_labels": [
     "出土文獻",
     "佛經",
@@ -758,6 +986,7 @@
     "賦",
     "曲",
     "詩話",
+    "詞話",
     "咒語",
     "論著",
     "制",
@@ -844,7 +1073,9 @@
     "回文詩",
     "離合詩",
     "寶塔詩",
-    "偽古文"
+    "偽古文",
+    "甲骨文",
+    "金文"
   ],
   "book_grouping_labels": [
     "宋四大書"
@@ -1030,5 +1261,113 @@
       "pattern": "^全唐詩/卷\\d+$",
       "note": "Wikisource 全唐詩 volume categories are organized by author; infer authorship only when exactly one plausible personal-name category remains on the work."
     }
-  ]
+  ],
+  "material_source_profiles": [
+    {
+      "name": "汐洛思原生數位作品",
+      "medium": "數位",
+      "author_pattern": "^汐洛思$",
+      "note": "Works explicitly authored by 汐洛思 in this corpus are born-digital originals; the stored work itself has a digital carrier."
+    },
+    {
+      "name": "classical_wiki_corpus 原生數位文本",
+      "medium": "數位",
+      "path_pattern": "(?:^|/)classical_wiki_corpus(?:/|$)",
+      "note": "Wikipedia, Minecraft Wiki / 礦藝大典, and the other wiki texts in classical_wiki_corpus are born-digital works. A web citation elsewhere does not trigger this rule."
+    },
+    {
+      "name": "四庫全書紙本",
+      "medium": "紙",
+      "pattern": "(?:^|/)四庫全書(?:/|$)|四庫全書本",
+      "note": "The 四庫全書 witness tradition represented by the corpus is a paper manuscript witness."
+    },
+    {
+      "name": "康熙字典紙本",
+      "medium": "紙",
+      "pattern": "(?:^|/)(?:御定)?康熙字典(?:/|$)|(?:御定)?康熙字典(?:\\\\s*[（(].+[)）])?$",
+      "note": "The 康熙字典 witnesses represented here are paper books."
+    },
+    {
+      "name": "南風雜誌紙本",
+      "medium": "紙",
+      "pattern": "南風雜誌|南風雜志|Nam\\\\s+Phong(?:\\\\s+Tạp\\\\s+Chí)?",
+      "note": "南風雜誌 is a printed periodical on paper."
+    },
+    {
+      "name": "大正新脩大藏經紙本",
+      "medium": "紙",
+      "pattern": "大正新脩大藏經",
+      "note": "The Taishō printed canon witness is paper."
+    },
+    {
+      "name": "四部叢刊紙本",
+      "medium": "紙",
+      "pattern": "四部叢刊",
+      "note": "The 四部叢刊 source witness is a paper photographic/printed edition."
+    },
+    {
+      "name": "古今圖書集成紙本",
+      "medium": "紙",
+      "pattern": "古今圖書集成",
+      "note": "The 古今圖書集成 source witness is a printed paper book."
+    },
+    {
+      "name": "永樂大典紙本",
+      "medium": "紙",
+      "pattern": "永樂大典",
+      "note": "The surviving 永樂大典 manuscript witness is on paper."
+    }
+  ],
+  "bronze_material_patterns": [
+    "青銅器",
+    "青銅"
+  ],
+  "material_detail_fields": {
+    "field": "material",
+    "description": "Optional object-level material detail. Keep medium as the broad physical support; use material for biological source or precise metal/alloy evidence.",
+    "examples": {
+      "oracle_bone": {
+        "type": "骨",
+        "animal": "牛",
+        "anatomical_element": "肩胛骨"
+      },
+      "metal": {
+        "type": "青銅",
+        "alloy": {
+          "system": "Cu-Sn-Pb",
+          "components": [
+            {
+              "element": "Cu",
+              "name": "銅"
+            },
+            {
+              "element": "Sn",
+              "name": "錫"
+            },
+            {
+              "element": "Pb",
+              "name": "鉛"
+            }
+          ],
+          "measurements": [
+            {
+              "method": "XRF",
+              "composition_percent": {
+                "Cu": null,
+                "Sn": null,
+                "Pb": null
+              },
+              "source": "only populate from an object-specific analytical source"
+            }
+          ]
+        }
+      }
+    },
+    "species_fields": {
+      "scientific_name": "Latin binomial (canonical taxon name)",
+      "common_name_zh": "Traditional-Chinese common name",
+      "common_name_en": "English common name"
+    },
+    "species_input_note": "The planner accepts a scientific name, Chinese common name, English common name, or a full triplet such as Mauremys mutica / 黃喉擬水龜 / Yellow pond turtle and normalizes a unique registry match to material.species. Broad animal labels such as 牛 or 龜 never imply a species."
+  }
 }
