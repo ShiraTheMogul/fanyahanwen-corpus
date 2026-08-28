@@ -1,0 +1,48 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "json"
+require_relative "../config/environment"
+
+# Small process boundary for corpus-maintenance tools written in Python.
+# The calendar rules remain in CalendarEngine; this file only transports JSON.
+def calendar_engine_dispatch(payload)
+  data = payload.is_a?(Hash) ? payload : {}
+  operation = data.fetch("operation", "resolve")
+  options = {}
+  %w[system from to leap include_before_epoch context authority direction country polity period].each do |key|
+    options[key.to_sym] = data[key] if data.key?(key)
+  end
+  CalendarEngine.call(operation: operation, value: data["value"], **options)
+rescue StandardError => e
+  {
+    "resolved" => false,
+    "operation" => data.is_a?(Hash) ? data["operation"].to_s : "",
+    "error" => "#{e.class}: #{e.message}"
+  }
+end
+
+if ARGV.include?("--stream")
+  STDIN.each_line do |line|
+    next if line.strip.empty?
+
+    begin
+      payload = JSON.parse(line)
+      response = calendar_engine_dispatch(payload)
+    rescue JSON::ParserError => e
+      response = { "resolved" => false, "error" => "JSON::ParserError: #{e.message}" }
+    end
+    STDOUT.puts(JSON.generate(response))
+    STDOUT.flush
+  end
+else
+  input = STDIN.read
+  payload = input.strip.empty? ? {} : JSON.parse(input)
+  response = if payload.is_a?(Array)
+    payload.map { |entry| calendar_engine_dispatch(entry) }
+  else
+    calendar_engine_dispatch(payload)
+  end
+  STDOUT.write(JSON.generate(response))
+  STDOUT.write("\n")
+end

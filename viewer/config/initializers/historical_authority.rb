@@ -14,6 +14,7 @@ Rails.application.config.to_prepare do
   CorpusSearch::Manifest.prepend(CorpusSearch::ManifestHistoricalExtension) unless CorpusSearch::Manifest < CorpusSearch::ManifestHistoricalExtension
   CorpusSearch::Manifest.prepend(CorpusSearch::ManifestIncrementalExtension) unless CorpusSearch::Manifest < CorpusSearch::ManifestIncrementalExtension
   HistoricalDateResolver.prepend(HistoricalDateResolverStaticNames) unless HistoricalDateResolver < HistoricalDateResolverStaticNames
+  HistoricalDateResolver.prepend(CalendarEngineHistoricalDateResolver) unless HistoricalDateResolver < CalendarEngineHistoricalDateResolver
   CbdbAutoAnnotator.prepend(CbdbAutoAnnotatorStaticNames) unless CbdbAutoAnnotator < CbdbAutoAnnotatorStaticNames
   CbdbAutoAnnotator.prepend(CbdbAutoAnnotatorKindResolution) unless CbdbAutoAnnotator < CbdbAutoAnnotatorKindResolution
   EraCalendarConverter.prepend(EraCalendarStaticNames) unless EraCalendarConverter < EraCalendarStaticNames

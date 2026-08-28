@@ -1,0 +1,149 @@
+﻿<%= turbo_frame_tag "era_calendar_out" do %>
+  <style>
+    .calendar-engine-result { min-width: 0; }
+    .calendar-engine-table-wrap { overflow-x: auto; max-width: 100%; }
+    .calendar-engine-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    .calendar-engine-table th,
+    .calendar-engine-table td { text-align: left; padding: .45em; vertical-align: top; border-bottom: 1px solid #ccc; overflow-wrap: anywhere; word-break: break-word; }
+    .calendar-engine-table th { border-bottom-color: currentColor; }
+    .calendar-engine-kv { display: grid; grid-template-columns: minmax(8rem, 12rem) 1fr; gap: .3em 1em; }
+    .calendar-engine-kv dt { font-weight: 600; }
+    .calendar-engine-kv dd { margin: 0; }
+    .calendar-engine-secondary { opacity: .76; }
+  </style>
+
+  <% if result["error"].present? && !result["ambiguous"] %>
+    <div class="tool-output" role="alert"><%= result["error"] %></div>
+
+  <% elsif result["direction"] == "named_year_to_absolute" %>
+    <div class="calendar-engine-result">
+      <% if result["ambiguous"] %>
+        <p><strong>Ambiguous year-system convention</strong></p>
+        <p>No absolute year was selected automatically.</p>
+        <div class="calendar-engine-table-wrap">
+          <table class="calendar-engine-table">
+            <thead><tr><th>System</th><th>Input year</th><th>Absolute year</th><th>Convention</th></tr></thead>
+            <tbody>
+              <% Array(result["candidates"]).each do |candidate| %>
+                <tr>
+                  <td><strong><%= candidate["source_label"] %></strong></td>
+                  <td><%= candidate["year_number"] %></td>
+                  <td><%= candidate["year"].to_i.negative? ? "#{candidate['year'].to_i.abs} BCE" : "#{candidate['year']} CE" %></td>
+                  <td><%= candidate["convention"] %><% if candidate["status"].present? %> · <%= candidate["status"].tr("_", " ") %><% end %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <p>
+          <strong><%= result["year"].to_i.negative? ? "#{result['year'].to_i.abs} BCE" : "#{result['year']} CE" %></strong>
+          <% if result["month"].present? %> · month <%= result["month"] %><% end %>
+          <% if result["day"].present? %> · day <%= result["day"] %><% end %>
+        </p>
+        <dl class="calendar-engine-kv">
+          <dt>Input system</dt><dd><%= result["source_label"] %></dd>
+          <dt>Year number</dt><dd><%= result["year_number"] %></dd>
+          <dt>Precision</dt><dd><%= result["precision"] %></dd>
+          <dt>Convention</dt><dd><%= result["convention"] %></dd>
+        </dl>
+      <% end %>
+    </div>
+
+  <% elsif %w[absolute_year_to_systems civil_date_to_systems].include?(result["direction"]) %>
+    <div class="calendar-engine-result">
+      <p>
+        <strong><%= result["year"].to_i.negative? ? "#{result['year'].to_i.abs} BCE" : "#{result['year']} CE" %></strong>
+        <% if result["month"].present? %>-<%= format("%02d", result["month"]) %><% end %><% if result["day"].present? %>-<%= format("%02d", result["day"]) %><% end %>
+      </p>
+
+      <dl class="calendar-engine-kv">
+        <dt>干支 year</dt><dd><%= result["sexagenary_year"] %> — cycle <%= result["sexagenary_cycle_number"] %>/60</dd>
+        <dt>《爾雅》歲名</dt><dd><%= result["erya_year"] %></dd>
+      </dl>
+      <p><small class="calendar-engine-secondary">The 《爾雅》 form is a calculated nomenclature rendering of the sexagenary year. A year name by itself repeats every sixty years and does not identify one absolute year.</small></p>
+
+      <h4>Year-numbering systems</h4>
+      <div class="calendar-engine-table-wrap">
+        <table class="calendar-engine-table">
+          <thead><tr><th style="width:25%;">System</th><th style="width:25%;">Rendering</th><th>Convention / status</th></tr></thead>
+          <tbody>
+            <% Array(result["year_systems"]).each do |system| %>
+              <tr>
+                <td><strong><%= system["label"] %></strong></td>
+                <td><%= system["display"] %></td>
+                <td><%= system["convention"] %><% if system["status"].present? %> · <%= system["status"].tr("_", " ") %><% end %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+
+      <% if Array(result["calendar_frames"]).any? %>
+        <h4>Calendar frames</h4>
+        <div class="calendar-engine-table-wrap">
+          <table class="calendar-engine-table">
+            <thead><tr><th style="width:24%;">Calendar</th><th style="width:32%;">Date</th><th>Backend / note</th></tr></thead>
+            <tbody>
+              <% Array(result["calendar_frames"]).each do |row| %>
+                <tr>
+                  <td><strong><%= row["label"] %></strong></td>
+                  <td><%= row["error"].presence || row["display"] || [row["year"], row["month"], row["day"]].compact.join("-") %></td>
+                  <td><%= [row["backend"], row["note"]].compact.join(" · ") %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% end %>
+    </div>
+
+  <% elsif result["direction"] == "nomenclature_lookup" %>
+    <div class="calendar-engine-result">
+      <p><strong><%= result["original"] %></strong></p>
+      <% case result["kind"] %>
+      <% when "sexagenary_cycle" %>
+        <dl class="calendar-engine-kv">
+          <dt>Cycle position</dt><dd><strong><%= result["cycle_number"] %> / 60</strong></dd>
+          <dt>Stem</dt><dd><%= result["stem"] %></dd>
+          <dt>Branch</dt><dd><%= result["branch"] %></dd>
+          <% if result["cycle_scope"] == "day" %><dt>Interpretation</dt><dd>day of the sexagenary cycle</dd><% end %>
+        </dl>
+      <% when "erya_sexagenary_year_name" %>
+        <dl class="calendar-engine-kv">
+          <dt>干支</dt><dd><%= result["sexagenary"] %></dd>
+          <dt>Cycle position</dt><dd><strong><%= result["cycle_number"] %> / 60</strong></dd>
+        </dl>
+      <% when "erya_month_name" %>
+        <dl class="calendar-engine-kv">
+          <% if result["erya_month_stem"].present? %><dt>月陽</dt><dd><%= result["erya_month_stem"] %> = <%= result["month_stem"] %></dd><% end %>
+          <dt>月名</dt><dd><%= result["erya_month"] %> = month <%= result["month"] %></dd>
+        </dl>
+      <% end %>
+      <% source = result["source"] || {} %>
+      <% if source.present? %>
+        <p>
+          <small>
+            <strong>Source:</strong> <%= source["label"] %><% if source["note"].present? %>. <%= source["note"] %><% end %>
+            <% if source["citation"].present? %><br><%= source["citation"] %><% end %>
+            <% if source["url"].present? %><br><%= link_to source["url"], source["url"], target: "_blank", rel: "noopener noreferrer" %><% end %>
+          </small>
+        </p>
+      <% end %>
+      <% if result["note"].present? %><p><small class="calendar-engine-secondary"><%= result["note"] %></small></p><% end %>
+    </div>
+
+  <% elsif result["direction"] == "calendar_convert" %>
+    <div class="calendar-engine-result">
+      <% converted = result["result"] || {} %>
+      <p><strong><%= converted["display"] || [converted["year"], converted["month"], converted["day"]].compact.join("-") %></strong></p>
+      <dl class="calendar-engine-kv">
+        <dt>From</dt><dd><%= result["from"] %></dd>
+        <dt>To</dt><dd><%= result["to"] %></dd>
+        <dt>Backend</dt><dd><%= result["backend"] %></dd>
+        <% if converted["sexagenary_year"].present? %><dt>干支 year</dt><dd><%= converted["sexagenary_year"] %></dd><% end %>
+        <% if converted["erya_year"].present? %><dt>《爾雅》歲名</dt><dd><%= converted["erya_year"] %></dd><% end %>
+      </dl>
+    </div>
+  <% end %>
+<% end %>

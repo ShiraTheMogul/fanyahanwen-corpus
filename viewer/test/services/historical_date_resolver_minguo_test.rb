@@ -3,7 +3,7 @@
 require_relative "../test_helper"
 
 class HistoricalDateResolverMinguoTest < ActiveSupport::TestCase
-  test "resolves Minguo calendar dates without an authority cache" do
+  test "resolves Minguo dates through the shared calendar engine without an authority cache" do
     unavailable_store = Object.new
     unavailable_store.define_singleton_method(:available?) { false }
     resolver = HistoricalDateResolver.new(store: unavailable_store)
@@ -20,10 +20,11 @@ class HistoricalDateResolverMinguoTest < ActiveSupport::TestCase
       assert resolution, "expected #{label.inspect} to resolve"
       assert_equal expected_year, resolution.year_start, label
       assert_equal expected_year, resolution.year_end, label
-      assert_equal "date_label_minguo", resolution.source, label
-      assert_equal "explicit_label", resolution.confidence, label
+      assert_equal "calendar_engine:minguo", resolution.source, label
+      assert_equal "exact", resolution.confidence, label
       assert_equal label, resolution.date_label, label
-      assert_nil resolution.authority_kind, label
+      assert_equal "calendar_era", resolution.authority_kind, label
+      assert_equal "minguo", resolution.authority_id, label
     end
   end
 

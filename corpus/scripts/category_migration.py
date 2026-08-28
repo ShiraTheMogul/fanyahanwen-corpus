@@ -18,6 +18,23 @@ from pathlib import Path
 from typing import Iterable, Sequence
 
 from category_audit import SheetSpec, read_json, write_xlsx
+from calendar_engine_client import CalendarEngineClient
+
+
+_CALENDAR_ENGINE: CalendarEngineClient | None = None
+
+
+def calendar_engine() -> CalendarEngineClient:
+    """Return the one shared Rails calendar-engine process for this audit run.
+
+    Python owns only the process transport. All date grammar, numeral parsing,
+    epochs, calendar conversions, and historical nomenclature stay in Ruby's
+    CalendarEngine.
+    """
+    global _CALENDAR_ENGINE
+    if _CALENDAR_ENGINE is None:
+        _CALENDAR_ENGINE = CalendarEngineClient()
+    return _CALENDAR_ENGINE
 
 
 @dataclasses.dataclass(frozen=True)
@@ -997,6 +1014,13 @@ def load_rules(path: Path) -> dict:
     data = read_json(path)
     if not isinstance(data, dict):
         raise ValueError("migration rules must be a JSON object")
+
+    # Old audit revisions stored deterministic epoch arithmetic in this rules
+    # file. CalendarEngine is now the only owner of that knowledge. Discard the
+    # legacy keys at the boundary so they cannot silently become a second source
+    # of truth even if an older rules file still contains them.
+    data.pop("calendar_year_bases", None)
+    data.pop("era_year_bases", None)
     return data
 
 
@@ -1012,37 +1036,30 @@ def canonical_label(normalizer: Traditionalizer, raw: str) -> tuple[str, tuple[s
     return normalizer.normalize(strip_namespace(raw))
 
 
-def chinese_integer(value: str) -> int | None:
-    text = value.strip()
-    if text == "元":
-        return 1
-    if text.isdigit():
-        return int(text)
-    text = text.replace("两", "兩")
-    text = re.sub(r"^廿", "二十", text)
-    text = re.sub(r"^卅", "三十", text)
-    text = re.sub(r"^卌", "四十", text)
-    digits = {"〇": 0, "零": 0, "○": 0, "一": 1, "二": 2, "兩": 2, "三": 3, "四": 4, "五": 5, "六": 6, "七": 7, "八": 8, "九": 9}
-    units = {"十": 10, "百": 100, "千": 1000}
-    if text and all(char in digits for char in text):
-        value = 0
-        for char in text:
-            value = value * 10 + digits[char]
-        return value
-    if not text or any(char not in digits and char not in units for char in text):
-        return None
-    total = 0
-    current = 0
-    for char in text:
-        if char in digits:
-            current = digits[char]
-        else:
-            total += (current or 1) * units[char]
-            current = 0
-    return total + current
+def calendar_context_for_work(work: Work) -> dict[str, object]:
+    """Pass work context to the shared authority resolver without overriding it.
+
+    year_start/year_end are deliberately omitted here. HistoricalDateResolver
+    treats explicit numeric years as authoritative metadata and would otherwise
+    short-circuit the category/title expression currently being tested.
+    """
+    context: dict[str, object] = {}
+    parts = work.metadata_path.parts
+    if parts:
+        context["corpus_root"] = parts[0]
+    for key, value in (("period", work.period), ("polity", work.polity), ("region", work.region)):
+        if value:
+            context[key] = value
+    return context
 
 
-def parse_date_category(canonical: str, calendar_year_bases: dict[str, object] | None = None) -> DateCategory | None:
+def parse_date_category(canonical: str, context: dict[str, object] | None = None) -> DateCategory | None:
+    """Resolve one category label through the shared Rails CalendarEngine.
+
+    The optional 提及 marker belongs to category semantics, so this script strips
+    that wrapper and sends the calendrical expression itself to CalendarEngine.
+    It never computes a calendar year locally.
+    """
     mention = False
     value = canonical.strip()
     mention_match = re.search(r"\s*[（(]提及[)）]\s*$", value)
@@ -1050,43 +1067,24 @@ def parse_date_category(canonical: str, calendar_year_bases: dict[str, object] |
         mention = True
         value = value[: mention_match.start()].strip()
 
-    number = r"(?:元|[〇零○一二三四五六七八九十百千兩两廿卅卌0-9]+)"
-    match = re.fullmatch(r"(\d{1,4})年(?:(\d{1,2})月)?(?:(\d{1,2})日)?", value)
-    if match:
-        year = int(match.group(1))
-        month = int(match.group(2)) if match.group(2) else None
-        day = int(match.group(3)) if match.group(3) else None
-        if month is not None and not (1 <= month <= 12):
-            return None
-        if day is not None and not (1 <= day <= 31):
-            return None
-        return DateCategory(raw=canonical, canonical=canonical, year=year, month=month, day=day, is_mention=mention)
+    try:
+        response = calendar_engine().resolve(value, context=context)
+    except (OSError, RuntimeError, json.JSONDecodeError) as exc:
+        raise RuntimeError(f"shared CalendarEngine unavailable while resolving {value!r}: {exc}") from exc
 
-    if isinstance(calendar_year_bases, dict):
-        era_match = re.fullmatch(rf"(.+?)({number})年(?:({number})月)?(?:({number})日)?", value)
-        if era_match:
-            ordinal = chinese_integer(era_match.group(2))
-            month = chinese_integer(era_match.group(3)) if era_match.group(3) else None
-            day = chinese_integer(era_match.group(4)) if era_match.group(4) else None
-            base = calendar_year_bases.get(era_match.group(1).strip())
-            try:
-                base_year = int(base) if base is not None else None
-            except (TypeError, ValueError):
-                base_year = None
-            if ordinal is not None and ordinal >= 1 and base_year is not None:
-                if month is not None and not (1 <= month <= 12):
-                    return None
-                if day is not None and not (1 <= day <= 31):
-                    return None
-                return DateCategory(
-                    raw=canonical,
-                    canonical=canonical,
-                    year=base_year + ordinal,
-                    month=month,
-                    day=day,
-                    is_mention=mention,
-                )
-    return None
+    if not response.get("resolved") or response.get("kind") != "date" or response.get("year") is None:
+        return None
+
+    month = response.get("month")
+    day = response.get("day")
+    return DateCategory(
+        raw=canonical,
+        canonical=canonical,
+        year=int(response["year"]),
+        month=int(month) if month is not None else None,
+        day=int(day) if day is not None else None,
+        is_mention=mention,
+    )
 
 
 def looks_like_unmapped_era_year(canonical: str) -> bool:
@@ -1094,26 +1092,11 @@ def looks_like_unmapped_era_year(canonical: str) -> bool:
     return bool(re.fullmatch(r"[\u3400-\u9fff\uf900-\ufaff]{1,10}(?:元|[〇零一二三四五六七八九十百千0-9]+)年", value))
 
 
-def parse_date_label(value: str) -> tuple[int, int | None, int | None] | None:
-    text = value.strip()
-    match = re.search(r"(?<!\d)(\d{3,4})(?:年|$)(?:(\d{1,2})月)?(?:(\d{1,2})日)?", text)
-    if not match:
-        match = re.fullmatch(r"(\d{3,4})", text)
-        if not match:
-            return None
-        return int(match.group(1)), None, None
-    return (
-        int(match.group(1)),
-        int(match.group(2)) if match.group(2) else None,
-        int(match.group(3)) if match.group(3) else None,
-    )
-
-
-def parse_existing_date_label(value: str, calendar_bases: dict[str, object]) -> tuple[int, int | None, int | None] | None:
-    parsed = parse_date_category(value, calendar_bases)
+def parse_existing_date_label(value: str, context: dict[str, object] | None = None) -> tuple[int, int | None, int | None] | None:
+    parsed = parse_date_category(value, context=context)
     if parsed is not None and not parsed.is_mention:
         return parsed.year, parsed.month, parsed.day
-    return parse_date_label(value)
+    return None
 
 
 def date_compatible(candidate: DateCategory, existing: tuple[int, int | None, int | None]) -> bool:
@@ -1244,20 +1227,30 @@ def title_parenthetical_tokens(title: str, normalizer: Traditionalizer) -> set[s
     return tokens
 
 
-def leading_date_in_suffix(value: str, bases: dict[str, object]) -> tuple[DateCategory, str] | None:
-    number = r"(?:元|[〇零○一二三四五六七八九十百千兩两廿卅卌0-9]+)"
-    patterns = [
-        rf"^(?:中華民國|中华民国|民國|民国){number}年(?:{number}月)?(?:{number}日)?",
-        r"^\d{3,4}年(?:\d{1,2}月)?(?:\d{1,2}日)?",
-    ]
-    for pattern in patterns:
-        match = re.match(pattern, value)
-        if not match:
-            continue
-        parsed = parse_date_category(match.group(0), bases)
-        if parsed is not None:
-            return parsed, value[match.end():].strip()
-    return None
+def leading_date_in_suffix(value: str, context: dict[str, object] | None = None) -> tuple[DateCategory, str] | None:
+    """Ask CalendarEngine to split a deterministic/authority-backed leading date."""
+    try:
+        response = calendar_engine().resolve_prefix(value, context=context, authority=True)
+    except (OSError, RuntimeError, json.JSONDecodeError) as exc:
+        raise RuntimeError(f"shared CalendarEngine unavailable while splitting {value!r}: {exc}") from exc
+
+    if not response.get("resolved") or response.get("kind") != "date" or response.get("year") is None:
+        return None
+
+    month = response.get("month")
+    day = response.get("day")
+    consumed = str(response.get("consumed") or "").strip()
+    if not consumed:
+        return None
+    date = DateCategory(
+        raw=consumed,
+        canonical=consumed,
+        year=int(response["year"]),
+        month=int(month) if month is not None else None,
+        day=int(day) if day is not None else None,
+        is_mention=False,
+    )
+    return date, str(response.get("rest") or "").strip()
 
 
 def existing_edition_labels(work: Work, normalizer: Traditionalizer) -> set[str]:
@@ -1285,14 +1278,6 @@ def source_periodisation_for(work: Work, rules: dict) -> dict | None:
         if patterns and any(re.search(pattern, haystack) for pattern in patterns):
             return row
     return None
-
-
-def calendar_year_bases(rules: dict) -> dict[str, object]:
-    value = rules.get("calendar_year_bases")
-    if isinstance(value, dict):
-        return value
-    legacy = rules.get("era_year_bases")
-    return legacy if isinstance(legacy, dict) else {}
 
 
 def looks_like_person_label(label: str) -> bool:
@@ -1671,7 +1656,7 @@ def candidate_aliases_for_work(work: Work, normalizer: Traditionalizer, indexes:
     for raw, _origin in unique_memberships(work):
         raw_surface = unicodedata.normalize("NFC", strip_namespace(raw))
         canonical, _ = canonical_label(normalizer, raw)
-        date_cat = parse_date_category(canonical)
+        date_cat = parse_date_category(canonical, context=calendar_context_for_work(work))
         if date_cat is not None and date_cat.is_mention:
             result[canonical].add(date_cat.source_label)
             raw_date = re.sub(r"\s*[（(]提及[)）]\s*$", "", raw_surface).strip()
@@ -2517,7 +2502,7 @@ def classify_membership(
             )
         ]
 
-    deterministic_bases = calendar_year_bases(rules)
+    calendar_context = calendar_context_for_work(work)
 
     range_period = configured_period_range(canonical, rules)
     if range_period:
@@ -2541,7 +2526,7 @@ def classify_membership(
             "Review the source chronology. A dynasty-wide range category must not overwrite a specific work date.",
         )]
 
-    date_cat = parse_date_category(canonical, deterministic_bases)
+    date_cat = parse_date_category(canonical, context=calendar_context)
     if date_cat is not None:
         if date_cat.is_mention:
             return [
@@ -2558,7 +2543,7 @@ def classify_membership(
         plain_dates = [item for item in work_date_categories if not item.is_mention]
         tuples = {(item.year, item.month, item.day) for item in plain_dates}
         years = {item.year for item in plain_dates}
-        existing = parse_existing_date_label(work.date_label, deterministic_bases) if work.date_label else None
+        existing = parse_existing_date_label(work.date_label, context=calendar_context) if work.date_label else None
         if len(years) > 1:
             return [
                 Action(
@@ -2605,7 +2590,7 @@ def classify_membership(
                     "high",
                     "",
                     f"most specific compatible date category; absolute equivalent {most_specific.label}",
-                    "Populate date_label with the historical expression, let HistoricalDateResolver derive the absolute year, then remove the date category.",
+                    "Populate date_label with the historical expression, let the shared CalendarEngine/HistoricalDateResolver path derive the absolute year, then remove the date category.",
                 )
             ]
         return [
@@ -2620,11 +2605,11 @@ def classify_membership(
             )
         ]
 
-    dated_composite = leading_date_in_suffix(canonical, deterministic_bases)
+    dated_composite = leading_date_in_suffix(canonical, context=calendar_context)
     if dated_composite is not None:
         composite_date, remainder = dated_composite
         if remainder:
-            existing = parse_existing_date_label(work.date_label, deterministic_bases) if work.date_label else None
+            existing = parse_existing_date_label(work.date_label, context=calendar_context) if work.date_label else None
             if existing and date_compatible(composite_date, existing):
                 confidence = "high"
                 existing_value = work.date_label
@@ -3723,8 +3708,8 @@ def plan_title_cleanup(
     works: Sequence[Work], normalizer: Traditionalizer, indexes: dict, rules: dict
 ) -> list[TitleAction]:
     rows: list[TitleAction] = []
-    bases = calendar_year_bases(rules)
     for work in works:
+        calendar_context = calendar_context_for_work(work)
         proposed_title, suffixes = split_trailing_parentheticals(work.title)
         if not suffixes or not proposed_title:
             continue
@@ -3734,9 +3719,9 @@ def plan_title_cleanup(
 
         for suffix in suffixes:
             canonical, unresolved = canonical_label(normalizer, suffix)
-            date_cat = parse_date_category(canonical, bases)
+            date_cat = parse_date_category(canonical, context=calendar_context)
             if date_cat is not None and not date_cat.is_mention:
-                existing = parse_existing_date_label(work.date_label, bases) if work.date_label else None
+                existing = parse_existing_date_label(work.date_label, context=calendar_context) if work.date_label else None
                 if existing and date_compatible(date_cat, existing):
                     action = Action(
                         "strip_title_date_suffix_redundant", "title + date_label", date_cat.source_label, "safe", work.date_label,
@@ -3747,7 +3732,7 @@ def plan_title_cleanup(
                     action = Action(
                         "strip_title_date_suffix_promote", "title + date_label", date_cat.source_label, "high", "",
                         f"trailing parenthetical is a deterministic calendar date; absolute equivalent {date_cat.label}",
-                        "Strip the suffix from the title, preserve the historical date expression in date_label, and let HistoricalDateResolver derive the absolute year.",
+                        "Strip the suffix from the title, preserve the historical date expression in date_label, and let the shared CalendarEngine/HistoricalDateResolver path derive the absolute year.",
                     )
                 else:
                     action = Action(
@@ -3758,7 +3743,7 @@ def plan_title_cleanup(
                 rows.append(TitleAction(work, work.title, proposed_title, suffix, action))
                 continue
 
-            dated_qualifier = leading_date_in_suffix(canonical, bases)
+            dated_qualifier = leading_date_in_suffix(canonical, context=calendar_context)
             if dated_qualifier is not None:
                 prefix_date, qualifier = dated_qualifier
                 if qualifier:
@@ -3766,7 +3751,7 @@ def plan_title_cleanup(
                         "title_date_qualifier_suffix_review", "title + date_label + source/contributor metadata",
                         f"date_label={prefix_date.source_label}; qualifier={qualifier}", "review", work.date_label,
                         f"trailing parenthetical begins with a resolvable date ({prefix_date.label}) and then adds a qualifier",
-                        "Strip the whole source-added suffix from the clean title, promote the date through HistoricalDateResolver, and classify the remaining institution/document qualifier separately.",
+                        "Strip the whole source-added suffix from the clean title, promote the date through the shared CalendarEngine/HistoricalDateResolver path, and classify the remaining institution/document qualifier separately.",
                     )))
                     continue
 
@@ -3963,6 +3948,7 @@ def build_sheets(
     category_origin_counts: dict[str, collections.Counter[str]] = collections.defaultdict(collections.Counter)
 
     for work in works:
+        calendar_context = calendar_context_for_work(work)
         for material_action in material_profile_actions(work, normalizer, rules):
             all_actions.append(
                 MembershipAction(
@@ -3997,7 +3983,7 @@ def build_sheets(
         date_categories: list[DateCategory] = []
         for raw, _origin in memberships:
             canonical, _unresolved = canonical_label(normalizer, raw)
-            parsed = parse_date_category(canonical, calendar_year_bases(rules))
+            parsed = parse_date_category(canonical, context=calendar_context)
             if parsed is not None:
                 date_categories.append(parsed)
         for raw, origin in memberships:
@@ -4377,6 +4363,20 @@ def main() -> int:
         return 2
     if output.suffix.lower() != ".xlsx":
         print("ERROR: --output must end in .xlsx", file=sys.stderr)
+        return 2
+
+    # Fail before an expensive corpus scan if the one shared calendar service
+    # cannot boot. The migration script never falls back to local date rules.
+    try:
+        calendar_status = calendar_engine().systems()
+    except (OSError, RuntimeError, json.JSONDecodeError) as exc:
+        print(f"ERROR: shared CalendarEngine unavailable: {exc}", file=sys.stderr)
+        return 2
+    if not calendar_status.get("resolved"):
+        print(
+            f"ERROR: shared CalendarEngine failed its startup check: {calendar_status.get('error', 'unknown error')}",
+            file=sys.stderr,
+        )
         return 2
 
     rules = load_rules(rules_path)

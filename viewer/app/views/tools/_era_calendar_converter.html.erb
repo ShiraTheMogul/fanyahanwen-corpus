@@ -1,8 +1,8 @@
-﻿<h2><%= t("tools.era_calendar.title", default: "Era / regnal calendar converter") %></h2>
+﻿<h2><%= t("tools.era_calendar.title", default: "Historical date calculator") %></h2>
 <p>
   <%= t(
     "tools.era_calendar.description",
-    default: "Convert historical era names and ruler regnal years using the same authority resolver used for corpus metadata. Conversion is year-level; use the lunar calendar tool for lunisolar month/day conversion."
+    default: "Resolve era and named-year expressions, compare year systems, inspect historical date names, and convert calendar frames through the shared calendar engine."
   ) %>
 </p>
 
@@ -11,11 +11,14 @@
 
   <p style="display:flex; gap:1em; flex-wrap:wrap; align-items:end;">
     <label>
-      <%= t("tools.era_calendar.direction", default: "Direction") %><%= t("tools.common.label_separator") %>
+      <%= t("tools.era_calendar.direction", default: "Calculation") %><%= t("tools.common.label_separator") %>
       <%= select_tag :direction,
                      options_for_select([
-                       [t("tools.era_calendar.forward", default: "Era / regnal year → absolute year"), "era_to_absolute"],
-                       [t("tools.era_calendar.reverse", default: "Absolute year → era names"), "absolute_to_era"]
+                       [t("tools.era_calendar.forward", default: "Era / named year → absolute year"), "era_to_absolute"],
+                       [t("tools.era_calendar.reverse", default: "Absolute year → regnal-era matches"), "absolute_to_era"],
+                       [t("tools.era_calendar.year_systems", default: "Absolute year → year systems and nomenclature"), "absolute_year_to_systems"],
+                       [t("tools.era_calendar.civil_date", default: "Gregorian date → calendars and nomenclature"), "civil_date_to_systems"],
+                       [t("tools.era_calendar.nomenclature", default: "Sexagenary / 《爾雅》 name → cycle meaning"), "nomenclature_lookup"]
                      ], "era_to_absolute") %>
     </label>
 
@@ -24,23 +27,20 @@
       <%= select_tag :country,
                      options_for_select([
                        [t("tools.era_calendar.country_any", default: "Any / infer from expression"), ""],
-                       ["China", "China"],
-                       ["Japan", "Japan"],
-                       ["Korea", "Korea"],
-                       ["Vietnam", "Vietnam"]
+                       ["China", "China"], ["Japan", "Japan"], ["Korea", "Korea"], ["Vietnam", "Vietnam"]
                      ], "") %>
     </label>
   </p>
 
   <p>
     <label style="display:block;">
-      <%= t("tools.era_calendar.input", default: "Era / regnal expression or absolute year") %><%= t("tools.common.label_separator") %>
+      <%= t("tools.era_calendar.input", default: "Date or historical expression") %><%= t("tools.common.label_separator") %>
       <%= text_field_tag :input,
                          nil,
                          list: "era-calendar-examples",
                          autocomplete: "off",
                          style: "width:100%; box-sizing:border-box;",
-                         placeholder: t("tools.era_calendar.placeholder", default: "太平天國癸好三年 · 昭和十年 · 開國五百三年 · 1853") %>
+                         placeholder: t("tools.era_calendar.placeholder", default: "昭和十年 · 民國一百十五年 · 2026 · 2026-08-28 · 庚戌 · 柔兆敦牂") %>
     </label>
     <datalist id="era-calendar-examples">
       <option value="永昌三年"></option>
@@ -49,29 +49,62 @@
       <option value="昭和十年"></option>
       <option value="開國五百三年"></option>
       <option value="孝徳天皇三年"></option>
-      <option value="1853"></option>
+      <option value="民國一百十五年"></option>
+      <option value="主體115年"></option>
+      <option value="佛曆2569年"></option>
+      <option value="孔子紀年二千五百七十七年"></option>
+      <option value="黃帝紀年四千七百二十四年"></option>
+      <option value="2026"></option>
+      <option value="2026-08-28"></option>
+      <option value="庚戌"></option>
+      <option value="柔兆敦牂"></option>
+      <option value="畢陬"></option>
     </datalist>
   </p>
 
   <p style="display:flex; gap:1em; flex-wrap:wrap;">
     <label style="flex:1 1 14rem; min-width:0;">
       <%= t("tools.era_calendar.polity", default: "Polity (optional)") %><%= t("tools.common.label_separator") %>
-      <%= text_field_tag :polity,
-                         nil,
-                         style: "width:100%; box-sizing:border-box;",
-                         placeholder: t("tools.era_calendar.polity_placeholder", default: "大西 · 大順 · 朝鮮王朝") %>
+      <%= text_field_tag :polity, nil, style: "width:100%; box-sizing:border-box;", placeholder: "大西 · 大順 · 朝鮮王朝" %>
     </label>
-
     <label style="flex:1 1 14rem; min-width:0;">
       <%= t("tools.era_calendar.period", default: "Period / dynasty (optional)") %><%= t("tools.common.label_separator") %>
-      <%= text_field_tag :period,
-                         nil,
-                         style: "width:100%; box-sizing:border-box;",
-                         placeholder: t("tools.era_calendar.period_placeholder", default: "唐 · 江戶時代 · 阮朝") %>
+      <%= text_field_tag :period, nil, style: "width:100%; box-sizing:border-box;", placeholder: "唐 · 江戶時代 · 阮朝" %>
+    </label>
+    <label style="flex:1 1 14rem; min-width:0;">
+      Cycle context<%= t("tools.common.label_separator") %>
+      <%= select_tag :cycle_scope,
+                     options_for_select([
+                       ["Neutral cycle position", ""],
+                       ["商代干支紀日", "shang_day"]
+                     ], "") %>
     </label>
   </p>
 
   <p><button type="submit"><%= t("tools.common.convert") %></button></p>
+<% end %>
+
+<h3>Calendar-frame conversion</h3>
+<p><small>For example, convert one complete Gregorian date into Julian, Hebrew, or tabular Islamic form. Modern Chinese lunisolar output uses the existing <code>lunar_calendar</code> backend.</small></p>
+<%= form_with url: tools_lunar_path, method: :post, data: { turbo_frame: "era_calendar_out" } do %>
+  <%= hidden_field_tag :calendar, "era" %>
+  <%= hidden_field_tag :direction, "calendar_convert" %>
+  <% frame_options = CalendarEngine::CALENDAR_FRAMES.map { |key, data| [data.fetch("label"), key] } %>
+  <p style="display:flex; gap:1em; flex-wrap:wrap; align-items:end;">
+    <label>
+      From<%= t("tools.common.label_separator") %>
+      <%= select_tag :from_calendar, options_for_select(frame_options.reject { |_label, key| key == "chinese_modern" }, "gregorian") %>
+    </label>
+    <label>
+      To<%= t("tools.common.label_separator") %>
+      <%= select_tag :to_calendar, options_for_select(frame_options, "julian") %>
+    </label>
+    <label style="flex:1 1 18rem; min-width:12rem;">
+      Date<%= t("tools.common.label_separator") %>
+      <%= text_field_tag :input, nil, placeholder: "2026-08-28", style: "width:100%; box-sizing:border-box;" %>
+    </label>
+    <button type="submit"><%= t("tools.common.convert") %></button>
+  </p>
 <% end %>
 
 <%= turbo_frame_tag "era_calendar_out" do %>
