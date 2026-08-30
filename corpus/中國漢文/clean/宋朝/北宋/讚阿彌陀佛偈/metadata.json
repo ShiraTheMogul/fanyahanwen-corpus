@@ -1,4 +1,4 @@
-﻿{
+{
   "schema_version": 1,
   "work_id": 59442,
   "corpus_root": "中國漢文",
@@ -17,12 +17,52 @@
   "is_compilation": false,
   "documents": [
     {
-      "document_id": 109497,
-      "file": "讚阿彌陀佛偈__juan_01.txt",
-      "path": "中國漢文/clean/宋朝/北宋/讚阿彌陀佛偈/讚阿彌陀佛偈__juan_01.txt",
-      "body_start_line": 9
+      "file": "讚阿彌陀佛偈__juan_001.txt",
+      "path": "中國漢文/clean/宋朝/北宋/讚阿彌陀佛偈/讚阿彌陀佛偈__juan_001.txt",
+      "page_title": "讚阿彌陀佛偈/1",
+      "chapter": "1",
+      "sources": [
+        "https://github.com/kanripo/KR6p0073"
+      ],
+      "digital_transcription_id": "kanripo:KR6p0073:master@157613e6702c6981dc2ee686e16e9c1856421ee3",
+      "document_id": 109497
     }
   ],
   "known_commentaries": [],
-  "ca": "960–1127年"
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR6p0073:witness:T",
+      "label": "T",
+      "upstream_code": "T",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR6p0073:master@157613e6702c6981dc2ee686e16e9c1856421ee3",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR6p0073",
+          "branch": "master",
+          "revision": "157613e6702c6981dc2ee686e16e9c1856421ee3",
+          "retrieved_at": "2026-08-12T06:43:35+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR6p0073:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "中國漢文/clean/宋朝/北宋/讚阿彌陀佛偈/讚阿彌陀佛偈__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_recorded_in_current_metadata",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

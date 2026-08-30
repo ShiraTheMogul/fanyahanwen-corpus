@@ -24,15 +24,83 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 229414,
-          "file": "南嶽倡酬集__juan_01.txt",
-          "path": "四庫全書/clean/集部/總集類/南嶽倡酬集/南嶽倡酬集__juan_01.txt",
-          "title": "南嶽倡酬集 (四庫全書本)",
-          "page_title": "南嶽倡酬集 (四庫全書本)",
-          "display_title": "南嶽倡酬集",
-          "body_start_line": 6
+          "file": "南嶽倡酬集__juan_000.txt",
+          "path": "四庫全書/clean/集部/總集類/南嶽倡酬集/南嶽倡酬集__juan_000.txt",
+          "page_title": "南嶽倡酬集/原序[張敬夫]",
+          "chapter": "原序[張敬夫]",
+          "sources": [
+            "https://github.com/kanripo/KR4h0037"
+          ],
+          "digital_transcription_id": "kanripo:KR4h0037:master@4a8c119131eb7af4918fabe553c9737f0f9f0aeb"
+        },
+        {
+          "file": "南嶽倡酬集__juan_001.txt",
+          "path": "四庫全書/clean/集部/總集類/南嶽倡酬集/南嶽倡酬集__juan_001.txt",
+          "page_title": "南嶽倡酬集/南嶽倡酬集",
+          "chapter": "南嶽倡酬集",
+          "sources": [
+            "https://github.com/kanripo/KR4h0037"
+          ],
+          "digital_transcription_id": "kanripo:KR4h0037:master@4a8c119131eb7af4918fabe553c9737f0f9f0aeb",
+          "document_id": 229414
+        },
+        {
+          "file": "南嶽倡酬集__juan_002.txt",
+          "path": "四庫全書/clean/集部/總集類/南嶽倡酬集/南嶽倡酬集__juan_002.txt",
+          "page_title": "南嶽倡酬集/附録",
+          "chapter": "附録",
+          "sources": [
+            "https://github.com/kanripo/KR4h0037"
+          ],
+          "digital_transcription_id": "kanripo:KR4h0037:master@4a8c119131eb7af4918fabe553c9737f0f9f0aeb"
+        },
+        {
+          "file": "南嶽倡酬集__juan_003.txt",
+          "path": "四庫全書/clean/集部/總集類/南嶽倡酬集/南嶽倡酬集__juan_003.txt",
+          "page_title": "南嶽倡酬集/東歸亂藳序",
+          "chapter": "東歸亂藳序",
+          "sources": [
+            "https://github.com/kanripo/KR4h0037"
+          ],
+          "digital_transcription_id": "kanripo:KR4h0037:master@4a8c119131eb7af4918fabe553c9737f0f9f0aeb"
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR4h0037:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR4h0037:master@4a8c119131eb7af4918fabe553c9737f0f9f0aeb",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR4h0037",
+          "branch": "master",
+          "revision": "4a8c119131eb7af4918fabe553c9737f0f9f0aeb",
+          "retrieved_at": "2026-08-12T03:49:19+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR4h0037:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/集部/總集類/南嶽倡酬集/南嶽倡酬集__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

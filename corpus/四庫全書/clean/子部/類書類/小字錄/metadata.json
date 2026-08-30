@@ -27,15 +27,63 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 201156,
-          "file": "小字錄__juan_01.txt",
-          "path": "四庫全書/clean/子部/類書類/小字錄/小字錄__juan_01.txt",
-          "title": "小字錄 (四庫全書本)",
-          "page_title": "小字錄 (四庫全書本)",
-          "display_title": "小字錄",
-          "body_start_line": 6
+          "file": "小字錄__juan_001.txt",
+          "path": "四庫全書/clean/子部/類書類/小字錄/小字錄__juan_001.txt",
+          "page_title": "小字錄/0",
+          "chapter": "0",
+          "sources": [
+            "https://github.com/kanripo/KR3k0035"
+          ],
+          "digital_transcription_id": "kanripo:KR3k0035:WYG@2545bb70373b2a59203d7db6c3efdcdadaf512c5",
+          "document_id": 201156
+        },
+        {
+          "file": "小字錄__juan_003.txt",
+          "path": "四庫全書/clean/子部/類書類/小字錄/小字錄__juan_003.txt",
+          "page_title": "小字錄/2",
+          "chapter": "2",
+          "sources": [
+            "https://github.com/kanripo/KR3k0035"
+          ],
+          "digital_transcription_id": "kanripo:KR3k0035:WYG@2545bb70373b2a59203d7db6c3efdcdadaf512c5"
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR3k0035:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "branch_fallback_inference",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR3k0035:WYG@2545bb70373b2a59203d7db6c3efdcdadaf512c5",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR3k0035",
+          "branch": "WYG",
+          "revision": "2545bb70373b2a59203d7db6c3efdcdadaf512c5",
+          "retrieved_at": "2026-08-12T02:56:35+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR3k0035:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/子部/類書類/小字錄/小字錄__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

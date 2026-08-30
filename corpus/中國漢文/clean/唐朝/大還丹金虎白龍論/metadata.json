@@ -1,4 +1,4 @@
-﻿{
+{
   "schema_version": 1,
   "work_id": 14400,
   "corpus_root": "中國漢文",
@@ -15,12 +15,51 @@
   "is_compilation": false,
   "documents": [
     {
-      "document_id": 27405,
-      "file": "大還丹金虎白龍論__juan_01.txt",
-      "path": "中國漢文/clean/唐朝/大還丹金虎白龍論/大還丹金虎白龍論__juan_01.txt",
-      "body_start_line": 6
+      "file": "大還丹金虎白龍論__juan_000.txt",
+      "path": "中國漢文/clean/唐朝/大還丹金虎白龍論/大還丹金虎白龍論__juan_000.txt",
+      "page_title": "大還丹金虎白龍論/提要／序跋",
+      "chapter": "提要／序跋",
+      "sources": [
+        "https://github.com/kanripo/KR5c0337"
+      ],
+      "digital_transcription_id": "kanripo:KR5c0337:master@3763fe2f8b460236fff89c100cc00818ba4faef6"
     }
   ],
   "known_commentaries": [],
-  "ca": "618–907年"
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR5c0337:witness:HFL",
+      "label": "HFL",
+      "upstream_code": "HFL",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR5c0337:master@3763fe2f8b460236fff89c100cc00818ba4faef6",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR5c0337",
+          "branch": "master",
+          "revision": "3763fe2f8b460236fff89c100cc00818ba4faef6",
+          "retrieved_at": "2026-08-12T05:30:43+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR5c0337:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "中國漢文/clean/唐朝/大還丹金虎白龍論/大還丹金虎白龍論__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

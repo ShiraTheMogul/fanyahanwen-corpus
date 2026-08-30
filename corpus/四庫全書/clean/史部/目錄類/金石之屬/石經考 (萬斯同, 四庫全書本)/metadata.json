@@ -20,49 +20,64 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 184499,
-          "file": "石經考 (萬斯同, 四庫全書本)__juan_01.txt",
-          "path": "四庫全書/clean/史部/目錄類/金石之屬/石經考 (萬斯同, 四庫全書本)/石經考 (萬斯同, 四庫全書本)__juan_01.txt",
-          "title": "石經考 (萬斯同, 四庫全書本)",
-          "page_title": "石經考 (萬斯同, 四庫全書本)/卷上",
-          "display_title": "石經考 (萬斯同, 四庫全書本)",
-          "source_categories": [
-            "175年 (提及)",
-            "183年 (提及)",
-            "493年 (提及)",
-            "546年 (提及)",
-            "547年 (提及)",
-            "579年 (提及)",
-            "586年 (提及)",
-            "PD-old"
+          "file": "石經考 (萬斯同, 四庫全書本)__juan_000.txt",
+          "path": "四庫全書/clean/史部/目錄類/金石之屬/石經考 (萬斯同, 四庫全書本)/石經考 (萬斯同, 四庫全書本)__juan_000.txt",
+          "page_title": "石經考 (萬斯同, 四庫全書本)/提要",
+          "chapter": "提要",
+          "sources": [
+            "https://github.com/kanripo/KR2n0038"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR2n0038:master@b63a23864c5f75a31a2e48aaeacab8591ba9e7cc"
         },
         {
-          "document_id": 184500,
-          "file": "石經考 (萬斯同, 四庫全書本)__juan_02.txt",
-          "path": "四庫全書/clean/史部/目錄類/金石之屬/石經考 (萬斯同, 四庫全書本)/石經考 (萬斯同, 四庫全書本)__juan_02.txt",
-          "title": "石經考 (萬斯同, 四庫全書本)",
-          "page_title": "石經考 (萬斯同, 四庫全書本)/卷下",
-          "display_title": "石經考 (萬斯同, 四庫全書本)",
-          "source_categories": [
-            "1087年 (提及)",
-            "1090年 (提及)",
-            "1288年 (提及)",
-            "492年 (提及)",
-            "836年 (提及)",
-            "837年 (提及)",
-            "876年 (提及)",
-            "944年 (提及)",
-            "946年 (提及)",
-            "950年 (提及)",
-            "951年 (提及)",
-            "962年 (提及)",
-            "PD-old"
+          "file": "石經考 (萬斯同, 四庫全書本)__juan_001.txt",
+          "path": "四庫全書/clean/史部/目錄類/金石之屬/石經考 (萬斯同, 四庫全書本)/石經考 (萬斯同, 四庫全書本)__juan_001.txt",
+          "page_title": "石經考 (萬斯同, 四庫全書本)/石經考",
+          "chapter": "石經考",
+          "sources": [
+            "https://github.com/kanripo/KR2n0038"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR2n0038:master@b63a23864c5f75a31a2e48aaeacab8591ba9e7cc",
+          "document_id": 184499
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR2n0038:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR2n0038:master@b63a23864c5f75a31a2e48aaeacab8591ba9e7cc",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR2n0038",
+          "branch": "master",
+          "revision": "b63a23864c5f75a31a2e48aaeacab8591ba9e7cc",
+          "retrieved_at": "2026-08-12T02:19:46+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR2n0038:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/史部/目錄類/金石之屬/石經考 (萬斯同, 四庫全書本)/石經考 (萬斯同, 四庫全書本)__juan_01.txt",
+        "四庫全書/clean/史部/目錄類/金石之屬/石經考 (萬斯同, 四庫全書本)/石經考 (萬斯同, 四庫全書本)__juan_02.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

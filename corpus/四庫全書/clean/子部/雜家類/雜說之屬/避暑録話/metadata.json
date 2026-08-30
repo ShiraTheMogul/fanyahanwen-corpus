@@ -20,46 +20,75 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 197547,
-          "file": "避暑録話__juan_01.txt",
-          "path": "四庫全書/clean/子部/雜家類/雜說之屬/避暑録話/避暑録話__juan_01.txt",
-          "title": "避暑録話 (四庫全書本)",
-          "page_title": "避暑録話 (四庫全書本)/卷上",
-          "display_title": "避暑録話",
-          "source_categories": [
-            "1052年 (提及)",
-            "1058年 (提及)",
-            "1126年 (提及)",
-            "736年 (提及)",
-            "746年 (提及)",
-            "753年 (提及)",
-            "755年 (提及)",
-            "867年 (提及)",
-            "889年 (提及)",
-            "977年 (提及)",
-            "PD-old"
+          "file": "避暑録話__juan_000.txt",
+          "path": "四庫全書/clean/子部/雜家類/雜說之屬/避暑録話/避暑録話__juan_000.txt",
+          "page_title": "避暑録話/提要",
+          "chapter": "提要",
+          "sources": [
+            "https://github.com/kanripo/KR3j0106"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3j0106:master@f6f69a2ab3b60fd7347c3effdd897dd68d8105e0"
         },
         {
-          "document_id": 197548,
-          "file": "避暑録話__juan_02.txt",
-          "path": "四庫全書/clean/子部/雜家類/雜說之屬/避暑録話/避暑録話__juan_02.txt",
-          "title": "避暑録話 (四庫全書本)",
-          "page_title": "避暑録話 (四庫全書本)/卷下",
-          "display_title": "避暑録話",
-          "source_categories": [
-            "1068年 (提及)",
-            "1103年 (提及)",
-            "19年 (提及)",
-            "343年 (提及)",
-            "732年 (提及)",
-            "992年 (提及)",
-            "PD-old"
+          "file": "避暑録話__juan_001.txt",
+          "path": "四庫全書/clean/子部/雜家類/雜說之屬/避暑録話/避暑録話__juan_001.txt",
+          "page_title": "避暑録話/卷上",
+          "chapter": "卷上",
+          "sources": [
+            "https://github.com/kanripo/KR3j0106"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3j0106:master@f6f69a2ab3b60fd7347c3effdd897dd68d8105e0",
+          "document_id": 197547
+        },
+        {
+          "file": "避暑録話__juan_002.txt",
+          "path": "四庫全書/clean/子部/雜家類/雜說之屬/避暑録話/避暑録話__juan_002.txt",
+          "page_title": "避暑録話/卷下",
+          "chapter": "卷下",
+          "sources": [
+            "https://github.com/kanripo/KR3j0106"
+          ],
+          "digital_transcription_id": "kanripo:KR3j0106:master@f6f69a2ab3b60fd7347c3effdd897dd68d8105e0",
+          "document_id": 197548
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR3j0106:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR3j0106:master@f6f69a2ab3b60fd7347c3effdd897dd68d8105e0",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR3j0106",
+          "branch": "master",
+          "revision": "f6f69a2ab3b60fd7347c3effdd897dd68d8105e0",
+          "retrieved_at": "2026-08-12T02:49:22+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR3j0106:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/子部/雜家類/雜說之屬/避暑録話/避暑録話__juan_01.txt",
+        "四庫全書/clean/子部/雜家類/雜說之屬/避暑録話/避暑録話__juan_02.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_recorded_in_current_metadata",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

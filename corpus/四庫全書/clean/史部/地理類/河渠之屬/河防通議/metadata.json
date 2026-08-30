@@ -20,36 +20,85 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 177908,
-          "file": "河防通議__juan_01.txt",
-          "path": "四庫全書/clean/史部/地理類/河渠之屬/河防通議/河防通議__juan_01.txt",
-          "title": "河防通議 (四庫全書本)",
-          "page_title": "河防通議 (四庫全書本)/卷上",
-          "display_title": "河防通議",
-          "source_categories": [
-            "1128年 (提及)",
-            "1196年 (提及)",
-            "PD-old",
-            "前602年 (提及)"
+          "file": "河防通議__juan_000.txt",
+          "path": "四庫全書/clean/史部/地理類/河渠之屬/河防通議/河防通議__juan_000.txt",
+          "page_title": "河防通議/原序",
+          "chapter": "原序",
+          "sources": [
+            "https://github.com/kanripo/KR2k0063"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR2k0063:master@5e88599e4767a631bb9cd806325fd0328b952ba9"
         },
         {
-          "document_id": 177909,
-          "file": "河防通議__juan_02.txt",
-          "path": "四庫全書/clean/史部/地理類/河渠之屬/河防通議/河防通議__juan_02.txt",
-          "title": "河防通議 (四庫全書本)",
-          "page_title": "河防通議 (四庫全書本)/卷下",
-          "display_title": "河防通議",
-          "source_categories": [
-            "1191年 (提及)",
-            "1195年 (提及)",
-            "1196年 (提及)",
-            "PD-old"
+          "file": "河防通議__juan_001.txt",
+          "path": "四庫全書/clean/史部/地理類/河渠之屬/河防通議/河防通議__juan_001.txt",
+          "page_title": "河防通議/卷上",
+          "chapter": "卷上",
+          "sources": [
+            "https://github.com/kanripo/KR2k0063"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR2k0063:master@5e88599e4767a631bb9cd806325fd0328b952ba9",
+          "document_id": 177908
+        },
+        {
+          "file": "河防通議__juan_002.txt",
+          "path": "四庫全書/clean/史部/地理類/河渠之屬/河防通議/河防通議__juan_002.txt",
+          "page_title": "河防通議/卷下",
+          "chapter": "卷下",
+          "sources": [
+            "https://github.com/kanripo/KR2k0063"
+          ],
+          "digital_transcription_id": "kanripo:KR2k0063:master@5e88599e4767a631bb9cd806325fd0328b952ba9",
+          "document_id": 177909
+        },
+        {
+          "file": "河防通議__juan_003.txt",
+          "path": "四庫全書/clean/史部/地理類/河渠之屬/河防通議/河防通議__juan_003.txt",
+          "page_title": "河防通議/後序",
+          "chapter": "後序",
+          "sources": [
+            "https://github.com/kanripo/KR2k0063"
+          ],
+          "digital_transcription_id": "kanripo:KR2k0063:master@5e88599e4767a631bb9cd806325fd0328b952ba9"
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR2k0063:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR2k0063:master@5e88599e4767a631bb9cd806325fd0328b952ba9",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR2k0063",
+          "branch": "master",
+          "revision": "5e88599e4767a631bb9cd806325fd0328b952ba9",
+          "retrieved_at": "2026-08-12T02:03:03+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR2k0063:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/史部/地理類/河渠之屬/河防通議/河防通議__juan_01.txt",
+        "四庫全書/clean/史部/地理類/河渠之屬/河防通議/河防通議__juan_02.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

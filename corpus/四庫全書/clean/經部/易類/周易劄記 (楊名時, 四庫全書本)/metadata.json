@@ -23,24 +23,75 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 206860,
-          "file": "周易劄記 (楊名時, 四庫全書本)__juan_01.txt",
-          "path": "四庫全書/clean/經部/易類/周易劄記 (楊名時, 四庫全書本)/周易劄記 (楊名時, 四庫全書本)__juan_01.txt",
-          "title": "周易劄記 (楊名時, 四庫全書本)",
-          "page_title": "周易劄記 (楊名時, 四庫全書本)/卷上",
-          "display_title": "周易劄記 (楊名時, 四庫全書本)",
-          "body_start_line": 6
+          "file": "周易劄記 (楊名時, 四庫全書本)__juan_000.txt",
+          "path": "四庫全書/clean/經部/易類/周易劄記 (楊名時, 四庫全書本)/周易劄記 (楊名時, 四庫全書本)__juan_000.txt",
+          "page_title": "周易劄記 (楊名時, 四庫全書本)/0",
+          "chapter": "0",
+          "sources": [
+            "https://github.com/kanripo/KR1a0141"
+          ],
+          "digital_transcription_id": "kanripo:KR1a0141:master@ad210f8ff3474eb3e730e4c62c73f38791cdc26f"
         },
         {
-          "document_id": 206861,
-          "file": "周易劄記 (楊名時, 四庫全書本)__juan_02.txt",
-          "path": "四庫全書/clean/經部/易類/周易劄記 (楊名時, 四庫全書本)/周易劄記 (楊名時, 四庫全書本)__juan_02.txt",
-          "title": "周易劄記 (楊名時, 四庫全書本)",
+          "file": "周易劄記 (楊名時, 四庫全書本)__juan_001.txt",
+          "path": "四庫全書/clean/經部/易類/周易劄記 (楊名時, 四庫全書本)/周易劄記 (楊名時, 四庫全書本)__juan_001.txt",
+          "page_title": "周易劄記 (楊名時, 四庫全書本)/卷上",
+          "chapter": "卷上",
+          "sources": [
+            "https://github.com/kanripo/KR1a0141"
+          ],
+          "digital_transcription_id": "kanripo:KR1a0141:master@ad210f8ff3474eb3e730e4c62c73f38791cdc26f",
+          "document_id": 206860
+        },
+        {
+          "file": "周易劄記 (楊名時, 四庫全書本)__juan_002.txt",
+          "path": "四庫全書/clean/經部/易類/周易劄記 (楊名時, 四庫全書本)/周易劄記 (楊名時, 四庫全書本)__juan_002.txt",
           "page_title": "周易劄記 (楊名時, 四庫全書本)/卷下",
-          "display_title": "周易劄記 (楊名時, 四庫全書本)",
-          "body_start_line": 6
+          "chapter": "卷下",
+          "sources": [
+            "https://github.com/kanripo/KR1a0141"
+          ],
+          "digital_transcription_id": "kanripo:KR1a0141:master@ad210f8ff3474eb3e730e4c62c73f38791cdc26f",
+          "document_id": 206861
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR1a0141:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR1a0141:master@ad210f8ff3474eb3e730e4c62c73f38791cdc26f",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR1a0141",
+          "branch": "master",
+          "revision": "ad210f8ff3474eb3e730e4c62c73f38791cdc26f",
+          "retrieved_at": "2026-08-12T00:16:45+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR1a0141:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/經部/易類/周易劄記 (楊名時, 四庫全書本)/周易劄記 (楊名時, 四庫全書本)__juan_01.txt",
+        "四庫全書/clean/經部/易類/周易劄記 (楊名時, 四庫全書本)/周易劄記 (楊名時, 四庫全書本)__juan_02.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

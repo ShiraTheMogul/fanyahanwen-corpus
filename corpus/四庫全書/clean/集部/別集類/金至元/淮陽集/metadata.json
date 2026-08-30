@@ -25,15 +25,83 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 227280,
-          "file": "淮陽集__juan_01.txt",
-          "path": "四庫全書/clean/集部/別集類/金至元/淮陽集/淮陽集__juan_01.txt",
-          "title": "淮陽集 (四庫全書本)",
-          "page_title": "淮陽集 (四庫全書本)",
-          "display_title": "淮陽集",
-          "body_start_line": 6
+          "file": "淮陽集__juan_000.txt",
+          "path": "四庫全書/clean/集部/別集類/金至元/淮陽集/淮陽集__juan_000.txt",
+          "page_title": "淮陽集/原序",
+          "chapter": "原序",
+          "sources": [
+            "https://github.com/kanripo/KR4d0423"
+          ],
+          "digital_transcription_id": "kanripo:KR4d0423:master@239b390ed3b67780721282a4c2553c047c4a6d5f"
+        },
+        {
+          "file": "淮陽集__juan_001.txt",
+          "path": "四庫全書/clean/集部/別集類/金至元/淮陽集/淮陽集__juan_001.txt",
+          "page_title": "淮陽集/淮陽集",
+          "chapter": "淮陽集",
+          "sources": [
+            "https://github.com/kanripo/KR4d0423"
+          ],
+          "digital_transcription_id": "kanripo:KR4d0423:master@239b390ed3b67780721282a4c2553c047c4a6d5f",
+          "document_id": 227280
+        },
+        {
+          "file": "淮陽集__juan_002.txt",
+          "path": "四庫全書/clean/集部/別集類/金至元/淮陽集/淮陽集__juan_002.txt",
+          "page_title": "淮陽集/詩餘",
+          "chapter": "詩餘",
+          "sources": [
+            "https://github.com/kanripo/KR4d0423"
+          ],
+          "digital_transcription_id": "kanripo:KR4d0423:master@239b390ed3b67780721282a4c2553c047c4a6d5f"
+        },
+        {
+          "file": "淮陽集__juan_003.txt",
+          "path": "四庫全書/clean/集部/別集類/金至元/淮陽集/淮陽集__juan_003.txt",
+          "page_title": "淮陽集/後序",
+          "chapter": "後序",
+          "sources": [
+            "https://github.com/kanripo/KR4d0423"
+          ],
+          "digital_transcription_id": "kanripo:KR4d0423:master@239b390ed3b67780721282a4c2553c047c4a6d5f"
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR4d0423:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR4d0423:master@239b390ed3b67780721282a4c2553c047c4a6d5f",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR4d0423",
+          "branch": "master",
+          "revision": "239b390ed3b67780721282a4c2553c047c4a6d5f",
+          "retrieved_at": "2026-08-12T03:36:23+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR4d0423:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/集部/別集類/金至元/淮陽集/淮陽集__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

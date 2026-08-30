@@ -24,15 +24,63 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 235721,
-          "file": "無住詞__juan_01.txt",
-          "path": "四庫全書/clean/集部/詞曲類/詞集之屬/無住詞/無住詞__juan_01.txt",
-          "title": "無住詞 (四庫全書本)",
-          "page_title": "無住詞 (四庫全書本)",
-          "display_title": "無住詞",
-          "body_start_line": 6
+          "file": "無住詞__juan_000.txt",
+          "path": "四庫全書/clean/集部/詞曲類/詞集之屬/無住詞/無住詞__juan_000.txt",
+          "page_title": "無住詞/提要",
+          "chapter": "提要",
+          "sources": [
+            "https://github.com/kanripo/KR4j0026"
+          ],
+          "digital_transcription_id": "kanripo:KR4j0026:master@e858eb7c47573893df92c59d4f166b66e2544c81"
+        },
+        {
+          "file": "無住詞__juan_001.txt",
+          "path": "四庫全書/clean/集部/詞曲類/詞集之屬/無住詞/無住詞__juan_001.txt",
+          "page_title": "無住詞/無住詞",
+          "chapter": "無住詞",
+          "sources": [
+            "https://github.com/kanripo/KR4j0026"
+          ],
+          "digital_transcription_id": "kanripo:KR4j0026:master@e858eb7c47573893df92c59d4f166b66e2544c81",
+          "document_id": 235721
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR4j0026:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR4j0026:master@e858eb7c47573893df92c59d4f166b66e2544c81",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR4j0026",
+          "branch": "master",
+          "revision": "e858eb7c47573893df92c59d4f166b66e2544c81",
+          "retrieved_at": "2026-08-12T03:59:37+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR4j0026:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/集部/詞曲類/詞集之屬/無住詞/無住詞__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

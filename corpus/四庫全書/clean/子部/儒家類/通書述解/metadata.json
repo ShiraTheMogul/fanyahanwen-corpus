@@ -23,24 +23,85 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 189150,
-          "file": "通書述解__juan_01.txt",
-          "path": "四庫全書/clean/子部/儒家類/通書述解/通書述解__juan_01.txt",
-          "title": "通書述解 (四庫全書本)",
-          "page_title": "通書述解 (四庫全書本)/卷上",
-          "display_title": "通書述解",
-          "body_start_line": 6
+          "file": "通書述解__juan_000.txt",
+          "path": "四庫全書/clean/子部/儒家類/通書述解/通書述解__juan_000.txt",
+          "page_title": "通書述解/原序",
+          "chapter": "原序",
+          "sources": [
+            "https://github.com/kanripo/KR3a0025"
+          ],
+          "digital_transcription_id": "kanripo:KR3a0025:master@1f86ddeb2da768655a5cd53ce50f8447064b39b0"
         },
         {
-          "document_id": 189151,
-          "file": "通書述解__juan_02.txt",
-          "path": "四庫全書/clean/子部/儒家類/通書述解/通書述解__juan_02.txt",
-          "title": "通書述解 (四庫全書本)",
-          "page_title": "通書述解 (四庫全書本)/卷下",
-          "display_title": "通書述解",
-          "body_start_line": 6
+          "file": "通書述解__juan_001.txt",
+          "path": "四庫全書/clean/子部/儒家類/通書述解/通書述解__juan_001.txt",
+          "page_title": "通書述解/卷上",
+          "chapter": "卷上",
+          "sources": [
+            "https://github.com/kanripo/KR3a0025"
+          ],
+          "digital_transcription_id": "kanripo:KR3a0025:master@1f86ddeb2da768655a5cd53ce50f8447064b39b0",
+          "document_id": 189150
+        },
+        {
+          "file": "通書述解__juan_002.txt",
+          "path": "四庫全書/clean/子部/儒家類/通書述解/通書述解__juan_002.txt",
+          "page_title": "通書述解/卷下",
+          "chapter": "卷下",
+          "sources": [
+            "https://github.com/kanripo/KR3a0025"
+          ],
+          "digital_transcription_id": "kanripo:KR3a0025:master@1f86ddeb2da768655a5cd53ce50f8447064b39b0",
+          "document_id": 189151
+        },
+        {
+          "file": "通書述解__juan_003.txt",
+          "path": "四庫全書/clean/子部/儒家類/通書述解/通書述解__juan_003.txt",
+          "page_title": "通書述解/跋",
+          "chapter": "跋",
+          "sources": [
+            "https://github.com/kanripo/KR3a0025"
+          ],
+          "digital_transcription_id": "kanripo:KR3a0025:master@1f86ddeb2da768655a5cd53ce50f8447064b39b0"
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR3a0025:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR3a0025:master@1f86ddeb2da768655a5cd53ce50f8447064b39b0",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR3a0025",
+          "branch": "master",
+          "revision": "1f86ddeb2da768655a5cd53ce50f8447064b39b0",
+          "retrieved_at": "2026-08-12T02:24:42+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR3a0025:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/子部/儒家類/通書述解/通書述解__juan_01.txt",
+        "四庫全書/clean/子部/儒家類/通書述解/通書述解__juan_02.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

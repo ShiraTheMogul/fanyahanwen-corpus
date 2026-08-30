@@ -1,4 +1,4 @@
-﻿{
+{
   "schema_version": 1,
   "work_id": 62004,
   "corpus_root": "中國漢文",
@@ -12,12 +12,51 @@
   "is_compilation": false,
   "documents": [
     {
-      "document_id": 113536,
-      "file": "丹房須知__juan_01.txt",
-      "path": "中國漢文/clean/宋朝/南宋/丹房須知/丹房須知__juan_01.txt",
-      "body_start_line": 8
+      "file": "丹房須知__juan_000.txt",
+      "path": "中國漢文/clean/宋朝/南宋/丹房須知/丹房須知__juan_000.txt",
+      "page_title": "丹房須知/提要／序跋",
+      "chapter": "提要／序跋",
+      "sources": [
+        "https://github.com/kanripo/KR5c0298"
+      ],
+      "digital_transcription_id": "kanripo:KR5c0298:master@22c30e83887dc3c07b157a02a36bae959b7dca9f"
     }
   ],
   "known_commentaries": [],
-  "ca": "1127–1279年"
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR5c0298:witness:HFL",
+      "label": "HFL",
+      "upstream_code": "HFL",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR5c0298:master@22c30e83887dc3c07b157a02a36bae959b7dca9f",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR5c0298",
+          "branch": "master",
+          "revision": "22c30e83887dc3c07b157a02a36bae959b7dca9f",
+          "retrieved_at": "2026-08-12T05:30:31+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR5c0298:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "中國漢文/clean/宋朝/南宋/丹房須知/丹房須知__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_recorded_in_current_metadata",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

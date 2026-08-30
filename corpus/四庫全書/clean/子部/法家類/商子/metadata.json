@@ -23,51 +23,101 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 191225,
-          "file": "商子__juan_01.txt",
-          "path": "四庫全書/clean/子部/法家類/商子/商子__juan_01.txt",
-          "title": "商子 (四庫全書本)",
-          "page_title": "商子 (四庫全書本)/卷1",
-          "display_title": "商子",
-          "body_start_line": 6
+          "file": "商子__juan_001.txt",
+          "path": "四庫全書/clean/子部/法家類/商子/商子__juan_001.txt",
+          "page_title": "商子/0",
+          "chapter": "0",
+          "sources": [
+            "https://github.com/kanripo/KR3c0004"
+          ],
+          "digital_transcription_id": "kanripo:KR3c0004:WYG@8bacb0257daa0ad1176b249588d1d25f891b7f00",
+          "document_id": 191225
         },
         {
-          "document_id": 191226,
-          "file": "商子__juan_02.txt",
-          "path": "四庫全書/clean/子部/法家類/商子/商子__juan_02.txt",
-          "title": "商子 (四庫全書本)",
-          "page_title": "商子 (四庫全書本)/卷2",
-          "display_title": "商子",
-          "body_start_line": 6
+          "file": "商子__juan_002.txt",
+          "path": "四庫全書/clean/子部/法家類/商子/商子__juan_002.txt",
+          "page_title": "商子/1",
+          "chapter": "1",
+          "sources": [
+            "https://github.com/kanripo/KR3c0004"
+          ],
+          "digital_transcription_id": "kanripo:KR3c0004:WYG@8bacb0257daa0ad1176b249588d1d25f891b7f00",
+          "document_id": 191226
         },
         {
-          "document_id": 191227,
-          "file": "商子__juan_03.txt",
-          "path": "四庫全書/clean/子部/法家類/商子/商子__juan_03.txt",
-          "title": "商子 (四庫全書本)",
-          "page_title": "商子 (四庫全書本)/卷3",
-          "display_title": "商子",
-          "body_start_line": 6
+          "file": "商子__juan_003.txt",
+          "path": "四庫全書/clean/子部/法家類/商子/商子__juan_003.txt",
+          "page_title": "商子/2",
+          "chapter": "2",
+          "sources": [
+            "https://github.com/kanripo/KR3c0004"
+          ],
+          "digital_transcription_id": "kanripo:KR3c0004:WYG@8bacb0257daa0ad1176b249588d1d25f891b7f00",
+          "document_id": 191227
         },
         {
-          "document_id": 191228,
-          "file": "商子__juan_04.txt",
-          "path": "四庫全書/clean/子部/法家類/商子/商子__juan_04.txt",
-          "title": "商子 (四庫全書本)",
-          "page_title": "商子 (四庫全書本)/卷4",
-          "display_title": "商子",
-          "body_start_line": 6
+          "file": "商子__juan_004.txt",
+          "path": "四庫全書/clean/子部/法家類/商子/商子__juan_004.txt",
+          "page_title": "商子/3",
+          "chapter": "3",
+          "sources": [
+            "https://github.com/kanripo/KR3c0004"
+          ],
+          "digital_transcription_id": "kanripo:KR3c0004:WYG@8bacb0257daa0ad1176b249588d1d25f891b7f00",
+          "document_id": 191228
         },
         {
-          "document_id": 191229,
-          "file": "商子__juan_05.txt",
-          "path": "四庫全書/clean/子部/法家類/商子/商子__juan_05.txt",
-          "title": "商子 (四庫全書本)",
-          "page_title": "商子 (四庫全書本)/卷5",
-          "display_title": "商子",
-          "body_start_line": 6
+          "file": "商子__juan_005.txt",
+          "path": "四庫全書/clean/子部/法家類/商子/商子__juan_005.txt",
+          "page_title": "商子/4",
+          "chapter": "4",
+          "sources": [
+            "https://github.com/kanripo/KR3c0004"
+          ],
+          "digital_transcription_id": "kanripo:KR3c0004:WYG@8bacb0257daa0ad1176b249588d1d25f891b7f00",
+          "document_id": 191229
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR3c0004:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "branch_fallback_inference",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR3c0004:WYG@8bacb0257daa0ad1176b249588d1d25f891b7f00",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR3c0004",
+          "branch": "WYG",
+          "revision": "8bacb0257daa0ad1176b249588d1d25f891b7f00",
+          "retrieved_at": "2026-08-12T02:31:12+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR3c0004:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/子部/法家類/商子/商子__juan_01.txt",
+        "四庫全書/clean/子部/法家類/商子/商子__juan_02.txt",
+        "四庫全書/clean/子部/法家類/商子/商子__juan_03.txt",
+        "四庫全書/clean/子部/法家類/商子/商子__juan_04.txt",
+        "四庫全書/clean/子部/法家類/商子/商子__juan_05.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

@@ -20,31 +20,53 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 205717,
-          "file": "孟子音義__juan_01.txt",
-          "path": "四庫全書/clean/經部/四書類/孟子音義/孟子音義__juan_01.txt",
-          "title": "孟子音義 (四庫全書本)",
-          "page_title": "孟子音義 (四庫全書本)/卷上",
-          "display_title": "孟子音義",
-          "source_categories": [
-            "201年 (提及)",
-            "PD-old"
+          "file": "孟子音義__juan_000.txt",
+          "path": "四庫全書/clean/經部/四書類/孟子音義/孟子音義__juan_000.txt",
+          "page_title": "孟子音義/0",
+          "chapter": "0",
+          "sources": [
+            "https://github.com/kanripo/KR1h0009"
           ],
-          "body_start_line": 6
-        },
-        {
-          "document_id": 205718,
-          "file": "孟子音義__juan_02.txt",
-          "path": "四庫全書/clean/經部/四書類/孟子音義/孟子音義__juan_02.txt",
-          "title": "孟子音義 (四庫全書本)",
-          "page_title": "孟子音義 (四庫全書本)/卷下",
-          "display_title": "孟子音義",
-          "source_categories": [
-            "PD-old"
-          ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR1h0009:master@174b70751bd55a5c6dba4ee737f36c4de16663a9"
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR1h0009:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR1h0009:master@174b70751bd55a5c6dba4ee737f36c4de16663a9",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR1h0009",
+          "branch": "master",
+          "revision": "174b70751bd55a5c6dba4ee737f36c4de16663a9",
+          "retrieved_at": "2026-08-12T00:37:43+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR1h0009:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/經部/四書類/孟子音義/孟子音義__juan_01.txt",
+        "四庫全書/clean/經部/四書類/孟子音義/孟子音義__juan_02.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

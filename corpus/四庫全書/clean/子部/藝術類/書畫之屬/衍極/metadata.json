@@ -20,54 +20,64 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 192289,
-          "file": "衍極__juan_01.txt",
-          "path": "四庫全書/clean/子部/藝術類/書畫之屬/衍極/衍極__juan_01.txt",
-          "title": "衍極 (四庫全書本)",
-          "page_title": "衍極 (四庫全書本)/卷上",
-          "display_title": "衍極",
-          "source_categories": [
-            "1053年 (提及)",
-            "1169年 (提及)",
-            "741年 (提及)",
-            "PD-old",
-            "前481年 (提及)"
+          "file": "衍極__juan_000.txt",
+          "path": "四庫全書/clean/子部/藝術類/書畫之屬/衍極/衍極__juan_000.txt",
+          "page_title": "衍極/原序",
+          "chapter": "原序",
+          "sources": [
+            "https://github.com/kanripo/KR3h0038"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3h0038:master@434ca685c4791edf5994e72b720b5cf79b235167"
         },
         {
-          "document_id": 192290,
-          "file": "衍極__juan_02.txt",
-          "path": "四庫全書/clean/子部/藝術類/書畫之屬/衍極/衍極__juan_02.txt",
-          "title": "衍極 (四庫全書本)",
-          "page_title": "衍極 (四庫全書本)/卷下",
-          "display_title": "衍極",
-          "source_categories": [
-            "1052年 (提及)",
-            "1109年 (提及)",
-            "161年 (提及)",
-            "169年 (提及)",
-            "170年 (提及)",
-            "172年 (提及)",
-            "175年 (提及)",
-            "177年 (提及)",
-            "179年 (提及)",
-            "181年 (提及)",
-            "220年 (提及)",
-            "353年 (提及)",
-            "619年 (提及)",
-            "626年 (提及)",
-            "702年 (提及)",
-            "703年 (提及)",
-            "766年 (提及)",
-            "851年 (提及)",
-            "992年 (提及)",
-            "PD-old",
-            "前148年 (提及)"
+          "file": "衍極__juan_001.txt",
+          "path": "四庫全書/clean/子部/藝術類/書畫之屬/衍極/衍極__juan_001.txt",
+          "page_title": "衍極/卷上",
+          "chapter": "卷上",
+          "sources": [
+            "https://github.com/kanripo/KR3h0038"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3h0038:master@434ca685c4791edf5994e72b720b5cf79b235167",
+          "document_id": 192289
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR3h0038:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR3h0038:master@434ca685c4791edf5994e72b720b5cf79b235167",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR3h0038",
+          "branch": "master",
+          "revision": "434ca685c4791edf5994e72b720b5cf79b235167",
+          "retrieved_at": "2026-08-12T02:41:31+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR3h0038:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/子部/藝術類/書畫之屬/衍極/衍極__juan_01.txt",
+        "四庫全書/clean/子部/藝術類/書畫之屬/衍極/衍極__juan_02.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

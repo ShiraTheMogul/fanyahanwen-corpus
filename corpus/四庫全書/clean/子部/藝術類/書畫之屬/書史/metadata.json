@@ -25,15 +25,53 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 191913,
-          "file": "書史__juan_01.txt",
-          "path": "四庫全書/clean/子部/藝術類/書畫之屬/書史/書史__juan_01.txt",
-          "title": "書史 (四庫全書本)",
-          "page_title": "書史 (四庫全書本)",
-          "display_title": "書史",
-          "body_start_line": 6
+          "file": "書史__juan_001.txt",
+          "path": "四庫全書/clean/子部/藝術類/書畫之屬/書史/書史__juan_001.txt",
+          "page_title": "書史/書史",
+          "chapter": "書史",
+          "sources": [
+            "https://github.com/kanripo/KR3h0022"
+          ],
+          "digital_transcription_id": "kanripo:KR3h0022:master@089891681df91faefb5ae02b6a53bc9fd26c5b6e",
+          "document_id": 191913
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR3h0022:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR3h0022:master@089891681df91faefb5ae02b6a53bc9fd26c5b6e",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR3h0022",
+          "branch": "master",
+          "revision": "089891681df91faefb5ae02b6a53bc9fd26c5b6e",
+          "retrieved_at": "2026-08-12T02:41:09+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR3h0022:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/子部/藝術類/書畫之屬/書史/書史__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

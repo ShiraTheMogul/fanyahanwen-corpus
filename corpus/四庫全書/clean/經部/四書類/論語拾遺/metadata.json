@@ -24,15 +24,52 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 205839,
-          "file": "論語拾遺__juan_01.txt",
-          "path": "四庫全書/clean/經部/四書類/論語拾遺/論語拾遺__juan_01.txt",
-          "title": "論語拾遺 (四庫全書本)",
-          "page_title": "論語拾遺 (四庫全書本)",
-          "display_title": "論語拾遺",
-          "body_start_line": 6
+          "file": "論語拾遺__juan_000.txt",
+          "path": "四庫全書/clean/經部/四書類/論語拾遺/論語拾遺__juan_000.txt",
+          "page_title": "論語拾遺/0",
+          "chapter": "0",
+          "sources": [
+            "https://github.com/kanripo/KR1h0010"
+          ],
+          "digital_transcription_id": "kanripo:KR1h0010:master@032b67dc90253eb06bc900492ae2e68bd4a4a739"
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR1h0010:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR1h0010:master@032b67dc90253eb06bc900492ae2e68bd4a4a739",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR1h0010",
+          "branch": "master",
+          "revision": "032b67dc90253eb06bc900492ae2e68bd4a4a739",
+          "retrieved_at": "2026-08-12T00:37:45+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR1h0010:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/經部/四書類/論語拾遺/論語拾遺__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

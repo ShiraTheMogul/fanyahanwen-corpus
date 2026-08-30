@@ -111,6 +111,8 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--staging-root", type=Path, required=True)
     parser.add_argument("--plan-dir", type=Path, default=None)
+    parser.add_argument("--source-id", action="append", default=[],
+                        help="Restrict fetch to one or more Kanripo IDs; repeat the option for several works.")
     parser.add_argument("--delay", type=float, default=0.5)
     parser.add_argument("--refresh-upstream", action="store_true")
     parser.add_argument("--limit", type=int, default=0, help="0 = all metadata-only candidates")
@@ -125,13 +127,22 @@ def main() -> int:
     source_rows: dict[str, dict[str, str]] = {}
     for row in rows:
         # The corrected planner writes only genuinely no-readable-target rows to
-        # this file.  Still honour source_fetch_needed so reruns do not waste
+        # this file. Still honour source_fetch_needed so reruns do not waste
         # branch-discovery requests for snapshots already present in staging.
         if row.get("source_fetch_needed", "").strip().lower() != "yes":
             continue
         sid = canonical_kanripo_id(row.get("source_id", ""))
         if sid:
             source_rows.setdefault(sid, row)
+    if args.source_id:
+        wanted = {canonical_kanripo_id(value) for value in args.source_id}
+        missing = sorted(wanted - set(source_rows))
+        if missing:
+            raise SystemExit(
+                "Requested Kanripo source ID(s) are not pending metadata-only fetches: "
+                + ", ".join(missing)
+            )
+        source_rows = {sid: row for sid, row in source_rows.items() if sid in wanted}
     selected = list(source_rows.items())
     if args.limit > 0:
         selected = selected[:args.limit]

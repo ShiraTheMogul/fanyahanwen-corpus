@@ -20,51 +20,87 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 190767,
-          "file": "唐國史補__juan_01.txt",
-          "path": "四庫全書/clean/子部/小說家類/雜事之屬/唐國史補/唐國史補__juan_01.txt",
-          "title": "唐國史補 (四庫全書本)",
-          "page_title": "唐國史補 (四庫全書本)/卷上",
-          "display_title": "唐國史補",
-          "source_categories": [
-            "736年 (提及)",
-            "799年 (提及)",
-            "PD-old"
+          "file": "唐國史補__juan_000.txt",
+          "path": "四庫全書/clean/子部/小說家類/雜事之屬/唐國史補/唐國史補__juan_000.txt",
+          "page_title": "唐國史補/自序",
+          "chapter": "自序",
+          "sources": [
+            "https://github.com/kanripo/KR3l0006"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3l0006:master@e22ef8054845f7026d4e0f557c81383661b45896"
         },
         {
-          "document_id": 190768,
-          "file": "唐國史補__juan_02.txt",
-          "path": "四庫全書/clean/子部/小說家類/雜事之屬/唐國史補/唐國史補__juan_02.txt",
-          "title": "唐國史補 (四庫全書本)",
-          "page_title": "唐國史補 (四庫全書本)/卷中",
-          "display_title": "唐國史補",
-          "source_categories": [
-            "822年 (提及)",
-            "PD-old"
+          "file": "唐國史補__juan_001.txt",
+          "path": "四庫全書/clean/子部/小說家類/雜事之屬/唐國史補/唐國史補__juan_001.txt",
+          "page_title": "唐國史補/卷上",
+          "chapter": "卷上",
+          "sources": [
+            "https://github.com/kanripo/KR3l0006"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3l0006:master@e22ef8054845f7026d4e0f557c81383661b45896",
+          "document_id": 190767
         },
         {
-          "document_id": 190769,
-          "file": "唐國史補__juan_03.txt",
-          "path": "四庫全書/clean/子部/小說家類/雜事之屬/唐國史補/唐國史補__juan_03.txt",
-          "title": "唐國史補 (四庫全書本)",
-          "page_title": "唐國史補 (四庫全書本)/卷下",
-          "display_title": "唐國史補",
-          "source_categories": [
-            "734年 (提及)",
-            "736年 (提及)",
-            "784年 (提及)",
-            "789年 (提及)",
-            "792年 (提及)",
-            "796年 (提及)",
-            "PD-old"
+          "file": "唐國史補__juan_002.txt",
+          "path": "四庫全書/clean/子部/小說家類/雜事之屬/唐國史補/唐國史補__juan_002.txt",
+          "page_title": "唐國史補/卷中",
+          "chapter": "卷中",
+          "sources": [
+            "https://github.com/kanripo/KR3l0006"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3l0006:master@e22ef8054845f7026d4e0f557c81383661b45896",
+          "document_id": 190768
+        },
+        {
+          "file": "唐國史補__juan_003.txt",
+          "path": "四庫全書/clean/子部/小說家類/雜事之屬/唐國史補/唐國史補__juan_003.txt",
+          "page_title": "唐國史補/卷下",
+          "chapter": "卷下",
+          "sources": [
+            "https://github.com/kanripo/KR3l0006"
+          ],
+          "digital_transcription_id": "kanripo:KR3l0006:master@e22ef8054845f7026d4e0f557c81383661b45896",
+          "document_id": 190769
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR3l0006:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR3l0006:master@e22ef8054845f7026d4e0f557c81383661b45896",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR3l0006",
+          "branch": "master",
+          "revision": "e22ef8054845f7026d4e0f557c81383661b45896",
+          "retrieved_at": "2026-08-12T03:00:10+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR3l0006:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/子部/小說家類/雜事之屬/唐國史補/唐國史補__juan_01.txt",
+        "四庫全書/clean/子部/小說家類/雜事之屬/唐國史補/唐國史補__juan_02.txt",
+        "四庫全書/clean/子部/小說家類/雜事之屬/唐國史補/唐國史補__juan_03.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

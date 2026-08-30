@@ -1,4 +1,4 @@
-﻿{
+{
   "schema_version": 1,
   "work_id": 4072,
   "corpus_root": "中國漢文",
@@ -10,12 +10,132 @@
   "is_compilation": false,
   "documents": [
     {
-      "document_id": 8765,
-      "file": "雲山集__juan_01.txt",
-      "path": "中國漢文/clean/元朝/大元/雲山集/雲山集__juan_01.txt",
-      "body_start_line": 5
+      "file": "雲山集__juan_000.txt",
+      "path": "中國漢文/clean/元朝/大元/雲山集/雲山集__juan_000.txt",
+      "page_title": "雲山集/提要／序跋",
+      "chapter": "提要／序跋",
+      "sources": [
+        "https://github.com/kanripo/KR5e0042"
+      ],
+      "digital_transcription_id": "kanripo:KR5e0042:master@28e276ca843f91285bf9d26798457732faee0674"
+    },
+    {
+      "file": "雲山集__juan_001.txt",
+      "path": "中國漢文/clean/元朝/大元/雲山集/雲山集__juan_001.txt",
+      "page_title": "雲山集/1",
+      "chapter": "1",
+      "sources": [
+        "https://github.com/kanripo/KR5e0042"
+      ],
+      "digital_transcription_id": "kanripo:KR5e0042:master@28e276ca843f91285bf9d26798457732faee0674",
+      "document_id": 8765
+    },
+    {
+      "file": "雲山集__juan_002.txt",
+      "path": "中國漢文/clean/元朝/大元/雲山集/雲山集__juan_002.txt",
+      "page_title": "雲山集/2",
+      "chapter": "2",
+      "sources": [
+        "https://github.com/kanripo/KR5e0042"
+      ],
+      "digital_transcription_id": "kanripo:KR5e0042:master@28e276ca843f91285bf9d26798457732faee0674"
+    },
+    {
+      "file": "雲山集__juan_003.txt",
+      "path": "中國漢文/clean/元朝/大元/雲山集/雲山集__juan_003.txt",
+      "page_title": "雲山集/3",
+      "chapter": "3",
+      "sources": [
+        "https://github.com/kanripo/KR5e0042"
+      ],
+      "digital_transcription_id": "kanripo:KR5e0042:master@28e276ca843f91285bf9d26798457732faee0674"
+    },
+    {
+      "file": "雲山集__juan_004.txt",
+      "path": "中國漢文/clean/元朝/大元/雲山集/雲山集__juan_004.txt",
+      "page_title": "雲山集/4",
+      "chapter": "4",
+      "sources": [
+        "https://github.com/kanripo/KR5e0042"
+      ],
+      "digital_transcription_id": "kanripo:KR5e0042:master@28e276ca843f91285bf9d26798457732faee0674"
+    },
+    {
+      "file": "雲山集__juan_005.txt",
+      "path": "中國漢文/clean/元朝/大元/雲山集/雲山集__juan_005.txt",
+      "page_title": "雲山集/5",
+      "chapter": "5",
+      "sources": [
+        "https://github.com/kanripo/KR5e0042"
+      ],
+      "digital_transcription_id": "kanripo:KR5e0042:master@28e276ca843f91285bf9d26798457732faee0674"
+    },
+    {
+      "file": "雲山集__juan_006.txt",
+      "path": "中國漢文/clean/元朝/大元/雲山集/雲山集__juan_006.txt",
+      "page_title": "雲山集/6",
+      "chapter": "6",
+      "sources": [
+        "https://github.com/kanripo/KR5e0042"
+      ],
+      "digital_transcription_id": "kanripo:KR5e0042:master@28e276ca843f91285bf9d26798457732faee0674"
+    },
+    {
+      "file": "雲山集__juan_007.txt",
+      "path": "中國漢文/clean/元朝/大元/雲山集/雲山集__juan_007.txt",
+      "page_title": "雲山集/7",
+      "chapter": "7",
+      "sources": [
+        "https://github.com/kanripo/KR5e0042"
+      ],
+      "digital_transcription_id": "kanripo:KR5e0042:master@28e276ca843f91285bf9d26798457732faee0674"
+    },
+    {
+      "file": "雲山集__juan_008.txt",
+      "path": "中國漢文/clean/元朝/大元/雲山集/雲山集__juan_008.txt",
+      "page_title": "雲山集/8",
+      "chapter": "8",
+      "sources": [
+        "https://github.com/kanripo/KR5e0042"
+      ],
+      "digital_transcription_id": "kanripo:KR5e0042:master@28e276ca843f91285bf9d26798457732faee0674"
     }
   ],
   "known_commentaries": [],
-  "ca": "1271–1368年"
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR5e0042:witness:HFL",
+      "label": "HFL",
+      "upstream_code": "HFL",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR5e0042:master@28e276ca843f91285bf9d26798457732faee0674",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR5e0042",
+          "branch": "master",
+          "revision": "28e276ca843f91285bf9d26798457732faee0674",
+          "retrieved_at": "2026-08-12T05:33:40+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR5e0042:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "中國漢文/clean/元朝/大元/雲山集/雲山集__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

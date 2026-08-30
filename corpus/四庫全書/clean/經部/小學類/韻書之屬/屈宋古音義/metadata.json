@@ -23,33 +23,97 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 206295,
-          "file": "屈宋古音義__juan_01.txt",
-          "path": "四庫全書/clean/經部/小學類/韻書之屬/屈宋古音義/屈宋古音義__juan_01.txt",
-          "title": "屈宋古音義 (四庫全書本)",
-          "page_title": "屈宋古音義 (四庫全書本)/卷1",
-          "display_title": "屈宋古音義",
-          "body_start_line": 6
+          "file": "屈宋古音義__juan_000.txt",
+          "path": "四庫全書/clean/經部/小學類/韻書之屬/屈宋古音義/屈宋古音義__juan_000.txt",
+          "page_title": "屈宋古音義/0",
+          "chapter": "0",
+          "sources": [
+            "https://github.com/kanripo/KR1j0073"
+          ],
+          "digital_transcription_id": "kanripo:KR1j0073:master@e1e8c20e28f277318b101adbb9f8c695bd03b065"
         },
         {
-          "document_id": 206296,
-          "file": "屈宋古音義__juan_02.txt",
-          "path": "四庫全書/clean/經部/小學類/韻書之屬/屈宋古音義/屈宋古音義__juan_02.txt",
-          "title": "屈宋古音義 (四庫全書本)",
-          "page_title": "屈宋古音義 (四庫全書本)/卷2",
-          "display_title": "屈宋古音義",
-          "body_start_line": 6
+          "file": "屈宋古音義__juan_001.txt",
+          "path": "四庫全書/clean/經部/小學類/韻書之屬/屈宋古音義/屈宋古音義__juan_001.txt",
+          "page_title": "屈宋古音義/卷一",
+          "chapter": "卷一",
+          "sources": [
+            "https://github.com/kanripo/KR1j0073"
+          ],
+          "digital_transcription_id": "kanripo:KR1j0073:master@e1e8c20e28f277318b101adbb9f8c695bd03b065",
+          "document_id": 206295
         },
         {
-          "document_id": 206297,
-          "file": "屈宋古音義__juan_03.txt",
-          "path": "四庫全書/clean/經部/小學類/韻書之屬/屈宋古音義/屈宋古音義__juan_03.txt",
-          "title": "屈宋古音義 (四庫全書本)",
-          "page_title": "屈宋古音義 (四庫全書本)/卷3",
-          "display_title": "屈宋古音義",
-          "body_start_line": 6
+          "file": "屈宋古音義__juan_002.txt",
+          "path": "四庫全書/clean/經部/小學類/韻書之屬/屈宋古音義/屈宋古音義__juan_002.txt",
+          "page_title": "屈宋古音義/卷二",
+          "chapter": "卷二",
+          "sources": [
+            "https://github.com/kanripo/KR1j0073"
+          ],
+          "digital_transcription_id": "kanripo:KR1j0073:master@e1e8c20e28f277318b101adbb9f8c695bd03b065",
+          "document_id": 206296
+        },
+        {
+          "file": "屈宋古音義__juan_003.txt",
+          "path": "四庫全書/clean/經部/小學類/韻書之屬/屈宋古音義/屈宋古音義__juan_003.txt",
+          "page_title": "屈宋古音義/卷三",
+          "chapter": "卷三",
+          "sources": [
+            "https://github.com/kanripo/KR1j0073"
+          ],
+          "digital_transcription_id": "kanripo:KR1j0073:master@e1e8c20e28f277318b101adbb9f8c695bd03b065",
+          "document_id": 206297
+        },
+        {
+          "file": "屈宋古音義__juan_004.txt",
+          "path": "四庫全書/clean/經部/小學類/韻書之屬/屈宋古音義/屈宋古音義__juan_004.txt",
+          "page_title": "屈宋古音義/跋",
+          "chapter": "跋",
+          "sources": [
+            "https://github.com/kanripo/KR1j0073"
+          ],
+          "digital_transcription_id": "kanripo:KR1j0073:master@e1e8c20e28f277318b101adbb9f8c695bd03b065"
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR1j0073:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR1j0073:master@e1e8c20e28f277318b101adbb9f8c695bd03b065",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR1j0073",
+          "branch": "master",
+          "revision": "e1e8c20e28f277318b101adbb9f8c695bd03b065",
+          "retrieved_at": "2026-08-12T00:47:38+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR1j0073:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/經部/小學類/韻書之屬/屈宋古音義/屈宋古音義__juan_01.txt",
+        "四庫全書/clean/經部/小學類/韻書之屬/屈宋古音義/屈宋古音義__juan_02.txt",
+        "四庫全書/clean/經部/小學類/韻書之屬/屈宋古音義/屈宋古音義__juan_03.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

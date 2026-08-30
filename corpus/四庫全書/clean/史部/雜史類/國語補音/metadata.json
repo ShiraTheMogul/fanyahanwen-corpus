@@ -20,50 +20,88 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 187478,
-          "file": "國語補音__juan_01.txt",
-          "path": "四庫全書/clean/史部/雜史類/國語補音/國語補音__juan_01.txt",
-          "title": "國語補音 (四庫全書本)",
-          "page_title": "國語補音 (四庫全書本)/卷1",
-          "display_title": "國語補音",
-          "source_categories": [
-            "PD-old"
+          "file": "國語補音__juan_000.txt",
+          "path": "四庫全書/clean/史部/雜史類/國語補音/國語補音__juan_000.txt",
+          "page_title": "國語補音/原序",
+          "chapter": "原序",
+          "sources": [
+            "https://github.com/kanripo/KR2e0002"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR2e0002:master@b2b6dc8dcbab22ed482e123e61cda66dda7e5b94"
         },
         {
-          "document_id": 187479,
-          "file": "國語補音__juan_02.txt",
-          "path": "四庫全書/clean/史部/雜史類/國語補音/國語補音__juan_02.txt",
-          "title": "國語補音 (四庫全書本)",
-          "page_title": "國語補音 (四庫全書本)/卷2",
-          "display_title": "國語補音",
-          "source_categories": [
-            "PD-old"
+          "file": "國語補音__juan_001.txt",
+          "path": "四庫全書/clean/史部/雜史類/國語補音/國語補音__juan_001.txt",
+          "page_title": "國語補音/卷一",
+          "chapter": "卷一",
+          "sources": [
+            "https://github.com/kanripo/KR2e0002"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR2e0002:master@b2b6dc8dcbab22ed482e123e61cda66dda7e5b94",
+          "document_id": 187478
         },
         {
-          "document_id": 187480,
-          "file": "國語補音__juan_03.txt",
-          "path": "四庫全書/clean/史部/雜史類/國語補音/國語補音__juan_03.txt",
-          "title": "國語補音 (四庫全書本)",
-          "page_title": "國語補音 (四庫全書本)/卷3",
-          "display_title": "國語補音",
-          "source_categories": [
-            "PD-old"
+          "file": "國語補音__juan_002.txt",
+          "path": "四庫全書/clean/史部/雜史類/國語補音/國語補音__juan_002.txt",
+          "page_title": "國語補音/卷二",
+          "chapter": "卷二",
+          "sources": [
+            "https://github.com/kanripo/KR2e0002"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR2e0002:master@b2b6dc8dcbab22ed482e123e61cda66dda7e5b94",
+          "document_id": 187479
         },
         {
-          "document_id": 187481,
-          "file": "國語補音__juan_04.txt",
-          "path": "四庫全書/clean/史部/雜史類/國語補音/國語補音__juan_04.txt",
-          "title": "國語補音 (四庫全書本)",
-          "page_title": "國語補音 (四庫全書本)/1卷",
-          "display_title": "國語補音"
+          "file": "國語補音__juan_003.txt",
+          "path": "四庫全書/clean/史部/雜史類/國語補音/國語補音__juan_003.txt",
+          "page_title": "國語補音/卷三",
+          "chapter": "卷三",
+          "sources": [
+            "https://github.com/kanripo/KR2e0002"
+          ],
+          "digital_transcription_id": "kanripo:KR2e0002:master@b2b6dc8dcbab22ed482e123e61cda66dda7e5b94",
+          "document_id": 187480
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR2e0002:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR2e0002:master@b2b6dc8dcbab22ed482e123e61cda66dda7e5b94",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR2e0002",
+          "branch": "master",
+          "revision": "b2b6dc8dcbab22ed482e123e61cda66dda7e5b94",
+          "retrieved_at": "2026-08-12T01:35:41+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR2e0002:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/史部/雜史類/國語補音/國語補音__juan_01.txt",
+        "四庫全書/clean/史部/雜史類/國語補音/國語補音__juan_02.txt",
+        "四庫全書/clean/史部/雜史類/國語補音/國語補音__juan_03.txt",
+        "四庫全書/clean/史部/雜史類/國語補音/國語補音__juan_04.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

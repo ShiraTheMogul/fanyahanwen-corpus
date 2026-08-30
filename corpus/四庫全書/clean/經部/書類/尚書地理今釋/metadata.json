@@ -26,15 +26,63 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 210157,
-          "file": "尚書地理今釋__juan_01.txt",
-          "path": "四庫全書/clean/經部/書類/尚書地理今釋/尚書地理今釋__juan_01.txt",
-          "title": "尚書地理今釋 (四庫全書本)",
-          "page_title": "尚書地理今釋 (四庫全書本)",
-          "display_title": "尚書地理今釋",
-          "body_start_line": 6
+          "file": "尚書地理今釋__juan_000.txt",
+          "path": "四庫全書/clean/經部/書類/尚書地理今釋/尚書地理今釋__juan_000.txt",
+          "page_title": "尚書地理今釋/提要",
+          "chapter": "提要",
+          "sources": [
+            "https://github.com/kanripo/KR1b0057"
+          ],
+          "digital_transcription_id": "kanripo:KR1b0057:master@5b40eda3e340dbe75e91bf0424d9b0d4e8eb8154"
+        },
+        {
+          "file": "尚書地理今釋__juan_001.txt",
+          "path": "四庫全書/clean/經部/書類/尚書地理今釋/尚書地理今釋__juan_001.txt",
+          "page_title": "尚書地理今釋/尚書地理今釋",
+          "chapter": "尚書地理今釋",
+          "sources": [
+            "https://github.com/kanripo/KR1b0057"
+          ],
+          "digital_transcription_id": "kanripo:KR1b0057:master@5b40eda3e340dbe75e91bf0424d9b0d4e8eb8154",
+          "document_id": 210157
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR1b0057:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR1b0057:master@5b40eda3e340dbe75e91bf0424d9b0d4e8eb8154",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR1b0057",
+          "branch": "master",
+          "revision": "5b40eda3e340dbe75e91bf0424d9b0d4e8eb8154",
+          "retrieved_at": "2026-08-12T00:20:06+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR1b0057:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/經部/書類/尚書地理今釋/尚書地理今釋__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

@@ -30,15 +30,52 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 175665,
-          "file": "扈從西巡日録__juan_01.txt",
-          "path": "四庫全書/clean/史部/傳記類/雜錄之屬/扈從西巡日録/扈從西巡日録__juan_01.txt",
-          "title": "扈從西巡日録 (四庫全書本)",
-          "page_title": "扈從西巡日録 (四庫全書本)",
-          "display_title": "扈從西巡日録",
-          "body_start_line": 6
+          "file": "扈從西巡日録__juan_000.txt",
+          "path": "四庫全書/clean/史部/傳記類/雜錄之屬/扈從西巡日録/扈從西巡日録__juan_000.txt",
+          "page_title": "扈從西巡日録/0",
+          "chapter": "0",
+          "sources": [
+            "https://github.com/kanripo/KR2g0061"
+          ],
+          "digital_transcription_id": "kanripo:KR2g0061:master@00b6f826e1fa89ef2e1a65f95999122a7dd90bfb"
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR2g0061:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR2g0061:master@00b6f826e1fa89ef2e1a65f95999122a7dd90bfb",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR2g0061",
+          "branch": "master",
+          "revision": "00b6f826e1fa89ef2e1a65f95999122a7dd90bfb",
+          "retrieved_at": "2026-08-12T01:43:14+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR2g0061:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/史部/傳記類/雜錄之屬/扈從西巡日録/扈從西巡日録__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

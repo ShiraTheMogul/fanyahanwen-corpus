@@ -23,33 +23,87 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 191736,
-          "file": "宋朝名畫評__juan_01.txt",
-          "path": "四庫全書/clean/子部/藝術類/書畫之屬/宋朝名畫評/宋朝名畫評__juan_01.txt",
-          "title": "宋朝名畫評 (四庫全書本)",
-          "page_title": "宋朝名畫評 (四庫全書本)/卷1",
-          "display_title": "宋朝名畫評",
-          "body_start_line": 6
+          "file": "宋朝名畫評__juan_000.txt",
+          "path": "四庫全書/clean/子部/藝術類/書畫之屬/宋朝名畫評/宋朝名畫評__juan_000.txt",
+          "page_title": "宋朝名畫評/原序",
+          "chapter": "原序",
+          "sources": [
+            "https://github.com/kanripo/KR3h0015"
+          ],
+          "digital_transcription_id": "kanripo:KR3h0015:master@ffe20817b31920e07fb89d6f93fa9efc7d5ee483"
         },
         {
-          "document_id": 191737,
-          "file": "宋朝名畫評__juan_02.txt",
-          "path": "四庫全書/clean/子部/藝術類/書畫之屬/宋朝名畫評/宋朝名畫評__juan_02.txt",
-          "title": "宋朝名畫評 (四庫全書本)",
-          "page_title": "宋朝名畫評 (四庫全書本)/卷2",
-          "display_title": "宋朝名畫評",
-          "body_start_line": 6
+          "file": "宋朝名畫評__juan_001.txt",
+          "path": "四庫全書/clean/子部/藝術類/書畫之屬/宋朝名畫評/宋朝名畫評__juan_001.txt",
+          "page_title": "宋朝名畫評/卷一",
+          "chapter": "卷一",
+          "sources": [
+            "https://github.com/kanripo/KR3h0015"
+          ],
+          "digital_transcription_id": "kanripo:KR3h0015:master@ffe20817b31920e07fb89d6f93fa9efc7d5ee483",
+          "document_id": 191736
         },
         {
-          "document_id": 191738,
-          "file": "宋朝名畫評__juan_03.txt",
-          "path": "四庫全書/clean/子部/藝術類/書畫之屬/宋朝名畫評/宋朝名畫評__juan_03.txt",
-          "title": "宋朝名畫評 (四庫全書本)",
-          "page_title": "宋朝名畫評 (四庫全書本)/卷3",
-          "display_title": "宋朝名畫評",
-          "body_start_line": 6
+          "file": "宋朝名畫評__juan_002.txt",
+          "path": "四庫全書/clean/子部/藝術類/書畫之屬/宋朝名畫評/宋朝名畫評__juan_002.txt",
+          "page_title": "宋朝名畫評/卷二",
+          "chapter": "卷二",
+          "sources": [
+            "https://github.com/kanripo/KR3h0015"
+          ],
+          "digital_transcription_id": "kanripo:KR3h0015:master@ffe20817b31920e07fb89d6f93fa9efc7d5ee483",
+          "document_id": 191737
+        },
+        {
+          "file": "宋朝名畫評__juan_003.txt",
+          "path": "四庫全書/clean/子部/藝術類/書畫之屬/宋朝名畫評/宋朝名畫評__juan_003.txt",
+          "page_title": "宋朝名畫評/卷三",
+          "chapter": "卷三",
+          "sources": [
+            "https://github.com/kanripo/KR3h0015"
+          ],
+          "digital_transcription_id": "kanripo:KR3h0015:master@ffe20817b31920e07fb89d6f93fa9efc7d5ee483",
+          "document_id": 191738
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR3h0015:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR3h0015:master@ffe20817b31920e07fb89d6f93fa9efc7d5ee483",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR3h0015",
+          "branch": "master",
+          "revision": "ffe20817b31920e07fb89d6f93fa9efc7d5ee483",
+          "retrieved_at": "2026-08-12T02:40:57+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR3h0015:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/子部/藝術類/書畫之屬/宋朝名畫評/宋朝名畫評__juan_01.txt",
+        "四庫全書/clean/子部/藝術類/書畫之屬/宋朝名畫評/宋朝名畫評__juan_02.txt",
+        "四庫全書/clean/子部/藝術類/書畫之屬/宋朝名畫評/宋朝名畫評__juan_03.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_recorded_in_current_metadata",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

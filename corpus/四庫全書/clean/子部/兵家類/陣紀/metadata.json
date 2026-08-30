@@ -20,55 +20,99 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 189464,
-          "file": "陣紀__juan_01.txt",
-          "path": "四庫全書/clean/子部/兵家類/陣紀/陣紀__juan_01.txt",
-          "title": "陣紀 (四庫全書本)",
-          "page_title": "陣紀 (四庫全書本)/卷1",
-          "display_title": "陣紀",
-          "source_categories": [
-            "PD-old"
+          "file": "陣紀__juan_000.txt",
+          "path": "四庫全書/clean/子部/兵家類/陣紀/陣紀__juan_000.txt",
+          "page_title": "陣紀/提要",
+          "chapter": "提要",
+          "sources": [
+            "https://github.com/kanripo/KR3b0017"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3b0017:master@33451709c0cbfbbe4b7d1279a97b4ae290ab9b42"
         },
         {
-          "document_id": 189465,
-          "file": "陣紀__juan_02.txt",
-          "path": "四庫全書/clean/子部/兵家類/陣紀/陣紀__juan_02.txt",
-          "title": "陣紀 (四庫全書本)",
-          "page_title": "陣紀 (四庫全書本)/卷2",
-          "display_title": "陣紀",
-          "source_categories": [
-            "1371年 (提及)",
-            "PD-old"
+          "file": "陣紀__juan_001.txt",
+          "path": "四庫全書/clean/子部/兵家類/陣紀/陣紀__juan_001.txt",
+          "page_title": "陣紀/卷一",
+          "chapter": "卷一",
+          "sources": [
+            "https://github.com/kanripo/KR3b0017"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3b0017:master@33451709c0cbfbbe4b7d1279a97b4ae290ab9b42",
+          "document_id": 189464
         },
         {
-          "document_id": 189466,
-          "file": "陣紀__juan_03.txt",
-          "path": "四庫全書/clean/子部/兵家類/陣紀/陣紀__juan_03.txt",
-          "title": "陣紀 (四庫全書本)",
-          "page_title": "陣紀 (四庫全書本)/卷3",
-          "display_title": "陣紀",
-          "source_categories": [
-            "PD-old"
+          "file": "陣紀__juan_002.txt",
+          "path": "四庫全書/clean/子部/兵家類/陣紀/陣紀__juan_002.txt",
+          "page_title": "陣紀/卷二",
+          "chapter": "卷二",
+          "sources": [
+            "https://github.com/kanripo/KR3b0017"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3b0017:master@33451709c0cbfbbe4b7d1279a97b4ae290ab9b42",
+          "document_id": 189465
         },
         {
-          "document_id": 189467,
-          "file": "陣紀__juan_04.txt",
-          "path": "四庫全書/clean/子部/兵家類/陣紀/陣紀__juan_04.txt",
-          "title": "陣紀 (四庫全書本)",
-          "page_title": "陣紀 (四庫全書本)/卷4",
-          "display_title": "陣紀",
-          "source_categories": [
-            "PD-old"
+          "file": "陣紀__juan_003.txt",
+          "path": "四庫全書/clean/子部/兵家類/陣紀/陣紀__juan_003.txt",
+          "page_title": "陣紀/卷三",
+          "chapter": "卷三",
+          "sources": [
+            "https://github.com/kanripo/KR3b0017"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3b0017:master@33451709c0cbfbbe4b7d1279a97b4ae290ab9b42",
+          "document_id": 189466
+        },
+        {
+          "file": "陣紀__juan_004.txt",
+          "path": "四庫全書/clean/子部/兵家類/陣紀/陣紀__juan_004.txt",
+          "page_title": "陣紀/卷四",
+          "chapter": "卷四",
+          "sources": [
+            "https://github.com/kanripo/KR3b0017"
+          ],
+          "digital_transcription_id": "kanripo:KR3b0017:master@33451709c0cbfbbe4b7d1279a97b4ae290ab9b42",
+          "document_id": 189467
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR3b0017:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR3b0017:master@33451709c0cbfbbe4b7d1279a97b4ae290ab9b42",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR3b0017",
+          "branch": "master",
+          "revision": "33451709c0cbfbbe4b7d1279a97b4ae290ab9b42",
+          "retrieved_at": "2026-08-12T02:29:57+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR3b0017:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/子部/兵家類/陣紀/陣紀__juan_01.txt",
+        "四庫全書/clean/子部/兵家類/陣紀/陣紀__juan_02.txt",
+        "四庫全書/clean/子部/兵家類/陣紀/陣紀__juan_03.txt",
+        "四庫全書/clean/子部/兵家類/陣紀/陣紀__juan_04.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

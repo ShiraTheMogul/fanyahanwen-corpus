@@ -20,46 +20,75 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 174918,
-          "file": "紹陶録__juan_01.txt",
-          "path": "四庫全書/clean/史部/傳記類/名人之屬/紹陶録/紹陶録__juan_01.txt",
-          "title": "紹陶録 (四庫全書本)",
-          "page_title": "紹陶録 (四庫全書本)/卷上",
-          "display_title": "紹陶録",
-          "source_categories": [
-            "365年 (提及)",
-            "384年 (提及)",
-            "394年 (提及)",
-            "400年 (提及)",
-            "401年 (提及)",
-            "423年 (提及)",
-            "427年 (提及)",
-            "456年 (提及)",
-            "475年 (提及)",
-            "492年 (提及)",
-            "494年 (提及)",
-            "502年 (提及)",
-            "505年 (提及)",
-            "527年 (提及)",
-            "578年 (提及)",
-            "847年 (提及)",
-            "PD-old"
+          "file": "紹陶録__juan_000.txt",
+          "path": "四庫全書/clean/史部/傳記類/名人之屬/紹陶録/紹陶録__juan_000.txt",
+          "page_title": "紹陶録/提要",
+          "chapter": "提要",
+          "sources": [
+            "https://github.com/kanripo/KR2g0009"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR2g0009:master@57a48a74afdf2e364beda66b0e4d6f2aec63acf4"
         },
         {
-          "document_id": 174919,
-          "file": "紹陶録__juan_02.txt",
-          "path": "四庫全書/clean/史部/傳記類/名人之屬/紹陶録/紹陶録__juan_02.txt",
-          "title": "紹陶録 (四庫全書本)",
-          "page_title": "紹陶録 (四庫全書本)/卷下",
-          "display_title": "紹陶録",
-          "source_categories": [
-            "PD-old"
+          "file": "紹陶録__juan_001.txt",
+          "path": "四庫全書/clean/史部/傳記類/名人之屬/紹陶録/紹陶録__juan_001.txt",
+          "page_title": "紹陶録/卷上",
+          "chapter": "卷上",
+          "sources": [
+            "https://github.com/kanripo/KR2g0009"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR2g0009:master@57a48a74afdf2e364beda66b0e4d6f2aec63acf4",
+          "document_id": 174918
+        },
+        {
+          "file": "紹陶録__juan_002.txt",
+          "path": "四庫全書/clean/史部/傳記類/名人之屬/紹陶録/紹陶録__juan_002.txt",
+          "page_title": "紹陶録/卷下",
+          "chapter": "卷下",
+          "sources": [
+            "https://github.com/kanripo/KR2g0009"
+          ],
+          "digital_transcription_id": "kanripo:KR2g0009:master@57a48a74afdf2e364beda66b0e4d6f2aec63acf4",
+          "document_id": 174919
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR2g0009:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR2g0009:master@57a48a74afdf2e364beda66b0e4d6f2aec63acf4",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR2g0009",
+          "branch": "master",
+          "revision": "57a48a74afdf2e364beda66b0e4d6f2aec63acf4",
+          "retrieved_at": "2026-08-12T01:40:28+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR2g0009:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/史部/傳記類/名人之屬/紹陶録/紹陶録__juan_01.txt",
+        "四庫全書/clean/史部/傳記類/名人之屬/紹陶録/紹陶録__juan_02.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

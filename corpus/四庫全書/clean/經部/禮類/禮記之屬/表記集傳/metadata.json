@@ -20,33 +20,85 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 212436,
-          "file": "表記集傳__juan_01.txt",
-          "path": "四庫全書/clean/經部/禮類/禮記之屬/表記集傳/表記集傳__juan_01.txt",
-          "title": "表記集傳 (四庫全書本)",
-          "page_title": "表記集傳 (四庫全書本)/卷1",
-          "display_title": "表記集傳",
-          "source_categories": [
-            "PD-old",
-            "前646年 (提及)",
-            "前647年 (提及)",
-            "前650年 (提及)"
+          "file": "表記集傳__juan_000.txt",
+          "path": "四庫全書/clean/經部/禮類/禮記之屬/表記集傳/表記集傳__juan_000.txt",
+          "page_title": "表記集傳/提要",
+          "chapter": "提要",
+          "sources": [
+            "https://github.com/kanripo/KR1d0063"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR1d0063:master@607c8d00a4d2430beea79c4dd951f82ab5418656"
         },
         {
-          "document_id": 212437,
-          "file": "表記集傳__juan_02.txt",
-          "path": "四庫全書/clean/經部/禮類/禮記之屬/表記集傳/表記集傳__juan_02.txt",
-          "title": "表記集傳 (四庫全書本)",
-          "page_title": "表記集傳 (四庫全書本)/卷2",
-          "display_title": "表記集傳",
-          "source_categories": [
-            "PD-old"
+          "file": "表記集傳__juan_001.txt",
+          "path": "四庫全書/clean/經部/禮類/禮記之屬/表記集傳/表記集傳__juan_001.txt",
+          "page_title": "表記集傳/卷一",
+          "chapter": "卷一",
+          "sources": [
+            "https://github.com/kanripo/KR1d0063"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR1d0063:master@607c8d00a4d2430beea79c4dd951f82ab5418656",
+          "document_id": 212436
+        },
+        {
+          "file": "表記集傳__juan_002.txt",
+          "path": "四庫全書/clean/經部/禮類/禮記之屬/表記集傳/表記集傳__juan_002.txt",
+          "page_title": "表記集傳/卷二",
+          "chapter": "卷二",
+          "sources": [
+            "https://github.com/kanripo/KR1d0063"
+          ],
+          "digital_transcription_id": "kanripo:KR1d0063:master@607c8d00a4d2430beea79c4dd951f82ab5418656",
+          "document_id": 212437
+        },
+        {
+          "file": "表記集傳__juan_003.txt",
+          "path": "四庫全書/clean/經部/禮類/禮記之屬/表記集傳/表記集傳__juan_003.txt",
+          "page_title": "表記集傳/附録",
+          "chapter": "附録",
+          "sources": [
+            "https://github.com/kanripo/KR1d0063"
+          ],
+          "digital_transcription_id": "kanripo:KR1d0063:master@607c8d00a4d2430beea79c4dd951f82ab5418656"
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR1d0063:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR1d0063:master@607c8d00a4d2430beea79c4dd951f82ab5418656",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR1d0063",
+          "branch": "master",
+          "revision": "607c8d00a4d2430beea79c4dd951f82ab5418656",
+          "retrieved_at": "2026-08-12T00:25:26+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR1d0063:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/經部/禮類/禮記之屬/表記集傳/表記集傳__juan_01.txt",
+        "四庫全書/clean/經部/禮類/禮記之屬/表記集傳/表記集傳__juan_02.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

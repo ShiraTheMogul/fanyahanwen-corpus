@@ -1,4 +1,4 @@
-﻿{
+{
   "schema_version": 1,
   "work_id": 79857,
   "corpus_root": "中國漢文",
@@ -14,12 +14,92 @@
   "is_compilation": false,
   "documents": [
     {
-      "document_id": 172567,
-      "file": "焦氏易林__juan_01.txt",
-      "path": "中國漢文/clean/漢朝/西漢/焦氏易林/焦氏易林__juan_01.txt",
-      "body_start_line": 6
+      "file": "焦氏易林__juan_000.txt",
+      "path": "中國漢文/clean/漢朝/西漢/焦氏易林/焦氏易林__juan_000.txt",
+      "page_title": "焦氏易林/較定易林原序",
+      "chapter": "較定易林原序",
+      "sources": [
+        "https://github.com/kanripo/KR3g0029"
+      ],
+      "digital_transcription_id": "kanripo:KR3g0029:master@764e995ce74aa249081918ca1b0c23bbca62bec8"
+    },
+    {
+      "file": "焦氏易林__juan_001.txt",
+      "path": "中國漢文/clean/漢朝/西漢/焦氏易林/焦氏易林__juan_001.txt",
+      "page_title": "焦氏易林/卷一",
+      "chapter": "卷一",
+      "sources": [
+        "https://github.com/kanripo/KR3g0029"
+      ],
+      "digital_transcription_id": "kanripo:KR3g0029:master@764e995ce74aa249081918ca1b0c23bbca62bec8",
+      "document_id": 172567
+    },
+    {
+      "file": "焦氏易林__juan_002.txt",
+      "path": "中國漢文/clean/漢朝/西漢/焦氏易林/焦氏易林__juan_002.txt",
+      "page_title": "焦氏易林/卷二",
+      "chapter": "卷二",
+      "sources": [
+        "https://github.com/kanripo/KR3g0029"
+      ],
+      "digital_transcription_id": "kanripo:KR3g0029:master@764e995ce74aa249081918ca1b0c23bbca62bec8"
+    },
+    {
+      "file": "焦氏易林__juan_003.txt",
+      "path": "中國漢文/clean/漢朝/西漢/焦氏易林/焦氏易林__juan_003.txt",
+      "page_title": "焦氏易林/卷三",
+      "chapter": "卷三",
+      "sources": [
+        "https://github.com/kanripo/KR3g0029"
+      ],
+      "digital_transcription_id": "kanripo:KR3g0029:master@764e995ce74aa249081918ca1b0c23bbca62bec8"
+    },
+    {
+      "file": "焦氏易林__juan_004.txt",
+      "path": "中國漢文/clean/漢朝/西漢/焦氏易林/焦氏易林__juan_004.txt",
+      "page_title": "焦氏易林/卷四",
+      "chapter": "卷四",
+      "sources": [
+        "https://github.com/kanripo/KR3g0029"
+      ],
+      "digital_transcription_id": "kanripo:KR3g0029:master@764e995ce74aa249081918ca1b0c23bbca62bec8"
     }
   ],
   "known_commentaries": [],
-  "ca": "前206–9年"
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR3g0029:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR3g0029:master@764e995ce74aa249081918ca1b0c23bbca62bec8",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR3g0029",
+          "branch": "master",
+          "revision": "764e995ce74aa249081918ca1b0c23bbca62bec8",
+          "retrieved_at": "2026-08-12T02:39:27+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR3g0029:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "中國漢文/clean/漢朝/西漢/焦氏易林/焦氏易林__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

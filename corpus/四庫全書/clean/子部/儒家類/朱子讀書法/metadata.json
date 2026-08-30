@@ -23,42 +23,99 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 188637,
-          "file": "朱子讀書法__juan_01.txt",
-          "path": "四庫全書/clean/子部/儒家類/朱子讀書法/朱子讀書法__juan_01.txt",
-          "title": "朱子讀書法 (四庫全書本)",
-          "page_title": "朱子讀書法 (四庫全書本)/卷1",
-          "display_title": "朱子讀書法",
-          "body_start_line": 6
+          "file": "朱子讀書法__juan_000.txt",
+          "path": "四庫全書/clean/子部/儒家類/朱子讀書法/朱子讀書法__juan_000.txt",
+          "page_title": "朱子讀書法/原序",
+          "chapter": "原序",
+          "sources": [
+            "https://github.com/kanripo/KR3a0070"
+          ],
+          "digital_transcription_id": "kanripo:KR3a0070:master@f0b99c8918c76bec53a7cb00abd7c0060578bd60"
         },
         {
-          "document_id": 188638,
-          "file": "朱子讀書法__juan_02.txt",
-          "path": "四庫全書/clean/子部/儒家類/朱子讀書法/朱子讀書法__juan_02.txt",
-          "title": "朱子讀書法 (四庫全書本)",
-          "page_title": "朱子讀書法 (四庫全書本)/卷2",
-          "display_title": "朱子讀書法",
-          "body_start_line": 6
+          "file": "朱子讀書法__juan_001.txt",
+          "path": "四庫全書/clean/子部/儒家類/朱子讀書法/朱子讀書法__juan_001.txt",
+          "page_title": "朱子讀書法/卷一",
+          "chapter": "卷一",
+          "sources": [
+            "https://github.com/kanripo/KR3a0070"
+          ],
+          "digital_transcription_id": "kanripo:KR3a0070:master@f0b99c8918c76bec53a7cb00abd7c0060578bd60",
+          "document_id": 188637
         },
         {
-          "document_id": 188639,
-          "file": "朱子讀書法__juan_03.txt",
-          "path": "四庫全書/clean/子部/儒家類/朱子讀書法/朱子讀書法__juan_03.txt",
-          "title": "朱子讀書法 (四庫全書本)",
-          "page_title": "朱子讀書法 (四庫全書本)/卷3",
-          "display_title": "朱子讀書法",
-          "body_start_line": 6
+          "file": "朱子讀書法__juan_002.txt",
+          "path": "四庫全書/clean/子部/儒家類/朱子讀書法/朱子讀書法__juan_002.txt",
+          "page_title": "朱子讀書法/卷二",
+          "chapter": "卷二",
+          "sources": [
+            "https://github.com/kanripo/KR3a0070"
+          ],
+          "digital_transcription_id": "kanripo:KR3a0070:master@f0b99c8918c76bec53a7cb00abd7c0060578bd60",
+          "document_id": 188638
         },
         {
-          "document_id": 188640,
-          "file": "朱子讀書法__juan_04.txt",
-          "path": "四庫全書/clean/子部/儒家類/朱子讀書法/朱子讀書法__juan_04.txt",
-          "title": "朱子讀書法 (四庫全書本)",
-          "page_title": "朱子讀書法 (四庫全書本)/卷4",
-          "display_title": "朱子讀書法",
-          "body_start_line": 6
+          "file": "朱子讀書法__juan_003.txt",
+          "path": "四庫全書/clean/子部/儒家類/朱子讀書法/朱子讀書法__juan_003.txt",
+          "page_title": "朱子讀書法/卷三",
+          "chapter": "卷三",
+          "sources": [
+            "https://github.com/kanripo/KR3a0070"
+          ],
+          "digital_transcription_id": "kanripo:KR3a0070:master@f0b99c8918c76bec53a7cb00abd7c0060578bd60",
+          "document_id": 188639
+        },
+        {
+          "file": "朱子讀書法__juan_004.txt",
+          "path": "四庫全書/clean/子部/儒家類/朱子讀書法/朱子讀書法__juan_004.txt",
+          "page_title": "朱子讀書法/卷四",
+          "chapter": "卷四",
+          "sources": [
+            "https://github.com/kanripo/KR3a0070"
+          ],
+          "digital_transcription_id": "kanripo:KR3a0070:master@f0b99c8918c76bec53a7cb00abd7c0060578bd60",
+          "document_id": 188640
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR3a0070:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR3a0070:master@f0b99c8918c76bec53a7cb00abd7c0060578bd60",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR3a0070",
+          "branch": "master",
+          "revision": "f0b99c8918c76bec53a7cb00abd7c0060578bd60",
+          "retrieved_at": "2026-08-12T02:26:01+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR3a0070:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/子部/儒家類/朱子讀書法/朱子讀書法__juan_01.txt",
+        "四庫全書/clean/子部/儒家類/朱子讀書法/朱子讀書法__juan_02.txt",
+        "四庫全書/clean/子部/儒家類/朱子讀書法/朱子讀書法__juan_03.txt",
+        "四庫全書/clean/子部/儒家類/朱子讀書法/朱子讀書法__juan_04.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_recorded_in_current_metadata",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

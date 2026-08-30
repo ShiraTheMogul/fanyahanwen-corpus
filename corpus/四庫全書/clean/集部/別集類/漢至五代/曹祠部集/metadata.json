@@ -23,24 +23,75 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 225807,
-          "file": "曹祠部集__juan_01.txt",
-          "path": "四庫全書/clean/集部/別集類/漢至五代/曹祠部集/曹祠部集__juan_01.txt",
-          "title": "曹祠部集 (四庫全書本)",
-          "page_title": "曹祠部集 (四庫全書本)/卷1",
-          "display_title": "曹祠部集",
-          "body_start_line": 6
+          "file": "曹祠部集__juan_000.txt",
+          "path": "四庫全書/clean/集部/別集類/漢至五代/曹祠部集/曹祠部集__juan_000.txt",
+          "page_title": "曹祠部集/0",
+          "chapter": "0",
+          "sources": [
+            "https://github.com/kanripo/KR4c0085"
+          ],
+          "digital_transcription_id": "kanripo:KR4c0085:master@3ea091f7a0d921f745ab8fc5c264b774f01bcd80"
         },
         {
-          "document_id": 225808,
-          "file": "曹祠部集__juan_02.txt",
-          "path": "四庫全書/clean/集部/別集類/漢至五代/曹祠部集/曹祠部集__juan_02.txt",
-          "title": "曹祠部集 (四庫全書本)",
-          "page_title": "曹祠部集 (四庫全書本)/卷2",
-          "display_title": "曹祠部集",
-          "body_start_line": 6
+          "file": "曹祠部集__juan_001.txt",
+          "path": "四庫全書/clean/集部/別集類/漢至五代/曹祠部集/曹祠部集__juan_001.txt",
+          "page_title": "曹祠部集/1",
+          "chapter": "1",
+          "sources": [
+            "https://github.com/kanripo/KR4c0085"
+          ],
+          "digital_transcription_id": "kanripo:KR4c0085:master@3ea091f7a0d921f745ab8fc5c264b774f01bcd80",
+          "document_id": 225807
+        },
+        {
+          "file": "曹祠部集__juan_002.txt",
+          "path": "四庫全書/clean/集部/別集類/漢至五代/曹祠部集/曹祠部集__juan_002.txt",
+          "page_title": "曹祠部集/2",
+          "chapter": "2",
+          "sources": [
+            "https://github.com/kanripo/KR4c0085"
+          ],
+          "digital_transcription_id": "kanripo:KR4c0085:master@3ea091f7a0d921f745ab8fc5c264b774f01bcd80",
+          "document_id": 225808
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR4c0085:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR4c0085:master@3ea091f7a0d921f745ab8fc5c264b774f01bcd80",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR4c0085",
+          "branch": "master",
+          "revision": "3ea091f7a0d921f745ab8fc5c264b774f01bcd80",
+          "retrieved_at": "2026-08-12T03:20:41+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR4c0085:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/集部/別集類/漢至五代/曹祠部集/曹祠部集__juan_01.txt",
+        "四庫全書/clean/集部/別集類/漢至五代/曹祠部集/曹祠部集__juan_02.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

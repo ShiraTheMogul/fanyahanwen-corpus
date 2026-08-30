@@ -20,32 +20,75 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 187726,
-          "file": "人譜__juan_01.txt",
-          "path": "四庫全書/clean/子部/儒家類/人譜/人譜__juan_01.txt",
-          "title": "人譜 (四庫全書本)",
-          "page_title": "人譜 (四庫全書本)/卷上",
-          "display_title": "人譜",
-          "source_categories": [
-            "1076年 (提及)",
-            "1085年 (提及)",
-            "PD-old"
+          "file": "人譜__juan_000.txt",
+          "path": "四庫全書/clean/子部/儒家類/人譜/人譜__juan_000.txt",
+          "page_title": "人譜/0",
+          "chapter": "0",
+          "sources": [
+            "https://github.com/kanripo/KR3a0098"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3a0098:master@395bb2a2184cb59ca6e92116174750f717d2c903"
         },
         {
-          "document_id": 187727,
-          "file": "人譜__juan_02.txt",
-          "path": "四庫全書/clean/子部/儒家類/人譜/人譜__juan_02.txt",
-          "title": "人譜 (四庫全書本)",
-          "page_title": "人譜 (四庫全書本)/卷下",
-          "display_title": "人譜",
-          "source_categories": [
-            "PD-old"
+          "file": "人譜__juan_001.txt",
+          "path": "四庫全書/clean/子部/儒家類/人譜/人譜__juan_001.txt",
+          "page_title": "人譜/1",
+          "chapter": "1",
+          "sources": [
+            "https://github.com/kanripo/KR3a0098"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3a0098:master@395bb2a2184cb59ca6e92116174750f717d2c903",
+          "document_id": 187726
+        },
+        {
+          "file": "人譜__juan_002.txt",
+          "path": "四庫全書/clean/子部/儒家類/人譜/人譜__juan_002.txt",
+          "page_title": "人譜/2",
+          "chapter": "2",
+          "sources": [
+            "https://github.com/kanripo/KR3a0098"
+          ],
+          "digital_transcription_id": "kanripo:KR3a0098:master@395bb2a2184cb59ca6e92116174750f717d2c903",
+          "document_id": 187727
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR3a0098:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR3a0098:master@395bb2a2184cb59ca6e92116174750f717d2c903",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR3a0098",
+          "branch": "master",
+          "revision": "395bb2a2184cb59ca6e92116174750f717d2c903",
+          "retrieved_at": "2026-08-12T02:26:49+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR3a0098:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/子部/儒家類/人譜/人譜__juan_01.txt",
+        "四庫全書/clean/子部/儒家類/人譜/人譜__juan_02.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

@@ -1,4 +1,4 @@
-﻿{
+{
   "schema_version": 1,
   "work_id": 63543,
   "corpus_root": "中國漢文",
@@ -16,12 +16,62 @@
   "is_compilation": false,
   "documents": [
     {
-      "document_id": 116522,
-      "file": "溪蠻叢笑__juan_01.txt",
-      "path": "中國漢文/clean/宋朝/南宋/溪蠻叢笑/溪蠻叢笑__juan_01.txt",
-      "body_start_line": 9
+      "file": "溪蠻叢笑__juan_000.txt",
+      "path": "中國漢文/clean/宋朝/南宋/溪蠻叢笑/溪蠻叢笑__juan_000.txt",
+      "page_title": "溪蠻叢笑/提要",
+      "chapter": "提要",
+      "sources": [
+        "https://github.com/kanripo/KR2k0140"
+      ],
+      "digital_transcription_id": "kanripo:KR2k0140:master@595047a566501e436ff535b51c6255bc03cf9a30"
+    },
+    {
+      "file": "溪蠻叢笑__juan_001.txt",
+      "path": "中國漢文/clean/宋朝/南宋/溪蠻叢笑/溪蠻叢笑__juan_001.txt",
+      "page_title": "溪蠻叢笑/溪蠻叢笑",
+      "chapter": "溪蠻叢笑",
+      "sources": [
+        "https://github.com/kanripo/KR2k0140"
+      ],
+      "digital_transcription_id": "kanripo:KR2k0140:master@595047a566501e436ff535b51c6255bc03cf9a30",
+      "document_id": 116522
     }
   ],
   "known_commentaries": [],
-  "ca": "1127–1279年"
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR2k0140:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR2k0140:master@595047a566501e436ff535b51c6255bc03cf9a30",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR2k0140",
+          "branch": "master",
+          "revision": "595047a566501e436ff535b51c6255bc03cf9a30",
+          "retrieved_at": "2026-08-12T02:08:11+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR2k0140:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "中國漢文/clean/宋朝/南宋/溪蠻叢笑/溪蠻叢笑__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_recorded_in_current_metadata",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

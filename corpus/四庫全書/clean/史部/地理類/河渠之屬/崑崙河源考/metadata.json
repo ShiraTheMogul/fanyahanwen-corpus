@@ -31,15 +31,63 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 177786,
-          "file": "崑崙河源考__juan_01.txt",
-          "path": "四庫全書/clean/史部/地理類/河渠之屬/崑崙河源考/崑崙河源考__juan_01.txt",
-          "title": "崑崙河源考 (四庫全書本)",
-          "page_title": "崑崙河源考 (四庫全書本)",
-          "display_title": "崑崙河源考",
-          "body_start_line": 6
+          "file": "崑崙河源考__juan_000.txt",
+          "path": "四庫全書/clean/史部/地理類/河渠之屬/崑崙河源考/崑崙河源考__juan_000.txt",
+          "page_title": "崑崙河源考/原序",
+          "chapter": "原序",
+          "sources": [
+            "https://github.com/kanripo/KR2k0073"
+          ],
+          "digital_transcription_id": "kanripo:KR2k0073:master@3b6d4e81deb2014c7b155c3edfaf7cf4863c6c6e"
+        },
+        {
+          "file": "崑崙河源考__juan_001.txt",
+          "path": "四庫全書/clean/史部/地理類/河渠之屬/崑崙河源考/崑崙河源考__juan_001.txt",
+          "page_title": "崑崙河源考/崑崙河源考",
+          "chapter": "崑崙河源考",
+          "sources": [
+            "https://github.com/kanripo/KR2k0073"
+          ],
+          "digital_transcription_id": "kanripo:KR2k0073:master@3b6d4e81deb2014c7b155c3edfaf7cf4863c6c6e",
+          "document_id": 177786
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR2k0073:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR2k0073:master@3b6d4e81deb2014c7b155c3edfaf7cf4863c6c6e",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR2k0073",
+          "branch": "master",
+          "revision": "3b6d4e81deb2014c7b155c3edfaf7cf4863c6c6e",
+          "retrieved_at": "2026-08-12T02:03:48+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR2k0073:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/史部/地理類/河渠之屬/崑崙河源考/崑崙河源考__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

@@ -1,4 +1,4 @@
-﻿{
+{
   "schema_version": 1,
   "work_id": 28258,
   "corpus_root": "中國漢文",
@@ -10,37 +10,120 @@
   "is_compilation": false,
   "documents": [
     {
-      "document_id": 42169,
-      "file": "渚宮舊事__juan_01.txt",
-      "path": "中國漢文/clean/唐朝/渚宮舊事/渚宮舊事__juan_01.txt",
+      "file": "渚宮舊事__juan_000.txt",
+      "path": "中國漢文/clean/唐朝/渚宮舊事/渚宮舊事__juan_000.txt",
+      "page_title": "渚宮舊事/提要",
+      "chapter": "提要",
+      "sources": [
+        "https://github.com/kanripo/KR2e0007"
+      ],
+      "digital_transcription_id": "kanripo:KR2e0007:master@5ed9d808e055e91a94ad421a76aba40bf0798096"
+    },
+    {
+      "file": "渚宮舊事__juan_001.txt",
+      "path": "中國漢文/clean/唐朝/渚宮舊事/渚宮舊事__juan_001.txt",
       "page_title": "渚宮舊事/卷一",
-      "body_start_line": 5
+      "chapter": "卷一",
+      "sources": [
+        "https://github.com/kanripo/KR2e0007"
+      ],
+      "digital_transcription_id": "kanripo:KR2e0007:master@5ed9d808e055e91a94ad421a76aba40bf0798096",
+      "document_id": 42169
     },
     {
-      "document_id": 42170,
-      "file": "渚宮舊事__juan_02.txt",
-      "path": "中國漢文/clean/唐朝/渚宮舊事/渚宮舊事__juan_02.txt",
-      "page_title": "渚宮舊事/卷二"
+      "file": "渚宮舊事__juan_002.txt",
+      "path": "中國漢文/clean/唐朝/渚宮舊事/渚宮舊事__juan_002.txt",
+      "page_title": "渚宮舊事/卷二",
+      "chapter": "卷二",
+      "sources": [
+        "https://github.com/kanripo/KR2e0007"
+      ],
+      "digital_transcription_id": "kanripo:KR2e0007:master@5ed9d808e055e91a94ad421a76aba40bf0798096",
+      "document_id": 42170
     },
     {
-      "document_id": 42171,
-      "file": "渚宮舊事__juan_03.txt",
-      "path": "中國漢文/clean/唐朝/渚宮舊事/渚宮舊事__juan_03.txt",
-      "page_title": "渚宮舊事/卷三"
+      "file": "渚宮舊事__juan_003.txt",
+      "path": "中國漢文/clean/唐朝/渚宮舊事/渚宮舊事__juan_003.txt",
+      "page_title": "渚宮舊事/卷三",
+      "chapter": "卷三",
+      "sources": [
+        "https://github.com/kanripo/KR2e0007"
+      ],
+      "digital_transcription_id": "kanripo:KR2e0007:master@5ed9d808e055e91a94ad421a76aba40bf0798096",
+      "document_id": 42171
     },
     {
-      "document_id": 42172,
-      "file": "渚宮舊事__juan_04.txt",
-      "path": "中國漢文/clean/唐朝/渚宮舊事/渚宮舊事__juan_04.txt",
-      "page_title": "渚宮舊事/卷四"
+      "file": "渚宮舊事__juan_004.txt",
+      "path": "中國漢文/clean/唐朝/渚宮舊事/渚宮舊事__juan_004.txt",
+      "page_title": "渚宮舊事/卷四",
+      "chapter": "卷四",
+      "sources": [
+        "https://github.com/kanripo/KR2e0007"
+      ],
+      "digital_transcription_id": "kanripo:KR2e0007:master@5ed9d808e055e91a94ad421a76aba40bf0798096",
+      "document_id": 42172
     },
     {
-      "document_id": 42173,
-      "file": "渚宮舊事__juan_05.txt",
-      "path": "中國漢文/clean/唐朝/渚宮舊事/渚宮舊事__juan_05.txt",
-      "page_title": "渚宮舊事/卷五"
+      "file": "渚宮舊事__juan_005.txt",
+      "path": "中國漢文/clean/唐朝/渚宮舊事/渚宮舊事__juan_005.txt",
+      "page_title": "渚宮舊事/卷五",
+      "chapter": "卷五",
+      "sources": [
+        "https://github.com/kanripo/KR2e0007"
+      ],
+      "digital_transcription_id": "kanripo:KR2e0007:master@5ed9d808e055e91a94ad421a76aba40bf0798096",
+      "document_id": 42173
+    },
+    {
+      "file": "渚宮舊事__juan_006.txt",
+      "path": "中國漢文/clean/唐朝/渚宮舊事/渚宮舊事__juan_006.txt",
+      "page_title": "渚宮舊事/補遺",
+      "chapter": "補遺",
+      "sources": [
+        "https://github.com/kanripo/KR2e0007"
+      ],
+      "digital_transcription_id": "kanripo:KR2e0007:master@5ed9d808e055e91a94ad421a76aba40bf0798096"
     }
   ],
   "known_commentaries": [],
-  "ca": "618–907年"
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR2e0007:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR2e0007:master@5ed9d808e055e91a94ad421a76aba40bf0798096",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR2e0007",
+          "branch": "master",
+          "revision": "5ed9d808e055e91a94ad421a76aba40bf0798096",
+          "retrieved_at": "2026-08-12T01:36:12+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR2e0007:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "中國漢文/clean/唐朝/渚宮舊事/渚宮舊事__juan_01.txt",
+        "中國漢文/clean/唐朝/渚宮舊事/渚宮舊事__juan_02.txt",
+        "中國漢文/clean/唐朝/渚宮舊事/渚宮舊事__juan_03.txt",
+        "中國漢文/clean/唐朝/渚宮舊事/渚宮舊事__juan_04.txt",
+        "中國漢文/clean/唐朝/渚宮舊事/渚宮舊事__juan_05.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

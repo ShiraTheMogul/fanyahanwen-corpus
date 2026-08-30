@@ -20,34 +20,75 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 213789,
-          "file": "伐檀集__juan_01.txt",
-          "path": "四庫全書/clean/集部/別集類/北宋建隆至靖康/伐檀集/伐檀集__juan_01.txt",
-          "title": "伐檀集 (四庫全書本)",
-          "page_title": "伐檀集 (四庫全書本)/卷上",
-          "display_title": "伐檀集",
-          "source_categories": [
-            "1053年 (提及)",
-            "PD-old"
+          "file": "伐檀集__juan_000.txt",
+          "path": "四庫全書/clean/集部/別集類/北宋建隆至靖康/伐檀集/伐檀集__juan_000.txt",
+          "page_title": "伐檀集/序",
+          "chapter": "序",
+          "sources": [
+            "https://github.com/kanripo/KR4d0037"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR4d0037:master@a3e5164fed4edd3fbbf2a1c3c687e8e3a84d3198"
         },
         {
-          "document_id": 213790,
-          "file": "伐檀集__juan_02.txt",
-          "path": "四庫全書/clean/集部/別集類/北宋建隆至靖康/伐檀集/伐檀集__juan_02.txt",
-          "title": "伐檀集 (四庫全書本)",
-          "page_title": "伐檀集 (四庫全書本)/卷下",
-          "display_title": "伐檀集",
-          "source_categories": [
-            "1050年 (提及)",
-            "1052年 (提及)",
-            "976年 (提及)",
-            "PD-old"
+          "file": "伐檀集__juan_001.txt",
+          "path": "四庫全書/clean/集部/別集類/北宋建隆至靖康/伐檀集/伐檀集__juan_001.txt",
+          "page_title": "伐檀集/卷上",
+          "chapter": "卷上",
+          "sources": [
+            "https://github.com/kanripo/KR4d0037"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR4d0037:master@a3e5164fed4edd3fbbf2a1c3c687e8e3a84d3198",
+          "document_id": 213789
+        },
+        {
+          "file": "伐檀集__juan_002.txt",
+          "path": "四庫全書/clean/集部/別集類/北宋建隆至靖康/伐檀集/伐檀集__juan_002.txt",
+          "page_title": "伐檀集/卷下",
+          "chapter": "卷下",
+          "sources": [
+            "https://github.com/kanripo/KR4d0037"
+          ],
+          "digital_transcription_id": "kanripo:KR4d0037:master@a3e5164fed4edd3fbbf2a1c3c687e8e3a84d3198",
+          "document_id": 213790
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR4d0037:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR4d0037:master@a3e5164fed4edd3fbbf2a1c3c687e8e3a84d3198",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR4d0037",
+          "branch": "master",
+          "revision": "a3e5164fed4edd3fbbf2a1c3c687e8e3a84d3198",
+          "retrieved_at": "2026-08-12T03:22:38+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR4d0037:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/集部/別集類/北宋建隆至靖康/伐檀集/伐檀集__juan_01.txt",
+        "四庫全書/clean/集部/別集類/北宋建隆至靖康/伐檀集/伐檀集__juan_02.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

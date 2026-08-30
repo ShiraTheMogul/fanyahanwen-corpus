@@ -23,33 +23,87 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 192693,
-          "file": "墨譜法式__juan_01.txt",
-          "path": "四庫全書/clean/子部/譜錄類/器物之屬/墨譜法式/墨譜法式__juan_01.txt",
-          "title": "墨譜法式 (四庫全書本)",
-          "page_title": "墨譜法式 (四庫全書本)/卷上",
-          "display_title": "墨譜法式",
-          "body_start_line": 6
+          "file": "墨譜法式__juan_000.txt",
+          "path": "四庫全書/clean/子部/譜錄類/器物之屬/墨譜法式/墨譜法式__juan_000.txt",
+          "page_title": "墨譜法式/原序",
+          "chapter": "原序",
+          "sources": [
+            "https://github.com/kanripo/KR3i0010"
+          ],
+          "digital_transcription_id": "kanripo:KR3i0010:master@f5622dd68e8332b23881e797a105863d5d385330"
         },
         {
-          "document_id": 192694,
-          "file": "墨譜法式__juan_02.txt",
-          "path": "四庫全書/clean/子部/譜錄類/器物之屬/墨譜法式/墨譜法式__juan_02.txt",
-          "title": "墨譜法式 (四庫全書本)",
-          "page_title": "墨譜法式 (四庫全書本)/卷中",
-          "display_title": "墨譜法式",
-          "body_start_line": 6
+          "file": "墨譜法式__juan_001.txt",
+          "path": "四庫全書/clean/子部/譜錄類/器物之屬/墨譜法式/墨譜法式__juan_001.txt",
+          "page_title": "墨譜法式/卷上",
+          "chapter": "卷上",
+          "sources": [
+            "https://github.com/kanripo/KR3i0010"
+          ],
+          "digital_transcription_id": "kanripo:KR3i0010:master@f5622dd68e8332b23881e797a105863d5d385330",
+          "document_id": 192693
         },
         {
-          "document_id": 192695,
-          "file": "墨譜法式__juan_03.txt",
-          "path": "四庫全書/clean/子部/譜錄類/器物之屬/墨譜法式/墨譜法式__juan_03.txt",
-          "title": "墨譜法式 (四庫全書本)",
-          "page_title": "墨譜法式 (四庫全書本)/卷下",
-          "display_title": "墨譜法式",
-          "body_start_line": 6
+          "file": "墨譜法式__juan_002.txt",
+          "path": "四庫全書/clean/子部/譜錄類/器物之屬/墨譜法式/墨譜法式__juan_002.txt",
+          "page_title": "墨譜法式/卷中",
+          "chapter": "卷中",
+          "sources": [
+            "https://github.com/kanripo/KR3i0010"
+          ],
+          "digital_transcription_id": "kanripo:KR3i0010:master@f5622dd68e8332b23881e797a105863d5d385330",
+          "document_id": 192694
+        },
+        {
+          "file": "墨譜法式__juan_003.txt",
+          "path": "四庫全書/clean/子部/譜錄類/器物之屬/墨譜法式/墨譜法式__juan_003.txt",
+          "page_title": "墨譜法式/卷下",
+          "chapter": "卷下",
+          "sources": [
+            "https://github.com/kanripo/KR3i0010"
+          ],
+          "digital_transcription_id": "kanripo:KR3i0010:master@f5622dd68e8332b23881e797a105863d5d385330",
+          "document_id": 192695
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR3i0010:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR3i0010:master@f5622dd68e8332b23881e797a105863d5d385330",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR3i0010",
+          "branch": "master",
+          "revision": "f5622dd68e8332b23881e797a105863d5d385330",
+          "retrieved_at": "2026-08-12T02:45:26+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR3i0010:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/子部/譜錄類/器物之屬/墨譜法式/墨譜法式__juan_01.txt",
+        "四庫全書/clean/子部/譜錄類/器物之屬/墨譜法式/墨譜法式__juan_02.txt",
+        "四庫全書/clean/子部/譜錄類/器物之屬/墨譜法式/墨譜法式__juan_03.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

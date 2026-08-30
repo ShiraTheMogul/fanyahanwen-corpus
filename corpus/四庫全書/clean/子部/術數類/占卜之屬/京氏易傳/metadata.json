@@ -20,43 +20,76 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 192445,
-          "file": "京氏易傳__juan_01.txt",
-          "path": "四庫全書/clean/子部/術數類/占卜之屬/京氏易傳/京氏易傳__juan_01.txt",
-          "title": "京氏易傳 (四庫全書本)",
-          "page_title": "京氏易傳 (四庫全書本)/卷上",
-          "display_title": "京氏易傳",
-          "source_categories": [
-            "PD-old"
+          "file": "京氏易傳__juan_000.txt",
+          "path": "四庫全書/clean/子部/術數類/占卜之屬/京氏易傳/京氏易傳__juan_000.txt",
+          "page_title": "京氏易傳/0",
+          "chapter": "0",
+          "sources": [
+            "https://github.com/kanripo/KR3g0030"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3g0030:WYG@98290d7ddb480dc0c80313dae265819bad4ee5ff"
         },
         {
-          "document_id": 192446,
-          "file": "京氏易傳__juan_02.txt",
-          "path": "四庫全書/clean/子部/術數類/占卜之屬/京氏易傳/京氏易傳__juan_02.txt",
-          "title": "京氏易傳 (四庫全書本)",
-          "page_title": "京氏易傳 (四庫全書本)/卷中",
-          "display_title": "京氏易傳",
-          "source_categories": [
-            "PD-old"
+          "file": "京氏易傳__juan_001.txt",
+          "path": "四庫全書/clean/子部/術數類/占卜之屬/京氏易傳/京氏易傳__juan_001.txt",
+          "page_title": "京氏易傳/1",
+          "chapter": "1",
+          "sources": [
+            "https://github.com/kanripo/KR3g0030"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3g0030:WYG@98290d7ddb480dc0c80313dae265819bad4ee5ff",
+          "document_id": 192445
         },
         {
-          "document_id": 192447,
-          "file": "京氏易傳__juan_03.txt",
-          "path": "四庫全書/clean/子部/術數類/占卜之屬/京氏易傳/京氏易傳__juan_03.txt",
-          "title": "京氏易傳 (四庫全書本)",
-          "page_title": "京氏易傳 (四庫全書本)/卷下",
-          "display_title": "京氏易傳",
-          "source_categories": [
-            "1093年 (提及)",
-            "PD-old"
+          "file": "京氏易傳__juan_003.txt",
+          "path": "四庫全書/clean/子部/術數類/占卜之屬/京氏易傳/京氏易傳__juan_003.txt",
+          "page_title": "京氏易傳/3",
+          "chapter": "3",
+          "sources": [
+            "https://github.com/kanripo/KR3g0030"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3g0030:WYG@98290d7ddb480dc0c80313dae265819bad4ee5ff",
+          "document_id": 192447
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR3g0030:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "branch_fallback_inference",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR3g0030:WYG@98290d7ddb480dc0c80313dae265819bad4ee5ff",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR3g0030",
+          "branch": "WYG",
+          "revision": "98290d7ddb480dc0c80313dae265819bad4ee5ff",
+          "retrieved_at": "2026-08-12T02:39:28+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR3g0030:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/子部/術數類/占卜之屬/京氏易傳/京氏易傳__juan_01.txt",
+        "四庫全書/clean/子部/術數類/占卜之屬/京氏易傳/京氏易傳__juan_02.txt",
+        "四庫全書/clean/子部/術數類/占卜之屬/京氏易傳/京氏易傳__juan_03.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

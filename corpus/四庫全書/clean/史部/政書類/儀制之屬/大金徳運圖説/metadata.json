@@ -32,15 +32,52 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 181494,
-          "file": "大金徳運圖説__juan_01.txt",
-          "path": "四庫全書/clean/史部/政書類/儀制之屬/大金徳運圖説/大金徳運圖説__juan_01.txt",
-          "title": "大金徳運圖説 (四庫全書本)",
-          "page_title": "大金徳運圖説 (四庫全書本)",
-          "display_title": "大金徳運圖説",
-          "body_start_line": 6
+          "file": "大金徳運圖説__juan_000.txt",
+          "path": "四庫全書/clean/史部/政書類/儀制之屬/大金徳運圖説/大金徳運圖説__juan_000.txt",
+          "page_title": "大金徳運圖説/大金徳運圖説",
+          "chapter": "大金徳運圖説",
+          "sources": [
+            "https://github.com/kanripo/KR2m0026"
+          ],
+          "digital_transcription_id": "kanripo:KR2m0026:master@c9f0eeab9f2a25f01da0288f17188ab781babad9"
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR2m0026:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR2m0026:master@c9f0eeab9f2a25f01da0288f17188ab781babad9",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR2m0026",
+          "branch": "master",
+          "revision": "c9f0eeab9f2a25f01da0288f17188ab781babad9",
+          "retrieved_at": "2026-08-12T02:17:50+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR2m0026:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/史部/政書類/儀制之屬/大金徳運圖説/大金徳運圖説__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_recorded_in_current_metadata",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

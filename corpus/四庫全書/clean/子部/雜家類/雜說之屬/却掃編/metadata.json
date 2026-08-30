@@ -20,63 +20,87 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 197079,
-          "file": "却掃編__juan_01.txt",
-          "path": "四庫全書/clean/子部/雜家類/雜說之屬/却掃編/却掃編__juan_01.txt",
-          "title": "却掃編 (四庫全書本)",
-          "page_title": "却掃編 (四庫全書本)/卷上",
-          "display_title": "却掃編",
-          "source_categories": [
-            "1005年 (提及)",
-            "1006年 (提及)",
-            "1069年 (提及)",
-            "1088年 (提及)",
-            "1091年 (提及)",
-            "1094年 (提及)",
-            "1125年 (提及)",
-            "1126年 (提及)",
-            "1129年 (提及)",
-            "51年 (提及)",
-            "988年 (提及)",
-            "PD-old"
+          "file": "却掃編__juan_000.txt",
+          "path": "四庫全書/clean/子部/雜家類/雜說之屬/却掃編/却掃編__juan_000.txt",
+          "page_title": "却掃編/提要",
+          "chapter": "提要",
+          "sources": [
+            "https://github.com/kanripo/KR3j0108"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3j0108:master@da078b614818d94e99b9c431ba91b0b649c6e15e"
         },
         {
-          "document_id": 197080,
-          "file": "却掃編__juan_02.txt",
-          "path": "四庫全書/clean/子部/雜家類/雜說之屬/却掃編/却掃編__juan_02.txt",
-          "title": "却掃編 (四庫全書本)",
-          "page_title": "却掃編 (四庫全書本)/卷中",
-          "display_title": "却掃編",
-          "source_categories": [
-            "1007年 (提及)",
-            "1090年 (提及)",
-            "PD-old"
+          "file": "却掃編__juan_001.txt",
+          "path": "四庫全書/clean/子部/雜家類/雜說之屬/却掃編/却掃編__juan_001.txt",
+          "page_title": "却掃編/卷上",
+          "chapter": "卷上",
+          "sources": [
+            "https://github.com/kanripo/KR3j0108"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3j0108:master@da078b614818d94e99b9c431ba91b0b649c6e15e",
+          "document_id": 197079
         },
         {
-          "document_id": 197081,
-          "file": "却掃編__juan_03.txt",
-          "path": "四庫全書/clean/子部/雜家類/雜說之屬/却掃編/却掃編__juan_03.txt",
-          "title": "却掃編 (四庫全書本)",
-          "page_title": "却掃編 (四庫全書本)/卷下",
-          "display_title": "却掃編",
-          "source_categories": [
-            "1024年 (提及)",
-            "1029年 (提及)",
-            "1034年 (提及)",
-            "1049年 (提及)",
-            "1070年 (提及)",
-            "1107年 (提及)",
-            "1129年 (提及)",
-            "982年 (提及)",
-            "PD-old"
+          "file": "却掃編__juan_002.txt",
+          "path": "四庫全書/clean/子部/雜家類/雜說之屬/却掃編/却掃編__juan_002.txt",
+          "page_title": "却掃編/卷中",
+          "chapter": "卷中",
+          "sources": [
+            "https://github.com/kanripo/KR3j0108"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3j0108:master@da078b614818d94e99b9c431ba91b0b649c6e15e",
+          "document_id": 197080
+        },
+        {
+          "file": "却掃編__juan_003.txt",
+          "path": "四庫全書/clean/子部/雜家類/雜說之屬/却掃編/却掃編__juan_003.txt",
+          "page_title": "却掃編/卷下",
+          "chapter": "卷下",
+          "sources": [
+            "https://github.com/kanripo/KR3j0108"
+          ],
+          "digital_transcription_id": "kanripo:KR3j0108:master@da078b614818d94e99b9c431ba91b0b649c6e15e",
+          "document_id": 197081
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR3j0108:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR3j0108:master@da078b614818d94e99b9c431ba91b0b649c6e15e",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR3j0108",
+          "branch": "master",
+          "revision": "da078b614818d94e99b9c431ba91b0b649c6e15e",
+          "retrieved_at": "2026-08-12T02:49:26+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR3j0108:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/子部/雜家類/雜說之屬/却掃編/却掃編__juan_01.txt",
+        "四庫全書/clean/子部/雜家類/雜說之屬/却掃編/却掃編__juan_02.txt",
+        "四庫全書/clean/子部/雜家類/雜說之屬/却掃編/却掃編__juan_03.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

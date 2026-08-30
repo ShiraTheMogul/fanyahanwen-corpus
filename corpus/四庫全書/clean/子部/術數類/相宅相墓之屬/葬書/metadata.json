@@ -24,15 +24,63 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 192621,
-          "file": "葬書__juan_01.txt",
-          "path": "四庫全書/clean/子部/術數類/相宅相墓之屬/葬書/葬書__juan_01.txt",
-          "title": "葬書 (四庫全書本)",
-          "page_title": "葬書 (四庫全書本)",
-          "display_title": "葬書",
-          "body_start_line": 6
+          "file": "葬書__juan_000.txt",
+          "path": "四庫全書/clean/子部/術數類/相宅相墓之屬/葬書/葬書__juan_000.txt",
+          "page_title": "葬書/提要",
+          "chapter": "提要",
+          "sources": [
+            "https://github.com/kanripo/KR3g0020"
+          ],
+          "digital_transcription_id": "kanripo:KR3g0020:master@a226840ad41dc34a98448cbea0229ec2a4687760"
+        },
+        {
+          "file": "葬書__juan_001.txt",
+          "path": "四庫全書/clean/子部/術數類/相宅相墓之屬/葬書/葬書__juan_001.txt",
+          "page_title": "葬書/葬書",
+          "chapter": "葬書",
+          "sources": [
+            "https://github.com/kanripo/KR3g0020"
+          ],
+          "digital_transcription_id": "kanripo:KR3g0020:master@a226840ad41dc34a98448cbea0229ec2a4687760",
+          "document_id": 192621
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR3g0020:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR3g0020:master@a226840ad41dc34a98448cbea0229ec2a4687760",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR3g0020",
+          "branch": "master",
+          "revision": "a226840ad41dc34a98448cbea0229ec2a4687760",
+          "retrieved_at": "2026-08-12T02:39:16+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR3g0020:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/子部/術數類/相宅相墓之屬/葬書/葬書__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_recorded_in_current_metadata",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

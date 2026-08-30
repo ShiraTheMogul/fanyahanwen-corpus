@@ -24,15 +24,63 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 218043,
-          "file": "月洞吟__juan_01.txt",
-          "path": "四庫全書/clean/集部/別集類/南宋建炎至德祐/月洞吟/月洞吟__juan_01.txt",
-          "title": "月洞吟 (四庫全書本)",
-          "page_title": "月洞吟 (四庫全書本)",
-          "display_title": "月洞吟",
-          "body_start_line": 6
+          "file": "月洞吟__juan_000.txt",
+          "path": "四庫全書/clean/集部/別集類/南宋建炎至德祐/月洞吟/月洞吟__juan_000.txt",
+          "page_title": "月洞吟/序[湯顯祖]",
+          "chapter": "序[湯顯祖]",
+          "sources": [
+            "https://github.com/kanripo/KR4d0405"
+          ],
+          "digital_transcription_id": "kanripo:KR4d0405:master@edc2d5a74895b7b62364fa84348a0fb9917b5f68"
+        },
+        {
+          "file": "月洞吟__juan_001.txt",
+          "path": "四庫全書/clean/集部/別集類/南宋建炎至德祐/月洞吟/月洞吟__juan_001.txt",
+          "page_title": "月洞吟/月洞吟",
+          "chapter": "月洞吟",
+          "sources": [
+            "https://github.com/kanripo/KR4d0405"
+          ],
+          "digital_transcription_id": "kanripo:KR4d0405:master@edc2d5a74895b7b62364fa84348a0fb9917b5f68",
+          "document_id": 218043
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR4d0405:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR4d0405:master@edc2d5a74895b7b62364fa84348a0fb9917b5f68",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR4d0405",
+          "branch": "master",
+          "revision": "edc2d5a74895b7b62364fa84348a0fb9917b5f68",
+          "retrieved_at": "2026-08-12T03:35:53+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR4d0405:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/集部/別集類/南宋建炎至德祐/月洞吟/月洞吟__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

@@ -20,43 +20,97 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 235738,
-          "file": "竹坡詞__juan_01.txt",
-          "path": "四庫全書/clean/集部/詞曲類/詞集之屬/竹坡詞/竹坡詞__juan_01.txt",
-          "title": "竹坡詞 (四庫全書本)",
-          "page_title": "竹坡詞 (四庫全書本)/卷1",
-          "display_title": "竹坡詞",
-          "source_categories": [
-            "PD-old"
+          "file": "竹坡詞__juan_000.txt",
+          "path": "四庫全書/clean/集部/詞曲類/詞集之屬/竹坡詞/竹坡詞__juan_000.txt",
+          "page_title": "竹坡詞/原序",
+          "chapter": "原序",
+          "sources": [
+            "https://github.com/kanripo/KR4j0028"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR4j0028:master@25c7623d944049081637ed0225be19bae09b780f"
         },
         {
-          "document_id": 235739,
-          "file": "竹坡詞__juan_02.txt",
-          "path": "四庫全書/clean/集部/詞曲類/詞集之屬/竹坡詞/竹坡詞__juan_02.txt",
-          "title": "竹坡詞 (四庫全書本)",
-          "page_title": "竹坡詞 (四庫全書本)/卷2",
-          "display_title": "竹坡詞",
-          "source_categories": [
-            "PD-old"
+          "file": "竹坡詞__juan_001.txt",
+          "path": "四庫全書/clean/集部/詞曲類/詞集之屬/竹坡詞/竹坡詞__juan_001.txt",
+          "page_title": "竹坡詞/卷一",
+          "chapter": "卷一",
+          "sources": [
+            "https://github.com/kanripo/KR4j0028"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR4j0028:master@25c7623d944049081637ed0225be19bae09b780f",
+          "document_id": 235738
         },
         {
-          "document_id": 235740,
-          "file": "竹坡詞__juan_03.txt",
-          "path": "四庫全書/clean/集部/詞曲類/詞集之屬/竹坡詞/竹坡詞__juan_03.txt",
-          "title": "竹坡詞 (四庫全書本)",
-          "page_title": "竹坡詞 (四庫全書本)/卷3",
-          "display_title": "竹坡詞",
-          "source_categories": [
-            "1173年 (提及)",
-            "PD-old"
+          "file": "竹坡詞__juan_002.txt",
+          "path": "四庫全書/clean/集部/詞曲類/詞集之屬/竹坡詞/竹坡詞__juan_002.txt",
+          "page_title": "竹坡詞/卷二",
+          "chapter": "卷二",
+          "sources": [
+            "https://github.com/kanripo/KR4j0028"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR4j0028:master@25c7623d944049081637ed0225be19bae09b780f",
+          "document_id": 235739
+        },
+        {
+          "file": "竹坡詞__juan_003.txt",
+          "path": "四庫全書/clean/集部/詞曲類/詞集之屬/竹坡詞/竹坡詞__juan_003.txt",
+          "page_title": "竹坡詞/卷三",
+          "chapter": "卷三",
+          "sources": [
+            "https://github.com/kanripo/KR4j0028"
+          ],
+          "digital_transcription_id": "kanripo:KR4j0028:master@25c7623d944049081637ed0225be19bae09b780f",
+          "document_id": 235740
+        },
+        {
+          "file": "竹坡詞__juan_004.txt",
+          "path": "四庫全書/clean/集部/詞曲類/詞集之屬/竹坡詞/竹坡詞__juan_004.txt",
+          "page_title": "竹坡詞/原跋",
+          "chapter": "原跋",
+          "sources": [
+            "https://github.com/kanripo/KR4j0028"
+          ],
+          "digital_transcription_id": "kanripo:KR4j0028:master@25c7623d944049081637ed0225be19bae09b780f"
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR4j0028:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR4j0028:master@25c7623d944049081637ed0225be19bae09b780f",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR4j0028",
+          "branch": "master",
+          "revision": "25c7623d944049081637ed0225be19bae09b780f",
+          "retrieved_at": "2026-08-12T03:59:39+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR4j0028:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/集部/詞曲類/詞集之屬/竹坡詞/竹坡詞__juan_01.txt",
+        "四庫全書/clean/集部/詞曲類/詞集之屬/竹坡詞/竹坡詞__juan_02.txt",
+        "四庫全書/clean/集部/詞曲類/詞集之屬/竹坡詞/竹坡詞__juan_03.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

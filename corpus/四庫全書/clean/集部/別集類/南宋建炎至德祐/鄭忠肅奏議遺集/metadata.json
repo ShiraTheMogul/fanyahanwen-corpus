@@ -20,40 +20,75 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 219794,
-          "file": "鄭忠肅奏議遺集__juan_01.txt",
-          "path": "四庫全書/clean/集部/別集類/南宋建炎至德祐/鄭忠肅奏議遺集/鄭忠肅奏議遺集__juan_01.txt",
-          "title": "鄭忠肅奏議遺集 (四庫全書本)",
-          "page_title": "鄭忠肅奏議遺集 (四庫全書本)/卷上",
-          "display_title": "鄭忠肅奏議遺集",
-          "source_categories": [
-            "1174年 (提及)",
-            "1175年 (提及)",
-            "1188年 (提及)",
-            "PD-old"
+          "file": "鄭忠肅奏議遺集__juan_000.txt",
+          "path": "四庫全書/clean/集部/別集類/南宋建炎至德祐/鄭忠肅奏議遺集/鄭忠肅奏議遺集__juan_000.txt",
+          "page_title": "鄭忠肅奏議遺集/[提要]",
+          "chapter": "[提要]",
+          "sources": [
+            "https://github.com/kanripo/KR4d0212"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR4d0212:master@ce4fe39d3cbfcccded5415b5e3fc3a73561159fa"
         },
         {
-          "document_id": 219795,
-          "file": "鄭忠肅奏議遺集__juan_02.txt",
-          "path": "四庫全書/clean/集部/別集類/南宋建炎至德祐/鄭忠肅奏議遺集/鄭忠肅奏議遺集__juan_02.txt",
-          "title": "鄭忠肅奏議遺集 (四庫全書本)",
-          "page_title": "鄭忠肅奏議遺集 (四庫全書本)/卷下",
-          "display_title": "鄭忠肅奏議遺集",
-          "source_categories": [
-            "1069年 (提及)",
-            "1109年 (提及)",
-            "1154年 (提及)",
-            "1181年 (提及)",
-            "1188年 (提及)",
-            "1190年 (提及)",
-            "992年 (提及)",
-            "PD-old"
+          "file": "鄭忠肅奏議遺集__juan_001.txt",
+          "path": "四庫全書/clean/集部/別集類/南宋建炎至德祐/鄭忠肅奏議遺集/鄭忠肅奏議遺集__juan_001.txt",
+          "page_title": "鄭忠肅奏議遺集/卷上",
+          "chapter": "卷上",
+          "sources": [
+            "https://github.com/kanripo/KR4d0212"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR4d0212:master@ce4fe39d3cbfcccded5415b5e3fc3a73561159fa",
+          "document_id": 219794
+        },
+        {
+          "file": "鄭忠肅奏議遺集__juan_002.txt",
+          "path": "四庫全書/clean/集部/別集類/南宋建炎至德祐/鄭忠肅奏議遺集/鄭忠肅奏議遺集__juan_002.txt",
+          "page_title": "鄭忠肅奏議遺集/卷下",
+          "chapter": "卷下",
+          "sources": [
+            "https://github.com/kanripo/KR4d0212"
+          ],
+          "digital_transcription_id": "kanripo:KR4d0212:master@ce4fe39d3cbfcccded5415b5e3fc3a73561159fa",
+          "document_id": 219795
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR4d0212:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR4d0212:master@ce4fe39d3cbfcccded5415b5e3fc3a73561159fa",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR4d0212",
+          "branch": "master",
+          "revision": "ce4fe39d3cbfcccded5415b5e3fc3a73561159fa",
+          "retrieved_at": "2026-08-12T03:30:20+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR4d0212:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/集部/別集類/南宋建炎至德祐/鄭忠肅奏議遺集/鄭忠肅奏議遺集__juan_01.txt",
+        "四庫全書/clean/集部/別集類/南宋建炎至德祐/鄭忠肅奏議遺集/鄭忠肅奏議遺集__juan_02.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

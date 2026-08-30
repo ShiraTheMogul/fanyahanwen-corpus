@@ -20,59 +20,99 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 191121,
-          "file": "談苑__juan_01.txt",
-          "path": "四庫全書/clean/子部/小說家類/雜事之屬/談苑/談苑__juan_01.txt",
-          "title": "談苑 (四庫全書本)",
-          "page_title": "談苑 (四庫全書本)/卷1",
-          "display_title": "談苑",
-          "source_categories": [
-            "PD-old"
+          "file": "談苑__juan_000.txt",
+          "path": "四庫全書/clean/子部/小說家類/雜事之屬/談苑/談苑__juan_000.txt",
+          "page_title": "談苑/提要",
+          "chapter": "提要",
+          "sources": [
+            "https://github.com/kanripo/KR3l0040"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3l0040:master@dab827ce4ed8710682c0ca7f18256d5c8dd15473"
         },
         {
-          "document_id": 191122,
-          "file": "談苑__juan_02.txt",
-          "path": "四庫全書/clean/子部/小說家類/雜事之屬/談苑/談苑__juan_02.txt",
-          "title": "談苑 (四庫全書本)",
-          "page_title": "談苑 (四庫全書本)/卷2",
-          "display_title": "談苑",
-          "source_categories": [
-            "1087年 (提及)",
-            "985年 (提及)",
-            "PD-old"
+          "file": "談苑__juan_001.txt",
+          "path": "四庫全書/clean/子部/小說家類/雜事之屬/談苑/談苑__juan_001.txt",
+          "page_title": "談苑/卷一",
+          "chapter": "卷一",
+          "sources": [
+            "https://github.com/kanripo/KR3l0040"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3l0040:master@dab827ce4ed8710682c0ca7f18256d5c8dd15473",
+          "document_id": 191121
         },
         {
-          "document_id": 191123,
-          "file": "談苑__juan_03.txt",
-          "path": "四庫全書/clean/子部/小說家類/雜事之屬/談苑/談苑__juan_03.txt",
-          "title": "談苑 (四庫全書本)",
-          "page_title": "談苑 (四庫全書本)/卷3",
-          "display_title": "談苑",
-          "source_categories": [
-            "1090年 (提及)",
-            "982年 (提及)",
-            "PD-old"
+          "file": "談苑__juan_002.txt",
+          "path": "四庫全書/clean/子部/小說家類/雜事之屬/談苑/談苑__juan_002.txt",
+          "page_title": "談苑/卷二",
+          "chapter": "卷二",
+          "sources": [
+            "https://github.com/kanripo/KR3l0040"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3l0040:master@dab827ce4ed8710682c0ca7f18256d5c8dd15473",
+          "document_id": 191122
         },
         {
-          "document_id": 191124,
-          "file": "談苑__juan_04.txt",
-          "path": "四庫全書/clean/子部/小說家類/雜事之屬/談苑/談苑__juan_04.txt",
-          "title": "談苑 (四庫全書本)",
-          "page_title": "談苑 (四庫全書本)/卷4",
-          "display_title": "談苑",
-          "source_categories": [
-            "676年 (提及)",
-            "PD-old"
+          "file": "談苑__juan_003.txt",
+          "path": "四庫全書/clean/子部/小說家類/雜事之屬/談苑/談苑__juan_003.txt",
+          "page_title": "談苑/卷三",
+          "chapter": "卷三",
+          "sources": [
+            "https://github.com/kanripo/KR3l0040"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3l0040:master@dab827ce4ed8710682c0ca7f18256d5c8dd15473",
+          "document_id": 191123
+        },
+        {
+          "file": "談苑__juan_004.txt",
+          "path": "四庫全書/clean/子部/小說家類/雜事之屬/談苑/談苑__juan_004.txt",
+          "page_title": "談苑/卷四",
+          "chapter": "卷四",
+          "sources": [
+            "https://github.com/kanripo/KR3l0040"
+          ],
+          "digital_transcription_id": "kanripo:KR3l0040:master@dab827ce4ed8710682c0ca7f18256d5c8dd15473",
+          "document_id": 191124
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR3l0040:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR3l0040:master@dab827ce4ed8710682c0ca7f18256d5c8dd15473",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR3l0040",
+          "branch": "master",
+          "revision": "dab827ce4ed8710682c0ca7f18256d5c8dd15473",
+          "retrieved_at": "2026-08-12T03:01:05+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR3l0040:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/子部/小說家類/雜事之屬/談苑/談苑__juan_01.txt",
+        "四庫全書/clean/子部/小說家類/雜事之屬/談苑/談苑__juan_02.txt",
+        "四庫全書/clean/子部/小說家類/雜事之屬/談苑/談苑__juan_03.txt",
+        "四庫全書/clean/子部/小說家類/雜事之屬/談苑/談苑__juan_04.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_recorded_in_current_metadata",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

@@ -24,15 +24,63 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 235050,
-          "file": "經義模範__juan_01.txt",
-          "path": "四庫全書/clean/集部/總集類/經義模範/經義模範__juan_01.txt",
-          "title": "經義模範 (四庫全書本)",
-          "page_title": "經義模範 (四庫全書本)",
-          "display_title": "經義模範",
-          "body_start_line": 6
+          "file": "經義模範__juan_000.txt",
+          "path": "四庫全書/clean/集部/總集類/經義模範/經義模範__juan_000.txt",
+          "page_title": "經義模範/原序",
+          "chapter": "原序",
+          "sources": [
+            "https://github.com/kanripo/KR4h0105"
+          ],
+          "digital_transcription_id": "kanripo:KR4h0105:master@f6a3ce6df5defc549706ea9cea46195357bbcf4d"
+        },
+        {
+          "file": "經義模範__juan_001.txt",
+          "path": "四庫全書/clean/集部/總集類/經義模範/經義模範__juan_001.txt",
+          "page_title": "經義模範/經義模範",
+          "chapter": "經義模範",
+          "sources": [
+            "https://github.com/kanripo/KR4h0105"
+          ],
+          "digital_transcription_id": "kanripo:KR4h0105:master@f6a3ce6df5defc549706ea9cea46195357bbcf4d",
+          "document_id": 235050
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR4h0105:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR4h0105:master@f6a3ce6df5defc549706ea9cea46195357bbcf4d",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR4h0105",
+          "branch": "master",
+          "revision": "f6a3ce6df5defc549706ea9cea46195357bbcf4d",
+          "retrieved_at": "2026-08-12T03:51:34+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR4h0105:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/集部/總集類/經義模範/經義模範__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

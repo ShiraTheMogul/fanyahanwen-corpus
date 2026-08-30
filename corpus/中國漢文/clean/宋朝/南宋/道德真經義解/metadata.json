@@ -1,4 +1,4 @@
-﻿{
+{
   "schema_version": 1,
   "work_id": 64807,
   "corpus_root": "中國漢文",
@@ -12,12 +12,82 @@
   "is_compilation": false,
   "documents": [
     {
-      "document_id": 119123,
-      "file": "道德真經義解__juan_01.txt",
-      "path": "中國漢文/clean/宋朝/南宋/道德真經義解/道德真經義解__juan_01.txt",
-      "body_start_line": 8
+      "file": "道德真經義解__juan_001.txt",
+      "path": "中國漢文/clean/宋朝/南宋/道德真經義解/道德真經義解__juan_001.txt",
+      "page_title": "道德真經義解/1",
+      "chapter": "1",
+      "sources": [
+        "https://github.com/kanripo/KR5c0110"
+      ],
+      "digital_transcription_id": "kanripo:KR5c0110:master@b703d7f7f2ed50ca565a8055eecde6857ff36578",
+      "document_id": 119123
+    },
+    {
+      "file": "道德真經義解__juan_002.txt",
+      "path": "中國漢文/clean/宋朝/南宋/道德真經義解/道德真經義解__juan_002.txt",
+      "page_title": "道德真經義解/2",
+      "chapter": "2",
+      "sources": [
+        "https://github.com/kanripo/KR5c0110"
+      ],
+      "digital_transcription_id": "kanripo:KR5c0110:master@b703d7f7f2ed50ca565a8055eecde6857ff36578"
+    },
+    {
+      "file": "道德真經義解__juan_003.txt",
+      "path": "中國漢文/clean/宋朝/南宋/道德真經義解/道德真經義解__juan_003.txt",
+      "page_title": "道德真經義解/3",
+      "chapter": "3",
+      "sources": [
+        "https://github.com/kanripo/KR5c0110"
+      ],
+      "digital_transcription_id": "kanripo:KR5c0110:master@b703d7f7f2ed50ca565a8055eecde6857ff36578"
+    },
+    {
+      "file": "道德真經義解__juan_004.txt",
+      "path": "中國漢文/clean/宋朝/南宋/道德真經義解/道德真經義解__juan_004.txt",
+      "page_title": "道德真經義解/4",
+      "chapter": "4",
+      "sources": [
+        "https://github.com/kanripo/KR5c0110"
+      ],
+      "digital_transcription_id": "kanripo:KR5c0110:master@b703d7f7f2ed50ca565a8055eecde6857ff36578"
     }
   ],
   "known_commentaries": [],
-  "ca": "1127–1279年"
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR5c0110:witness:HFL",
+      "label": "HFL",
+      "upstream_code": "HFL",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR5c0110:master@b703d7f7f2ed50ca565a8055eecde6857ff36578",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR5c0110",
+          "branch": "master",
+          "revision": "b703d7f7f2ed50ca565a8055eecde6857ff36578",
+          "retrieved_at": "2026-08-12T05:29:34+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR5c0110:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "中國漢文/clean/宋朝/南宋/道德真經義解/道德真經義解__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_recorded_in_current_metadata",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

@@ -1,4 +1,4 @@
-﻿{
+{
   "schema_version": 1,
   "work_id": 3484,
   "corpus_root": "中國漢文",
@@ -10,24 +10,76 @@
   "is_compilation": false,
   "documents": [
     {
-      "document_id": 7841,
-      "file": "肇論新疏__juan_01.txt",
-      "path": "中國漢文/clean/元朝/大元/肇論新疏/肇論新疏__juan_01.txt",
-      "page_title": "肇論新疏/卷001"
+      "file": "肇論新疏__juan_001.txt",
+      "path": "中國漢文/clean/元朝/大元/肇論新疏/肇論新疏__juan_001.txt",
+      "page_title": "肇論新疏/1",
+      "chapter": "1",
+      "sources": [
+        "https://github.com/kanripo/KR6m0040"
+      ],
+      "digital_transcription_id": "kanripo:KR6m0040:master@a347a85ffafa39954b1c868976fddb8c88f4bc37",
+      "document_id": 7841
     },
     {
-      "document_id": 7842,
-      "file": "肇論新疏__juan_02.txt",
-      "path": "中國漢文/clean/元朝/大元/肇論新疏/肇論新疏__juan_02.txt",
-      "page_title": "肇論新疏/卷002"
+      "file": "肇論新疏__juan_002.txt",
+      "path": "中國漢文/clean/元朝/大元/肇論新疏/肇論新疏__juan_002.txt",
+      "page_title": "肇論新疏/2",
+      "chapter": "2",
+      "sources": [
+        "https://github.com/kanripo/KR6m0040"
+      ],
+      "digital_transcription_id": "kanripo:KR6m0040:master@a347a85ffafa39954b1c868976fddb8c88f4bc37",
+      "document_id": 7842
     },
     {
-      "document_id": 7843,
-      "file": "肇論新疏__juan_03.txt",
-      "path": "中國漢文/clean/元朝/大元/肇論新疏/肇論新疏__juan_03.txt",
-      "page_title": "肇論新疏/卷003"
+      "file": "肇論新疏__juan_003.txt",
+      "path": "中國漢文/clean/元朝/大元/肇論新疏/肇論新疏__juan_003.txt",
+      "page_title": "肇論新疏/3",
+      "chapter": "3",
+      "sources": [
+        "https://github.com/kanripo/KR6m0040"
+      ],
+      "digital_transcription_id": "kanripo:KR6m0040:master@a347a85ffafa39954b1c868976fddb8c88f4bc37",
+      "document_id": 7843
     }
   ],
   "known_commentaries": [],
-  "ca": "1271–1368年"
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR6m0040:witness:T",
+      "label": "T",
+      "upstream_code": "T",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR6m0040:master@a347a85ffafa39954b1c868976fddb8c88f4bc37",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR6m0040",
+          "branch": "master",
+          "revision": "a347a85ffafa39954b1c868976fddb8c88f4bc37",
+          "retrieved_at": "2026-08-12T17:41:51+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR6m0040:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "中國漢文/clean/元朝/大元/肇論新疏/肇論新疏__juan_01.txt",
+        "中國漢文/clean/元朝/大元/肇論新疏/肇論新疏__juan_02.txt",
+        "中國漢文/clean/元朝/大元/肇論新疏/肇論新疏__juan_03.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

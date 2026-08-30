@@ -20,82 +20,79 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 189591,
-          "file": "周髀算經__juan_01.txt",
-          "path": "四庫全書/clean/子部/天文演算法類/推步之屬/周髀算經/周髀算經__juan_01.txt",
-          "title": "周髀算經 (四庫全書本)",
-          "page_title": "周髀算經 (四庫全書本)/卷上之1",
-          "display_title": "周髀算經",
-          "source_categories": [
-            "PD-old"
+          "file": "周髀算經__juan_000.txt",
+          "path": "四庫全書/clean/子部/天文演算法類/推步之屬/周髀算經/周髀算經__juan_000.txt",
+          "page_title": "周髀算經/0",
+          "chapter": "0",
+          "sources": [
+            "https://github.com/kanripo/KR3f0001"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3f0001:WYG@e41f8b05157f41c87da656605d910688f596370c"
         },
         {
-          "document_id": 189592,
-          "file": "周髀算經__juan_02.txt",
-          "path": "四庫全書/clean/子部/天文演算法類/推步之屬/周髀算經/周髀算經__juan_02.txt",
-          "title": "周髀算經 (四庫全書本)",
-          "page_title": "周髀算經 (四庫全書本)/卷上之2",
-          "display_title": "周髀算經",
-          "source_categories": [
-            "442年 (提及)",
-            "581年 (提及)",
-            "582年 (提及)",
-            "584年 (提及)",
-            "PD-old"
+          "file": "周髀算經__juan_001.txt",
+          "path": "四庫全書/clean/子部/天文演算法類/推步之屬/周髀算經/周髀算經__juan_001.txt",
+          "page_title": "周髀算經/1",
+          "chapter": "1",
+          "sources": [
+            "https://github.com/kanripo/KR3f0001"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3f0001:WYG@e41f8b05157f41c87da656605d910688f596370c",
+          "document_id": 189591
         },
         {
-          "document_id": 189593,
-          "file": "周髀算經__juan_03.txt",
-          "path": "四庫全書/clean/子部/天文演算法類/推步之屬/周髀算經/周髀算經__juan_03.txt",
-          "title": "周髀算經 (四庫全書本)",
-          "page_title": "周髀算經 (四庫全書本)/卷上之3",
-          "display_title": "周髀算經",
-          "source_categories": [
-            "PD-old"
+          "file": "周髀算經__juan_002.txt",
+          "path": "四庫全書/clean/子部/天文演算法類/推步之屬/周髀算經/周髀算經__juan_002.txt",
+          "page_title": "周髀算經/2",
+          "chapter": "2",
+          "sources": [
+            "https://github.com/kanripo/KR3f0001"
           ],
-          "body_start_line": 6
-        },
-        {
-          "document_id": 189594,
-          "file": "周髀算經__juan_04.txt",
-          "path": "四庫全書/clean/子部/天文演算法類/推步之屬/周髀算經/周髀算經__juan_04.txt",
-          "title": "周髀算經 (四庫全書本)",
-          "page_title": "周髀算經 (四庫全書本)/卷下之1",
-          "display_title": "周髀算經",
-          "source_categories": [
-            "PD-old"
-          ],
-          "body_start_line": 6
-        },
-        {
-          "document_id": 189595,
-          "file": "周髀算經__juan_05.txt",
-          "path": "四庫全書/clean/子部/天文演算法類/推步之屬/周髀算經/周髀算經__juan_05.txt",
-          "title": "周髀算經 (四庫全書本)",
-          "page_title": "周髀算經 (四庫全書本)/卷下之2",
-          "display_title": "周髀算經",
-          "source_categories": [
-            "PD-old"
-          ],
-          "body_start_line": 6
-        },
-        {
-          "document_id": 189596,
-          "file": "周髀算經__juan_06.txt",
-          "path": "四庫全書/clean/子部/天文演算法類/推步之屬/周髀算經/周髀算經__juan_06.txt",
-          "title": "周髀算經 (四庫全書本)",
-          "page_title": "周髀算經 (四庫全書本)/卷下之3",
-          "display_title": "周髀算經",
-          "source_categories": [
-            "PD-old"
-          ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3f0001:WYG@e41f8b05157f41c87da656605d910688f596370c",
+          "document_id": 189592
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR3f0001:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "branch_fallback_inference",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR3f0001:WYG@e41f8b05157f41c87da656605d910688f596370c",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR3f0001",
+          "branch": "WYG",
+          "revision": "e41f8b05157f41c87da656605d910688f596370c",
+          "retrieved_at": "2026-08-12T02:37:11+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR3f0001:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/子部/天文演算法類/推步之屬/周髀算經/周髀算經__juan_01.txt",
+        "四庫全書/clean/子部/天文演算法類/推步之屬/周髀算經/周髀算經__juan_02.txt",
+        "四庫全書/clean/子部/天文演算法類/推步之屬/周髀算經/周髀算經__juan_03.txt",
+        "四庫全書/clean/子部/天文演算法類/推步之屬/周髀算經/周髀算經__juan_04.txt",
+        "四庫全書/clean/子部/天文演算法類/推步之屬/周髀算經/周髀算經__juan_05.txt",
+        "四庫全書/clean/子部/天文演算法類/推步之屬/周髀算經/周髀算經__juan_06.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

@@ -23,33 +23,87 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 219326,
-          "file": "紫巖詩選__juan_01.txt",
-          "path": "四庫全書/clean/集部/別集類/南宋建炎至德祐/紫巖詩選/紫巖詩選__juan_01.txt",
-          "title": "紫巖詩選 (四庫全書本)",
-          "page_title": "紫巖詩選 (四庫全書本)/卷1",
-          "display_title": "紫巖詩選",
-          "body_start_line": 6
+          "file": "紫巖詩選__juan_000.txt",
+          "path": "四庫全書/clean/集部/別集類/南宋建炎至德祐/紫巖詩選/紫巖詩選__juan_000.txt",
+          "page_title": "紫巖詩選/目録",
+          "chapter": "目録",
+          "sources": [
+            "https://github.com/kanripo/KR4d0410"
+          ],
+          "digital_transcription_id": "kanripo:KR4d0410:master@4ef5d3539183bee9e0e5657bcfe8c27b953b8d41"
         },
         {
-          "document_id": 219327,
-          "file": "紫巖詩選__juan_02.txt",
-          "path": "四庫全書/clean/集部/別集類/南宋建炎至德祐/紫巖詩選/紫巖詩選__juan_02.txt",
-          "title": "紫巖詩選 (四庫全書本)",
-          "page_title": "紫巖詩選 (四庫全書本)/卷2",
-          "display_title": "紫巖詩選",
-          "body_start_line": 6
+          "file": "紫巖詩選__juan_001.txt",
+          "path": "四庫全書/clean/集部/別集類/南宋建炎至德祐/紫巖詩選/紫巖詩選__juan_001.txt",
+          "page_title": "紫巖詩選/卷一",
+          "chapter": "卷一",
+          "sources": [
+            "https://github.com/kanripo/KR4d0410"
+          ],
+          "digital_transcription_id": "kanripo:KR4d0410:master@4ef5d3539183bee9e0e5657bcfe8c27b953b8d41",
+          "document_id": 219326
         },
         {
-          "document_id": 219328,
-          "file": "紫巖詩選__juan_03.txt",
-          "path": "四庫全書/clean/集部/別集類/南宋建炎至德祐/紫巖詩選/紫巖詩選__juan_03.txt",
-          "title": "紫巖詩選 (四庫全書本)",
-          "page_title": "紫巖詩選 (四庫全書本)/卷3",
-          "display_title": "紫巖詩選",
-          "body_start_line": 6
+          "file": "紫巖詩選__juan_002.txt",
+          "path": "四庫全書/clean/集部/別集類/南宋建炎至德祐/紫巖詩選/紫巖詩選__juan_002.txt",
+          "page_title": "紫巖詩選/卷二",
+          "chapter": "卷二",
+          "sources": [
+            "https://github.com/kanripo/KR4d0410"
+          ],
+          "digital_transcription_id": "kanripo:KR4d0410:master@4ef5d3539183bee9e0e5657bcfe8c27b953b8d41",
+          "document_id": 219327
+        },
+        {
+          "file": "紫巖詩選__juan_003.txt",
+          "path": "四庫全書/clean/集部/別集類/南宋建炎至德祐/紫巖詩選/紫巖詩選__juan_003.txt",
+          "page_title": "紫巖詩選/卷三",
+          "chapter": "卷三",
+          "sources": [
+            "https://github.com/kanripo/KR4d0410"
+          ],
+          "digital_transcription_id": "kanripo:KR4d0410:master@4ef5d3539183bee9e0e5657bcfe8c27b953b8d41",
+          "document_id": 219328
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR4d0410:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR4d0410:master@4ef5d3539183bee9e0e5657bcfe8c27b953b8d41",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR4d0410",
+          "branch": "master",
+          "revision": "4ef5d3539183bee9e0e5657bcfe8c27b953b8d41",
+          "retrieved_at": "2026-08-12T03:36:00+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR4d0410:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/集部/別集類/南宋建炎至德祐/紫巖詩選/紫巖詩選__juan_01.txt",
+        "四庫全書/clean/集部/別集類/南宋建炎至德祐/紫巖詩選/紫巖詩選__juan_02.txt",
+        "四庫全書/clean/集部/別集類/南宋建炎至德祐/紫巖詩選/紫巖詩選__juan_03.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

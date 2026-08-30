@@ -1,4 +1,4 @@
-﻿{
+{
   "schema_version": 1,
   "work_id": 25968,
   "corpus_root": "中國漢文",
@@ -15,12 +15,51 @@
   "is_compilation": false,
   "documents": [
     {
-      "document_id": 39607,
-      "file": "枕中記__juan_01.txt",
-      "path": "中國漢文/clean/唐朝/枕中記/枕中記__juan_01.txt",
-      "body_start_line": 6
+      "file": "枕中記__juan_000.txt",
+      "path": "中國漢文/clean/唐朝/枕中記/枕中記__juan_000.txt",
+      "page_title": "枕中記/提要／序跋",
+      "chapter": "提要／序跋",
+      "sources": [
+        "https://github.com/kanripo/KR5c0234"
+      ],
+      "digital_transcription_id": "kanripo:KR5c0234:master@4cfd633ff44c5208823ff151795a4cce4386793b"
     }
   ],
   "known_commentaries": [],
-  "ca": "618–907年"
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR5c0234:witness:HFL",
+      "label": "HFL",
+      "upstream_code": "HFL",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR5c0234:master@4cfd633ff44c5208823ff151795a4cce4386793b",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR5c0234",
+          "branch": "master",
+          "revision": "4cfd633ff44c5208823ff151795a4cce4386793b",
+          "retrieved_at": "2026-08-12T05:30:19+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR5c0234:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "中國漢文/clean/唐朝/枕中記/枕中記__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

@@ -20,43 +20,75 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 186822,
-          "file": "孫毅菴奏議__juan_01.txt",
-          "path": "四庫全書/clean/史部/詔令奏議類/奏議之屬/孫毅菴奏議/孫毅菴奏議__juan_01.txt",
-          "title": "孫毅菴奏議 (四庫全書本)",
-          "page_title": "孫毅菴奏議 (四庫全書本)/卷上",
-          "display_title": "孫毅菴奏議",
-          "source_categories": [
-            "1514年 (提及)",
-            "1515年 (提及)",
-            "1516年 (提及)",
-            "1517年 (提及)",
-            "1518年 (提及)",
-            "1519年 (提及)",
-            "PD-old"
+          "file": "孫毅菴奏議__juan_000.txt",
+          "path": "四庫全書/clean/史部/詔令奏議類/奏議之屬/孫毅菴奏議/孫毅菴奏議__juan_000.txt",
+          "page_title": "孫毅菴奏議/提要",
+          "chapter": "提要",
+          "sources": [
+            "https://github.com/kanripo/KR2f0025"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR2f0025:master@d501cb32ded02fcaa47279ab41e98c9ce586c88d"
         },
         {
-          "document_id": 186823,
-          "file": "孫毅菴奏議__juan_02.txt",
-          "path": "四庫全書/clean/史部/詔令奏議類/奏議之屬/孫毅菴奏議/孫毅菴奏議__juan_02.txt",
-          "title": "孫毅菴奏議 (四庫全書本)",
-          "page_title": "孫毅菴奏議 (四庫全書本)/卷下",
-          "display_title": "孫毅菴奏議",
-          "source_categories": [
-            "1467年 (提及)",
-            "1519年 (提及)",
-            "1520年 (提及)",
-            "1521年 (提及)",
-            "1527年 (提及)",
-            "1528年 (提及)",
-            "1536年 (提及)",
-            "PD-old"
+          "file": "孫毅菴奏議__juan_001.txt",
+          "path": "四庫全書/clean/史部/詔令奏議類/奏議之屬/孫毅菴奏議/孫毅菴奏議__juan_001.txt",
+          "page_title": "孫毅菴奏議/卷上",
+          "chapter": "卷上",
+          "sources": [
+            "https://github.com/kanripo/KR2f0025"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR2f0025:master@d501cb32ded02fcaa47279ab41e98c9ce586c88d",
+          "document_id": 186822
+        },
+        {
+          "file": "孫毅菴奏議__juan_002.txt",
+          "path": "四庫全書/clean/史部/詔令奏議類/奏議之屬/孫毅菴奏議/孫毅菴奏議__juan_002.txt",
+          "page_title": "孫毅菴奏議/卷下",
+          "chapter": "卷下",
+          "sources": [
+            "https://github.com/kanripo/KR2f0025"
+          ],
+          "digital_transcription_id": "kanripo:KR2f0025:master@d501cb32ded02fcaa47279ab41e98c9ce586c88d",
+          "document_id": 186823
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR2f0025:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR2f0025:master@d501cb32ded02fcaa47279ab41e98c9ce586c88d",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR2f0025",
+          "branch": "master",
+          "revision": "d501cb32ded02fcaa47279ab41e98c9ce586c88d",
+          "retrieved_at": "2026-08-12T01:39:13+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR2f0025:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/史部/詔令奏議類/奏議之屬/孫毅菴奏議/孫毅菴奏議__juan_01.txt",
+        "四庫全書/clean/史部/詔令奏議類/奏議之屬/孫毅菴奏議/孫毅菴奏議__juan_02.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

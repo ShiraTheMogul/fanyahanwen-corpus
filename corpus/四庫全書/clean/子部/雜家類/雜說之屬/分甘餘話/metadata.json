@@ -20,65 +20,99 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 197063,
-          "file": "分甘餘話__juan_01.txt",
-          "path": "四庫全書/clean/子部/雜家類/雜說之屬/分甘餘話/分甘餘話__juan_01.txt",
-          "title": "分甘餘話 (四庫全書本)",
-          "page_title": "分甘餘話 (四庫全書本)/卷1",
-          "display_title": "分甘餘話",
-          "source_categories": [
-            "1181年 (提及)",
-            "1708年 (提及)",
-            "1709年 (提及)",
-            "PD-old"
+          "file": "分甘餘話__juan_000.txt",
+          "path": "四庫全書/clean/子部/雜家類/雜說之屬/分甘餘話/分甘餘話__juan_000.txt",
+          "page_title": "分甘餘話/序",
+          "chapter": "序",
+          "sources": [
+            "https://github.com/kanripo/KR3j0165"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3j0165:master@67e47a5253f05d757849bcd4d9f6b2651212d979"
         },
         {
-          "document_id": 197064,
-          "file": "分甘餘話__juan_02.txt",
-          "path": "四庫全書/clean/子部/雜家類/雜說之屬/分甘餘話/分甘餘話__juan_02.txt",
-          "title": "分甘餘話 (四庫全書本)",
-          "page_title": "分甘餘話 (四庫全書本)/卷2",
-          "display_title": "分甘餘話",
-          "source_categories": [
-            "1027年 (提及)",
-            "1662年 (提及)",
-            "PD-old"
+          "file": "分甘餘話__juan_001.txt",
+          "path": "四庫全書/clean/子部/雜家類/雜說之屬/分甘餘話/分甘餘話__juan_001.txt",
+          "page_title": "分甘餘話/卷一",
+          "chapter": "卷一",
+          "sources": [
+            "https://github.com/kanripo/KR3j0165"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3j0165:master@67e47a5253f05d757849bcd4d9f6b2651212d979",
+          "document_id": 197063
         },
         {
-          "document_id": 197065,
-          "file": "分甘餘話__juan_03.txt",
-          "path": "四庫全書/clean/子部/雜家類/雜說之屬/分甘餘話/分甘餘話__juan_03.txt",
-          "title": "分甘餘話 (四庫全書本)",
-          "page_title": "分甘餘話 (四庫全書本)/卷3",
-          "display_title": "分甘餘話",
-          "source_categories": [
-            "1091年 (提及)",
-            "1653年 (提及)",
-            "1707年 (提及)",
-            "PD-old"
+          "file": "分甘餘話__juan_002.txt",
+          "path": "四庫全書/clean/子部/雜家類/雜說之屬/分甘餘話/分甘餘話__juan_002.txt",
+          "page_title": "分甘餘話/卷二",
+          "chapter": "卷二",
+          "sources": [
+            "https://github.com/kanripo/KR3j0165"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3j0165:master@67e47a5253f05d757849bcd4d9f6b2651212d979",
+          "document_id": 197064
         },
         {
-          "document_id": 197066,
-          "file": "分甘餘話__juan_04.txt",
-          "path": "四庫全書/clean/子部/雜家類/雜說之屬/分甘餘話/分甘餘話__juan_04.txt",
-          "title": "分甘餘話 (四庫全書本)",
-          "page_title": "分甘餘話 (四庫全書本)/卷4",
-          "display_title": "分甘餘話",
-          "source_categories": [
-            "1705年 (提及)",
-            "1707年 (提及)",
-            "1710年 (提及)",
-            "PD-old"
+          "file": "分甘餘話__juan_003.txt",
+          "path": "四庫全書/clean/子部/雜家類/雜說之屬/分甘餘話/分甘餘話__juan_003.txt",
+          "page_title": "分甘餘話/卷三",
+          "chapter": "卷三",
+          "sources": [
+            "https://github.com/kanripo/KR3j0165"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3j0165:master@67e47a5253f05d757849bcd4d9f6b2651212d979",
+          "document_id": 197065
+        },
+        {
+          "file": "分甘餘話__juan_004.txt",
+          "path": "四庫全書/clean/子部/雜家類/雜說之屬/分甘餘話/分甘餘話__juan_004.txt",
+          "page_title": "分甘餘話/卷四",
+          "chapter": "卷四",
+          "sources": [
+            "https://github.com/kanripo/KR3j0165"
+          ],
+          "digital_transcription_id": "kanripo:KR3j0165:master@67e47a5253f05d757849bcd4d9f6b2651212d979",
+          "document_id": 197066
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR3j0165:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR3j0165:master@67e47a5253f05d757849bcd4d9f6b2651212d979",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR3j0165",
+          "branch": "master",
+          "revision": "67e47a5253f05d757849bcd4d9f6b2651212d979",
+          "retrieved_at": "2026-08-12T02:50:57+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR3j0165:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/子部/雜家類/雜說之屬/分甘餘話/分甘餘話__juan_01.txt",
+        "四庫全書/clean/子部/雜家類/雜說之屬/分甘餘話/分甘餘話__juan_02.txt",
+        "四庫全書/clean/子部/雜家類/雜說之屬/分甘餘話/分甘餘話__juan_03.txt",
+        "四庫全書/clean/子部/雜家類/雜說之屬/分甘餘話/分甘餘話__juan_04.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

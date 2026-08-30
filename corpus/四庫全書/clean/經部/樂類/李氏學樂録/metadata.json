@@ -20,31 +20,75 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 210756,
-          "file": "李氏學樂録__juan_01.txt",
-          "path": "四庫全書/clean/經部/樂類/李氏學樂録/李氏學樂録__juan_01.txt",
-          "title": "李氏學樂録 (四庫全書本)",
-          "page_title": "李氏學樂録 (四庫全書本)/卷1",
-          "display_title": "李氏學樂録",
-          "source_categories": [
-            "1699年 (提及)",
-            "PD-old"
+          "file": "李氏學樂録__juan_000.txt",
+          "path": "四庫全書/clean/經部/樂類/李氏學樂録/李氏學樂録__juan_000.txt",
+          "page_title": "李氏學樂録/0",
+          "chapter": "0",
+          "sources": [
+            "https://github.com/kanripo/KR1i0018"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR1i0018:master@31a34f4d268cb96c0a333b06f6ca569159beebd6"
         },
         {
-          "document_id": 210757,
-          "file": "李氏學樂録__juan_02.txt",
-          "path": "四庫全書/clean/經部/樂類/李氏學樂録/李氏學樂録__juan_02.txt",
-          "title": "李氏學樂録 (四庫全書本)",
-          "page_title": "李氏學樂録 (四庫全書本)/卷2",
-          "display_title": "李氏學樂録",
-          "source_categories": [
-            "PD-old"
+          "file": "李氏學樂録__juan_001.txt",
+          "path": "四庫全書/clean/經部/樂類/李氏學樂録/李氏學樂録__juan_001.txt",
+          "page_title": "李氏學樂録/卷一",
+          "chapter": "卷一",
+          "sources": [
+            "https://github.com/kanripo/KR1i0018"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR1i0018:master@31a34f4d268cb96c0a333b06f6ca569159beebd6",
+          "document_id": 210756
+        },
+        {
+          "file": "李氏學樂録__juan_002.txt",
+          "path": "四庫全書/clean/經部/樂類/李氏學樂録/李氏學樂録__juan_002.txt",
+          "page_title": "李氏學樂録/卷二",
+          "chapter": "卷二",
+          "sources": [
+            "https://github.com/kanripo/KR1i0018"
+          ],
+          "digital_transcription_id": "kanripo:KR1i0018:master@31a34f4d268cb96c0a333b06f6ca569159beebd6",
+          "document_id": 210757
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR1i0018:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR1i0018:master@31a34f4d268cb96c0a333b06f6ca569159beebd6",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR1i0018",
+          "branch": "master",
+          "revision": "31a34f4d268cb96c0a333b06f6ca569159beebd6",
+          "retrieved_at": "2026-08-12T00:42:51+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR1i0018:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/經部/樂類/李氏學樂録/李氏學樂録__juan_01.txt",
+        "四庫全書/clean/經部/樂類/李氏學樂録/李氏學樂録__juan_02.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

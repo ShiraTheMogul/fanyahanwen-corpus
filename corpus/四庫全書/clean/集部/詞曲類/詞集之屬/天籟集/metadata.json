@@ -20,31 +20,85 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 235686,
-          "file": "天籟集__juan_01.txt",
-          "path": "四庫全書/clean/集部/詞曲類/詞集之屬/天籟集/天籟集__juan_01.txt",
-          "title": "天籟集 (四庫全書本)",
-          "page_title": "天籟集 (四庫全書本)/卷上",
-          "display_title": "天籟集",
-          "source_categories": [
-            "1277年 (提及)",
-            "PD-old"
+          "file": "天籟集__juan_000.txt",
+          "path": "四庫全書/clean/集部/詞曲類/詞集之屬/天籟集/天籟集__juan_000.txt",
+          "page_title": "天籟集/原序[王博文]",
+          "chapter": "原序[王博文]",
+          "sources": [
+            "https://github.com/kanripo/KR4j0059"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR4j0059:master@bf1d560dd82fb26fa813cecfcae2da8d3925457a"
         },
         {
-          "document_id": 235687,
-          "file": "天籟集__juan_02.txt",
-          "path": "四庫全書/clean/集部/詞曲類/詞集之屬/天籟集/天籟集__juan_02.txt",
-          "title": "天籟集 (四庫全書本)",
-          "page_title": "天籟集 (四庫全書本)/卷下",
-          "display_title": "天籟集",
-          "source_categories": [
-            "PD-old"
+          "file": "天籟集__juan_001.txt",
+          "path": "四庫全書/clean/集部/詞曲類/詞集之屬/天籟集/天籟集__juan_001.txt",
+          "page_title": "天籟集/卷上",
+          "chapter": "卷上",
+          "sources": [
+            "https://github.com/kanripo/KR4j0059"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR4j0059:master@bf1d560dd82fb26fa813cecfcae2da8d3925457a",
+          "document_id": 235686
+        },
+        {
+          "file": "天籟集__juan_002.txt",
+          "path": "四庫全書/clean/集部/詞曲類/詞集之屬/天籟集/天籟集__juan_002.txt",
+          "page_title": "天籟集/卷下",
+          "chapter": "卷下",
+          "sources": [
+            "https://github.com/kanripo/KR4j0059"
+          ],
+          "digital_transcription_id": "kanripo:KR4j0059:master@bf1d560dd82fb26fa813cecfcae2da8d3925457a",
+          "document_id": 235687
+        },
+        {
+          "file": "天籟集__juan_003.txt",
+          "path": "四庫全書/clean/集部/詞曲類/詞集之屬/天籟集/天籟集__juan_003.txt",
+          "page_title": "天籟集/後序",
+          "chapter": "後序",
+          "sources": [
+            "https://github.com/kanripo/KR4j0059"
+          ],
+          "digital_transcription_id": "kanripo:KR4j0059:master@bf1d560dd82fb26fa813cecfcae2da8d3925457a"
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR4j0059:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR4j0059:master@bf1d560dd82fb26fa813cecfcae2da8d3925457a",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR4j0059",
+          "branch": "master",
+          "revision": "bf1d560dd82fb26fa813cecfcae2da8d3925457a",
+          "retrieved_at": "2026-08-12T04:00:16+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR4j0059:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/集部/詞曲類/詞集之屬/天籟集/天籟集__juan_01.txt",
+        "四庫全書/clean/集部/詞曲類/詞集之屬/天籟集/天籟集__juan_02.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

@@ -1,4 +1,4 @@
-﻿{
+{
   "schema_version": 1,
   "work_id": 75413,
   "corpus_root": "中國漢文",
@@ -17,12 +17,82 @@
   "is_compilation": false,
   "documents": [
     {
-      "document_id": 145836,
-      "file": "天仙金丹心法__juan_01.txt",
-      "path": "中國漢文/clean/清朝/大清/天仙金丹心法/天仙金丹心法__juan_01.txt",
-      "body_start_line": 6
+      "file": "天仙金丹心法__juan_001.txt",
+      "path": "中國漢文/clean/清朝/大清/天仙金丹心法/天仙金丹心法__juan_001.txt",
+      "page_title": "天仙金丹心法/卷1",
+      "chapter": "卷1",
+      "sources": [
+        "https://github.com/kanripo/KR5i0056"
+      ],
+      "digital_transcription_id": "kanripo:KR5i0056:master@f408d1e8e498e2fee44a46c30f331b2920200463",
+      "document_id": 145836
+    },
+    {
+      "file": "天仙金丹心法__juan_002.txt",
+      "path": "中國漢文/clean/清朝/大清/天仙金丹心法/天仙金丹心法__juan_002.txt",
+      "page_title": "天仙金丹心法/卷2",
+      "chapter": "卷2",
+      "sources": [
+        "https://github.com/kanripo/KR5i0056"
+      ],
+      "digital_transcription_id": "kanripo:KR5i0056:master@f408d1e8e498e2fee44a46c30f331b2920200463"
+    },
+    {
+      "file": "天仙金丹心法__juan_003.txt",
+      "path": "中國漢文/clean/清朝/大清/天仙金丹心法/天仙金丹心法__juan_003.txt",
+      "page_title": "天仙金丹心法/卷3",
+      "chapter": "卷3",
+      "sources": [
+        "https://github.com/kanripo/KR5i0056"
+      ],
+      "digital_transcription_id": "kanripo:KR5i0056:master@f408d1e8e498e2fee44a46c30f331b2920200463"
+    },
+    {
+      "file": "天仙金丹心法__juan_004.txt",
+      "path": "中國漢文/clean/清朝/大清/天仙金丹心法/天仙金丹心法__juan_004.txt",
+      "page_title": "天仙金丹心法/卷4",
+      "chapter": "卷4",
+      "sources": [
+        "https://github.com/kanripo/KR5i0056"
+      ],
+      "digital_transcription_id": "kanripo:KR5i0056:master@f408d1e8e498e2fee44a46c30f331b2920200463"
     }
   ],
   "known_commentaries": [],
-  "ca": "1644–1912年"
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR5i0056:witness:CK-KZ",
+      "label": "CK-KZ",
+      "upstream_code": "CK-KZ",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR5i0056:master@f408d1e8e498e2fee44a46c30f331b2920200463",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR5i0056",
+          "branch": "master",
+          "revision": "f408d1e8e498e2fee44a46c30f331b2920200463",
+          "retrieved_at": "2026-08-12T05:35:57+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR5i0056:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "中國漢文/clean/清朝/大清/天仙金丹心法/天仙金丹心法__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

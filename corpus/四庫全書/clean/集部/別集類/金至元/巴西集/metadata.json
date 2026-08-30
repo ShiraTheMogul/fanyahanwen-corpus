@@ -20,49 +20,75 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 226977,
-          "file": "巴西集__juan_01.txt",
-          "path": "四庫全書/clean/集部/別集類/金至元/巴西集/巴西集__juan_01.txt",
-          "title": "巴西集 (四庫全書本)",
-          "page_title": "巴西集 (四庫全書本)/卷上",
-          "display_title": "巴西集",
-          "source_categories": [
-            "1246年 (提及)",
-            "1305年 (提及)",
-            "1306年 (提及)",
-            "1309年 (提及)",
-            "1310年 (提及)",
-            "1312年 (提及)",
-            "1313年 (提及)",
-            "1314年 (提及)",
-            "1315年 (提及)",
-            "PD-old"
+          "file": "巴西集__juan_000.txt",
+          "path": "四庫全書/clean/集部/別集類/金至元/巴西集/巴西集__juan_000.txt",
+          "page_title": "巴西集/提要",
+          "chapter": "提要",
+          "sources": [
+            "https://github.com/kanripo/KR4d0438"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR4d0438:master@e77cad6335437e873385189c220eaa25a79978e8"
         },
         {
-          "document_id": 226978,
-          "file": "巴西集__juan_02.txt",
-          "path": "四庫全書/clean/集部/別集類/金至元/巴西集/巴西集__juan_02.txt",
-          "title": "巴西集 (四庫全書本)",
-          "page_title": "巴西集 (四庫全書本)/卷下",
-          "display_title": "巴西集",
-          "source_categories": [
-            "1246年 (提及)",
-            "1275年 (提及)",
-            "1280年 (提及)",
-            "1287年 (提及)",
-            "1309年 (提及)",
-            "1310年 (提及)",
-            "1315年 (提及)",
-            "1316年 (提及)",
-            "1319年 (提及)",
-            "1320年 (提及)",
-            "PD-old"
+          "file": "巴西集__juan_001.txt",
+          "path": "四庫全書/clean/集部/別集類/金至元/巴西集/巴西集__juan_001.txt",
+          "page_title": "巴西集/卷上",
+          "chapter": "卷上",
+          "sources": [
+            "https://github.com/kanripo/KR4d0438"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR4d0438:master@e77cad6335437e873385189c220eaa25a79978e8",
+          "document_id": 226977
+        },
+        {
+          "file": "巴西集__juan_002.txt",
+          "path": "四庫全書/clean/集部/別集類/金至元/巴西集/巴西集__juan_002.txt",
+          "page_title": "巴西集/卷下",
+          "chapter": "卷下",
+          "sources": [
+            "https://github.com/kanripo/KR4d0438"
+          ],
+          "digital_transcription_id": "kanripo:KR4d0438:master@e77cad6335437e873385189c220eaa25a79978e8",
+          "document_id": 226978
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR4d0438:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR4d0438:master@e77cad6335437e873385189c220eaa25a79978e8",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR4d0438",
+          "branch": "master",
+          "revision": "e77cad6335437e873385189c220eaa25a79978e8",
+          "retrieved_at": "2026-08-12T03:36:38+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR4d0438:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/集部/別集類/金至元/巴西集/巴西集__juan_01.txt",
+        "四庫全書/clean/集部/別集類/金至元/巴西集/巴西集__juan_02.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

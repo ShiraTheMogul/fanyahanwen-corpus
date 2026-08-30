@@ -26,15 +26,73 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 235700,
-          "file": "平齋詞__juan_01.txt",
-          "path": "四庫全書/clean/集部/詞曲類/詞集之屬/平齋詞/平齋詞__juan_01.txt",
-          "title": "平齋詞 (四庫全書本)",
-          "page_title": "平齋詞 (四庫全書本)",
-          "display_title": "平齋詞",
-          "body_start_line": 6
+          "file": "平齋詞__juan_000.txt",
+          "path": "四庫全書/clean/集部/詞曲類/詞集之屬/平齋詞/平齋詞__juan_000.txt",
+          "page_title": "平齋詞/提要",
+          "chapter": "提要",
+          "sources": [
+            "https://github.com/kanripo/KR4j0046"
+          ],
+          "digital_transcription_id": "kanripo:KR4j0046:master@e7934850d3dd0a9019f9ee72b7d412afea55cad7"
+        },
+        {
+          "file": "平齋詞__juan_001.txt",
+          "path": "四庫全書/clean/集部/詞曲類/詞集之屬/平齋詞/平齋詞__juan_001.txt",
+          "page_title": "平齋詞/平齋詞",
+          "chapter": "平齋詞",
+          "sources": [
+            "https://github.com/kanripo/KR4j0046"
+          ],
+          "digital_transcription_id": "kanripo:KR4j0046:master@e7934850d3dd0a9019f9ee72b7d412afea55cad7",
+          "document_id": 235700
+        },
+        {
+          "file": "平齋詞__juan_002.txt",
+          "path": "四庫全書/clean/集部/詞曲類/詞集之屬/平齋詞/平齋詞__juan_002.txt",
+          "page_title": "平齋詞/原跋",
+          "chapter": "原跋",
+          "sources": [
+            "https://github.com/kanripo/KR4j0046"
+          ],
+          "digital_transcription_id": "kanripo:KR4j0046:master@e7934850d3dd0a9019f9ee72b7d412afea55cad7"
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR4j0046:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR4j0046:master@e7934850d3dd0a9019f9ee72b7d412afea55cad7",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR4j0046",
+          "branch": "master",
+          "revision": "e7934850d3dd0a9019f9ee72b7d412afea55cad7",
+          "retrieved_at": "2026-08-12T03:59:57+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR4j0046:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/集部/詞曲類/詞集之屬/平齋詞/平齋詞__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

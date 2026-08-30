@@ -25,15 +25,73 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 206173,
-          "file": "九經補韻__juan_01.txt",
-          "path": "四庫全書/clean/經部/小學類/韻書之屬/九經補韻/九經補韻__juan_01.txt",
-          "title": "九經補韻 (四庫全書本)",
-          "page_title": "九經補韻 (四庫全書本)",
-          "display_title": "九經補韻",
-          "body_start_line": 6
+          "file": "九經補韻__juan_000.txt",
+          "path": "四庫全書/clean/經部/小學類/韻書之屬/九經補韻/九經補韻__juan_000.txt",
+          "page_title": "九經補韻/0",
+          "chapter": "0",
+          "sources": [
+            "https://github.com/kanripo/KR1j0063"
+          ],
+          "digital_transcription_id": "kanripo:KR1j0063:master@5e597cfdb181f0031d4f88db3559abd8c3174120"
+        },
+        {
+          "file": "九經補韻__juan_001.txt",
+          "path": "四庫全書/clean/經部/小學類/韻書之屬/九經補韻/九經補韻__juan_001.txt",
+          "page_title": "九經補韻/九經補韻",
+          "chapter": "九經補韻",
+          "sources": [
+            "https://github.com/kanripo/KR1j0063"
+          ],
+          "digital_transcription_id": "kanripo:KR1j0063:master@5e597cfdb181f0031d4f88db3559abd8c3174120",
+          "document_id": 206173
+        },
+        {
+          "file": "九經補韻__juan_002.txt",
+          "path": "四庫全書/clean/經部/小學類/韻書之屬/九經補韻/九經補韻__juan_002.txt",
+          "page_title": "九經補韻/後紀",
+          "chapter": "後紀",
+          "sources": [
+            "https://github.com/kanripo/KR1j0063"
+          ],
+          "digital_transcription_id": "kanripo:KR1j0063:master@5e597cfdb181f0031d4f88db3559abd8c3174120"
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR1j0063:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR1j0063:master@5e597cfdb181f0031d4f88db3559abd8c3174120",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR1j0063",
+          "branch": "master",
+          "revision": "5e597cfdb181f0031d4f88db3559abd8c3174120",
+          "retrieved_at": "2026-08-12T00:46:38+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR1j0063:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/經部/小學類/韻書之屬/九經補韻/九經補韻__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

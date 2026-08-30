@@ -28,15 +28,63 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 197485,
-          "file": "胡文穆雜著__juan_01.txt",
-          "path": "四庫全書/clean/子部/雜家類/雜說之屬/胡文穆雜著/胡文穆雜著__juan_01.txt",
-          "title": "胡文穆雜著 (四庫全書本)",
-          "page_title": "胡文穆雜著 (四庫全書本)",
-          "display_title": "胡文穆雜著",
-          "body_start_line": 6
+          "file": "胡文穆雜著__juan_000.txt",
+          "path": "四庫全書/clean/子部/雜家類/雜說之屬/胡文穆雜著/胡文穆雜著__juan_000.txt",
+          "page_title": "胡文穆雜著/提要",
+          "chapter": "提要",
+          "sources": [
+            "https://github.com/kanripo/KR3j0150"
+          ],
+          "digital_transcription_id": "kanripo:KR3j0150:master@adf92e8d30e80f2ccde73d3900c8c85567992888"
+        },
+        {
+          "file": "胡文穆雜著__juan_001.txt",
+          "path": "四庫全書/clean/子部/雜家類/雜說之屬/胡文穆雜著/胡文穆雜著__juan_001.txt",
+          "page_title": "胡文穆雜著/胡文穆雜著",
+          "chapter": "胡文穆雜著",
+          "sources": [
+            "https://github.com/kanripo/KR3j0150"
+          ],
+          "digital_transcription_id": "kanripo:KR3j0150:master@adf92e8d30e80f2ccde73d3900c8c85567992888",
+          "document_id": 197485
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR3j0150:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR3j0150:master@adf92e8d30e80f2ccde73d3900c8c85567992888",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR3j0150",
+          "branch": "master",
+          "revision": "adf92e8d30e80f2ccde73d3900c8c85567992888",
+          "retrieved_at": "2026-08-12T02:50:27+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR3j0150:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/子部/雜家類/雜說之屬/胡文穆雜著/胡文穆雜著__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

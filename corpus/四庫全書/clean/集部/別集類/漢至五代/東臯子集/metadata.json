@@ -20,43 +20,54 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 225995,
-          "file": "東臯子集__juan_01.txt",
-          "path": "四庫全書/clean/集部/別集類/漢至五代/東臯子集/東臯子集__juan_01.txt",
-          "title": "東臯子集 (四庫全書本)",
-          "page_title": "東臯子集 (四庫全書本)/卷上",
-          "display_title": "東臯子集",
-          "source_categories": [
-            "617年 (提及)",
-            "PD-old"
+          "file": "東臯子集__juan_000.txt",
+          "path": "四庫全書/clean/集部/別集類/漢至五代/東臯子集/東臯子集__juan_000.txt",
+          "page_title": "東臯子集/0",
+          "chapter": "0",
+          "sources": [
+            "https://github.com/kanripo/KR4c0001"
           ],
-          "body_start_line": 6
-        },
-        {
-          "document_id": 225996,
-          "file": "東臯子集__juan_02.txt",
-          "path": "四庫全書/clean/集部/別集類/漢至五代/東臯子集/東臯子集__juan_02.txt",
-          "title": "東臯子集 (四庫全書本)",
-          "page_title": "東臯子集 (四庫全書本)/卷中",
-          "display_title": "東臯子集",
-          "source_categories": [
-            "PD-old"
-          ],
-          "body_start_line": 6
-        },
-        {
-          "document_id": 225997,
-          "file": "東臯子集__juan_03.txt",
-          "path": "四庫全書/clean/集部/別集類/漢至五代/東臯子集/東臯子集__juan_03.txt",
-          "title": "東臯子集 (四庫全書本)",
-          "page_title": "東臯子集 (四庫全書本)/卷下",
-          "display_title": "東臯子集",
-          "source_categories": [
-            "PD-old"
-          ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR4c0001:WYG@662da6011f867737fa4711a796d9f682798c1018"
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR4c0001:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "branch_fallback_inference",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR4c0001:WYG@662da6011f867737fa4711a796d9f682798c1018",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR4c0001",
+          "branch": "WYG",
+          "revision": "662da6011f867737fa4711a796d9f682798c1018",
+          "retrieved_at": "2026-08-12T03:17:59+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR4c0001:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/集部/別集類/漢至五代/東臯子集/東臯子集__juan_01.txt",
+        "四庫全書/clean/集部/別集類/漢至五代/東臯子集/東臯子集__juan_02.txt",
+        "四庫全書/clean/集部/別集類/漢至五代/東臯子集/東臯子集__juan_03.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

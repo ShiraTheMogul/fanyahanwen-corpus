@@ -24,15 +24,63 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 227791,
-          "file": "翠寒集__juan_01.txt",
-          "path": "四庫全書/clean/集部/別集類/金至元/翠寒集/翠寒集__juan_01.txt",
-          "title": "翠寒集 (四庫全書本)",
-          "page_title": "翠寒集 (四庫全書本)",
-          "display_title": "翠寒集",
-          "body_start_line": 6
+          "file": "翠寒集__juan_000.txt",
+          "path": "四庫全書/clean/集部/別集類/金至元/翠寒集/翠寒集__juan_000.txt",
+          "page_title": "翠寒集/原序",
+          "chapter": "原序",
+          "sources": [
+            "https://github.com/kanripo/KR4d0498"
+          ],
+          "digital_transcription_id": "kanripo:KR4d0498:master@efa4b28934616e91a46b0a6bc36c57c4fb1a6dda"
+        },
+        {
+          "file": "翠寒集__juan_001.txt",
+          "path": "四庫全書/clean/集部/別集類/金至元/翠寒集/翠寒集__juan_001.txt",
+          "page_title": "翠寒集/翠寒集",
+          "chapter": "翠寒集",
+          "sources": [
+            "https://github.com/kanripo/KR4d0498"
+          ],
+          "digital_transcription_id": "kanripo:KR4d0498:master@efa4b28934616e91a46b0a6bc36c57c4fb1a6dda",
+          "document_id": 227791
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR4d0498:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR4d0498:master@efa4b28934616e91a46b0a6bc36c57c4fb1a6dda",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR4d0498",
+          "branch": "master",
+          "revision": "efa4b28934616e91a46b0a6bc36c57c4fb1a6dda",
+          "retrieved_at": "2026-08-12T03:38:08+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR4d0498:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/集部/別集類/金至元/翠寒集/翠寒集__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

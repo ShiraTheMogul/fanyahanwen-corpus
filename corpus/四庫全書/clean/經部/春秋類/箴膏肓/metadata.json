@@ -24,15 +24,73 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 209981,
-          "file": "箴膏肓__juan_01.txt",
-          "path": "四庫全書/clean/經部/春秋類/箴膏肓/箴膏肓__juan_01.txt",
-          "title": "箴膏肓 (四庫全書本)",
-          "page_title": "箴膏肓 (四庫全書本)",
-          "display_title": "箴膏肓",
-          "body_start_line": 6
+          "file": "箴膏肓__juan_000.txt",
+          "path": "四庫全書/clean/經部/春秋類/箴膏肓/箴膏肓__juan_000.txt",
+          "page_title": "箴膏肓/0",
+          "chapter": "0",
+          "sources": [
+            "https://github.com/kanripo/KR1e0011"
+          ],
+          "digital_transcription_id": "kanripo:KR1e0011:master@d8f2728ddc5364750509715f92e9aaba15534a43"
+        },
+        {
+          "file": "箴膏肓__juan_001.txt",
+          "path": "四庫全書/clean/經部/春秋類/箴膏肓/箴膏肓__juan_001.txt",
+          "page_title": "箴膏肓/箴膏肓",
+          "chapter": "箴膏肓",
+          "sources": [
+            "https://github.com/kanripo/KR1e0011"
+          ],
+          "digital_transcription_id": "kanripo:KR1e0011:master@d8f2728ddc5364750509715f92e9aaba15534a43",
+          "document_id": 209981
+        },
+        {
+          "file": "箴膏肓__juan_002.txt",
+          "path": "四庫全書/clean/經部/春秋類/箴膏肓/箴膏肓__juan_002.txt",
+          "page_title": "箴膏肓/箴膏肓補遺",
+          "chapter": "箴膏肓補遺",
+          "sources": [
+            "https://github.com/kanripo/KR1e0011"
+          ],
+          "digital_transcription_id": "kanripo:KR1e0011:master@d8f2728ddc5364750509715f92e9aaba15534a43"
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR1e0011:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR1e0011:master@d8f2728ddc5364750509715f92e9aaba15534a43",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR1e0011",
+          "branch": "master",
+          "revision": "d8f2728ddc5364750509715f92e9aaba15534a43",
+          "retrieved_at": "2026-08-12T00:30:52+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR1e0011:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/經部/春秋類/箴膏肓/箴膏肓__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

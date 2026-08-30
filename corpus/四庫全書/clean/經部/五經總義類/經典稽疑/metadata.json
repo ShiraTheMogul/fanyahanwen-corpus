@@ -20,34 +20,85 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 205199,
-          "file": "經典稽疑__juan_01.txt",
-          "path": "四庫全書/clean/經部/五經總義類/經典稽疑/經典稽疑__juan_01.txt",
-          "title": "經典稽疑 (四庫全書本)",
-          "page_title": "經典稽疑 (四庫全書本)/卷上",
-          "display_title": "經典稽疑",
-          "source_categories": [
-            "175年 (提及)",
-            "238年 (提及)",
-            "PD-old"
+          "file": "經典稽疑__juan_000.txt",
+          "path": "四庫全書/clean/經部/五經總義類/經典稽疑/經典稽疑__juan_000.txt",
+          "page_title": "經典稽疑/原序",
+          "chapter": "原序",
+          "sources": [
+            "https://github.com/kanripo/KR1g0018"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR1g0018:master@c8ef4732213ffe56f3336b16a153f5762873a315"
         },
         {
-          "document_id": 205200,
-          "file": "經典稽疑__juan_02.txt",
-          "path": "四庫全書/clean/經部/五經總義類/經典稽疑/經典稽疑__juan_02.txt",
-          "title": "經典稽疑 (四庫全書本)",
-          "page_title": "經典稽疑 (四庫全書本)/卷下",
-          "display_title": "經典稽疑",
-          "source_categories": [
-            "175年 (提及)",
-            "65年 (提及)",
-            "PD-old"
+          "file": "經典稽疑__juan_001.txt",
+          "path": "四庫全書/clean/經部/五經總義類/經典稽疑/經典稽疑__juan_001.txt",
+          "page_title": "經典稽疑/卷上",
+          "chapter": "卷上",
+          "sources": [
+            "https://github.com/kanripo/KR1g0018"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR1g0018:master@c8ef4732213ffe56f3336b16a153f5762873a315",
+          "document_id": 205199
+        },
+        {
+          "file": "經典稽疑__juan_002.txt",
+          "path": "四庫全書/clean/經部/五經總義類/經典稽疑/經典稽疑__juan_002.txt",
+          "page_title": "經典稽疑/卷下",
+          "chapter": "卷下",
+          "sources": [
+            "https://github.com/kanripo/KR1g0018"
+          ],
+          "digital_transcription_id": "kanripo:KR1g0018:master@c8ef4732213ffe56f3336b16a153f5762873a315",
+          "document_id": 205200
+        },
+        {
+          "file": "經典稽疑__juan_003.txt",
+          "path": "四庫全書/clean/經部/五經總義類/經典稽疑/經典稽疑__juan_003.txt",
+          "page_title": "經典稽疑/後語",
+          "chapter": "後語",
+          "sources": [
+            "https://github.com/kanripo/KR1g0018"
+          ],
+          "digital_transcription_id": "kanripo:KR1g0018:master@c8ef4732213ffe56f3336b16a153f5762873a315"
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR1g0018:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR1g0018:master@c8ef4732213ffe56f3336b16a153f5762873a315",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR1g0018",
+          "branch": "master",
+          "revision": "c8ef4732213ffe56f3336b16a153f5762873a315",
+          "retrieved_at": "2026-08-12T00:36:36+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR1g0018:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/經部/五經總義類/經典稽疑/經典稽疑__juan_01.txt",
+        "四庫全書/clean/經部/五經總義類/經典稽疑/經典稽疑__juan_02.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

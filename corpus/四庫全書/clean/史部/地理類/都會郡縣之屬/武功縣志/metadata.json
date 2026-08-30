@@ -20,89 +20,87 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 179613,
-          "file": "武功縣志__juan_01.txt",
-          "path": "四庫全書/clean/史部/地理類/都會郡縣之屬/武功縣志/武功縣志__juan_01.txt",
-          "title": "武功縣志 (四庫全書本)",
-          "page_title": "武功縣志 (四庫全書本)/卷1",
-          "display_title": "武功縣志",
-          "source_categories": [
-            "1075年 (提及)",
-            "1088年 (提及)",
-            "1101年 (提及)",
-            "1102年 (提及)",
-            "1110年 (提及)",
-            "1118年 (提及)",
-            "1376年 (提及)",
-            "1437年 (提及)",
-            "574年 (提及)",
-            "598年 (提及)",
-            "620年 (提及)",
-            "622年 (提及)",
-            "623年 (提及)",
-            "65年 (提及)",
-            "895年 (提及)",
-            "930年 (提及)",
-            "PD-old"
+          "file": "武功縣志__juan_000.txt",
+          "path": "四庫全書/clean/史部/地理類/都會郡縣之屬/武功縣志/武功縣志__juan_000.txt",
+          "page_title": "武功縣志/原序",
+          "chapter": "原序",
+          "sources": [
+            "https://github.com/kanripo/KR2k0030"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR2k0030:master@8cdbf969e44abdf319f313d2764749bb1c1333d2"
         },
         {
-          "document_id": 179614,
-          "file": "武功縣志__juan_02.txt",
-          "path": "四庫全書/clean/史部/地理類/都會郡縣之屬/武功縣志/武功縣志__juan_02.txt",
-          "title": "武功縣志 (四庫全書本)",
-          "page_title": "武功縣志 (四庫全書本)/卷2",
-          "display_title": "武功縣志",
-          "source_categories": [
-            "1101年 (提及)",
-            "1102年 (提及)",
-            "1110年 (提及)",
-            "1376年 (提及)",
-            "1391年 (提及)",
-            "1412年 (提及)",
-            "1517年 (提及)",
-            "1518年 (提及)",
-            "802年 (提及)",
-            "803年 (提及)",
-            "PD-old"
+          "file": "武功縣志__juan_001.txt",
+          "path": "四庫全書/clean/史部/地理類/都會郡縣之屬/武功縣志/武功縣志__juan_001.txt",
+          "page_title": "武功縣志/卷一",
+          "chapter": "卷一",
+          "sources": [
+            "https://github.com/kanripo/KR2k0030"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR2k0030:master@8cdbf969e44abdf319f313d2764749bb1c1333d2",
+          "document_id": 179613
         },
         {
-          "document_id": 179615,
-          "file": "武功縣志__juan_03.txt",
-          "path": "四庫全書/clean/史部/地理類/都會郡縣之屬/武功縣志/武功縣志__juan_03.txt",
-          "title": "武功縣志 (四庫全書本)",
-          "page_title": "武功縣志 (四庫全書本)/卷3",
-          "display_title": "武功縣志",
-          "source_categories": [
-            "1379年 (提及)",
-            "1380年 (提及)",
-            "1425年 (提及)",
-            "1426年 (提及)",
-            "1438年 (提及)",
-            "1450年 (提及)",
-            "1462年 (提及)",
-            "1465年 (提及)",
-            "1484年 (提及)",
-            "1519年 (提及)",
-            "536年 (提及)",
-            "545年 (提及)",
-            "598年 (提及)",
-            "603年 (提及)",
-            "617年 (提及)",
-            "710年 (提及)",
-            "714年 (提及)",
-            "716年 (提及)",
-            "757年 (提及)",
-            "902年 (提及)",
-            "PD-old",
-            "前81年 (提及)"
+          "file": "武功縣志__juan_002.txt",
+          "path": "四庫全書/clean/史部/地理類/都會郡縣之屬/武功縣志/武功縣志__juan_002.txt",
+          "page_title": "武功縣志/卷二",
+          "chapter": "卷二",
+          "sources": [
+            "https://github.com/kanripo/KR2k0030"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR2k0030:master@8cdbf969e44abdf319f313d2764749bb1c1333d2",
+          "document_id": 179614
+        },
+        {
+          "file": "武功縣志__juan_003.txt",
+          "path": "四庫全書/clean/史部/地理類/都會郡縣之屬/武功縣志/武功縣志__juan_003.txt",
+          "page_title": "武功縣志/卷三",
+          "chapter": "卷三",
+          "sources": [
+            "https://github.com/kanripo/KR2k0030"
+          ],
+          "digital_transcription_id": "kanripo:KR2k0030:master@8cdbf969e44abdf319f313d2764749bb1c1333d2",
+          "document_id": 179615
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR2k0030:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR2k0030:master@8cdbf969e44abdf319f313d2764749bb1c1333d2",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR2k0030",
+          "branch": "master",
+          "revision": "8cdbf969e44abdf319f313d2764749bb1c1333d2",
+          "retrieved_at": "2026-08-12T01:48:40+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR2k0030:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/史部/地理類/都會郡縣之屬/武功縣志/武功縣志__juan_01.txt",
+        "四庫全書/clean/史部/地理類/都會郡縣之屬/武功縣志/武功縣志__juan_02.txt",
+        "四庫全書/clean/史部/地理類/都會郡縣之屬/武功縣志/武功縣志__juan_03.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

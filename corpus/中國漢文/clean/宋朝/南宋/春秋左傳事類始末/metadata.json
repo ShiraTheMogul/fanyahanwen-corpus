@@ -1,4 +1,4 @@
-﻿{
+{
   "schema_version": 1,
   "work_id": 63179,
   "corpus_root": "中國漢文",
@@ -12,12 +12,112 @@
   "is_compilation": false,
   "documents": [
     {
-      "document_id": 115734,
-      "file": "春秋左傳事類始末__juan_01.txt",
-      "path": "中國漢文/clean/宋朝/南宋/春秋左傳事類始末/春秋左傳事類始末__juan_01.txt",
-      "body_start_line": 8
+      "file": "春秋左傳事類始末__juan_000.txt",
+      "path": "中國漢文/clean/宋朝/南宋/春秋左傳事類始末/春秋左傳事類始末__juan_000.txt",
+      "page_title": "春秋左傳事類始末/目録",
+      "chapter": "目録",
+      "sources": [
+        "https://github.com/kanripo/KR2c0003"
+      ],
+      "digital_transcription_id": "kanripo:KR2c0003:master@12929d8d494036774fe0d11f33a5418c1d3b91f6"
+    },
+    {
+      "file": "春秋左傳事類始末__juan_001.txt",
+      "path": "中國漢文/clean/宋朝/南宋/春秋左傳事類始末/春秋左傳事類始末__juan_001.txt",
+      "page_title": "春秋左傳事類始末/卷一",
+      "chapter": "卷一",
+      "sources": [
+        "https://github.com/kanripo/KR2c0003"
+      ],
+      "digital_transcription_id": "kanripo:KR2c0003:master@12929d8d494036774fe0d11f33a5418c1d3b91f6",
+      "document_id": 115734
+    },
+    {
+      "file": "春秋左傳事類始末__juan_002.txt",
+      "path": "中國漢文/clean/宋朝/南宋/春秋左傳事類始末/春秋左傳事類始末__juan_002.txt",
+      "page_title": "春秋左傳事類始末/卷二",
+      "chapter": "卷二",
+      "sources": [
+        "https://github.com/kanripo/KR2c0003"
+      ],
+      "digital_transcription_id": "kanripo:KR2c0003:master@12929d8d494036774fe0d11f33a5418c1d3b91f6"
+    },
+    {
+      "file": "春秋左傳事類始末__juan_003.txt",
+      "path": "中國漢文/clean/宋朝/南宋/春秋左傳事類始末/春秋左傳事類始末__juan_003.txt",
+      "page_title": "春秋左傳事類始末/卷三",
+      "chapter": "卷三",
+      "sources": [
+        "https://github.com/kanripo/KR2c0003"
+      ],
+      "digital_transcription_id": "kanripo:KR2c0003:master@12929d8d494036774fe0d11f33a5418c1d3b91f6"
+    },
+    {
+      "file": "春秋左傳事類始末__juan_004.txt",
+      "path": "中國漢文/clean/宋朝/南宋/春秋左傳事類始末/春秋左傳事類始末__juan_004.txt",
+      "page_title": "春秋左傳事類始末/卷四",
+      "chapter": "卷四",
+      "sources": [
+        "https://github.com/kanripo/KR2c0003"
+      ],
+      "digital_transcription_id": "kanripo:KR2c0003:master@12929d8d494036774fe0d11f33a5418c1d3b91f6"
+    },
+    {
+      "file": "春秋左傳事類始末__juan_005.txt",
+      "path": "中國漢文/clean/宋朝/南宋/春秋左傳事類始末/春秋左傳事類始末__juan_005.txt",
+      "page_title": "春秋左傳事類始末/卷五",
+      "chapter": "卷五",
+      "sources": [
+        "https://github.com/kanripo/KR2c0003"
+      ],
+      "digital_transcription_id": "kanripo:KR2c0003:master@12929d8d494036774fe0d11f33a5418c1d3b91f6"
+    },
+    {
+      "file": "春秋左傳事類始末__juan_006.txt",
+      "path": "中國漢文/clean/宋朝/南宋/春秋左傳事類始末/春秋左傳事類始末__juan_006.txt",
+      "page_title": "春秋左傳事類始末/附録",
+      "chapter": "附録",
+      "sources": [
+        "https://github.com/kanripo/KR2c0003"
+      ],
+      "digital_transcription_id": "kanripo:KR2c0003:master@12929d8d494036774fe0d11f33a5418c1d3b91f6"
     }
   ],
   "known_commentaries": [],
-  "ca": "1127–1279年"
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR2c0003:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR2c0003:master@12929d8d494036774fe0d11f33a5418c1d3b91f6",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR2c0003",
+          "branch": "master",
+          "revision": "12929d8d494036774fe0d11f33a5418c1d3b91f6",
+          "retrieved_at": "2026-08-12T01:27:03+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR2c0003:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "中國漢文/clean/宋朝/南宋/春秋左傳事類始末/春秋左傳事類始末__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_recorded_in_current_metadata",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

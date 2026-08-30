@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Generate a repository-ready Kanripo incorporation overlay without touching PALCC.
 
 This consumes the latest quality-aware merge plan and cached Kanripo commit ZIPs.
@@ -8,8 +8,9 @@ It materialises only deterministic canonical-text actions:
 - PREFER_KANRIPO_COMPLETE_DIGITAL_TRANSCRIPTION
 - FILL_METADATA_ONLY_WORK
 
-The generated ZIP contains only final repository files (metadata.json + replacement
-primary text files). A companion apply script is written *outside* the ZIP because
+The generated ZIP contains only final repository files (external metadata.json +
+body-only replacement primary text files). Inline # KEY: VALUE metadata headers are
+not emitted. A companion apply script is written *outside* the ZIP because
 replacement requires deleting stale root-level primary .txt files first.
 
 The corpus itself is never modified by this generator.
@@ -38,9 +39,11 @@ DEFAULT_ACTIONS = {
 EXCLUDED_ROOT_NAMES = {"metadata.json"}
 ORG_META_RE = re.compile(r"^#\+([A-Z0-9_]+):\s*(.*?)\s*$", re.I)
 ORG_PROP_RE = re.compile(r"^#\+PROPERTY:\s*([A-Z0-9_]+)\s+(.*?)\s*$", re.I)
+ORG_HEADING_RE = re.compile(r"^\*+\s+(?:\d+\s+)?(.+?)\s*$")
 PB_RE = re.compile(r"<pb:[^>]+>")
 JUAN_FILE_RE = re.compile(r"_(\d+)\.txt$", re.I)
 PALCC_JUAN_RE = re.compile(r"__juan_(\d+)\.txt$", re.I)
+UTF8_BOM = b"\xef\xbb\xbf"
 
 
 def utc_now() -> str:
@@ -131,7 +134,13 @@ def target_document_container(meta: dict[str, Any], target_rel_no_corpus: str) -
     raise RuntimeError("metadata has multiple document containers and target edition is ambiguous")
 
 
-def header_from_existing(target: Path) -> dict[str, str]:
+def legacy_header_from_existing(target: Path) -> dict[str, str]:
+    """Read the old inline metadata header, if one still exists.
+
+    This is an input-compatibility shim only. New Kanripo corpus text is body-only;
+    useful legacy values are promoted into metadata.json before the old text is
+    replaced.
+    """
     result: dict[str, str] = {}
     for path in sorted(target.glob("*.txt")):
         try:
@@ -150,6 +159,46 @@ def header_from_existing(target: Path) -> dict[str, str]:
     return result
 
 
+def _add_unique_metadata_string(meta: dict[str, Any], field: str, value: str) -> None:
+    value = value.strip()
+    if not value:
+        return
+    current = meta.get(field)
+    if current is None:
+        meta[field] = [value]
+        return
+    if not isinstance(current, list):
+        raise RuntimeError(f"metadata {field} exists but is not a list")
+    if value not in current:
+        current.append(value)
+
+
+def promote_legacy_header_metadata(meta: dict[str, Any], header: dict[str, str]) -> None:
+    """Keep useful old header values in the external metadata record.
+
+    The old generator copied DISPLAY_TITLE/AUTHOR/TIMES back into every text file.
+    Once those headers disappear, retain the information in fields already used by
+    the corpus metadata model. Current structured metadata remains authoritative if
+    it is more specific than the old header.
+    """
+    work_base = header.get("WORK_BASE_TITLE", "").strip()
+    if work_base and not str(meta.get("work_base_title") or "").strip():
+        meta["work_base_title"] = work_base
+
+    display = header.get("DISPLAY_TITLE", "").strip()
+    title = str(meta.get("title") or "").strip()
+    if display and title and display != title:
+        _add_unique_metadata_string(meta, "aliases", display)
+
+    author = header.get("AUTHOR", "").strip()
+    if author:
+        _add_unique_metadata_string(meta, "authors", author)
+
+    times = header.get("TIMES", "").strip()
+    if times and not str(meta.get("period") or "").strip():
+        meta["period"] = times
+
+
 def parse_kanripo_text(raw: str) -> tuple[str, dict[str, str]]:
     meta: dict[str, str] = {}
     body: list[str] = []
@@ -164,9 +213,18 @@ def parse_kanripo_text(raw: str) -> tuple[str, dict[str, str]]:
         if mm:
             meta[mm.group(1).upper()] = mm.group(2).strip()
             continue
+        # Other # comments are Kanripo/Mandoku apparatus such as src/dating notes.
+        # Preserve source provenance in metadata; keep those comments out of clean text.
+        if line.startswith("#"):
+            continue
         # Mandoku page-break markers are digital layout markup, not textual content.
         line = PB_RE.sub("", line)
         line = line.replace("¶", "")
+        heading = ORG_HEADING_RE.match(line)
+        if heading:
+            clean_heading = heading.group(1).strip()
+            meta.setdefault("SECTION_TITLE", clean_heading)
+            line = clean_heading
         body.append(line.rstrip())
     while body and not body[0].strip():
         body.pop(0)
@@ -283,8 +341,7 @@ def upsert_source_witness(meta: dict[str, Any], row: dict[str, str], base_commit
 
 def make_documents(meta: dict[str, Any], target_rel_no_corpus: str, title: str,
                    source_id: str, branch: str, revision: str, witness_label: str,
-                   archive: Path, target_overlay: Path, old_ids: dict[int, int],
-                   old_header: dict[str, str]) -> list[dict[str, Any]]:
+                   archive: Path, target_overlay: Path, old_ids: dict[int, int]) -> list[dict[str, Any]]:
     docs: list[dict[str, Any]] = []
     seen_indexes: set[int] = set()
     with zipfile.ZipFile(archive) as zf:
@@ -302,27 +359,12 @@ def make_documents(meta: dict[str, Any], target_rel_no_corpus: str, title: str,
                 idx += 1
             seen_indexes.add(idx)
             filename = f"{title}__juan_{idx:03d}.txt"
-            chapter = km.get("JUAN") or ("提要／序跋" if idx == 0 else f"卷{idx}")
+            chapter = km.get("SECTION_TITLE") or ("提要／序跋" if idx == 0 else f"卷{idx}")
             page_title = f"{title}/{chapter}"
-            header_lines = [
-                f"# WORK_TITLE: {title}",
-                f"# DISPLAY_TITLE: {old_header.get('DISPLAY_TITLE') or title}",
-                f"# PAGE_TITLE: {page_title}",
-            ]
-            for key in ("AUTHOR", "TIMES"):
-                if old_header.get(key):
-                    header_lines.append(f"# {key}: {old_header[key]}")
-            header_lines.extend([
-                "# SOURCE: Kanseki Repository",
-                f"# SOURCE_ID: {source_id}",
-                f"# SOURCE_WITNESS: {witness_label or 'unspecified'}",
-                f"# DIGITAL_EDITION: {branch}",
-                f"# DIGITAL_REVISION: {revision}",
-                "# LICENSE: CC BY-SA (Kanseki Repository; upstream version unspecified)",
-                "",
-            ])
             target_overlay.mkdir(parents=True, exist_ok=True)
-            (target_overlay / filename).write_text("\n".join(header_lines) + body, encoding="utf-8", newline="\n")
+            # Current corpus format keeps metadata in metadata.json. Primary text
+            # files contain only the historical text body.
+            (target_overlay / filename).write_text(body, encoding="utf-8-sig", newline="\n")
             d: dict[str, Any] = {
                 "file": filename,
                 "path": f"{target_rel_no_corpus}/{filename}",
@@ -339,8 +381,52 @@ def make_documents(meta: dict[str, Any], target_rel_no_corpus: str, title: str,
     return docs
 
 
-def write_apply_script(path: Path, overlay_zip: Path, base_commit: str, targets: list[str]) -> None:
-    quoted_targets = "\n".join(f"  {shlex.quote(t)}" for t in targets)
+def contains_han(text: str) -> bool:
+    for ch in text:
+        cp = ord(ch)
+        if (
+            0x3400 <= cp <= 0x4DBF
+            or 0x4E00 <= cp <= 0x9FFF
+            or 0xF900 <= cp <= 0xFAFF
+            or 0x20000 <= cp <= 0x2EBEF
+            or 0x30000 <= cp <= 0x323AF
+        ):
+            return True
+    return False
+
+
+def verify_overlay_encoding(overlay_root: Path) -> None:
+    """Fail generation if a Han-bearing text file lacks BOM or a ZIP Han name lacks UTF-8 flag."""
+    for path in overlay_root.rglob("*"):
+        if not path.is_file():
+            continue
+        data = path.read_bytes()
+        try:
+            text = data.decode("utf-8-sig")
+        except UnicodeDecodeError as exc:
+            raise RuntimeError(f"overlay file is not valid UTF-8: {path}") from exc
+        if contains_han(text) and not data.startswith(UTF8_BOM):
+            raise RuntimeError(f"Han-bearing overlay file lacks UTF-8 BOM: {path}")
+        if path.suffix.lower() == ".txt":
+            first_lines = text.splitlines()[:16]
+            if any(line.startswith("# WORK_TITLE:") for line in first_lines) and any(
+                line.startswith("# SOURCE: Kanseki Repository") for line in first_lines
+            ):
+                raise RuntimeError(f"generated corpus text still contains legacy inline metadata: {path}")
+
+
+def verify_zip_unicode_flags(zip_path: Path) -> None:
+    with zipfile.ZipFile(zip_path) as zf:
+        for info in zf.infolist():
+            if any(ord(ch) > 0x7F for ch in info.filename) and not (info.flag_bits & 0x800):
+                raise RuntimeError(f"ZIP entry with Unicode filename lacks UTF-8 metadata flag: {info.filename}")
+
+
+def write_apply_script(path: Path, overlay_zip: Path, base_commit: str, targets: list[str]) -> Path:
+    # Keep the executable shell file ASCII so its #! line remains the first bytes.
+    # Han-bearing target paths live in a UTF-8-with-BOM companion text file.
+    target_file = path.with_name("apply_targets.txt")
+    target_file.write_text("\n".join(targets) + "\n", encoding="utf-8-sig", newline="\n")
     script = f'''#!/usr/bin/env bash
 set -euo pipefail
 REPO_ROOT="${{1:-$(pwd)}}"
@@ -350,24 +436,27 @@ if [[ "$ACTUAL" != "$EXPECTED" ]]; then
   echo "Refusing to apply: repository HEAD is $ACTUAL, expected $EXPECTED." >&2
   exit 1
 fi
-TARGETS=(
-{quoted_targets}
-)
+SCRIPT_DIR="$(cd -- "$(dirname -- "${{BASH_SOURCE[0]}}")" && pwd)"
+TARGET_FILE="$SCRIPT_DIR/apply_targets.txt"
+mapfile -t TARGETS < <(tail -c +4 "$TARGET_FILE")
 for rel in "${{TARGETS[@]}}"; do
+  [[ -z "$rel" ]] && continue
   if [[ -n "$(git -C "$REPO_ROOT" status --porcelain -- "$rel")" ]]; then
     echo "Refusing to apply: target has uncommitted changes: $rel" >&2
     exit 1
   fi
 done
 for rel in "${{TARGETS[@]}}"; do
+  [[ -z "$rel" ]] && continue
   find "$REPO_ROOT/$rel" -maxdepth 1 -type f -name '*.txt' -delete
- done
+done
 unzip -o {shlex.quote(str(overlay_zip))} -d "$REPO_ROOT"
 echo "Kanripo incorporation overlay applied."
 echo "No routes were changed. Review git diff before committing."
 '''
-    path.write_text(script, encoding="utf-8", newline="\n")
+    path.write_text(script, encoding="ascii", newline="\n")
     path.chmod(0o755)
+    return target_file
 
 
 def main() -> int:
@@ -441,12 +530,13 @@ def main() -> int:
             old_paths = old_primary_paths(meta, target_no_corpus)
             old_urls = source_urls(meta)
             old_ids = existing_id_map(meta)
-            old_header = header_from_existing(target)
+            old_header = legacy_header_from_existing(target)
+            promote_legacy_header_metadata(meta, old_header)
             overlay_target = overlay_root / target_rel
             docs = make_documents(
                 meta, target_no_corpus, title, sid, branch, revision,
                 row.get("preferred_source_witness_label", ""), archive,
-                overlay_target, old_ids, old_header,
+                overlay_target, old_ids,
             )
             container = target_document_container(meta, target_no_corpus)
             container[:] = docs
@@ -455,7 +545,7 @@ def main() -> int:
             overlay_target.mkdir(parents=True, exist_ok=True)
             (overlay_target / "metadata.json").write_text(
                 json.dumps(meta, ensure_ascii=False, indent=2) + "\n",
-                encoding="utf-8", newline="\n",
+                encoding="utf-8-sig", newline="\n",
             )
             targets.append(target_rel)
             applied.append({
@@ -480,12 +570,15 @@ def main() -> int:
 
     targets = sorted(set(targets))
     zip_path = run_dir / f"fanya-kanripo-incorporation-overlay-{base_commit[:8]}-{run_dir.name}.zip"
+    apply_targets_path: Path | None = None
     if applied:
+        verify_overlay_encoding(overlay_root)
         with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=6, allowZip64=True) as zf:
             for p in sorted(overlay_root.rglob("*")):
                 if p.is_file():
                     zf.write(p, p.relative_to(overlay_root).as_posix())
-        write_apply_script(run_dir / "apply_overlay.sh", zip_path, base_commit, targets)
+        verify_zip_unicode_flags(zip_path)
+        apply_targets_path = write_apply_script(run_dir / "apply_overlay.sh", zip_path, base_commit, targets)
 
     with (run_dir / "generated.csv").open("w", encoding="utf-8-sig", newline="") as h:
         fields = ["source_id","title","action","target","branch","revision","source_witness","new_primary_files"]
@@ -503,6 +596,7 @@ def main() -> int:
         "target_work_directories": len(targets),
         "overlay_zip": str(zip_path) if applied else None,
         "apply_script": str(run_dir / "apply_overlay.sh") if applied else None,
+        "apply_targets": str(apply_targets_path) if apply_targets_path else None,
         "corpus_files_changed": 0,
     }
     (run_dir / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")

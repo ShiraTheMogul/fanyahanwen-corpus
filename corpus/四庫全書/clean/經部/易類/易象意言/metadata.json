@@ -24,15 +24,63 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 207971,
-          "file": "易象意言__juan_01.txt",
-          "path": "四庫全書/clean/經部/易類/易象意言/易象意言__juan_01.txt",
-          "title": "易象意言 (四庫全書本)",
-          "page_title": "易象意言 (四庫全書本)",
-          "display_title": "易象意言",
-          "body_start_line": 6
+          "file": "易象意言__juan_000.txt",
+          "path": "四庫全書/clean/經部/易類/易象意言/易象意言__juan_000.txt",
+          "page_title": "易象意言/提要",
+          "chapter": "提要",
+          "sources": [
+            "https://github.com/kanripo/KR1a0053"
+          ],
+          "digital_transcription_id": "kanripo:KR1a0053:master@6b12b75a952bb1d104bb87e6a98d31fc2eb8935b"
+        },
+        {
+          "file": "易象意言__juan_001.txt",
+          "path": "四庫全書/clean/經部/易類/易象意言/易象意言__juan_001.txt",
+          "page_title": "易象意言/易象意言",
+          "chapter": "易象意言",
+          "sources": [
+            "https://github.com/kanripo/KR1a0053"
+          ],
+          "digital_transcription_id": "kanripo:KR1a0053:master@6b12b75a952bb1d104bb87e6a98d31fc2eb8935b",
+          "document_id": 207971
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR1a0053:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR1a0053:master@6b12b75a952bb1d104bb87e6a98d31fc2eb8935b",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR1a0053",
+          "branch": "master",
+          "revision": "6b12b75a952bb1d104bb87e6a98d31fc2eb8935b",
+          "retrieved_at": "2026-08-12T00:11:20+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR1a0053:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/經部/易類/易象意言/易象意言__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

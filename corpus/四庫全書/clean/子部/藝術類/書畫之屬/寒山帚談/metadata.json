@@ -23,24 +23,105 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 191759,
-          "file": "寒山帚談__juan_01.txt",
-          "path": "四庫全書/clean/子部/藝術類/書畫之屬/寒山帚談/寒山帚談__juan_01.txt",
-          "title": "寒山帚談 (四庫全書本)",
-          "page_title": "寒山帚談 (四庫全書本)/卷上",
-          "display_title": "寒山帚談",
-          "body_start_line": 6
+          "file": "寒山帚談__juan_000.txt",
+          "path": "四庫全書/clean/子部/藝術類/書畫之屬/寒山帚談/寒山帚談__juan_000.txt",
+          "page_title": "寒山帚談/[提要]",
+          "chapter": "[提要]",
+          "sources": [
+            "https://github.com/kanripo/KR3h0051"
+          ],
+          "digital_transcription_id": "kanripo:KR3h0051:master@c33a3946eec024100de1b47023432679144f07bb"
         },
         {
-          "document_id": 191760,
-          "file": "寒山帚談__juan_02.txt",
-          "path": "四庫全書/clean/子部/藝術類/書畫之屬/寒山帚談/寒山帚談__juan_02.txt",
-          "title": "寒山帚談 (四庫全書本)",
-          "page_title": "寒山帚談 (四庫全書本)/卷下",
-          "display_title": "寒山帚談",
-          "body_start_line": 6
+          "file": "寒山帚談__juan_001.txt",
+          "path": "四庫全書/clean/子部/藝術類/書畫之屬/寒山帚談/寒山帚談__juan_001.txt",
+          "page_title": "寒山帚談/卷上",
+          "chapter": "卷上",
+          "sources": [
+            "https://github.com/kanripo/KR3h0051"
+          ],
+          "digital_transcription_id": "kanripo:KR3h0051:master@c33a3946eec024100de1b47023432679144f07bb",
+          "document_id": 191759
+        },
+        {
+          "file": "寒山帚談__juan_002.txt",
+          "path": "四庫全書/clean/子部/藝術類/書畫之屬/寒山帚談/寒山帚談__juan_002.txt",
+          "page_title": "寒山帚談/卷下",
+          "chapter": "卷下",
+          "sources": [
+            "https://github.com/kanripo/KR3h0051"
+          ],
+          "digital_transcription_id": "kanripo:KR3h0051:master@c33a3946eec024100de1b47023432679144f07bb",
+          "document_id": 191760
+        },
+        {
+          "file": "寒山帚談__juan_003.txt",
+          "path": "四庫全書/clean/子部/藝術類/書畫之屬/寒山帚談/寒山帚談__juan_003.txt",
+          "page_title": "寒山帚談/拾遺",
+          "chapter": "拾遺",
+          "sources": [
+            "https://github.com/kanripo/KR3h0051"
+          ],
+          "digital_transcription_id": "kanripo:KR3h0051:master@c33a3946eec024100de1b47023432679144f07bb"
+        },
+        {
+          "file": "寒山帚談__juan_004.txt",
+          "path": "四庫全書/clean/子部/藝術類/書畫之屬/寒山帚談/寒山帚談__juan_004.txt",
+          "page_title": "寒山帚談/寒山金石林甲乙表",
+          "chapter": "寒山金石林甲乙表",
+          "sources": [
+            "https://github.com/kanripo/KR3h0051"
+          ],
+          "digital_transcription_id": "kanripo:KR3h0051:master@c33a3946eec024100de1b47023432679144f07bb"
+        },
+        {
+          "file": "寒山帚談__juan_005.txt",
+          "path": "四庫全書/clean/子部/藝術類/書畫之屬/寒山帚談/寒山帚談__juan_005.txt",
+          "page_title": "寒山帚談/金石林緒論",
+          "chapter": "金石林緒論",
+          "sources": [
+            "https://github.com/kanripo/KR3h0051"
+          ],
+          "digital_transcription_id": "kanripo:KR3h0051:master@c33a3946eec024100de1b47023432679144f07bb"
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR3h0051:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR3h0051:master@c33a3946eec024100de1b47023432679144f07bb",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR3h0051",
+          "branch": "master",
+          "revision": "c33a3946eec024100de1b47023432679144f07bb",
+          "retrieved_at": "2026-08-12T02:41:49+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR3h0051:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/子部/藝術類/書畫之屬/寒山帚談/寒山帚談__juan_01.txt",
+        "四庫全書/clean/子部/藝術類/書畫之屬/寒山帚談/寒山帚談__juan_02.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

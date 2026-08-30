@@ -25,15 +25,63 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 219547,
-          "file": "西塍集__juan_01.txt",
-          "path": "四庫全書/clean/集部/別集類/南宋建炎至德祐/西塍集/西塍集__juan_01.txt",
-          "title": "西塍集 (四庫全書本)",
-          "page_title": "西塍集 (四庫全書本)",
-          "display_title": "西塍集",
-          "body_start_line": 6
+          "file": "西塍集__juan_000.txt",
+          "path": "四庫全書/clean/集部/別集類/南宋建炎至德祐/西塍集/西塍集__juan_000.txt",
+          "page_title": "西塍集/提要",
+          "chapter": "提要",
+          "sources": [
+            "https://github.com/kanripo/KR4d0358"
+          ],
+          "digital_transcription_id": "kanripo:KR4d0358:master@3348f8e537e0cdf44fe3e9d03dc18bfca5f3a45f"
+        },
+        {
+          "file": "西塍集__juan_001.txt",
+          "path": "四庫全書/clean/集部/別集類/南宋建炎至德祐/西塍集/西塍集__juan_001.txt",
+          "page_title": "西塍集/西塍集",
+          "chapter": "西塍集",
+          "sources": [
+            "https://github.com/kanripo/KR4d0358"
+          ],
+          "digital_transcription_id": "kanripo:KR4d0358:master@3348f8e537e0cdf44fe3e9d03dc18bfca5f3a45f",
+          "document_id": 219547
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR4d0358:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR4d0358:master@3348f8e537e0cdf44fe3e9d03dc18bfca5f3a45f",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR4d0358",
+          "branch": "master",
+          "revision": "3348f8e537e0cdf44fe3e9d03dc18bfca5f3a45f",
+          "retrieved_at": "2026-08-12T03:34:58+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR4d0358:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/集部/別集類/南宋建炎至德祐/西塍集/西塍集__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

@@ -23,24 +23,75 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 193627,
-          "file": "傷寒類方__juan_01.txt",
-          "path": "四庫全書/clean/子部/醫家類/傷寒類方/傷寒類方__juan_01.txt",
-          "title": "傷寒類方 (四庫全書本)",
-          "page_title": "傷寒類方 (四庫全書本)/卷上",
-          "display_title": "傷寒類方",
-          "body_start_line": 6
+          "file": "傷寒類方__juan_000.txt",
+          "path": "四庫全書/clean/子部/醫家類/傷寒類方/傷寒類方__juan_000.txt",
+          "page_title": "傷寒類方/原序",
+          "chapter": "原序",
+          "sources": [
+            "https://github.com/kanripo/KR3e0099"
+          ],
+          "digital_transcription_id": "kanripo:KR3e0099:master@fcee8f1ad8c2799af58f1942e1a2d8b7d489f078"
         },
         {
-          "document_id": 193628,
-          "file": "傷寒類方__juan_02.txt",
-          "path": "四庫全書/clean/子部/醫家類/傷寒類方/傷寒類方__juan_02.txt",
-          "title": "傷寒類方 (四庫全書本)",
-          "page_title": "傷寒類方 (四庫全書本)/卷下",
-          "display_title": "傷寒類方",
-          "body_start_line": 6
+          "file": "傷寒類方__juan_001.txt",
+          "path": "四庫全書/clean/子部/醫家類/傷寒類方/傷寒類方__juan_001.txt",
+          "page_title": "傷寒類方/卷上",
+          "chapter": "卷上",
+          "sources": [
+            "https://github.com/kanripo/KR3e0099"
+          ],
+          "digital_transcription_id": "kanripo:KR3e0099:master@fcee8f1ad8c2799af58f1942e1a2d8b7d489f078",
+          "document_id": 193627
+        },
+        {
+          "file": "傷寒類方__juan_002.txt",
+          "path": "四庫全書/clean/子部/醫家類/傷寒類方/傷寒類方__juan_002.txt",
+          "page_title": "傷寒類方/卷下",
+          "chapter": "卷下",
+          "sources": [
+            "https://github.com/kanripo/KR3e0099"
+          ],
+          "digital_transcription_id": "kanripo:KR3e0099:master@fcee8f1ad8c2799af58f1942e1a2d8b7d489f078",
+          "document_id": 193628
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR3e0099:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR3e0099:master@fcee8f1ad8c2799af58f1942e1a2d8b7d489f078",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR3e0099",
+          "branch": "master",
+          "revision": "fcee8f1ad8c2799af58f1942e1a2d8b7d489f078",
+          "retrieved_at": "2026-08-12T02:35:00+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR3e0099:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/子部/醫家類/傷寒類方/傷寒類方__juan_01.txt",
+        "四庫全書/clean/子部/醫家類/傷寒類方/傷寒類方__juan_02.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

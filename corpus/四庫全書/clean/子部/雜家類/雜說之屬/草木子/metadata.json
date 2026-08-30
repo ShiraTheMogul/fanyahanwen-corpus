@@ -20,61 +20,99 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 197487,
-          "file": "草木子__juan_01.txt",
-          "path": "四庫全書/clean/子部/雜家類/雜說之屬/草木子/草木子__juan_01.txt",
-          "title": "草木子 (四庫全書本)",
-          "page_title": "草木子 (四庫全書本)/卷1",
-          "display_title": "草木子",
-          "source_categories": [
-            "PD-old"
+          "file": "草木子__juan_000.txt",
+          "path": "四庫全書/clean/子部/雜家類/雜說之屬/草木子/草木子__juan_000.txt",
+          "page_title": "草木子/原序",
+          "chapter": "原序",
+          "sources": [
+            "https://github.com/kanripo/KR3j0149"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3j0149:master@b2ced8eed40cd8396ec07bc9f3efa26474707e0a"
         },
         {
-          "document_id": 197488,
-          "file": "草木子__juan_02.txt",
-          "path": "四庫全書/clean/子部/雜家類/雜說之屬/草木子/草木子__juan_02.txt",
-          "title": "草木子 (四庫全書本)",
-          "page_title": "草木子 (四庫全書本)/卷2",
-          "display_title": "草木子",
-          "source_categories": [
-            "PD-old"
+          "file": "草木子__juan_001.txt",
+          "path": "四庫全書/clean/子部/雜家類/雜說之屬/草木子/草木子__juan_001.txt",
+          "page_title": "草木子/卷一",
+          "chapter": "卷一",
+          "sources": [
+            "https://github.com/kanripo/KR3j0149"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3j0149:master@b2ced8eed40cd8396ec07bc9f3efa26474707e0a",
+          "document_id": 197487
         },
         {
-          "document_id": 197489,
-          "file": "草木子__juan_03.txt",
-          "path": "四庫全書/clean/子部/雜家類/雜說之屬/草木子/草木子__juan_03.txt",
-          "title": "草木子 (四庫全書本)",
-          "page_title": "草木子 (四庫全書本)/卷3",
-          "display_title": "草木子",
-          "source_categories": [
-            "1346年 (提及)",
-            "1349年 (提及)",
-            "1351年 (提及)",
-            "1355年 (提及)",
-            "1359年 (提及)",
-            "1362年 (提及)",
-            "PD-old"
+          "file": "草木子__juan_002.txt",
+          "path": "四庫全書/clean/子部/雜家類/雜說之屬/草木子/草木子__juan_002.txt",
+          "page_title": "草木子/卷二",
+          "chapter": "卷二",
+          "sources": [
+            "https://github.com/kanripo/KR3j0149"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3j0149:master@b2ced8eed40cd8396ec07bc9f3efa26474707e0a",
+          "document_id": 197488
         },
         {
-          "document_id": 197490,
-          "file": "草木子__juan_04.txt",
-          "path": "四庫全書/clean/子部/雜家類/雜說之屬/草木子/草木子__juan_04.txt",
-          "title": "草木子 (四庫全書本)",
-          "page_title": "草木子 (四庫全書本)/卷4",
-          "display_title": "草木子",
-          "source_categories": [
-            "1276年 (提及)",
-            "PD-old"
+          "file": "草木子__juan_003.txt",
+          "path": "四庫全書/clean/子部/雜家類/雜說之屬/草木子/草木子__juan_003.txt",
+          "page_title": "草木子/卷三",
+          "chapter": "卷三",
+          "sources": [
+            "https://github.com/kanripo/KR3j0149"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3j0149:master@b2ced8eed40cd8396ec07bc9f3efa26474707e0a",
+          "document_id": 197489
+        },
+        {
+          "file": "草木子__juan_004.txt",
+          "path": "四庫全書/clean/子部/雜家類/雜說之屬/草木子/草木子__juan_004.txt",
+          "page_title": "草木子/卷四",
+          "chapter": "卷四",
+          "sources": [
+            "https://github.com/kanripo/KR3j0149"
+          ],
+          "digital_transcription_id": "kanripo:KR3j0149:master@b2ced8eed40cd8396ec07bc9f3efa26474707e0a",
+          "document_id": 197490
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR3j0149:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR3j0149:master@b2ced8eed40cd8396ec07bc9f3efa26474707e0a",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR3j0149",
+          "branch": "master",
+          "revision": "b2ced8eed40cd8396ec07bc9f3efa26474707e0a",
+          "retrieved_at": "2026-08-12T02:50:26+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR3j0149:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/子部/雜家類/雜說之屬/草木子/草木子__juan_01.txt",
+        "四庫全書/clean/子部/雜家類/雜說之屬/草木子/草木子__juan_02.txt",
+        "四庫全書/clean/子部/雜家類/雜說之屬/草木子/草木子__juan_03.txt",
+        "四庫全書/clean/子部/雜家類/雜說之屬/草木子/草木子__juan_04.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

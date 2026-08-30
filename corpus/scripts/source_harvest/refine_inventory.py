@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Refine a completed source inventory without rescanning the PALCC corpus.
 
 This is a second-stage triage pass over the CSVs produced by inventory_sources.py.
@@ -38,6 +38,18 @@ KANA_RE = re.compile(r"[\u3040-\u309f\u30a0-\u30ff]")
 LATIN_RE = re.compile(r"[A-Za-z]")
 W_NS = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
 
+# Some Kanripo catalogue titles contain a role marker which describes the payload,
+# not part of the work title. Keep this list deliberately narrow: it is used only
+# while reconciling Kanripo source titles against PALCC work titles.
+KANRIPO_CATALOGUE_ROLE_SUFFIXES = ("正文", "本文", "原文", "經文")
+
+# Conventional title variants which refer to the same textual work. These are
+# explicit equivalence groups, not fuzzy substitutions. Add future groups only when
+# the bibliographic identity is established.
+TITLE_ALIAS_GROUPS = (
+    ("春秋左傳", "春秋左氏傳"),
+)
+
 UD_TARGETS = [
     ("UD_Classical_Chinese-Kyoto", "KR1h0004", "論語", "", "論語"),
     ("UD_Classical_Chinese-Kyoto", "KR1h0001", "孟子", "", "孟子"),
@@ -60,6 +72,33 @@ def clean(value: Any) -> str:
 def title_norm(value: str) -> str:
     text = unicodedata.normalize("NFKC", clean(value)).translate(TITLE_FOLD)
     return PUNCT_RE.sub("", text).casefold()
+
+
+def kanripo_title_norm(value: str) -> tuple[str, bool]:
+    """Normalize a Kanripo catalogue title and remove a narrow payload-role suffix.
+
+    Returns the normalized title plus a flag recording whether a suffix was removed.
+    The removal happens after punctuation normalization, so both ``(正文)`` and
+    ``（正文）`` are handled without creating a general parenthesis-stripping rule.
+    """
+    norm = title_norm(value)
+    for suffix in KANRIPO_CATALOGUE_ROLE_SUFFIXES:
+        suffix_norm = title_norm(suffix)
+        if norm.endswith(suffix_norm) and len(norm) > len(suffix_norm):
+            return norm[:-len(suffix_norm)], True
+    return norm, False
+
+
+def title_alias_norms(value: str, *, kanripo_catalogue: bool = False) -> set[str]:
+    norm = kanripo_title_norm(value)[0] if kanripo_catalogue else title_norm(value)
+    if not norm:
+        return set()
+    result = {norm}
+    for group in TITLE_ALIAS_GROUPS:
+        group_norms = {title_norm(member) for member in group}
+        if norm in group_norms:
+            result.update(group_norms)
+    return result
 
 
 def read_csv(path: Path) -> list[dict[str, str]]:
@@ -128,9 +167,10 @@ def load_last_inventory(staging_root: Path) -> Path:
 def exact_title_index(corpus_rows: list[dict[str, str]]) -> dict[str, list[dict[str, str]]]:
     index: dict[str, list[dict[str, str]]] = {}
     for row in corpus_rows:
-        norm = title_norm(row.get("title", ""))
-        if norm:
-            index.setdefault(norm, []).append(row)
+        for norm in title_alias_norms(row.get("title", "")):
+            bucket = index.setdefault(norm, [])
+            if row not in bucket:
+                bucket.append(row)
     return index
 
 
@@ -330,13 +370,55 @@ def build_codh(staging_root: Path, output: Path, refined: Path) -> tuple[list[di
     return rows, segments
 
 
+def kanripo_exact_candidates(title: str, index: dict[str, list[dict[str, str]]]) -> tuple[list[dict[str, str]], bool]:
+    candidates: list[dict[str, str]] = []
+    seen_paths: set[str] = set()
+    _cleaned_norm, qualifier_removed = kanripo_title_norm(title)
+    for norm in title_alias_norms(title, kanripo_catalogue=True):
+        for candidate in index.get(norm, []):
+            path = candidate.get("path", "")
+            if path in seen_paths:
+                continue
+            seen_paths.add(path)
+            candidates.append(candidate)
+    return candidates, qualifier_removed
+
+
 def build_kanripo(output: Path, refined: Path, corpus_rows: list[dict[str, str]]) -> Counter[str]:
     rows = read_csv(output / "kanripo_matches.csv")
     primary_by_path = {row.get("path", ""): intish(row.get("primary_text_file_count")) for row in corpus_rows}
     primary_counts_known = has_primary_count_data(corpus_rows)
+    exact_index = exact_title_index(corpus_rows)
     for row in rows:
-        status = row.get("match_status", "")
         title = row.get("source_title", "")
+        exact_candidates, qualifier_removed = kanripo_exact_candidates(title, exact_index)
+        if exact_candidates:
+            first = exact_candidates[0]
+            source_direct = kanripo_title_norm(title)[0]
+            direct_candidate = any(title_norm(candidate.get("title", "")) == source_direct for candidate in exact_candidates)
+            if direct_candidate and qualifier_removed:
+                match_basis = "exact_title_after_catalogue_qualifier_cleanup"
+            elif direct_candidate:
+                match_basis = "exact_title"
+            elif qualifier_removed:
+                match_basis = "catalogue_qualifier_cleanup+canonical_title_alias"
+            else:
+                match_basis = "canonical_title_alias"
+            status = "exact_title" if len(exact_candidates) == 1 else "exact_title_ambiguous"
+            row["match_status"] = status
+            row["match_score"] = "1.0"
+            row["palcc_title"] = first.get("title", "")
+            row["palcc_path"] = first.get("path", "")
+            row["palcc_work_id"] = first.get("work_id", "")
+            row["palcc_corpus_root"] = first.get("corpus_root", "")
+            row["candidate_count"] = str(len(exact_candidates))
+            row["candidate_titles"] = " | ".join(candidate.get("title", "") for candidate in exact_candidates)
+            row["candidate_paths"] = " | ".join(candidate.get("path", "") for candidate in exact_candidates)
+            row["refined_match_basis"] = match_basis
+        else:
+            status = row.get("match_status", "")
+            row["refined_match_basis"] = "inventory_match"
+
         score = floatish(row.get("match_score"))
         candidate_paths = [part.strip() for part in row.get("candidate_paths", "").split(" | ") if part.strip()]
         candidate_primary = [primary_by_path.get(path, 0) for path in candidate_paths]
@@ -362,7 +444,7 @@ def build_kanripo(output: Path, refined: Path, corpus_rows: list[dict[str, str]]
 
     fields = [
         "source_id","source_title","source_author","source_period","source_catalog_label","source_url","refined_queue",
-        "match_status","match_score","palcc_title","palcc_path","candidate_count","candidate_titles","candidate_paths",
+        "refined_match_basis","match_status","match_score","palcc_title","palcc_path","candidate_count","candidate_titles","candidate_paths",
         "candidate_primary_text_file_counts","all_exact_candidates_metadata_only",
     ]
     mapping = {
@@ -513,13 +595,16 @@ def main() -> int:
         "  * Unlinked NIJL GitLab descriptions are hints only, not authoritative titles.",
         "  * NIJL exact title matches of <=3 characters go to collision review.",
         "  * Fuzzy/containment matches are relationships to review, not witness identity.",
+        "  * Kanripo catalogue payload markers such as （正文） are excluded from work-title identity.",
+        "  * Established Kanripo/PALCC title aliases are exact bibliographic equivalences, not fuzzy matches.",
         "  * TueCL is 莊子・逍遙遊, not a missing standalone work.",
         "  * Kyoto KR6c0023 and KR6c0127 are exact-source new-work candidates unless PALCC later gains exact editions.",
         "",
         "Queues are triage only; download-for-witness-compare never means overwrite.",
         "",
     ]
-    (refined / "summary.txt").write_text("\n".join(lines), encoding="utf-8")
+    # This report contains Han script, so preserve the corpus-wide UTF-8 BOM rule.
+    (refined / "summary.txt").write_text("\n".join(lines), encoding="utf-8-sig")
     print("\n".join(lines))
     print(f"Refined reports: {refined}")
     return 0

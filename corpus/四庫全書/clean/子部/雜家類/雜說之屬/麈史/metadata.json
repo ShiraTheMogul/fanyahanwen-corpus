@@ -20,53 +20,87 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 197642,
-          "file": "麈史__juan_01.txt",
-          "path": "四庫全書/clean/子部/雜家類/雜說之屬/麈史/麈史__juan_01.txt",
-          "title": "麈史 (四庫全書本)",
-          "page_title": "麈史 (四庫全書本)/卷1",
-          "display_title": "麈史",
-          "source_categories": [
-            "1006年 (提及)",
-            "907年 (提及)",
-            "PD-old"
+          "file": "麈史__juan_000.txt",
+          "path": "四庫全書/clean/子部/雜家類/雜說之屬/麈史/麈史__juan_000.txt",
+          "page_title": "麈史/序",
+          "chapter": "序",
+          "sources": [
+            "https://github.com/kanripo/KR3j0090"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3j0090:master@8c314a6e735cc40df5bea11b44174fdfa3d2801e"
         },
         {
-          "document_id": 197643,
-          "file": "麈史__juan_02.txt",
-          "path": "四庫全書/clean/子部/雜家類/雜說之屬/麈史/麈史__juan_02.txt",
-          "title": "麈史 (四庫全書本)",
-          "page_title": "麈史 (四庫全書本)/卷2",
-          "display_title": "麈史",
-          "source_categories": [
-            "1015年 (提及)",
-            "1030年 (提及)",
-            "1053年 (提及)",
-            "1059年 (提及)",
-            "454年 (提及)",
-            "573年 (提及)",
-            "PD-old"
+          "file": "麈史__juan_001.txt",
+          "path": "四庫全書/clean/子部/雜家類/雜說之屬/麈史/麈史__juan_001.txt",
+          "page_title": "麈史/卷一",
+          "chapter": "卷一",
+          "sources": [
+            "https://github.com/kanripo/KR3j0090"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3j0090:master@8c314a6e735cc40df5bea11b44174fdfa3d2801e",
+          "document_id": 197642
         },
         {
-          "document_id": 197644,
-          "file": "麈史__juan_03.txt",
-          "path": "四庫全書/clean/子部/雜家類/雜說之屬/麈史/麈史__juan_03.txt",
-          "title": "麈史 (四庫全書本)",
-          "page_title": "麈史 (四庫全書本)/卷3",
-          "display_title": "麈史",
-          "source_categories": [
-            "1030年 (提及)",
-            "1049年 (提及)",
-            "1053年 (提及)",
-            "PD-old"
+          "file": "麈史__juan_002.txt",
+          "path": "四庫全書/clean/子部/雜家類/雜說之屬/麈史/麈史__juan_002.txt",
+          "page_title": "麈史/卷二",
+          "chapter": "卷二",
+          "sources": [
+            "https://github.com/kanripo/KR3j0090"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3j0090:master@8c314a6e735cc40df5bea11b44174fdfa3d2801e",
+          "document_id": 197643
+        },
+        {
+          "file": "麈史__juan_003.txt",
+          "path": "四庫全書/clean/子部/雜家類/雜說之屬/麈史/麈史__juan_003.txt",
+          "page_title": "麈史/卷三",
+          "chapter": "卷三",
+          "sources": [
+            "https://github.com/kanripo/KR3j0090"
+          ],
+          "digital_transcription_id": "kanripo:KR3j0090:master@8c314a6e735cc40df5bea11b44174fdfa3d2801e",
+          "document_id": 197644
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR3j0090:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR3j0090:master@8c314a6e735cc40df5bea11b44174fdfa3d2801e",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR3j0090",
+          "branch": "master",
+          "revision": "8c314a6e735cc40df5bea11b44174fdfa3d2801e",
+          "retrieved_at": "2026-08-12T02:49:00+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR3j0090:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/子部/雜家類/雜說之屬/麈史/麈史__juan_01.txt",
+        "四庫全書/clean/子部/雜家類/雜說之屬/麈史/麈史__juan_02.txt",
+        "四庫全書/clean/子部/雜家類/雜說之屬/麈史/麈史__juan_03.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_recorded_in_current_metadata",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

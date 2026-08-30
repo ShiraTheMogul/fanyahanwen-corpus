@@ -1,4 +1,4 @@
-﻿{
+{
   "schema_version": 1,
   "work_id": 55619,
   "corpus_root": "中國漢文",
@@ -19,12 +19,52 @@
   "is_compilation": false,
   "documents": [
     {
-      "document_id": 104936,
-      "file": "潛虛__juan_01.txt",
-      "path": "中國漢文/clean/宋朝/北宋/潛虛/潛虛__juan_01.txt",
-      "body_start_line": 10
+      "file": "潛虛__juan_001.txt",
+      "path": "中國漢文/clean/宋朝/北宋/潛虛/潛虛__juan_001.txt",
+      "page_title": "潛虛/1",
+      "chapter": "1",
+      "sources": [
+        "https://github.com/kanripo/KR3g0004"
+      ],
+      "digital_transcription_id": "kanripo:KR3g0004:master@d44356bc2b100d83146923a135b484e1cc2de6b8",
+      "document_id": 104936
     }
   ],
   "known_commentaries": [],
-  "ca": "1019–1086年"
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR3g0004:witness:SBCK",
+      "label": "SBCK",
+      "upstream_code": "SBCK",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR3g0004:master@d44356bc2b100d83146923a135b484e1cc2de6b8",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR3g0004",
+          "branch": "master",
+          "revision": "d44356bc2b100d83146923a135b484e1cc2de6b8",
+          "retrieved_at": "2026-08-12T02:39:02+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR3g0004:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "中國漢文/clean/宋朝/北宋/潛虛/潛虛__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_recorded_in_current_metadata",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

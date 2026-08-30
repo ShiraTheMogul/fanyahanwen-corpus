@@ -20,43 +20,86 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 226619,
-          "file": "雲臺編__juan_01.txt",
-          "path": "四庫全書/clean/集部/別集類/漢至五代/雲臺編/雲臺編__juan_01.txt",
-          "title": "雲臺編 (四庫全書本)",
-          "page_title": "雲臺編 (四庫全書本)/卷上",
-          "display_title": "雲臺編",
-          "source_categories": [
-            "PD-old"
+          "file": "雲臺編__juan_000.txt",
+          "path": "四庫全書/clean/集部/別集類/漢至五代/雲臺編/雲臺編__juan_000.txt",
+          "page_title": "雲臺編/0",
+          "chapter": "0",
+          "sources": [
+            "https://github.com/kanripo/KR4c0094"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR4c0094:WYG@33d65a62f9039375d4b064883914a3770ae4936c"
         },
         {
-          "document_id": 226620,
-          "file": "雲臺編__juan_02.txt",
-          "path": "四庫全書/clean/集部/別集類/漢至五代/雲臺編/雲臺編__juan_02.txt",
-          "title": "雲臺編 (四庫全書本)",
-          "page_title": "雲臺編 (四庫全書本)/卷中",
-          "display_title": "雲臺編",
-          "source_categories": [
-            "873年 (提及)",
-            "PD-old"
+          "file": "雲臺編__juan_001.txt",
+          "path": "四庫全書/clean/集部/別集類/漢至五代/雲臺編/雲臺編__juan_001.txt",
+          "page_title": "雲臺編/1",
+          "chapter": "1",
+          "sources": [
+            "https://github.com/kanripo/KR4c0094"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR4c0094:WYG@33d65a62f9039375d4b064883914a3770ae4936c",
+          "document_id": 226619
         },
         {
-          "document_id": 226621,
-          "file": "雲臺編__juan_03.txt",
-          "path": "四庫全書/clean/集部/別集類/漢至五代/雲臺編/雲臺編__juan_03.txt",
-          "title": "雲臺編 (四庫全書本)",
-          "page_title": "雲臺編 (四庫全書本)/卷下",
-          "display_title": "雲臺編",
-          "source_categories": [
-            "PD-old"
+          "file": "雲臺編__juan_002.txt",
+          "path": "四庫全書/clean/集部/別集類/漢至五代/雲臺編/雲臺編__juan_002.txt",
+          "page_title": "雲臺編/2",
+          "chapter": "2",
+          "sources": [
+            "https://github.com/kanripo/KR4c0094"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR4c0094:WYG@33d65a62f9039375d4b064883914a3770ae4936c",
+          "document_id": 226620
+        },
+        {
+          "file": "雲臺編__juan_004.txt",
+          "path": "四庫全書/clean/集部/別集類/漢至五代/雲臺編/雲臺編__juan_004.txt",
+          "page_title": "雲臺編/4",
+          "chapter": "4",
+          "sources": [
+            "https://github.com/kanripo/KR4c0094"
+          ],
+          "digital_transcription_id": "kanripo:KR4c0094:WYG@33d65a62f9039375d4b064883914a3770ae4936c"
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR4c0094:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "branch_fallback_inference",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR4c0094:WYG@33d65a62f9039375d4b064883914a3770ae4936c",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR4c0094",
+          "branch": "WYG",
+          "revision": "33d65a62f9039375d4b064883914a3770ae4936c",
+          "retrieved_at": "2026-08-12T03:20:44+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR4c0094:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/集部/別集類/漢至五代/雲臺編/雲臺編__juan_01.txt",
+        "四庫全書/clean/集部/別集類/漢至五代/雲臺編/雲臺編__juan_02.txt",
+        "四庫全書/clean/集部/別集類/漢至五代/雲臺編/雲臺編__juan_03.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

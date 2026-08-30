@@ -23,42 +23,99 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 205308,
-          "file": "四書劄記__juan_01.txt",
-          "path": "四庫全書/clean/經部/四書類/四書劄記/四書劄記__juan_01.txt",
-          "title": "四書劄記 (四庫全書本)",
-          "page_title": "四書劄記 (四庫全書本)/卷1",
-          "display_title": "四書劄記",
-          "body_start_line": 6
+          "file": "四書劄記__juan_000.txt",
+          "path": "四庫全書/clean/經部/四書類/四書劄記/四書劄記__juan_000.txt",
+          "page_title": "四書劄記/0",
+          "chapter": "0",
+          "sources": [
+            "https://github.com/kanripo/KR1h0064"
+          ],
+          "digital_transcription_id": "kanripo:KR1h0064:master@a7393fa4630aa43636cc8110cdfc9a29a71620fc"
         },
         {
-          "document_id": 205309,
-          "file": "四書劄記__juan_02.txt",
-          "path": "四庫全書/clean/經部/四書類/四書劄記/四書劄記__juan_02.txt",
-          "title": "四書劄記 (四庫全書本)",
-          "page_title": "四書劄記 (四庫全書本)/卷2",
-          "display_title": "四書劄記",
-          "body_start_line": 6
+          "file": "四書劄記__juan_001.txt",
+          "path": "四庫全書/clean/經部/四書類/四書劄記/四書劄記__juan_001.txt",
+          "page_title": "四書劄記/卷一",
+          "chapter": "卷一",
+          "sources": [
+            "https://github.com/kanripo/KR1h0064"
+          ],
+          "digital_transcription_id": "kanripo:KR1h0064:master@a7393fa4630aa43636cc8110cdfc9a29a71620fc",
+          "document_id": 205308
         },
         {
-          "document_id": 205310,
-          "file": "四書劄記__juan_03.txt",
-          "path": "四庫全書/clean/經部/四書類/四書劄記/四書劄記__juan_03.txt",
-          "title": "四書劄記 (四庫全書本)",
-          "page_title": "四書劄記 (四庫全書本)/卷3",
-          "display_title": "四書劄記",
-          "body_start_line": 6
+          "file": "四書劄記__juan_002.txt",
+          "path": "四庫全書/clean/經部/四書類/四書劄記/四書劄記__juan_002.txt",
+          "page_title": "四書劄記/卷二",
+          "chapter": "卷二",
+          "sources": [
+            "https://github.com/kanripo/KR1h0064"
+          ],
+          "digital_transcription_id": "kanripo:KR1h0064:master@a7393fa4630aa43636cc8110cdfc9a29a71620fc",
+          "document_id": 205309
         },
         {
-          "document_id": 205311,
-          "file": "四書劄記__juan_04.txt",
-          "path": "四庫全書/clean/經部/四書類/四書劄記/四書劄記__juan_04.txt",
-          "title": "四書劄記 (四庫全書本)",
-          "page_title": "四書劄記 (四庫全書本)/卷4",
-          "display_title": "四書劄記",
-          "body_start_line": 6
+          "file": "四書劄記__juan_003.txt",
+          "path": "四庫全書/clean/經部/四書類/四書劄記/四書劄記__juan_003.txt",
+          "page_title": "四書劄記/卷三",
+          "chapter": "卷三",
+          "sources": [
+            "https://github.com/kanripo/KR1h0064"
+          ],
+          "digital_transcription_id": "kanripo:KR1h0064:master@a7393fa4630aa43636cc8110cdfc9a29a71620fc",
+          "document_id": 205310
+        },
+        {
+          "file": "四書劄記__juan_004.txt",
+          "path": "四庫全書/clean/經部/四書類/四書劄記/四書劄記__juan_004.txt",
+          "page_title": "四書劄記/卷四",
+          "chapter": "卷四",
+          "sources": [
+            "https://github.com/kanripo/KR1h0064"
+          ],
+          "digital_transcription_id": "kanripo:KR1h0064:master@a7393fa4630aa43636cc8110cdfc9a29a71620fc",
+          "document_id": 205311
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR1h0064:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR1h0064:master@a7393fa4630aa43636cc8110cdfc9a29a71620fc",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR1h0064",
+          "branch": "master",
+          "revision": "a7393fa4630aa43636cc8110cdfc9a29a71620fc",
+          "retrieved_at": "2026-08-12T00:41:43+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR1h0064:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/經部/四書類/四書劄記/四書劄記__juan_01.txt",
+        "四庫全書/clean/經部/四書類/四書劄記/四書劄記__juan_02.txt",
+        "四庫全書/clean/經部/四書類/四書劄記/四書劄記__juan_03.txt",
+        "四庫全書/clean/經部/四書類/四書劄記/四書劄記__juan_04.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

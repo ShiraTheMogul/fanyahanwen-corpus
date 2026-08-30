@@ -23,33 +23,87 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 228359,
-          "file": "欽定補繪蕭雲從離騷全圖__juan_01.txt",
-          "path": "四庫全書/clean/集部/楚辭類/欽定補繪蕭雲從離騷全圖/欽定補繪蕭雲從離騷全圖__juan_01.txt",
-          "title": "欽定補繪蕭雲從離騷全圖 (四庫全書本)",
-          "page_title": "欽定補繪蕭雲從離騷全圖 (四庫全書本)/卷上",
-          "display_title": "欽定補繪蕭雲從離騷全圖",
-          "body_start_line": 6
+          "file": "欽定補繪蕭雲從離騷全圖__juan_000.txt",
+          "path": "四庫全書/clean/集部/楚辭類/欽定補繪蕭雲從離騷全圖/欽定補繪蕭雲從離騷全圖__juan_000.txt",
+          "page_title": "欽定補繪蕭雲從離騷全圖/目錄",
+          "chapter": "目錄",
+          "sources": [
+            "https://github.com/kanripo/KR4a0006"
+          ],
+          "digital_transcription_id": "kanripo:KR4a0006:master@4d53089476775f3856233c3828b79787b878ba03"
         },
         {
-          "document_id": 228360,
-          "file": "欽定補繪蕭雲從離騷全圖__juan_02.txt",
-          "path": "四庫全書/clean/集部/楚辭類/欽定補繪蕭雲從離騷全圖/欽定補繪蕭雲從離騷全圖__juan_02.txt",
-          "title": "欽定補繪蕭雲從離騷全圖 (四庫全書本)",
-          "page_title": "欽定補繪蕭雲從離騷全圖 (四庫全書本)/卷中",
-          "display_title": "欽定補繪蕭雲從離騷全圖",
-          "body_start_line": 6
+          "file": "欽定補繪蕭雲從離騷全圖__juan_001.txt",
+          "path": "四庫全書/clean/集部/楚辭類/欽定補繪蕭雲從離騷全圖/欽定補繪蕭雲從離騷全圖__juan_001.txt",
+          "page_title": "欽定補繪蕭雲從離騷全圖/卷上",
+          "chapter": "卷上",
+          "sources": [
+            "https://github.com/kanripo/KR4a0006"
+          ],
+          "digital_transcription_id": "kanripo:KR4a0006:master@4d53089476775f3856233c3828b79787b878ba03",
+          "document_id": 228359
         },
         {
-          "document_id": 228361,
-          "file": "欽定補繪蕭雲從離騷全圖__juan_03.txt",
-          "path": "四庫全書/clean/集部/楚辭類/欽定補繪蕭雲從離騷全圖/欽定補繪蕭雲從離騷全圖__juan_03.txt",
-          "title": "欽定補繪蕭雲從離騷全圖 (四庫全書本)",
-          "page_title": "欽定補繪蕭雲從離騷全圖 (四庫全書本)/卷下",
-          "display_title": "欽定補繪蕭雲從離騷全圖",
-          "body_start_line": 6
+          "file": "欽定補繪蕭雲從離騷全圖__juan_002.txt",
+          "path": "四庫全書/clean/集部/楚辭類/欽定補繪蕭雲從離騷全圖/欽定補繪蕭雲從離騷全圖__juan_002.txt",
+          "page_title": "欽定補繪蕭雲從離騷全圖/卷中",
+          "chapter": "卷中",
+          "sources": [
+            "https://github.com/kanripo/KR4a0006"
+          ],
+          "digital_transcription_id": "kanripo:KR4a0006:master@4d53089476775f3856233c3828b79787b878ba03",
+          "document_id": 228360
+        },
+        {
+          "file": "欽定補繪蕭雲從離騷全圖__juan_003.txt",
+          "path": "四庫全書/clean/集部/楚辭類/欽定補繪蕭雲從離騷全圖/欽定補繪蕭雲從離騷全圖__juan_003.txt",
+          "page_title": "欽定補繪蕭雲從離騷全圖/卷下",
+          "chapter": "卷下",
+          "sources": [
+            "https://github.com/kanripo/KR4a0006"
+          ],
+          "digital_transcription_id": "kanripo:KR4a0006:master@4d53089476775f3856233c3828b79787b878ba03",
+          "document_id": 228361
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR4a0006:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR4a0006:master@4d53089476775f3856233c3828b79787b878ba03",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR4a0006",
+          "branch": "master",
+          "revision": "4d53089476775f3856233c3828b79787b878ba03",
+          "retrieved_at": "2026-08-12T03:08:58+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR4a0006:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/集部/楚辭類/欽定補繪蕭雲從離騷全圖/欽定補繪蕭雲從離騷全圖__juan_01.txt",
+        "四庫全書/clean/集部/楚辭類/欽定補繪蕭雲從離騷全圖/欽定補繪蕭雲從離騷全圖__juan_02.txt",
+        "四庫全書/clean/集部/楚辭類/欽定補繪蕭雲從離騷全圖/欽定補繪蕭雲從離騷全圖__juan_03.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

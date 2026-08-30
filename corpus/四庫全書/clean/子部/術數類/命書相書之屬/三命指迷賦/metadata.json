@@ -23,15 +23,63 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 192475,
-          "file": "三命指迷賦__juan_01.txt",
-          "path": "四庫全書/clean/子部/術數類/命書相書之屬/三命指迷賦/三命指迷賦__juan_01.txt",
-          "title": "三命指迷賦 (四庫全書本)",
-          "page_title": "三命指迷賦 (四庫全書本)/卷上",
-          "display_title": "三命指迷賦",
-          "body_start_line": 6
+          "file": "三命指迷賦__juan_000.txt",
+          "path": "四庫全書/clean/子部/術數類/命書相書之屬/三命指迷賦/三命指迷賦__juan_000.txt",
+          "page_title": "三命指迷賦/提要",
+          "chapter": "提要",
+          "sources": [
+            "https://github.com/kanripo/KR3g0038"
+          ],
+          "digital_transcription_id": "kanripo:KR3g0038:master@b0a58335dbcb7284cd7592e8ad8c9117e7f30c89"
+        },
+        {
+          "file": "三命指迷賦__juan_001.txt",
+          "path": "四庫全書/clean/子部/術數類/命書相書之屬/三命指迷賦/三命指迷賦__juan_001.txt",
+          "page_title": "三命指迷賦/三命指迷賦",
+          "chapter": "三命指迷賦",
+          "sources": [
+            "https://github.com/kanripo/KR3g0038"
+          ],
+          "digital_transcription_id": "kanripo:KR3g0038:master@b0a58335dbcb7284cd7592e8ad8c9117e7f30c89",
+          "document_id": 192475
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR3g0038:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR3g0038:master@b0a58335dbcb7284cd7592e8ad8c9117e7f30c89",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR3g0038",
+          "branch": "master",
+          "revision": "b0a58335dbcb7284cd7592e8ad8c9117e7f30c89",
+          "retrieved_at": "2026-08-12T02:39:41+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR3g0038:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/子部/術數類/命書相書之屬/三命指迷賦/三命指迷賦__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

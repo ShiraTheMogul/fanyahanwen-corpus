@@ -20,49 +20,87 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 209287,
-          "file": "春秋王霸列國世紀編__juan_01.txt",
-          "path": "四庫全書/clean/經部/春秋類/春秋王霸列國世紀編/春秋王霸列國世紀編__juan_01.txt",
-          "title": "春秋王霸列國世紀編 (四庫全書本)",
-          "page_title": "春秋王霸列國世紀編 (四庫全書本)/卷1",
-          "display_title": "春秋王霸列國世紀編",
-          "source_categories": [
-            "PD-old"
+          "file": "春秋王霸列國世紀編__juan_000.txt",
+          "path": "四庫全書/clean/經部/春秋類/春秋王霸列國世紀編/春秋王霸列國世紀編__juan_000.txt",
+          "page_title": "春秋王霸列國世紀編/原序",
+          "chapter": "原序",
+          "sources": [
+            "https://github.com/kanripo/KR1e0049"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR1e0049:master@d7cc2e00a70ec739eaf9d1682941ea7b99729a88"
         },
         {
-          "document_id": 209288,
-          "file": "春秋王霸列國世紀編__juan_02.txt",
-          "path": "四庫全書/clean/經部/春秋類/春秋王霸列國世紀編/春秋王霸列國世紀編__juan_02.txt",
-          "title": "春秋王霸列國世紀編 (四庫全書本)",
-          "page_title": "春秋王霸列國世紀編 (四庫全書本)/卷2",
-          "display_title": "春秋王霸列國世紀編",
-          "source_categories": [
-            "PD-old",
-            "前481年 (提及)",
-            "前487年 (提及)",
-            "前534年 (提及)"
+          "file": "春秋王霸列國世紀編__juan_001.txt",
+          "path": "四庫全書/clean/經部/春秋類/春秋王霸列國世紀編/春秋王霸列國世紀編__juan_001.txt",
+          "page_title": "春秋王霸列國世紀編/卷一",
+          "chapter": "卷一",
+          "sources": [
+            "https://github.com/kanripo/KR1e0049"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR1e0049:master@d7cc2e00a70ec739eaf9d1682941ea7b99729a88",
+          "document_id": 209287
         },
         {
-          "document_id": 209289,
-          "file": "春秋王霸列國世紀編__juan_03.txt",
-          "path": "四庫全書/clean/經部/春秋類/春秋王霸列國世紀編/春秋王霸列國世紀編__juan_03.txt",
-          "title": "春秋王霸列國世紀編 (四庫全書本)",
-          "page_title": "春秋王霸列國世紀編 (四庫全書本)/卷3",
-          "display_title": "春秋王霸列國世紀編",
-          "source_categories": [
-            "PD-old",
-            "前481年 (提及)",
-            "前495年 (提及)",
-            "前526年 (提及)",
-            "前537年 (提及)"
+          "file": "春秋王霸列國世紀編__juan_002.txt",
+          "path": "四庫全書/clean/經部/春秋類/春秋王霸列國世紀編/春秋王霸列國世紀編__juan_002.txt",
+          "page_title": "春秋王霸列國世紀編/卷二",
+          "chapter": "卷二",
+          "sources": [
+            "https://github.com/kanripo/KR1e0049"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR1e0049:master@d7cc2e00a70ec739eaf9d1682941ea7b99729a88",
+          "document_id": 209288
+        },
+        {
+          "file": "春秋王霸列國世紀編__juan_003.txt",
+          "path": "四庫全書/clean/經部/春秋類/春秋王霸列國世紀編/春秋王霸列國世紀編__juan_003.txt",
+          "page_title": "春秋王霸列國世紀編/卷三",
+          "chapter": "卷三",
+          "sources": [
+            "https://github.com/kanripo/KR1e0049"
+          ],
+          "digital_transcription_id": "kanripo:KR1e0049:master@d7cc2e00a70ec739eaf9d1682941ea7b99729a88",
+          "document_id": 209289
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR1e0049:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR1e0049:master@d7cc2e00a70ec739eaf9d1682941ea7b99729a88",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR1e0049",
+          "branch": "master",
+          "revision": "d7cc2e00a70ec739eaf9d1682941ea7b99729a88",
+          "retrieved_at": "2026-08-12T00:31:58+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR1e0049:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/經部/春秋類/春秋王霸列國世紀編/春秋王霸列國世紀編__juan_01.txt",
+        "四庫全書/clean/經部/春秋類/春秋王霸列國世紀編/春秋王霸列國世紀編__juan_02.txt",
+        "四庫全書/clean/經部/春秋類/春秋王霸列國世紀編/春秋王霸列國世紀編__juan_03.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_recorded_in_current_metadata",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

@@ -6,13 +6,51 @@
   "is_compilation": false,
   "documents": [
     {
-      "document_id": 260449,
-      "file": "般若波羅蜜多心經.txt",
-      "path": "維基大典/clean/般若波羅蜜多心經/般若波羅蜜多心經.txt",
-      "body_start_line": 1,
-      "display_title": "般若波羅蜜多心經",
-      "page_title": "般若波羅蜜多心經"
+      "file": "般若波羅蜜多心經__juan_001.txt",
+      "path": "維基大典/clean/般若波羅蜜多心經/般若波羅蜜多心經__juan_001.txt",
+      "page_title": "般若波羅蜜多心經/1",
+      "chapter": "1",
+      "sources": [
+        "https://github.com/kanripo/KR6c0128"
+      ],
+      "digital_transcription_id": "kanripo:KR6c0128:master@a977e939244871acf0daf9334044e2ad10e83dae"
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR6c0128:witness:T",
+      "label": "T",
+      "upstream_code": "T",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR6c0128:master@a977e939244871acf0daf9334044e2ad10e83dae",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR6c0128",
+          "branch": "master",
+          "revision": "a977e939244871acf0daf9334044e2ad10e83dae",
+          "retrieved_at": "2026-08-12T05:49:52+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR6c0128:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "維基大典/clean/般若波羅蜜多心經/般若波羅蜜多心經.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

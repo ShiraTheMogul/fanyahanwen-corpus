@@ -27,15 +27,73 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 219531,
-          "file": "菊磵集__juan_01.txt",
-          "path": "四庫全書/clean/集部/別集類/南宋建炎至德祐/菊磵集/菊磵集__juan_01.txt",
-          "title": "菊磵集 (四庫全書本)",
-          "page_title": "菊磵集 (四庫全書本)",
-          "display_title": "菊磵集",
-          "body_start_line": 6
+          "file": "菊磵集__juan_000.txt",
+          "path": "四庫全書/clean/集部/別集類/南宋建炎至德祐/菊磵集/菊磵集__juan_000.txt",
+          "page_title": "菊磵集/原序",
+          "chapter": "原序",
+          "sources": [
+            "https://github.com/kanripo/KR4d0293"
+          ],
+          "digital_transcription_id": "kanripo:KR4d0293:master@d74a3b28e7dc974991f0bf36d57429e53d0e4d9c"
+        },
+        {
+          "file": "菊磵集__juan_001.txt",
+          "path": "四庫全書/clean/集部/別集類/南宋建炎至德祐/菊磵集/菊磵集__juan_001.txt",
+          "page_title": "菊磵集/菊磵集",
+          "chapter": "菊磵集",
+          "sources": [
+            "https://github.com/kanripo/KR4d0293"
+          ],
+          "digital_transcription_id": "kanripo:KR4d0293:master@d74a3b28e7dc974991f0bf36d57429e53d0e4d9c",
+          "document_id": 219531
+        },
+        {
+          "file": "菊磵集__juan_002.txt",
+          "path": "四庫全書/clean/集部/別集類/南宋建炎至德祐/菊磵集/菊磵集__juan_002.txt",
+          "page_title": "菊磵集/附録",
+          "chapter": "附録",
+          "sources": [
+            "https://github.com/kanripo/KR4d0293"
+          ],
+          "digital_transcription_id": "kanripo:KR4d0293:master@d74a3b28e7dc974991f0bf36d57429e53d0e4d9c"
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR4d0293:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR4d0293:master@d74a3b28e7dc974991f0bf36d57429e53d0e4d9c",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR4d0293",
+          "branch": "master",
+          "revision": "d74a3b28e7dc974991f0bf36d57429e53d0e4d9c",
+          "retrieved_at": "2026-08-12T03:32:56+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR4d0293:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/集部/別集類/南宋建炎至德祐/菊磵集/菊磵集__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

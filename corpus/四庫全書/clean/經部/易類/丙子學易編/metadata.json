@@ -26,15 +26,83 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 206493,
-          "file": "丙子學易編__juan_01.txt",
-          "path": "四庫全書/clean/經部/易類/丙子學易編/丙子學易編__juan_01.txt",
-          "title": "丙子學易編 (四庫全書本)",
-          "page_title": "丙子學易編 (四庫全書本)",
-          "display_title": "丙子學易編",
-          "body_start_line": 6
+          "file": "丙子學易編__juan_000.txt",
+          "path": "四庫全書/clean/經部/易類/丙子學易編/丙子學易編__juan_000.txt",
+          "page_title": "丙子學易編/序",
+          "chapter": "序",
+          "sources": [
+            "https://github.com/kanripo/KR1a0050"
+          ],
+          "digital_transcription_id": "kanripo:KR1a0050:master@5d01e6b7260e3a106d9cfa5750558eb994adeb7a"
+        },
+        {
+          "file": "丙子學易編__juan_001.txt",
+          "path": "四庫全書/clean/經部/易類/丙子學易編/丙子學易編__juan_001.txt",
+          "page_title": "丙子學易編/丙子學易編",
+          "chapter": "丙子學易編",
+          "sources": [
+            "https://github.com/kanripo/KR1a0050"
+          ],
+          "digital_transcription_id": "kanripo:KR1a0050:master@5d01e6b7260e3a106d9cfa5750558eb994adeb7a",
+          "document_id": 206493
+        },
+        {
+          "file": "丙子學易編__juan_002.txt",
+          "path": "四庫全書/clean/經部/易類/丙子學易編/丙子學易編__juan_002.txt",
+          "page_title": "丙子學易編/後序",
+          "chapter": "後序",
+          "sources": [
+            "https://github.com/kanripo/KR1a0050"
+          ],
+          "digital_transcription_id": "kanripo:KR1a0050:master@5d01e6b7260e3a106d9cfa5750558eb994adeb7a"
+        },
+        {
+          "file": "丙子學易編__juan_003.txt",
+          "path": "四庫全書/clean/經部/易類/丙子學易編/丙子學易編__juan_003.txt",
+          "page_title": "丙子學易編/跋",
+          "chapter": "跋",
+          "sources": [
+            "https://github.com/kanripo/KR1a0050"
+          ],
+          "digital_transcription_id": "kanripo:KR1a0050:master@5d01e6b7260e3a106d9cfa5750558eb994adeb7a"
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR1a0050:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR1a0050:master@5d01e6b7260e3a106d9cfa5750558eb994adeb7a",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR1a0050",
+          "branch": "master",
+          "revision": "5d01e6b7260e3a106d9cfa5750558eb994adeb7a",
+          "retrieved_at": "2026-08-12T00:11:16+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR1a0050:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/經部/易類/丙子學易編/丙子學易編__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

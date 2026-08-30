@@ -23,33 +23,87 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 195759,
-          "file": "芻言__juan_01.txt",
-          "path": "四庫全書/clean/子部/雜家類/雜學之屬/芻言/芻言__juan_01.txt",
-          "title": "芻言 (四庫全書本)",
-          "page_title": "芻言 (四庫全書本)/卷上",
-          "display_title": "芻言",
-          "body_start_line": 6
+          "file": "芻言__juan_000.txt",
+          "path": "四庫全書/clean/子部/雜家類/雜學之屬/芻言/芻言__juan_000.txt",
+          "page_title": "芻言/提要",
+          "chapter": "提要",
+          "sources": [
+            "https://github.com/kanripo/KR3j0019"
+          ],
+          "digital_transcription_id": "kanripo:KR3j0019:master@ac51ebba4247c4ffb0e747c0b989c286d3d59dfb"
         },
         {
-          "document_id": 195760,
-          "file": "芻言__juan_02.txt",
-          "path": "四庫全書/clean/子部/雜家類/雜學之屬/芻言/芻言__juan_02.txt",
-          "title": "芻言 (四庫全書本)",
-          "page_title": "芻言 (四庫全書本)/卷中",
-          "display_title": "芻言",
-          "body_start_line": 6
+          "file": "芻言__juan_001.txt",
+          "path": "四庫全書/clean/子部/雜家類/雜學之屬/芻言/芻言__juan_001.txt",
+          "page_title": "芻言/卷上",
+          "chapter": "卷上",
+          "sources": [
+            "https://github.com/kanripo/KR3j0019"
+          ],
+          "digital_transcription_id": "kanripo:KR3j0019:master@ac51ebba4247c4ffb0e747c0b989c286d3d59dfb",
+          "document_id": 195759
         },
         {
-          "document_id": 195761,
-          "file": "芻言__juan_03.txt",
-          "path": "四庫全書/clean/子部/雜家類/雜學之屬/芻言/芻言__juan_03.txt",
-          "title": "芻言 (四庫全書本)",
-          "page_title": "芻言 (四庫全書本)/卷下",
-          "display_title": "芻言",
-          "body_start_line": 6
+          "file": "芻言__juan_002.txt",
+          "path": "四庫全書/clean/子部/雜家類/雜學之屬/芻言/芻言__juan_002.txt",
+          "page_title": "芻言/卷中",
+          "chapter": "卷中",
+          "sources": [
+            "https://github.com/kanripo/KR3j0019"
+          ],
+          "digital_transcription_id": "kanripo:KR3j0019:master@ac51ebba4247c4ffb0e747c0b989c286d3d59dfb",
+          "document_id": 195760
+        },
+        {
+          "file": "芻言__juan_003.txt",
+          "path": "四庫全書/clean/子部/雜家類/雜學之屬/芻言/芻言__juan_003.txt",
+          "page_title": "芻言/卷下",
+          "chapter": "卷下",
+          "sources": [
+            "https://github.com/kanripo/KR3j0019"
+          ],
+          "digital_transcription_id": "kanripo:KR3j0019:master@ac51ebba4247c4ffb0e747c0b989c286d3d59dfb",
+          "document_id": 195761
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR3j0019:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR3j0019:master@ac51ebba4247c4ffb0e747c0b989c286d3d59dfb",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR3j0019",
+          "branch": "master",
+          "revision": "ac51ebba4247c4ffb0e747c0b989c286d3d59dfb",
+          "retrieved_at": "2026-08-12T02:47:02+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR3j0019:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/子部/雜家類/雜學之屬/芻言/芻言__juan_01.txt",
+        "四庫全書/clean/子部/雜家類/雜學之屬/芻言/芻言__juan_02.txt",
+        "四庫全書/clean/子部/雜家類/雜學之屬/芻言/芻言__juan_03.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_recorded_in_current_metadata",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

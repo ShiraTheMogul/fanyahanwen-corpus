@@ -23,15 +23,63 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 207888,
-          "file": "易緯通卦驗__juan_01.txt",
-          "path": "四庫全書/clean/經部/易類/易緯通卦驗/易緯通卦驗__juan_01.txt",
-          "title": "易緯通卦驗 (四庫全書本)",
-          "page_title": "易緯通卦驗 (四庫全書本)",
-          "display_title": "易緯通卦驗",
-          "body_start_line": 6
+          "file": "易緯通卦驗__juan_001.txt",
+          "path": "四庫全書/clean/經部/易類/易緯通卦驗/易緯通卦驗__juan_001.txt",
+          "page_title": "易緯通卦驗/卷上",
+          "chapter": "卷上",
+          "sources": [
+            "https://github.com/kanripo/KR1a0167"
+          ],
+          "digital_transcription_id": "kanripo:KR1a0167:master@19a0581f992fe342f0bb12b94119e294d0f7ff62",
+          "document_id": 207888
+        },
+        {
+          "file": "易緯通卦驗__juan_002.txt",
+          "path": "四庫全書/clean/經部/易類/易緯通卦驗/易緯通卦驗__juan_002.txt",
+          "page_title": "易緯通卦驗/卷下",
+          "chapter": "卷下",
+          "sources": [
+            "https://github.com/kanripo/KR1a0167"
+          ],
+          "digital_transcription_id": "kanripo:KR1a0167:master@19a0581f992fe342f0bb12b94119e294d0f7ff62"
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR1a0167:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR1a0167:master@19a0581f992fe342f0bb12b94119e294d0f7ff62",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR1a0167",
+          "branch": "master",
+          "revision": "19a0581f992fe342f0bb12b94119e294d0f7ff62",
+          "retrieved_at": "2026-08-12T00:17:34+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR1a0167:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/經部/易類/易緯通卦驗/易緯通卦驗__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

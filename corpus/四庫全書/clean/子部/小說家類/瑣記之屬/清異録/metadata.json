@@ -20,35 +20,75 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 189923,
-          "file": "清異録__juan_01.txt",
-          "path": "四庫全書/clean/子部/小說家類/瑣記之屬/清異録/清異録__juan_01.txt",
-          "title": "清異録 (四庫全書本)",
-          "page_title": "清異録 (四庫全書本)/卷上",
-          "display_title": "清異録",
-          "source_categories": [
-            "953年 (提及)",
-            "961年 (提及)",
-            "PD-old"
+          "file": "清異録__juan_000.txt",
+          "path": "四庫全書/clean/子部/小說家類/瑣記之屬/清異録/清異録__juan_000.txt",
+          "page_title": "清異録/總目",
+          "chapter": "總目",
+          "sources": [
+            "https://github.com/kanripo/KR3l0127"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3l0127:master@e114a3506a41b80fc6585c302307a7731039bcfc"
         },
         {
-          "document_id": 189924,
-          "file": "清異録__juan_02.txt",
-          "path": "四庫全書/clean/子部/小說家類/瑣記之屬/清異録/清異録__juan_02.txt",
-          "title": "清異録 (四庫全書本)",
-          "page_title": "清異録 (四庫全書本)/卷下",
-          "display_title": "清異録",
-          "source_categories": [
-            "714年 (提及)",
-            "847年 (提及)",
-            "933年 (提及)",
-            "PD-old"
+          "file": "清異録__juan_001.txt",
+          "path": "四庫全書/clean/子部/小說家類/瑣記之屬/清異録/清異録__juan_001.txt",
+          "page_title": "清異録/卷上",
+          "chapter": "卷上",
+          "sources": [
+            "https://github.com/kanripo/KR3l0127"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3l0127:master@e114a3506a41b80fc6585c302307a7731039bcfc",
+          "document_id": 189923
+        },
+        {
+          "file": "清異録__juan_002.txt",
+          "path": "四庫全書/clean/子部/小說家類/瑣記之屬/清異録/清異録__juan_002.txt",
+          "page_title": "清異録/卷下",
+          "chapter": "卷下",
+          "sources": [
+            "https://github.com/kanripo/KR3l0127"
+          ],
+          "digital_transcription_id": "kanripo:KR3l0127:master@e114a3506a41b80fc6585c302307a7731039bcfc",
+          "document_id": 189924
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR3l0127:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR3l0127:master@e114a3506a41b80fc6585c302307a7731039bcfc",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR3l0127",
+          "branch": "master",
+          "revision": "e114a3506a41b80fc6585c302307a7731039bcfc",
+          "retrieved_at": "2026-08-12T03:03:25+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR3l0127:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/子部/小說家類/瑣記之屬/清異録/清異録__juan_01.txt",
+        "四庫全書/clean/子部/小說家類/瑣記之屬/清異録/清異録__juan_02.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_recorded_in_current_metadata",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

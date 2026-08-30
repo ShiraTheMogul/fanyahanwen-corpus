@@ -1,4 +1,4 @@
-﻿{
+{
   "schema_version": 1,
   "work_id": 2125,
   "corpus_root": "中國漢文",
@@ -8,72 +8,86 @@
   "is_compilation": false,
   "documents": [
     {
-      "document_id": 5194,
-      "file": "化書__juan_01.txt",
-      "path": "中國漢文/clean/五代十國/十國/閩/化書/化書__juan_01.txt",
-      "page_title": "化書/卷一",
-      "chapter": "卷一",
+      "file": "化書__juan_001.txt",
+      "path": "中國漢文/clean/五代十國/十國/閩/化書/化書__juan_001.txt",
+      "page_title": "化書/卷1",
+      "chapter": "卷1",
       "sources": [
-        "https://zh.wikisource.org/wiki/%E5%8C%96%E6%9B%B8%2F%E5%8D%B7%E4%B8%80"
+        "https://github.com/kanripo/KR5i0042"
       ],
-      "body_start_line": 8
+      "digital_transcription_id": "kanripo:KR5i0042:master@4dc6c51f2aee315d794a374774d1859ba25dd926",
+      "document_id": 5194
     },
     {
-      "document_id": 5195,
-      "file": "化書__juan_02.txt",
-      "path": "中國漢文/clean/五代十國/十國/閩/化書/化書__juan_02.txt",
-      "page_title": "化書/卷二",
-      "chapter": "卷二",
+      "file": "化書__juan_002.txt",
+      "path": "中國漢文/clean/五代十國/十國/閩/化書/化書__juan_002.txt",
+      "page_title": "化書/卷2",
+      "chapter": "卷2",
       "sources": [
-        "https://zh.wikisource.org/wiki/%E5%8C%96%E6%9B%B8%2F%E5%8D%B7%E4%BA%8C"
+        "https://github.com/kanripo/KR5i0042"
       ],
-      "body_start_line": 8
+      "digital_transcription_id": "kanripo:KR5i0042:master@4dc6c51f2aee315d794a374774d1859ba25dd926",
+      "document_id": 5195
     },
     {
-      "document_id": 5196,
-      "file": "化書__juan_03.txt",
-      "path": "中國漢文/clean/五代十國/十國/閩/化書/化書__juan_03.txt",
-      "page_title": "化書/卷三",
-      "chapter": "卷三",
+      "file": "化書__juan_003.txt",
+      "path": "中國漢文/clean/五代十國/十國/閩/化書/化書__juan_003.txt",
+      "page_title": "化書/卷3",
+      "chapter": "卷3",
       "sources": [
-        "https://zh.wikisource.org/wiki/%E5%8C%96%E6%9B%B8%2F%E5%8D%B7%E4%B8%89"
+        "https://github.com/kanripo/KR5i0042"
       ],
-      "body_start_line": 8
-    },
-    {
-      "document_id": 5197,
-      "file": "化書__juan_04.txt",
-      "path": "中國漢文/clean/五代十國/十國/閩/化書/化書__juan_04.txt",
-      "page_title": "化書/卷四",
-      "chapter": "卷四",
-      "sources": [
-        "https://zh.wikisource.org/wiki/%E5%8C%96%E6%9B%B8%2F%E5%8D%B7%E5%9B%9B"
-      ],
-      "body_start_line": 8
-    },
-    {
-      "document_id": 5198,
-      "file": "化書__juan_05.txt",
-      "path": "中國漢文/clean/五代十國/十國/閩/化書/化書__juan_05.txt",
-      "page_title": "化書/卷五",
-      "chapter": "卷五",
-      "sources": [
-        "https://zh.wikisource.org/wiki/%E5%8C%96%E6%9B%B8%2F%E5%8D%B7%E4%BA%94"
-      ],
-      "body_start_line": 8
-    },
-    {
-      "document_id": 5199,
-      "file": "化書__juan_06.txt",
-      "path": "中國漢文/clean/五代十國/十國/閩/化書/化書__juan_06.txt",
-      "page_title": "化書/卷六",
-      "chapter": "卷六",
-      "sources": [
-        "https://zh.wikisource.org/wiki/%E5%8C%96%E6%9B%B8%2F%E5%8D%B7%E5%85%AD"
-      ],
-      "body_start_line": 8
+      "digital_transcription_id": "kanripo:KR5i0042:master@4dc6c51f2aee315d794a374774d1859ba25dd926",
+      "document_id": 5196
     }
   ],
   "known_commentaries": [],
-  "ca": "907–960年"
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR5i0042:witness:CK-KZ",
+      "label": "CK-KZ",
+      "upstream_code": "CK-KZ",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR5i0042:master@4dc6c51f2aee315d794a374774d1859ba25dd926",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR5i0042",
+          "branch": "master",
+          "revision": "4dc6c51f2aee315d794a374774d1859ba25dd926",
+          "retrieved_at": "2026-08-12T05:35:50+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR5i0042:pre-kanripo",
+      "provider": "Wikisource",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "中國漢文/clean/五代十國/十國/閩/化書/化書__juan_01.txt",
+        "中國漢文/clean/五代十國/十國/閩/化書/化書__juan_02.txt",
+        "中國漢文/clean/五代十國/十國/閩/化書/化書__juan_03.txt",
+        "中國漢文/clean/五代十國/十國/閩/化書/化書__juan_04.txt",
+        "中國漢文/clean/五代十國/十國/閩/化書/化書__juan_05.txt",
+        "中國漢文/clean/五代十國/十國/閩/化書/化書__juan_06.txt"
+      ],
+      "source_urls": [
+        "https://zh.wikisource.org/wiki/%E5%8C%96%E6%9B%B8%2F%E5%8D%B7%E4%B8%80",
+        "https://zh.wikisource.org/wiki/%E5%8C%96%E6%9B%B8%2F%E5%8D%B7%E4%BA%8C",
+        "https://zh.wikisource.org/wiki/%E5%8C%96%E6%9B%B8%2F%E5%8D%B7%E4%B8%89",
+        "https://zh.wikisource.org/wiki/%E5%8C%96%E6%9B%B8%2F%E5%8D%B7%E5%9B%9B",
+        "https://zh.wikisource.org/wiki/%E5%8C%96%E6%9B%B8%2F%E5%8D%B7%E4%BA%94",
+        "https://zh.wikisource.org/wiki/%E5%8C%96%E6%9B%B8%2F%E5%8D%B7%E5%85%AD"
+      ],
+      "capture_date": null,
+      "capture_date_status": "not_recorded_in_current_metadata",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

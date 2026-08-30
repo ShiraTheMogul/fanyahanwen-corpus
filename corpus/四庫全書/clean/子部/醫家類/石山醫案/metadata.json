@@ -20,45 +20,97 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 194629,
-          "file": "石山醫案__juan_01.txt",
-          "path": "四庫全書/clean/子部/醫家類/石山醫案/石山醫案__juan_01.txt",
-          "title": "石山醫案 (四庫全書本)",
-          "page_title": "石山醫案 (四庫全書本)/卷上",
-          "display_title": "石山醫案",
-          "source_categories": [
-            "1515年 (提及)",
-            "1530年 (提及)",
-            "PD-old"
+          "file": "石山醫案__juan_000.txt",
+          "path": "四庫全書/clean/子部/醫家類/石山醫案/石山醫案__juan_000.txt",
+          "page_title": "石山醫案/提要",
+          "chapter": "提要",
+          "sources": [
+            "https://github.com/kanripo/KR3e0074"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3e0074:master@cd6a0074beae547c53339a913505b75585410cbb"
         },
         {
-          "document_id": 194630,
-          "file": "石山醫案__juan_02.txt",
-          "path": "四庫全書/clean/子部/醫家類/石山醫案/石山醫案__juan_02.txt",
-          "title": "石山醫案 (四庫全書本)",
-          "page_title": "石山醫案 (四庫全書本)/卷中",
-          "display_title": "石山醫案",
-          "source_categories": [
-            "PD-old"
+          "file": "石山醫案__juan_001.txt",
+          "path": "四庫全書/clean/子部/醫家類/石山醫案/石山醫案__juan_001.txt",
+          "page_title": "石山醫案/卷上",
+          "chapter": "卷上",
+          "sources": [
+            "https://github.com/kanripo/KR3e0074"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3e0074:master@cd6a0074beae547c53339a913505b75585410cbb",
+          "document_id": 194629
         },
         {
-          "document_id": 194631,
-          "file": "石山醫案__juan_03.txt",
-          "path": "四庫全書/clean/子部/醫家類/石山醫案/石山醫案__juan_03.txt",
-          "title": "石山醫案 (四庫全書本)",
-          "page_title": "石山醫案 (四庫全書本)/卷下",
-          "display_title": "石山醫案",
-          "source_categories": [
-            "1529年 (提及)",
-            "PD-old"
+          "file": "石山醫案__juan_002.txt",
+          "path": "四庫全書/clean/子部/醫家類/石山醫案/石山醫案__juan_002.txt",
+          "page_title": "石山醫案/卷中",
+          "chapter": "卷中",
+          "sources": [
+            "https://github.com/kanripo/KR3e0074"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3e0074:master@cd6a0074beae547c53339a913505b75585410cbb",
+          "document_id": 194630
+        },
+        {
+          "file": "石山醫案__juan_003.txt",
+          "path": "四庫全書/clean/子部/醫家類/石山醫案/石山醫案__juan_003.txt",
+          "page_title": "石山醫案/卷下",
+          "chapter": "卷下",
+          "sources": [
+            "https://github.com/kanripo/KR3e0074"
+          ],
+          "digital_transcription_id": "kanripo:KR3e0074:master@cd6a0074beae547c53339a913505b75585410cbb",
+          "document_id": 194631
+        },
+        {
+          "file": "石山醫案__juan_004.txt",
+          "path": "四庫全書/clean/子部/醫家類/石山醫案/石山醫案__juan_004.txt",
+          "page_title": "石山醫案/附録",
+          "chapter": "附録",
+          "sources": [
+            "https://github.com/kanripo/KR3e0074"
+          ],
+          "digital_transcription_id": "kanripo:KR3e0074:master@cd6a0074beae547c53339a913505b75585410cbb"
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR3e0074:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR3e0074:master@cd6a0074beae547c53339a913505b75585410cbb",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR3e0074",
+          "branch": "master",
+          "revision": "cd6a0074beae547c53339a913505b75585410cbb",
+          "retrieved_at": "2026-08-12T02:34:06+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR3e0074:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/子部/醫家類/石山醫案/石山醫案__juan_01.txt",
+        "四庫全書/clean/子部/醫家類/石山醫案/石山醫案__juan_02.txt",
+        "四庫全書/clean/子部/醫家類/石山醫案/石山醫案__juan_03.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

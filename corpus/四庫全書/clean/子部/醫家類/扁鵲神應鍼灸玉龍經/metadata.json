@@ -24,15 +24,52 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 193963,
-          "file": "扁鵲神應鍼灸玉龍經__juan_01.txt",
-          "path": "四庫全書/clean/子部/醫家類/扁鵲神應鍼灸玉龍經/扁鵲神應鍼灸玉龍經__juan_01.txt",
-          "title": "扁鵲神應鍼灸玉龍經 (四庫全書本)",
-          "page_title": "扁鵲神應鍼灸玉龍經 (四庫全書本)",
-          "display_title": "扁鵲神應鍼灸玉龍經",
-          "body_start_line": 6
+          "file": "扁鵲神應鍼灸玉龍經__juan_000.txt",
+          "path": "四庫全書/clean/子部/醫家類/扁鵲神應鍼灸玉龍經/扁鵲神應鍼灸玉龍經__juan_000.txt",
+          "page_title": "扁鵲神應鍼灸玉龍經/後序",
+          "chapter": "後序",
+          "sources": [
+            "https://github.com/kanripo/KR3e0063"
+          ],
+          "digital_transcription_id": "kanripo:KR3e0063:master@f5a06f7a934c3afbb355f30384df52da2d0a2311"
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR3e0063:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR3e0063:master@f5a06f7a934c3afbb355f30384df52da2d0a2311",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR3e0063",
+          "branch": "master",
+          "revision": "f5a06f7a934c3afbb355f30384df52da2d0a2311",
+          "retrieved_at": "2026-08-12T02:33:37+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR3e0063:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/子部/醫家類/扁鵲神應鍼灸玉龍經/扁鵲神應鍼灸玉龍經__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

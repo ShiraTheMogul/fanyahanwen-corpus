@@ -29,15 +29,73 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 225636,
-          "file": "孔北海集__juan_01.txt",
-          "path": "四庫全書/clean/集部/別集類/漢至五代/孔北海集/孔北海集__juan_01.txt",
-          "title": "孔北海集 (四庫全書本)",
-          "page_title": "孔北海集 (四庫全書本)",
-          "display_title": "孔北海集",
-          "body_start_line": 6
+          "file": "孔北海集__juan_000.txt",
+          "path": "四庫全書/clean/集部/別集類/漢至五代/孔北海集/孔北海集__juan_000.txt",
+          "page_title": "孔北海集/提要",
+          "chapter": "提要",
+          "sources": [
+            "https://github.com/kanripo/KR4b0003"
+          ],
+          "digital_transcription_id": "kanripo:KR4b0003:master@40dbef16dcb9875500cc72827f9797a1cdaff455"
+        },
+        {
+          "file": "孔北海集__juan_001.txt",
+          "path": "四庫全書/clean/集部/別集類/漢至五代/孔北海集/孔北海集__juan_001.txt",
+          "page_title": "孔北海集/孔北海集",
+          "chapter": "孔北海集",
+          "sources": [
+            "https://github.com/kanripo/KR4b0003"
+          ],
+          "digital_transcription_id": "kanripo:KR4b0003:master@40dbef16dcb9875500cc72827f9797a1cdaff455",
+          "document_id": 225636
+        },
+        {
+          "file": "孔北海集__juan_002.txt",
+          "path": "四庫全書/clean/集部/別集類/漢至五代/孔北海集/孔北海集__juan_002.txt",
+          "page_title": "孔北海集/附録",
+          "chapter": "附録",
+          "sources": [
+            "https://github.com/kanripo/KR4b0003"
+          ],
+          "digital_transcription_id": "kanripo:KR4b0003:master@40dbef16dcb9875500cc72827f9797a1cdaff455"
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR4b0003:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR4b0003:master@40dbef16dcb9875500cc72827f9797a1cdaff455",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR4b0003",
+          "branch": "master",
+          "revision": "40dbef16dcb9875500cc72827f9797a1cdaff455",
+          "retrieved_at": "2026-08-12T03:09:05+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR4b0003:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/集部/別集類/漢至五代/孔北海集/孔北海集__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

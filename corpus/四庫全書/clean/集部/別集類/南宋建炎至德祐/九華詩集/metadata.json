@@ -24,15 +24,73 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 216902,
-          "file": "九華詩集__juan_01.txt",
-          "path": "四庫全書/clean/集部/別集類/南宋建炎至德祐/九華詩集/九華詩集__juan_01.txt",
-          "title": "九華詩集 (四庫全書本)",
-          "page_title": "九華詩集 (四庫全書本)",
-          "display_title": "九華詩集",
-          "body_start_line": 6
+          "file": "九華詩集__juan_000.txt",
+          "path": "四庫全書/clean/集部/別集類/南宋建炎至德祐/九華詩集/九華詩集__juan_000.txt",
+          "page_title": "九華詩集/傳",
+          "chapter": "傳",
+          "sources": [
+            "https://github.com/kanripo/KR4d0411"
+          ],
+          "digital_transcription_id": "kanripo:KR4d0411:master@b0b01539d2c54e3764534d13a55cfcddf7557a33"
+        },
+        {
+          "file": "九華詩集__juan_001.txt",
+          "path": "四庫全書/clean/集部/別集類/南宋建炎至德祐/九華詩集/九華詩集__juan_001.txt",
+          "page_title": "九華詩集/九華詩集",
+          "chapter": "九華詩集",
+          "sources": [
+            "https://github.com/kanripo/KR4d0411"
+          ],
+          "digital_transcription_id": "kanripo:KR4d0411:master@b0b01539d2c54e3764534d13a55cfcddf7557a33",
+          "document_id": 216902
+        },
+        {
+          "file": "九華詩集__juan_002.txt",
+          "path": "四庫全書/clean/集部/別集類/南宋建炎至德祐/九華詩集/九華詩集__juan_002.txt",
+          "page_title": "九華詩集/附釋希坦詩",
+          "chapter": "附釋希坦詩",
+          "sources": [
+            "https://github.com/kanripo/KR4d0411"
+          ],
+          "digital_transcription_id": "kanripo:KR4d0411:master@b0b01539d2c54e3764534d13a55cfcddf7557a33"
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR4d0411:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR4d0411:master@b0b01539d2c54e3764534d13a55cfcddf7557a33",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR4d0411",
+          "branch": "master",
+          "revision": "b0b01539d2c54e3764534d13a55cfcddf7557a33",
+          "retrieved_at": "2026-08-12T03:36:01+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR4d0411:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/集部/別集類/南宋建炎至德祐/九華詩集/九華詩集__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

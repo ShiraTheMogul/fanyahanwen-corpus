@@ -24,15 +24,73 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 186380,
-          "file": "晝簾緒論__juan_01.txt",
-          "path": "四庫全書/clean/史部/職官類/官箴之屬/晝簾緒論/晝簾緒論__juan_01.txt",
-          "title": "晝簾緒論 (四庫全書本)",
-          "page_title": "晝簾緒論 (四庫全書本)",
-          "display_title": "晝簾緒論",
-          "body_start_line": 6
+          "file": "晝簾緒論__juan_000.txt",
+          "path": "四庫全書/clean/史部/職官類/官箴之屬/晝簾緒論/晝簾緒論__juan_000.txt",
+          "page_title": "晝簾緒論/原序",
+          "chapter": "原序",
+          "sources": [
+            "https://github.com/kanripo/KR2l0020"
+          ],
+          "digital_transcription_id": "kanripo:KR2l0020:master@ce1052ef2d5f57b1d699e6fbcbba2addcbf155e3"
+        },
+        {
+          "file": "晝簾緒論__juan_001.txt",
+          "path": "四庫全書/clean/史部/職官類/官箴之屬/晝簾緒論/晝簾緒論__juan_001.txt",
+          "page_title": "晝簾緒論/晝簾緒論",
+          "chapter": "晝簾緒論",
+          "sources": [
+            "https://github.com/kanripo/KR2l0020"
+          ],
+          "digital_transcription_id": "kanripo:KR2l0020:master@ce1052ef2d5f57b1d699e6fbcbba2addcbf155e3",
+          "document_id": 186380
+        },
+        {
+          "file": "晝簾緒論__juan_002.txt",
+          "path": "四庫全書/clean/史部/職官類/官箴之屬/晝簾緒論/晝簾緒論__juan_002.txt",
+          "page_title": "晝簾緒論/跋",
+          "chapter": "跋",
+          "sources": [
+            "https://github.com/kanripo/KR2l0020"
+          ],
+          "digital_transcription_id": "kanripo:KR2l0020:master@ce1052ef2d5f57b1d699e6fbcbba2addcbf155e3"
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR2l0020:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR2l0020:master@ce1052ef2d5f57b1d699e6fbcbba2addcbf155e3",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR2l0020",
+          "branch": "master",
+          "revision": "ce1052ef2d5f57b1d699e6fbcbba2addcbf155e3",
+          "retrieved_at": "2026-08-12T02:16:35+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR2l0020:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/史部/職官類/官箴之屬/晝簾緒論/晝簾緒論__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

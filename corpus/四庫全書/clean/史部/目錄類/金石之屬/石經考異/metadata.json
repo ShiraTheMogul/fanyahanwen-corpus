@@ -20,52 +20,75 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 184501,
-          "file": "石經考異__juan_01.txt",
-          "path": "四庫全書/clean/史部/目錄類/金石之屬/石經考異/石經考異__juan_01.txt",
-          "title": "石經考異 (四庫全書本)",
-          "page_title": "石經考異 (四庫全書本)/卷上",
-          "display_title": "石經考異",
-          "source_categories": [
-            "1118年 (提及)",
-            "1735年 (提及)",
-            "175年 (提及)",
-            "178年 (提及)",
-            "183年 (提及)",
-            "546年 (提及)",
-            "579年 (提及)",
-            "586年 (提及)",
-            "745年 (提及)",
-            "837年 (提及)",
-            "876年 (提及)",
-            "953年 (提及)",
-            "PD-old"
+          "file": "石經考異__juan_000.txt",
+          "path": "四庫全書/clean/史部/目錄類/金石之屬/石經考異/石經考異__juan_000.txt",
+          "page_title": "石經考異/原序",
+          "chapter": "原序",
+          "sources": [
+            "https://github.com/kanripo/KR2n0047"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR2n0047:master@a28f8ff80edb9f55d23065c038f697b1c38ff331"
         },
         {
-          "document_id": 184502,
-          "file": "石經考異__juan_02.txt",
-          "path": "四庫全書/clean/史部/目錄類/金石之屬/石經考異/石經考異__juan_02.txt",
-          "title": "石經考異 (四庫全書本)",
-          "page_title": "石經考異 (四庫全書本)/卷下",
-          "display_title": "石經考異",
-          "source_categories": [
-            "1049年 (提及)",
-            "1170年 (提及)",
-            "1177年 (提及)",
-            "1232年 (提及)",
-            "1379年 (提及)",
-            "1427年 (提及)",
-            "1517年 (提及)",
-            "938年 (提及)",
-            "944年 (提及)",
-            "951年 (提及)",
-            "PD-old"
+          "file": "石經考異__juan_001.txt",
+          "path": "四庫全書/clean/史部/目錄類/金石之屬/石經考異/石經考異__juan_001.txt",
+          "page_title": "石經考異/卷上",
+          "chapter": "卷上",
+          "sources": [
+            "https://github.com/kanripo/KR2n0047"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR2n0047:master@a28f8ff80edb9f55d23065c038f697b1c38ff331",
+          "document_id": 184501
+        },
+        {
+          "file": "石經考異__juan_002.txt",
+          "path": "四庫全書/clean/史部/目錄類/金石之屬/石經考異/石經考異__juan_002.txt",
+          "page_title": "石經考異/卷下",
+          "chapter": "卷下",
+          "sources": [
+            "https://github.com/kanripo/KR2n0047"
+          ],
+          "digital_transcription_id": "kanripo:KR2n0047:master@a28f8ff80edb9f55d23065c038f697b1c38ff331",
+          "document_id": 184502
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR2n0047:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR2n0047:master@a28f8ff80edb9f55d23065c038f697b1c38ff331",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR2n0047",
+          "branch": "master",
+          "revision": "a28f8ff80edb9f55d23065c038f697b1c38ff331",
+          "retrieved_at": "2026-08-12T02:19:53+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR2n0047:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/史部/目錄類/金石之屬/石經考異/石經考異__juan_01.txt",
+        "四庫全書/clean/史部/目錄類/金石之屬/石經考異/石經考異__juan_02.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

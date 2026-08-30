@@ -25,15 +25,52 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 188911,
-          "file": "節孝語録__juan_01.txt",
-          "path": "四庫全書/clean/子部/儒家類/節孝語録/節孝語録__juan_01.txt",
-          "title": "節孝語録 (四庫全書本)",
-          "page_title": "節孝語録 (四庫全書本)",
-          "display_title": "節孝語録",
-          "body_start_line": 6
+          "file": "節孝語録__juan_000.txt",
+          "path": "四庫全書/clean/子部/儒家類/節孝語録/節孝語録__juan_000.txt",
+          "page_title": "節孝語録/節孝語録",
+          "chapter": "節孝語録",
+          "sources": [
+            "https://github.com/kanripo/KR3a0035"
+          ],
+          "digital_transcription_id": "kanripo:KR3a0035:master@c8951844baea14089a590296661f7ae6cceb2a04"
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR3a0035:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR3a0035:master@c8951844baea14089a590296661f7ae6cceb2a04",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR3a0035",
+          "branch": "master",
+          "revision": "c8951844baea14089a590296661f7ae6cceb2a04",
+          "retrieved_at": "2026-08-12T02:24:58+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR3a0035:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/子部/儒家類/節孝語録/節孝語録__juan_01.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

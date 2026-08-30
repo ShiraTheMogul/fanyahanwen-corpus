@@ -20,61 +20,99 @@
       "source_title": "四庫全書",
       "documents": [
         {
-          "document_id": 199731,
-          "file": "名疑__juan_01.txt",
-          "path": "四庫全書/clean/子部/類書類/名疑/名疑__juan_01.txt",
-          "title": "名疑 (四庫全書本)",
-          "page_title": "名疑 (四庫全書本)/卷1",
-          "display_title": "名疑",
-          "source_categories": [
-            "PD-old"
+          "file": "名疑__juan_000.txt",
+          "path": "四庫全書/clean/子部/類書類/名疑/名疑__juan_000.txt",
+          "page_title": "名疑/原序",
+          "chapter": "原序",
+          "sources": [
+            "https://github.com/kanripo/KR3k0042"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3k0042:master@848cf8e262b3ac8d6b6e5808dbdce46b12e29454"
         },
         {
-          "document_id": 199732,
-          "file": "名疑__juan_02.txt",
-          "path": "四庫全書/clean/子部/類書類/名疑/名疑__juan_02.txt",
-          "title": "名疑 (四庫全書本)",
-          "page_title": "名疑 (四庫全書本)/卷2",
-          "display_title": "名疑",
-          "source_categories": [
-            "PD-old",
-            "前554年 (提及)"
+          "file": "名疑__juan_001.txt",
+          "path": "四庫全書/clean/子部/類書類/名疑/名疑__juan_001.txt",
+          "page_title": "名疑/卷一",
+          "chapter": "卷一",
+          "sources": [
+            "https://github.com/kanripo/KR3k0042"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3k0042:master@848cf8e262b3ac8d6b6e5808dbdce46b12e29454",
+          "document_id": 199731
         },
         {
-          "document_id": 199733,
-          "file": "名疑__juan_03.txt",
-          "path": "四庫全書/clean/子部/類書類/名疑/名疑__juan_03.txt",
-          "title": "名疑 (四庫全書本)",
-          "page_title": "名疑 (四庫全書本)/卷3",
-          "display_title": "名疑",
-          "source_categories": [
-            "1211年 (提及)",
-            "1246年 (提及)",
-            "1261年 (提及)",
-            "1370年 (提及)",
-            "1445年 (提及)",
-            "PD-old"
+          "file": "名疑__juan_002.txt",
+          "path": "四庫全書/clean/子部/類書類/名疑/名疑__juan_002.txt",
+          "page_title": "名疑/卷二",
+          "chapter": "卷二",
+          "sources": [
+            "https://github.com/kanripo/KR3k0042"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3k0042:master@848cf8e262b3ac8d6b6e5808dbdce46b12e29454",
+          "document_id": 199732
         },
         {
-          "document_id": 199734,
-          "file": "名疑__juan_04.txt",
-          "path": "四庫全書/clean/子部/類書類/名疑/名疑__juan_04.txt",
-          "title": "名疑 (四庫全書本)",
-          "page_title": "名疑 (四庫全書本)/卷4",
-          "display_title": "名疑",
-          "source_categories": [
-            "1年 (提及)",
-            "PD-old"
+          "file": "名疑__juan_003.txt",
+          "path": "四庫全書/clean/子部/類書類/名疑/名疑__juan_003.txt",
+          "page_title": "名疑/卷三",
+          "chapter": "卷三",
+          "sources": [
+            "https://github.com/kanripo/KR3k0042"
           ],
-          "body_start_line": 6
+          "digital_transcription_id": "kanripo:KR3k0042:master@848cf8e262b3ac8d6b6e5808dbdce46b12e29454",
+          "document_id": 199733
+        },
+        {
+          "file": "名疑__juan_004.txt",
+          "path": "四庫全書/clean/子部/類書類/名疑/名疑__juan_004.txt",
+          "page_title": "名疑/卷四",
+          "chapter": "卷四",
+          "sources": [
+            "https://github.com/kanripo/KR3k0042"
+          ],
+          "digital_transcription_id": "kanripo:KR3k0042:master@848cf8e262b3ac8d6b6e5808dbdce46b12e29454",
+          "document_id": 199734
         }
       ]
     }
-  ]
+  ],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR3k0042:witness:WYG",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "WYG",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR3k0042:master@848cf8e262b3ac8d6b6e5808dbdce46b12e29454",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR3k0042",
+          "branch": "master",
+          "revision": "848cf8e262b3ac8d6b6e5808dbdce46b12e29454",
+          "retrieved_at": "2026-08-12T02:56:50+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR3k0042:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "四庫全書/clean/子部/類書類/名疑/名疑__juan_01.txt",
+        "四庫全書/clean/子部/類書類/名疑/名疑__juan_02.txt",
+        "四庫全書/clean/子部/類書類/名疑/名疑__juan_03.txt",
+        "四庫全書/clean/子部/類書類/名疑/名疑__juan_04.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

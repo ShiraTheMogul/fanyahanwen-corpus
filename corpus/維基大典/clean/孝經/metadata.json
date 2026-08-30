@@ -6,13 +6,61 @@
   "is_compilation": false,
   "documents": [
     {
-      "document_id": 255377,
-      "file": "孝經.txt",
-      "path": "維基大典/clean/孝經/孝經.txt",
-      "body_start_line": 1,
-      "display_title": "孝經",
-      "page_title": "孝經"
+      "file": "孝經__juan_000.txt",
+      "path": "維基大典/clean/孝經/孝經__juan_000.txt",
+      "page_title": "孝經/0",
+      "chapter": "0",
+      "sources": [
+        "https://github.com/kanripo/KR1f0002"
+      ],
+      "digital_transcription_id": "kanripo:KR1f0002:master@74fb143a758497fe303d9dd52183c9841184b3d4"
+    },
+    {
+      "file": "孝經__juan_001.txt",
+      "path": "維基大典/clean/孝經/孝經__juan_001.txt",
+      "page_title": "孝經/1",
+      "chapter": "1",
+      "sources": [
+        "https://github.com/kanripo/KR1f0002"
+      ],
+      "digital_transcription_id": "kanripo:KR1f0002:master@74fb143a758497fe303d9dd52183c9841184b3d4"
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "source_witnesses": [
+    {
+      "witness_id": "kanripo:KR1f0002:witness:SBCK",
+      "label": "SBCK",
+      "upstream_code": "SBCK",
+      "evidence": "BASEEDITION",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR1f0002:master@74fb143a758497fe303d9dd52183c9841184b3d4",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR1f0002",
+          "branch": "master",
+          "revision": "74fb143a758497fe303d9dd52183c9841184b3d4",
+          "retrieved_at": "2026-08-12T00:35:28+00:00",
+          "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    }
+  ],
+  "superseded_digital_transcriptions": [
+    {
+      "transcription_id": "palcc:60fc899aa300b62c1e4127ce927453c28d377759:KR1f0002:pre-kanripo",
+      "provider": "PALCC legacy transcription",
+      "repository_revision": "60fc899aa300b62c1e4127ce927453c28d377759",
+      "paths": [
+        "維基大典/clean/孝經/孝經.txt"
+      ],
+      "source_urls": [],
+      "capture_date": null,
+      "capture_date_status": "not_applicable",
+      "preferred": false,
+      "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
+    }
+  ],
+  "provenance_schema_version": 1
 }

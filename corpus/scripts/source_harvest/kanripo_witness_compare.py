@@ -156,6 +156,19 @@ def resolve_queue(staging_root: Path, explicit: Path | None) -> Path:
     )
 
 
+def filter_source_ids(rows: list[dict[str, str]], requested: list[str]) -> list[dict[str, str]]:
+    """Restrict a refined queue to explicitly requested Kanripo source IDs."""
+    if not requested:
+        return rows
+    wanted = {canonical_kanripo_id(value) for value in requested}
+    selected = [row for row in rows if canonical_kanripo_id(row.get("source_id", "")) in wanted]
+    found = {canonical_kanripo_id(row.get("source_id", "")) for row in selected}
+    missing = sorted(wanted - found)
+    if missing:
+        raise SystemExit("Requested Kanripo source ID(s) are not in the witness queue: " + ", ".join(missing))
+    return selected
+
+
 def is_han(ch: str) -> bool:
     cp = ord(ch)
     return any(lo <= cp <= hi for lo, hi in HAN_RANGES)
@@ -409,6 +422,8 @@ def main() -> int:
     parser.add_argument("--repo-root", type=Path, default=Path.cwd())
     parser.add_argument("--staging-root", type=Path, required=True)
     parser.add_argument("--queue", type=Path, default=None)
+    parser.add_argument("--source-id", action="append", default=[],
+                        help="Restrict comparison to one or more Kanripo IDs; repeat the option for several works.")
     parser.add_argument("--limit", type=int, default=100,
                         help="Number of refined exact-title works to process (default: 100; 0 = all after offset).")
     parser.add_argument("--offset", type=int, default=0,
@@ -427,6 +442,7 @@ def main() -> int:
     queue = resolve_queue(staging_root, args.queue)
     rows = read_csv(queue)
     rows = [r for r in rows if r.get("refined_queue") == "DOWNLOAD_FOR_WITNESS_COMPARE"]
+    rows = filter_source_ids(rows, args.source_id)
     if args.offset < 0:
         raise SystemExit("--offset must be >= 0")
     selected = rows[args.offset:]
