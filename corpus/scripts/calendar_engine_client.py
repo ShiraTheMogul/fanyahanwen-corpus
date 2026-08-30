@@ -58,6 +58,16 @@ class CalendarEngineClient:
             request["context"] = context
         return self.call(request)
 
+    def period_bounds(self, value: str | list[str] | tuple[str, ...]) -> dict[str, Any]:
+        """Return established Gregorian historical bounds for period/path labels.
+
+        The client transports labels only. Period authority data and range
+        intersection remain in Rails CalendarEngine.
+        """
+        payload: str | list[str]
+        payload = list(value) if isinstance(value, tuple) else value
+        return self.call({"operation": "period_bounds", "value": payload})
+
     def systems(self) -> dict[str, Any]:
         return self.call({"operation": "systems"})
 

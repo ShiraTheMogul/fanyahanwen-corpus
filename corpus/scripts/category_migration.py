@@ -7,6 +7,7 @@ import collections
 import dataclasses
 import datetime as dt
 import json
+import hashlib
 import re
 import shutil
 import sqlite3
@@ -19,9 +20,11 @@ from typing import Iterable, Sequence
 
 from category_audit import SheetSpec, read_json, write_xlsx
 from calendar_engine_client import CalendarEngineClient
+from historical_annotator_client import HistoricalAnnotatorClient
 
 
 _CALENDAR_ENGINE: CalendarEngineClient | None = None
+_HISTORICAL_ANNOTATOR: HistoricalAnnotatorClient | None = None
 
 
 def calendar_engine() -> CalendarEngineClient:
@@ -37,6 +40,19 @@ def calendar_engine() -> CalendarEngineClient:
     return _CALENDAR_ENGINE
 
 
+def historical_annotator() -> HistoricalAnnotatorClient:
+    """Return the shared Rails named-entity annotator process for this run.
+
+    Python supplies text, metadata context, and the person-category surface forms
+    it wants checked. CbdbAutoAnnotator remains the sole owner of person scoring,
+    temporal gates, ambiguity handling, and Literary-Chinese syntax heuristics.
+    """
+    global _HISTORICAL_ANNOTATOR
+    if _HISTORICAL_ANNOTATOR is None:
+        _HISTORICAL_ANNOTATOR = HistoricalAnnotatorClient()
+    return _HISTORICAL_ANNOTATOR
+
+
 @dataclasses.dataclass(frozen=True)
 class Work:
     metadata_path: Path
@@ -45,6 +61,7 @@ class Work:
     work_base_title: str
     aliases: tuple[str, ...]
     date_label: str
+    date: str
     year_start: int | None
     year_end: int | None
     period: str
@@ -66,6 +83,7 @@ class Work:
     sources: tuple[str, ...]
     identifiers: tuple[dict, ...]
     documents: tuple[dict, ...]
+    metadata_sha256: str = ""
 
 
 @dataclasses.dataclass
@@ -74,6 +92,11 @@ class Evidence:
     documents: set[str] = dataclasses.field(default_factory=set)
     first_document: str = ""
     first_snippet: str = ""
+    person_annotation_confidences: collections.Counter[str] = dataclasses.field(default_factory=collections.Counter)
+    person_annotation_documents: set[str] = dataclasses.field(default_factory=set)
+    person_annotation_attempts: int = 0
+    person_annotation_authority_available: bool = False
+    first_person_annotation: str = ""
 
 
 @dataclasses.dataclass
@@ -825,6 +848,15 @@ def parse_args() -> argparse.Namespace:
         help="Disable CBDB person/text-role verification even when a local CBDB SQLite is available.",
     )
     parser.add_argument("--output", type=Path, default=Path.cwd() / "category_migration.xlsx")
+    parser.add_argument(
+        "--application-plan",
+        type=Path,
+        default=None,
+        help=(
+            "Also write a UTF-8-BOM JSONL application plan for category_migration_apply.py. "
+            "This still does not modify metadata.json."
+        ),
+    )
     parser.add_argument("--skip-body-evidence", action="store_true")
     parser.add_argument(
         "--include-master-actions",
@@ -955,16 +987,54 @@ def integer_value(value: object) -> int | None:
         return None
 
 
-def discover_works(corpus_root: Path, limit: int | None) -> tuple[list[Work], list[tuple[str, str]]]:
+def hierarchy_labels_from_metadata_paths(paths: Sequence[Path], corpus_root: Path) -> set[str]:
+    """Return structural directory labels without reading every metadata file.
+
+    --limit is a row-processing limit, not a semantic-universe limit. The
+    migration already enumerates every metadata.json path before slicing the
+    requested sample, so collect intermediate directories from that same list.
+    This keeps test runs from mistaking corpus periods such as 東漢 or 南梁 for
+    personal names merely because those period directories fall outside the
+    first N works.
+
+    The immediate work directory is excluded: work titles are not structural
+    period/geography vocabulary.
+    """
+    labels: set[str] = set()
+    for path in paths:
+        try:
+            parts = path.relative_to(corpus_root).parts
+        except ValueError:
+            continue
+        try:
+            clean_index = parts.index("clean")
+        except ValueError:
+            continue
+        for label in parts[clean_index + 1 : -2]:
+            value = clean_text(label)
+            if value:
+                labels.add(value)
+    return labels
+
+
+def discover_works(
+    corpus_root: Path, limit: int | None
+) -> tuple[list[Work], list[tuple[str, str]], set[str]]:
     works: list[Work] = []
     issues: list[tuple[str, str]] = []
-    paths = sorted(corpus_root.rglob("metadata.json"), key=lambda path: path.as_posix())
+    all_paths = sorted(corpus_root.rglob("metadata.json"), key=lambda path: path.as_posix())
+    hierarchy_labels = hierarchy_labels_from_metadata_paths(all_paths, corpus_root)
+    paths = all_paths
     if limit is not None:
         paths = paths[: max(0, limit)]
     for path in paths:
         rel = path.relative_to(corpus_root)
         try:
-            metadata = read_json(path)
+            raw_metadata = path.read_bytes()
+            metadata = json.loads(raw_metadata.decode("utf-8-sig"))
+            if not isinstance(metadata, dict):
+                raise ValueError("top-level JSON value is not an object")
+            metadata_digest = hashlib.sha256(raw_metadata).hexdigest()
         except Exception as exc:
             issues.append((rel.as_posix(), f"metadata read error: {exc}"))
             continue
@@ -984,6 +1054,7 @@ def discover_works(corpus_root: Path, limit: int | None) -> tuple[list[Work], li
                 work_base_title=clean_text(metadata.get("work_base_title")),
                 aliases=string_list(metadata.get("aliases")),
                 date_label=clean_text(metadata.get("date_label")),
+                date=clean_text(metadata.get("date")),
                 year_start=integer_value(metadata.get("year_start") or metadata.get("year")),
                 year_end=integer_value(metadata.get("year_end") or metadata.get("year")),
                 period=clean_text(metadata.get("period")),
@@ -1005,9 +1076,10 @@ def discover_works(corpus_root: Path, limit: int | None) -> tuple[list[Work], li
                 sources=source_strings(metadata.get("sources")),
                 identifiers=identifiers,
                 documents=documents,
+                metadata_sha256=metadata_digest,
             )
         )
-    return works, issues
+    return works, issues, hierarchy_labels
 
 
 def load_rules(path: Path) -> dict:
@@ -1051,6 +1123,171 @@ def calendar_context_for_work(work: Work) -> dict[str, object]:
         if value:
             context[key] = value
     return context
+
+
+def corpus_hierarchy_labels(work: Work) -> tuple[str, ...]:
+    """Return only the authoritative folder hierarchy surrounding one work.
+
+    metadata_path is relative to corpus/.  Everything after clean and before the
+    work directory is corpus placement; the work directory and metadata.json are
+    not chronology labels.
+    """
+    parts = work.metadata_path.parts
+    try:
+        clean_index = parts.index("clean")
+    except ValueError:
+        return ()
+    return tuple(parts[clean_index + 1 : -2])
+
+
+def normalized_hierarchy_labels(work: Work, normalizer: Traditionalizer) -> tuple[str, ...]:
+    return tuple(
+        normalize_name(normalizer, value)
+        for value in corpus_hierarchy_labels(work)
+        if clean_text(value)
+    )
+
+
+def calendar_period_bounds(labels: str | Sequence[str]) -> tuple[int, int, tuple[str, ...]] | None:
+    """Ask Rails for the established historical bounds of period/path labels.
+
+    Python does not own dynasty boundaries. CalendarEngine exposes the existing
+    Rails period authority table and performs path-range intersection there.
+    """
+    value: object
+    if isinstance(labels, str):
+        value = labels
+    else:
+        value = list(labels)
+    try:
+        response = calendar_engine().period_bounds(value)
+    except (OSError, RuntimeError, json.JSONDecodeError) as exc:
+        raise RuntimeError(f"shared CalendarEngine unavailable while checking period bounds {value!r}: {exc}") from exc
+    if not response.get("resolved"):
+        return None
+    start = response.get("year_start")
+    end = response.get("year_end")
+    if start is None or end is None:
+        return None
+    matched = tuple(str(item) for item in response.get("labels", []) if str(item))
+    return int(start), int(end), matched
+
+
+def work_absolute_year_range(
+    work: Work,
+    work_date_categories: Sequence[DateCategory] = (),
+    *,
+    context: dict[str, object] | None = None,
+) -> tuple[int, int] | None:
+    """Return firm work-level absolute chronology for migration safety checks.
+
+    Mention dates are intentionally excluded. Exact numeric chronology wins,
+    followed by the materialized Gregorian date and date_label. Category dates
+    are used only when all non-mention categories converge on one absolute year.
+    Broad ca values are not used here because many were derived from the folder
+    itself and would make a folder-consistency test circular.
+    """
+    if work.year_start is not None or work.year_end is not None:
+        left = work.year_start if work.year_start is not None else work.year_end
+        right = work.year_end if work.year_end is not None else work.year_start
+        assert left is not None and right is not None
+        return min(left, right), max(left, right)
+
+    for value in (work.date, work.date_label):
+        if not value:
+            continue
+        parsed = parse_existing_date_label(value, context=context)
+        if parsed is not None:
+            return parsed[0], parsed[0]
+
+    years = {item.year for item in work_date_categories if not item.is_mention}
+    if len(years) == 1:
+        year = next(iter(years))
+        return year, year
+    return None
+
+
+def ranges_overlap(left: tuple[int, int], right: tuple[int, int]) -> bool:
+    return left[0] <= right[1] and right[0] <= left[1]
+
+
+def annotation_metadata_for_work(work: Work) -> dict[str, object]:
+    """Build the chronology context consumed by the existing Rails annotator.
+
+    Firm normalized dates win. When no firm date exists, the corpus hierarchy is
+    converted to the same period bounds already exposed by CalendarEngine from
+    the annotator's period table. This gives the annotator a useful future-person
+    gate even for a specific folder label it does not itself name directly.
+    """
+    metadata: dict[str, object] = {}
+    parts = work.metadata_path.parts
+    if parts:
+        metadata["corpus_root"] = parts[0]
+    for key, value in (("period", work.period), ("polity", work.polity), ("region", work.region)):
+        if value:
+            metadata[key] = value
+    if work.date_label:
+        metadata["date_label"] = work.date_label
+    if work.date:
+        metadata["date"] = work.date
+    if work.authors:
+        metadata["authors"] = list(work.authors)
+
+    firm = work_absolute_year_range(work, context=calendar_context_for_work(work))
+    if firm is not None:
+        metadata["year_start"], metadata["year_end"] = firm
+        return metadata
+
+    path_bounds = calendar_period_bounds(corpus_hierarchy_labels(work))
+    if path_bounds is not None:
+        metadata["year_start"], metadata["year_end"] = path_bounds[:2]
+    return metadata
+
+
+def is_date_review_action(item: MembershipAction) -> bool:
+    """Select actual date actions without matching the 'date' inside candidate."""
+    action = item.action.action
+    target = item.action.target_field
+    return (
+        action.startswith(("date_", "promote_date_", "remove_date_", "split_date_", "era_year_"))
+        or "_date_" in action
+        or "mentions.dates" in target
+        or target == "date_label"
+        or target.startswith("date_label ")
+        or target.startswith("date_label+")
+        or target.startswith("date_label +")
+    )
+
+
+def is_people_review_action(item: MembershipAction) -> bool:
+    """Author/contributor-role review only; mentions have their own review sheet."""
+    if item.action.confidence != "review":
+        return False
+    action = item.action.action
+    target = item.action.target_field
+    if "person_mention" in action or target == "mentions.people":
+        return False
+    return (
+        target.startswith("authors")
+        or target.startswith("contributors")
+        or "author" in action
+        or "contributor" in action
+        or "person_role" in action
+        or "person_preamble_role" in action
+    )
+
+
+def is_person_mention_review_action(item: MembershipAction) -> bool:
+    if item.action.confidence != "review":
+        return False
+    return "person_mention" in item.action.action or item.action.target_field == "mentions.people"
+
+
+def is_period_polity_review_action(item: MembershipAction) -> bool:
+    """Period/polity review contains only unresolved cases; safe redundancies auto-remove."""
+    if item.action.confidence != "review":
+        return False
+    return any(token in item.action.action for token in ("period", "polity", "geograph"))
 
 
 def parse_date_category(canonical: str, context: dict[str, object] | None = None) -> DateCategory | None:
@@ -1296,7 +1533,10 @@ def looks_like_person_label(label: str) -> bool:
 
 
 def person_inference_blocked_labels(
-    works: Sequence[Work], normalizer: Traditionalizer, rules: dict
+    works: Sequence[Work],
+    normalizer: Traditionalizer,
+    rules: dict,
+    hierarchy_labels: Iterable[str] = (),
 ) -> set[str]:
     """Labels that must never become people merely from title/category coincidence.
 
@@ -1307,6 +1547,7 @@ def person_inference_blocked_labels(
     blocked = {normalize_name(normalizer, value) for value in controlled_taxonomy_nodes(rules)}
     blocked.update(normalize_name(normalizer, value) for value in rules.get("tradition_labels") or [] if clean_text(value))
     blocked.update(normalize_name(normalizer, value) for value in rules.get("person_inference_exclusions") or [] if clean_text(value))
+    blocked.update(normalize_name(normalizer, value) for value in hierarchy_labels if clean_text(value))
     for work in works:
         for value in (work.period, work.polity, work.macro_region, work.region):
             if value:
@@ -1477,6 +1718,18 @@ def configured_period_candidate(
     return period_candidate(label, indexes["periods"])
 
 
+def hierarchy_period_candidates(
+    work: Work, indexes: dict, normalizer: Traditionalizer, rules: dict
+) -> tuple[str, ...]:
+    """Return recognized period targets already encoded by the corpus path."""
+    output: list[str] = []
+    for label in normalized_hierarchy_labels(work, normalizer):
+        candidate = configured_period_candidate(label, indexes, normalizer, rules)
+        if candidate and candidate not in output:
+            output.append(candidate)
+    return tuple(output)
+
+
 def period_prefixed_taxonomy(
     label: str, indexes: dict, normalizer: Traditionalizer, rules: dict
 ) -> tuple[str, str, str] | None:
@@ -1540,6 +1793,36 @@ def figure_names_from_terms(terms_path: Path, normalizer: Traditionalizer) -> se
                 text = clean_text(alias)
                 if text:
                     result.add(normalize_name(normalizer, text))
+    return result
+
+
+def figure_alias_groups_from_terms(terms_path: Path, normalizer: Traditionalizer) -> dict[str, tuple[str, ...]]:
+    """Return figure-name surface groups for mention verification only.
+
+    The audit file groups figures under intellectual/religious traditions for
+    discovery. That grouping is not a migration taxonomy rule. Here it is used
+    only to let a source category such as 孔子 be corroborated by an attested
+    alias such as 仲尼 before the shared annotator decides whether the occurrence
+    is a plausible person reference in this work's chronology and syntax.
+    """
+    if not terms_path.is_file():
+        return {}
+    data = read_json(terms_path)
+    result: dict[str, tuple[str, ...]] = {}
+    for group in data.get("groups") or []:
+        if not isinstance(group, dict):
+            continue
+        for entry in group.get("entries") or []:
+            if not isinstance(entry, dict) or clean_text(entry.get("kind")) != "figure":
+                continue
+            raw_forms = [clean_text(entry.get("label"))]
+            raw_forms.extend(clean_text(value) for value in entry.get("aliases") or [])
+            raw_forms = [value for value in raw_forms if value]
+            normalized = [normalize_name(normalizer, value) for value in raw_forms]
+            surfaces = tuple(dict.fromkeys([*raw_forms, *normalized]))
+            for key in normalized:
+                if key:
+                    result[key] = surfaces
     return result
 
 
@@ -1646,13 +1929,19 @@ def scan_preamble_person_evidence(
     return evidence, issues, scanned_documents
 
 
-def candidate_aliases_for_work(work: Work, normalizer: Traditionalizer, indexes: dict) -> dict[str, set[str]]:
+def candidate_aliases_for_work(
+    work: Work,
+    normalizer: Traditionalizer,
+    indexes: dict,
+    figure_aliases: dict[str, tuple[str, ...]] | None = None,
+) -> dict[str, set[str]]:
     result: dict[str, set[str]] = collections.defaultdict(set)
-    people = indexes["people"]
     periods = indexes["periods"]
     polities = indexes["polities"]
     macro_regions = indexes["macro_regions"]
     regions = indexes["regions"]
+    people = indexes["people"]
+    figure_aliases = figure_aliases or {}
     for raw, _origin in unique_memberships(work):
         raw_surface = unicodedata.normalize("NFC", strip_namespace(raw))
         canonical, _ = canonical_label(normalizer, raw)
@@ -1665,9 +1954,9 @@ def candidate_aliases_for_work(work: Work, normalizer: Traditionalizer, indexes:
             continue
         if canonical in people:
             result[canonical].add(canonical)
+            result[canonical].update(figure_aliases.get(canonical, ()))
             if raw_surface:
                 result[canonical].add(raw_surface)
-            continue
         if canonical in periods:
             result[canonical].add(canonical)
             if raw_surface:
@@ -1685,20 +1974,54 @@ def candidate_aliases_for_work(work: Work, normalizer: Traditionalizer, indexes:
     return result
 
 
+def _record_person_annotation(
+    item: Evidence,
+    rel_document: str,
+    matches: Sequence[dict],
+    *,
+    authority_available: bool,
+) -> None:
+    item.person_annotation_attempts += 1
+    item.person_annotation_authority_available = (
+        item.person_annotation_authority_available or authority_available
+    )
+    for match in matches:
+        if clean_text(match.get("kind")) != "person":
+            continue
+        confidence = clean_text(match.get("confidence")) or "possible"
+        item.person_annotation_confidences[confidence] += 1
+        item.person_annotation_documents.add(rel_document)
+        if not item.first_person_annotation:
+            candidates = match.get("candidates") if isinstance(match.get("candidates"), list) else []
+            first = candidates[0] if candidates and isinstance(candidates[0], dict) else {}
+            label = clean_text(first.get("label") or first.get("local_label"))
+            authority = clean_text(first.get("authority_source"))
+            surface = clean_text(match.get("text"))
+            details = [value for value in (surface, label, authority, confidence) if value]
+            item.first_person_annotation = " | ".join(details)
+
+
 def scan_body_evidence(
     corpus_root: Path,
     works: Sequence[Work],
     normalizer: Traditionalizer,
     indexes: dict,
     progress_every: int,
+    figure_aliases: dict[str, tuple[str, ...]] | None = None,
 ) -> tuple[dict[tuple[Path, str], Evidence], list[tuple[str, str]], int]:
     evidence: dict[tuple[Path, str], Evidence] = {}
     issues: list[tuple[str, str]] = []
     scanned_documents = 0
     for work_index, work in enumerate(works, start=1):
-        candidates = candidate_aliases_for_work(work, normalizer, indexes)
+        candidates = candidate_aliases_for_work(work, normalizer, indexes, figure_aliases)
         if not candidates:
             continue
+        person_candidates = {
+            canonical: aliases
+            for canonical, aliases in candidates.items()
+            if canonical in indexes["people"]
+        }
+        annotation_metadata: dict[str, object] | None = None
         for document in work.documents:
             path = resolve_document_path(corpus_root, work, document)
             if path is None:
@@ -1713,6 +2036,8 @@ def scan_body_evidence(
                 rel_document = path.relative_to(corpus_root).as_posix()
             except ValueError:
                 rel_document = str(path)
+
+            person_hits: set[str] = set()
             for canonical, aliases in candidates.items():
                 for alias in aliases:
                     if not alias:
@@ -1724,13 +2049,70 @@ def scan_body_evidence(
                     item = evidence.setdefault(key, Evidence())
                     item.occurrences += count
                     item.documents.add(rel_document)
+                    if canonical in person_candidates:
+                        person_hits.add(canonical)
                     if not item.first_snippet:
                         pos = body.find(alias)
                         item.first_document = rel_document
                         item.first_snippet = body_snippet(body, pos, len(alias))
+
+            if person_hits:
+                if annotation_metadata is None:
+                    annotation_metadata = annotation_metadata_for_work(work)
+                wanted = {
+                    canonical: sorted(person_candidates[canonical])
+                    for canonical in person_hits
+                }
+                try:
+                    response = historical_annotator().annotate(
+                        body, metadata=annotation_metadata, wanted=wanted
+                    )
+                    if not response.get("resolved"):
+                        raise RuntimeError(clean_text(response.get("error")) or "annotation request failed")
+                    matches = response.get("matches") if isinstance(response.get("matches"), dict) else {}
+                    authority_available = bool(response.get("authority_available"))
+                    for canonical in person_hits:
+                        item = evidence.setdefault((work.metadata_path, canonical), Evidence())
+                        rows = matches.get(canonical) if isinstance(matches.get(canonical), list) else []
+                        _record_person_annotation(
+                            item, rel_document, rows, authority_available=authority_available
+                        )
+                except (OSError, RuntimeError, json.JSONDecodeError) as exc:
+                    issues.append((work.metadata_path.as_posix(), f"person annotation check failed: {exc}"))
+                    for canonical in person_hits:
+                        item = evidence.setdefault((work.metadata_path, canonical), Evidence())
+                        item.person_annotation_attempts += 1
+
         if progress_every > 0 and work_index % progress_every == 0:
             print(f"Body evidence: {work_index:,}/{len(works):,} works", file=sys.stderr)
     return evidence, issues, scanned_documents
+
+
+def person_annotation_status(evidence: Evidence | None) -> str:
+    if evidence is None or evidence.occurrences <= 0:
+        return "absent"
+    if evidence.person_annotation_confidences.get("high", 0) > 0:
+        return "high"
+    if evidence.person_annotation_confidences.get("possible", 0) > 0:
+        return "possible"
+    if evidence.person_annotation_attempts > 0 and not evidence.person_annotation_authority_available:
+        return "authority_unavailable"
+    if evidence.person_annotation_attempts > 0:
+        return "unconfirmed"
+    return "not_checked"
+
+
+def person_annotation_evidence_text(evidence: Evidence | None) -> str:
+    if evidence is None:
+        return ""
+    bits = [f"exact body occurrences: {evidence.occurrences}"]
+    high = evidence.person_annotation_confidences.get("high", 0)
+    possible = evidence.person_annotation_confidences.get("possible", 0)
+    if high or possible:
+        bits.append(f"shared annotator: high={high}, possible={possible}")
+    if evidence.first_person_annotation:
+        bits.append(f"first annotation: {evidence.first_person_annotation}")
+    return "; ".join(bits)
 
 
 def person_semantics(
@@ -1739,10 +2121,16 @@ def person_semantics(
     people: set[str],
     preamble_evidence: dict[tuple[Path, str], PreamblePersonEvidence] | None = None,
     authorial_compilation_evidence: dict[tuple[Path, str], str] | None = None,
-    body_evidence: dict[tuple[Path, str], Evidence] | None = None,
     cbdb_people: dict[str, tuple[CbdbPersonCandidate, ...]] | None = None,
     cbdb_role_evidence: dict[tuple[Path, str], tuple[CbdbRoleEvidence, ...]] | None = None,
 ) -> dict[str, dict[str, float | int | str]]:
+    """Summarize only category labels with positive authorship evidence.
+
+    Identity alone is deliberately insufficient. A label does not enter People
+    Semantics merely because CBDB knows a person with that name, or because the
+    string occurs in the body. Those signals created large mention/topic queues
+    without helping the category migration decide authorship.
+    """
     stats: dict[str, dict[str, int]] = collections.defaultdict(lambda: collections.Counter())
     preamble_roles: dict[str, collections.Counter[str]] = collections.defaultdict(collections.Counter)
     cbdb_roles: dict[str, collections.Counter[str]] = collections.defaultdict(collections.Counter)
@@ -1771,10 +2159,8 @@ def person_semantics(
             if preamble and preamble.roles:
                 row["preamble_role_matches"] += 1
                 preamble_roles[canonical].update(preamble.roles)
-            body = (body_evidence or {}).get((work.metadata_path, canonical))
-            if body and body.occurrences:
-                row["body_mention_works"] += 1
-                row["body_occurrences"] += body.occurrences
+                if "author" in preamble.roles:
+                    row["preamble_author_matches"] += 1
             direct_roles = (cbdb_role_evidence or {}).get((work.metadata_path, canonical), ())
             if direct_roles:
                 row["cbdb_text_role_matches"] += 1
@@ -1786,9 +2172,20 @@ def person_semantics(
 
     output: dict[str, dict[str, float | int | str]] = {}
     for person, row in stats.items():
+        # Positive authorship evidence is the admission rule. This intentionally
+        # excludes famous/serious names that merely occur as subjects or mentions.
+        author_signal = any((
+            int(row.get("author_matches", 0)) > 0,
+            int(row.get("title_parenthetical_matches", 0)) > 0,
+            int(row.get("authorial_compilation_matches", 0)) > 0,
+            int(row.get("preamble_author_matches", 0)) > 0,
+            int(row.get("cbdb_author_matches", 0)) > 0,
+        ))
+        if not author_signal:
+            continue
+
         denominator = row["works_with_authors"]
         ratio = row["author_matches"] / denominator if denominator else 0.0
-        body_ratio = row["body_mention_works"] / row["works"] if row["works"] else 0.0
         role_summary = ", ".join(
             f"{role}={count}" for role, count in preamble_roles.get(person, collections.Counter()).most_common()
         )
@@ -1801,18 +2198,9 @@ def person_semantics(
             count for role, count in cbdb_roles.get(person, collections.Counter()).items() if role != "author"
         )
 
-        if int(row.get("preamble_role_matches", 0)) > 0:
-            semantic = "explicit contributor role in source-added document preamble"
-        elif (
-            cbdb_direct_author >= 2
-            and cbdb_non_author_roles == 0
-            and body_ratio <= 0.25
-        ) or (
-            int(row.get("works", 0)) <= 3
-            and cbdb_direct_author >= 1
-            and cbdb_non_author_roles == 0
-            and body_ratio <= 0.25
-        ):
+        if int(row.get("preamble_author_matches", 0)) > 0:
+            semantic = "explicit author role in source-added document preamble"
+        elif cbdb_direct_author > 0 and cbdb_non_author_roles == 0:
             semantic = "CBDB-verified author grouping"
         elif cbdb_direct_author > 0:
             semantic = "CBDB author evidence present; category behaviour still mixed/unresolved"
@@ -1820,16 +2208,11 @@ def person_semantics(
             semantic = "author grouping in an author-organized source anthology"
         elif (row["author_matches"] >= 3 and ratio >= 0.8) or row["title_parenthetical_matches"] >= 2:
             semantic = "likely author grouping"
-        elif cbdb_candidate_count > 0:
-            semantic = "CBDB-confirmed personal name; source role unresolved"
-        elif row["author_matches"] == 0 and row["title_parenthetical_matches"] == 0:
-            semantic = "likely mention/topic or unresolved person role"
         else:
-            semantic = "mixed person role"
+            semantic = "potential author grouping; evidence requires review"
         output[person] = {
             **row,
             "author_ratio": ratio,
-            "body_mention_ratio": body_ratio,
             "preamble_roles": role_summary,
             "cbdb_candidates": cbdb_candidate_count,
             "cbdb_roles": cbdb_role_summary,
@@ -2508,13 +2891,28 @@ def classify_membership(
     if range_period:
         target_norm = normalize_name(normalizer, range_period)
         work_period_norm = normalize_name(normalizer, work.period) if work.period else ""
-        if work_period_norm == target_norm:
+        path_periods = hierarchy_period_candidates(work, indexes, normalizer, rules)
+        work_range = work_absolute_year_range(work, work_date_categories, context=calendar_context)
+        target_bounds = calendar_period_bounds(range_period)
+        if work_range and target_bounds and not ranges_overlap(work_range, target_bounds[:2]):
             return [Action(
-                "remove_period_range_category_redundant", "period", work.period, "safe", work.period,
-                f"source date-range label maps to period {range_period}",
-                "This range is dynasty/period classification, not the date of every individual work. Keep the structured period and remove the source range category.",
+                "period_range_category_date_conflict_review", "period", range_period, "review", work.period,
+                f"firm work chronology {work_range[0]}..{work_range[1]} falls outside {range_period} bounds {target_bounds[0]}..{target_bounds[1]}",
+                "Do not promote a source period classification when the normalized work date contradicts it. Review the source category and corpus placement together.",
+            )]
+        if work_period_norm == target_norm or target_norm in path_periods:
+            return [Action(
+                "remove_period_range_category_redundant", "period", work.period or range_period, "safe", work.period,
+                f"source date-range label maps to period {range_period}, already represented by structured metadata/corpus hierarchy",
+                "This range is dynasty/period classification, not the date of every individual work. Keep the curated placement and remove the source range category.",
             )]
         if not work.period:
+            if path_periods:
+                return [Action(
+                    "period_range_category_path_conflict_review", "period / corpus path", range_period, "review", " / ".join(corpus_hierarchy_labels(work)),
+                    f"configured source range maps to {range_period}, while canonical corpus path contains period(s) {', '.join(path_periods)}",
+                    "The corpus hierarchy is authoritative for placement. Do not populate a conflicting period automatically; review this as a possible scraped-category error or genuine folder mismatch.",
+                )]
             return [Action(
                 "promote_period_from_range_category", "period", range_period, "high", "",
                 f"configured source range maps to period {range_period}",
@@ -2523,7 +2921,7 @@ def classify_membership(
         return [Action(
             "period_range_category_conflict_review", "period", range_period, "review", work.period,
             f"configured source range maps to {range_period} but structured period differs",
-            "Review the source chronology. A dynasty-wide range category must not overwrite a specific work date.",
+            "Review the source chronology. A dynasty-wide range category must not overwrite a specific work date or curated corpus placement.",
         )]
 
     date_cat = parse_date_category(canonical, context=calendar_context)
@@ -2543,7 +2941,8 @@ def classify_membership(
         plain_dates = [item for item in work_date_categories if not item.is_mention]
         tuples = {(item.year, item.month, item.day) for item in plain_dates}
         years = {item.year for item in plain_dates}
-        existing = parse_existing_date_label(work.date_label, context=calendar_context) if work.date_label else None
+        existing_source = work.date_label or work.date
+        existing = parse_existing_date_label(existing_source, context=calendar_context) if existing_source else None
         if len(years) > 1:
             return [
                 Action(
@@ -2556,20 +2955,33 @@ def classify_membership(
                     "Do not choose a work date automatically when category evidence disagrees.",
                 )
             ]
+        path_bounds = calendar_period_bounds(corpus_hierarchy_labels(work))
+        if path_bounds and not ranges_overlap((date_cat.year, date_cat.year), path_bounds[:2]):
+            return [
+                Action(
+                    "date_path_period_conflict_review",
+                    "date_label / period / corpus path",
+                    date_cat.source_label,
+                    "review",
+                    work.date_label or work.date or work.period,
+                    f"absolute date {date_cat.year} falls outside canonical path period bounds {path_bounds[0]}..{path_bounds[1]} ({'/'.join(path_bounds[2])})",
+                    "The date may expose one of the small number of genuinely misfiled works, or the source category may be wrong. Do not move the work or discard the date automatically.",
+                )
+            ]
         most_specific = max(plain_dates, key=lambda item: item.specificity) if plain_dates else date_cat
         if existing and date_compatible(date_cat, existing):
             return [
                 Action(
                     "remove_date_category_redundant",
                     "date_label",
-                    work.date_label,
+                    existing_source,
                     "safe",
-                    work.date_label,
+                    existing_source,
                     "category agrees with existing date metadata",
                     "The date belongs in date metadata and the category can be removed.",
                 )
             ]
-        if not work.date_label:
+        if not existing_source:
             if date_cat.canonical != most_specific.canonical:
                 return [
                     Action(
@@ -2599,7 +3011,7 @@ def classify_membership(
                 "date_label",
                 most_specific.source_label,
                 "review",
-                work.date_label,
+                existing_source,
                 "category does not agree with existing date metadata",
                 "Review the date evidence before changing either value.",
             )
@@ -2609,18 +3021,31 @@ def classify_membership(
     if dated_composite is not None:
         composite_date, remainder = dated_composite
         if remainder:
-            existing = parse_existing_date_label(work.date_label, context=calendar_context) if work.date_label else None
-            if existing and date_compatible(composite_date, existing):
+            existing_source = work.date_label or work.date
+            existing = parse_existing_date_label(existing_source, context=calendar_context) if existing_source else None
+            path_bounds = calendar_period_bounds(corpus_hierarchy_labels(work))
+            path_conflict = bool(
+                path_bounds
+                and not ranges_overlap((composite_date.year, composite_date.year), path_bounds[:2])
+            )
+            if path_conflict:
+                confidence = "review"
+                existing_value = existing_source or work.period
+                evidence_text = (
+                    f"absolute date {composite_date.year} falls outside canonical path period bounds "
+                    f"{path_bounds[0]}..{path_bounds[1]} ({'/'.join(path_bounds[2])})"
+                )
+            elif existing and date_compatible(composite_date, existing):
                 confidence = "high"
-                existing_value = work.date_label
+                existing_value = existing_source
                 evidence_text = f"date prefix agrees with structured date metadata; absolute equivalent {composite_date.label}"
-            elif not work.date_label:
+            elif not existing_source:
                 confidence = "high"
                 existing_value = ""
                 evidence_text = f"date prefix can populate date metadata; absolute equivalent {composite_date.label}"
             else:
                 confidence = "review"
-                existing_value = work.date_label
+                existing_value = existing_source
                 evidence_text = "date prefix conflicts with structured date metadata"
             return [Action(
                 "split_date_from_category",
@@ -2955,7 +3380,6 @@ def classify_membership(
         canonical = person_base
 
     if canonical in indexes["people"]:
-        body_count = evidence.occurrences if evidence else 0
         if canonical in authors:
             return [
                 Action(
@@ -3059,62 +3483,109 @@ def classify_membership(
                     "Promote the source author category into structured authorship, then remove the personal-name category. The anthology rule requires exactly one plausible person candidate on the work.",
                 )
             ]
-        stats = semantics.get(canonical, {})
-        likely_author = (
-            (
-                int(stats.get("author_matches", 0)) >= int(rules.get("person_author_min_matches", 3))
-                and float(stats.get("author_ratio", 0.0)) >= float(rules.get("person_author_ratio", 0.8))
-            )
-            or int(stats.get("title_parenthetical_matches", 0))
-            >= int(rules.get("person_parenthetical_author_min_matches", 2))
-            or (
-                int(stats.get("cbdb_author_matches", 0)) >= 2
-                and not any(
-                    token and not token.startswith("author=")
-                    for token in clean_text(stats.get("cbdb_roles")).split(", ")
+        stats = semantics.get(canonical)
+        if stats is not None:
+            likely_author = (
+                (
+                    int(stats.get("author_matches", 0)) >= int(rules.get("person_author_min_matches", 3))
+                    and float(stats.get("author_ratio", 0.0)) >= float(rules.get("person_author_ratio", 0.8))
                 )
-                and float(stats.get("body_mention_ratio", 0.0)) <= 0.25
-            )
-            or (
-                int(stats.get("works", 0)) <= 3
-                and int(stats.get("cbdb_author_matches", 0)) >= 1
-                and not any(
-                    token and not token.startswith("author=")
-                    for token in clean_text(stats.get("cbdb_roles")).split(", ")
+                or int(stats.get("title_parenthetical_matches", 0))
+                >= int(rules.get("person_parenthetical_author_min_matches", 2))
+                or int(stats.get("authorial_compilation_matches", 0)) > 0
+                or int(stats.get("preamble_author_matches", 0)) > 0
+                or (
+                    int(stats.get("cbdb_author_matches", 0)) > 0
+                    and not any(
+                        token and not token.startswith("author=")
+                        for token in clean_text(stats.get("cbdb_roles")).split(", ")
+                    )
                 )
-                and float(stats.get("body_mention_ratio", 0.0)) <= 0.25
             )
-        )
-        if not authors and likely_author:
-            return [
-                Action(
-                    "promote_author_candidate",
-                    "authors",
-                    canonical,
-                    "high",
-                    "",
-                    (
-                        f"person category behaves like an author grouping; structured-author ratio "
-                        f"{float(stats.get('author_ratio', 0.0)):.1%}, title-parenthesis signals "
-                        f"{int(stats.get('title_parenthetical_matches', 0))}, CBDB direct author-title signals "
-                        f"{int(stats.get('cbdb_author_matches', 0))}"
-                    ),
-                    "Use category behaviour to fill missing authors, then remove the person category.",
-                )
-            ]
+            if not authors and likely_author:
+                return [
+                    Action(
+                        "promote_author_candidate",
+                        "authors",
+                        canonical,
+                        "high",
+                        "",
+                        (
+                            f"person category behaves like an author grouping; structured-author ratio "
+                            f"{float(stats.get('author_ratio', 0.0)):.1%}, title-parenthesis signals "
+                            f"{int(stats.get('title_parenthetical_matches', 0))}, preamble author signals "
+                            f"{int(stats.get('preamble_author_matches', 0))}, CBDB direct author-title signals "
+                            f"{int(stats.get('cbdb_author_matches', 0))}"
+                        ),
+                        "Use positive authorship evidence to fill missing authors, then remove the personal-name category.",
+                    )
+                ]
+
+        body_count = evidence.occurrences if evidence else 0
         if body_count > 0:
+            status = person_annotation_status(evidence)
+            annotation_evidence = person_annotation_evidence_text(evidence)
             caution = ""
             if work.is_compilation and evidence and len(evidence.documents) < len(work.documents):
                 caution = " Mention evidence is component-level within a compilation."
+            if status == "high":
+                return [
+                    Action(
+                        "promote_person_mention",
+                        "mentions.people",
+                        canonical,
+                        "high" if not work.is_compilation else "review",
+                        " | ".join(work.authors),
+                        annotation_evidence,
+                        "The source category is corroborated in the body and the shared historical annotator confirms a high-confidence person occurrence. This records a person mention only; it does not infer the person's associated tradition or genre." + caution,
+                    )
+                ]
+            if status == "possible":
+                return [
+                    Action(
+                        "person_mention_review",
+                        "mentions.people",
+                        canonical,
+                        "review",
+                        " | ".join(work.authors),
+                        annotation_evidence,
+                        "The source category is corroborated in the body and the shared annotator retains the person identity as possible, but its normal ambiguity/chronology threshold was not high enough for automatic promotion. Do not infer a tradition category from the name.",
+                    )
+                ]
+            if status == "authority_unavailable":
+                return [
+                    Action(
+                        "person_mention_authority_unavailable_review",
+                        "mentions.people",
+                        canonical,
+                        "review",
+                        " | ".join(work.authors),
+                        annotation_evidence,
+                        "The personal-name string occurs in the body, but the shared historical annotator had no usable authority index. Re-run after the authority data are available; do not turn the figure's audit grouping into taxonomy.",
+                    )
+                ]
             return [
                 Action(
-                    "promote_person_mention",
+                    "person_mention_unconfirmed_review",
                     "mentions.people",
                     canonical,
-                    "high" if not work.is_compilation else "review",
+                    "review",
                     " | ".join(work.authors),
-                    f"exact body occurrences: {body_count}",
-                    "The person is present in the work body and is not a structured author/contributor." + caution,
+                    annotation_evidence,
+                    "The personal-name string occurs in the body, but the shared annotator did not confirm it under its temporal, ambiguity, and syntax rules. Keep this as a mention review instead of assuming authorship or subject taxonomy.",
+                )
+            ]
+
+        if stats is not None:
+            return [
+                Action(
+                    "author_role_review",
+                    "authors",
+                    canonical,
+                    "review",
+                    " | ".join(work.authors),
+                    clean_text(stats.get("semantic")),
+                    "This label has positive authorship evidence somewhere in the corpus, but this work has neither local authorship evidence nor a corroborated body mention.",
                 )
             ]
         return [
@@ -3124,8 +3595,8 @@ def classify_membership(
                 canonical,
                 "review",
                 " | ".join(work.authors + work.editors + work.contributors),
-                clean_text(stats.get("semantic")),
-                "The category is a known personal name but its role in this work is unresolved.",
+                "known personal identity; no positive authorship evidence and no body corroboration",
+                "The source category names a person, but its role in this work is unresolved. Do not infer an intellectual/religious tradition solely from the identity.",
             )
         ]
 
@@ -3137,6 +3608,17 @@ def classify_membership(
     polity_cand = polity_candidate(canonical, indexes["polities"])
     geo_field, geo_cand = geography_candidate(canonical, indexes)
     body_count = evidence.occurrences if evidence else 0
+    hierarchy_norms = set(normalized_hierarchy_labels(work, normalizer))
+    path_periods = set(hierarchy_period_candidates(work, indexes, normalizer, rules))
+    work_range = work_absolute_year_range(work, work_date_categories, context=calendar_context) if p_candidate else None
+    path_bounds = calendar_period_bounds(corpus_hierarchy_labels(work)) if p_candidate else None
+    candidate_bounds = calendar_period_bounds(indexes["periods"].get(p_candidate, p_candidate)) if p_candidate else None
+    candidate_date_conflict = bool(
+        p_candidate and work_range and candidate_bounds and not ranges_overlap(work_range, candidate_bounds[:2])
+    )
+    path_date_conflict = bool(
+        work_range and path_bounds and not ranges_overlap(work_range, path_bounds[:2])
+    )
 
     period_phase_labels = set(rules.get("period_phase_labels") or [])
     source_periodisation = source_periodisation_for(work, rules)
@@ -3301,8 +3783,8 @@ def classify_membership(
         prefix_geo_field, prefix_geo = geography_candidate(prefix, indexes)
         if prefix_period or prefix_polity or prefix_geo_field:
             prefix_matches = (
-                (prefix_period and prefix_period == period_norm)
-                or (prefix_polity and prefix_polity == polity_norm)
+                (prefix_period and (prefix_period == period_norm or prefix_period in path_periods))
+                or (prefix_polity and (prefix_polity == polity_norm or prefix_polity in hierarchy_norms))
                 or (prefix_geo_field == "macro_region" and prefix_geo == macro_norm)
                 or (prefix_geo_field == "region" and prefix_geo == region_norm)
             )
@@ -3328,15 +3810,25 @@ def classify_membership(
 
 
     redundant_fields: list[str] = []
-    if p_candidate and p_candidate == period_norm:
+    path_redundancy = False
+    if p_candidate and (p_candidate == period_norm or p_candidate in path_periods):
         redundant_fields.append("period")
-    if polity_cand and polity_cand == polity_norm:
+        path_redundancy = path_redundancy or p_candidate in path_periods
+    if polity_cand and (polity_cand == polity_norm or polity_cand in hierarchy_norms):
         redundant_fields.append("polity")
-    if canonical and canonical == macro_norm:
+        path_redundancy = path_redundancy or polity_cand in hierarchy_norms
+    if geo_field == "macro_region" and geo_cand and (geo_cand == macro_norm or geo_cand in hierarchy_norms):
         redundant_fields.append("macro_region")
-    if canonical and canonical == region_norm:
+        path_redundancy = path_redundancy or geo_cand in hierarchy_norms
+    if geo_field == "region" and geo_cand and (geo_cand == region_norm or geo_cand in hierarchy_norms):
         redundant_fields.append("region")
+        path_redundancy = path_redundancy or geo_cand in hierarchy_norms
     if redundant_fields:
+        evidence_text = "category agrees with structured metadata"
+        note = "Remove the redundant category after confirming the structured field is authoritative."
+        if path_redundancy:
+            evidence_text += "; canonical corpus hierarchy also contains this classification"
+            note = "The curated corpus hierarchy already carries this broader/same classification; remove the duplicated Wikisource category without changing the work's placement."
         return [
             Action(
                 "remove_geography_period_category_redundant",
@@ -3346,12 +3838,44 @@ def classify_membership(
                 ),
                 "safe",
                 " | ".join(redundant_fields),
-                "category exactly agrees with structured metadata",
-                "Remove the redundant category after confirming the structured field is authoritative.",
+                evidence_text,
+                note,
             )
         ]
 
+    if p_candidate and candidate_date_conflict:
+        return [Action(
+            "period_category_date_conflict_review",
+            "period / date",
+            indexes["periods"].get(p_candidate, canonical),
+            "review",
+            work.period,
+            f"firm work chronology {work_range[0]}..{work_range[1]} does not overlap candidate period bounds {candidate_bounds[0]}..{candidate_bounds[1]}",
+            "The normalized date contradicts this source period category. Do not populate period metadata or move the work from this category automatically.",
+        )]
+
+    if p_candidate and path_date_conflict and candidate_bounds and work_range and ranges_overlap(work_range, candidate_bounds[:2]):
+        return [Action(
+            "period_path_date_conflict_review",
+            "period / corpus path / date",
+            indexes["periods"].get(p_candidate, canonical),
+            "review",
+            work.period,
+            f"firm work chronology {work_range[0]}..{work_range[1]} fits candidate {candidate_bounds[0]}..{candidate_bounds[1]} but conflicts with canonical path bounds {path_bounds[0]}..{path_bounds[1]}",
+            "This is a strong candidate for one of the genuinely misfiled works. Keep it in review; the planner must never move a directory from source-category evidence alone.",
+        )]
+
     if p_candidate and not work.period:
+        if path_periods:
+            return [Action(
+                "period_category_path_conflict_review",
+                "period / corpus path",
+                indexes["periods"][p_candidate],
+                "review",
+                " / ".join(corpus_hierarchy_labels(work)),
+                f"source category proposes {indexes['periods'][p_candidate]}, but canonical path already encodes period(s) {', '.join(path_periods)}",
+                "Do not fill missing period metadata from a conflicting Wikisource category. The folder hierarchy remains authoritative unless independent chronology supports a correction.",
+            )]
         return [
             Action(
                 "promote_period_metadata",
@@ -3721,14 +4245,22 @@ def plan_title_cleanup(
             canonical, unresolved = canonical_label(normalizer, suffix)
             date_cat = parse_date_category(canonical, context=calendar_context)
             if date_cat is not None and not date_cat.is_mention:
-                existing = parse_existing_date_label(work.date_label, context=calendar_context) if work.date_label else None
-                if existing and date_compatible(date_cat, existing):
+                existing_source = work.date_label or work.date
+                existing = parse_existing_date_label(existing_source, context=calendar_context) if existing_source else None
+                path_bounds = calendar_period_bounds(corpus_hierarchy_labels(work))
+                if path_bounds and not ranges_overlap((date_cat.year, date_cat.year), path_bounds[:2]):
                     action = Action(
-                        "strip_title_date_suffix_redundant", "title + date_label", date_cat.source_label, "safe", work.date_label,
+                        "title_date_path_period_conflict_review", "title + date_label + period / corpus path", date_cat.source_label, "review", existing_source or work.period,
+                        f"trailing date resolves to {date_cat.year}, outside canonical path period bounds {path_bounds[0]}..{path_bounds[1]} ({'/'.join(path_bounds[2])})",
+                        "Do not let a source-added title date silently change chronology or placement. Review whether the date is wrong or the work is genuinely misfiled.",
+                    )
+                elif existing and date_compatible(date_cat, existing):
+                    action = Action(
+                        "strip_title_date_suffix_redundant", "title + date_label", date_cat.source_label, "safe", existing_source,
                         f"trailing parenthetical date agrees with structured date metadata; absolute equivalent {date_cat.label}",
                         "Strip the source-added date suffix from the title; the date is already structured.",
                     )
-                elif not work.date_label:
+                elif not existing_source:
                     action = Action(
                         "strip_title_date_suffix_promote", "title + date_label", date_cat.source_label, "high", "",
                         f"trailing parenthetical is a deterministic calendar date; absolute equivalent {date_cat.label}",
@@ -3736,7 +4268,7 @@ def plan_title_cleanup(
                     )
                 else:
                     action = Action(
-                        "title_date_suffix_conflict_review", "title + date_label", date_cat.source_label, "review", work.date_label,
+                        "title_date_suffix_conflict_review", "title + date_label", date_cat.source_label, "review", existing_source,
                         "trailing parenthetical date conflicts with structured date metadata",
                         "Review the dating evidence before stripping the suffix or changing the date field.",
                     )
@@ -3852,7 +4384,7 @@ def title_action_row(item: TitleAction) -> tuple[object, ...]:
     return (
         item.action.confidence, item.action.action, item.current_title, item.proposed_title, item.suffix,
         item.action.target_field, item.action.proposed_value, item.action.existing_value, item.action.evidence, item.action.note,
-        int(work.work_id) if work.work_id.isdigit() else work.work_id, work.date_label, work.period, work.polity,
+        int(work.work_id) if work.work_id.isdigit() else work.work_id, work.date_label or work.date, work.period, work.polity,
         work.macro_region, work.region, work.metadata_path.as_posix(),
     )
 
@@ -3869,7 +4401,7 @@ def action_row(item: MembershipAction) -> tuple[object, ...]:
         item.origin,
         int(work.work_id) if work.work_id.isdigit() else work.work_id,
         work.title,
-        work.date_label,
+        work.date_label or work.date,
         work.period,
         work.polity,
         work.macro_region,
@@ -3941,7 +4473,7 @@ def build_sheets(
     preamble_documents_scanned: int,
     generated_at: str,
     include_master_actions: bool,
-) -> list[SheetSpec]:
+) -> tuple[list[SheetSpec], list[MembershipAction], list[TitleAction]]:
     all_actions: list[MembershipAction] = []
     title_actions = plan_title_cleanup(works, normalizer, indexes, rules)
     category_counts: collections.Counter[str] = collections.Counter()
@@ -4108,11 +4640,12 @@ def build_sheets(
         and "mention" not in item.action.action
         and not any(token in item.action.action for token in ("compilation", "collection", "book_grouping", "serial_publication")),
     )
-    subset("Mention Promotions", lambda item: "mention" in item.action.action)
+    subset("Mention Promotions", lambda item: "mention" in item.action.action and item.action.confidence != "review")
+    subset("Person Mention Review", is_person_mention_review_action)
     subset("Conflicts Review", lambda item: "conflict" in item.action.action or item.action.action.endswith("_review"))
-    subset("People Review", lambda item: "person" in item.action.action or item.action.target_field.startswith("authors"))
-    subset("Date Review", lambda item: "date" in item.action.action)
-    subset("Period Polity Review", lambda item: any(token in item.action.action for token in ("period", "polity", "geograph")))
+    subset("People Review", is_people_review_action)
+    subset("Date Review", is_date_review_action)
+    subset("Period Polity Review", is_period_polity_review_action)
     subset("Source Periodisation", lambda item: "source_period" in item.action.action)
     subset("Compilation Review", lambda item: "compilation" in item.action.action and item.action.confidence == "review")
     subset("Collection Structure", lambda item: "collection_" in item.action.action or "collection hierarchy" in item.action.target_field)
@@ -4250,9 +4783,8 @@ def build_sheets(
                 int(row.get("title_parenthetical_matches", 0)),
                 int(row.get("authorial_compilation_matches", 0)),
                 int(row.get("preamble_role_matches", 0)),
+                int(row.get("preamble_author_matches", 0)),
                 clean_text(row.get("preamble_roles")),
-                int(row.get("body_mention_works", 0)),
-                float(row.get("body_mention_ratio", 0.0)),
                 int(row.get("cbdb_candidates", 0)),
                 int(row.get("cbdb_text_role_matches", 0)),
                 int(row.get("cbdb_author_matches", 0)),
@@ -4263,11 +4795,11 @@ def build_sheets(
     sheets.append(
         SheetSpec(
             "People Semantics",
-            ("Person category", "Works", "Works with authors", "Author matches", "Author ratio", "Other role matches", "Title-parenthesis signals", "Authorial-anthology signals", "Preamble role signals", "Preamble roles", "Body-mention works", "Body-mention ratio", "CBDB candidates", "CBDB text-role matches", "CBDB author matches", "CBDB roles", "Inferred category behaviour"),
+            ("Person category", "Works", "Works with authors", "Author matches", "Author ratio", "Other role matches", "Title-parenthesis signals", "Authorial-anthology signals", "Preamble role signals", "Preamble author signals", "Preamble roles", "CBDB candidates", "CBDB text-role matches", "CBDB author matches", "CBDB roles", "Inferred author behaviour"),
             people_rows,
             len(people_rows),
-            widths=(28, 12, 20, 16, 14, 20, 22, 24, 20, 30, 20, 18, 16, 22, 20, 30, 52),
-            wrap_columns=frozenset({0, 9, 15, 16}),
+            widths=(28, 12, 20, 16, 14, 20, 22, 24, 20, 22, 30, 16, 22, 20, 30, 52),
+            wrap_columns=frozenset({0, 10, 14, 15}),
         )
     )
 
@@ -4340,7 +4872,91 @@ def build_sheets(
     sheets.append(
         SheetSpec("Audit Issues", ("Metadata path", "Detail"), issue_rows, len(issue_rows), widths=(86, 100), wrap_columns=frozenset({0, 1}))
     )
-    return sheets
+    return sheets, all_actions, title_actions
+
+
+def action_plan_payload(action: Action) -> dict[str, str]:
+    return {
+        "action": action.action,
+        "target_field": action.target_field,
+        "proposed_value": action.proposed_value,
+        "confidence": action.confidence,
+        "existing_value": action.existing_value,
+        "evidence": action.evidence,
+        "note": action.note,
+    }
+
+
+def write_application_plan(
+    path: Path,
+    corpus_root: Path,
+    membership_actions: Sequence[MembershipAction],
+    title_actions: Sequence[TitleAction],
+    generated_at: str,
+) -> None:
+    """Write the exact planner decisions as a machine-readable, stale-safe JSONL plan.
+
+    The application stage must consume planner output, not re-infer category meaning.
+    Each work record therefore carries the SHA-256 of the metadata.json bytes that
+    were inspected. category_migration_apply.py refuses a changed file instead of
+    applying a decision to newer metadata.
+    """
+    grouped_memberships: dict[Path, list[MembershipAction]] = collections.defaultdict(list)
+    grouped_titles: dict[Path, list[TitleAction]] = collections.defaultdict(list)
+    work_by_path: dict[Path, Work] = {}
+    for item in membership_actions:
+        grouped_memberships[item.work.metadata_path].append(item)
+        work_by_path[item.work.metadata_path] = item.work
+    for item in title_actions:
+        grouped_titles[item.work.metadata_path].append(item)
+        work_by_path[item.work.metadata_path] = item.work
+
+    header = {
+        "record": "header",
+        "schema": "fanyahanwen.category_migration.application_plan",
+        "version": 1,
+        "generated_at": generated_at,
+        "corpus_root": str(corpus_root),
+        "works": len(work_by_path),
+        "membership_actions": len(membership_actions),
+        "title_actions": len(title_actions),
+        "safety": "PLAN ONLY; category_migration_apply.py verifies metadata SHA-256 before staging changes",
+    }
+
+    with path.open("w", encoding="utf-8-sig", newline="\n") as handle:
+        handle.write(json.dumps(header, ensure_ascii=False, separators=(",", ":")) + "\n")
+        for metadata_path in sorted(work_by_path, key=lambda value: value.as_posix()):
+            work = work_by_path[metadata_path]
+            absolute = corpus_root / metadata_path
+            digest = work.metadata_sha256 or hashlib.sha256(absolute.read_bytes()).hexdigest()
+            record = {
+                "record": "work",
+                "metadata_path": metadata_path.as_posix(),
+                "metadata_sha256": digest,
+                "work_id": work.work_id,
+                "title": work.title,
+                "membership_actions": [
+                    {
+                        "raw_category": item.raw_category,
+                        "canonical_category": item.canonical_category,
+                        "origin": item.origin,
+                        "body_occurrences": item.body_occurrences,
+                        "body_documents": item.body_documents,
+                        "action": action_plan_payload(item.action),
+                    }
+                    for item in grouped_memberships.get(metadata_path, ())
+                ],
+                "title_actions": [
+                    {
+                        "current_title": item.current_title,
+                        "proposed_title": item.proposed_title,
+                        "suffix": item.suffix,
+                        "action": action_plan_payload(item.action),
+                    }
+                    for item in grouped_titles.get(metadata_path, ())
+                ],
+            }
+            handle.write(json.dumps(record, ensure_ascii=False, separators=(",", ":")) + "\n")
 
 
 def main() -> int:
@@ -4350,6 +4966,7 @@ def main() -> int:
     corpus_root = args.corpus_root.expanduser().resolve()
     rules_path = args.rules.expanduser().resolve()
     output = args.output.expanduser().resolve()
+    application_plan = args.application_plan.expanduser().resolve() if args.application_plan else None
     traditional_map = args.traditional_map.expanduser().resolve() if args.traditional_map else None
 
     if not corpus_root.is_dir():
@@ -4363,6 +4980,9 @@ def main() -> int:
         return 2
     if output.suffix.lower() != ".xlsx":
         print("ERROR: --output must end in .xlsx", file=sys.stderr)
+        return 2
+    if application_plan is not None and not application_plan.parent.is_dir():
+        print(f"ERROR: application-plan directory does not exist: {application_plan.parent}", file=sys.stderr)
         return 2
 
     # Fail before an expensive corpus scan if the one shared calendar service
@@ -4401,15 +5021,18 @@ def main() -> int:
 
     print(f"Corpus root: {corpus_root}", file=sys.stderr)
     print(f"Traditionalization: {normalizer.backend_name}", file=sys.stderr)
-    works, issues = discover_works(corpus_root, args.limit)
+    works, issues, hierarchy_labels = discover_works(corpus_root, args.limit)
     print(f"Works: {len(works):,}", file=sys.stderr)
     # OpenCC CLI installations are much faster when the corpus strings are
     # converted in one batch. The Python binding ignores this call.
     normalizer.preload(traditionalization_prewarm_values(works))
 
     terms_path = script_dir / "category_audit_terms.json"
-    figure_names = figure_names_from_terms(terms_path, normalizer)
-    blocked_person_labels = person_inference_blocked_labels(works, normalizer, rules)
+    figure_aliases = figure_alias_groups_from_terms(terms_path, normalizer)
+    figure_names = set(figure_aliases) or figure_names_from_terms(terms_path, normalizer)
+    blocked_person_labels = person_inference_blocked_labels(
+        works, normalizer, rules, hierarchy_labels=hierarchy_labels
+    )
 
     cbdb_authority: CbdbAuthority | None = None
     cbdb_people: dict[str, tuple[CbdbPersonCandidate, ...]] = {}
@@ -4490,7 +5113,7 @@ def main() -> int:
         scanned_documents = 0
     else:
         evidence, body_issues, scanned_documents = scan_body_evidence(
-            corpus_root, works, normalizer, indexes, args.progress_every
+            corpus_root, works, normalizer, indexes, args.progress_every, figure_aliases
         )
         issues.extend(body_issues)
 
@@ -4500,7 +5123,6 @@ def main() -> int:
         indexes["people"],
         preamble_evidence,
         authorial_compilation_evidence,
-        evidence,
         cbdb_people,
         cbdb_role_evidence,
     )
@@ -4509,7 +5131,7 @@ def main() -> int:
     print(f"Document preambles scanned: {preamble_documents_scanned:,}", file=sys.stderr)
 
     generated_at = dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
-    sheets = build_sheets(
+    sheets, membership_actions, title_actions = build_sheets(
         works,
         normalizer,
         indexes,
@@ -4526,6 +5148,9 @@ def main() -> int:
     write_xlsx(output, sheets, generated_at)
     print(f"Wrote: {output}", file=sys.stderr)
     print(f"Sheets: {len(sheets):,}", file=sys.stderr)
+    if application_plan is not None:
+        write_application_plan(application_plan, corpus_root, membership_actions, title_actions, generated_at)
+        print(f"Application plan: {application_plan}", file=sys.stderr)
     if cbdb_authority is not None:
         cbdb_authority.close()
     return 0

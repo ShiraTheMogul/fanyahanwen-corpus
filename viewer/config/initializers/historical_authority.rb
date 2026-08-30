@@ -17,6 +17,7 @@ Rails.application.config.to_prepare do
   HistoricalDateResolver.prepend(CalendarEngineHistoricalDateResolver) unless HistoricalDateResolver < CalendarEngineHistoricalDateResolver
   CbdbAutoAnnotator.prepend(CbdbAutoAnnotatorStaticNames) unless CbdbAutoAnnotator < CbdbAutoAnnotatorStaticNames
   CbdbAutoAnnotator.prepend(CbdbAutoAnnotatorKindResolution) unless CbdbAutoAnnotator < CbdbAutoAnnotatorKindResolution
+  CbdbAutoAnnotator.prepend(CbdbAutoAnnotatorStability) unless CbdbAutoAnnotator < CbdbAutoAnnotatorStability
   EraCalendarConverter.prepend(EraCalendarStaticNames) unless EraCalendarConverter < EraCalendarStaticNames
   ToolsController.prepend(EraCalendarTools) unless ToolsController < EraCalendarTools
 end

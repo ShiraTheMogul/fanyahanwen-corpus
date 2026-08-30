@@ -128,6 +128,17 @@ class CalendarEngine
     }
   }.transform_values(&:freeze).freeze
 
+  # Explicit frame names accepted when a source category/title contains a full
+  # non-Gregorian date. Bare numeric dates keep their existing Gregorian
+  # interpretation; a non-Gregorian conversion is attempted only when the
+  # source names the frame, so migration never guesses a calendar.
+  CALENDAR_FRAME_ALIASES = {
+    "gregorian" => ["Gregorian", "Gregorian calendar", "格里曆", "格里历", "公曆", "公历"],
+    "julian" => ["Julian", "Julian calendar", "儒略曆", "儒略历"],
+    "hebrew" => ["Hebrew", "Hebrew calendar", "Jewish", "Jewish calendar", "希伯來曆", "希伯来历", "猶太曆", "犹太历"],
+    "islamic_tabular" => ["Hijri", "Hijri calendar", "Islamic", "Islamic calendar", "伊斯蘭曆", "伊斯兰历", "回曆", "回历"]
+  }.transform_values { |values| values.freeze }.freeze
+
   class << self
     def call(operation: :resolve, value: nil, **options)
       new.call(operation: operation, value: value, **options)
@@ -168,6 +179,8 @@ class CalendarEngine
         polity: options[:polity],
         period: options[:period]
       )
+    when "period_bounds"
+      period_bounds(value)
     when "lookup"
       lookup_nomenclature(value, context: options[:context] || {}) || {
         "resolved" => false,
@@ -183,6 +196,75 @@ class CalendarEngine
   end
 
   private
+
+  def period_bounds(value)
+    labels = value.is_a?(Array) ? value : [value]
+    labels = labels.map { |item| item.to_s.strip }.reject(&:empty?)
+    raise ArgumentError, "Enter a period or corpus-path label." if labels.empty?
+    unless defined?(CbdbAutoAnnotatorStaticNames::PERIOD_RANGES)
+      raise ArgumentError, "Historical period ranges are unavailable."
+    end
+
+    context = nil
+    matched = []
+    labels.each do |label|
+      range = period_range_for_label(label)
+      next unless range
+
+      if context
+        start_year = [context.fetch(:start), range.fetch(:start)].max
+        end_year = [context.fetch(:end), range.fetch(:end)].min
+        # A child folder can be homonymous with a later dynasty (for example
+        # 戰國時代/宋). Such a range cannot replace the chronology already
+        # established by its parents, so ignore that interpretation.
+        next if start_year > end_year
+        context = { start: start_year, end: end_year }
+      else
+        context = { start: range.fetch(:start), end: range.fetch(:end) }
+      end
+      matched << label
+    end
+
+    return {
+      "resolved" => false,
+      "operation" => "period_bounds",
+      "kind" => "period_bounds",
+      "original" => value,
+      "error" => "No established historical period range matched."
+    } unless context
+
+    {
+      "resolved" => true,
+      "operation" => "period_bounds",
+      "kind" => "period_bounds",
+      "original" => value,
+      "year_start" => context.fetch(:start),
+      "year_end" => context.fetch(:end),
+      "labels" => matched,
+      "source" => "CbdbAutoAnnotatorStaticNames::PERIOD_RANGES"
+    }
+  end
+
+  def period_range_for_label(value)
+    forms = normalized_period_forms(value)
+    CbdbAutoAnnotatorStaticNames::PERIOD_RANGES.each do |labels, start_year, end_year|
+      next unless Array(labels).any? { |label| forms.include?(label.to_s) }
+      return { start: Integer(start_year), end: Integer(end_year) }
+    end
+    nil
+  end
+
+  def normalized_period_forms(value)
+    raw = value.to_s.strip
+    return [] if raw.empty?
+
+    output = [raw]
+    output << raw.sub(/朝\z/, "") if raw.end_with?("朝")
+    output << raw.each_char.drop(1).join if raw.start_with?("大") && raw.each_char.count > 1
+    stripped = raw.sub(/\A大/, "").sub(/朝\z/, "")
+    output << stripped unless stripped.empty?
+    output.uniq
+  end
 
   def systems
     {
@@ -205,6 +287,9 @@ class CalendarEngine
 
     named = resolve_named_year(raw, requested_system)
     return named if named
+
+    framed = resolve_explicit_calendar_frame_date(raw)
+    return framed if framed
 
     absolute = resolve_absolute_date(raw)
     return absolute if absolute
@@ -406,6 +491,106 @@ class CalendarEngine
     nil
   end
 
+
+  def resolve_explicit_calendar_frame_date(raw)
+    parsed = explicit_calendar_frame_date(raw)
+    return nil unless parsed
+
+    frame_key = parsed.fetch(:frame)
+    fields = parsed.fetch(:fields)
+    source_definition = CALENDAR_FRAMES.fetch(frame_key)
+
+    if frame_key == "gregorian"
+      raise ArgumentError, "Invalid Gregorian date." unless valid_calendar_fields?(*fields, frame: "gregorian")
+      result_year, result_month, result_day = fields
+      backend = "calendar_engine"
+    else
+      converted = convert(
+        numeric_calendar_date(*fields),
+        from: frame_key,
+        to: "gregorian",
+        leap: false
+      )
+      result = converted.fetch("result")
+      result_year = Integer(result.fetch("year"))
+      result_month = Integer(result.fetch("month"))
+      result_day = Integer(result.fetch("day"))
+      backend = converted.fetch("backend")
+    end
+
+    {
+      "resolved" => true,
+      "ambiguous" => false,
+      "operation" => "resolve",
+      "kind" => "date",
+      "original" => raw,
+      "source_system" => frame_key,
+      "source_label" => source_definition.fetch("label"),
+      "calendar_frame" => frame_key,
+      "source_date" => {
+        "year" => fields[0],
+        "month" => fields[1],
+        "day" => fields[2]
+      },
+      "year" => result_year,
+      "month" => result_month,
+      "day" => result_day,
+      "precision" => "day",
+      "confidence" => "exact",
+      "backend" => backend,
+      "candidates" => []
+    }
+  end
+
+  def explicit_calendar_frame_date(raw)
+    CALENDAR_FRAME_ALIASES.each do |frame_key, aliases|
+      aliases.sort_by { |value| -value.length }.each do |alias_name|
+        escaped = Regexp.escape(alias_name)
+        prefix = raw.match(/\A#{escaped}\s*(?:[:：]\s*)?(.+)\z/i)
+        if prefix && (fields = parse_calendar_coordinate_date(prefix[1]))
+          return { frame: frame_key, fields: fields }
+        end
+
+        parenthesized_suffix = raw.match(/\A(.+?)\s*[（(]\s*#{escaped}\s*[)）]\z/i)
+        if parenthesized_suffix && (fields = parse_calendar_coordinate_date(parenthesized_suffix[1]))
+          return { frame: frame_key, fields: fields }
+        end
+
+        bare_suffix = raw.match(/\A(.+?)\s*#{escaped}\z/i)
+        if bare_suffix && (fields = parse_calendar_coordinate_date(bare_suffix[1]))
+          return { frame: frame_key, fields: fields }
+        end
+      end
+    end
+    nil
+  end
+
+  def parse_calendar_coordinate_date(value)
+    raw = value.to_s.strip
+    if (numeric = raw.match(/\A(-?\d{1,6})[-\/]([0-9]{1,2})[-\/]([0-9]{1,2})\z/))
+      year = Integer(numeric[1], 10)
+      raise ArgumentError, "There is no historical year zero." if year.zero?
+      month = Integer(numeric[2], 10)
+      day = Integer(numeric[3], 10)
+      return [year, month, day] if month.positive? && day.positive?
+      return nil
+    end
+
+    written = raw.match(/\A(#{NUMBER_CAPTURE})\s*年\s*(#{NUMBER_CAPTURE})\s*月\s*(#{NUMBER_CAPTURE})\s*日\z/)
+    return nil unless written
+
+    year = parse_number(written[1])
+    month = parse_number(written[2])
+    day = parse_number(written[3])
+    return nil unless year&.positive? && month&.positive? && day&.positive?
+
+    [year, month, day]
+  end
+
+  def numeric_calendar_date(year, month, day)
+    "#{year}-#{format('%02d', month)}-#{format('%02d', day)}"
+  end
+
   def resolve_absolute_date(raw)
     if (match = raw.match(/\A([+-]?\d{4,})-(\d{2})-(\d{2})(?:T.*)?\z/))
       year = Integer(match[1], 10)
@@ -591,12 +776,21 @@ class CalendarEngine
     require "when_exe"
     source_definition = CALENDAR_FRAMES.fetch(from_key)
     target_definition = CALENDAR_FRAMES.fetch(to_key)
+    backend_fields = fields.dup
+    if %w[gregorian julian].include?(from_key)
+      backend_fields[0] = astronomical_year(fields[0])
+    end
     begin
-      source = When.tm_pos(*fields, frame: source_definition.fetch("when_frame"))
+      source = When.tm_pos(*backend_fields, frame: source_definition.fetch("when_frame"))
       converted = When.Calendar(target_definition.fetch("when_frame")) ^ source
       coordinates = converted.cal_date
     rescue StandardError => e
       raise ArgumentError, "Invalid #{source_definition.fetch('label')} date: #{e.message}"
+    end
+
+    converted_year = coordinate_value(coordinates[0])
+    if %w[gregorian julian].include?(to_key) && converted_year.is_a?(Integer)
+      converted_year = historical_year(converted_year)
     end
 
     {
@@ -608,7 +802,7 @@ class CalendarEngine
       "to" => to_key,
       "backend" => "when_exe",
       "result" => {
-        "year" => coordinate_value(coordinates[0]),
+        "year" => converted_year,
         "month" => coordinate_value(coordinates[1]),
         "day" => coordinate_value(coordinates[2]),
         "display" => converted.to_s,

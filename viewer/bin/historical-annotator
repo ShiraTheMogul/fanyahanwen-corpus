@@ -1,0 +1,73 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "json"
+require_relative "../config/environment"
+
+# Process boundary for corpus-maintenance tools that need the existing named-
+# entity annotator. Domain decisions stay in CbdbAutoAnnotator; this executable
+# only transports JSON and filters the result to caller-requested surface forms.
+def historical_annotator_dispatch(payload)
+  data = payload.is_a?(Hash) ? payload : {}
+  text = data["text"].to_s
+  metadata = data["metadata"].is_a?(Hash) ? data["metadata"] : {}
+  wanted = data["wanted"].is_a?(Hash) ? data["wanted"] : {}
+
+  result = CbdbAutoAnnotator.call(text: text, metadata: metadata)
+  surface_owners = Hash.new { |hash, key| hash[key] = [] }
+  wanted.each do |canonical, surfaces|
+    Array(surfaces).each do |surface|
+      value = surface.to_s
+      surface_owners[value] << canonical.to_s unless value.empty?
+    end
+  end
+
+  matches = Hash.new { |hash, key| hash[key] = [] }
+  result.items.each do |item|
+    next unless item["kind"].to_s == "person"
+
+    surface_owners[item["text"].to_s].each do |canonical|
+      matches[canonical] << item
+    end
+  end
+
+  authority = result.authority.to_h
+  authority_available = authority["historical_available"] == true || authority["cbdb_lookup_names"].to_i.positive?
+  {
+    "resolved" => true,
+    "authority_available" => authority_available,
+    "matches" => matches,
+    "context" => result.context,
+    "authority" => authority
+  }
+rescue StandardError => e
+  {
+    "resolved" => false,
+    "error" => "#{e.class}: #{e.message}"
+  }
+end
+
+if ARGV.include?("--stream")
+  STDIN.each_line do |line|
+    next if line.strip.empty?
+
+    begin
+      payload = JSON.parse(line)
+      response = historical_annotator_dispatch(payload)
+    rescue JSON::ParserError => e
+      response = { "resolved" => false, "error" => "JSON::ParserError: #{e.message}" }
+    end
+    STDOUT.puts(JSON.generate(response))
+    STDOUT.flush
+  end
+else
+  input = STDIN.read
+  payload = input.strip.empty? ? {} : JSON.parse(input)
+  response = if payload.is_a?(Array)
+    payload.map { |entry| historical_annotator_dispatch(entry) }
+  else
+    historical_annotator_dispatch(payload)
+  end
+  STDOUT.write(JSON.generate(response))
+  STDOUT.write("\n")
+end

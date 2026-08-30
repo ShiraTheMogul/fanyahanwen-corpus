@@ -59,7 +59,7 @@ class CalendarEngineTest < ActiveSupport::TestCase
     assert shang["resolved"]
     assert_equal 47, shang["cycle_number"]
     assert_equal "day", shang["cycle_scope"]
-    assert_equal "合集37986", shang.dig("source", "label")
+    assert_equal "《甲骨文合集》37986", shang.dig("source", "label")
     assert_nil shang["year"]
   end
 
@@ -119,6 +119,89 @@ class CalendarEngineTest < ActiveSupport::TestCase
     end
   end
 
+  test "resolves explicitly labelled calendar-frame dates for migration consumers" do
+    julian = CalendarEngine.call(operation: :resolve, value: "儒略曆1900年2月29日")
+    assert julian["resolved"], julian["error"]
+    assert_equal "julian", julian["source_system"]
+    assert_equal [1900, 2, 29], %w[year month day].map { |key| julian.dig("source_date", key) }
+    assert_equal [1900, 3, 13], %w[year month day].map { |key| julian[key] }
+
+    julian_prefix = CalendarEngine.call(operation: :resolve_prefix, value: "儒略曆1900年2月29日刊")
+    assert julian_prefix["resolved"], julian_prefix["error"]
+    assert_equal "儒略曆1900年2月29日", julian_prefix["consumed"]
+    assert_equal "刊", julian_prefix["rest"]
+    assert_equal [1900, 3, 13], %w[year month day].map { |key| julian_prefix[key] }
+
+    expected_hebrew = CalendarEngine.call(
+      operation: :convert,
+      value: "5786-01-01",
+      from: "hebrew",
+      to: "gregorian"
+    )
+    hebrew = CalendarEngine.call(operation: :resolve, value: "5786-01-01 (Hebrew)")
+    assert hebrew["resolved"], hebrew["error"]
+    assert_equal "hebrew", hebrew["source_system"]
+    assert_equal(
+      %w[year month day].map { |key| expected_hebrew.dig("result", key) },
+      %w[year month day].map { |key| hebrew[key] }
+    )
+  end
+
+  test "does not guess a non-Gregorian frame for an unlabelled numeric date" do
+    plain = CalendarEngine.call(operation: :resolve, value: "1900-02-28")
+    assert plain["resolved"]
+    assert_equal "iso8601", plain["source_system"]
+    assert_equal [1900, 2, 28], %w[year month day].map { |key| plain[key] }
+  end
+
+  test "keeps authority-backed regnal resolution behind resolve for migration callers" do
+    resolution = HistoricalDateResolver::Resolution.new(
+      year_start: 1664,
+      year_end: 1664,
+      date_label: "康熙三年",
+      source: "historical_authority",
+      authority_kind: "era",
+      authority_id: "test-kangxi",
+      authority_name: "康熙",
+      country: "China",
+      confidence: "high",
+      candidates: []
+    )
+
+    HistoricalDateResolver.stub(:resolve, resolution) do
+      result = CalendarEngine.call(
+        operation: :resolve,
+        value: "康熙三年",
+        authority: true,
+        context: { period: "清", polity: "大清" }
+      )
+      assert result["resolved"]
+      assert_equal 1664, result["year"]
+      assert_equal "historical_authority", result["source_system"]
+      assert_equal "era", result["authority_kind"]
+      assert_equal "康熙", result["source_label"]
+    end
+  end
+
+  test "exposes established period bounds for migration safety without duplicating them in Python" do
+    tang = CalendarEngine.call(operation: :period_bounds, value: "唐朝")
+    assert tang["resolved"]
+    assert_equal [618, 907], [tang["year_start"], tang["year_end"]]
+    assert_equal ["唐朝"], tang["labels"]
+
+    # 宋 below 戰國時代 is the ancient polity folder, not the later dynasty.
+    # The path intersection keeps the chronology already established by its
+    # parents and ignores the impossible homonymous interpretation.
+    warring_states_song = CalendarEngine.call(
+      operation: :period_bounds,
+      value: ["周朝", "東周", "戰國時代", "宋"]
+    )
+    assert warring_states_song["resolved"]
+    assert_equal [-475, -256], [warring_states_song["year_start"], warring_states_song["year_end"]]
+    assert_equal ["周朝", "東周", "戰國時代"], warring_states_song["labels"]
+    assert_equal "CbdbAutoAnnotatorStaticNames::PERIOD_RANGES", warring_states_song["source"]
+  end
+
   test "uses when_exe for calendar-frame conversion" do
     result = CalendarEngine.call(operation: :convert, value: "2026-08-28", from: "gregorian", to: "julian")
     assert result["resolved"], result["error"]
@@ -132,5 +215,18 @@ class CalendarEngineTest < ActiveSupport::TestCase
     julian_leap = CalendarEngine.call(operation: :convert, value: "1900-02-29", from: "julian", to: "gregorian")
     assert julian_leap["resolved"], julian_leap["error"]
     assert_equal [1900, 3, 13], %w[year month day].map { |key| julian_leap.dig("result", key) }
+
+    # CalendarEngine exposes historical numbering (-1 = 1 BCE) while the
+    # backend uses astronomical numbering (0 = 1 BCE). Verify that conversion
+    # does not leak a year zero across that process boundary.
+    bce = CalendarEngine.call(operation: :convert, value: "-1-03-15", from: "julian", to: "gregorian")
+    assert bce["resolved"], bce["error"]
+    refute_equal 0, bce.dig("result", "year")
+
+    julian_jd = Date.new(0, 3, 15, Date::JULIAN).jd
+    gregorian = Date.jd(julian_jd, Date::GREGORIAN)
+    expected_year = gregorian.year <= 0 ? gregorian.year - 1 : gregorian.year
+    assert_equal [expected_year, gregorian.month, gregorian.day],
+      %w[year month day].map { |key| bce.dig("result", key) }
   end
 end

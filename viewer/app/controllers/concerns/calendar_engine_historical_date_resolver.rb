@@ -25,7 +25,7 @@ module CalendarEngineHistoricalDateResolver
       year_end: year,
       date_label: text,
       source: "calendar_engine:#{calendar['source_system']}",
-      authority_kind: calendar["source_system"].to_s.in?(%w[gregorian iso8601 ce bce]) ? nil : "calendar_era",
+      authority_kind: calendar["source_system"].to_s.in?(%w[gregorian julian hebrew islamic_tabular iso8601 ce bce]) ? nil : "calendar_era",
       authority_id: calendar["source_system"],
       authority_name: calendar["source_label"],
       country: calendar["country"] || send(:context_country, data),
