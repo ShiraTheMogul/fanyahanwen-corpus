@@ -1464,6 +1464,31 @@ def title_parenthetical_tokens(title: str, normalizer: Traditionalizer) -> set[s
     return tokens
 
 
+def title_parenthetical_person_roles(
+    title: str, normalizer: Traditionalizer
+) -> dict[str, tuple[str, ...]]:
+    """Return explicit person roles encoded by trailing title parentheses.
+
+    A suffix such as ``（實叉難陀譯）`` is direct local evidence that
+    實叉難陀 is the translator of this work.  Keep that role separate from
+    plain parenthetical personal names, which may be source-added authorship
+    disambiguators.  This prevents corpus-wide author-grouping statistics from
+    overriding an explicit local intellectual role.
+    """
+    _base, suffixes = split_trailing_parentheticals(title)
+    roles: dict[str, list[str]] = collections.defaultdict(list)
+    for value in suffixes:
+        canonical = normalize_name(normalizer, value)
+        match = split_contributor_role_suffix(canonical)
+        if match is None:
+            continue
+        name, role = match
+        person = normalize_name(normalizer, name)
+        if role not in roles[person]:
+            roles[person].append(role)
+    return {person: tuple(values) for person, values in roles.items()}
+
+
 def leading_date_in_suffix(value: str, context: dict[str, object] | None = None) -> tuple[DateCategory, str] | None:
     """Ask CalendarEngine to split a deterministic/authority-backed leading date."""
     try:
@@ -2133,19 +2158,29 @@ def person_semantics(
     """
     stats: dict[str, dict[str, int]] = collections.defaultdict(lambda: collections.Counter())
     preamble_roles: dict[str, collections.Counter[str]] = collections.defaultdict(collections.Counter)
+    title_roles: dict[str, collections.Counter[str]] = collections.defaultdict(collections.Counter)
     cbdb_roles: dict[str, collections.Counter[str]] = collections.defaultdict(collections.Counter)
     for work in works:
         authors = {normalize_name(normalizer, value) for value in work.authors + work.document_authors}
         other_roles = {normalize_name(normalizer, value) for value in work.editors + work.contributors}
         has_authors = bool(authors)
         title_tokens = title_parenthetical_tokens(work.title, normalizer)
+        title_person_roles = title_parenthetical_person_roles(work.title, normalizer)
         for raw, _origin in unique_memberships(work):
             canonical, _ = canonical_label(normalizer, raw)
             if canonical not in people:
                 continue
             row = stats[canonical]
             row["works"] += 1
-            if canonical in title_tokens:
+            explicit_title_roles = title_person_roles.get(canonical, ())
+            if explicit_title_roles:
+                row["title_role_matches"] += 1
+                title_roles[canonical].update(explicit_title_roles)
+                if "author" in explicit_title_roles:
+                    row["title_author_role_matches"] += 1
+                if any(role != "author" for role in explicit_title_roles):
+                    row["title_non_author_role_matches"] += 1
+            elif canonical in title_tokens:
                 row["title_parenthetical_matches"] += 1
             if (authorial_compilation_evidence or {}).get((work.metadata_path, canonical)):
                 row["authorial_compilation_matches"] += 1
@@ -2177,6 +2212,7 @@ def person_semantics(
         author_signal = any((
             int(row.get("author_matches", 0)) > 0,
             int(row.get("title_parenthetical_matches", 0)) > 0,
+            int(row.get("title_author_role_matches", 0)) > 0,
             int(row.get("authorial_compilation_matches", 0)) > 0,
             int(row.get("preamble_author_matches", 0)) > 0,
             int(row.get("cbdb_author_matches", 0)) > 0,
@@ -2189,6 +2225,9 @@ def person_semantics(
         role_summary = ", ".join(
             f"{role}={count}" for role, count in preamble_roles.get(person, collections.Counter()).most_common()
         )
+        title_role_summary = ", ".join(
+            f"{role}={count}" for role, count in title_roles.get(person, collections.Counter()).most_common()
+        )
         cbdb_role_summary = ", ".join(
             f"{role}={count}" for role, count in cbdb_roles.get(person, collections.Counter()).most_common()
         )
@@ -2200,6 +2239,8 @@ def person_semantics(
 
         if int(row.get("preamble_author_matches", 0)) > 0:
             semantic = "explicit author role in source-added document preamble"
+        elif int(row.get("title_author_role_matches", 0)) > 0:
+            semantic = "explicit author role in source-added title suffix"
         elif cbdb_direct_author > 0 and cbdb_non_author_roles == 0:
             semantic = "CBDB-verified author grouping"
         elif cbdb_direct_author > 0:
@@ -2214,6 +2255,7 @@ def person_semantics(
             **row,
             "author_ratio": ratio,
             "preamble_roles": role_summary,
+            "title_roles": title_role_summary,
             "cbdb_candidates": cbdb_candidate_count,
             "cbdb_roles": cbdb_role_summary,
             "semantic": semantic,
@@ -2233,6 +2275,34 @@ def existing_containment_ids(work: Work) -> set[str]:
         if value:
             result.add(value)
     return result
+
+
+def existing_containment_has(
+    work: Work,
+    work_id: str,
+    *,
+    volume: str = "",
+    edition: str = "",
+    issue: str = "",
+) -> bool:
+    """Return whether contained_in already preserves the requested qualifiers.
+
+    A parent work_id alone is not enough for a source category such as
+    ``全唐文/卷0649``.  If the category also carries volume, edition, or issue
+    information, the planner must keep a promotion action until those details
+    have been copied into the structured containment row.
+    """
+    expected = {
+        "volume": clean_text(volume),
+        "edition": clean_text(edition),
+        "issue": clean_text(issue),
+    }
+    for row in work.contained_in:
+        if clean_text(row.get("work_id")) != clean_text(work_id):
+            continue
+        if all(not value or clean_text(row.get(key)) == value for key, value in expected.items()):
+            return True
+    return False
 
 
 def category_rule_match(label: str, rows: Sequence[dict]) -> dict | None:
@@ -3151,6 +3221,23 @@ def classify_membership(
     if shijing_action is not None:
         return [shijing_action]
 
+    # Controlled taxonomy is authoritative before title/compilation coincidence.
+    # Labels such as 甲骨文 and 金文 can also be corpus work titles, but that does
+    # not turn every use of the category into contained_in membership.  A
+    # configured taxonomy node remains taxonomy unless a more specific source
+    # path (for example a compilation/volume category) explicitly encodes
+    # containment.
+    if canonical in controlled_taxonomy and canonical == strip_namespace(raw):
+        return [Action(
+            "keep_controlled_taxonomy",
+            "categories",
+            canonical,
+            "safe",
+            canonical,
+            "configured controlled taxonomy / ontology node",
+            "This is a meaningful browse/search category. Keep the leaf category; parent relationships are inherited through the taxonomy graph.",
+        )]
+
     parts = compilation_parts(canonical)
     if parts is not None:
         base, edition, volume = parts
@@ -3159,21 +3246,27 @@ def classify_membership(
         compilations = [candidate for candidate in matches if candidate.is_compilation]
         if len(compilations) == 1:
             parent = compilations[0]
-            proposal = f"work_id={parent.work_id}; title={parent.title}; volume=卷{volume}"
+            volume_label = f"卷{volume}"
+            proposal = f"work_id={parent.work_id}; title={parent.title}; volume={volume_label}"
             if edition:
                 proposal += f"; edition={edition}"
-            if parent.work_id in existing_containment_ids(work):
+            if existing_containment_has(work, parent.work_id, volume=volume_label, edition=edition):
                 return [
                     Action(
                         "remove_compilation_path_redundant",
                         "contained_in",
                         proposal,
                         "safe",
-                        "contained_in already links this compilation",
-                        "category path resolves to existing compilation membership",
-                        "The path-like category duplicates structured compilation membership.",
+                        "contained_in already preserves this compilation path",
+                        "category path resolves to existing compilation membership with matching qualifiers",
+                        "The path-like category duplicates structured compilation membership, including its volume/edition detail.",
                     )
                 ]
+            existing_note = (
+                "existing parent link needs volume/edition enrichment"
+                if parent.work_id in existing_containment_ids(work)
+                else "category path resolves to one compilation work"
+            )
             return [
                 Action(
                     "promote_compilation_membership",
@@ -3181,7 +3274,7 @@ def classify_membership(
                     proposal,
                     "high",
                     "",
-                    "category path resolves to one compilation work",
+                    existing_note,
                     "Preserve the volume and edition information in structured compilation membership.",
                 )
             ]
@@ -3190,10 +3283,10 @@ def classify_membership(
                 "promote_compilation_membership_unresolved_parent",
                 "contained_in / compilation system",
                 f"title={base}; volume=卷{volume}" + (f"; edition={edition}" if edition else ""),
-                "high",
+                "review",
                 "",
                 f"explicit compilation/volume path; title matches: {len(matches)}; marked compilations: {len(compilations)}",
-                "The membership and volume/edition evidence are explicit in the source category. Resolve or create the parent compilation once at the compilation level; individual member rows do not need separate semantic review.",
+                "The membership and volume/edition evidence are explicit, but contained_in requires one resolved parent work_id. Resolve or create the parent compilation once, then regenerate the plan.",
             )
         ]
 
@@ -3266,10 +3359,10 @@ def classify_membership(
                     "promote_compilation_membership_unresolved_parent",
                     "is_compilation / contained_in",
                     canonical,
-                    "high",
+                    "review",
                     "",
                     f"configured compilation label; corpus title matches: {len(known_matches)}; marked compilations: 0",
-                    "Membership evidence is strong. Resolve which matching title is the parent and mark the parent as a compilation if appropriate; do this once per compilation, not once per member.",
+                    "Membership evidence is strong, but there is no resolved compilation work_id to write. Resolve the parent and mark it as a compilation if appropriate, then regenerate the plan.",
                 )
             ]
         if not known_matches:
@@ -3278,10 +3371,10 @@ def classify_membership(
                     "promote_compilation_membership_missing_parent",
                     "compilation system / contained_in",
                     canonical,
-                    "high",
+                    "review",
                     "",
                     "configured compilation title has no corpus title match",
-                    "The source membership is explicit. Add or resolve the parent compilation record once, then attach these members through contained_in.",
+                    "The source membership is explicit, but contained_in cannot be written without a parent work_id. Add or resolve the parent compilation record once, then regenerate the plan.",
                 )
             ]
 
@@ -3322,10 +3415,10 @@ def classify_membership(
             "promote_book_grouping_membership",
             "book grouping system",
             canonical,
-            "high",
+            "review",
             "",
             "configured/validated collective book-grouping label",
-            "Treat exact membership in a configured book grouping as structured grouping evidence. Do not retain the grouping name as ordinary subject taxonomy.",
+            "This is valid grouping evidence, but the repository does not yet expose a deterministic book-grouping metadata writer. Keep it in the review queue until that schema is resolved.",
         )]
 
     serial_parts = serial_publication_parts(canonical, rules)
@@ -3338,14 +3431,19 @@ def classify_membership(
         if len(compilations) == 1:
             parent = compilations[0]
             proposal = f"work_id={parent.work_id}; title={parent.title}" + (f"; issue={issue}" if issue else "")
+        resolved_parent = len(compilations) == 1
         return [Action(
             "promote_serial_publication_membership",
             "contained_in / publication system",
             proposal,
-            "high",
+            "high" if resolved_parent else "review",
             "",
             "source category names a serial/publication title" + (" and issue" if issue else ""),
-            "Preserve source-publication membership structurally. A parent publication record may need to be created or marked as a compilation/serial once; the source category itself should not remain subject taxonomy.",
+            (
+                "The publication resolves to one parent work, so preserve source-publication membership in contained_in and remove the source category."
+                if resolved_parent
+                else "The source-publication evidence is explicit, but contained_in requires one resolved parent work_id. Resolve or create the publication record, then regenerate the plan."
+            ),
         )]
 
     if likely_compilation_title(canonical, rules):
@@ -3404,6 +3502,41 @@ def classify_membership(
                     "The person's role is already structured.",
                 )
             ]
+        local_title_roles = title_parenthetical_person_roles(work.title, normalizer).get(canonical, ())
+        if local_title_roles:
+            role_set = set(local_title_roles)
+            if len(role_set) == 1:
+                role = next(iter(role_set))
+                if role == "author" and authors and canonical not in authors:
+                    return [Action(
+                        "title_author_role_conflict_review",
+                        "authors",
+                        canonical,
+                        "review",
+                        " | ".join(work.authors + work.document_authors),
+                        f"trailing title suffix explicitly marks {canonical} as author",
+                        "The local title credit conflicts with existing structured authorship. Review the witness/title identity before changing metadata.",
+                    )]
+                target = "authors" if role == "author" else "contributors"
+                proposed = canonical if role == "author" else f"{canonical}; role={role}"
+                return [Action(
+                    "promote_author_candidate" if role == "author" else "promote_contributor_role_candidate",
+                    target,
+                    proposed,
+                    "high",
+                    " | ".join(work.authors + work.editors + work.contributors),
+                    f"trailing title suffix explicitly marks {canonical} as {role}",
+                    "Explicit local contributor-role evidence takes precedence over corpus-wide person-category behaviour. Remove the personal-name category after structuring this credit.",
+                )]
+            return [Action(
+                "title_person_role_conflict_review",
+                "authors / contributors",
+                canonical,
+                "review",
+                " | ".join(work.authors + work.editors + work.contributors),
+                "trailing title suffixes encode multiple intellectual roles: " + ", ".join(sorted(role_set)),
+                "Preserve each attested intellectual role explicitly; do not collapse the person into authorship from global category statistics.",
+            )]
         cbdb_direct = (indexes.get("cbdb_role_evidence") or {}).get((work.metadata_path, canonical), ())
         if cbdb_direct:
             role_set = {item.role for item in cbdb_direct if item.role}
@@ -3494,6 +3627,7 @@ def classify_membership(
                 >= int(rules.get("person_parenthetical_author_min_matches", 2))
                 or int(stats.get("authorial_compilation_matches", 0)) > 0
                 or int(stats.get("preamble_author_matches", 0)) > 0
+                or int(stats.get("title_author_role_matches", 0)) > 0
                 or (
                     int(stats.get("cbdb_author_matches", 0)) > 0
                     and not any(
@@ -3512,8 +3646,9 @@ def classify_membership(
                         "",
                         (
                             f"person category behaves like an author grouping; structured-author ratio "
-                            f"{float(stats.get('author_ratio', 0.0)):.1%}, title-parenthesis signals "
-                            f"{int(stats.get('title_parenthetical_matches', 0))}, preamble author signals "
+                            f"{float(stats.get('author_ratio', 0.0)):.1%}, plain title-parenthesis signals "
+                            f"{int(stats.get('title_parenthetical_matches', 0))}, explicit title author-role signals "
+                            f"{int(stats.get('title_author_role_matches', 0))}, preamble author signals "
                             f"{int(stats.get('preamble_author_matches', 0))}, CBDB direct author-title signals "
                             f"{int(stats.get('cbdb_author_matches', 0))}"
                         ),
@@ -4124,17 +4259,6 @@ def classify_membership(
             canonical,
             clean_text(taxonomy_pattern.get("name")) or "configured taxonomy pattern",
             clean_text(taxonomy_pattern.get("note")) or "This is a meaningful patterned browse/search category.",
-        )]
-
-    if canonical in controlled_taxonomy and canonical == strip_namespace(raw):
-        return [Action(
-            "keep_controlled_taxonomy",
-            "categories",
-            canonical,
-            "safe",
-            canonical,
-            "configured controlled taxonomy / ontology node",
-            "This is a meaningful browse/search category. Keep the leaf category; parent relationships are inherited through the taxonomy graph.",
         )]
 
     path_text = work.metadata_path.as_posix()

@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 127426,
   "corpus_root": "四庫全書",
@@ -53,6 +53,16 @@
           ],
           "digital_transcription_id": "kanripo:KR1a0141:master@ad210f8ff3474eb3e730e4c62c73f38791cdc26f",
           "document_id": 206861
+        },
+        {
+          "file": "周易劄記 (楊名時, 四庫全書本)__juan_003.txt",
+          "path": "四庫全書/clean/經部/易類/周易劄記 (楊名時, 四庫全書本)/周易劄記 (楊名時, 四庫全書本)__juan_003.txt",
+          "page_title": "周易劄記 (楊名時, 四庫全書本)/卷三",
+          "chapter": "卷三",
+          "sources": [
+            "https://github.com/kanripo/KR1a0105"
+          ],
+          "digital_transcription_id": "kanripo:KR1a0105:master@e60c21cd5da30de4668e6df2746e8137e3d195f4"
         }
       ]
     }
@@ -72,6 +82,23 @@
           "revision": "ad210f8ff3474eb3e730e4c62c73f38791cdc26f",
           "retrieved_at": "2026-08-12T00:16:45+00:00",
           "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    },
+    {
+      "witness_id": "kanripo:KR1a0105:witness:legacy-inline",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "UNSPECIFIED",
+      "evidence": "legacy Kanripo inline header",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR1a0105:master@e60c21cd5da30de4668e6df2746e8137e3d195f4",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR1a0105",
+          "branch": "master",
+          "revision": "e60c21cd5da30de4668e6df2746e8137e3d195f4",
+          "license": "CC BY-SA (Kanseki Repository; upstream version unspecified)",
           "preferred": true
         }
       ]

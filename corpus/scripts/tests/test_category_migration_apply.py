@@ -188,13 +188,103 @@ class CategoryMigrationApplyTest(unittest.TestCase):
             self.assertEqual(1, report["counts"]["membership_review"])
             self.assertFalse((staged / rel).exists())
 
-    def test_unknown_high_action_is_deferred_and_left_untouched(self):
+    def test_resolved_compilation_membership_is_applied(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            rel, _target, raw = self.fixture(root, {"source_categories": ["全唐文"]})
+            rel, _target, raw = self.fixture(root, {"source_categories": ["全唐文/卷0649"]})
             plan = root / "plan.jsonl"
             self.write_plan(plan, rel.as_posix(), raw, [
-                self.membership("全唐文", "全唐文", "source", self.action("promote_compilation_membership", "contained_in", "work_id=1; title=全唐文"))
+                self.membership(
+                    "全唐文/卷0649",
+                    "全唐文/卷0649",
+                    "source",
+                    self.action(
+                        "promote_compilation_membership",
+                        "contained_in",
+                        "work_id=parent-1; title=全唐文; volume=卷0649",
+                    ),
+                )
+            ])
+            staged, report, changed, errors = self.run_stage(root, plan)
+            self.assertEqual([], errors)
+            self.assertEqual([rel], changed)
+            result = self.load_staged(staged, rel)
+            self.assertEqual(
+                [{"work_id": "parent-1", "title": "全唐文", "volume": "卷0649"}],
+                result["contained_in"],
+            )
+            self.assertNotIn("source_categories", result)
+            self.assertEqual(0, report["deferred_high_actions"])
+
+    def test_resolved_compilation_membership_enriches_existing_parent_row(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            metadata = {
+                "source_categories": ["全唐文/卷0649"],
+                "contained_in": [{"work_id": "parent-1", "title": "全唐文"}],
+            }
+            rel, _target, raw = self.fixture(root, metadata)
+            plan = root / "plan.jsonl"
+            self.write_plan(plan, rel.as_posix(), raw, [
+                self.membership(
+                    "全唐文/卷0649",
+                    "全唐文/卷0649",
+                    "source",
+                    self.action(
+                        "promote_compilation_membership",
+                        "contained_in",
+                        "work_id=parent-1; title=全唐文; volume=卷0649",
+                    ),
+                )
+            ])
+            staged, report, changed, errors = self.run_stage(root, plan)
+            self.assertEqual([], errors)
+            result = self.load_staged(staged, rel)
+            self.assertEqual("卷0649", result["contained_in"][0]["volume"])
+            self.assertNotIn("source_categories", result)
+            self.assertEqual(0, report["deferred_high_actions"])
+
+    def test_unresolved_structural_review_is_never_applied(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            rel, _target, raw = self.fixture(root, {"source_categories": ["全唐文/卷0649"]})
+            plan = root / "plan.jsonl"
+            self.write_plan(plan, rel.as_posix(), raw, [
+                self.membership(
+                    "全唐文/卷0649",
+                    "全唐文/卷0649",
+                    "source",
+                    self.action(
+                        "promote_compilation_membership_unresolved_parent",
+                        "contained_in / compilation system",
+                        "title=全唐文; volume=卷0649",
+                        "review",
+                    ),
+                )
+            ])
+            staged, report, changed, errors = self.run_stage(root, plan)
+            self.assertEqual([], errors)
+            self.assertEqual([], changed)
+            self.assertEqual(1, report["counts"]["membership_review"])
+            self.assertEqual(0, report["deferred_high_actions"])
+
+    def test_stale_unresolved_structural_high_is_deferred(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            rel, _target, raw = self.fixture(root, {"source_categories": ["全唐文/卷0649"]})
+            plan = root / "plan.jsonl"
+            self.write_plan(plan, rel.as_posix(), raw, [
+                self.membership(
+                    "全唐文/卷0649",
+                    "全唐文/卷0649",
+                    "source",
+                    self.action(
+                        "promote_compilation_membership",
+                        "contained_in",
+                        "title=全唐文; volume=卷0649",
+                        "high",
+                    ),
+                )
             ])
             staged, report, changed, errors = self.run_stage(root, plan)
             self.assertEqual([], errors)

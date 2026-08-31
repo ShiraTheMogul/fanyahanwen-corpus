@@ -150,6 +150,7 @@ def make_work(
     categories: tuple[str, ...] = (),
     source_categories: tuple[str, ...] = (),
     authors: tuple[str, ...] = (),
+    contained_in: tuple[dict, ...] = (),
 ) -> migration.Work:
     return migration.Work(
         metadata_path=Path(path),
@@ -175,7 +176,7 @@ def make_work(
         editors=(),
         contributors=(),
         document_authors=(),
-        contained_in=(),
+        contained_in=contained_in,
         editions=(),
         sources=(),
         identifiers=(),
@@ -382,6 +383,136 @@ class CategoryMigrationCalendarAdapterTest(unittest.TestCase):
         self.assertNotIn("孔子", semantics)
         self.assertIn("李白", semantics)
         self.assertGreater(int(semantics["李白"].get("author_matches", 0)), 0)
+
+    def test_explicit_translator_title_suffix_is_not_global_author_evidence(self) -> None:
+        normalizer = IdentityNormalizer()
+        work = dataclasses.replace(
+            make_work(
+                path="朝鮮漢文/clean/高麗/高麗版大藏經/大乘四法經/metadata.json",
+                categories=("實叉難陀",),
+            ),
+            title="大乘四法經 (實叉難陀譯)",
+            work_base_title="大乘四法經",
+        )
+        semantics = migration.person_semantics([work], normalizer, {"實叉難陀"})
+        self.assertNotIn("實叉難陀", semantics)
+
+    def test_explicit_local_translator_role_vetoes_global_author_promotion(self) -> None:
+        normalizer = IdentityNormalizer()
+        work = dataclasses.replace(
+            make_work(
+                path="朝鮮漢文/clean/高麗/高麗版大藏經/大乘四法經/metadata.json",
+                categories=("實叉難陀",),
+            ),
+            title="大乘四法經 (實叉難陀譯)",
+            work_base_title="大乘四法經",
+        )
+        indexes = {
+            "periods": {},
+            "polities": {},
+            "macro_regions": {},
+            "regions": {},
+            "people": {"實叉難陀"},
+            "titles": {},
+        }
+        misleading_global_semantics = {
+            "實叉難陀": {
+                "author_matches": 50,
+                "works_with_authors": 50,
+                "author_ratio": 1.0,
+                "title_parenthetical_matches": 20,
+                "title_author_role_matches": 0,
+                "authorial_compilation_matches": 0,
+                "preamble_author_matches": 0,
+                "cbdb_author_matches": 0,
+                "cbdb_roles": "",
+                "semantic": "likely author grouping",
+            }
+        }
+        actions = migration.classify_membership(
+            work, "實叉難陀", "categories", "實叉難陀", (), normalizer, indexes, {},
+            misleading_global_semantics, None, None, ()
+        )
+        self.assertEqual(1, len(actions))
+        self.assertEqual("promote_contributor_role_candidate", actions[0].action)
+        self.assertEqual("contributors", actions[0].target_field)
+        self.assertEqual("實叉難陀; role=translator", actions[0].proposed_value)
+        self.assertEqual("high", actions[0].confidence)
+
+    def test_controlled_taxonomy_wins_over_same_named_compilation(self) -> None:
+        normalizer = IdentityNormalizer()
+        work = make_work(categories=("甲骨文",))
+        parent = dataclasses.replace(
+            make_work(path="中國漢文/clean/商朝/甲骨文/metadata.json"),
+            work_id="parent-1",
+            title="甲骨文",
+            work_base_title="甲骨文",
+            is_compilation=True,
+        )
+        indexes = {
+            "periods": {},
+            "polities": {},
+            "macro_regions": {},
+            "regions": {},
+            "people": set(),
+            "titles": {"甲骨文": [parent]},
+        }
+        rules = {"_controlled_taxonomy_nodes": {"甲骨文", "金文"}}
+        actions = migration.classify_membership(
+            work, "甲骨文", "categories", "甲骨文", (), normalizer, indexes, rules, {}, None, None, ()
+        )
+        self.assertEqual(1, len(actions))
+        self.assertEqual("keep_controlled_taxonomy", actions[0].action)
+        self.assertEqual("safe", actions[0].confidence)
+        self.assertEqual("categories", actions[0].target_field)
+
+    def test_unresolved_compilation_parent_is_review_not_high(self) -> None:
+        normalizer = IdentityNormalizer()
+        work = make_work(source_categories=("全唐文/卷0001",))
+        indexes = {
+            "periods": {},
+            "polities": {},
+            "macro_regions": {},
+            "regions": {},
+            "people": set(),
+            "titles": {},
+        }
+        actions = migration.classify_membership(
+            work, "全唐文/卷0001", "source", "全唐文/卷0001", (), normalizer, indexes, {}, {}, None, None, ()
+        )
+        self.assertEqual(1, len(actions))
+        self.assertEqual("promote_compilation_membership_unresolved_parent", actions[0].action)
+        self.assertEqual("review", actions[0].confidence)
+
+    def test_existing_parent_link_missing_volume_is_enriched_before_category_removal(self) -> None:
+        normalizer = IdentityNormalizer()
+        work = make_work(
+            source_categories=("全唐文/卷0649",),
+            contained_in=({"work_id": "parent-1", "title": "全唐文"},),
+        )
+        parent = dataclasses.replace(
+            make_work(path="中國漢文/clean/清朝/全唐文/metadata.json"),
+            work_id="parent-1",
+            title="全唐文",
+            work_base_title="全唐文",
+            is_compilation=True,
+        )
+        indexes = {
+            "periods": {},
+            "polities": {},
+            "macro_regions": {},
+            "regions": {},
+            "people": set(),
+            "titles": {"全唐文": [parent]},
+        }
+        actions = migration.classify_membership(
+            work, "全唐文/卷0649", "source", "全唐文/卷0649", (), normalizer, indexes, {}, {}, None, None, ()
+        )
+        self.assertEqual(1, len(actions))
+        self.assertEqual("promote_compilation_membership", actions[0].action)
+        self.assertEqual("high", actions[0].confidence)
+        self.assertIn("volume=卷0649", actions[0].proposed_value)
+        self.assertIn("enrichment", actions[0].evidence)
 
     def test_high_shared_annotation_promotes_person_mention_without_tradition_category(self) -> None:
         work = make_work(

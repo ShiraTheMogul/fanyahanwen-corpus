@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 126504,
   "corpus_root": "四庫全書",
@@ -182,6 +182,16 @@
           ],
           "digital_transcription_id": "kanripo:KR3a0044:master@3d005c4739d30392130162a72c8e762f84d95a4b",
           "document_id": 189149
+        },
+        {
+          "file": "近思録集註__juan_015.txt",
+          "path": "四庫全書/clean/子部/儒家類/近思録集註/近思録集註__juan_015.txt",
+          "page_title": "近思録集註/後序",
+          "chapter": "後序",
+          "sources": [
+            "https://github.com/kanripo/KR3a0043"
+          ],
+          "digital_transcription_id": "kanripo:KR3a0043:master@9fd967760485c0d302b8afd1a5f7da1eba470215"
         }
       ]
     }
@@ -201,6 +211,23 @@
           "revision": "3d005c4739d30392130162a72c8e762f84d95a4b",
           "retrieved_at": "2026-08-12T02:25:14+00:00",
           "license": "CC BY-SA (upstream wording; version not specified in harvested record)",
+          "preferred": true
+        }
+      ]
+    },
+    {
+      "witness_id": "kanripo:KR3a0043:witness:legacy-inline",
+      "label": "四庫全書・文淵閣本",
+      "upstream_code": "UNSPECIFIED",
+      "evidence": "legacy Kanripo inline header",
+      "digital_transcriptions": [
+        {
+          "transcription_id": "kanripo:KR3a0043:master@9fd967760485c0d302b8afd1a5f7da1eba470215",
+          "provider": "Kanseki Repository",
+          "repository": "https://github.com/kanripo/KR3a0043",
+          "branch": "master",
+          "revision": "9fd967760485c0d302b8afd1a5f7da1eba470215",
+          "license": "CC BY-SA (Kanseki Repository; upstream version unspecified)",
           "preferred": true
         }
       ]

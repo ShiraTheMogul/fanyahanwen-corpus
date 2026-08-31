@@ -244,6 +244,60 @@ def parse_assignments(value: str) -> dict[str, str]:
     return output
 
 
+def add_contained_in(metadata: dict, proposed: str) -> bool:
+    """Add one resolved parent membership from a planner proposal.
+
+    ``contained_in`` is only written when the planner supplied a concrete
+    ``work_id``.  Volume/edition/issue qualifiers are merged into an existing
+    parent row when compatible, making the operation idempotent while retaining
+    source structure such as ``全唐文/卷0649``.
+    """
+    assignments = parse_assignments(proposed)
+    work_id = clean_text(assignments.get("work_id"))
+    if not work_id:
+        raise ApplicationError("contained_in proposal has no resolved work_id")
+
+    row: dict[str, str] = {"work_id": work_id}
+    for key in ("title", "volume", "edition", "issue"):
+        value = clean_text(assignments.get(key))
+        if value:
+            row[key] = value
+
+    current = metadata.get("contained_in")
+    if current is None:
+        metadata["contained_in"] = [row]
+        return True
+    if not isinstance(current, list):
+        raise ApplicationError("contained_in is not an array")
+
+    qualifiers = ("volume", "edition", "issue")
+    for entry in current:
+        if not isinstance(entry, dict) or clean_text(entry.get("work_id")) != work_id:
+            continue
+        incompatible = any(
+            clean_text(entry.get(key)) and clean_text(row.get(key)) and clean_text(entry.get(key)) != clean_text(row.get(key))
+            for key in qualifiers
+        )
+        if incompatible:
+            continue
+        changed = False
+        for key, value in row.items():
+            if key == "work_id":
+                continue
+            existing = clean_text(entry.get(key))
+            if not existing:
+                entry[key] = value
+                changed = True
+            elif key != "title" and existing != value:
+                raise ApplicationError(
+                    f"contained_in {work_id} {key} changed unexpectedly: current={existing!r}, proposed={value!r}"
+                )
+        return changed
+
+    current.append(row)
+    return True
+
+
 def add_mention(metadata: dict, target_field: str, value: str) -> bool:
     if not target_field.startswith("mentions."):
         raise ApplicationError(f"unsupported mention target {target_field!r}")
@@ -476,6 +530,14 @@ def apply_membership_action(metadata: dict, item: dict, safe_only: bool) -> tupl
         changed = add_contributor(metadata, first, role, target)
         changed = remove_category_membership(metadata, raw, origin) or changed
         return ("applied" if changed else "no_change"), f"promoted contributor role to {target}"
+
+    if name in {"promote_compilation_membership", "promote_serial_publication_membership"}:
+        assignments = parse_assignments(proposed)
+        if not clean_text(assignments.get("work_id")):
+            return "deferred_high", "structural membership has no resolved parent work_id"
+        changed = add_contained_in(metadata, proposed)
+        changed = remove_category_membership(metadata, raw, origin) or changed
+        return ("applied" if changed else "no_change"), "promoted resolved contained_in membership"
 
     if name.startswith(DEFERRED_STRUCTURAL_ACTION_PREFIXES):
         return "deferred_high", "parent/grouping/publication structure must be resolved before writing its schema"
