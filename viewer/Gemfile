@@ -25,7 +25,7 @@ gem "roo"
 gem "pdf-reader"
 
 # Chinese stuff 
-gem "chinese_convt", "0.1.3"
+gem "opencc-rb", "1.0.6", require: false
 gem "lunar_calendar", github: "elct9620/lunar_calendar" # you wouldnt believe this but rubygems doesnt work lol
 gem "when_exe", "~> 0.5.0"
 gem "chinese_permalink", "1.3.1"

@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+﻿# frozen_string_literal: true
 
 class PreferencesController < ApplicationController
   protect_from_forgery with: :exception
@@ -65,7 +65,7 @@ def update
     end
 
     if params.key?(:script_mode)
-      session[:script_mode] = safe_symbol(params[:script_mode], allowed: [:original, :traditional, :simplified])
+      session[:script_mode] = safe_symbol(params[:script_mode], allowed: CharacterStandards.allowed_modes)
     end
 
     if params.key?(:han_font)

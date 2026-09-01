@@ -1,16 +1,19 @@
-<%#
+﻿<%#
   Dynamic @font-face injection.
 
-  We generate font faces based on files found in app/assets/fonts so
-  adding a new font (e.g. Oracle Bone / Seal Script) is as simple as
-  dropping a new folder into that folder.
+  We generate ordinary font faces based on files found in app/assets/fonts.
+  The two BabelStone Erjian files already live in the existing
+  app/assets/fonts/babelstone_erjian folder and are also exposed explicitly
+  here because they represent two different character standards.
 
   We keep the selected "Han font" in session[:han_font].
+  We keep the selected character standard in session[:script_mode].
 
   PERFORMANCE NOTE:
   Rendering this partial can be expensive because it loops all faces and calls asset_path.
   We fragment-cache the generated <style> block keyed by:
     - selected font key
+    - selected script mode
     - a digest of HanFonts.faces metadata
   so most requests reuse the same HTML.
 %>
@@ -18,12 +21,31 @@
 <% selected_key = (session[:han_font].presence || HanFonts.default_key).to_s.strip.downcase.tr(" ", "_").to_sym %>
 <% selected_family = HanFonts.family_for(selected_key) || "serif" %>
 <% selected_stack = HanFonts.stack_for(selected_key) %>
+<% script_mode = (session[:script_mode].presence || :original).to_s.strip.downcase.tr(" ", "_").to_sym %>
+
+<% erjian_1_family = "BabelStone Erjian 1" %>
+<% erjian_2_family = "BabelStone Erjian 2" %>
+<% erjian_1_href = (asset_path("babelstone_erjian/BabelStoneErjian1.woff2") rescue nil) %>
+<% erjian_2_href = (asset_path("babelstone_erjian/BabelStoneErjian2.woff2") rescue nil) %>
+
+<% effective_family =
+     case script_mode
+     when :erjian_1 then erjian_1_family
+     when :erjian_2 then erjian_2_family
+     else selected_family
+     end %>
+<% effective_stack =
+     case script_mode
+     when :erjian_1 then %Q{"#{erjian_1_family}", "#{selected_family}", "WenJin Mincho", serif}
+     when :erjian_2 then %Q{"#{erjian_2_family}", "#{selected_family}", "WenJin Mincho", serif}
+     else selected_stack
+     end %>
 
 <% faces_digest = HanFonts.faces.map { |f|
   [f.family, f.asset_path, f.format, f.unicode_range].join("|")
 }.join(";;") %>
 
-<% cache_key = ["dynamic-han-font-faces-v1", selected_key, faces_digest] %>
+<% cache_key = ["dynamic-han-font-faces-v2", selected_key, script_mode, faces_digest] %>
 
 <% cache(cache_key) do %>
 <style id="dynamic-han-font-faces">
@@ -45,10 +67,46 @@
   }
   <% end %>
 
-  :root {
-    --han-font-primary: "<%= selected_family %>";
-    --han-font-fallback: "WenJin Mincho";
-    --han-font-stack: <%= raw(selected_stack) %>;
+  <% if erjian_1_href %>
+  @font-face {
+    font-family: "<%= erjian_1_family %>";
+    src: url("<%= erjian_1_href %>") format("woff2");
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
   }
+  <% end %>
+
+  <% if erjian_2_href %>
+  @font-face {
+    font-family: "<%= erjian_2_family %>";
+    src: url("<%= erjian_2_href %>") format("woff2");
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+  }
+  <% end %>
+
+  :root {
+    --han-font-primary: "<%= effective_family %>";
+    --han-font-fallback: "WenJin Mincho";
+    --han-font-stack: <%= raw(effective_stack) %>;
+  }
+
+  <% if CharacterStandards.erjian_mode?(script_mode) %>
+  /*
+   * 二簡字 is a glyph overlay over standard simplified Unicode. Apply it to
+   * the whole reading area even when the user's ordinary font scope is set to
+   * "headwords only". The corpus text itself remains unchanged.
+   */
+  body.han-font-scope-all .maincol,
+  body.han-font-scope-headwords .maincol,
+  body.han-font-scope-all .han-tooltip,
+  body.han-font-scope-headwords .han-tooltip {
+    /* Direct value is deliberate: han-font-bootstrap maintains the ordinary
+       font CSS variables from <body>, while 二簡字 must stay in force. */
+    font-family: <%= raw(effective_stack) %>;
+  }
+  <% end %>
 </style>
 <% end %>
