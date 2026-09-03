@@ -8,7 +8,7 @@ class CorpusViewerController < ApplicationController
   ANNOTATION_SYSTEM_FOLDERS = %w[kanbun hanmun hanvan].freeze
   DIRECTORY_PAGINATION_THRESHOLD = 1_000
   DIRECTORY_PAGE_SIZE = 200
-  WORK_INLINE_DOCUMENT_LIMIT = 20
+  WORK_INLINE_DOCUMENT_LIMIT = 1
   WORK_INLINE_BYTE_LIMIT = 512 * 1024
   WORK_PAGE_SIZE = 100
 
@@ -40,12 +40,10 @@ class CorpusViewerController < ApplicationController
       )
 
       if work_listing.work_folder?
-        unless work_listing.inline_renderable?(
+        if work_listing.inline_renderable?(
           document_limit: WORK_INLINE_DOCUMENT_LIMIT,
           byte_limit: WORK_INLINE_BYTE_LIMIT
         )
-          load_work_folder_index(fs: fs, metadata_store: metadata_store, work_listing: work_listing)
-        else
           document_paths = work_listing.page(
             page: 1,
             per_page: WORK_INLINE_DOCUMENT_LIMIT
@@ -55,8 +53,11 @@ class CorpusViewerController < ApplicationController
             metadata_store: metadata_store,
             document_paths: document_paths
           )
+          render :show, formats: [:html]
+        else
+          load_work_folder_index(fs: fs, metadata_store: metadata_store, work_listing: work_listing)
+          render :work_index, formats: [:html]
         end
-        render :show, formats: [:html]
         return
       end
 
@@ -194,7 +195,6 @@ class CorpusViewerController < ApplicationController
 
   private
 
-
   def directory_sort_preferences
     raw = session[:corpus_directory_sort]
     raw.is_a?(Hash) ? raw : {}
@@ -207,6 +207,7 @@ class CorpusViewerController < ApplicationController
     @source_abs_path = @abs_path
     @meta = metadata_store.display_entries_for_path(@rel_path)
     @work_page = work_listing.page(page: params[:page], per_page: WORK_PAGE_SIZE)
+    @work_documents = @work_page.documents
     @work_document_paths = @work_page.paths
   end
 
