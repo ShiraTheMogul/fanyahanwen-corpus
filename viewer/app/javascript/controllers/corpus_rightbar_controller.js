@@ -1,4 +1,15 @@
 import { Controller } from "@hotwired/stimulus"
+import { t } from "i18n"
+
+const AUTO_ANNOTATION_STORAGE_KEY = "corpus.authority.auto_annotations.v1"
+const AUTO_ANNOTATION_KIND_STORAGE_KEY = "corpus.authority.auto_annotation_kinds.v1"
+const AUTO_ANNOTATION_KINDS = ["person", "clan", "place", "office"]
+const AUTO_ANNOTATION_KIND_DEFAULTS = {
+  person: false,
+  clan: false,
+  place: true,
+  office: false,
+}
 
 // Reader-only controls for the Corpus Viewer.
 //
@@ -23,8 +34,13 @@ export default class extends Controller {
   ]
 
   connect() {
+    this._collapseRightbarGroups()
+    this._initializeAutoAnnotationPreferences()
     this._syncFromStorage()
+    this._installAutoAnnotationKindControls()
+    this._applyAutoAnnotationKindVisibility()
     this._hideReadingToolbarControls()
+    this._enforceNewAutoAnnotationDefault()
     this._installJudouControl()
     this._syncToolbarProxies()
 
@@ -38,6 +54,7 @@ export default class extends Controller {
     this._toolbar = document.querySelector(".corpus-toolbar")
     if (this._toolbar) {
       this._toolbarObserver = new MutationObserver(() => {
+        this._enforceNewAutoAnnotationDefault()
         this._hideReadingToolbarControls()
         this._syncToolbarProxies()
       })
@@ -54,7 +71,10 @@ export default class extends Controller {
     // asynchronously. Sync again after the current frame so their status is
     // reflected in the rightbar as soon as it appears.
     window.requestAnimationFrame(() => {
+      this._enforceNewAutoAnnotationDefault()
       this._hideReadingToolbarControls()
+      this._installAutoAnnotationKindControls()
+      this._applyAutoAnnotationKindVisibility()
       this._installJudouControl()
       this._syncToolbarProxies()
     })
@@ -135,6 +155,160 @@ export default class extends Controller {
   openAnnotationColors(event) {
     event?.preventDefault()
     this._toolbarControl("corpus-annotations#openColorSettings")?.click()
+  }
+
+  _collapseRightbarGroups() {
+    this.element.querySelectorAll("details.rightbar-group[open]").forEach((group) => {
+      group.removeAttribute("open")
+    })
+  }
+
+  _initializeAutoAnnotationPreferences() {
+    this._autoAnnotationKinds = this._loadAutoAnnotationKinds()
+    this._newAutoAnnotationDefault = false
+
+    try {
+      if (window.localStorage.getItem(AUTO_ANNOTATION_STORAGE_KEY) === null) {
+        window.localStorage.setItem(AUTO_ANNOTATION_STORAGE_KEY, "0")
+        this._newAutoAnnotationDefault = true
+      }
+    } catch (_) {}
+  }
+
+  _enforceNewAutoAnnotationDefault() {
+    if (!this._newAutoAnnotationDefault) return
+
+    const button = this._autoAnnotationButton()
+    if (!button) return
+
+    // The automatic-annotation module and Stimulus can both initialise on the
+    // same Turbo load. If the annotation module won that race before the new
+    // stored default was written, turn that one accidental first load back off.
+    this._newAutoAnnotationDefault = false
+    if (this._pressed(button)) button.click()
+  }
+
+  _loadAutoAnnotationKinds() {
+    let stored = {}
+    try {
+      const raw = window.localStorage.getItem(AUTO_ANNOTATION_KIND_STORAGE_KEY)
+      if (raw) {
+        const parsed = JSON.parse(raw)
+        if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) stored = parsed
+      }
+    } catch (_) {}
+
+    return Object.fromEntries(
+      AUTO_ANNOTATION_KINDS.map((kind) => [
+        kind,
+        typeof stored[kind] === "boolean" ? stored[kind] : AUTO_ANNOTATION_KIND_DEFAULTS[kind],
+      ]),
+    )
+  }
+
+  _storeAutoAnnotationKinds() {
+    try {
+      window.localStorage.setItem(
+        AUTO_ANNOTATION_KIND_STORAGE_KEY,
+        JSON.stringify(this._autoAnnotationKinds),
+      )
+    } catch (_) {}
+  }
+
+  _translation(key, fallback) {
+    const translated = t(key)
+    return translated === key ? fallback : translated
+  }
+
+  _autoAnnotationKindLabel(kind) {
+    const fallback = {
+      person: "People",
+      clan: "Clans",
+      place: "Places",
+      office: "Offices",
+    }[kind] || kind
+
+    return this._translation(`authority_auto.kind_${kind}`, fallback)
+  }
+
+  _installAutoAnnotationKindControls() {
+    if (!this.hasAutoAnnotationsTarget) return
+
+    const host = this.autoAnnotationsTarget.closest(".rightbar-row-stack")
+    if (!host || host.querySelector("[data-auto-annotation-kinds]")) return
+
+    const fieldset = document.createElement("fieldset")
+    fieldset.className = "rightbar-auto-annotation-kinds"
+    fieldset.dataset.autoAnnotationKinds = "1"
+
+    const legend = document.createElement("legend")
+    legend.textContent = this._translation(
+      "corpus_viewer.rightbar.automatic_annotation_types",
+      "Automatic annotation types",
+    )
+    fieldset.appendChild(legend)
+
+    AUTO_ANNOTATION_KINDS.forEach((kind) => {
+      const label = document.createElement("label")
+      const checkbox = document.createElement("input")
+      checkbox.type = "checkbox"
+      checkbox.dataset.autoAnnotationKind = kind
+      checkbox.checked = this._autoAnnotationKinds[kind] === true
+      checkbox.addEventListener("change", () => {
+        this._autoAnnotationKinds[kind] = checkbox.checked
+        this._storeAutoAnnotationKinds()
+        this._applyAutoAnnotationKindVisibility()
+        this._syncToolbarProxies()
+      })
+      label.appendChild(checkbox)
+      label.appendChild(document.createTextNode(` ${this._autoAnnotationKindLabel(kind)}`))
+      fieldset.appendChild(label)
+    })
+
+    const hint = document.createElement("p")
+    hint.className = "rightbar-explanation rightbar-auto-annotation-hint"
+    hint.textContent = this._translation(
+      "corpus_viewer.rightbar.automatic_annotation_types_hint",
+      "Choose which automatic suggestions may appear. Places are enabled by default; the other authority types are opt-in.",
+    )
+
+    const message = this.hasAutoAnnotationMessageTarget ? this.autoAnnotationMessageTarget : null
+    if (message) {
+      host.insertBefore(fieldset, message)
+      host.insertBefore(hint, message)
+    } else {
+      host.appendChild(fieldset)
+      host.appendChild(hint)
+    }
+  }
+
+  _applyAutoAnnotationKindVisibility() {
+    const root = document.documentElement
+    if (!root) return
+
+    AUTO_ANNOTATION_KINDS.forEach((kind) => {
+      root.classList.toggle(`cv-auto-${kind}-off`, this._autoAnnotationKinds[kind] !== true)
+    })
+  }
+
+  _visibleAutoAnnotationCount() {
+    const reader = document.querySelector(".corpus-reader")
+    if (!reader) return 0
+
+    const enabled = AUTO_ANNOTATION_KINDS.filter((kind) => this._autoAnnotationKinds[kind] === true)
+    if (!enabled.length) return 0
+
+    const selector = enabled
+      .map((kind) => `.ne-auto-${kind}[data-authority-auto-index]`)
+      .join(", ")
+    if (!selector) return 0
+
+    const indexes = new Set()
+    reader.querySelectorAll(selector).forEach((span) => {
+      const value = span.getAttribute("data-authority-auto-index")
+      if (value !== null) indexes.add(value)
+    })
+    return indexes.size
   }
 
   _syncFromStorage() {
@@ -266,13 +440,22 @@ export default class extends Controller {
   _syncAutoAnnotationProxy() {
     const button = this._autoAnnotationButton()
     const label = button?.textContent?.trim() || ""
+    const state = (button?.dataset?.state || "").toString()
 
     if (this.hasAutoAnnotationsTarget) {
       this.autoAnnotationsTarget.disabled = !button || !!button.disabled
     }
 
     if (this.hasAutoAnnotationStatusTarget) {
-      this.autoAnnotationStatusTarget.textContent = label || "—"
+      if (button && (state === "ready" || state === "empty")) {
+        const found = parseInt(button.dataset.authorityFoundCount || "0", 10)
+        const visible = this._visibleAutoAnnotationCount()
+        this.autoAnnotationStatusTarget.textContent = Number.isFinite(found) && found !== visible
+          ? `${visible} of ${found} visible`
+          : `${visible} visible`
+      } else {
+        this.autoAnnotationStatusTarget.textContent = label || "—"
+      }
     }
 
     if (!this.hasAutoAnnotationMessageTarget) return
