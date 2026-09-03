@@ -46,7 +46,10 @@ def git_blob_sha1(bytes)
 end
 
 def download(url)
-  URI.open(url, "rb", redirect: true, &:read)
+  # open-uri may return a UTF-8-tagged String even for a binary response.
+  # Treat downloaded resources as bytes until after Git-blob verification so
+  # BOM stripping cannot trigger an Encoding::CompatibilityError.
+  URI.open(url, "rb", redirect: true, &:read).b
 end
 
 def write_verified(resource)
