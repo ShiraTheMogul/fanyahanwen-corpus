@@ -140,17 +140,17 @@
             } do %>
         <%= hidden_field_tag :return_to, request.fullpath %>
 
+        <% script_choices = CharacterStandards.selectable_modes.map { |mode| [t("view_options.script.#{mode}"), mode.to_s] } %>
         <div class="rightbar-row">
           <label for="script_mode"><%= t("view_options.script.convert_text") %></label>
           <%= select_tag :script_mode,
-                options_for_select(
-                  [[t("view_options.script.original"), "original"],
-                   [t("view_options.script.traditional"), "traditional"],
-                   [t("view_options.script.simplified"), "simplified"]],
-                  (session[:script_mode] || :original).to_s
-                ),
+                options_for_select(script_choices, (session[:script_mode] || :original).to_s),
                 class: "rightbar-select" %>
         </div>
+
+        <% unless CharacterStandards.available?(:mainland_traditional) %>
+          <p class="rightbar-note"><%= t("view_options.script.mainland_resource_missing") %></p>
+        <% end %>
 
         <div class="rightbar-row">
           <label for="han_font"><%= t("view_options.font.han_font") %></label>

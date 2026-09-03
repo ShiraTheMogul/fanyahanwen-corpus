@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+﻿# frozen_string_literal: true
 
 module CorpusTextHelper
   include PhoneticizationHelper
@@ -6,9 +6,11 @@ module CorpusTextHelper
   def corpus_text_with_optional_ruby(text, allow_ruby: true)
   s = text.to_s
   @__chengyu_text_marks = chengyu_text_marks_for(s)
+  @__hidden_source_comment_indices = source_comment_line_indices(s)
 
   # Always render indexed spans so client-side annotations can map selections
-  # back to corpus character offsets.
+  # back to corpus character offsets. Hash-prefixed provenance lines stay in
+  # those offsets but are hidden from the reader display.
   if allow_ruby && ruby_enabled_in_session?
     corpus_text_with_ruby_indexed(s)
   else
@@ -16,10 +18,36 @@ module CorpusTextHelper
   end
 ensure
   @__chengyu_text_marks = nil
+  @__hidden_source_comment_indices = nil
 end
 
 private
 
+  # Kanripo and some older imports place source/provenance notes in the body as
+  # lines beginning with '#'. Keep them in the stored text and character index;
+  # the Corpus Viewer only suppresses their visual rendering.
+  def source_comment_line_indices(text)
+    hidden = {}
+    index = 0
+
+    text.to_s.each_line do |line|
+      length = line.each_char.count
+      length.times { |offset| hidden[index + offset] = true } if line.start_with?("#")
+      index += length
+    end
+
+    hidden
+  end
+
+  def hidden_source_comment_index?(index)
+    @__hidden_source_comment_indices&.key?(index)
+  end
+
+  def append_hidden_source_character(buf, character, index)
+    buf.safe_concat(%(<span class="cch corpus-source-comment" data-corpus-idx="#{index}" hidden aria-hidden="true">).html_safe)
+    buf << ERB::Util.html_escape(character)
+    buf.safe_concat("</span>".html_safe)
+  end
 
 
   def chengyu_text_marks_for(display_text)
@@ -231,6 +259,12 @@ def corpus_text_without_ruby_indexed(text)
   note_stack = []
 
   text.each_char do |ch|
+    if hidden_source_comment_index?(idx)
+      append_hidden_source_character(buf, ch, idx)
+      idx += 1
+      next
+    end
+
     opener = note_opener_kind(ch)
     closer = note_closer_kind(ch)
 
@@ -270,6 +304,12 @@ def corpus_text_with_ruby_indexed(text)
   note_stack = []
 
   text.each_char do |ch|
+    if hidden_source_comment_index?(idx)
+      append_hidden_source_character(buf, ch, idx)
+      idx += 1
+      next
+    end
+
     opener = note_opener_kind(ch)
     closer = note_closer_kind(ch)
 

@@ -1,4 +1,4 @@
-require_relative "../test_helper"
+﻿require_relative "../test_helper"
 
 class CorpusViewerControllerTest < ActiveSupport::TestCase
   test "maps a direct translation file back to its source text" do
@@ -37,4 +37,25 @@ class CorpusViewerControllerTest < ActiveSupport::TestCase
     assert_not controller.send(:hidden_root_entry?, "中國漢文/clean/作品/file.txt")
   end
 
+  test "corpus reader hides hash-prefixed body lines without changing character offsets" do
+    renderer = Class.new do
+      include CorpusTextHelper
+    end.new
+
+    text = "甲\n# Source: Kanripo\n乙\n"
+    rendered = renderer.corpus_text_with_optional_ruby(text, allow_ruby: false).to_s
+
+    assert_equal text.each_char.count, rendered.scan(/data-corpus-idx=/).size
+    assert_equal "# Source: Kanripo\n".each_char.count, rendered.scan(/corpus-source-comment/).size
+    assert_match(/corpus-source-comment[^>]*hidden[^>]*aria-hidden="true"/, rendered)
+    assert_match(/data-corpus-idx="0"[^>]*>甲<\/span>/, rendered)
+    assert_match(/>乙<\/span>/, rendered)
+  end
+
+  test "corpus viewer standard selector follows CharacterStandards selectable modes" do
+    rightbar = Rails.root.join("app", "views", "corpus_viewer", "_rightbar.html.erb").read
+
+    assert_includes rightbar, "CharacterStandards.selectable_modes"
+    assert_not_includes rightbar, '[[t("view_options.script.original"), "original"]'
+  end
 end
