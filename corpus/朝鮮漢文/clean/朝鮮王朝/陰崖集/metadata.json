@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 81824,
   "corpus_root": "朝鮮漢文",
@@ -6,10 +6,6 @@
   "period": "朝鮮王朝",
   "polity": "朝鮮",
   "title": "陰崖集",
-  "source_categories": [
-    "1754年",
-    "李耔"
-  ],
   "is_compilation": false,
   "documents": [
     {
@@ -41,5 +37,11 @@
       "body_start_line": 6
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "date_label": "1754年",
+  "mentions": {
+    "people": [
+      "李耔"
+    ]
+  }
 }

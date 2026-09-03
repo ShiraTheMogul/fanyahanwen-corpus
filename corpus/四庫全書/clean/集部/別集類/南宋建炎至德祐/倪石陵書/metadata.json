@@ -3,14 +3,6 @@
   "work_id": 128005,
   "corpus_root": "四庫全書",
   "title": "倪石陵書",
-  "source_categories": [
-    "1178年 (提及)",
-    "1185年 (提及)",
-    "1781年 (提及)",
-    "790年 (提及)",
-    "794年 (提及)",
-    "PD-old"
-  ],
   "is_compilation": false,
   "contained_in": [
     {
@@ -86,5 +78,15 @@
       "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
     }
   ],
-  "provenance_schema_version": 1
+  "provenance_schema_version": 1,
+  "mentions": {
+    "dates": [
+      "1178年",
+      "1185年",
+      "1781年",
+      "790年",
+      "794年"
+    ]
+  },
+  "medium": "紙"
 }

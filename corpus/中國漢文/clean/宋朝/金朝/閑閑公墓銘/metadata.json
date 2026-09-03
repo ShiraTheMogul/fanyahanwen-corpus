@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 66172,
   "corpus_root": "中國漢文",
@@ -6,16 +6,6 @@
   "period": "金朝",
   "polity": "金",
   "title": "閑閑公墓銘",
-  "source_categories": [
-    "1185年 (提及)",
-    "1200年 (提及)",
-    "1202年 (提及)",
-    "1213年 (提及)",
-    "50%",
-    "元好問",
-    "墓銘",
-    "金朝"
-  ],
   "sources": [
     "https://zh.wikisource.org/wiki/%E9%96%91%E9%96%91%E5%85%AC%E5%A2%93%E9%8A%98"
   ],
@@ -28,5 +18,19 @@
       "body_start_line": 9
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "categories": [
+    "墓銘"
+  ],
+  "authors": [
+    "元好問"
+  ],
+  "mentions": {
+    "dates": [
+      "1185年",
+      "1200年",
+      "1202年",
+      "1213年"
+    ]
+  }
 }

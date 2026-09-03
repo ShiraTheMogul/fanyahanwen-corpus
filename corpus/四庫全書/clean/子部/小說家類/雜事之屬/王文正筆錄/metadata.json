@@ -3,14 +3,6 @@
   "work_id": 126652,
   "corpus_root": "四庫全書",
   "title": "王文正筆錄",
-  "source_categories": [
-    "1002年 (提及)",
-    "1003年 (提及)",
-    "1004年 (提及)",
-    "1016年 (提及)",
-    "1780年 (提及)",
-    "PD-old"
-  ],
   "is_compilation": false,
   "contained_in": [
     {
@@ -75,5 +67,15 @@
       "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
     }
   ],
-  "provenance_schema_version": 1
+  "provenance_schema_version": 1,
+  "mentions": {
+    "dates": [
+      "1002年",
+      "1003年",
+      "1004年",
+      "1016年",
+      "1780年"
+    ]
+  },
+  "medium": "紙"
 }

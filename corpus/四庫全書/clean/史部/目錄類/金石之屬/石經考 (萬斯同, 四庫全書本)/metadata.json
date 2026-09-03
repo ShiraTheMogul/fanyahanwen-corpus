@@ -2,7 +2,7 @@
   "schema_version": 1,
   "work_id": 126297,
   "corpus_root": "四庫全書",
-  "title": "石經考 (萬斯同, 四庫全書本)",
+  "title": "石經考",
   "is_compilation": false,
   "contained_in": [
     {
@@ -41,6 +41,9 @@
           "document_id": 184499
         }
       ]
+    },
+    {
+      "edition_label": "萬斯同, 四庫全書本"
     }
   ],
   "source_witnesses": [
@@ -79,5 +82,6 @@
       "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
     }
   ],
-  "provenance_schema_version": 1
+  "provenance_schema_version": 1,
+  "medium": "紙"
 }

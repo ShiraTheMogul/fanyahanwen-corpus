@@ -3,16 +3,6 @@
   "work_id": 128150,
   "corpus_root": "四庫全書",
   "title": "義豐集",
-  "source_categories": [
-    "1163年 (提及)",
-    "1164年 (提及)",
-    "1180年 (提及)",
-    "1181年 (提及)",
-    "1196年 (提及)",
-    "1781年 (提及)",
-    "340年 (提及)",
-    "PD-old"
-  ],
   "is_compilation": false,
   "contained_in": [
     {
@@ -88,5 +78,17 @@
       "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
     }
   ],
-  "provenance_schema_version": 1
+  "provenance_schema_version": 1,
+  "mentions": {
+    "dates": [
+      "1163年",
+      "1164年",
+      "1180年",
+      "1181年",
+      "1196年",
+      "1781年",
+      "340年"
+    ]
+  },
+  "medium": "紙"
 }

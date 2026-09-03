@@ -1,10 +1,10 @@
-{
+﻿{
   "corpus_root": "日本漢文",
   "macro_region": "日本",
   "period": "江戸時代",
   "polity": "日本",
   "region": "長門国",
-  "title": "吉田松陰自賛肖像（吉田家本）",
+  "title": "吉田松陰自賛肖像",
   "date_label": "己未五月（安政六年、1859）",
   "year_start": 1859,
   "year_end": 1859,
@@ -22,9 +22,9 @@
   ],
   "categories": [
     "自賛",
-    "肖像画",
     "吉田松陰",
-    "長州藩"
+    "長州藩",
+    "肖像畫"
   ],
   "sources": [
     {
@@ -45,7 +45,7 @@
     "吉田松陰自賛肖像.jpg"
   ],
   "schema_version": 1,
-  "work_base_title": "吉田松陰自賛肖像（吉田家本）",
+  "work_base_title": "吉田松陰自賛肖像",
   "is_compilation": false,
   "known_commentaries": [],
   "transcription_policy": "diplomatic lineation with standard Unicode traditional forms; uncertain graphs are not silently supplied",
@@ -59,5 +59,10 @@
       "document_id": 492308
     }
   ],
-  "work_id": 214915
+  "work_id": 214915,
+  "editions": [
+    {
+      "edition_label": "吉田家本"
+    }
+  ]
 }

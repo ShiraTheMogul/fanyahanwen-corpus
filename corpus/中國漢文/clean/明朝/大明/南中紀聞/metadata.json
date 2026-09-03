@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 67058,
   "corpus_root": "中國漢文",
@@ -8,11 +8,7 @@
   "title": "南中紀聞",
   "work_base_title": "南中紀聞",
   "source_categories": [
-    "1613年 (提及)",
-    "1628年 (提及)",
-    "25%",
-    "包汝",
-    "明朝"
+    "包汝"
   ],
   "is_compilation": false,
   "documents": [
@@ -23,5 +19,11 @@
       "body_start_line": 6
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "mentions": {
+    "dates": [
+      "1613年",
+      "1628年"
+    ]
+  }
 }

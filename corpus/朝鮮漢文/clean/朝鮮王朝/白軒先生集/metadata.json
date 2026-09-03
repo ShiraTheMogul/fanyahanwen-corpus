@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 81473,
   "corpus_root": "朝鮮漢文",
@@ -6,10 +6,6 @@
   "period": "朝鮮王朝",
   "polity": "朝鮮",
   "title": "白軒先生集",
-  "source_categories": [
-    "1700年",
-    "李景奭"
-  ],
   "is_compilation": false,
   "documents": [
     {
@@ -405,5 +401,11 @@
       "body_start_line": 6
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "date_label": "1700年",
+  "mentions": {
+    "people": [
+      "李景奭"
+    ]
+  }
 }

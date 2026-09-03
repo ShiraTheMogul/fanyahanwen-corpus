@@ -2,7 +2,7 @@
   "schema_version": 1,
   "work_id": 128490,
   "corpus_root": "四庫全書",
-  "title": "華陽集 (顧况, 四庫全書本)",
+  "title": "華陽集",
   "is_compilation": false,
   "contained_in": [
     {
@@ -443,6 +443,9 @@
           "digital_transcription_id": "kanripo:KR4d0159:master@ab48a3a356166349be92890b678411f9c127af46"
         }
       ]
+    },
+    {
+      "edition_label": "顧況, 四庫全書本"
     }
   ],
   "source_witnesses": [
@@ -482,5 +485,6 @@
       "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
     }
   ],
-  "provenance_schema_version": 1
+  "provenance_schema_version": 1,
+  "medium": "紙"
 }

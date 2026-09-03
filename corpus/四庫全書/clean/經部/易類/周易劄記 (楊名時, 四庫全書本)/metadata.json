@@ -2,10 +2,7 @@
   "schema_version": 1,
   "work_id": 127426,
   "corpus_root": "四庫全書",
-  "title": "周易劄記 (楊名時, 四庫全書本)",
-  "source_categories": [
-    "PD-old"
-  ],
+  "title": "周易劄記",
   "is_compilation": false,
   "contained_in": [
     {
@@ -65,6 +62,9 @@
           "digital_transcription_id": "kanripo:KR1a0105:master@e60c21cd5da30de4668e6df2746e8137e3d195f4"
         }
       ]
+    },
+    {
+      "edition_label": "楊名時, 四庫全書本"
     }
   ],
   "source_witnesses": [
@@ -120,5 +120,6 @@
       "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
     }
   ],
-  "provenance_schema_version": 1
+  "provenance_schema_version": 1,
+  "medium": "紙"
 }

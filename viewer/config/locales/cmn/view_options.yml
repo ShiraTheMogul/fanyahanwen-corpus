@@ -1,4 +1,4 @@
-# PLACEHOLDER CATALOGUE: translate values only; do not rename keys.
+﻿# PLACEHOLDER CATALOGUE: translate values only; do not rename keys.
 cmn:
   view_options:
     heading: View options
@@ -30,14 +30,27 @@ cmn:
       right: Right
       left: Left
     script:
-      heading: Han script settings
-      convert_text: Convert text
-      original: Original
-      traditional: Traditional
-      simplified: Simplified
+      heading: 漢字標準
+      convert_text: 字形標準
+      original: 原文
+      traditional: OpenCC 標準繁體
+      simplified: 大陸簡體
+      mainland_traditional: 大陸繁體
+      taiwan_traditional: 台灣正體
+      hong_kong_traditional: 香港繁體
+      macau_traditional: 澳門繁體
+      singapore_modern: 新加坡簡體（現代）
+      malaysia_simplified: 大馬簡體
+      singapore_1969: 新加坡簡體（1969）
+      wu_zhao: 則天文字（689年）
+      shinjitai: 日本新字體
+      erjian_1: 二簡字（第一表）
+      erjian_2: 二簡字（第二表）
+      mainland_resource_missing: 尚未安裝經驗證的大陸繁體 OpenCC 字符表；請執行 script/fetch_character_standard_resources.rb。
     font:
       heading: Font settings
       han_font: Han font
+      other_fonts: 其他字體
       apply_to: Apply font to
       all_han_text: All Han text
       headwords_only: Headwords only

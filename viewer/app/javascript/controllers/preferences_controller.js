@@ -2,7 +2,7 @@
 
 // Handles reader/dictionary preferences without forcing a full reload when the
 // changed preference can be applied in the browser. Server-rendered changes
-// (ruby wrapping and script conversion) still reload the current page.
+// (ruby wrapping and character-standard conversion) still reload the page.
 export default class extends Controller {
   static values = {
     currentMandarinScheme: String,
@@ -18,22 +18,14 @@ export default class extends Controller {
     currentHanFontWarnMissing: String,
   }
 
-  connect() {
-    this._installCharacterStandardOptions()
-    this._updateCharacterStandardWarning()
-  }
-
   submit(event) {
     event.preventDefault()
 
     const form = this.element
     const fd = new FormData(form)
-
     const next = this._snapshotFromForm(form)
     const curr = this._snapshotFromValues()
-
     const needsReload = this._needsReload(curr, next)
-
     const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content")
 
     fetch(form.action, {
@@ -52,9 +44,8 @@ export default class extends Controller {
       .then((data) => {
         if (!data?.ok) return
 
-        // Apply ordinary font changes instantly. 二簡字 modes own the effective
-        // display stack in layouts/_dynamic_fonts.html.erb, so changing the
-        // ordinary fallback font must not overwrite the active Erjian overlay.
+        // The Erjian standard supplies its own glyph overlay. An ordinary font
+        // change is stored, but must not replace that overlay before reload.
         const erjianActive = next.script_mode === "erjian_1" || next.script_mode === "erjian_2"
 
         if (!erjianActive && data.han_font_stack) {
@@ -79,7 +70,6 @@ export default class extends Controller {
         }
 
         window.dispatchEvent(new CustomEvent("han-font-changed", { detail: data }))
-
         this._setValuesFromSnapshot(next)
 
         const msg = document.getElementById("han-font-message")
@@ -98,8 +88,6 @@ export default class extends Controller {
   }
 
   autosubmit() {
-    this._updateCharacterStandardWarning()
-
     clearTimeout(this._autosubmitTimer)
     this._autosubmitTimer = setTimeout(() => {
       if (this.element?.requestSubmit) this.element.requestSubmit()
@@ -117,7 +105,6 @@ export default class extends Controller {
     if (forceServerKeys.some((key) => (curr[key] || "") !== (next[key] || ""))) return true
 
     const showAllNext = (next.ruby_enabled || "0") === "1"
-
     if (showAllNext) {
       const rubyKeys = ["ruby_source", "ruby_orientation", "ruby_side", "ruby_token"]
       if (rubyKeys.some((key) => (curr[key] || "") !== (next[key] || ""))) return true
@@ -148,9 +135,6 @@ export default class extends Controller {
       const elements = Array.from(form.querySelectorAll(selector))
       if (elements.length === 0) return ""
 
-      // Rails check_box helpers emit a hidden "0" input immediately before the
-      // checkbox. Looking up only the first matching element therefore reads
-      // the hidden field forever. Prefer the real checkbox when one exists.
       const checkbox = elements.find((element) => element.type === "checkbox")
       if (checkbox) return checkbox.checked ? "1" : "0"
 
@@ -185,69 +169,5 @@ export default class extends Controller {
     this.currentHanFontValue = snapshot.han_font
     this.currentHanFontScopeValue = snapshot.han_font_scope
     this.currentHanFontWarnMissingValue = snapshot.han_font_warn_missing
-  }
-
-  _installCharacterStandardOptions() {
-    const select = this.element.querySelector('select[name="script_mode"]')
-    if (!select) return
-
-    const options = [
-      ["singapore_1969", "新加坡簡體字（1969）"],
-      ["wu_zhao", "則天文字"],
-      ["shinjitai", "新字体"],
-      ["erjian_1", "二簡字（第一表）"],
-      ["erjian_2", "二簡字（第一・第二表）"],
-    ]
-
-    options.forEach(([value, label]) => {
-      if (select.querySelector(`option[value="${value}"]`)) return
-
-      const option = document.createElement("option")
-      option.value = value
-      option.textContent = label
-      select.appendChild(option)
-    })
-
-    if (this.currentScriptModeValue) {
-      select.value = this.currentScriptModeValue
-    }
-  }
-
-  _updateCharacterStandardWarning() {
-    const select = this.element.querySelector('select[name="script_mode"]')
-    if (!select) return
-
-    let note = this.element.querySelector("[data-character-standard-warning]")
-    const warning = this._characterStandardWarning(select.value)
-
-    if (!warning) {
-      note?.remove()
-      return
-    }
-
-    if (!note) {
-      note = document.createElement("p")
-      note.className = "rightbar-note"
-      note.dataset.characterStandardWarning = "1"
-      select.closest(".rightbar-row")?.insertAdjacentElement("afterend", note)
-    }
-
-    note.textContent = warning
-  }
-
-  _characterStandardWarning(mode) {
-    if (mode === "singapore_1969") {
-      return "新加坡1969年《簡體字表》 is applied with Unicode substitutions. Entries that remain unencoded are preserved as their source characters."
-    }
-
-    if (mode === "erjian_1") {
-      return "二簡字（第一表） uses BabelStone Erjian 1 as a display overlay. Stored corpus text is unchanged."
-    }
-
-    if (mode === "erjian_2") {
-      return "二簡字（第一・第二表） uses BabelStone Erjian 2 as a display overlay, including both tables of the 1977 draft. Stored corpus text is unchanged."
-    }
-
-    return ""
   }
 }

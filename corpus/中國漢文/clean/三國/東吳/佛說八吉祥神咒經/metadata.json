@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 266,
   "corpus_root": "中國漢文",
@@ -6,16 +6,9 @@
   "period": "東吳",
   "polity": "東吳",
   "title": "佛說八吉祥神咒經",
-  "categories": [
-    "三國",
-    "東吳"
-  ],
   "source_categories": [
-    "三國",
     "大正新脩大藏經",
-    "支謙",
-    "月氏",
-    "東吳"
+    "月氏"
   ],
   "sources": [
     "https://zh.wikisource.org/wiki/%E4%BD%9B%E8%AA%AA%E5%85%AB%E5%90%89%E7%A5%A5%E7%A5%9E%E5%92%92%E7%B6%93"
@@ -29,5 +22,11 @@
       "body_start_line": 13
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "contributors": [
+    {
+      "name": "支謙",
+      "role": "translator"
+    }
+  ]
 }

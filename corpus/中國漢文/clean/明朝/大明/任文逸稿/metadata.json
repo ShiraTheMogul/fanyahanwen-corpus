@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 66576,
   "corpus_root": "中國漢文",
@@ -7,10 +7,6 @@
   "polity": "大明",
   "title": "任文逸稿",
   "work_base_title": "任文逸稿",
-  "source_categories": [
-    "任瀚",
-    "明朝"
-  ],
   "is_compilation": false,
   "documents": [
     {
@@ -20,5 +16,10 @@
       "body_start_line": 6
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "mentions": {
+    "people": [
+      "任瀚"
+    ]
+  }
 }

@@ -1,23 +1,42 @@
 ﻿# frozen_string_literal: true
 
-# Display-only character-standard conversions.
-#
-# Corpus files and database values remain untouched. A view asks this object for
-# a transformed copy of the text and renders that copy only.
-module CharacterStandards
-  MODES = %i[
-    original
-    traditional
-    simplified
-    singapore_1969
-    wu_zhao
-    shinjitai
-    erjian_1
-    erjian_2
-  ].freeze
+require "digest"
+require "json"
 
+# Display-only Han character-standard conversions.
+#
+# Corpus files and database values are never changed. Views ask this object for
+# a transformed copy. Each selectable mode has one explicit implementation so
+# adding a new standard does not require another case statement in a helper.
+module CharacterStandards
+  PROFILES = {
+    original:              { converter: :identity },
+    traditional:           { converter: :traditional },
+    simplified:            { converter: :simplified },
+    mainland_traditional:  { converter: :mainland_traditional, resource: :mainland_traditional },
+    taiwan_traditional:    { converter: :taiwan_traditional },
+    hong_kong_traditional: { converter: :hong_kong_traditional },
+    macau_traditional:     { converter: :macau_traditional },
+    singapore_modern:      { converter: :singapore_modern },
+    malaysia_simplified:   { converter: :malaysia_simplified },
+    singapore_1969:        { converter: :singapore_1969_from_any },
+    wu_zhao:               { converter: :wu_zhao },
+    shinjitai:             { converter: :shinjitai_from_any },
+    erjian_1:              { converter: :erjian_from_any },
+    erjian_2:              { converter: :erjian_from_any }
+  }.freeze
+
+  MODES = PROFILES.keys.freeze
   ERJIAN_MODES = %i[erjian_1 erjian_2].freeze
   ZETIAN_SOURCE = "Zetian Script (則天文字)"
+
+  MAINLAND_TRADITIONAL_PATH = "config/mainland_traditional_characters.txt"
+  MAINLAND_TRADITIONAL_PHRASES_PATH = "config/mainland_traditional_phrases.txt"
+  MAINLAND_TRADITIONAL_COMPATIBILITY_PATH = "config/mainland_traditional_cjk_compatibility.txt"
+  MAINLAND_TRADITIONAL_CONFIG_PATH = "config/mainland_traditional_opencc.json"
+  MAINLAND_TRADITIONAL_LICENSE_PATH = "config/mainland_traditional_OPENCC_LICENSE.txt"
+  MAINLAND_TRADITIONAL_MANIFEST_PATH = "config/mainland_traditional_manifest.json"
+  MAINLAND_TRADITIONAL_UPSTREAM_COMMIT = "33ba491670d5aff20bfbc41d5f412ac8607ba722"
 
   # The corpus stores multiple attested forms for a few 則天文字. For a
   # single selectable display standard we use the familiar/common form shown
@@ -35,8 +54,6 @@ module CharacterStandards
   }.freeze
 
   # Some corpus mappings were entered against a simplified base character.
-  # Accept the corresponding traditional form as input as well, and vice versa
-  # where the stored base is traditional.
   ZETIAN_BASE_ALIASES = {
     "國" => "国",
     "聖" => "圣",
@@ -60,20 +77,145 @@ module CharacterStandards
     MODES
   end
 
+  # The UI uses this to hide a standard whose external resource has not yet
+  # been installed. Session validation still accepts all known modes so an old
+  # session cannot crash when resources are temporarily absent.
+  def selectable_modes
+    MODES.select { |mode| available?(mode) }
+  end
+
+  def available?(mode)
+    profile = PROFILES[normalise_mode(mode)]
+    return false unless profile
+
+    case profile[:resource]
+    when :mainland_traditional
+      mainland_traditional_resource_valid?
+    else
+      true
+    end
+  end
+
   def erjian_mode?(mode)
     ERJIAN_MODES.include?(normalise_mode(mode))
   end
 
-  # OpenCC is the normal Traditional/Simplified conversion engine. Its
-  # dictionaries handle phrase-level ambiguity that a one-character lookup
-  # cannot. If the native binding cannot be loaded or conversion fails, fall
-  # back to the corpus' Unihan variant data so display rendering still works.
+  # External conversion data is enabled only when the fetch script's manifest
+  # matches every installed byte. This prevents a partial or edited dictionary
+  # from silently presenting itself as the named standard.
+  def mainland_traditional_resource_valid?
+    paths = {
+      "data_file" => Rails.root.join(MAINLAND_TRADITIONAL_PATH),
+      "phrases_file" => Rails.root.join(MAINLAND_TRADITIONAL_PHRASES_PATH),
+      "compatibility_file" => Rails.root.join(MAINLAND_TRADITIONAL_COMPATIBILITY_PATH),
+      "config_file" => Rails.root.join(MAINLAND_TRADITIONAL_CONFIG_PATH),
+      "license_file" => Rails.root.join(MAINLAND_TRADITIONAL_LICENSE_PATH)
+    }
+    manifest_path = Rails.root.join(MAINLAND_TRADITIONAL_MANIFEST_PATH)
+    return false unless manifest_path.file? && paths.values.all?(&:file?)
+
+    stamp = paths.values.flat_map { |path| [path.mtime.to_f, path.size] } +
+            [manifest_path.mtime.to_f, manifest_path.size]
+    if @mainland_resource_validation_stamp == stamp
+      return @mainland_resource_validation_result == true
+    end
+
+    manifest_text = File.open(manifest_path, "r:bom|utf-8", &:read)
+    manifest = JSON.parse(manifest_text)
+
+    valid = manifest.fetch("upstream_commit") == MAINLAND_TRADITIONAL_UPSTREAM_COMMIT
+    paths.each do |manifest_key, path|
+      bytes = File.binread(path)
+      valid &&= manifest.fetch(manifest_key) == path.basename.to_s
+      valid &&= manifest.fetch("#{manifest_key.delete_suffix('_file')}_sha256") == Digest::SHA256.hexdigest(bytes)
+
+      # The three upstream dictionaries contain Han script and must retain the
+      # repository's UTF-8-with-BOM invariant after installation.
+      if %w[data_file phrases_file compatibility_file].include?(manifest_key)
+        valid &&= bytes.start_with?("\xEF\xBB\xBF".b)
+      end
+    end
+
+    @mainland_resource_validation_stamp = stamp
+    @mainland_resource_validation_result = valid
+    valid
+  rescue JSON::ParserError, KeyError, Errno::ENOENT, Encoding::InvalidByteSequenceError, Encoding::UndefinedConversionError
+    @mainland_resource_validation_result = false
+    false
+  end
+
+  def convert(text, mode)
+    value = text.to_s
+    return value if value.empty?
+
+    profile = PROFILES[normalise_mode(mode)] || PROFILES.fetch(:original)
+    return value unless available?(mode)
+
+    public_send(profile.fetch(:converter), value)
+  rescue StandardError
+    value
+  end
+
+  def identity(text)
+    text.to_s
+  end
+
+  # OpenCC Standard Traditional remains useful as a neutral intermediate form.
   def traditional(text)
     opencc_script_convert(text, :s2t, :traditional)
   end
 
   def simplified(text)
     opencc_script_convert(text, :t2s, :simplified)
+  end
+
+  # Regional profiles deliberately use OpenCC's character/orthographic
+  # regionalisation configs, not the modern terminology phrase profiles such
+  # as s2twp. Corpus wording therefore is not localised into modern vocabulary.
+  def taiwan_traditional(text)
+    source = traditional(text)
+    opencc_convert(source, :t2tw) || source
+  end
+
+  def hong_kong_traditional(text)
+    source = traditional(text)
+    opencc_convert(source, :t2hk) || source
+  end
+
+  # MediaWiki and zhconv currently use the Hong Kong base mapping for Macau.
+  # Keeping a distinct profile key lets a Macau-specific map be added later
+  # without changing stored user preferences.
+  def macau_traditional(text)
+    hong_kong_traditional(text)
+  end
+
+  # Contemporary Singapore and Malaysia use the same automatic simplified base
+  # mapping as Mainland Chinese in MediaWiki/zhconv. Their profile keys remain
+  # separate so future regional additions do not require a preference migration.
+  def singapore_modern(text)
+    simplified(text)
+  end
+
+  def malaysia_simplified(text)
+    simplified(text)
+  end
+
+  # Mainland Traditional is a two-stage conversion:
+  # 1. OpenCC resolves Simplified/Traditional lexical ambiguity into its
+  #    Standard Traditional intermediate form.
+  # 2. TerryTian-tech, Yi Jianpeng, Hu Xinmei and Duan Yatong's t2gov data
+  #    applies the PRC standard's phrase-aware and character-level choices.
+  #
+  # This is the upstream t2gov architecture with local, hash-verified filenames.
+  # TGPhrases here performs orthographic/semantic disambiguation (for example,
+  # context-sensitive merged forms); it is separate from OpenCC's modern
+  # regional terminology profiles such as s2twp, which Fanya does not apply.
+  def mainland_traditional(text)
+    source = traditional(text)
+    converted = opencc_convert_file(source, Rails.root.join(MAINLAND_TRADITIONAL_CONFIG_PATH))
+    converted.nil? ? text.to_s : converted
+  rescue StandardError
+    text.to_s
   end
 
   def opencc_script_convert(text, config, fallback_mode)
@@ -87,11 +229,38 @@ module CharacterStandards
   end
 
   def opencc_convert(text, config)
-    # Gemfile uses require: false deliberately: a missing runtime OpenCC
-    # library must not stop Rails booting before the Unihan fallback can run.
     require "opencc" unless defined?(::OpenCC)
-    ::OpenCC.public_send(config, text.to_s)
+
+    if ::OpenCC.respond_to?(config)
+      return ::OpenCC.public_send(config, text.to_s)
+    end
+
+    converter = ::OpenCC::Converter.new(config.to_s)
+    begin
+      converter.convert(text.to_s)
+    ensure
+      converter.close if converter
+    end
   rescue LoadError, StandardError
+    nil
+  rescue Exception => error # opencc-rb 1.0.6 raises Exception when opencc_open fails.
+    raise if error.is_a?(SystemExit) || error.is_a?(Interrupt) || error.is_a?(SignalException)
+    nil
+  end
+
+  def opencc_convert_file(text, config_path)
+    require "opencc" unless defined?(::OpenCC)
+
+    converter = ::OpenCC::Converter.new(config_path.to_s)
+    begin
+      converter.convert(text.to_s)
+    ensure
+      converter.close if converter
+    end
+  rescue LoadError, StandardError
+    nil
+  rescue Exception => error # opencc-rb 1.0.6 raises Exception when opencc_open fails.
+    raise if error.is_a?(SystemExit) || error.is_a?(Interrupt) || error.is_a?(SignalException)
     nil
   end
 
@@ -158,6 +327,10 @@ module CharacterStandards
     text.to_s
   end
 
+  def singapore_1969_from_any(text)
+    singapore_1969(traditional(text))
+  end
+
   def singapore_1969(text)
     translate_characters(text, singapore_1969_map)
   rescue StandardError
@@ -196,15 +369,19 @@ module CharacterStandards
     end.freeze
   end
 
+  def shinjitai_from_any(text)
+    shinjitai(traditional(text))
+  end
+
   def shinjitai(text)
-    # OpenCC's t2jp configuration normalises CJK Compatibility Ideographs
-    # before applying the Shinjitai reverse dictionary. Restrict Unicode
-    # normalisation to those two compatibility blocks so unrelated text is
-    # left byte-for-byte equivalent apart from the requested Han conversion.
     source = normalise_cjk_compatibility_ideographs(text)
     translate_characters(source, shinjitai_map)
   rescue StandardError
     text.to_s
+  end
+
+  def erjian_from_any(text)
+    simplified(text)
   end
 
   def zetian_map

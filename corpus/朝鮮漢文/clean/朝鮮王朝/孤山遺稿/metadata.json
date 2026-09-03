@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 80904,
   "corpus_root": "朝鮮漢文",
@@ -6,10 +6,6 @@
   "period": "朝鮮王朝",
   "polity": "朝鮮",
   "title": "孤山遺稿",
-  "source_categories": [
-    "1796年",
-    "尹善道"
-  ],
   "is_compilation": false,
   "documents": [
     {
@@ -76,5 +72,11 @@
       "body_start_line": 6
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "date_label": "1796年",
+  "mentions": {
+    "people": [
+      "尹善道"
+    ]
+  }
 }

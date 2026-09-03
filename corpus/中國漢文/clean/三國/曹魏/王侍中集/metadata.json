@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 131,
   "corpus_root": "中國漢文",
@@ -7,16 +7,10 @@
   "polity": "曹魏",
   "title": "王侍中集",
   "categories": [
-    "三國",
-    "曹魏"
+    "文集"
   ],
   "source_categories": [
-    "213年 (提及)",
-    "218年 (提及)",
-    "文集",
-    "曹魏",
-    "漢魏六朝百三家集",
-    "王粲"
+    "漢魏六朝百三家集"
   ],
   "sources": [
     "https://zh.wikisource.org/wiki/%E7%8E%8B%E4%BE%8D%E4%B8%AD%E9%9B%86"
@@ -30,5 +24,14 @@
       "body_start_line": 13
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "authors": [
+    "王粲"
+  ],
+  "mentions": {
+    "dates": [
+      "213年",
+      "218年"
+    ]
+  }
 }

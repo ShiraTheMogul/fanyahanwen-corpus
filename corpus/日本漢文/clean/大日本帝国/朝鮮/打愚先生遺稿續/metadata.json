@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 80319,
   "corpus_root": "日本漢文",
@@ -7,10 +7,6 @@
   "polity": "大日本帝國",
   "region": "朝鮮",
   "title": "打愚先生遺稿續",
-  "source_categories": [
-    "1928年",
-    "李翔"
-  ],
   "is_compilation": false,
   "documents": [
     {
@@ -42,5 +38,11 @@
       "body_start_line": 8
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "date_label": "1928年",
+  "mentions": {
+    "people": [
+      "李翔"
+    ]
+  }
 }

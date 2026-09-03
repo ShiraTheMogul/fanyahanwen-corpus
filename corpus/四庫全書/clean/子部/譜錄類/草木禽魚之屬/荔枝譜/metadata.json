@@ -3,13 +3,6 @@
   "work_id": 126836,
   "corpus_root": "四庫全書",
   "title": "荔枝譜",
-  "source_categories": [
-    "1030年 (提及)",
-    "1059年 (提及)",
-    "1148年 (提及)",
-    "1781年 (提及)",
-    "PD-old"
-  ],
   "is_compilation": false,
   "contained_in": [
     {
@@ -85,5 +78,14 @@
       "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
     }
   ],
-  "provenance_schema_version": 1
+  "provenance_schema_version": 1,
+  "mentions": {
+    "dates": [
+      "1030年",
+      "1059年",
+      "1148年",
+      "1781年"
+    ]
+  },
+  "medium": "紙"
 }

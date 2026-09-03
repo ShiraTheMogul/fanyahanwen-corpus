@@ -3,13 +3,6 @@
   "work_id": 126454,
   "corpus_root": "四庫全書",
   "title": "政經",
-  "source_categories": [
-    "1217年 (提及)",
-    "1232年 (提及)",
-    "1233年 (提及)",
-    "1780年 (提及)",
-    "PD-old"
-  ],
   "is_compilation": false,
   "contained_in": [
     {
@@ -85,5 +78,14 @@
       "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
     }
   ],
-  "provenance_schema_version": 1
+  "provenance_schema_version": 1,
+  "mentions": {
+    "dates": [
+      "1217年",
+      "1232年",
+      "1233年",
+      "1780年"
+    ]
+  },
+  "medium": "紙"
 }

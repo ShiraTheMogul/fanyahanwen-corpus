@@ -7,14 +7,6 @@
   "polity": "唐",
   "title": "翰林志",
   "work_base_title": "翰林志",
-  "source_categories": [
-    "728年 (提及)",
-    "738年 (提及)",
-    "784年 (提及)",
-    "傳",
-    "唐朝",
-    "李肇"
-  ],
   "is_compilation": false,
   "documents": [
     {
@@ -265,5 +257,18 @@
       "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
     }
   ],
-  "provenance_schema_version": 1
+  "provenance_schema_version": 1,
+  "categories": [
+    "傳"
+  ],
+  "authors": [
+    "李肇"
+  ],
+  "mentions": {
+    "dates": [
+      "728年",
+      "738年",
+      "784年"
+    ]
+  }
 }

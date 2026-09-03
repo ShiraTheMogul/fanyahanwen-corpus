@@ -2,7 +2,7 @@
   "schema_version": 1,
   "work_id": 127917,
   "corpus_root": "四庫全書",
-  "title": "文忠集 (歐陽修, 四庫全書本)",
+  "title": "文忠集",
   "is_compilation": false,
   "contained_in": [
     {
@@ -162,6 +162,9 @@
           "document_id": 214717
         }
       ]
+    },
+    {
+      "edition_label": "歐陽修, 四庫全書本"
     }
   ],
   "source_witnesses": [
@@ -351,5 +354,6 @@
       "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
     }
   ],
-  "provenance_schema_version": 1
+  "provenance_schema_version": 1,
+  "medium": "紙"
 }

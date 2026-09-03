@@ -1,20 +1,16 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 19,
   "corpus_root": "中國漢文",
   "macro_region": "中國",
   "period": "曹魏",
   "polity": "曹魏",
-  "title": "佛說須賴經 (白延譯)",
+  "title": "佛說須賴經",
   "categories": [
-    "三國",
-    "曹魏"
+    "佛經"
   ],
   "source_categories": [
-    "三國",
-    "佛經",
     "大正新脩大藏經",
-    "曹魏",
     "白延"
   ],
   "sources": [
@@ -29,5 +25,11 @@
       "body_start_line": 13
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "contributors": [
+    {
+      "name": "白延",
+      "role": "translator"
+    }
+  ]
 }

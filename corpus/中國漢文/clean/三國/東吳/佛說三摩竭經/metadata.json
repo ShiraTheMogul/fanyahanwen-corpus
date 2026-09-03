@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 260,
   "corpus_root": "中國漢文",
@@ -7,15 +7,10 @@
   "polity": "東吳",
   "title": "佛說三摩竭經",
   "categories": [
-    "三國",
-    "東吳"
+    "佛經"
   ],
   "source_categories": [
-    "三國",
-    "佛經",
-    "大正新脩大藏經",
-    "東吳",
-    "竺律炎"
+    "大正新脩大藏經"
   ],
   "sources": [
     "https://zh.wikisource.org/wiki/%E4%BD%9B%E8%AA%AA%E4%B8%89%E6%91%A9%E7%AB%AD%E7%B6%93"
@@ -29,5 +24,11 @@
       "body_start_line": 13
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "contributors": [
+    {
+      "name": "竺律炎",
+      "role": "translator"
+    }
+  ]
 }

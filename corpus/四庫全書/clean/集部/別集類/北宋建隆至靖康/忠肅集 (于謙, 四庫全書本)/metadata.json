@@ -2,7 +2,7 @@
   "schema_version": 1,
   "work_id": 127913,
   "corpus_root": "四庫全書",
-  "title": "忠肅集 (于謙, 四庫全書本)",
+  "title": "忠肅集",
   "is_compilation": false,
   "contained_in": [
     {
@@ -232,6 +232,9 @@
           "digital_transcription_id": "kanripo:KR4d0057:master@37a88ef4f89682253c829beac3a04ea2b383f0a4"
         }
       ]
+    },
+    {
+      "edition_label": "于謙, 四庫全書本"
     }
   ],
   "source_witnesses": [
@@ -297,5 +300,6 @@
       "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
     }
   ],
-  "provenance_schema_version": 1
+  "provenance_schema_version": 1,
+  "medium": "紙"
 }

@@ -3,13 +3,6 @@
   "work_id": 126628,
   "corpus_root": "四庫全書",
   "title": "投轄錄",
-  "source_categories": [
-    "1102年 (提及)",
-    "1125年 (提及)",
-    "1214年 (提及)",
-    "1776年 (提及)",
-    "PD-old"
-  ],
   "is_compilation": false,
   "contained_in": [
     {
@@ -74,5 +67,14 @@
       "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
     }
   ],
-  "provenance_schema_version": 1
+  "provenance_schema_version": 1,
+  "mentions": {
+    "dates": [
+      "1102年",
+      "1125年",
+      "1214年",
+      "1776年"
+    ]
+  },
+  "medium": "紙"
 }

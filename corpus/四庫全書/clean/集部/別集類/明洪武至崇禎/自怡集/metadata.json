@@ -3,13 +3,6 @@
   "work_id": 128321,
   "corpus_root": "四庫全書",
   "title": "自怡集",
-  "source_categories": [
-    "1373年 (提及)",
-    "1377年 (提及)",
-    "1380年 (提及)",
-    "1778年 (提及)",
-    "PD-old"
-  ],
   "is_compilation": false,
   "contained_in": [
     {
@@ -95,5 +88,14 @@
       "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
     }
   ],
-  "provenance_schema_version": 1
+  "provenance_schema_version": 1,
+  "mentions": {
+    "dates": [
+      "1373年",
+      "1377年",
+      "1380年",
+      "1778年"
+    ]
+  },
+  "medium": "紙"
 }

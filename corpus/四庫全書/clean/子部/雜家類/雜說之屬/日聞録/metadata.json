@@ -3,12 +3,6 @@
   "work_id": 127133,
   "corpus_root": "四庫全書",
   "title": "日聞録",
-  "source_categories": [
-    "1781年 (提及)",
-    "721年 (提及)",
-    "PD-old",
-    "前99年 (提及)"
-  ],
   "is_compilation": false,
   "contained_in": [
     {
@@ -84,5 +78,13 @@
       "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
     }
   ],
-  "provenance_schema_version": 1
+  "provenance_schema_version": 1,
+  "mentions": {
+    "dates": [
+      "1781年",
+      "721年",
+      "前99年"
+    ]
+  },
+  "medium": "紙"
 }

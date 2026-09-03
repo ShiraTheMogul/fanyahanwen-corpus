@@ -1,13 +1,4 @@
-<%#
-  Shared right sidebar: view options form.
-
-  This partial renders the <form> only; it does NOT call content_for.
-  It is used by:
-    - app/views/characters/_rightbar.html.erb
-    - app/views/corpus_viewer/_rightbar.html.erb
-
-  Corpus Viewer has some specific options relating to text formatting, whilst the dict limits it a bit. 
-%>
+﻿<%# Shared right sidebar: view options form. %>
 
 <%= form_with url: preferences_path, method: :post, local: true,
       data: {
@@ -38,15 +29,11 @@
               [
                 [t("view_options.phoneticization.original_unihan"), :original],
                 *Phoneticization::Converters::MANDARIN_SCHEMES.keys.map do |k|
-                  label =
-                case k
-                when :fanqie
-                  t("view_options.phoneticization.fanqie_chinese")
-                when :tang
-                  t("view_options.phoneticization.tang_pronunciation")
-                else
-                  k.to_s.tr("_", " ").split.map(&:capitalize).join(" ")
-                end
+                  label = case k
+                          when :fanqie then t("view_options.phoneticization.fanqie_chinese")
+                          when :tang then t("view_options.phoneticization.tang_pronunciation")
+                          else k.to_s.tr("_", " ").split.map(&:capitalize).join(" ")
+                          end
                   [label, k]
                 end
               ],
@@ -62,15 +49,11 @@
               [
                 [t("view_options.phoneticization.original_unihan"), :original],
                 *Phoneticization::Converters::CANTONESE_SCHEMES.keys.map do |k|
-                  label =
-                case k
-                when :fanqie
-                  t("view_options.phoneticization.fanqie_chinese")
-                when :tang
-                  t("view_options.phoneticization.tang_pronunciation")
-                else
-                  k.to_s.tr("_", " ").split.map(&:capitalize).join(" ")
-                end
+                  label = case k
+                          when :fanqie then t("view_options.phoneticization.fanqie_chinese")
+                          when :tang then t("view_options.phoneticization.tang_pronunciation")
+                          else k.to_s.tr("_", " ").split.map(&:capitalize).join(" ")
+                          end
                   [label, k]
                 end
               ],
@@ -93,7 +76,6 @@
             ),
             class: "rightbar-select" %>
     </div>
-
   </details>
 
   <details class="rightbar-section rightbar-group" open>
@@ -110,15 +92,9 @@
       <div class="rightbar-row">
         <label for="ruby_family"><%= t("view_options.ruby.reading_family") %></label>
         <%= select_tag :ruby_family,
-              options_for_select(
-                ruby_groups.map { |group| [group[:label], group[:key]] },
-                current_ruby_family
-              ),
+              options_for_select(ruby_groups.map { |group| [group[:label], group[:key]] }, current_ruby_family),
               class: "rightbar-select",
-              data: {
-                ruby_source_target: "family",
-                action: "change->ruby-source#changeFamily"
-              } %>
+              data: { ruby_source_target: "family", action: "change->ruby-source#changeFamily" } %>
       </div>
 
       <div class="rightbar-row">
@@ -126,15 +102,10 @@
         <%= select_tag :ruby_source_choice,
               "".html_safe,
               class: "rightbar-select",
-              data: {
-                ruby_source_target: "source",
-                action: "change->ruby-source#changeSource"
-              } %>
+              data: { ruby_source_target: "source", action: "change->ruby-source#changeSource" } %>
       </div>
 
-      <%= hidden_field_tag :ruby_source,
-            current_ruby_key,
-            data: { ruby_source_target: "hidden" } %>
+      <%= hidden_field_tag :ruby_source, current_ruby_key, data: { ruby_source_target: "hidden" } %>
     </div>
 
     <p class="rightbar-note"><%= t("view_options.ruby.explanation_html") %></p>
@@ -151,10 +122,7 @@
       <div class="rightbar-row">
         <label for="ruby_token"><%= t("view_options.ruby.token") %></label>
         <%= select_tag :ruby_token,
-              options_for_select(
-                [[t("view_options.ruby.auto_first"), ""]] + _ruby_tokens.map { |t| [t, t] },
-                (session[:ruby_token] || "").to_s
-              ),
+              options_for_select([[t("view_options.ruby.auto_first"), ""]] + _ruby_tokens.map { |token| [token, token] }, (session[:ruby_token] || "").to_s),
               class: "rightbar-select" %>
       </div>
     <% else %>
@@ -164,20 +132,14 @@
     <div class="rightbar-row">
       <label for="ruby_orientation"><%= t("view_options.ruby.layout") %></label>
       <%= select_tag :ruby_orientation,
-            options_for_select(
-              [[t("view_options.ruby.horizontal"), "horizontal"], [t("view_options.ruby.vertical_side"), "verticalside"]],
-              (session[:ruby_orientation] || :horizontal).to_s
-            ),
+            options_for_select([[t("view_options.ruby.horizontal"), "horizontal"], [t("view_options.ruby.vertical_side"), "verticalside"]], (session[:ruby_orientation] || :horizontal).to_s),
             class: "rightbar-select" %>
     </div>
 
     <div class="rightbar-row">
       <label for="ruby_side"><%= t("view_options.ruby.side") %></label>
       <%= select_tag :ruby_side,
-            options_for_select(
-              [[t("view_options.ruby.right"), "right"], [t("view_options.ruby.left"), "left"]],
-              (session[:ruby_side] || :right).to_s
-            ),
+            options_for_select([[t("view_options.ruby.right"), "right"], [t("view_options.ruby.left"), "left"]], (session[:ruby_side] || :right).to_s),
             class: "rightbar-select" %>
     </div>
   </details>
@@ -185,26 +147,30 @@
   <details class="rightbar-section rightbar-group" open>
     <summary class="rightbar-summary"><strong><%= t("view_options.script.heading") %></strong></summary>
 
+    <% script_choices = CharacterStandards.selectable_modes.map { |mode| [t("view_options.script.#{mode}"), mode.to_s] } %>
+
     <div class="rightbar-row">
       <label for="script_mode"><%= t("view_options.script.convert_text") %></label>
       <%= select_tag :script_mode,
-            options_for_select(
-              [[t("view_options.script.original"), "original"], [t("view_options.script.traditional"), "traditional"], [t("view_options.script.simplified"), "simplified"]],
-              (session[:script_mode] || :original).to_s
-            ),
+            options_for_select(script_choices, (session[:script_mode] || :original).to_s),
             class: "rightbar-select" %>
     </div>
+
+    <% unless CharacterStandards.available?(:mainland_traditional) %>
+      <p class="rightbar-note"><%= t("view_options.script.mainland_resource_missing") %></p>
+    <% end %>
   </details>
 
   <details class="rightbar-section rightbar-group" open>
     <summary class="rightbar-summary"><strong><%= t("view_options.font.heading") %></strong></summary>
 
+    <% selected_han_font = (session[:han_font] || HanFonts.default_key).to_s %>
     <div class="rightbar-row">
       <label for="han_font"><%= t("view_options.font.han_font") %></label>
       <%= select_tag :han_font,
-            options_for_select(
-              HanFonts.choices,
-              (session[:han_font] || HanFonts.default_key).to_s
+            grouped_options_for_select(
+              HanFonts.choice_groups(ungrouped_label: t("view_options.font.other_fonts")),
+              selected_han_font
             ),
             class: "rightbar-select" %>
     </div>
@@ -225,7 +191,7 @@
       <%= check_box_tag :han_font_warn_missing, "1", (session.key?(:han_font_warn_missing) ? session[:han_font_warn_missing] : true) == true %>
     </div>
 
-    <% font_info = HanFonts.information_for((session[:han_font] || HanFonts.default_key).to_s) %>
+    <% font_info = HanFonts.information_for(selected_han_font) %>
     <details class="rightbar-credits">
       <summary><%= t("view_options.font.information") %></summary>
       <pre><%= font_info.presence || t("view_options.font.information_not_found") %></pre>

@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 5,
   "corpus_root": "中國漢文",
@@ -6,15 +6,6 @@
   "period": "曹魏",
   "polity": "曹魏",
   "title": "七啟",
-  "categories": [
-    "三國",
-    "曹魏"
-  ],
-  "source_categories": [
-    "50%",
-    "曹植",
-    "曹魏"
-  ],
   "sources": [
     "https://zh.wikisource.org/wiki/%E4%B8%83%E5%95%9F"
   ],
@@ -27,5 +18,8 @@
       "body_start_line": 13
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "authors": [
+    "曹植"
+  ]
 }

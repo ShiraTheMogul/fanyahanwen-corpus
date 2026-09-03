@@ -1,53 +1,77 @@
-# frozen_string_literal: true
+﻿# frozen_string_literal: true
 
 require "digest"
 require "json"
 require "thread"
 
-# Discover available Han-script fonts from app/assets/fonts and expose them
-# to the UI (rightbar) and to a dynamic @font-face injector in the layout.
+# Discover available Han-script fonts from app/assets/fonts and expose them to
+# the UI and the dynamic @font-face injector.
 #
-# Design goals:
-# - Drop a font folder into app/assets/fonts/<font_name>/ and it shows up automatically.
-# - Keep the "choice" stored in the session as a simple symbol.
-# - Avoid breaking the existing layout: we only set font-family on main content
-#   (and tooltips) based on a scope toggle.
-# - Do NOT let Han fonts override Latin/ASCII: we enforce unicode-range = Han blocks.
+# A font folder may optionally contain font.json:
+# {
+#   "label": "LXGW WenKai KR - Regular",
+#   "family": "Fanya LXGW WenKai KR Regular",
+#   "group": "LXGW WenKai KR",
+#   "file": "LXGWWenKaiKR-Regular.ttf"
+# }
 #
-# Folder convention (recommended):
-#   app/assets/fonts/<font_key>/
-#     <font file>.woff2 / .woff / .otf / .ttf
-#     LICENSE* / OFL* / CREDITS* / README* (optional)
-#
-# We still support "loose" font files directly under app/assets/fonts for backwards
-# compatibility, but folders are nicer (and make credits easy).
+# The metadata keeps display names and related variants together without making
+# font choice responsible for character-standard conversion.
 module HanFonts
   FONT_EXTS = %w[.woff2 .woff .otf .ttf].freeze
-  CREDIT_PATTERNS = [
-    "LICENSE*",
-    "OFL*",
-    "CREDITS*",
-    "README*",
-    "COPYING*"
-  ].freeze
+  CREDIT_PATTERNS = ["LICENSE*", "OFL*", "CREDITS*", "README*", "COPYING*"].freeze
+  METADATA_FILE = "font.json"
 
-  # A single font face (file) entry.
   FontFace = Struct.new(
-    :key,          # symbol stored in session
-    :label,        # UI label
-    :family,       # CSS font-family name
-    :asset_path,   # path relative to app/assets/fonts
-    :format,       # css format() value
-    :unicode_range,# unicode-range string
+    :key,
+    :label,
+    :family,
+    :asset_path,
+    :format,
+    :unicode_range,
+    :group,
     keyword_init: true
   )
 
   module_function
 
   def choices
-    faces.group_by(&:key).map do |_key, group|
-      [group.first.label, group.first.key]
-    end.sort_by { |label, _| label.downcase }
+    distinct_faces.map { |face| [face.label, face.key] }
+                  .sort_by { |label, _| label.downcase }
+  end
+
+  # Rails' grouped_options_for_select consumes [group_label, options] pairs.
+  # A named group is retained only when it has at least two choices; one-off
+  # fonts go into the translated catch-all group supplied by the view.
+  def choice_groups(ungrouped_label: "Other fonts")
+    entries = distinct_faces.sort_by { |face| [face.group.to_s.downcase, face.label.downcase] }
+    by_group = entries.group_by { |face| face.group.to_s.strip.presence }
+
+    grouped = []
+    ungrouped = Array(by_group.delete(nil))
+
+    by_group.keys.compact.sort_by(&:downcase).each do |group_name|
+      members = by_group.fetch(group_name)
+      if members.length < 2
+        ungrouped.concat(members)
+        next
+      end
+
+      grouped << [group_name, members.map { |face| [face.label, face.key] }]
+    end
+
+    unless ungrouped.empty?
+      grouped.unshift([
+        ungrouped_label,
+        ungrouped.sort_by { |face| face.label.downcase }.map { |face| [face.label, face.key] }
+      ])
+    end
+
+    grouped
+  end
+
+  def distinct_faces
+    faces.group_by(&:key).values.map(&:first)
   end
 
   def allowed_keys
@@ -64,8 +88,6 @@ module HanFonts
     f ? f.family : faces.first&.family
   end
 
-  # A CSS-ready font stack string.
-  # We always include WenJin Mincho as the preferred fallback for missing glyphs.
   def stack_for(key)
     fam = family_for(key)
     wen = family_for(:wenjin_mincho) || "serif"
@@ -77,13 +99,6 @@ module HanFonts
     end
   end
 
-  # Return true only when the selected font explicitly maps every Han
-  # character in +text+. Punctuation and Latin text are ignored because the
-  # browser may correctly render those through an ordinary fallback font.
-  #
-  # Coverage is supplied by a small sidecar generated from the actual webfont.
-  # This avoids the misleading CSS behaviour where a missing historical glyph
-  # silently falls back to a modern font.
   def covers_text?(key, text)
     characters = text.to_s.each_char.select { |character| character.match?(/\p{Han}/) }
     return false if characters.empty?
@@ -125,9 +140,6 @@ module HanFonts
     {}
   end
 
-  # Allowed scopes for applying the selected Han font.
-  # - :all       applies to all Han text in main content + tooltip
-  # - :headwords applies only to headwords (dictionary + tooltip)
   def allowed_scopes
     %i[all headwords]
   end
@@ -136,10 +148,6 @@ module HanFonts
     :all
   end
 
-  # Development used to rediscover the complete font directory on every call.
-  # A normal layout asks for faces several times, so that multiplied filesystem
-  # work (especially on WSL /mnt/c). Keep hot-reload behaviour with a short TTL
-  # while making repeated calls in the same request effectively free.
   DEVELOPMENT_DISCOVERY_TTL = [ENV.fetch("HAN_FONTS_DISCOVERY_TTL", "30").to_f, 0.0].max
 
   def faces
@@ -172,8 +180,6 @@ module HanFonts
     @coverage_cache = nil
   end
 
-  # ---- internal ----
-
   def normalise_key(value)
     value.to_s.strip.downcase.tr(" ", "_").tr("-", "_").to_sym
   end
@@ -183,35 +189,35 @@ module HanFonts
     return [] unless Dir.exist?(root)
 
     out = []
-
-    # Special handling for WenJin Mincho: split across planes.
     out.concat(wenjin_faces(root))
 
-    # 1) Folder-based fonts (recommended)
     Dir.children(root).each do |child|
       next if child.start_with?(".")
       dir = root.join(child)
       next unless Dir.exist?(dir)
       next if child == "wenjin_mincho"
 
-      best = choose_best_in_dir(dir)
+      metadata = font_metadata(dir)
+      best = choose_metadata_file(dir, metadata) || choose_best_in_dir(dir)
       next unless best
 
       rel = Pathname(best).relative_path_from(root).to_s
       key = normalise_key(child)
-      label = human_label(child)
+      label = metadata.fetch("label", human_label(child)).to_s
+      family = metadata.fetch("family", label).to_s
+      group = metadata["group"].to_s.strip.presence
 
       out << FontFace.new(
         key: key,
         label: label,
-        family: label,
+        family: family,
         asset_path: rel,
         format: css_format_for(rel),
-        unicode_range: UnicodeRanges.han_css_unicode_range
+        unicode_range: UnicodeRanges.han_css_unicode_range,
+        group: group
       )
     end
 
-    # 2) Legacy loose files directly under fonts/
     Dir.glob(root.join("*")) do |p|
       next unless File.file?(p)
       next unless FONT_EXTS.include?(File.extname(p).downcase)
@@ -227,49 +233,62 @@ module HanFonts
         family: label,
         asset_path: rel,
         format: css_format_for(rel),
-        unicode_range: UnicodeRanges.han_css_unicode_range
+        unicode_range: UnicodeRanges.han_css_unicode_range,
+        group: nil
       )
     end
 
     out
   end
 
+  def font_metadata(dir)
+    path = dir.join(METADATA_FILE)
+    return {} unless path.file?
+
+    text = File.open(path, "r:bom|utf-8", &:read)
+    value = JSON.parse(text)
+    value.is_a?(Hash) ? value : {}
+  rescue JSON::ParserError, Encoding::InvalidByteSequenceError, Encoding::UndefinedConversionError, Errno::ENOENT
+    {}
+  end
+
+  def choose_metadata_file(dir, metadata)
+    wanted = metadata["file"].to_s.strip
+    return nil if wanted.empty?
+    return nil unless File.basename(wanted) == wanted
+    return nil unless FONT_EXTS.include?(File.extname(wanted).downcase)
+
+    path = dir.join(canonical_entry_name(dir, wanted))
+    path.file? ? path.to_s : nil
+  rescue StandardError
+    nil
+  end
+
   def human_label(s)
     s.to_s.tr("_", " ").tr("-", " ").split.map(&:capitalize).join(" ")
   end
 
+  def canonical_entry_name(dir, wanted_basename)
+    wanted = wanted_basename.to_s
+    return wanted if wanted.empty?
 
-# On case-insensitive filesystems (e.g. WSL on /mnt/c), Dir.glob can match a file
-# but return a path whose *extension case* doesn't match the real on-disk filename.
-# Propshaft indexes assets by their real logical path, so a mismatch like
-#   WenJinMinchoP0-Regular.WOFF2  vs  WenJinMinchoP0-Regular.woff2
-# will crash the page.
-#
-# This helper re-resolves a basename to the actual entry name in that directory
-# (case-insensitive match, but returns the real case).
-def canonical_entry_name(dir, wanted_basename)
-  wanted = wanted_basename.to_s
-  return wanted if wanted.empty?
+    Dir.children(dir).find { |entry| entry.casecmp?(wanted) } || wanted
+  rescue StandardError
+    wanted
+  end
 
-  Dir.children(dir).find { |e| e.casecmp?(wanted) } || wanted
-rescue StandardError
-  wanted
-end
+  def canonicalise_path_case(path)
+    p = path.to_s
+    d = File.dirname(p)
+    b = File.basename(p)
+    return p unless Dir.exist?(d)
 
-def canonicalise_path_case(path)
-  p = path.to_s
-  d = File.dirname(p)
-  b = File.basename(p)
-  return p unless Dir.exist?(d)
-
-  File.join(d, canonical_entry_name(d, b))
-rescue StandardError
-  p
-end
-
+    File.join(d, canonical_entry_name(d, b))
+  rescue StandardError
+    p
+  end
 
   def choose_best_in_dir(dir)
-    # Prefer woff2 > woff > otf > ttf
     exts = [".woff2", ".woff", ".otf", ".ttf"]
     exts.each do |ext|
       hit = Dir.glob(dir.join("**/*#{ext}")).sort.first
@@ -285,7 +304,6 @@ end
     p0 = choose_best(dir, "WenJinMinchoP0-Regular")
     p2 = choose_best(dir, "WenJinMinchoP2-Regular")
     p3 = choose_best(dir, "WenJinMinchoP3-Regular")
-
     return [] if [p0, p2, p3].compact.empty?
 
     faces = []
@@ -299,7 +317,8 @@ end
         family: family,
         asset_path: "wenjin_mincho/#{File.basename(p0)}",
         format: css_format_for(p0),
-        unicode_range: "U+0000-FFFF"
+        unicode_range: "U+0000-FFFF",
+        group: nil
       )
     end
 
@@ -310,7 +329,8 @@ end
         family: family,
         asset_path: "wenjin_mincho/#{File.basename(p2)}",
         format: css_format_for(p2),
-        unicode_range: "U+20000-2A6DF, U+2A700-2B73F, U+2B740-2B81D, U+2B820-2CEAD, U+2CEB0-2EBEF"
+        unicode_range: "U+20000-2A6DF, U+2A700-2B73F, U+2B740-2B81D, U+2B820-2CEAD, U+2CEB0-2EBEF",
+        group: nil
       )
     end
 
@@ -321,7 +341,8 @@ end
         family: family,
         asset_path: "wenjin_mincho/#{File.basename(p3)}",
         format: css_format_for(p3),
-        unicode_range: "U+2EBF0-2EE5D, U+30000-3134A, U+31350-323AF, U+323B0-33479"
+        unicode_range: "U+2EBF0-2EE5D, U+30000-3134A, U+31350-323AF, U+323B0-33479",
+        group: nil
       )
     end
 
@@ -340,7 +361,6 @@ end
     nil
   end
 
-
   def css_format_for(path)
     ext = File.extname(path).downcase
     case ext
@@ -357,35 +377,24 @@ end
     @credits_paths[normalise_key(key)]
   end
 
-  # Returns human-readable information about a font, if present.
-  #
-  # Convention:
-  # - Prefer any file inside the font folder whose basename begins with "readme"
-  #   (case-insensitive). This tends to be where authors put credits + notes.
-  # - Fall back to LICENSE/OFL/CREDITS/COPYING style files if no README exists.
-  #
-  # If nothing is found, returns nil.
   def information_for(key)
     k = normalise_key(key)
-
     dir = font_dir_for(k)
     if dir
       readme = Dir.glob(File.join(dir, "*"))
-                 .select { |p| File.file?(p) }
-                 .sort
-                 .find { |p| File.basename(p).downcase.start_with?("readme") }
+                  .select { |p| File.file?(p) }
+                  .sort
+                  .find { |p| File.basename(p).downcase.start_with?("readme") }
       txt = safe_read_text(readme) if readme
       return txt if txt.present?
     end
 
-    # fall back to earlier credit-file discovery
     txt = safe_read_text(credits_path_for(k))
     txt.presence
   rescue StandardError
     nil
   end
 
-  # Backwards-compat shim (older views called this).
   def credits_for(key)
     information_for(key)
   end
@@ -395,15 +404,14 @@ end
     out = {}
     return out unless Dir.exist?(root)
 
-    # folder fonts
     Dir.children(root).each do |child|
       next if child.start_with?(".")
       dir = root.join(child)
       next unless Dir.exist?(dir)
 
       key = normalise_key(child)
-      CREDIT_PATTERNS.each do |pat|
-        hit = Dir.glob(dir.join(pat)).sort.first
+      CREDIT_PATTERNS.each do |pattern|
+        hit = Dir.glob(dir.join(pattern)).sort.first
         if hit
           out[key] = hit.to_s
           break
@@ -431,10 +439,9 @@ end
     return nil if path.blank?
     return nil unless File.file?(path)
 
-    # Avoid accidentally slurping huge files.
     File.open(path, "rb") { |io| io.read(64 * 1024) }
-      &.force_encoding("UTF-8")
-      &.scrub
+        &.force_encoding("UTF-8")
+        &.scrub
   rescue StandardError
     nil
   end

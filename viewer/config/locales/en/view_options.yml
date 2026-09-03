@@ -1,4 +1,4 @@
-en:
+﻿en:
   view_options:
     heading: "View options"
     phoneticization:
@@ -28,14 +28,27 @@ en:
       right: "Right"
       left: "Left"
     script:
-      heading: "Han script settings"
-      convert_text: "Convert text"
+      heading: "Han character standards"
+      convert_text: "Character standard"
       original: "Original"
-      traditional: "Traditional"
-      simplified: "Simplified"
+      traditional: "Traditional (OpenCC Standard)"
+      simplified: "Mainland Simplified"
+      mainland_traditional: "Mainland Traditional"
+      taiwan_traditional: "Taiwan Traditional"
+      hong_kong_traditional: "Hong Kong Traditional"
+      macau_traditional: "Macau Traditional"
+      singapore_modern: "Singapore Simplified (Modern)"
+      malaysia_simplified: "Malaysia Simplified"
+      singapore_1969: "Singapore Simplified (1969)"
+      wu_zhao: "Wu Zhao Standard (689 AD)"
+      shinjitai: "Shinjitai"
+      erjian_1: "Second-round Simplified (First)"
+      erjian_2: "Second-round Simplified (Second)"
+      mainland_resource_missing: "Mainland Traditional is unavailable until its verified OpenCC character table has been installed with script/fetch_character_standard_resources.rb."
     font:
       heading: "Font settings"
       han_font: "Han font"
+      other_fonts: "Other fonts"
       apply_to: "Apply font to"
       all_han_text: "All Han text"
       headwords_only: "Headwords only"

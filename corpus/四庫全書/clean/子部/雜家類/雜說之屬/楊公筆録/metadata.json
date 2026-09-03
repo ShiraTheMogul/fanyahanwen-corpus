@@ -3,15 +3,6 @@
   "work_id": 127144,
   "corpus_root": "四庫全書",
   "title": "楊公筆録",
-  "source_categories": [
-    "1085年 (提及)",
-    "1088年 (提及)",
-    "1090年 (提及)",
-    "1098年 (提及)",
-    "1778年 (提及)",
-    "879年 (提及)",
-    "PD-old"
-  ],
   "is_compilation": false,
   "contained_in": [
     {
@@ -76,5 +67,16 @@
       "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
     }
   ],
-  "provenance_schema_version": 1
+  "provenance_schema_version": 1,
+  "mentions": {
+    "dates": [
+      "1085年",
+      "1088年",
+      "1090年",
+      "1098年",
+      "1778年",
+      "879年"
+    ]
+  },
+  "medium": "紙"
 }

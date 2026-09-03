@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 81108,
   "corpus_root": "朝鮮漢文",
@@ -6,10 +6,6 @@
   "period": "朝鮮王朝",
   "polity": "朝鮮",
   "title": "晩沙稿",
-  "source_categories": [
-    "1759年",
-    "沈之源"
-  ],
   "is_compilation": false,
   "documents": [
     {
@@ -48,5 +44,11 @@
       "body_start_line": 6
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "date_label": "1759年",
+  "mentions": {
+    "people": [
+      "沈之源"
+    ]
+  }
 }

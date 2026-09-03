@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 68428,
   "corpus_root": "中國漢文",
@@ -7,10 +7,6 @@
   "polity": "大明",
   "title": "彭文憲公筆記",
   "work_base_title": "彭文憲公筆記",
-  "source_categories": [
-    "彭時",
-    "明朝"
-  ],
   "is_compilation": false,
   "documents": [
     {
@@ -20,5 +16,10 @@
       "body_start_line": 6
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "mentions": {
+    "people": [
+      "彭時"
+    ]
+  }
 }

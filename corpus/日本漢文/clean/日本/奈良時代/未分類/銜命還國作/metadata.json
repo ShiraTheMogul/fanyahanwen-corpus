@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 80399,
   "corpus_root": "日本漢文",
@@ -7,11 +7,8 @@
   "polity": "日本",
   "title": "銜命還國作",
   "source_categories": [
-    "50%",
-    "五言詩",
     "唐朝",
-    "唐诗",
-    "日本漢詩"
+    "唐诗"
   ],
   "is_compilation": false,
   "documents": [
@@ -22,5 +19,9 @@
       "body_start_line": 7
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "categories": [
+    "五言詩",
+    "漢詩"
+  ]
 }

@@ -3,14 +3,6 @@
   "work_id": 127922,
   "corpus_root": "四庫全書",
   "title": "春卿遺稿",
-  "source_categories": [
-    "1012年 (提及)",
-    "1053年 (提及)",
-    "1054年 (提及)",
-    "1778年 (提及)",
-    "894年 (提及)",
-    "PD-old"
-  ],
   "is_compilation": false,
   "contained_in": [
     {
@@ -86,5 +78,15 @@
       "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
     }
   ],
-  "provenance_schema_version": 1
+  "provenance_schema_version": 1,
+  "mentions": {
+    "dates": [
+      "1012年",
+      "1053年",
+      "1054年",
+      "1778年",
+      "894年"
+    ]
+  },
+  "medium": "紙"
 }

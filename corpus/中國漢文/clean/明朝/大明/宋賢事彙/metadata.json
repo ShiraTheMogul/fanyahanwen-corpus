@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 67886,
   "corpus_root": "中國漢文",
@@ -7,10 +7,6 @@
   "polity": "大明",
   "title": "宋賢事彙",
   "work_base_title": "宋賢事彙",
-  "source_categories": [
-    "明朝",
-    "李廷機"
-  ],
   "is_compilation": false,
   "documents": [
     {
@@ -20,5 +16,10 @@
       "body_start_line": 6
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "mentions": {
+    "people": [
+      "李廷機"
+    ]
+  }
 }
