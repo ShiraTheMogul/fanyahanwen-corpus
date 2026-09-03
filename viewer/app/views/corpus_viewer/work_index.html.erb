@@ -17,15 +17,6 @@
 <section class="corpus-work-index">
   <h2><%= meta_hash["Work"].presence || meta_hash["Title"].presence || File.basename(@rel_path.to_s) %></h2>
 
-  <% if @meta.present? %>
-    <dl class="corpus-work-index__metadata">
-      <% @meta.each do |label, value| %>
-        <dt><%= label %></dt>
-        <dd><%= value %></dd>
-      <% end %>
-    </dl>
-  <% end %>
-
 
   <ul class="corpus-list">
     <% @work_documents.each do |document| %>
