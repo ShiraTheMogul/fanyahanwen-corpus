@@ -355,20 +355,120 @@ body > .site-footer {
 }
 
 @media (max-width: 700px) {
+  /* The full mobile header is too tall to remain pinned over the document.
+     Let it scroll away with the rest of the page. */
+  body > .site-header {
+    position: static;
+    top: auto;
+  }
+
   .site-header-inner {
     grid-template-columns: minmax(0, 1fr);
     grid-template-areas:
       "left"
       "center"
       "right";
+    gap: 0.48rem;
+    padding: 0.55rem 0.65rem 0.6rem;
+  }
+
+  /* Centre the brand and navigation, and keep the short Han title on one
+     line so the header does not spend two rows on the logo alone. */
+  .site-header-left {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.38rem;
+    width: 100%;
+  }
+
+  .site-title {
+    width: 100%;
+    text-align: center;
+  }
+
+  .site-title-link {
+    display: inline-flex;
+    grid-auto-flow: initial;
+    grid-template-columns: none;
+    align-items: baseline;
+    justify-content: center;
+    font-size: clamp(1.05rem, 5vw, 1.22rem);
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .site-title-part--corpus {
+    grid-column: auto;
+  }
+
+  .site-nav {
+    width: 100%;
+    justify-content: center;
+    gap: 0.22rem 0.62rem;
+    font-size: clamp(0.84rem, 3.9vw, 0.95rem);
+    line-height: 1.15;
+    text-align: center;
+  }
+
+  .site-nav-link {
+    padding-block: 0.08rem;
+  }
+
+  /* Keep dictionary search, Go, and 組字 on one compact row. */
+  .site-header-center,
+  .site-search-with-compose,
+  .site-search-with-compose > .site-search {
+    min-width: 0;
+  }
+
+  .site-search-with-compose {
+    display: flex;
+    align-items: stretch;
+    gap: 0.38rem;
+    width: 100%;
+  }
+
+  .site-search-with-compose > .site-search {
+    flex: 1 1 auto;
+    gap: 0.35rem;
+    width: auto;
   }
 
   .site-search-input {
     min-width: 0;
   }
 
+  .site-search-submit {
+    flex: 0 0 auto;
+    padding-inline: 0.7rem;
+  }
+
+  .site-ids-quick-compose {
+    flex: 0 0 auto;
+  }
+
+  /* Controls form one centred row; the date deliberately takes the row below
+     so it cannot force the controls into a lopsided wrap. */
   .site-header-right {
-    justify-content: flex-start;
+    width: 100%;
+    justify-content: center;
+    gap: 0.32rem 0.42rem;
+  }
+
+  .lunar-date {
+    flex: 1 0 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 380px) {
+  .site-nav {
+    gap-inline: 0.48rem;
+    font-size: 0.82rem;
+  }
+
+  .site-header-inner {
+    padding-inline: 0.5rem;
   }
 }
 
