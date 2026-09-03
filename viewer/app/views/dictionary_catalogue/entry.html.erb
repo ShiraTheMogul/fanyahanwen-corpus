@@ -1,4 +1,4 @@
-<% content_for :title, "#{@entry.headword} — #{@work.title}" %>
+﻿<% content_for :title, "#{@entry.headword} — #{@work.title}" %>
 
 <% content_for :rightbar do %>
   <h3><%= t("view_options.heading") %></h3>
@@ -58,11 +58,6 @@
       <dt><%= t("dictionary.catalogue.entry_sequence", default: "Entry sequence") %></dt>
       <dd><%= @entry.sequence_number %></dd>
 
-      <% if @entry.group_sequence.present? %>
-        <dt><%= t("dictionary.catalogue.group_sequence", default: "Group sequence") %></dt>
-        <dd><%= @entry.group_sequence %><%= " — group head" if @entry.group_head? %></dd>
-      <% end %>
-
       <% effective_initial = @entry.initial.presence || @section.initial.presence %>
       <% if effective_initial %>
         <dt><%= t("dictionary.catalogue.initial", default: "Initial") %></dt>
@@ -85,37 +80,37 @@
       </p>
     <% end %>
 
-    <h3><%= t("dictionary.catalogue.readings", default: "Readings") %></h3>
-    <% reading_state = @effective_readings.fetch(@entry.id, { readings: [], inherited: false, group_head: nil }) %>
-    <% if reading_state.fetch(:readings).empty? %>
-      <p class="dictionary-reading-missing"><%= t("dictionary.catalogue.not_preserved", default: "not preserved in this source group") %></p>
-    <% else %>
-      <% reading_state.fetch(:readings).each do |reading| %>
-        <p>
-          <strong><%= reading.kind %>:</strong>
-          <%= reading.raw_value %>
-          <% if reading.value.present? && reading.value != reading.raw_value %>
-            <span style="opacity: 0.75;">(<%= reading.value %>)</span>
-          <% end %>
-        </p>
-      <% end %>
-      <% if reading_state.fetch(:inherited) %>
-        <p class="dictionary-reading-inherited">
-          <%= t("dictionary.catalogue.inherited_reading_long", default: "This reading is inherited from pronunciation-group head %{headword} (#%{sequence}).", headword: reading_state.fetch(:group_head).headword, sequence: reading_state.fetch(:group_head).sequence_number) %>
-        </p>
-      <% end %>
-    <% end %>
+<% reading_state = @effective_readings.fetch(
+     @entry.id,
+     { readings: [], inherited: false, group_head: nil }
+   ) %>
 
-    <% if @entry.contains_unresolved_glyph? || @entry.review_required? %>
-      <div class="dictionary-status-box">
-        <% if @entry.contains_unresolved_glyph? %>
-          <div><%= t("dictionary.catalogue.unresolved_glyph", default: "The source entry contains an unresolved glyph marker.") %></div>
-        <% end %>
-        <% if @entry.review_required? %>
-          <div><%= t("dictionary.catalogue.review_required", default: "This entry remains marked for review.") %></div>
-        <% end %>
-      </div>
-    <% end %>
+<% if reading_state.fetch(:readings).any? %>
+  <h3><%= t("dictionary.catalogue.readings", default: "Readings") %></h3>
+
+  <% reading_state.fetch(:readings).each do |reading| %>
+    <p>
+      <strong><%= reading.kind %>:</strong>
+      <%= reading.raw_value %>
+
+      <% if reading.value.present? && reading.value != reading.raw_value %>
+        <span style="opacity: 0.75;">(<%= reading.value %>)</span>
+      <% end %>
+    </p>
+  <% end %>
+
+  <% if reading_state.fetch(:inherited) %>
+    <p class="dictionary-reading-inherited">
+      <%= t(
+        "dictionary.catalogue.inherited_reading_long",
+        default: "This reading is inherited from pronunciation-group head %{headword} (#%{sequence}).",
+        headword: reading_state.fetch(:group_head).headword,
+        sequence: reading_state.fetch(:group_head).sequence_number
+      ) %>
+    </p>
+  <% end %>
+<% end %>
+
   </div>
 
   <div class="dictionary-browser-main">
@@ -124,12 +119,7 @@
       <%= @entry.definition.presence || "—" %>
     </p>
 
-    <details style="margin-top: 18px;">
-      <summary><strong><%= t("dictionary.catalogue.raw_source_entry", default: "Raw parsed source entry") %></strong></summary>
-      <pre style="white-space: pre-wrap; overflow-wrap: anywhere;"><%= @entry.raw_payload %></pre>
-    </details>
-
-    <h2 style="margin-top: 24px;"><%= t("dictionary.catalogue.source_references", default: "Corpus source") %></h2>
+    <h2 style="margin-top: 24px;"><%= t("dictionary.catalogue.source_references", default: "Entry in Corpus") %></h2>
 
     <% @entry.dictionary_references.sort_by(&:position).each do |reference| %>
       <div class="dictionary-source-reference">
