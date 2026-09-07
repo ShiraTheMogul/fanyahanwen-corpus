@@ -1725,8 +1725,11 @@ export default class extends Controller {
   }
 
   dateEraChanged() {
-    if (this.dateEraTarget.value) this.dateOutputTarget.disabled = true
-    else this.dateOutputTarget.disabled = false
+    const expression = this.selectedEraExpression()
+    this.dateOutputTarget.disabled = false
+    this.dateStatusTarget.textContent = expression
+      ? this.tr("era_preview", { expression })
+      : ""
   }
 
   queueEraSuggestions() {
@@ -1766,6 +1769,7 @@ export default class extends Controller {
     this.dateEraTarget.appendChild(option)
     this.dateEraTarget.disabled = disabled
     this.dateOutputTarget.disabled = false
+    if (!disabled || label === this.tr("era_none")) this.dateStatusTarget.textContent = ""
   }
 
   renderEraSuggestions(rows) {
@@ -1818,21 +1822,15 @@ export default class extends Controller {
       return
     }
 
-    const eraExpression = this.selectedEraExpression()
-    if (eraExpression) {
-      await this.insertTextAtSelection(eraExpression, { convert: true })
-      this.dateStatusTarget.textContent = this.tr("inserted")
-      this.closeDialogs()
-      return
-    }
-
-    await this.insertDateValue(input, this.dateOutputTarget.value)
+    await this.insertDateValue(input, this.dateOutputTarget.value, {
+      eraExpression: this.selectedEraExpression(),
+    })
   }
 
-  async insertDateValue(input, output) {
+  async insertDateValue(input, output, { eraExpression = null } = {}) {
     this.dateStatusTarget.textContent = this.tr("converting")
     try {
-      const data = await this.postJson({ operation: "date", input, output })
+      const data = await this.postJson({ operation: "date", input, output, era_expression: eraExpression })
       if (!data?.ok) throw new Error(data?.error || this.tr("date_failed"))
       const formatted = this.formatArabicNumericRuns(data.text)
       await this.insertTextAtSelection(formatted, { convert: true })

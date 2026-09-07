@@ -126,7 +126,37 @@ class WordProcessorController < ApplicationController
 
     raise ArgumentError, "That date cannot be represented in the selected system." if text.blank?
 
+    era_expression = params[:era_expression].to_s.strip.presence
+    text = combine_era_year_label(
+      text: text,
+      output: output,
+      result: result,
+      resolved: resolved,
+      era_expression: era_expression
+    ) if era_expression
+
     { ok: true, text: text, result: result }
+  end
+
+  def combine_era_year_label(text:, output:, result:, resolved:, era_expression:)
+    return era_expression unless resolved["month"].present? && resolved["day"].present?
+
+    frame = Array(result["calendar_frames"]).find { |row| row["key"] == output }
+    return era_expression unless frame && frame["month"].present? && frame["day"].present?
+
+    month = frame["month"]
+    day = frame["day"]
+    if output == "chinese_modern"
+      leap = frame["leap"] ? "閏" : ""
+      "#{era_expression} #{leap}#{month}月#{day}日"
+    elsif %w[gregorian julian].include?(output)
+      "#{era_expression} #{month}月#{day}日"
+    else
+      # Era names are East Asian year labels. For unrelated calendar frames or
+      # other year-numbering systems, keep the selected era expression as the
+      # year output instead of combining two conflicting year labels.
+      era_expression
+    end
   end
 
   def era_suggestions
