@@ -19,6 +19,7 @@
     <%= stylesheet_link_tag "xiangqi", "data-turbo-track": "reload" if controller_name == "xiangqi" %>
     <%= stylesheet_link_tag "character_learning", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "tools", "data-turbo-track": "reload" if controller_name == "tools" %>
+    <%= stylesheet_link_tag "word_processor", "data-turbo-track": "reload" if controller_name == "word_processor" %>
     <%= stylesheet_link_tag "theme", "data-turbo-track": "reload" %>
 
     <%= render "layouts/dynamic_fonts" %>
@@ -69,13 +70,11 @@
             <% end %>
           </div>
           <nav class="site-nav" aria-label="<%= t("site.navigation.aria_label") %>">
-            <%= link_to t("site.navigation.corpus_viewer"), corpus_viewer_path, class: "site-nav-link" %>
 			<%= link_to t("site.navigation.corpus_search"), corpus_search_path, class: "site-nav-link" %>
 			<%= link_to t("site.navigation.dictionary"), characters_path, class: "site-nav-link" %>
-			<%#= link_to t("site.navigation.grammar"), "/grammar", class: "site-nav-link" %>
+			<%= link_to t("word_processor.navigation"), "/word-processor", class: "site-nav-link" %>
 			<%= link_to t("site.navigation.tools"), tools_path, class: "site-nav-link" %>
 			<%= link_to t("site.navigation.tickets"), ticket_access_path, class: "site-nav-link" %>
-			<%= link_to t("site.navigation.fun"), fun_path, class: "site-nav-link" %>
           </nav>
         </div>
 
@@ -131,12 +130,15 @@
 
 	    <div class="page-shell <%= content_for?(:rightbar) ? "has-rightbar" : "no-rightbar" %>">
       <main class="maincol"
-        data-controller="han-tooltip"
-        data-action="click->han-tooltip#click dblclick->han-tooltip#dblclick">
+        <% unless controller_name == "word_processor" %>
+          data-controller="han-tooltip"
+          data-action="click->han-tooltip#click dblclick->han-tooltip#dblclick"
+        <% end %>>
         <% if controller_name == "tools" && action_name == "index" %>
           <div class="tools-picker" data-controller="tools-picker" data-tools-picker-state="loading">
             <div data-tools-picker-legacy>
               <%= yield %>
+              <%= render "tools/fun_links" %>
             </div>
             <%= render "tools/measurement_converter", catalogue: HistoricalMeasurements.catalogue %>
           </div>
@@ -147,6 +149,9 @@
               <%= yield %>
             </div>
           <% else %>
+            <% if controller_name == "characters" && action_name == "show" && @character.present? %>
+              <%= render "shared/word_processor_dictionary_shelf" %>
+            <% end %>
             <%= yield %>
           <% end %>
         <% end %>

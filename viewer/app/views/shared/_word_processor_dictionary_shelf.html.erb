@@ -1,0 +1,14 @@
+﻿<%# Dictionary → Word Processor shelf bridge. The actual character is content, so it remains Han in every interface locale. %>
+<% if @character.present? %>
+  <p class="dictionary-writer-shelf-action"
+     data-controller="word-processor-shelf"
+     data-word-processor-shelf-text-value="<%= @character.chr %>"
+     data-word-processor-shelf-codepoint-value="U+<%= @character.codepoint.to_s(16).upcase.rjust(4, '0') %>"
+     data-word-processor-shelf-success-message-value="<%= t("word_processor.shelf_added") %>"
+     data-word-processor-shelf-error-message-value="<%= t("word_processor.shelf_error") %>">
+    <button type="button" class="corpus-btn" data-action="word-processor-shelf#add">
+      <%= t("word_processor.add_to_shelf", default: "Add to Word Processor shelf") %>
+    </button>
+    <span class="wp-save-status" data-word-processor-shelf-target="status" aria-live="polite"></span>
+  </p>
+<% end %>

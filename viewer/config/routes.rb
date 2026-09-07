@@ -75,6 +75,10 @@ Rails.application.routes.draw do
 	post "/textbook/api/format_numeral", to: "textbook_api#format_numeral"
 	post "/textbook/api/parse_numeral",  to: "textbook_api#parse_numeral"
 	
+	# word processor
+	get  "/word-processor",         to: "word_processor#index",   as: :word_processor
+	post "/word-processor/convert", to: "word_processor#convert", as: :word_processor_convert
+	
 	# Edit submissions and tickets
 	# Moderator UI (HTML) for reviewing and applying edit tickets.
 	get    "/tickets/login",  to: "tickets_sessions#new",     as: :tickets_login

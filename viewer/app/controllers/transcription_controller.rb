@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+﻿# frozen_string_literal: true
 
 class TranscriptionController < ApplicationController
   layout "application"
@@ -8,7 +8,7 @@ class TranscriptionController < ApplicationController
   def show
     @text = params[:text].presence || DEFAULT_TEXT
     @title = params[:title].presence || "Practice text"
-    @rime_schemas = rime_schemas
+    @rime_schemas = RimeSchemaRegistry.available
     @variant_equivalents = variant_equivalents(@text)
   end
 
@@ -36,32 +36,5 @@ class TranscriptionController < ApplicationController
       end
       [[codepoint].pack("U"), members.uniq]
     end
-  end
-
-  def rime_schemas
-    path = Rails.root.join("config", "rime_schemas.yml")
-    return [] unless path.file?
-
-    schemas = YAML.safe_load_file(path, aliases: false).fetch("schemas", [])
-    schema_ids = schemas.filter_map { |schema| schema["schema_id"].presence }
-
-    # The previous DISTINCT query scanned all matching CharacterInputCode rows;
-    # the performance sweep measured that single query at ~8 seconds. We only
-    # need a yes/no answer for a handful of configured schemas. `exists?` can
-    # stop on the first matching row, and the performance migration adds an
-    # index shaped for this lookup. Keeping this uncached means a fresh import is
-    # visible immediately.
-    available = schema_ids.select do |schema_id|
-      CharacterInputCode
-        .where(system_id: schema_id)
-        .where.not(kind: "auxiliary")
-        .exists?
-    end
-
-    schemas
-      .select { |schema| available.include?(schema["schema_id"]) }
-      .map { |schema| schema.merge("browser_available" => true) }
-  rescue Psych::SyntaxError
-    []
   end
 end

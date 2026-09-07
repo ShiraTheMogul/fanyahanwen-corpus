@@ -1,5 +1,12 @@
 ﻿import { Controller } from "@hotwired/stimulus"
 import { t } from "i18n"
+import {
+  QuoteConverter,
+  convertPuncText,
+  loadPunctuationState,
+  punctuationPresetOptions,
+  savePunctuationState,
+} from "controllers/han_punctuation"
 
 // Client-side view controls for the corpus reader. Client-side is used as it allows for instant changes. This makes the site run a bit faster!
 //
@@ -76,88 +83,15 @@ export default class extends Controller {
   // Stored separately from core layout state so we can evolve the UI without breaking older saves.
 
   _loadPunct() {
-    const getStr = (k, fallback) => {
-      const v = window.localStorage.getItem(k)
-      if (v === null || v === undefined || v === "") return fallback
-      return v.toString()
-    }
-    const getBool = (k, fallback) => {
-      const v = window.localStorage.getItem(k)
-      if (v === null || v === undefined || v === "") return fallback
-      return v === "1"
-    }
-
-    return {
-      preset: getStr("corpus.punctPreset", "modern_trad"),
-      userOverrodeVerticalQuotes: getBool("corpus.punctUserOverrodeVQ", false),
-      options: {
-        quoteFamily: getStr("corpus.quoteFamily", "corner"),     // corner | speech_curly | speech_fullwidth | off
-        quoteOrder: getStr("corpus.quoteOrder", "trad"),         // trad | simp
-        verticalQuoteForms: getBool("corpus.verticalQuoteForms", false),
-        semicolon: getStr("corpus.punctSemi", "keep"),           // keep | collapse
-        colon: getStr("corpus.punctColon", "keep"),
-        question: getStr("corpus.punctQ", "keep"),
-        exclamation: getStr("corpus.punctEx", "keep"),
-        comma: getStr("corpus.punctComma", "keep"),              // keep | dunhao
-      }
-    }
+    return loadPunctuationState()
   }
 
   _savePunct() {
-    const p = (this._punct?.preset || "source").toString()
-    window.localStorage.setItem("corpus.punctPreset", p)
-    window.localStorage.setItem("corpus.punctUserOverrodeVQ", this._punct?.userOverrodeVerticalQuotes ? "1" : "0")
-    const o = this._punct?.options || {}
-    window.localStorage.setItem("corpus.quoteFamily", (o.quoteFamily || "corner").toString())
-    window.localStorage.setItem("corpus.quoteOrder", (o.quoteOrder || "trad").toString())
-    window.localStorage.setItem("corpus.verticalQuoteForms", o.verticalQuoteForms ? "1" : "0")
-    window.localStorage.setItem("corpus.punctSemi", (o.semicolon || "keep").toString())
-    window.localStorage.setItem("corpus.punctColon", (o.colon || "keep").toString())
-    window.localStorage.setItem("corpus.punctQ", (o.question || "keep").toString())
-    window.localStorage.setItem("corpus.punctEx", (o.exclamation || "keep").toString())
-    window.localStorage.setItem("corpus.punctComma", (o.comma || "keep").toString())
+    savePunctuationState(this._punct)
   }
 
   _presetOptions(preset) {
-    const o = {
-      quoteFamily: "corner",
-      quoteOrder: "trad",
-      verticalQuoteForms: false,
-      semicolon: "keep",
-      colon: "keep",
-      question: "keep",
-      exclamation: "keep",
-      comma: "keep",
-    }
-
-    if (preset === "source") return o
-    if (preset === "strip") return o
-
-    if (preset === "modern_trad") {
-      o.quoteFamily = "corner"
-      o.quoteOrder = "trad"
-      return o
-    }
-
-    if (preset === "modern_prc") {
-      // PRC: horizontal prefers speech marks, vertical prefers corner brackets.
-      o.quoteFamily = "speech_curly"
-      o.quoteOrder = "simp"
-      return o
-    }
-
-    if (preset === "pure") {
-      o.quoteFamily = "corner"
-      o.quoteOrder = "trad"
-      o.comma = "dunhao"
-      o.semicolon = "collapse"
-      o.colon = "collapse"
-      o.question = "collapse"
-      o.exclamation = "collapse"
-      return o
-    }
-
-    return o
+    return punctuationPresetOptions(preset)
   }
 
   _syncPunctButtons() {
@@ -791,7 +725,9 @@ _repeatMarkChar() {
   const v = (this._state?.jpRepeatMark || "none").toString()
   if (v === "kanji") return "々"
   if (v === "vertical") return "〻"
-  if (v === "zhou") return "㆓" // this is technically the kanbun character, but it actually ends up looking good and working well compared to the standard 二, so I like it.
+  // "zhou" is retained as the storage/UI value for backward compatibility.
+  // The actual character is U+16FE3 OLD CHINESE ITERATION MARK.
+  if (v === "zhou") return "𖿣"
   return null
 }
 
@@ -800,7 +736,7 @@ _applyRepeatMark() {
   // - none: do nothing
   // - kanji: 々
   // - vertical: 〻
-  // - zhou: ㆓
+  // - zhou (legacy option key): 𖿣
   // In horizontal mode (non-vertical), the mark is rendered as a subscript via CSS.
 
   const markChar = this._repeatMarkChar()
@@ -1047,7 +983,6 @@ _applyRepeatMark() {
     // Fallback: strip readings from textContent.
     return (rubyEl.textContent || "").split(/\s+/)[0] || ""
   }
-
   async _rubyReadingFor(ch) {
     this._rubyCache ||= new Map()
     const cached = this._rubyCache.get(ch)
@@ -1162,140 +1097,5 @@ _getStrippedHTML() {
       if (p && p.closest && (p.closest("rt, rp") || p.closest(".xuanji-phon"))) continue
       node.nodeValue = (node.nodeValue || "").replace(PUNCT_RE, "")
     }
-  }
-}
-
-
-// ---- Punctuation / quotation conversion helpers ----
-function convertStrong(full, mode) { return (mode === "collapse") ? "。" : full }
-
-function convertPuncText(text, opts) {
-  let t = text
-
-  // commas
-  if (opts.comma === "dunhao") {
-    t = t.replace(/,/g, "、").replace(/，/g, "、")
-  } else {
-    t = t.replace(/,/g, "，")
-  }
-
-  // periods (non-decimal)
-  t = t.replace(/(?<!\d)\.(?!\d)/g, "。")
-
-  // semicolon / colon / question / exclamation
-  t = t.replace(/;/g, convertStrong("；", opts.semicolon)).replace(/；/g, convertStrong("；", opts.semicolon))
-  t = t.replace(/:/g, convertStrong("：", opts.colon)).replace(/：/g, convertStrong("：", opts.colon))
-  t = t.replace(/\?/g, convertStrong("？", opts.question)).replace(/？/g, convertStrong("？", opts.question))
-  t = t.replace(/!/g, convertStrong("！", opts.exclamation)).replace(/！/g, convertStrong("！", opts.exclamation))
-
-  return t
-}
-
-class QuoteConverter {
-  constructor(opts) {
-    this.opts = opts || {}
-    // Stack stores the nesting kinds we opened: "outer" or "inner"
-    this.stack = []
-  }
-
-  _isQuoteChar(ch) {
-    return (
-      ch === '"' || ch === "'" ||
-      ch === "「" || ch === "」" || ch === "『" || ch === "』" ||
-      ch === "﹁" || ch === "﹂" || ch === "﹃" || ch === "﹄" ||
-      ch === "“" || ch === "”" || ch === "‘" || ch === "’" ||
-      ch === "＂" || ch === "＇"
-    )
-  }
-
-  _isOpenish(ch) {
-    return (ch === "「" || ch === "『" || ch === "﹁" || ch === "﹃" || ch === "“" || ch === "‘")
-  }
-
-  _isCloseish(ch) {
-    return (ch === "」" || ch === "』" || ch === "﹂" || ch === "﹄" || ch === "”" || ch === "’")
-  }
-
-  glyphs() {
-    const fam = (this.opts.quoteFamily || "corner").toString()
-    if (fam === "off") return null
-
-    const order = (this.opts.quoteOrder || "trad").toString()
-
-    // Corner brackets:
-    // A = 「」 (or ﹁﹂), B = 『』 (or ﹃﹄)
-    let A_open = "「", A_close = "」"
-    let B_open = "『", B_close = "』"
-    if (fam === "corner" && !!this.opts.verticalQuoteForms) {
-      A_open = "﹁"; A_close = "﹂"
-      B_open = "﹃"; B_close = "﹄"
-    }
-
-    if (fam === "speech_curly") {
-      // Latin speech marks: outer=“”, inner=‘’
-      const outO = "“", outC = "”", inO = "‘", inC = "’"
-      // "simp" ordering means outer uses single quotes, inner uses double quotes
-      if (order === "simp") return { outerOpen: inO, outerClose: inC, innerOpen: outO, innerClose: outC }
-      return { outerOpen: outO, outerClose: outC, innerOpen: inO, innerClose: inC }
-    }
-
-    if (fam === "speech_fullwidth") {
-      // Chinese fullwidth speech marks: outer=＂＂, inner=＇＇
-      const outO = "＂", outC = "＂", inO = "＇", inC = "＇"
-      if (order === "simp") return { outerOpen: inO, outerClose: inC, innerOpen: outO, innerClose: outC }
-      return { outerOpen: outO, outerClose: outC, innerOpen: inO, innerClose: inC }
-    }
-
-    // corner family ordering
-    if (order === "simp") {
-      // Simplified ordering: outer=『』, inner=「」
-      return { outerOpen: B_open, outerClose: B_close, innerOpen: A_open, innerClose: A_close }
-    }
-    // Traditional: outer=「」, inner=『』
-    return { outerOpen: A_open, outerClose: A_close, innerOpen: B_open, innerClose: B_close }
-  }
-
-  convert(text) {
-    const g = this.glyphs()
-    if (!g) return text
-
-    let out = ""
-    for (const ch of text) {
-      if (!this._isQuoteChar(ch)) { out += ch; continue }
-
-      // Determine whether this is an open or close based on the source char when possible.
-      const isOpen = this._isOpenish(ch)
-      const isClose = this._isCloseish(ch)
-
-      if (isOpen) {
-        const kind = (this.stack.length === 0) ? "outer" : "inner"
-        this.stack.push(kind)
-        out += (kind === "outer") ? g.outerOpen : g.innerOpen
-        continue
-      }
-
-      if (isClose) {
-        const kind = this.stack.pop() || ((this.stack.length === 0) ? "outer" : "inner")
-        out += (kind === "outer") ? g.outerClose : g.innerClose
-        continue
-      }
-
-      // Neutral quotes (", ', ＂, ＇): toggle heuristically.
-      // If we are inside outer but not yet inside inner, assume open inner first.
-      if (this.stack.length === 1 && this.stack[0] === "outer") {
-        this.stack.push("inner")
-        out += g.innerOpen
-        continue
-      }
-
-      if (this.stack.length > 0) {
-        const kind = this.stack.pop()
-        out += (kind === "outer") ? g.outerClose : g.innerClose
-      } else {
-        this.stack.push("outer")
-        out += g.outerOpen
-      }
-    }
-    return out
   }
 }

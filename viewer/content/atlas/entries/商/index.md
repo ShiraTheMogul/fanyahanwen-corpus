@@ -68,6 +68,19 @@ What is extant of Shang literature now is strictly seen in oracle bones, the bon
 
 The Shang people spoke Old Chinese, and the language was not too far from what is seen in the Zhou-Qin period of the Chinese classics. Structures such as 自……至…… and more can be seen even here.
 
+## Notable works
+
+- 《合集》974
+- 《合集》6057
+- 《合集》10405
+- 《合集》33696
+- 《合集》37986
+- 《花東》288
+- 《英藏》2593
+- 《英藏》2674
+- 《山博》0853
+- 《懷特》1915
+
 ## References
 
 - Takashima, Kenichi (2011). "Literacy to the South and East of Anyang". In Feng, Li; Banner, David Prager (eds.). Writing & literacy in early China: studies from the Columbia Early China Seminar. Seattle: University of Washington Press. pp. 151–155. ISBN 9780295991528.

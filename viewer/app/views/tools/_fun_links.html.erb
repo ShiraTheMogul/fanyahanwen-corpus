@@ -1,0 +1,16 @@
+﻿<% tools = [
+  ["transcription", "/fun/transcription", "word_processor.tool_transcription_desc"],
+  ["deconstruction", "/fun/deconstruction", "word_processor.tool_deconstruction_desc"],
+  ["components", "/fun/components", "word_processor.tool_components_desc"],
+  ["construction", "/fun/make-a-character", "word_processor.tool_construction_desc"],
+  ["chengyu", "/fun/chengyu-jielong", "word_processor.tool_chengyu_desc"],
+  ["xuanji", xuanji_path, "word_processor.tool_xuanji_desc"],
+  ["xiangqi", "/xiangqi", "word_processor.tool_xiangqi_desc"]
+] %>
+
+<% tools.each do |key, path, description_key| %>
+  <% name = t("word_processor.tools.#{key}") %>
+  <h2><%= name %></h2>
+  <p><%= t(description_key) %></p>
+  <p><%= link_to t("word_processor.open_tool", name: name), path %></p>
+<% end %>

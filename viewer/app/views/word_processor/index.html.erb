@@ -1,0 +1,421 @@
+﻿<div class="word-processor"
+     data-controller="word-processor"
+     data-word-processor-convert-url-value="<%= word_processor_convert_path %>"
+     data-word-processor-preferences-url-value="<%= preferences_path %>"
+     data-word-processor-initial-script-mode-value="<%= @script_mode %>">
+  <script type="application/json" data-word-processor-target="rimeSchemas"><%= raw(json_escape(@rime_schemas.to_json)) %></script>
+  <script type="application/json" data-word-processor-target="functionWords"><%= raw(json_escape(@function_word_groups.to_json)) %></script>
+  <script type="application/json" data-word-processor-target="dateSystems"><%= raw(json_escape(@date_systems.to_json)) %></script>
+
+  <header class="wp-heading">
+    <div class="wp-heading-copy">
+      <h1><%= t("word_processor.title") %></h1>
+      <p class="wp-muted"><%= t("word_processor.writer_intro") %></p>
+    </div>
+  </header>
+
+  <div class="wp-document-bar">
+    <label class="wp-document-title" for="wp-document-title">
+      <span><%= t("word_processor.document_title_label") %></span>
+      <input id="wp-document-title" type="text" placeholder="<%= t("word_processor.untitled") %>" data-word-processor-target="documentTitle" data-action="input->word-processor#documentTitleChanged">
+    </label>
+    <button type="button" class="corpus-btn corpus-btn-primary wp-save-button" data-action="word-processor#downloadProject"><%= t("word_processor.save") %></button>
+  </div>
+
+  <div class="wp-layout">
+    <aside class="wp-chapters" aria-label="<%= t("word_processor.chapters") %>">
+      <div class="wp-panel-heading">
+        <h2><%= t("word_processor.chapters") %></h2>
+        <button type="button" class="corpus-btn" data-action="word-processor#addChapter"><%= t("word_processor.add") %></button>
+      </div>
+      <div class="wp-chapter-list" data-word-processor-target="chapterList"></div>
+      <p class="wp-muted wp-small"><%= t("word_processor.chapter_help") %></p>
+    </aside>
+
+    <section class="wp-main">
+      <div class="corpus-reader wp-reader" data-word-processor-target="reader">
+        <div class="corpus-toolbar wp-toolbar">
+          <div class="wp-toolbar-group wp-view-group">
+            <button type="button" class="corpus-btn" data-word-processor-target="orientationButton" data-action="word-processor#toggleOrientation"><%= t("word_processor.vertical") %></button>
+            <button type="button" class="corpus-btn" data-word-processor-target="themeButton" data-action="word-processor#cycleTheme"><%= t("word_processor.theme_bamboo") %></button>
+          </div>
+
+          <label class="wp-toolbar-field wp-font-field">
+            <span><%= t("word_processor.font") %></span>
+            <%= select_tag :wp_han_font,
+                  grouped_options_for_select(
+                    HanFonts.choice_groups(ungrouped_label: t("view_options.font.other_fonts")),
+                    (session[:han_font] || HanFonts.default_key).to_s
+                  ),
+                  data: { word_processor_target: "hanFont", action: "change->word-processor#hanFontChanged" } %>
+          </label>
+
+          <label class="wp-toolbar-field wp-standard-field">
+            <span><%= t("word_processor.character_standard") %></span>
+            <select data-word-processor-target="scriptMode" data-action="change->word-processor#scriptModeChanged">
+              <% @script_modes.each do |mode| %>
+                <option value="<%= mode %>" <%= "selected" if mode.to_s == @script_mode %>><%= t("view_options.script.#{mode}", default: mode.to_s.tr("_", " ").split.map(&:capitalize).join(" ")) %></option>
+              <% end %>
+            </select>
+          </label>
+          <button type="button" class="corpus-btn" data-action="word-processor#convertSelectionToScript"><%= t("word_processor.convert") %> <%= t("word_processor.selection").downcase %></button>
+          <button type="button" class="corpus-btn" data-action="word-processor#openPunctuation"><%= t("word_processor.punctuation") %></button>
+
+          <div class="wp-toolbar-group wp-repeat-group">
+            <label class="wp-toolbar-field wp-repeat-field">
+              <span><%= t("word_processor.repetition_mark") %></span>
+              <select data-word-processor-target="repeatMark" data-action="change->word-processor#repeatMarkChanged">
+                <option value=""><%= t("word_processor.none") %></option>
+                <option value="々">々</option>
+                <option value="〻">〻</option>
+                <option value="𖿣">𖿣</option>
+              </select>
+            </label>
+            <button type="button" class="corpus-btn wp-han-button" data-action="word-processor#insertRepeatMark"><%= t("word_processor.repeat") %></button>
+            <label class="wp-check wp-check-compact" title="<%= t("word_processor.auto_repeat_duplicates") %>"><input type="checkbox" data-word-processor-target="autoRepeat" data-action="change->word-processor#autoRepeatChanged"> <%= t("word_processor.auto_repeat") %></label>
+          </div>
+
+          <label class="wp-toolbar-field wp-input-select">
+            <span><%= t("word_processor.input_method") %></span>
+            <select data-word-processor-target="rimeSchema" data-action="change->word-processor#rimeSchemaChanged">
+              <option value=""><%= t("word_processor.system_input") %></option>
+              <% @rime_schemas.each do |schema| %>
+                <option value="<%= schema.fetch("schema_id") %>"><%= schema.fetch("label") %></option>
+              <% end %>
+            </select>
+          </label>
+
+          <label class="wp-toolbar-field wp-number-select">
+            <span><%= t("word_processor.numbers") %></span>
+            <select data-word-processor-target="numeralSystem" data-action="change->word-processor#numeralOptionsChanged">
+              <option value="han"><%= t("word_processor.numeral_standard") %></option>
+              <option value="financial"><%= t("word_processor.financial_han") %></option>
+              <option value="suzhou"><%= t("word_processor.numeral_suzhou") %></option>
+              <option value="rods"><%= t("word_processor.numeral_rods") %></option>
+              <option value="arabic"><%= t("word_processor.keep_arabic") %></option>
+            </select>
+          </label>
+
+          <details class="wp-toolbar-menu" data-word-processor-target="insertMenu">
+            <summary class="corpus-btn"><%= t("word_processor.insert_menu") %></summary>
+            <div class="wp-toolbar-popover">
+              <button type="button" data-action="word-processor#openDateDialog"><%= t("word_processor.date_button") %></button>
+              <button type="button" data-action="word-processor#openMeasurementDialog"><%= t("word_processor.measurement_button") %></button>
+              <button type="button" data-action="word-processor#openIdsDialog"><%= t("word_processor.input_by_ids") %></button>
+            </div>
+          </details>
+        </div>
+
+        <div class="wp-input-method" data-word-processor-target="rimePanel" hidden>
+          <input type="text" autocomplete="off" spellcheck="false" placeholder="<%= t("word_processor.type_input_code") %>" data-word-processor-target="rimeCode" data-action="pointerdown->word-processor#rememberRimeInsertionPoint input->word-processor#rimeCodeChanged keydown->word-processor#rimeKeydown">
+          <div class="wp-candidates" data-word-processor-target="rimeCandidates"></div>
+        </div>
+
+        <div class="corpus-viewbox theme-bamboo is-vertical wp-viewbox" data-word-processor-target="viewbox" data-action="scroll->word-processor#positionNumeralComposer">
+          <div class="corpus-textflow is-vertical wp-editor"
+               contenteditable="true"
+               role="textbox"
+               aria-multiline="true"
+               spellcheck="false"
+               data-word-processor-target="editor"
+               data-action="keydown->word-processor#editorKeydown beforeinput->word-processor#beforeInput input->word-processor#editorInput paste->word-processor#paste drop->word-processor#drop compositionstart->word-processor#compositionStart compositionend->word-processor#compositionEnd contextmenu->word-processor#contextMenu focus->word-processor#editorFocus blur->word-processor#editorBlur"
+               aria-label="<%= t("word_processor.editing_area") %>"></div>
+
+          <div class="wp-inline-ime wp-number-ime" data-word-processor-target="numeralComposerPanel" role="listbox" hidden>
+            <div class="wp-inline-ime-head">
+              <span class="wp-inline-ime-raw" data-word-processor-target="numeralComposerRaw"></span>
+              <button type="button" class="wp-inline-ime-variants" data-action="word-processor#expandNumeralVariants"><%= t("word_processor.variants") %></button>
+            </div>
+            <div class="wp-inline-ime-candidates" data-word-processor-target="numeralCandidates"></div>
+            <div class="wp-inline-ime-help"><%= t("word_processor.number_popup_help") %></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wp-statusbar">
+        <span data-word-processor-target="status"><%= t("word_processor.ready") %></span>
+        <span data-word-processor-target="counts"></span>
+      </div>
+    </section>
+
+    <aside class="wp-shelves" aria-label="<%= t("word_processor.writing_shelves") %>">
+      <details open>
+        <summary><%= t("word_processor.my_shelf") %></summary>
+        <form class="wp-inline-form" data-action="submit->word-processor#pinShelfText">
+          <input type="text" maxlength="16" placeholder="<%= t("word_processor.character_or_short_string") %>" data-word-processor-target="pinInput">
+          <button type="submit" class="corpus-btn"><%= t("word_processor.add") %></button>
+        </form>
+        <div class="wp-chip-list" data-word-processor-target="pinnedShelf"></div>
+      </details>
+
+      <details>
+        <summary><%= t("word_processor.recent") %></summary>
+        <div class="wp-chip-list" data-word-processor-target="recentShelf"></div>
+      </details>
+
+      <details>
+        <summary><%= t("word_processor.function_words") %></summary>
+        <label class="wp-block-label"><%= t("word_processor.category") %>
+          <select data-word-processor-target="functionWordCategory" data-action="change->word-processor#renderFunctionWords"></select>
+        </label>
+        <div class="wp-chip-list wp-function-words" data-word-processor-target="functionWordShelf"></div>
+      </details>
+
+      <details>
+        <summary><%= t("word_processor.heavenly_stems") %></summary>
+        <div class="wp-chip-list">
+          <% @heavenly_stems.each do |stem| %>
+            <button type="button" class="wp-chip wp-han-button" data-insert="<%= stem %>" data-action="word-processor#insertHanFromButton"><%= stem %></button>
+          <% end %>
+        </div>
+      </details>
+
+      <details>
+        <summary><%= t("word_processor.earthly_branches") %></summary>
+        <div class="wp-chip-list">
+          <% @earthly_branches.each do |branch| %>
+            <button type="button" class="wp-chip wp-han-button" data-insert="<%= branch %>" data-action="word-processor#insertHanFromButton"><%= branch %></button>
+          <% end %>
+        </div>
+      </details>
+
+      <details>
+        <summary><%= t("word_processor.punctuation_and_signs") %></summary>
+        <div class="wp-chip-list">
+          <% ["，", "。", "、", "；", "：", "？", "！", "「", "」", "『", "』", "（", "）", "〔", "〕", "《", "》", "〈", "〉", "𖿢", "々", "〻", "𖿣"].each do |mark| %>
+            <button type="button" class="wp-chip wp-han-button" data-insert="<%= mark %>" data-action="word-processor#insertFromButton"><%= mark %></button>
+          <% end %>
+        </div>
+      </details>
+
+      <details>
+        <summary><%= t("word_processor.file") %></summary>
+        <div class="wp-stack">
+          <button type="button" class="corpus-btn" data-action="word-processor#newDocument"><%= t("word_processor.new_document") %></button>
+          <label class="corpus-btn wp-file-label"><%= t("word_processor.open_file") %><input type="file" accept=".txt,.json,.fanyawp.json,.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" data-word-processor-target="openFile" data-action="change->word-processor#openFile"></label>
+          <button type="button" class="corpus-btn" data-action="word-processor#downloadProject"><%= t("word_processor.save_project") %></button>
+          <button type="button" class="corpus-btn" data-action="word-processor#downloadTxt"><%= t("word_processor.download_txt") %></button>
+        </div>
+      </details>
+
+      <details>
+        <summary><%= t("word_processor.shortcuts_controller") %></summary>
+        <p class="wp-small wp-muted"><%= t("word_processor.shortcut_bind_help") %></p>
+        <div data-word-processor-target="shortcutList"></div>
+        <button type="button" class="corpus-btn" data-action="word-processor#clearShortcuts"><%= t("word_processor.reset_shortcuts") %></button>
+      </details>
+
+      <details>
+        <summary><%= t("word_processor.notes") %></summary>
+        <div data-word-processor-target="notesList"></div>
+      </details>
+
+      <details>
+        <summary><%= t("word_processor.submit_to_corpus") %></summary>
+        <p class="wp-small wp-muted"><%= t("word_processor.prepare_ticket_help") %></p>
+        <button type="button" class="corpus-btn" data-action="word-processor#prepareTicket"><%= t("word_processor.prepare_current_document") %></button>
+
+        <div class="wp-ticket" data-controller="corpus-submission-ticket" data-corpus-submission-ticket-source-value="word_processor">
+          <form data-action="submit->corpus-submission-ticket#submit">
+            <label class="wp-block-label"><%= t("word_processor.parent_corpus_directory") %>
+              <input type="text" data-corpus-submission-ticket-target="parentPath" placeholder="corpus/.../clean/...">
+            </label>
+            <label class="wp-block-label"><%= t("word_processor.work_folder") %>
+              <input type="text" data-corpus-submission-ticket-target="workFolder">
+            </label>
+            <label class="wp-block-label"><%= t("word_processor.ticket_title") %>
+              <input type="text" data-corpus-submission-ticket-target="title" value="<%= t("word_processor.ticket_default_title") %>">
+            </label>
+            <label class="wp-block-label"><%= t("word_processor.summary") %>
+              <input type="text" data-corpus-submission-ticket-target="summary">
+            </label>
+            <label class="wp-block-label"><%= t("word_processor.work_title") %>
+              <input type="text" data-corpus-submission-ticket-target="workTitle">
+            </label>
+            <label class="wp-block-label"><%= t("word_processor.author_short") %>
+              <input type="text" data-corpus-submission-ticket-target="author">
+            </label>
+            <label class="wp-block-label"><%= t("word_processor.date") %>
+              <input type="text" data-corpus-submission-ticket-target="dateLabel">
+            </label>
+            <label class="wp-block-label"><%= t("word_processor.corpus_root_nation") %>
+              <input type="text" data-corpus-submission-ticket-target="nation">
+            </label>
+            <label class="wp-block-label"><%= t("word_processor.period") %>
+              <input type="text" data-corpus-submission-ticket-target="period">
+            </label>
+            <label class="wp-block-label"><%= t("word_processor.polity") %>
+              <input type="text" data-corpus-submission-ticket-target="polity">
+            </label>
+            <label class="wp-block-label"><%= t("word_processor.region") %>
+              <input type="text" data-corpus-submission-ticket-target="region">
+            </label>
+            <label class="wp-block-label"><%= t("word_processor.categories") %>
+              <textarea rows="2" data-corpus-submission-ticket-target="categories"></textarea>
+            </label>
+            <label class="wp-block-label"><%= t("word_processor.source_citation") %>
+              <input type="text" data-corpus-submission-ticket-target="sourceCitation">
+            </label>
+            <label class="wp-block-label"><%= t("word_processor.source_url") %>
+              <input type="url" data-corpus-submission-ticket-target="url">
+            </label>
+            <label class="wp-block-label"><%= t("word_processor.context") %>
+              <textarea rows="3" data-corpus-submission-ticket-target="contextDetails"></textarea>
+            </label>
+            <label class="wp-block-label"><%= t("word_processor.content_role") %>
+              <select data-corpus-submission-ticket-target="textType">
+                <option value="source"><%= t("word_processor.source_text") %></option>
+                <option value="kanbun"><%= t("word_processor.gloss_japan") %></option>
+                <option value="hanmun"><%= t("word_processor.gloss_korea") %></option>
+                <option value="hanvan"><%= t("word_processor.gloss_vietnam") %></option>
+              </select>
+            </label>
+            <input type="hidden" value="multi" data-corpus-submission-ticket-target="pageMode">
+            <div data-corpus-submission-ticket-target="singleFields" hidden></div>
+            <div data-corpus-submission-ticket-target="multiFields">
+              <div data-corpus-submission-ticket-target="pagesList"></div>
+            </div>
+            <label class="wp-check"><input type="checkbox" data-corpus-submission-ticket-target="storeOnDevice"> <%= t("word_processor.store_ticket_key") %></label>
+            <button type="submit" class="corpus-btn corpus-btn-primary"><%= t("word_processor.submit_ticket") %></button>
+          </form>
+          <div class="wp-ticket-result">
+            <div data-corpus-submission-ticket-target="status"></div>
+            <div><%= t("word_processor.ticket_id") %>: <span data-corpus-submission-ticket-target="ticketId"></span></div>
+            <div><%= t("word_processor.ticket_key") %>: <code data-corpus-submission-ticket-target="ticketKey"></code></div>
+            <button type="button" class="corpus-btn" data-corpus-submission-ticket-target="copyKeyBtn" data-action="corpus-submission-ticket#copyKey"><%= t("word_processor.copy_key") %></button>
+            <button type="button" class="corpus-btn" data-corpus-submission-ticket-target="downloadKeyBtn" data-action="corpus-submission-ticket#downloadKey" hidden><%= t("word_processor.download_key") %></button>
+          </div>
+        </div>
+      </details>
+    </aside>
+  </div>
+
+  <div class="wp-context-menu" data-word-processor-target="contextMenu" hidden role="menu">
+    <button type="button" data-action="word-processor#contextCut"><%= t("word_processor.cut") %></button>
+    <button type="button" data-action="word-processor#contextCopy"><%= t("word_processor.copy") %></button>
+    <button type="button" data-action="word-processor#contextPaste"><%= t("word_processor.paste") %></button>
+    <button type="button" data-action="word-processor#contextAddToShelf"><%= t("word_processor.add_to_shelf") %></button>
+    <hr>
+    <button type="button" data-kind="proper_name" data-action="word-processor#applyContextAnnotation"><%= t("word_processor.proper_name_mark") %></button>
+    <button type="button" data-kind="title" data-action="word-processor#applyContextAnnotation"><%= t("word_processor.title_mark") %></button>
+    <button type="button" data-kind="place" data-action="word-processor#applyContextAnnotation"><%= t("word_processor.place_name_mark") %></button>
+    <button type="button" data-kind="office" data-action="word-processor#applyContextAnnotation"><%= t("word_processor.office_name_mark") %></button>
+    <button type="button" data-action="word-processor#removeContextMarks"><%= t("word_processor.remove_text_mark") %></button>
+    <hr>
+    <button type="button" data-action="word-processor#addComment"><%= t("word_processor.add_comment") %></button>
+    <button type="button" data-action="word-processor#addNote"><%= t("word_processor.add_note") %></button>
+    <button type="button" data-region="japan" data-action="word-processor#addGloss"><%= t("word_processor.gloss_japan") %></button>
+    <button type="button" data-region="korea" data-action="word-processor#addGloss"><%= t("word_processor.gloss_korea") %></button>
+    <button type="button" data-region="vietnam" data-action="word-processor#addGloss"><%= t("word_processor.gloss_vietnam") %></button>
+  </div>
+
+  <div class="corpus-punct-overlay wp-dialog-overlay" data-word-processor-target="punctuationDialog" data-action="click->word-processor#dialogBackdrop" hidden>
+    <div class="corpus-punct-panel" role="dialog" aria-modal="true" aria-label="<%= t("word_processor.punctuation_settings") %>">
+      <div class="corpus-punct-header">
+        <div class="corpus-punct-title"><%= t("word_processor.punctuation") %></div>
+        <button type="button" class="corpus-btn" data-action="word-processor#closeDialogs"><%= t("word_processor.close") %></button>
+      </div>
+      <div class="corpus-punct-grid">
+        <fieldset class="corpus-fieldset">
+          <legend><%= t("word_processor.preset") %></legend>
+          <% [[t("word_processor.source_preset"), "source"], [t("word_processor.modern_traditional"), "modern_trad"], [t("word_processor.modern_prc"), "modern_prc"], [t("word_processor.pure_classical"), "pure"], [t("word_processor.strip_punctuation"), "strip"], [t("word_processor.custom"), "custom"]].each do |label, value| %>
+            <label><input type="radio" name="wp_punct_preset" value="<%= value %>" data-action="change->word-processor#punctuationChanged"> <%= label %></label>
+          <% end %>
+        </fieldset>
+        <fieldset class="corpus-fieldset">
+          <legend><%= t("word_processor.quotation_marks") %></legend>
+          <label><input type="radio" name="wp_quote_family" value="corner" data-action="change->word-processor#punctuationChanged"> <%= t("word_processor.chinese_quotation_marks") %></label>
+          <label><input type="radio" name="wp_quote_family" value="speech_curly" data-action="change->word-processor#punctuationChanged"> <%= t("word_processor.curly_speech_marks") %></label>
+          <label><input type="radio" name="wp_quote_family" value="speech_fullwidth" data-action="change->word-processor#punctuationChanged"> <%= t("word_processor.fullwidth_speech_marks") %></label>
+          <label><input type="radio" name="wp_quote_family" value="off" data-action="change->word-processor#punctuationChanged"> <%= t("word_processor.disabled") %></label>
+          <label><input type="radio" name="wp_quote_order" value="trad" data-action="change->word-processor#punctuationChanged"> <%= t("word_processor.traditional_nesting") %></label>
+          <label><input type="radio" name="wp_quote_order" value="simp" data-action="change->word-processor#punctuationChanged"> <%= t("word_processor.simplified_nesting") %></label>
+          <label><input type="checkbox" data-word-processor-target="verticalQuotes" data-action="change->word-processor#punctuationChanged"> <%= t("word_processor.use_vertical_quote_forms") %></label>
+        </fieldset>
+        <fieldset class="corpus-fieldset">
+          <legend><%= t("word_processor.comma") %></legend>
+          <label><input type="radio" name="wp_comma" value="keep" data-action="change->word-processor#punctuationChanged"> <%= t("word_processor.keep_comma") %></label>
+          <label><input type="radio" name="wp_comma" value="dunhao" data-action="change->word-processor#punctuationChanged"> <%= t("word_processor.comma_to_enumeration") %></label>
+        </fieldset>
+        <fieldset class="corpus-fieldset">
+          <legend><%= t("word_processor.strong_punctuation") %></legend>
+          <% [[t("word_processor.semicolon"), "semi"], [t("word_processor.colon"), "colon"], [t("word_processor.question_mark"), "q"], [t("word_processor.exclamation_mark"), "ex"]].each do |label, name| %>
+            <div class="wp-punct-row"><strong><%= label %></strong>
+              <label><input type="radio" name="wp_<%= name %>" value="keep" data-action="change->word-processor#punctuationChanged"> <%= t("word_processor.keep") %></label>
+              <label><input type="radio" name="wp_<%= name %>" value="collapse" data-action="change->word-processor#punctuationChanged"> <%= t("word_processor.collapse") %></label>
+            </div>
+          <% end %>
+        </fieldset>
+      </div>
+      <p><button type="button" class="corpus-btn" data-action="word-processor#convertPunctuationInChapter"><%= t("word_processor.apply_chapter_punctuation") %></button></p>
+    </div>
+  </div>
+
+  <div class="wp-dialog-overlay" data-word-processor-target="dateDialog" data-action="click->word-processor#dialogBackdrop" hidden>
+    <div class="wp-dialog" role="dialog" aria-modal="true" aria-label="<%= t("word_processor.insert_date") %>">
+      <div class="wp-panel-heading"><h2><%= t("word_processor.insert_date") %></h2><button type="button" class="corpus-btn" data-action="word-processor#closeDialogs"><%= t("word_processor.close") %></button></div>
+      <button type="button" class="corpus-btn" data-action="word-processor#insertTodayLunar"><%= t("word_processor.insert_today_lunar") %></button>
+      <label class="wp-block-label"><%= t("word_processor.date_or_expression") %>
+        <input type="text" placeholder="2026-09-07" data-word-processor-target="dateInput" data-action="input->word-processor#dateInputChanged">
+      </label>
+      <label class="wp-block-label"><%= t("word_processor.output_system") %>
+        <select data-word-processor-target="dateOutput"></select>
+      </label>
+      <label class="wp-block-label"><%= t("word_processor.era_name_optional") %>
+        <select data-word-processor-target="dateEra" data-action="change->word-processor#dateEraChanged" disabled>
+          <option value=""><%= t("word_processor.era_none") %></option>
+        </select>
+      </label>
+      <p class="wp-small wp-muted"><%= t("word_processor.era_name_help") %></p>
+      <button type="button" class="corpus-btn" data-action="word-processor#insertCustomDate"><%= t("word_processor.convert_and_insert") %></button>
+      <div class="wp-small" data-word-processor-target="dateStatus"></div>
+    </div>
+  </div>
+
+  <div class="wp-dialog-overlay" data-word-processor-target="measurementDialog" data-action="click->word-processor#dialogBackdrop" hidden>
+    <div class="wp-dialog wp-dialog-wide" role="dialog" aria-modal="true" aria-label="<%= t("word_processor.insert_measurement_heading") %>">
+      <div class="wp-panel-heading"><h2><%= t("word_processor.insert_measurement_heading") %></h2><button type="button" class="corpus-btn" data-action="word-processor#closeDialogs"><%= t("word_processor.close") %></button></div>
+      <%= render "tools/measurement_converter", catalogue: @measurement_catalogue %>
+      <p><button type="button" class="corpus-btn corpus-btn-primary" data-action="word-processor#insertMeasurementResult"><%= t("word_processor.insert_displayed_measurement") %></button></p>
+    </div>
+  </div>
+
+  <div class="wp-dialog-overlay" data-word-processor-target="idsDialog" data-action="click->word-processor#dialogBackdrop" hidden>
+    <div class="wp-dialog wp-dialog-wide" role="dialog" aria-modal="true" aria-label="<%= t("word_processor.input_by_ids") %>">
+      <div class="wp-panel-heading"><h2><%= t("word_processor.input_by_ids") %></h2><button type="button" class="corpus-btn" data-action="word-processor#closeDialogs"><%= t("word_processor.close") %></button></div>
+      <p class="wp-small wp-muted"><%= t("word_processor.ids_input_help") %></p>
+      <div data-action="ids-constructor:changed->word-processor#idsChanged">
+        <%= render "shared/ids_builder",
+                   compact: false,
+                   show_palette: true,
+                   palette_open: true,
+                   show_search: true,
+                   search_url: "/characters/structure" %>
+      </div>
+      <p class="wp-small"><%= t("word_processor.current_ids") %>: <code data-word-processor-target="idsExpression">?</code></p>
+      <button type="button" class="corpus-btn corpus-btn-primary" data-action="word-processor#insertIdsExpression"><%= t("word_processor.insert_ids_literal") %></button>
+    </div>
+  </div>
+  <div class="wp-dialog-overlay" data-word-processor-target="confirmDialog" data-action="click->word-processor#dialogBackdrop" hidden>
+    <div class="wp-dialog wp-dialog-compact" role="dialog" aria-modal="true" aria-labelledby="wp-confirm-title">
+      <div class="wp-panel-heading"><h2 id="wp-confirm-title"><%= t("word_processor.confirm") %></h2></div>
+      <p data-word-processor-target="confirmMessage"></p>
+      <div class="wp-dialog-actions">
+        <button type="button" class="corpus-btn" data-action="word-processor#cancelConfirmation"><%= t("word_processor.cancel") %></button>
+        <button type="button" class="corpus-btn corpus-btn-primary" data-word-processor-target="confirmButton" data-action="word-processor#confirmAction"><%= t("word_processor.confirm") %></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="wp-dialog-overlay" data-word-processor-target="textEntryDialog" data-action="click->word-processor#dialogBackdrop" hidden>
+    <div class="wp-dialog wp-dialog-compact" role="dialog" aria-modal="true" aria-labelledby="wp-text-entry-title">
+      <div class="wp-panel-heading"><h2 id="wp-text-entry-title" data-word-processor-target="textEntryTitle"></h2></div>
+      <textarea rows="5" data-word-processor-target="textEntryInput" data-action="keydown->word-processor#textEntryKeydown"></textarea>
+      <div class="wp-dialog-actions">
+        <button type="button" class="corpus-btn" data-action="word-processor#cancelTextEntry"><%= t("word_processor.cancel") %></button>
+        <button type="button" class="corpus-btn corpus-btn-primary" data-word-processor-target="textEntrySubmit" data-action="word-processor#submitTextEntry"><%= t("word_processor.apply") %></button>
+      </div>
+    </div>
+  </div>
+
+</div>
