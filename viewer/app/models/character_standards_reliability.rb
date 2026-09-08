@@ -192,78 +192,142 @@ module CharacterStandardsReliability
   end
   # ---- 二簡 cumulative pipeline ------------------------------------------------
   #
-  # The 1977 scheme is represented as two overlays over the ordinary Mainland
-  # Simplified inventory. They are intentionally separate from Singapore 1969,
-  # whose historical table has its own base and continues to use the existing
-  # Traditional -> Singapore mapping path.
+  # 《第二次汉字简化方案（草案）》has two distinct tables.  Their table
+  # membership is part of the standard itself; it must not be guessed from the
+  # free-text `VariantMapping.source` column at request time.
+  #
+  # Pipeline:
+  #   erjian_1: any input -> Mainland Simplified -> 第一表
+  #   erjian_2: any input -> Mainland Simplified -> 第一表 -> 第二表
+  #
+  # Singapore 1969 is deliberately independent and continues to use its own
+  # Traditional-base conversion in CharacterStandards#singapore_1969_from_any.
 
-  ERJIAN_SOURCE_PATTERNS = {
-    1 => [
-      /(?:二[简簡]|erjian|second chinese character simplification|second[- ]round simplif).*?(?:第一|第1|一表|一批|一輪|一轮|first|1st|round ?1|table ?1|list ?1)/i,
-      /(?:第一|第1|一表|一批|一輪|一轮|first|1st|round ?1|table ?1|list ?1).*?(?:二[简簡]|erjian|second chinese character simplification|second[- ]round simplif)/i
-    ],
-    2 => [
-      /(?:二[简簡]|erjian|second chinese character simplification|second[- ]round simplif).*?(?:第二|第2|二表|二批|二輪|二轮|second|2nd|round ?2|table ?2|list ?2)/i,
-      /(?:第二|第2|二表|二批|二輪|二轮|second|2nd|round ?2|table ?2|list ?2).*?(?:二[简簡]|erjian|second chinese character simplification|second[- ]round simplif)/i
-    ]
+  ERJIAN_TABLE_PATHS = {
+    1 => "config/erjian_1977_table1.tsv",
+    2 => "config/erjian_1977_table2.tsv"
   }.freeze
 
-  def erjian_source_round(source)
-    label = source.to_s.strip
-    return nil if label.empty?
+  ERJIAN_RESOURCE_PROBES = {
+    1 => {
+      "舞" => "午",
+      "道" => "辺",
+      "蚯蚓" => "丘引"
+    },
+    2 => {
+      "鞭" => "卞",
+      "澳" => "沃",
+      "鹦鹉" => "𰋷武"
+    }
+  }.freeze
 
-    ERJIAN_SOURCE_PATTERNS.each do |round, patterns|
-      return round if patterns.any? { |pattern| label.match?(pattern) }
-    end
-    nil
+  ERJIAN_MINIMUM_RULE_COUNTS = {
+    1 => 250,
+    2 => 250
+  }.freeze
+
+  def erjian_resource_file_available?(round)
+    relative = ERJIAN_TABLE_PATHS[Integer(round)]
+    return false if relative.nil?
+
+    path = Rails.root.join(relative)
+    path.file? && path.size.positive?
+  rescue ArgumentError, TypeError, NameError
+    false
   end
 
-  def erjian_round_sources(round)
+  # Read the reviewed, stage-specific resource once and cache it by file stamp.
+  # This intentionally does not touch VariantMapping.  A database-wide DISTINCT
+  # source scan on every Writer keystroke was both expensive and semantically
+  # incapable of distinguishing 第一表 from 第二表 when the rows shared the
+  # historical source title.
+  def erjian_round_rules(round)
     wanted = Integer(round)
-    VariantMapping.distinct.where.not(source: [nil, ""]).pluck(:source).select do |source|
-      erjian_source_round(source) == wanted
-    end.sort.freeze
-  rescue ArgumentError, TypeError, ActiveRecord::StatementInvalid, NameError
-    [].freeze
+    relative = ERJIAN_TABLE_PATHS.fetch(wanted)
+    path = Rails.root.join(relative)
+    raise CharacterStandards::ConversionUnavailable,
+          "二簡 table #{wanted} resource is unavailable: #{relative}" unless path.file?
+
+    stamp = [path.mtime.to_f, path.size]
+    @erjian_rule_cache ||= {}
+    cached = @erjian_rule_cache[wanted]
+    return cached.fetch(:rules) if cached && cached.fetch(:stamp) == stamp
+
+    ordered = {}
+    File.foreach(path, mode: "r:bom|utf-8") do |line|
+      line = line.strip
+      next if line.empty? || line.start_with?("#")
+
+      source, target = line.split("\t", 2)
+      source = source.to_s
+      target = target.to_s
+      next if source.empty? || target.empty?
+
+      # Ruby Hash preserves insertion position when an existing key is updated,
+      # matching a JavaScript object's Object.entries order while allowing a
+      # later reviewed value for the same source key.
+      ordered[source] = target
+    end
+
+    rules = ordered.to_a.freeze
+    validate_erjian_rules!(wanted, rules)
+
+    @erjian_rule_cache[wanted] = { stamp: stamp.freeze, rules: rules }.freeze
+    rules
+  rescue CharacterStandards::ConversionUnavailable
+    raise
+  rescue Errno::ENOENT, Encoding::InvalidByteSequenceError, Encoding::UndefinedConversionError,
+         ArgumentError, TypeError, KeyError => error
+    raise CharacterStandards::ConversionUnavailable,
+          "二簡 table #{round} resource could not be loaded: #{error.message}"
   end
 
-  def erjian_round_map(round)
+  def validate_erjian_rules!(round, rules)
     wanted = Integer(round)
-    sources = erjian_round_sources(wanted)
-    return {}.freeze if sources.empty?
-
-    Rails.cache.fetch("character_standards:erjian:round#{wanted}:v1:#{sources.join('|')}") do
-      rows = VariantMapping.where(source: sources).order(:id).pluck(:base_codepoint, :variant_codepoint)
-      rows.each_with_object({}) do |(base_codepoint, variant_codepoint), map|
-        base = codepoint_to_character(base_codepoint)
-        variant = codepoint_to_character(variant_codepoint)
-        next if base.nil? || variant.nil?
-
-        # Preserve the first reviewed mapping if duplicate base rows exist.
-        map[base] ||= variant
-      end.freeze
+    minimum = ERJIAN_MINIMUM_RULE_COUNTS.fetch(wanted)
+    if rules.length < minimum
+      raise CharacterStandards::ConversionUnavailable,
+            "二簡 table #{wanted} resource is incomplete (#{rules.length} rules; expected at least #{minimum})"
     end
-  rescue ArgumentError, TypeError, ActiveRecord::StatementInvalid, NameError
-    {}.freeze
+
+    lookup = rules.to_h
+    ERJIAN_RESOURCE_PROBES.fetch(wanted).each do |source, expected|
+      next if lookup[source] == expected
+
+      raise CharacterStandards::ConversionUnavailable,
+            "二簡 table #{wanted} resource failed its #{source}→#{expected} integrity probe"
+    end
+    true
+  end
+
+  # Apply rules in reviewed source order.  Some entries are whole-word
+  # substitutions (for example 蚯蚓→丘引 and 鹦鹉→𰋷武), so a character-only
+  # translation table is insufficient.
+  def apply_erjian_rules(text, rules)
+    value = text.to_s.dup
+    rules.each do |source, target|
+      value.gsub!(source, target)
+    end
+    value
   end
 
   def erjian_first_round_from_any(text)
-    source = simplified(text)
-    translate_characters(source, erjian_round_map(1))
+    mainland = simplified(text)
+    apply_erjian_rules(mainland, erjian_round_rules(1))
   rescue CharacterStandards::ConversionUnavailable
     raise
   end
 
   def erjian_second_round_from_any(text)
     first_round = erjian_first_round_from_any(text)
-    translate_characters(first_round, erjian_round_map(2))
+    apply_erjian_rules(first_round, erjian_round_rules(2))
   rescue CharacterStandards::ConversionUnavailable
     raise
   end
 
-  # Compatibility for older callers which referenced the old shared converter
-  # directly. It now means the first-round state; convert(..., :erjian_2) uses
-  # the explicit cumulative second-round method above.
+  # Compatibility for older callers.  The shared converter name now denotes
+  # the first cumulative state only; convert(..., :erjian_2) explicitly adds
+  # 第二表 after it.
   def erjian_from_any(text)
     erjian_first_round_from_any(text)
   end

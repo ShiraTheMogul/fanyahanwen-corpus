@@ -80,25 +80,38 @@ class CharacterStandardsReliabilityTest < ActiveSupport::TestCase
     assert converted.end_with?("\n")
   end
 
-  test "二簡 first round is Mainland Simplified followed by first-round overlay" do
-    CharacterStandards.stub(:simplified, "传体") do
-      CharacterStandards.stub(:erjian_round_map, ->(round) { round == 1 ? { "传" => "伝" } : {} }) do
-        assert_equal "伝体", CharacterStandards.convert("傳體", :erjian_1)
-      end
+  test "二簡 first round is Mainland Simplified followed by 第一表" do
+    CharacterStandards.stub(:simplified, "舞道蚯蚓") do
+      assert_equal "午辺丘引", CharacterStandards.convert("舞道蚯蚓", :erjian_1)
     end
   end
 
-  test "二簡 second round is cumulative Mainland Simplified then first round then second round" do
+  test "二簡 second round is cumulative Mainland Simplified then 第一表 then 第二表" do
     calls = []
-    CharacterStandards.stub(:simplified, ->(text) { calls << [:simplified, text]; "传体" }) do
-      CharacterStandards.stub(:erjian_round_map, ->(round) {
-        calls << [:round, round]
-        round == 1 ? { "传" => "伝" } : { "伝" => "仮" }
-      }) do
-        assert_equal "仮体", CharacterStandards.convert("傳體", :erjian_2)
+    CharacterStandards.stub(:simplified, ->(text) { calls << [:simplified, text]; "澳洲鞭子鹦鹉舞" }) do
+      assert_equal "沃洲卞子𰋷武午", CharacterStandards.convert("澳洲鞭子鹦鹉舞", :erjian_2)
+    end
+    assert_equal [[:simplified, "澳洲鞭子鹦鹉舞"]], calls
+  end
+
+  test "二簡 resources are stage-specific reviewed files with integrity probes" do
+    first = CharacterStandards.erjian_round_rules(1)
+    second = CharacterStandards.erjian_round_rules(2)
+
+    assert_operator first.length, :>=, 250
+    assert_operator second.length, :>=, 250
+    assert_equal "午", first.to_h.fetch("舞")
+    assert_equal "丘引", first.to_h.fetch("蚯蚓")
+    assert_equal "沃", second.to_h.fetch("澳")
+    assert_equal "𰋷武", second.to_h.fetch("鹦鹉")
+  end
+
+  test "二簡 conversion does not discover stages by scanning VariantMapping sources" do
+    VariantMapping.stub(:distinct, ->(*) { flunk "二簡 must not scan VariantMapping.source at conversion time" }) do
+      CharacterStandards.stub(:simplified, "舞鞭") do
+        assert_equal "午卞", CharacterStandards.convert("舞鞭", :erjian_2)
       end
     end
-    assert_equal [[:simplified, "傳體"], [:round, 1], [:round, 2]], calls
   end
 
   test "Singapore 1969 keeps its own Traditional base and never enters the 二簡 chain" do
@@ -111,12 +124,5 @@ class CharacterStandardsReliabilityTest < ActiveSupport::TestCase
     end
   end
 
-  test "二簡 source labels are separated into first and second rounds" do
-    assert_equal 1, CharacterStandards.erjian_source_round("二簡字 第一表")
-    assert_equal 1, CharacterStandards.erjian_source_round("Second Chinese Character Simplification Scheme — First List")
-    assert_equal 2, CharacterStandards.erjian_source_round("二简字 第二表")
-    assert_equal 2, CharacterStandards.erjian_source_round("Second Chinese Character Simplification Scheme — Second List")
-    assert_nil CharacterStandards.erjian_source_round("Singapore 1969 简体字表")
-  end
 
 end
