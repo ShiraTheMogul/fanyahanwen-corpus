@@ -128,17 +128,20 @@ class WordProcessorReliabilityJavascriptTest < ActiveSupport::TestCase
     source = Rails.root.join("app/javascript/controllers/index.js").read(encoding: "bom|utf-8")
     writer_install = source.index("installWordProcessorReliability(WordProcessorController)")
     semantic_install = source.index("installWordProcessorSemanticAnnotations(WordProcessorController)")
+    script_install = source.index("installWordProcessorScriptStandards(WordProcessorController)")
     viewer_install = source.index("installCorpusAnnotationsReliability(CorpusAnnotationsController)")
     typography_install = source.index("installCorpusReaderTypographyReliability(CorpusReaderController)")
     eager = source.index('eagerLoadControllersFrom("controllers", application)')
 
     assert writer_install
     assert semantic_install
+    assert script_install
     assert viewer_install
     assert typography_install
     assert eager
     assert_operator writer_install, :<, semantic_install
-    assert_operator semantic_install, :<, eager
+    assert_operator semantic_install, :<, script_install
+    assert_operator script_install, :<, eager
     assert_operator viewer_install, :<, eager
     assert_operator typography_install, :<, eager
   end
@@ -347,6 +350,52 @@ class WordProcessorReliabilityJavascriptTest < ActiveSupport::TestCase
     assert_includes viewer, 'from "controllers/han_typography"'
     assert_includes writer, 'documentValue.settings.fontSizePx'
     assert_includes viewer, 'this._state.fontSizePx'
+  end
+
+  test "live character-standard conversion includes IME replacement commits" do
+    skip "node is not installed" unless system("node", "--version", out: File::NULL, err: File::NULL)
+
+    javascript = <<~'JS'
+      const fs = require("fs")
+      const vm = require("vm")
+      let source = fs.readFileSync(process.argv[1], "utf8")
+        .replace(/^\uFEFF/, "")
+        .replace(/^import[\s\S]*?from\s+"controllers\/han_typography"\s*\n/, "")
+        .replace(/^export\s+/gm, "")
+      const context = { console }
+      vm.createContext(context)
+      vm.runInContext(source, context)
+
+      const oldText = "新字X"
+      const newText = "新字體"
+      const diff = { oldStart: 2, oldEnd: 3, newStart: 2, newEnd: 3 }
+      const inserted = context.insertedReplacementFromDiff(oldText, newText, diff)
+      if (inserted !== "體") throw new Error(`IME replacement segment was lost: ${inserted}`)
+    JS
+
+    path = Rails.root.join("app/javascript/controllers/word_processor_script_standards.js")
+    stdout, stderr, status = Open3.capture3("node", "-e", javascript, path.to_s)
+    assert status.success?, [stdout, stderr].reject(&:empty?).join("\n")
+  end
+
+  test "live script conversion no longer requires a pure insertion diff" do
+    source = Rails.root.join("app/javascript/controllers/word_processor_script_standards.js").read(encoding: "bom|utf-8")
+
+    assert_includes source, "const inserted = insertedReplacementFromDiff(oldText, newText, diff)"
+    assert_includes source, "this.enqueueCommittedInsertion(liveChapter.id, start, end, liveInserted)"
+    refute_includes source, "diff.oldStart === diff.oldEnd"
+  end
+
+  test "Writer exposes Convert all and preserves annotation ranges during whole-document conversion" do
+    source = Rails.root.join("app/javascript/controllers/word_processor_script_standards.js").read(encoding: "bom|utf-8")
+
+    assert_includes source, 'button.textContent = this.tr?.("convert_all") || "Convert all"'
+    assert_includes source, "prototype.convertAllToScript = async function()"
+    assert_includes source, 'operation: "script_batch"'
+    assert_includes source, "wpRemapAnnotationsForWholeConversion"
+    assert_includes source, "const prefixes = boundaries.map((offset) => oldText.slice(0, offset))"
+    assert_includes source, "start: mapped.get(start) ?? start"
+    assert_includes source, "end: mapped.get(end) ?? end"
   end
 
 end

@@ -9,10 +9,23 @@ module CharacterStandardsReliability
     value = text.to_s
     return value if value.empty?
 
-    profile = CharacterStandards::PROFILES[normalise_mode(mode)] || CharacterStandards::PROFILES.fetch(:original)
+    normalized = normalise_mode(mode)
+    profile = CharacterStandards::PROFILES[normalized] || CharacterStandards::PROFILES.fetch(:original)
     return value unless available?(mode)
 
-    public_send(profile.fetch(:converter), value)
+    # 二簡 has two cumulative historical stages. The first-round profile is
+    # Mainland Simplified plus the first-round overlay. The second-round profile
+    # must pass through that complete first-round state before its own overlay.
+    # Keeping this dispatch here also avoids the old PROFILES table's accidental
+    # use of the same one-stage converter for both selections.
+    case normalized
+    when :erjian_1
+      erjian_first_round_from_any(value)
+    when :erjian_2
+      erjian_second_round_from_any(value)
+    else
+      public_send(profile.fetch(:converter), value)
+    end
   rescue CharacterStandards::ConversionUnavailable
     raise
   rescue StandardError => error
@@ -177,4 +190,82 @@ module CharacterStandardsReliability
     Rails.logger.error("[character_standards] Wu Zhao conversion failed: #{error.class}: #{error.message}") if defined?(Rails)
     source || text.to_s
   end
+  # ---- 二簡 cumulative pipeline ------------------------------------------------
+  #
+  # The 1977 scheme is represented as two overlays over the ordinary Mainland
+  # Simplified inventory. They are intentionally separate from Singapore 1969,
+  # whose historical table has its own base and continues to use the existing
+  # Traditional -> Singapore mapping path.
+
+  ERJIAN_SOURCE_PATTERNS = {
+    1 => [
+      /(?:二[简簡]|erjian|second chinese character simplification|second[- ]round simplif).*?(?:第一|第1|一表|一批|一輪|一轮|first|1st|round ?1|table ?1|list ?1)/i,
+      /(?:第一|第1|一表|一批|一輪|一轮|first|1st|round ?1|table ?1|list ?1).*?(?:二[简簡]|erjian|second chinese character simplification|second[- ]round simplif)/i
+    ],
+    2 => [
+      /(?:二[简簡]|erjian|second chinese character simplification|second[- ]round simplif).*?(?:第二|第2|二表|二批|二輪|二轮|second|2nd|round ?2|table ?2|list ?2)/i,
+      /(?:第二|第2|二表|二批|二輪|二轮|second|2nd|round ?2|table ?2|list ?2).*?(?:二[简簡]|erjian|second chinese character simplification|second[- ]round simplif)/i
+    ]
+  }.freeze
+
+  def erjian_source_round(source)
+    label = source.to_s.strip
+    return nil if label.empty?
+
+    ERJIAN_SOURCE_PATTERNS.each do |round, patterns|
+      return round if patterns.any? { |pattern| label.match?(pattern) }
+    end
+    nil
+  end
+
+  def erjian_round_sources(round)
+    wanted = Integer(round)
+    VariantMapping.distinct.where.not(source: [nil, ""]).pluck(:source).select do |source|
+      erjian_source_round(source) == wanted
+    end.sort.freeze
+  rescue ArgumentError, TypeError, ActiveRecord::StatementInvalid, NameError
+    [].freeze
+  end
+
+  def erjian_round_map(round)
+    wanted = Integer(round)
+    sources = erjian_round_sources(wanted)
+    return {}.freeze if sources.empty?
+
+    Rails.cache.fetch("character_standards:erjian:round#{wanted}:v1:#{sources.join('|')}") do
+      rows = VariantMapping.where(source: sources).order(:id).pluck(:base_codepoint, :variant_codepoint)
+      rows.each_with_object({}) do |(base_codepoint, variant_codepoint), map|
+        base = codepoint_to_character(base_codepoint)
+        variant = codepoint_to_character(variant_codepoint)
+        next if base.nil? || variant.nil?
+
+        # Preserve the first reviewed mapping if duplicate base rows exist.
+        map[base] ||= variant
+      end.freeze
+    end
+  rescue ArgumentError, TypeError, ActiveRecord::StatementInvalid, NameError
+    {}.freeze
+  end
+
+  def erjian_first_round_from_any(text)
+    source = simplified(text)
+    translate_characters(source, erjian_round_map(1))
+  rescue CharacterStandards::ConversionUnavailable
+    raise
+  end
+
+  def erjian_second_round_from_any(text)
+    first_round = erjian_first_round_from_any(text)
+    translate_characters(first_round, erjian_round_map(2))
+  rescue CharacterStandards::ConversionUnavailable
+    raise
+  end
+
+  # Compatibility for older callers which referenced the old shared converter
+  # directly. It now means the first-round state; convert(..., :erjian_2) uses
+  # the explicit cumulative second-round method above.
+  def erjian_from_any(text)
+    erjian_first_round_from_any(text)
+  end
+
 end

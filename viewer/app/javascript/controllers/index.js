@@ -5,6 +5,7 @@ import CorpusAnnotationsController from "controllers/corpus_annotations_controll
 import CorpusReaderController from "controllers/corpus_reader_controller"
 import { installWordProcessorReliability } from "controllers/word_processor_reliability"
 import { installWordProcessorSemanticAnnotations } from "controllers/word_processor_semantic_annotations"
+import { installWordProcessorScriptStandards } from "controllers/word_processor_script_standards"
 import { installCorpusAnnotationsReliability } from "controllers/corpus_annotations_reliability"
 import { installCorpusReaderTypographyReliability } from "controllers/corpus_reader_typography_reliability"
 
@@ -13,6 +14,7 @@ import { installCorpusReaderTypographyReliability } from "controllers/corpus_rea
 // same patched class objects.
 installWordProcessorReliability(WordProcessorController)
 installWordProcessorSemanticAnnotations(WordProcessorController)
+installWordProcessorScriptStandards(WordProcessorController)
 installCorpusAnnotationsReliability(CorpusAnnotationsController)
 installCorpusReaderTypographyReliability(CorpusReaderController)
 

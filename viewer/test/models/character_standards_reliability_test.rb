@@ -80,4 +80,43 @@ class CharacterStandardsReliabilityTest < ActiveSupport::TestCase
     assert converted.end_with?("\n")
   end
 
+  test "二簡 first round is Mainland Simplified followed by first-round overlay" do
+    CharacterStandards.stub(:simplified, "传体") do
+      CharacterStandards.stub(:erjian_round_map, ->(round) { round == 1 ? { "传" => "伝" } : {} }) do
+        assert_equal "伝体", CharacterStandards.convert("傳體", :erjian_1)
+      end
+    end
+  end
+
+  test "二簡 second round is cumulative Mainland Simplified then first round then second round" do
+    calls = []
+    CharacterStandards.stub(:simplified, ->(text) { calls << [:simplified, text]; "传体" }) do
+      CharacterStandards.stub(:erjian_round_map, ->(round) {
+        calls << [:round, round]
+        round == 1 ? { "传" => "伝" } : { "伝" => "仮" }
+      }) do
+        assert_equal "仮体", CharacterStandards.convert("傳體", :erjian_2)
+      end
+    end
+    assert_equal [[:simplified, "傳體"], [:round, 1], [:round, 2]], calls
+  end
+
+  test "Singapore 1969 keeps its own Traditional base and never enters the 二簡 chain" do
+    CharacterStandards.stub(:traditional, "傳體") do
+      CharacterStandards.stub(:simplified, ->(*) { flunk "Singapore 1969 must not use Mainland Simplified" }) do
+        CharacterStandards.stub(:singapore_1969_map, { "傳" => "传" }) do
+          assert_equal "传體", CharacterStandards.convert("傳體", :singapore_1969)
+        end
+      end
+    end
+  end
+
+  test "二簡 source labels are separated into first and second rounds" do
+    assert_equal 1, CharacterStandards.erjian_source_round("二簡字 第一表")
+    assert_equal 1, CharacterStandards.erjian_source_round("Second Chinese Character Simplification Scheme — First List")
+    assert_equal 2, CharacterStandards.erjian_source_round("二简字 第二表")
+    assert_equal 2, CharacterStandards.erjian_source_round("Second Chinese Character Simplification Scheme — Second List")
+    assert_nil CharacterStandards.erjian_source_round("Singapore 1969 简体字表")
+  end
+
 end
