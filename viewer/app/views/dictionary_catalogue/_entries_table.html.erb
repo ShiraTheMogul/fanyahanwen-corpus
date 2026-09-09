@@ -1,4 +1,4 @@
-<%# Locals: work:, section:, entries:, total:, page:, per:, effective_readings: %>
+﻿<%# Locals: work:, section:, entries:, total:, page:, per:, effective_readings: %>
 
 <div class="dictionary-pager">
   <% if page > 1 %>
@@ -52,12 +52,18 @@
       <tr>
         <td style="width: 150px;">
           <div class="dictionary-entry-headword">
-            <%= link_to entry.headword,
-              dictionary_catalogue_entry_path(
-                corpus_work_id: work.corpus_work_id,
-                entry_sequence: entry.sequence_number
-              ),
-              data: { turbo: false } %>
+            <%= link_to dictionary_catalogue_entry_path(
+                  corpus_work_id: work.corpus_work_id,
+                  entry_sequence: entry.sequence_number
+                ), data: { turbo: false } do %>
+              <% source_image = wfg_kangxi_headword_image(entry, width: 64, height: 60) %>
+              <% if source_image %>
+                <%= source_image %>
+                <span class="visually-hidden"><%= entry.headword %></span>
+              <% else %>
+                <%= entry.headword %>
+              <% end %>
+            <% end %>
           </div>
           <div class="dictionary-entry-sequence">#<%= entry.sequence_number %></div>
           <% if entry.group_head? %>

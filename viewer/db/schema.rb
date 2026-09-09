@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_11_200400) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_09_190000) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.integer "blob_id", null: false
     t.datetime "created_at", null: false
@@ -394,6 +394,34 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_11_200400) do
     t.index ["headword"], name: "index_dictionary_entries_on_headword"
   end
 
+  create_table "dictionary_entry_aliases", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "dictionary_entry_id", null: false
+    t.string "form", null: false
+    t.boolean "is_pua", default: false, null: false
+    t.string "kind", null: false
+    t.json "metadata", default: {}, null: false
+    t.integer "position", null: false
+    t.datetime "updated_at", null: false
+    t.index ["dictionary_entry_id", "kind", "position"], name: "idx_dictionary_entry_aliases_kind"
+    t.index ["dictionary_entry_id", "position"], name: "idx_dictionary_entry_aliases_position", unique: true
+    t.index ["dictionary_entry_id"], name: "index_dictionary_entry_aliases_on_dictionary_entry_id"
+    t.index ["form"], name: "idx_dictionary_entry_aliases_form"
+  end
+
+  create_table "dictionary_entry_blocks", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "dictionary_entry_id", null: false
+    t.string "kind", null: false
+    t.json "metadata", default: {}, null: false
+    t.integer "position", null: false
+    t.text "text", null: false
+    t.datetime "updated_at", null: false
+    t.index ["dictionary_entry_id", "kind", "position"], name: "idx_dictionary_entry_blocks_kind"
+    t.index ["dictionary_entry_id", "position"], name: "idx_dictionary_entry_blocks_position", unique: true
+    t.index ["dictionary_entry_id"], name: "index_dictionary_entry_blocks_on_dictionary_entry_id"
+  end
+
   create_table "dictionary_entry_characters", force: :cascade do |t|
     t.integer "character_codepoint_id", null: false
     t.datetime "created_at", null: false
@@ -639,6 +667,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_11_200400) do
   add_foreign_key "chengyu_senses", "chengyus", on_delete: :cascade
   add_foreign_key "dictionary_entries", "dictionary_sections"
   add_foreign_key "dictionary_entries", "dictionary_works"
+  add_foreign_key "dictionary_entry_aliases", "dictionary_entries"
+  add_foreign_key "dictionary_entry_blocks", "dictionary_entries"
   add_foreign_key "dictionary_entry_characters", "character_codepoints"
   add_foreign_key "dictionary_entry_characters", "dictionary_entries"
   add_foreign_key "dictionary_readings", "dictionary_entries"

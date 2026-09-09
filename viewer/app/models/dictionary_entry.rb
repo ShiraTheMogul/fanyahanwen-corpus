@@ -1,4 +1,4 @@
-class DictionaryEntry < ApplicationRecord
+﻿class DictionaryEntry < ApplicationRecord
   belongs_to :dictionary_work
   belongs_to :dictionary_section
 
@@ -6,6 +6,8 @@ class DictionaryEntry < ApplicationRecord
   has_many :dictionary_entry_characters, dependent: :delete_all
   has_many :character_codepoints, through: :dictionary_entry_characters
   has_many :dictionary_references, dependent: :delete_all
+  has_many :dictionary_entry_blocks, dependent: :delete_all
+  has_many :dictionary_entry_aliases, dependent: :delete_all
 
   validates :sequence_number, presence: true, uniqueness: { scope: :dictionary_work_id }
 

@@ -1,4 +1,4 @@
-<% if params[:q].present? %>
+﻿<% if params[:q].present? %>
   <div class="dictionary-lookup-results">
     <% if @lookup_query.blank? %>
       <p><%= t("dictionary.catalogue.invalid_lookup", default: "That Unicode value is not valid.") %></p>
@@ -13,12 +13,17 @@
       <ol>
         <% @lookup_entries.each do |entry| %>
           <li style="margin-bottom: 8px;">
-            <%= link_to entry.headword,
-              dictionary_catalogue_entry_path(
-                corpus_work_id: @work.corpus_work_id,
-                entry_sequence: entry.sequence_number
-              ),
-              data: { turbo: false } %>
+            <%= link_to dictionary_catalogue_entry_path(
+                  corpus_work_id: @work.corpus_work_id,
+                  entry_sequence: entry.sequence_number
+                ), data: { turbo: false } do %>
+              <% source_image = wfg_kangxi_headword_image(entry, css_class: "dictionary-wfg-headword-image dictionary-wfg-headword-image--small", width: 40, height: 38) %>
+              <% if source_image %>
+                <%= source_image %><span class="visually-hidden"><%= entry.headword %></span>
+              <% else %>
+                <%= entry.headword %>
+              <% end %>
+            <% end %>
             <span style="opacity: 0.7;">— <%= entry.dictionary_section.label %></span>
             <% reading_state = @effective_readings.fetch(entry.id, { readings: [], inherited: false, group_head: nil }) %>
             <% reading = reading_state.fetch(:readings).first %>

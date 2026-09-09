@@ -7,8 +7,17 @@
 
 <%= render "styles" %>
 
-<h1>
-  <span style="font-size: 2.4rem;"><%= @entry.headword %></span>
+<% wfg_entry = wfg_kangxi_entry?(@entry) %>
+<% wfg_image = wfg_kangxi_headword_image(@entry, width: 100, height: 94) if wfg_entry %>
+
+<h1 class="dictionary-entry-title">
+  <% if wfg_image %>
+    <%= wfg_image %>
+    <span class="visually-hidden"><%= @entry.headword %></span>
+    <span class="dictionary-entry-unicode-identity"><%= @entry.headword %></span>
+  <% else %>
+    <span style="font-size: 2.4rem;"><%= @entry.headword %></span>
+  <% end %>
   <span style="font-size: 1rem; opacity: 0.65;">#<%= @entry.sequence_number %></span>
 </h1>
 
@@ -17,7 +26,12 @@
 <div class="dictionary-browser-columns">
   <div class="dictionary-browser-sidebar">
     <% primary_character = @entry.dictionary_entry_characters.sort_by(&:position).first %>
-    <% if primary_character %>
+    <% if wfg_image %>
+      <div class="dictionary-wfg-source-glyph">
+        <%= wfg_image %>
+        <div class="dictionary-entry-sequence">WFG source glyph</div>
+      </div>
+    <% elsif primary_character %>
       <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.7.0/dist/hanzi-writer.min.js"></script>
       <div id="hanzi-writer-dictionary-entry" style="margin: 4px 0 14px;"></div>
       <script>
@@ -58,17 +72,36 @@
       <dt><%= t("dictionary.catalogue.entry_sequence", default: "Entry sequence") %></dt>
       <dd><%= @entry.sequence_number %></dd>
 
+      <% if wfg_entry %>
+        <% metadata = @entry.metadata.to_h %>
+        <% if metadata["wfg_record_key"].present? %>
+          <dt>WFG record key</dt>
+          <dd><%= metadata["wfg_record_key"] %></dd>
+        <% end %>
+        <% if metadata["wfg_is_pua_headword"] == true %>
+          <dt>Encoding</dt>
+          <dd>WFG local PUA headword; source glyph retained above.</dd>
+        <% end %>
+        <% if metadata["additional_strokes"].present? %>
+          <dt>部外筆畫</dt>
+          <dd><%= metadata["additional_strokes"] %></dd>
+        <% end %>
+        <% if metadata["total_strokes"].present? %>
+          <dt>總筆畫</dt>
+          <dd><%= metadata["total_strokes"] %></dd>
+        <% end %>
+      <% end %>
+
       <% effective_initial = @entry.initial.presence || @section.initial.presence %>
       <% if effective_initial %>
         <dt><%= t("dictionary.catalogue.initial", default: "Initial") %></dt>
         <dd><%= effective_initial %>母</dd>
       <% end %>
-
     </dl>
 
     <h3><%= t("dictionary.catalogue.characters", default: "Characters") %></h3>
     <% if @entry.dictionary_entry_characters.empty? %>
-      <p>—</p>
+      <p><%= wfg_entry ? "No portable Unicode headword link." : "—" %></p>
     <% else %>
       <p style="font-size: 1.8rem; line-height: 1.4;">
         <% @entry.dictionary_entry_characters.sort_by(&:position).each_with_index do |entry_character, index| %>
@@ -80,61 +113,134 @@
       </p>
     <% end %>
 
-<% reading_state = @effective_readings.fetch(
-     @entry.id,
-     { readings: [], inherited: false, group_head: nil }
-   ) %>
-
-<% if reading_state.fetch(:readings).any? %>
-  <h3><%= t("dictionary.catalogue.readings", default: "Readings") %></h3>
-
-  <% reading_state.fetch(:readings).each do |reading| %>
-    <p>
-      <strong><%= reading.kind %>:</strong>
-      <%= reading.raw_value %>
-
-      <% if reading.value.present? && reading.value != reading.raw_value %>
-        <span style="opacity: 0.75;">(<%= reading.value %>)</span>
+    <% if wfg_entry && @entry.dictionary_entry_aliases.any? %>
+      <h3>古文、異體與檢索別名</h3>
+      <% @entry.dictionary_entry_aliases.order(:position).group_by(&:kind).each do |kind, aliases| %>
+        <div class="dictionary-wfg-alias-group">
+          <strong><%= kind %></strong>
+          <div class="dictionary-wfg-aliases">
+            <% aliases.each_with_index do |entry_alias, index| %>
+              <%= " · " unless index.zero? %>
+              <%= dictionary_character_link(entry_alias.form, is_pua: entry_alias.is_pua?) %>
+            <% end %>
+          </div>
+        </div>
       <% end %>
-    </p>
-  <% end %>
+    <% end %>
 
-  <% if reading_state.fetch(:inherited) %>
-    <p class="dictionary-reading-inherited">
-      <%= t(
-        "dictionary.catalogue.inherited_reading_long",
-        default: "This reading is inherited from pronunciation-group head %{headword} (#%{sequence}).",
-        headword: reading_state.fetch(:group_head).headword,
-        sequence: reading_state.fetch(:group_head).sequence_number
-      ) %>
-    </p>
-  <% end %>
-<% end %>
+    <% reading_state = @effective_readings.fetch(
+         @entry.id,
+         { readings: [], inherited: false, group_head: nil }
+       ) %>
 
+    <% if reading_state.fetch(:readings).any? %>
+      <h3><%= t("dictionary.catalogue.readings", default: "Readings") %></h3>
+
+      <% reading_state.fetch(:readings).each do |reading| %>
+        <p>
+          <strong><%= reading.kind %>:</strong>
+          <%= reading.raw_value %>
+          <% if reading.value.present? && reading.value != reading.raw_value %>
+            <span style="opacity: 0.75;">(<%= reading.value %>)</span>
+          <% end %>
+        </p>
+      <% end %>
+
+      <% if reading_state.fetch(:inherited) %>
+        <p class="dictionary-reading-inherited">
+          <%= t(
+            "dictionary.catalogue.inherited_reading_long",
+            default: "This reading is inherited from pronunciation-group head %{headword} (#%{sequence}).",
+            headword: reading_state.fetch(:group_head).headword,
+            sequence: reading_state.fetch(:group_head).sequence_number
+          ) %>
+        </p>
+      <% end %>
+    <% end %>
   </div>
 
   <div class="dictionary-browser-main">
     <h2><%= t("dictionary.catalogue.definition", default: "Definition") %></h2>
-    <p style="font-size: 1.12rem; line-height: 1.75;">
-      <%= @entry.definition.presence || "—" %>
-    </p>
+
+    <% if wfg_entry && @entry.dictionary_entry_blocks.where.not(kind: "考證").exists? %>
+      <div class="dictionary-wfg-definition-blocks">
+        <% @entry.dictionary_entry_blocks.where.not(kind: "考證").order(:position).each do |block| %>
+          <div class="dictionary-wfg-definition-block dictionary-wfg-definition-block--<%= block.kind %>">
+            <span class="dictionary-wfg-block-kind"><%= block.kind %></span>
+            <span class="dictionary-wfg-block-text"><%= block.text %></span>
+            <% notes = Array(block.metadata.to_h["notes"]).reject(&:blank?) %>
+            <% if notes.any? %>
+              <span class="dictionary-wfg-block-notes">〔<%= notes.join("；") %>〕</span>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p style="font-size: 1.12rem; line-height: 1.75;">
+        <%= @entry.definition.presence || "—" %>
+      </p>
+    <% end %>
+
+    <% if wfg_entry && @entry.dictionary_entry_blocks.where(kind: "考證").exists? %>
+      <h2 style="margin-top: 24px;">考證</h2>
+      <% @entry.dictionary_entry_blocks.where(kind: "考證").order(:position).each do |block| %>
+        <% block_meta = block.metadata.to_h %>
+        <div class="dictionary-wfg-correction">
+          <% if block_meta["label"].present? %><strong><%= block_meta["label"] %></strong><% end %>
+          <% if block_meta["original"].present? %>
+            <div><span class="dictionary-wfg-correction-label">原文</span> <%= block_meta["original"] %></div>
+          <% end %>
+          <% if block_meta["correction"].present? %>
+            <div><span class="dictionary-wfg-correction-label">考證</span> <%= block_meta["correction"] %></div>
+          <% else %>
+            <div><%= block.text %></div>
+          <% end %>
+          <% source = block_meta["source"].to_h %>
+          <% if source.present? %>
+            <small class="dictionary-wfg-correction-source">
+              <%= [source["volume"], wfg_location_text("愛日堂藏本", { "page" => source["airitang_page"], "position" => source["airitang_position"] }), wfg_location_text("同文書局本", { "page" => source["tongwen_page"], "position" => source["tongwen_position"] })].compact.join(" · ") %>
+            </small>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
 
     <h2 style="margin-top: 24px;"><%= t("dictionary.catalogue.source_references", default: "Entry in Corpus") %></h2>
 
     <% @entry.dictionary_references.sort_by(&:position).each do |reference| %>
       <div class="dictionary-source-reference">
-        <div>
-          <%= link_to reference.source_file,
-            corpus_viewer_path(path: reference.source_path),
-            data: { turbo: false } %>
-        </div>
-        <div style="opacity: 0.75; font-size: 0.9rem;">
-          <%= reference.source_path %><br>
-          <%= t("dictionary.catalogue.lines", default: "Lines") %>
-          <%= reference.line_start %><%= "–#{reference.line_end}" if reference.line_end != reference.line_start %>
-          ·
-          <%= t("dictionary.catalogue.document_id", default: "document ID") %> <%= reference.corpus_document_id %>
-        </div>
+        <% if reference.source_kind == "digital_dictionary" %>
+          <div><strong><%= reference.source_label %></strong></div>
+          <% locations = reference.metadata.to_h %>
+          <div style="opacity: 0.78; font-size: 0.9rem; line-height: 1.65;">
+            <% if locations["volume"].present? %><div><%= locations["volume"] %></div><% end %>
+            <% [
+              ["武英殿刻本", locations["wuying"]],
+              ["同文書局本", locations["tongwen"]],
+              ["標點整理本", locations["punctuated"]],
+              ["愛日堂藏本", locations["airitang"]]
+            ].each do |label, location| %>
+              <% rendered = wfg_location_text(label, location) %>
+              <% if rendered %><div><%= rendered %></div><% end %>
+            <% end %>
+            <% if reference.source_record_key.present? %>
+              <div>WFG record: <%= reference.source_record_key %></div>
+            <% end %>
+          </div>
+        <% else %>
+          <div>
+            <%= link_to reference.source_file,
+              corpus_viewer_path(path: reference.source_path),
+              data: { turbo: false } %>
+          </div>
+          <div style="opacity: 0.75; font-size: 0.9rem;">
+            <%= reference.source_path %><br>
+            <%= t("dictionary.catalogue.lines", default: "Lines") %>
+            <%= reference.line_start %><%= "–#{reference.line_end}" if reference.line_end != reference.line_start %>
+            ·
+            <%= t("dictionary.catalogue.document_id", default: "document ID") %> <%= reference.corpus_document_id %>
+          </div>
+        <% end %>
       </div>
     <% end %>
 
@@ -162,3 +268,23 @@
     </div>
   </div>
 </div>
+
+<% if wfg_entry %>
+  <style>
+    .dictionary-entry-title { display: flex; align-items: center; gap: 10px; }
+    .dictionary-entry-unicode-identity { font-size: 1.3rem; opacity: 0.72; }
+    .dictionary-wfg-headword-image { display: inline-block; object-fit: contain; image-rendering: auto; vertical-align: middle; }
+    .dictionary-wfg-source-glyph { margin: 4px 0 14px; }
+    .dictionary-wfg-alias-group { margin: 8px 0; }
+    .dictionary-wfg-aliases { margin-top: 3px; font-size: 1.45rem; line-height: 1.5; }
+    .dictionary-pua-label { font-size: 0.7rem; opacity: 0.7; }
+    .dictionary-wfg-definition-block { position: relative; padding: 10px 8px 10px 46px; border-bottom: 1px solid rgba(0, 0, 0, 0.10); font-size: 1.08rem; line-height: 1.75; }
+    .dictionary-wfg-block-kind { position: absolute; left: 8px; top: 12px; display: inline-block; min-width: 25px; padding: 1px 4px; border-radius: 4px; text-align: center; font-weight: 700; }
+    .dictionary-wfg-definition-block--音 .dictionary-wfg-block-kind { border: 1px solid currentColor; }
+    .dictionary-wfg-definition-block--例 .dictionary-wfg-block-kind { border: 1px solid currentColor; opacity: 0.75; }
+    .dictionary-wfg-block-notes { margin-left: 0.4em; opacity: 0.75; }
+    .dictionary-wfg-correction { padding: 10px 0; border-bottom: 1px solid rgba(0, 0, 0, 0.10); line-height: 1.7; }
+    .dictionary-wfg-correction-label { display: inline-block; min-width: 2.8em; font-weight: 700; }
+    .dictionary-wfg-correction-source { display: block; margin-top: 4px; opacity: 0.72; }
+  </style>
+<% end %>
