@@ -1,8 +1,12 @@
-﻿# Fanya Hanwen Corpus — 《第二次汉字简化方案（草案）》第一表
-# Pipeline semantics: Mainland Simplified is applied first. Table 2 is applied only after Table 1.
-# Mapping transcription/Unicode choices derived from Honoka55, erjian-convert (MIT License), retrieved 2026-09-08.
-# Historical/table structure cross-checked against Andrew West, BabelStone Erjian, retrieved 2026-09-08.
-# Columns: source<TAB>target. Order is significant and follows the source converter.
+﻿# Fanya Hanwen Corpus — 《第二次汉字简化方案（草案）》第一表 — Unicode-representable mappings
+# Historical source: 中国文字改革委员会. (1977). 《第二次汉字简化方案（草案）》.
+# Reconciliation: Zapryagaev, Alexander. (2022, February 19). The Chart of Current Status for Second Stage Simplification in Unicode, Version 3.0 (IRG N2924).
+# Current mapping check: West, Andrew. (n.d.). BabelStone Erjian. Retrieved September 9, 2026, from https://www.babelstone.co.uk/Fonts/Erjian.html
+# Current unencoded-repertoire check: Wen, Witty 文辰䶮 & Yang, Tao 陶扬. (2026, March 12). IRG N2921: Preliminary Proposal from G-Source for WS202X.
+# Implementation comparison only: Honoka55. (2023). erjian-convert [Computer software]. MIT License.
+# Pipeline: Mainland Simplified is applied first. 第二表 is applied only after 第一表.
+# Policy: emit only defensible UCS scalar/sequence mappings for the intended final glyph. Do not substitute PUA values or ordinary Unicode code points used only as BabelStone Erjian font slots.
+# Columns: source<TAB>target. Order is significant.
 懊	㤇
 芭	巴
 笆	巴
@@ -164,7 +168,7 @@
 宣	㝉
 癣	㾌
 靴	𰆳
-雪	彐
+雪	𫜹
 阎	闫
 演	𰛑
 耀	𭀦

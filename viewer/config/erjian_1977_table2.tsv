@@ -1,8 +1,16 @@
-﻿# Fanya Hanwen Corpus — 《第二次汉字简化方案（草案）》第二表
-# Pipeline semantics: Mainland Simplified is applied first. Table 2 is applied only after Table 1.
-# Mapping transcription/Unicode choices derived from Honoka55, erjian-convert (MIT License), retrieved 2026-09-08.
-# Historical/table structure cross-checked against Andrew West, BabelStone Erjian, retrieved 2026-09-08.
-# Columns: source<TAB>target. Order is significant and follows the source converter.
+﻿# Fanya Hanwen Corpus — 《第二次汉字简化方案（草案）》第二表 — Unicode-representable mappings
+# Historical source: 中国文字改革委员会. (1977). 《第二次汉字简化方案（草案）》.
+# Reconciliation: Zapryagaev, Alexander. (2022, February 19). The Chart of Current Status for Second Stage Simplification in Unicode, Version 3.0 (IRG N2924).
+# Current mapping check: West, Andrew. (n.d.). BabelStone Erjian. Retrieved September 9, 2026, from https://www.babelstone.co.uk/Fonts/Erjian.html
+# Current unencoded-repertoire check: Wen, Witty 文辰䶮 & Yang, Tao 陶扬. (2026, March 12). IRG N2921: Preliminary Proposal from G-Source for WS202X.
+# Implementation comparison only: Honoka55. (2023). erjian-convert [Computer software]. MIT License.
+# Pipeline: Mainland Simplified -> 第一表 -> 第二表. 第二表 sources are stored in their historical/base form; the loader normalises them through 第一表 before matching.
+# Policy: emit only defensible UCS scalar/sequence mappings for the intended final glyph. Do not substitute PUA values, ordinary Unicode code points used only as BabelStone Erjian font slots, or unrelated visual lookalikes.
+# Context: 2.1:010 雕→刁 applies to the 'engraving' sense; only 雕刻→刁刻 is automated. The 2.2:014 bird form remains unencoded.
+# Word-level rules remain word-level: 磅礴→㝑薄 and 舢舨→舢板 do not authorize generic replacement of 磅 or 舨 outside those expressions.
+# Where a primary 第二表 target itself contains a later simplified component (for example 襟、襻、裤), this executable table stores the final cumulative Unicode glyph.
+# Pipeline alias: 𰬸→𬜨 is retained because 𰬸 is the Unicode simplified form associated with 繐 in OpenCC/Unihan data; it must reach the same reviewed 二簡 output when presented by the preceding Simplified stage or supplied directly.
+# Columns: source<TAB>target. Order is significant.
 癍	斑
 鞭	卞
 辩	弁
@@ -20,22 +28,7 @@
 癫	𱂪
 凋	刁
 碉	刁
-鹰雕	𪈠𩾗
-金雕	金𩾗
-海雕	海𩾗
-雕属	𩾗属
-食猿雕	食𤝌𩾗
-角雕	角𩾗
-战雕	战𩾗
-楔尾雕	楔尾𩾗
-山雕	山𩾗
-蛇雕	蛇𩾗
-林雕	林𩾗
-真雕	真𩾗
-射雕	射𩾗
-双雕	双𩾗
-老雕	老𩾗
-雕	刁
+雕刻	刁刻
 陡	斗
 嘟	都
 锻	煅
@@ -56,7 +49,6 @@
 徽	辉
 嫉	忌
 捡	拣
-嚼	噍
 诫	戒
 襟	𥘞
 飓	巨
@@ -102,8 +94,8 @@
 渲	㝉
 檐	沿
 颜	彦
-赢	盈
 榨	乍
+搾	乍
 蘸	沾
 骤	驺
 谘	咨
@@ -152,7 +144,6 @@
 健	伣
 键	𰽢
 剿	𠜅
-儆	警
 裤	䃿
 篱	竻
 犁	牞
@@ -165,17 +156,15 @@
 孽	𰰟
 藕	𰰤
 锹	𫓱
-瞧	𥋊
 瘸	疦
 撒	𰒼
 擅	𢩳
 薯	𦬸
 蔬	𦬸
 穗	𬜨
+繐	𬜨
 𰬸	𬜨
-艇	𦨍
 瘟	𤵒
-霞	雫
 掀	㧥
 𣔙	㭠
 锨	㭠
@@ -189,7 +178,6 @@
 椅	𣎷
 屹	𡴭
 癔	𤴥
-鹰	𪈠
 辕	𰹷
 猿	𤝌
 愿	𫹵
@@ -198,13 +186,8 @@
 糟	𮇘
 渣	泎
 铡	钆
-绽	𥿕
-涨	涱
-胀	涱
 蒸	炡
 撞	𢬂
-插	臿
-锸	臿
 得	𬁟
 费	弗
 蜂	夆
@@ -213,8 +196,6 @@
 锋	夆
 鼓	壴
 臌	壴
-滚	衮
-磙	衮
 侯	𫶬
 候	𫶬
 既	旡
@@ -226,6 +207,7 @@
 掬	匊
 垒	厽
 儡	厽
+漏	屚
 没	殳
 墓	圶
 脑	㐫
@@ -238,9 +220,9 @@
 数	𮲓
 酸	夋
 痠	夋
-藤	滕
 微	𡵉
 涡	呙
+蜗	呙
 娲	呙
 窝	呙
 莴	呙
@@ -249,18 +231,12 @@
 蠢	𧉾
 摩	𭙕
 旁	㝑
-搜	叟
-嗖	叟
-飕	叟
 臾	㬰
 隋	陏
 随	陏
 犀	𰠨
 舟	𠔾
-第	弟
-嚏	涕
 柬	𫠣
-斓	阑
 矮	仦
 寡	𠆣
 集	亼
@@ -268,7 +244,6 @@
 燃	𤆂
 割	刈
 奥	𫤭
-韩	𨊣
 溉	𣲪
 谏	𫍝
 豺	犲
