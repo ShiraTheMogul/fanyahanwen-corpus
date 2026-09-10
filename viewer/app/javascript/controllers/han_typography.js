@@ -14,11 +14,19 @@ const AUTO_COLUMN_RELATIVE_TRIGGER_EM = 0.10
 const AUTO_COLUMN_SAFETY_EM = 0.15
 const MAX_COLUMN_FACTOR = 3.0
 const REFERENCE_FONT_STACK = '"WenJin Mincho", serif'
-const PRIMARY_COVERAGE_PROBE_FALLBACK = "monospace"
-const FALLBACK_METRIC_EPSILON_EM = 0.0025
-const MIN_FALLBACK_BOUNDARY_GAP_EM = 0.06
-const MAX_FALLBACK_BOUNDARY_GAP_EM = 0.30
-const FALLBACK_STYLE_ID = "fanya-han-font-fallback-layout"
+const VERTICAL_GLYPH_STYLE_ID = "fanya-han-font-vertical-glyph-spacing"
+const GLYPH_VERTICAL_POSITION_TRIGGER_EM = 0.025
+const GLYPH_VERTICAL_SAFETY_EM = 0.05
+const MIN_GLYPH_SIDE_EXTRA_EM = 0.015
+const MAX_GLYPH_SIDE_EXTRA_EM = 1.25
+// Contenteditable Writer text cannot safely be wrapped character-by-character.
+// For that surface we derive one conservative vertical rhythm from the same
+// measured glyph geometry and reserve a small top/bottom writing margin.
+const CONTINUOUS_TRACKING_TRIGGER_EM = 0.075
+const CONTINUOUS_TRACKING_SAFETY_EM = 0.075
+const MAX_CONTINUOUS_TRACKING_EM = 0.85
+const MIN_CONTINUOUS_EDGE_PADDING_EM = 0.22
+const MAX_CONTINUOUS_EDGE_PADDING_EM = 0.70
 const FONT_LAYOUT_CACHE_LIMIT = 24
 const fontLayoutCache = new Map()
 
@@ -66,9 +74,6 @@ export function hanTypographySample(text, limit = FONT_LAYOUT_SAMPLE_LIMIT) {
   const unique = uniqueHanCharacters(text)
   if (unique.length <= limit) return unique
 
-  // Sample across the whole text instead of taking only the opening lines.
-  // This matters for sparse historical-script fonts whose covered characters
-  // may be scattered throughout a chapter.
   const sampled = []
   const step = unique.length / limit
   for (let index = 0; index < limit; index += 1) {
@@ -114,6 +119,18 @@ function computedFontStack(target, windowRef, documentRef) {
   }
 }
 
+async function ensureFontLoaded(documentRef, family, sample) {
+  const fontSet = documentRef?.fonts
+  if (!fontSet?.load || !family || sample.length === 0) return
+
+  try {
+    await fontSet.load(
+      `${FONT_LAYOUT_PROBE_PX}px ${quoteFontFamily(family)}`,
+      sample.join(""),
+    )
+  } catch (_) {}
+}
+
 function canvasCharacterMetrics(documentRef, fontStack, sample) {
   const canvas = documentRef?.createElement?.("canvas")
   const context = canvas?.getContext?.("2d")
@@ -128,13 +145,11 @@ function canvasCharacterMetrics(documentRef, fontStack, sample) {
     const rawDescent = Number(metrics.actualBoundingBoxDescent)
     const rawLeft = Number(metrics.actualBoundingBoxLeft)
     const rawRight = Number(metrics.actualBoundingBoxRight)
-    const rawAdvance = Number(metrics.width)
 
     const ascent = Number.isFinite(rawAscent) ? rawAscent / FONT_LAYOUT_PROBE_PX : null
     const descent = Number.isFinite(rawDescent) ? rawDescent / FONT_LAYOUT_PROBE_PX : null
     const left = Number.isFinite(rawLeft) ? rawLeft / FONT_LAYOUT_PROBE_PX : null
     const right = Number.isFinite(rawRight) ? rawRight / FONT_LAYOUT_PROBE_PX : null
-    const advance = Number.isFinite(rawAdvance) ? rawAdvance / FONT_LAYOUT_PROBE_PX : null
     const height = Number.isFinite(ascent) && Number.isFinite(descent) && (ascent + descent) > 0
       ? ascent + descent
       : null
@@ -142,88 +157,108 @@ function canvasCharacterMetrics(documentRef, fontStack, sample) {
       ? left + right
       : null
 
-    if (Number.isFinite(height) || Number.isFinite(width) || Number.isFinite(advance)) {
-      byCharacter.set(character, { height, width, advance, ascent, descent, left, right })
+    // Canvas is only a fallback for browsers where SVG getBBox is unavailable.
+    // Treat the horizontal ascent/descent as an approximate vertical envelope
+    // so the caller can still distinguish before/after overhang.
+    const top = Number.isFinite(ascent) ? -ascent : null
+    const bottom = Number.isFinite(descent) ? descent : null
+
+    if (Number.isFinite(height) || Number.isFinite(width)) {
+      byCharacter.set(character, { height, width, top, bottom })
     }
   }
 
   return byCharacter.size > 0 ? byCharacter : null
 }
 
-const FALLBACK_FINGERPRINT_KEYS = [
-  "height",
-  "width",
-  "advance",
-  "ascent",
-  "descent",
-  "left",
-  "right",
-]
+function verticalSvgCharacterMetrics(documentRef, fontStack, characters) {
+  const body = documentRef?.body
+  if (!body || !documentRef?.createElementNS) return null
 
-function metricFingerprintsMatch(leftMetrics, rightMetrics, epsilon = FALLBACK_METRIC_EPSILON_EM) {
-  if (!leftMetrics || !rightMetrics) return false
-  let compared = 0
+  const namespace = "http://www.w3.org/2000/svg"
+  const svg = documentRef.createElementNS(namespace, "svg")
+  const text = documentRef.createElementNS(namespace, "text")
 
-  for (const key of FALLBACK_FINGERPRINT_KEYS) {
-    const left = Number(leftMetrics[key])
-    const right = Number(rightMetrics[key])
-    if (!Number.isFinite(left) || !Number.isFinite(right)) continue
-    compared += 1
-    if (Math.abs(left - right) > epsilon) return false
-  }
+  svg.setAttribute("aria-hidden", "true")
+  svg.setAttribute("width", "1")
+  svg.setAttribute("height", "1")
+  svg.style.position = "fixed"
+  svg.style.left = "-10000px"
+  svg.style.top = "-10000px"
+  svg.style.overflow = "visible"
+  svg.style.opacity = "0"
+  svg.style.pointerEvents = "none"
 
-  return compared >= 4
-}
+  text.setAttribute("x", "0")
+  text.setAttribute("y", "0")
+  text.style.fontFamily = fontStack
+  text.style.fontSize = `${FONT_LAYOUT_PROBE_PX}px`
+  text.style.fontWeight = "400"
+  text.style.fontStyle = "normal"
+  text.style.fontKerning = "none"
+  text.style.writingMode = "vertical-rl"
+  text.style.textOrientation = "mixed"
 
-function fallbackCharactersFromMetrics(selected, primaryProbe, characters) {
-  const fallback = []
+  svg.appendChild(text)
+  body.appendChild(svg)
 
-  for (const character of characters) {
-    const selectedMetrics = selected?.get?.(character)
-    const primaryMetrics = primaryProbe?.get?.(character)
-    if (!selectedMetrics || !primaryMetrics) continue
-
-    // The real stack and the probe both begin with the selected primary face.
-    // The probe then switches to an intentionally different fallback. If the
-    // primary owns this character, both renders still use that same primary
-    // face and their metric fingerprints remain equal. If they diverge, the
-    // browser had to leave the primary face for this character. This detects
-    // fallback runs without knowing the selected font's name or coverage list.
-    if (!metricFingerprintsMatch(selectedMetrics, primaryMetrics)) fallback.push(character)
-  }
-
-  return fallback
-}
-
-async function ensureFontLoaded(documentRef, family, sample) {
-  const fontSet = documentRef?.fonts
-  if (!fontSet?.load || !family || sample.length === 0) return
-
+  const byCharacter = new Map()
   try {
-    await fontSet.load(
-      `${FONT_LAYOUT_PROBE_PX}px ${quoteFontFamily(family)}`,
-      sample.join(""),
-    )
-  } catch (_) {}
+    for (const character of characters) {
+      text.textContent = character
+      let box = null
+      try {
+        box = text.getBBox()
+      } catch (_) {
+        box = null
+      }
+
+      const rawX = Number(box?.x)
+      const rawY = Number(box?.y)
+      const rawWidth = Number(box?.width)
+      const rawHeight = Number(box?.height)
+      const x = Number.isFinite(rawX) ? rawX / FONT_LAYOUT_PROBE_PX : null
+      const y = Number.isFinite(rawY) ? rawY / FONT_LAYOUT_PROBE_PX : null
+      const width = Number.isFinite(rawWidth) && rawWidth > 0
+        ? rawWidth / FONT_LAYOUT_PROBE_PX
+        : null
+      const height = Number.isFinite(rawHeight) && rawHeight > 0
+        ? rawHeight / FONT_LAYOUT_PROBE_PX
+        : null
+      const top = Number.isFinite(y) ? y : null
+      const bottom = Number.isFinite(y) && Number.isFinite(height) ? y + height : null
+      const left = Number.isFinite(x) ? x : null
+      const right = Number.isFinite(x) && Number.isFinite(width) ? x + width : null
+
+      if (Number.isFinite(height) || Number.isFinite(width)) {
+        byCharacter.set(character, { height, width, top, bottom, left, right })
+      }
+    }
+  } finally {
+    svg.remove()
+  }
+
+  return byCharacter.size > 0 ? byCharacter : null
 }
 
-function summarisePairedMetrics(selected, reference, sample, fallbackCharacters = []) {
+function measuredCharacterMetrics(documentRef, fontStack, characters) {
+  return verticalSvgCharacterMetrics(documentRef, fontStack, characters) ||
+    canvasCharacterMetrics(documentRef, fontStack, characters)
+}
+
+function summarisePairedMetrics(selected, reference, sample) {
   const selectedHeights = []
   const referenceHeights = []
   const selectedWidths = []
   const referenceWidths = []
   const trackingCandidates = []
   const columnCandidates = []
-  const fallbackSet = new Set(fallbackCharacters)
+  const verticalPositionCandidates = []
 
   for (const character of sample) {
     const selectedMetrics = selected?.get?.(character)
     if (!selectedMetrics) continue
     const referenceMetrics = reference?.get?.(character)
-
-    // Geometry correction describes the selected face itself. Characters that
-    // already came from WenJin fallback must not dilute those measurements.
-    if (fallbackSet.has(character)) continue
 
     const selectedHeight = Number(selectedMetrics.height)
     const referenceHeight = Number(referenceMetrics?.height)
@@ -241,6 +276,24 @@ function summarisePairedMetrics(selected, reference, sample, fallbackCharacters 
         relativeOverflow > AUTO_TRACKING_TRIGGER_EM
       ) {
         trackingCandidates.push(absoluteOverflow + AUTO_TRACKING_SAFETY_EM)
+      }
+    }
+
+    const selectedTop = Number(selectedMetrics.top)
+    const selectedBottom = Number(selectedMetrics.bottom)
+    const referenceTop = Number(referenceMetrics?.top)
+    const referenceBottom = Number(referenceMetrics?.bottom)
+    if (
+      Number.isFinite(selectedTop) &&
+      Number.isFinite(selectedBottom) &&
+      Number.isFinite(referenceTop) &&
+      Number.isFinite(referenceBottom)
+    ) {
+      const beforeOverflow = referenceTop - selectedTop
+      const afterOverflow = selectedBottom - referenceBottom
+      const positionalOverflow = Math.max(beforeOverflow, afterOverflow, 0)
+      if (positionalOverflow > GLYPH_VERTICAL_POSITION_TRIGGER_EM) {
+        verticalPositionCandidates.push(positionalOverflow)
       }
     }
 
@@ -263,22 +316,45 @@ function summarisePairedMetrics(selected, reference, sample, fallbackCharacters 
     }
   }
 
-  // A single malformed outline should not loosen an entire chapter. Two or
-  // more matching problem glyphs are enough to establish that the selected
-  // font has a repeatable geometry problem. We then use the 75th percentile
-  // of only those problem glyphs, so sparse historical-script coverage is
-  // still detected without letting one extreme graph dictate the layout.
-  const enoughTrackingEvidence = trackingCandidates.length >= 2
-  const enoughColumnEvidence = columnCandidates.length >= 2
+  const heightP95 = percentile(selectedHeights, 0.95)
+  const heightP99 = percentile(selectedHeights, 0.99)
+  const referenceHeightP95 = percentile(referenceHeights, 0.95)
+  const referenceHeightP99 = percentile(referenceHeights, 0.99)
+  const positionP95 = percentile(verticalPositionCandidates, 0.95)
 
-  const extraTrackingEm = enoughTrackingEvidence
+  const extraTrackingEm = trackingCandidates.length >= 2
     ? Math.min(
         MAX_AUTO_TRACKING_EM,
         Math.max(0, percentile(trackingCandidates, 0.75) || 0),
       )
     : 0
 
-  const proposedColumnFactor = enoughColumnEvidence
+  // Writer uses uninterrupted text nodes so per-character layout padding would
+  // interfere with caret/selection behaviour. Estimate a safe shared character
+  // advance from the high end of the *actual vertical* ink measurements.
+  // P99 catches isolated large OBI graphs in ordinary chapter-sized samples;
+  // WenJin/Shanggu remain neutral because their measurements stay close to the
+  // one-em reference envelope.
+  const absoluteHeightRisk = Number.isFinite(heightP99) ? Math.max(0, heightP99 - 1.0) : 0
+  const relativeHeightRisk = Number.isFinite(heightP99) && Number.isFinite(referenceHeightP99)
+    ? Math.max(0, heightP99 - referenceHeightP99)
+    : absoluteHeightRisk
+  const positionRisk = Number.isFinite(positionP95) ? Math.max(0, positionP95) : 0
+  const continuousRisk = Math.max(absoluteHeightRisk, relativeHeightRisk, positionRisk)
+  const continuousTrackingEm = continuousRisk > CONTINUOUS_TRACKING_TRIGGER_EM
+    ? Math.min(
+        MAX_CONTINUOUS_TRACKING_EM,
+        Math.max(0, continuousRisk + CONTINUOUS_TRACKING_SAFETY_EM),
+      )
+    : 0
+  const continuousEdgePaddingEm = continuousTrackingEm > 0
+    ? Math.min(
+        MAX_CONTINUOUS_EDGE_PADDING_EM,
+        Math.max(MIN_CONTINUOUS_EDGE_PADDING_EM, continuousTrackingEm * 0.65 + 0.10),
+      )
+    : 0
+
+  const proposedColumnFactor = columnCandidates.length >= 2
     ? percentile(columnCandidates, 0.75)
     : null
   const columnFactor = Number.isFinite(proposedColumnFactor)
@@ -289,92 +365,160 @@ function summarisePairedMetrics(selected, reference, sample, fallbackCharacters 
     : DEFAULT_COLUMN_FACTOR
 
   return {
-    heightP95: percentile(selectedHeights, 0.95),
-    referenceHeightP95: percentile(referenceHeights, 0.95),
+    heightP95,
+    heightP99,
+    referenceHeightP95,
+    referenceHeightP99,
+    verticalPositionP95: positionP95,
     widthP95: percentile(selectedWidths, 0.95),
     referenceWidthP95: percentile(referenceWidths, 0.95),
     problemHeightGlyphs: trackingCandidates.length,
+    problemVerticalPositionGlyphs: verticalPositionCandidates.length,
     problemWidthGlyphs: columnCandidates.length,
     extraTrackingEm,
+    continuousTrackingEm,
+    continuousEdgePaddingEm,
     columnFactor,
   }
 }
 
-function fallbackBoundaryGapEm(summary) {
-  const extraTracking = Math.max(0, Number(summary?.extraTrackingEm) || 0)
-  if (extraTracking <= 0) return 0
+function uniqueLayoutCharacters(root) {
+  const seen = new Set()
+  const output = []
+  const spans = Array.from(root?.querySelectorAll?.(".cch") || [])
 
-  // The ordinary tracking already separates two glyphs from the same face.
-  // A font transition gets half of that correction on the boundary itself,
-  // which protects a normal-sized fallback glyph from a neighbouring face
-  // whose ink box extends beyond its nominal em.
-  return Math.min(
-    MAX_FALLBACK_BOUNDARY_GAP_EM,
-    Math.max(MIN_FALLBACK_BOUNDARY_GAP_EM, extraTracking * 0.5),
-  )
+  if (spans.length > 0) {
+    for (const element of spans) {
+      if (element.hidden || element.hasAttribute?.("hidden")) continue
+      if (element.classList?.contains?.("corpus-source-comment")) continue
+      if (element.closest?.(".han-jiagzhu, rt, rp")) continue
+
+      const chars = Array.from(element.textContent || "")
+      if (chars.length !== 1 || /\s/u.test(chars[0]) || seen.has(chars[0])) continue
+      seen.add(chars[0])
+      output.push(chars[0])
+    }
+    return output
+  }
+
+  for (const character of Array.from(root?.textContent || "")) {
+    if (/\s/u.test(character) || seen.has(character)) continue
+    seen.add(character)
+    output.push(character)
+  }
+  return output
 }
 
-function ensureFallbackLayoutStyles(documentRef) {
-  if (!documentRef?.head || documentRef.getElementById?.(FALLBACK_STYLE_ID)) return
+function glyphVerticalPadding(selectedMetrics, referenceMetrics, characters) {
+  const output = {}
 
-  const style = documentRef.createElement("style")
-  style.id = FALLBACK_STYLE_ID
-  style.textContent = `
-    .corpus-textflow.is-vertical .cch.han-font-fallback-start {
-      margin-inline-start: var(--han-font-fallback-boundary-gap, 0em);
+  for (const character of characters) {
+    const selected = selectedMetrics?.get?.(character)
+    if (!selected) continue
+    const reference = referenceMetrics?.get?.(character)
+
+    const selectedTop = Number(selected.top)
+    const selectedBottom = Number(selected.bottom)
+    const referenceTop = Number(reference?.top)
+    const referenceBottom = Number(reference?.bottom)
+
+    let startExtra = 0
+    let endExtra = 0
+
+    if (
+      Number.isFinite(selectedTop) &&
+      Number.isFinite(selectedBottom) &&
+      Number.isFinite(referenceTop) &&
+      Number.isFinite(referenceBottom)
+    ) {
+      // Compare the rendered ink envelope with the same character in WenJin.
+      // This is deliberately directional. A glyph such as 有 can overhang
+      // mainly above its ordinary cell; giving it equal padding on both sides
+      // leaves too much space below while still letting the top escape.
+      startExtra = Math.max(0, referenceTop - selectedTop)
+      endExtra = Math.max(0, selectedBottom - referenceBottom)
+    } else {
+      // Rare characters may be absent from the reference face too. Fall back
+      // to total ink height and split the unknown overhang conservatively.
+      const height = Number(selected.height)
+      if (Number.isFinite(height) && height > 1.0) {
+        const half = Math.max(0, height - 1.0) / 2
+        startExtra = half
+        endExtra = half
+      }
     }
 
-    .corpus-textflow.is-vertical .cch.han-font-fallback-end {
-      margin-inline-end: var(--han-font-fallback-boundary-gap, 0em);
+    const resolveSide = (value) => {
+      if (!Number.isFinite(value) || value < MIN_GLYPH_SIDE_EXTRA_EM) return 0
+      return Math.min(MAX_GLYPH_SIDE_EXTRA_EM, value + GLYPH_VERTICAL_SAFETY_EM)
+    }
+
+    const start = resolveSide(startExtra)
+    const end = resolveSide(endExtra)
+    if (start <= 0 && end <= 0) continue
+
+    output[character] = {
+      start: Number(start.toFixed(4)),
+      end: Number(end.toFixed(4)),
+    }
+  }
+
+  return output
+}
+
+function ensureVerticalGlyphStyles(documentRef) {
+  if (!documentRef?.head || documentRef.getElementById?.(VERTICAL_GLYPH_STYLE_ID)) return
+
+  const style = documentRef.createElement("style")
+  style.id = VERTICAL_GLYPH_STYLE_ID
+  style.textContent = `
+    /* Some historical-script fonts draw beyond the ordinary one-em vertical
+       character box. Add measured breathing room to the character that owns
+       that ink. The span stays inline, preserving punctuation, ruby and normal
+       browser fallback behaviour. Start/end padding are independent so a
+       glyph whose ink rises above its cell can be moved inward without adding
+       an equally large gap underneath. */
+    .corpus-textflow.is-vertical .cch.han-font-vertical-glyph-space {
+      padding-inline-start: var(--han-font-glyph-space-start, 0em);
+      padding-inline-end: var(--han-font-glyph-space-end, 0em);
     }
   `
   documentRef.head.appendChild(style)
 }
 
-function clearFallbackRunLayout(target) {
-  target?.style?.removeProperty?.("--han-font-fallback-boundary-gap")
-  target?.querySelectorAll?.(
-    ".cch.han-font-fallback, .cch.han-font-fallback-start, .cch.han-font-fallback-end",
-  )?.forEach?.((element) => {
-    element.classList.remove(
-      "han-font-fallback",
-      "han-font-fallback-start",
-      "han-font-fallback-end",
-    )
+function clearVerticalGlyphLayout(target) {
+  target?.querySelectorAll?.(".cch.han-font-vertical-glyph-space")?.forEach?.((element) => {
+    element.classList.remove("han-font-vertical-glyph-space")
+    element.style?.removeProperty?.("--han-font-glyph-space-start")
+    element.style?.removeProperty?.("--han-font-glyph-space-end")
   })
 }
 
-function applyFallbackRunLayout(target, metrics) {
-  clearFallbackRunLayout(target)
+function applyVerticalGlyphLayout(target, metrics) {
+  clearVerticalGlyphLayout(target)
+  if (!metrics?.adjusted) return
 
-  const fallbackCharacters = new Set(metrics?.fallbackCharacters || [])
-  const gap = Number(metrics?.fallbackBoundaryGapEm) || 0
-  if (fallbackCharacters.size === 0 || gap <= 0) return
+  const spacing = metrics?.characterVerticalSpacing || {}
+  if (Object.keys(spacing).length === 0) return
 
-  ensureFallbackLayoutStyles(target?.ownerDocument || document)
-  target.style.setProperty("--han-font-fallback-boundary-gap", `${gap}em`)
+  ensureVerticalGlyphStyles(target?.ownerDocument || document)
 
-  const characters = Array.from(target.querySelectorAll?.(".cch") || []).filter((element) => {
-    if (element.closest?.(".han-jiagzhu, rt, rp")) return false
-    const text = Array.from(element.textContent || "")
-    return text.length === 1 && isHanCharacter(text[0])
-  })
+  Array.from(target.querySelectorAll?.(".cch") || []).forEach((element) => {
+    if (element.hidden || element.hasAttribute?.("hidden")) return
+    if (element.classList?.contains?.("corpus-source-comment")) return
+    if (element.closest?.(".han-jiagzhu, rt, rp")) return
 
-  const fallbackState = characters.map((element) => {
-    const character = Array.from(element.textContent || "")[0]
-    return fallbackCharacters.has(character)
-  })
+    const chars = Array.from(element.textContent || "")
+    if (chars.length !== 1 || /\s/u.test(chars[0])) return
 
-  characters.forEach((element, index) => {
-    if (!fallbackState[index]) return
-    element.classList.add("han-font-fallback")
+    const characterSpacing = spacing[chars[0]] || {}
+    const start = Number(characterSpacing.start) || 0
+    const end = Number(characterSpacing.end) || 0
+    if (start <= 0 && end <= 0) return
 
-    if (index === 0 || !fallbackState[index - 1]) {
-      element.classList.add("han-font-fallback-start")
-    }
-    if (index === characters.length - 1 || !fallbackState[index + 1]) {
-      element.classList.add("han-font-fallback-end")
-    }
+    element.classList.add("han-font-vertical-glyph-space")
+    element.style.setProperty("--han-font-glyph-space-start", `${start}em`)
+    element.style.setProperty("--han-font-glyph-space-end", `${end}em`)
   })
 }
 
@@ -382,11 +526,13 @@ export async function detectHanFontLayout(target, {
   root = target,
   documentRef = document,
   windowRef = window,
+  continuous = false,
 } = {}) {
-  const allCharacters = uniqueHanCharacters(root?.textContent || "")
-  const sample = allCharacters.length <= FONT_LAYOUT_SAMPLE_LIMIT
-    ? allCharacters
-    : hanTypographySample(allCharacters.join(""))
+  const layoutCharacters = uniqueLayoutCharacters(root)
+  const allHanCharacters = layoutCharacters.filter(isHanCharacter)
+  const sample = allHanCharacters.length <= FONT_LAYOUT_SAMPLE_LIMIT
+    ? allHanCharacters
+    : hanTypographySample(allHanCharacters.join(""))
   const fontStack = computedFontStack(target, windowRef, documentRef)
   const primaryFamily = firstFontFamily(fontStack)
 
@@ -395,15 +541,20 @@ export async function detectHanFontLayout(target, {
     primaryFamily,
     sampleSize: sample.length,
     heightP95: null,
+    heightP99: null,
     referenceHeightP95: null,
+    referenceHeightP99: null,
+    verticalPositionP95: null,
     widthP95: null,
     referenceWidthP95: null,
     problemHeightGlyphs: 0,
+    problemVerticalPositionGlyphs: 0,
     problemWidthGlyphs: 0,
     extraTrackingEm: 0,
+    continuousTrackingEm: 0,
+    continuousEdgePaddingEm: 0,
     columnFactor: DEFAULT_COLUMN_FACTOR,
-    fallbackCharacters: [],
-    fallbackBoundaryGapEm: 0,
+    characterVerticalSpacing: {},
     adjusted: false,
   }
 
@@ -414,52 +565,48 @@ export async function detectHanFontLayout(target, {
     ensureFontLoaded(documentRef, "WenJin Mincho", sample),
   ])
 
-  const cacheKey = `${fontStack}\u0000${allCharacters.join("")}`
+  const cacheKey = `${continuous ? "continuous" : "indexed"}\u0000${fontStack}\u0000${layoutCharacters.join("")}`
   const cached = fontLayoutCache.get(cacheKey)
-  if (cached) return { ...cached, fallbackCharacters: [...(cached.fallbackCharacters || [])] }
+  if (cached) return { ...cached, characterVerticalSpacing: { ...(cached.characterVerticalSpacing || {}) } }
 
-  const primaryProbeStack = `${quoteFontFamily(primaryFamily)}, ${PRIMARY_COVERAGE_PROBE_FALLBACK}`
-  const selected = canvasCharacterMetrics(documentRef, fontStack, sample)
-  if (!selected) return neutral
+  // SVG writing-mode measurement sees the glyph after vertical shaping and
+  // after CSS font fallback. Canvas is retained only as a browser fallback.
+  const selectedSample = measuredCharacterMetrics(documentRef, fontStack, sample)
+  if (!selectedSample) return neutral
 
-  const reference = canvasCharacterMetrics(documentRef, REFERENCE_FONT_STACK, sample)
-  const primaryProbe = canvasCharacterMetrics(documentRef, primaryProbeStack, sample)
-  const sampleFallbackCharacters = fallbackCharactersFromMetrics(
-    selected,
-    primaryProbe,
-    sample,
-  )
-  const summary = summarisePairedMetrics(
-    selected,
-    reference,
-    sample,
-    sampleFallbackCharacters,
-  )
-
+  const reference = measuredCharacterMetrics(documentRef, REFERENCE_FONT_STACK, sample)
+  const summary = summarisePairedMetrics(selectedSample, reference, sample)
   const adjusted =
+    summary.problemHeightGlyphs > 0 ||
+    summary.problemVerticalPositionGlyphs > 0 ||
     summary.extraTrackingEm > 0 ||
+    summary.continuousTrackingEm > 0 ||
     summary.columnFactor > DEFAULT_COLUMN_FACTOR
 
-  let fallbackCharacters = sampleFallbackCharacters
-  if (adjusted && allCharacters.length !== sample.length) {
-    // Geometry uses a bounded sample, but fallback transitions must be known
-    // for every distinct Han character in the rendered chapter. Measuring
-    // unique characters keeps this independent of chapter length.
-    const selectedAll = canvasCharacterMetrics(documentRef, fontStack, allCharacters)
-    const referenceAll = canvasCharacterMetrics(documentRef, REFERENCE_FONT_STACK, allCharacters)
-    const primaryProbeAll = canvasCharacterMetrics(documentRef, primaryProbeStack, allCharacters)
-    fallbackCharacters = fallbackCharactersFromMetrics(
-      selectedAll,
-      primaryProbeAll,
-      allCharacters,
+  let characterVerticalSpacing = {}
+  // The Corpus Reader can spend the extra work on exact per-glyph envelopes
+  // because its source is already indexed into .cch spans. Writer requests
+  // continuous mode and uses only the bounded 384-character sample above.
+  if (adjusted && !continuous) {
+    await Promise.all([
+      ensureFontLoaded(documentRef, primaryFamily, layoutCharacters),
+      ensureFontLoaded(documentRef, "WenJin Mincho", layoutCharacters),
+    ])
+    const [allMetrics, allReferenceMetrics] = [
+      measuredCharacterMetrics(documentRef, fontStack, layoutCharacters),
+      measuredCharacterMetrics(documentRef, REFERENCE_FONT_STACK, layoutCharacters),
+    ]
+    characterVerticalSpacing = glyphVerticalPadding(
+      allMetrics,
+      allReferenceMetrics,
+      layoutCharacters,
     )
   }
 
   const result = {
     ...neutral,
     ...summary,
-    fallbackCharacters,
-    fallbackBoundaryGapEm: adjusted ? fallbackBoundaryGapEm(summary) : 0,
+    characterVerticalSpacing,
     adjusted,
   }
 
@@ -469,31 +616,28 @@ export async function detectHanFontLayout(target, {
     if (oldestKey) fontLayoutCache.delete(oldestKey)
   }
 
-  return { ...result, fallbackCharacters: [...fallbackCharacters] }
+  return { ...result, characterVerticalSpacing: { ...characterVerticalSpacing } }
 }
 
 export function applyDetectedHanFontLayout(target, metrics, {
   vertical = false,
   hasRuby = false,
   fontSizePx = DEFAULT_FONT_SIZE_PX,
+  continuous = false,
 } = {}) {
   if (!target?.style) return
+
+  const clearContinuousLayout = () => {
+    target.style.removeProperty("padding-inline-start")
+    target.style.removeProperty("padding-inline-end")
+  }
 
   if (!vertical) {
     target.style.removeProperty("letter-spacing")
     target.style.removeProperty("--cv-col")
-    clearFallbackRunLayout(target)
+    clearContinuousLayout()
+    clearVerticalGlyphLayout(target)
     return
-  }
-
-  const extraTracking = Number(metrics?.extraTrackingEm) || 0
-  const baseTracking = hasRuby ? RUBY_VERTICAL_TRACKING_EM : DEFAULT_VERTICAL_TRACKING_EM
-
-  if (extraTracking > 0) {
-    target.style.letterSpacing = `${baseTracking + extraTracking}em`
-  } else {
-    // Let corpusviewer.css retain exact control of the gold-standard case.
-    target.style.removeProperty("letter-spacing")
   }
 
   const columnFactor = Number(metrics?.columnFactor) || DEFAULT_COLUMN_FACTOR
@@ -504,7 +648,32 @@ export function applyDetectedHanFontLayout(target, metrics, {
     target.style.removeProperty("--cv-col")
   }
 
-  applyFallbackRunLayout(target, metrics)
+  if (continuous) {
+    // Contenteditable Writer text deliberately remains ordinary text nodes so
+    // browser selection, IME composition and annotation offsets remain stable.
+    // Give an abnormal font one measured rhythm across the flow instead of
+    // inserting presentation wrappers into the document.
+    clearVerticalGlyphLayout(target)
+    const extraTracking = Number(metrics?.continuousTrackingEm) || 0
+    const edgePadding = Number(metrics?.continuousEdgePaddingEm) || 0
+    const baseTracking = hasRuby ? RUBY_VERTICAL_TRACKING_EM : DEFAULT_VERTICAL_TRACKING_EM
+
+    if (metrics?.adjusted && extraTracking > 0) {
+      target.style.letterSpacing = `${baseTracking + extraTracking}em`
+      target.style.setProperty("padding-inline-start", `${edgePadding}em`)
+      target.style.setProperty("padding-inline-end", `${edgePadding}em`)
+    } else {
+      target.style.removeProperty("letter-spacing")
+      clearContinuousLayout()
+    }
+    return
+  }
+
+  // Corpus Reader text has indexed .cch spans, so it can use the more precise
+  // per-glyph directional envelope correction without affecting editable text.
+  target.style.removeProperty("letter-spacing")
+  clearContinuousLayout()
+  applyVerticalGlyphLayout(target, metrics)
 }
 
 export function createHanFontSizeControl({
