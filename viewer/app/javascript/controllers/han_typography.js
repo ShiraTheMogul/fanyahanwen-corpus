@@ -14,6 +14,11 @@ const AUTO_COLUMN_RELATIVE_TRIGGER_EM = 0.10
 const AUTO_COLUMN_SAFETY_EM = 0.15
 const MAX_COLUMN_FACTOR = 3.0
 const REFERENCE_FONT_STACK = '"WenJin Mincho", serif'
+const PRIMARY_COVERAGE_PROBE_FALLBACK = "monospace"
+const FALLBACK_METRIC_EPSILON_EM = 0.0025
+const MIN_FALLBACK_BOUNDARY_GAP_EM = 0.06
+const MAX_FALLBACK_BOUNDARY_GAP_EM = 0.30
+const FALLBACK_STYLE_ID = "fanya-han-font-fallback-layout"
 const FONT_LAYOUT_CACHE_LIMIT = 24
 const fontLayoutCache = new Map()
 
@@ -45,7 +50,7 @@ function isHanCharacter(character) {
   }
 }
 
-export function hanTypographySample(text, limit = FONT_LAYOUT_SAMPLE_LIMIT) {
+function uniqueHanCharacters(text) {
   const seen = new Set()
   const unique = []
 
@@ -54,7 +59,11 @@ export function hanTypographySample(text, limit = FONT_LAYOUT_SAMPLE_LIMIT) {
     seen.add(character)
     unique.push(character)
   }
+  return unique
+}
 
+export function hanTypographySample(text, limit = FONT_LAYOUT_SAMPLE_LIMIT) {
+  const unique = uniqueHanCharacters(text)
   if (unique.length <= limit) return unique
 
   // Sample across the whole text instead of taking only the opening lines.
@@ -115,24 +124,75 @@ function canvasCharacterMetrics(documentRef, fontStack, sample) {
 
   for (const character of sample) {
     const metrics = context.measureText(character)
-    const ascent = Number(metrics.actualBoundingBoxAscent)
-    const descent = Number(metrics.actualBoundingBoxDescent)
-    const left = Number(metrics.actualBoundingBoxLeft)
-    const right = Number(metrics.actualBoundingBoxRight)
+    const rawAscent = Number(metrics.actualBoundingBoxAscent)
+    const rawDescent = Number(metrics.actualBoundingBoxDescent)
+    const rawLeft = Number(metrics.actualBoundingBoxLeft)
+    const rawRight = Number(metrics.actualBoundingBoxRight)
+    const rawAdvance = Number(metrics.width)
 
+    const ascent = Number.isFinite(rawAscent) ? rawAscent / FONT_LAYOUT_PROBE_PX : null
+    const descent = Number.isFinite(rawDescent) ? rawDescent / FONT_LAYOUT_PROBE_PX : null
+    const left = Number.isFinite(rawLeft) ? rawLeft / FONT_LAYOUT_PROBE_PX : null
+    const right = Number.isFinite(rawRight) ? rawRight / FONT_LAYOUT_PROBE_PX : null
+    const advance = Number.isFinite(rawAdvance) ? rawAdvance / FONT_LAYOUT_PROBE_PX : null
     const height = Number.isFinite(ascent) && Number.isFinite(descent) && (ascent + descent) > 0
-      ? (ascent + descent) / FONT_LAYOUT_PROBE_PX
+      ? ascent + descent
       : null
     const width = Number.isFinite(left) && Number.isFinite(right) && (left + right) > 0
-      ? (left + right) / FONT_LAYOUT_PROBE_PX
+      ? left + right
       : null
 
-    if (Number.isFinite(height) || Number.isFinite(width)) {
-      byCharacter.set(character, { height, width })
+    if (Number.isFinite(height) || Number.isFinite(width) || Number.isFinite(advance)) {
+      byCharacter.set(character, { height, width, advance, ascent, descent, left, right })
     }
   }
 
   return byCharacter.size > 0 ? byCharacter : null
+}
+
+const FALLBACK_FINGERPRINT_KEYS = [
+  "height",
+  "width",
+  "advance",
+  "ascent",
+  "descent",
+  "left",
+  "right",
+]
+
+function metricFingerprintsMatch(leftMetrics, rightMetrics, epsilon = FALLBACK_METRIC_EPSILON_EM) {
+  if (!leftMetrics || !rightMetrics) return false
+  let compared = 0
+
+  for (const key of FALLBACK_FINGERPRINT_KEYS) {
+    const left = Number(leftMetrics[key])
+    const right = Number(rightMetrics[key])
+    if (!Number.isFinite(left) || !Number.isFinite(right)) continue
+    compared += 1
+    if (Math.abs(left - right) > epsilon) return false
+  }
+
+  return compared >= 4
+}
+
+function fallbackCharactersFromMetrics(selected, primaryProbe, characters) {
+  const fallback = []
+
+  for (const character of characters) {
+    const selectedMetrics = selected?.get?.(character)
+    const primaryMetrics = primaryProbe?.get?.(character)
+    if (!selectedMetrics || !primaryMetrics) continue
+
+    // The real stack and the probe both begin with the selected primary face.
+    // The probe then switches to an intentionally different fallback. If the
+    // primary owns this character, both renders still use that same primary
+    // face and their metric fingerprints remain equal. If they diverge, the
+    // browser had to leave the primary face for this character. This detects
+    // fallback runs without knowing the selected font's name or coverage list.
+    if (!metricFingerprintsMatch(selectedMetrics, primaryMetrics)) fallback.push(character)
+  }
+
+  return fallback
 }
 
 async function ensureFontLoaded(documentRef, family, sample) {
@@ -147,18 +207,23 @@ async function ensureFontLoaded(documentRef, family, sample) {
   } catch (_) {}
 }
 
-function summarisePairedMetrics(selected, reference, sample) {
+function summarisePairedMetrics(selected, reference, sample, fallbackCharacters = []) {
   const selectedHeights = []
   const referenceHeights = []
   const selectedWidths = []
   const referenceWidths = []
   const trackingCandidates = []
   const columnCandidates = []
+  const fallbackSet = new Set(fallbackCharacters)
 
   for (const character of sample) {
     const selectedMetrics = selected?.get?.(character)
     if (!selectedMetrics) continue
     const referenceMetrics = reference?.get?.(character)
+
+    // Geometry correction describes the selected face itself. Characters that
+    // already came from WenJin fallback must not dilute those measurements.
+    if (fallbackSet.has(character)) continue
 
     const selectedHeight = Number(selectedMetrics.height)
     const referenceHeight = Number(referenceMetrics?.height)
@@ -235,12 +300,93 @@ function summarisePairedMetrics(selected, reference, sample) {
   }
 }
 
+function fallbackBoundaryGapEm(summary) {
+  const extraTracking = Math.max(0, Number(summary?.extraTrackingEm) || 0)
+  if (extraTracking <= 0) return 0
+
+  // The ordinary tracking already separates two glyphs from the same face.
+  // A font transition gets half of that correction on the boundary itself,
+  // which protects a normal-sized fallback glyph from a neighbouring face
+  // whose ink box extends beyond its nominal em.
+  return Math.min(
+    MAX_FALLBACK_BOUNDARY_GAP_EM,
+    Math.max(MIN_FALLBACK_BOUNDARY_GAP_EM, extraTracking * 0.5),
+  )
+}
+
+function ensureFallbackLayoutStyles(documentRef) {
+  if (!documentRef?.head || documentRef.getElementById?.(FALLBACK_STYLE_ID)) return
+
+  const style = documentRef.createElement("style")
+  style.id = FALLBACK_STYLE_ID
+  style.textContent = `
+    .corpus-textflow.is-vertical .cch.han-font-fallback-start {
+      margin-inline-start: var(--han-font-fallback-boundary-gap, 0em);
+    }
+
+    .corpus-textflow.is-vertical .cch.han-font-fallback-end {
+      margin-inline-end: var(--han-font-fallback-boundary-gap, 0em);
+    }
+  `
+  documentRef.head.appendChild(style)
+}
+
+function clearFallbackRunLayout(target) {
+  target?.style?.removeProperty?.("--han-font-fallback-boundary-gap")
+  target?.querySelectorAll?.(
+    ".cch.han-font-fallback, .cch.han-font-fallback-start, .cch.han-font-fallback-end",
+  )?.forEach?.((element) => {
+    element.classList.remove(
+      "han-font-fallback",
+      "han-font-fallback-start",
+      "han-font-fallback-end",
+    )
+  })
+}
+
+function applyFallbackRunLayout(target, metrics) {
+  clearFallbackRunLayout(target)
+
+  const fallbackCharacters = new Set(metrics?.fallbackCharacters || [])
+  const gap = Number(metrics?.fallbackBoundaryGapEm) || 0
+  if (fallbackCharacters.size === 0 || gap <= 0) return
+
+  ensureFallbackLayoutStyles(target?.ownerDocument || document)
+  target.style.setProperty("--han-font-fallback-boundary-gap", `${gap}em`)
+
+  const characters = Array.from(target.querySelectorAll?.(".cch") || []).filter((element) => {
+    if (element.closest?.(".han-jiagzhu, rt, rp")) return false
+    const text = Array.from(element.textContent || "")
+    return text.length === 1 && isHanCharacter(text[0])
+  })
+
+  const fallbackState = characters.map((element) => {
+    const character = Array.from(element.textContent || "")[0]
+    return fallbackCharacters.has(character)
+  })
+
+  characters.forEach((element, index) => {
+    if (!fallbackState[index]) return
+    element.classList.add("han-font-fallback")
+
+    if (index === 0 || !fallbackState[index - 1]) {
+      element.classList.add("han-font-fallback-start")
+    }
+    if (index === characters.length - 1 || !fallbackState[index + 1]) {
+      element.classList.add("han-font-fallback-end")
+    }
+  })
+}
+
 export async function detectHanFontLayout(target, {
   root = target,
   documentRef = document,
   windowRef = window,
 } = {}) {
-  const sample = hanTypographySample(root?.textContent || "")
+  const allCharacters = uniqueHanCharacters(root?.textContent || "")
+  const sample = allCharacters.length <= FONT_LAYOUT_SAMPLE_LIMIT
+    ? allCharacters
+    : hanTypographySample(allCharacters.join(""))
   const fontStack = computedFontStack(target, windowRef, documentRef)
   const primaryFamily = firstFontFamily(fontStack)
 
@@ -256,6 +402,8 @@ export async function detectHanFontLayout(target, {
     problemWidthGlyphs: 0,
     extraTrackingEm: 0,
     columnFactor: DEFAULT_COLUMN_FACTOR,
+    fallbackCharacters: [],
+    fallbackBoundaryGapEm: 0,
     adjusted: false,
   }
 
@@ -266,22 +414,53 @@ export async function detectHanFontLayout(target, {
     ensureFontLoaded(documentRef, "WenJin Mincho", sample),
   ])
 
-  const cacheKey = `${fontStack}\u0000${sample.join("")}`
+  const cacheKey = `${fontStack}\u0000${allCharacters.join("")}`
   const cached = fontLayoutCache.get(cacheKey)
-  if (cached) return { ...cached }
+  if (cached) return { ...cached, fallbackCharacters: [...(cached.fallbackCharacters || [])] }
 
+  const primaryProbeStack = `${quoteFontFamily(primaryFamily)}, ${PRIMARY_COVERAGE_PROBE_FALLBACK}`
   const selected = canvasCharacterMetrics(documentRef, fontStack, sample)
   if (!selected) return neutral
 
   const reference = canvasCharacterMetrics(documentRef, REFERENCE_FONT_STACK, sample)
-  const summary = summarisePairedMetrics(selected, reference, sample)
+  const primaryProbe = canvasCharacterMetrics(documentRef, primaryProbeStack, sample)
+  const sampleFallbackCharacters = fallbackCharactersFromMetrics(
+    selected,
+    primaryProbe,
+    sample,
+  )
+  const summary = summarisePairedMetrics(
+    selected,
+    reference,
+    sample,
+    sampleFallbackCharacters,
+  )
+
+  const adjusted =
+    summary.extraTrackingEm > 0 ||
+    summary.columnFactor > DEFAULT_COLUMN_FACTOR
+
+  let fallbackCharacters = sampleFallbackCharacters
+  if (adjusted && allCharacters.length !== sample.length) {
+    // Geometry uses a bounded sample, but fallback transitions must be known
+    // for every distinct Han character in the rendered chapter. Measuring
+    // unique characters keeps this independent of chapter length.
+    const selectedAll = canvasCharacterMetrics(documentRef, fontStack, allCharacters)
+    const referenceAll = canvasCharacterMetrics(documentRef, REFERENCE_FONT_STACK, allCharacters)
+    const primaryProbeAll = canvasCharacterMetrics(documentRef, primaryProbeStack, allCharacters)
+    fallbackCharacters = fallbackCharactersFromMetrics(
+      selectedAll,
+      primaryProbeAll,
+      allCharacters,
+    )
+  }
 
   const result = {
     ...neutral,
     ...summary,
-    adjusted:
-      summary.extraTrackingEm > 0 ||
-      summary.columnFactor > DEFAULT_COLUMN_FACTOR,
+    fallbackCharacters,
+    fallbackBoundaryGapEm: adjusted ? fallbackBoundaryGapEm(summary) : 0,
+    adjusted,
   }
 
   fontLayoutCache.set(cacheKey, result)
@@ -290,7 +469,7 @@ export async function detectHanFontLayout(target, {
     if (oldestKey) fontLayoutCache.delete(oldestKey)
   }
 
-  return { ...result }
+  return { ...result, fallbackCharacters: [...fallbackCharacters] }
 }
 
 export function applyDetectedHanFontLayout(target, metrics, {
@@ -303,6 +482,7 @@ export function applyDetectedHanFontLayout(target, metrics, {
   if (!vertical) {
     target.style.removeProperty("letter-spacing")
     target.style.removeProperty("--cv-col")
+    clearFallbackRunLayout(target)
     return
   }
 
@@ -323,6 +503,8 @@ export function applyDetectedHanFontLayout(target, metrics, {
   } else {
     target.style.removeProperty("--cv-col")
   }
+
+  applyFallbackRunLayout(target, metrics)
 }
 
 export function createHanFontSizeControl({
