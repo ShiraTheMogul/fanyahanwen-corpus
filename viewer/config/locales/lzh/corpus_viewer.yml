@@ -1,21 +1,21 @@
-# PLACEHOLDER CATALOGUE: translate values only; do not rename keys.
+﻿# PLACEHOLDER CATALOGUE: translate values only; do not rename keys.
 lzh:
   corpus_viewer:
     title: 語料庫閱覽器
     root: 總目
-    unexpected_state: 神魂顛倒
+    unexpected_state: 此頁未能顯示。
     recent_activity:
       summary: 最新動向
     directory_submission:
       button: 在此呈文
-      button_title: 提議於此目錄添文
-      heading: 呈新文（立提案）
-      explanation_html: 此舉不直寫語料庫；乃立待審提案，附差異檔。其內新立一作品目錄，置一檔或數檔焉。
-      parent_directory: 上級 clean 目錄
+      button_title: 呈新文於此分類
+      heading: 呈新文送審
+      explanation_html: 一案一書。
+      parent_directory: 所屬語料分類
       work_folder: 作品目錄
       work_folder_placeholder: 如：論語
       ticket_title: 提案題
-      default_ticket_title: 呈交庫文
+      default_ticket_title: 語料庫新文提案
       short_summary: 概要
       short_summary_placeholder: 所呈何物？
       content_role: 內容用途
@@ -25,12 +25,12 @@ lzh:
         hanmun: 韓國漢文訓讀體
         hanvan: 越南漢文訓讀體
       metadata_fields:
-        nation: 國別（NATION）
-        work_title: 作品題（WORK_TITLE）
-        author: 作者（AUTHOR）
-        source: 所自（SOURCE）
-        url: 網址（URL）
-        page_title: 頁題（PAGE_TITLE）
+        nation: 國別
+        work_title: 作品題
+        author: 作者／撰修者
+        source: 所自
+        url: 網址
+        page_title: 頁題
       source_placeholder: 於此列引據（APA第七版為佳）
       url_placeholder: https://…
       context_and_rights: 來歷與版權
@@ -41,10 +41,10 @@ lzh:
       single_file: 單一文本檔
       multiple_files: 多頁檔
       file_name: 檔名
-      file_name_placeholder: 未另定則名曰 work_folder.txt
+      file_name_placeholder: 留空則自動生成
       text_body: 正文
       pages: 諸頁
-      pages_hint_html: 多頁者，於作品目錄內立編號檔，如 <code>work_folder__juan_0001.txt</code>。
+      pages_hint_html: 作品須分卷、分章或分節者，可用多頁；系統於作品目錄內依次存為編號文本檔。
     header:
       work: 作品：
       author: 作者：
@@ -79,16 +79,15 @@ lzh:
       annotate_off: 加註：閉
       review_submit: 審閱呈案
       text_edit: 纂文
-      text_edit_title: 提議纂文（立提案）
+      text_edit_title: 建議訂正文句
     annotation_systems:
       names:
         kanbun: 日本漢文訓讀
         hanmun: 韓國漢文訓讀
         hanvan: 越南漢文訓讀
       editor:
-        heading: 添訓讀體系（立提案）
-        explanation_html: 手工訓註為常法。核可之檔，以同名置於原文頁旁之 <code>kanbun/</code>、<code>hanmun/</code>
-          或 <code>hanvan/</code>。
+        heading: 添訓讀體系
+        explanation_html: 核可之訓註與原文並列。
         system: 訓讀體系
         options:
           kanbun: 日本漢文訓讀體
@@ -97,13 +96,13 @@ lzh:
         summary_placeholder: 所添所正為何？
         reasoning_placeholder: 編校取捨有審者當知者，具述之。
         digital_keyboard: 屏上鍵盤
-        ai_notice: 此處不示Kanbun-LM，蓋自動生成惟適日語；故此項仍以手工為常法。
+        ai_notice: 自動生成日本漢文訓讀今惟日語介面可用；此表供手工加註。
         source_page: 原文頁
         text: 訓讀文
     text_edit:
-      heading: 提議纂文（立提案）
-      explanation_html: 此舉不直改語料庫；乃立提案，並附統一差異檔。
-      default_title: 纂文
+      heading: 建議訂正文句
+      explanation_html: 改下文，並述所更。
+      default_title: 訂正文句
       summary_placeholder: 何所更易？
       reasoning_placeholder: 何以當易？
       edited_text: 所纂之文
@@ -184,7 +183,7 @@ lzh:
       font_size_aria: 字體大小（像素）
       remove_punctuation: 除標點
       right_click_ruby: 右擊見旁訓
-      client_side_note: 諸選項惟行於本機，無須按「施用」。
+      client_side_note: 此諸設定即時生效，無須再按「施用」。
     companion_materials:
       heading: 相關材料
       hide_ai: 藏AI襄助材料
@@ -216,8 +215,8 @@ lzh:
         historical_source: 歷史原件／寫本
         author_provided: 作者所供
     companion_submission:
-      heading: 添相關材料（立提案）
-      explanation: 相關材料經核可後，列於此庫文之側。二十MB之限惟及此一提案；同一文本所收核可材料，數無定限。
+      heading: 添相關材料送審
+      explanation: 每案至多十檔，合二十MB。
       material_type: 材料類
       types:
         translation: 譯文
@@ -229,20 +228,20 @@ lzh:
       optional_label_hint: 譯文於選單以語言及譯者識之，不用此標識。
       language: 譯文語言（ISO 639-3）
       language_placeholder: 鍵入語名
-      language_hint: 所存者，乃所選三字母ISO 639-3碼。
+      language_hint: 依語名選取即可；系統自存其三字母ISO 639-3碼。
       translator: 譯者
       translator_placeholder: 譯者姓名（若知）
       translator_hint: 匿名或譯者不詳者，留空。
       translation_text: 譯文
       material_files: 材料檔
       material_files_hint: 納PNG、JPEG或PDF。合佐證檔計，此提案至多十檔、二十MB。
-      related_path: 相關庫文路徑
+      related_path: 相關庫文
       related_path_placeholder: 語料庫內另一.txt檔之路徑
       material_links: 材料鏈
       material_links_placeholder: 每行一公開掃描、版本或材料網址
       ticket_summary: 提案概要
-      ticket_summary_placeholder: 供審者閱之簡述
-      reviewer_reasoning: 供審緣由
+      ticket_summary_placeholder: 簡述所呈何物。
+      reviewer_reasoning: 編校附言
       reviewer_reasoning_placeholder: 述編校取捨或未決之處。
     material_metadata:
       note: 材料說明
@@ -275,4 +274,4 @@ lzh:
       save_key_hint: 常不勾選。否則鑰惟示一次，瀏覽器不存之。
     errors:
       not_found: 未見。
-      bad_path: 路徑不合。
+      bad_path: 此語料路徑不合。

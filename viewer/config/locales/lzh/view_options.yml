@@ -18,7 +18,7 @@ lzh:
       heading: 旁訓設定
       reading_family: 讀音族類
       variety_system: 語種／體系
-      explanation_html: 旁訓文字，供語料庫閱覽器之提示及「右擊見旁訓」所用。用<em>盡示旁訓</em>，則先包裹全頁，故或稍遲。
+      explanation_html: 旁訓用於語料庫閱覽器之提示及右擊所見讀音。<em>盡示旁訓</em>則遍示於全文，長篇或稍遲。
       show_all: 盡示旁訓
       token: 旁訓單元
       auto_first: 自動（取首可得者）
@@ -45,14 +45,15 @@ lzh:
       shinjitai: 日本新字體
       erjian_1: 二簡字（第一表）
       erjian_2: 二簡字（第二表）
-      mainland_resource_missing: 大陸繁體所需之經驗證 OpenCC 字表尚未安裝；請執行 script/fetch_character_standard_resources.rb。
+      mainland_resource_missing: 大陸繁體暫不可用。請稍後再試；若仍有此患，請告本站維護者。
     font:
       heading: 字體設定
       han_font: 漢字字體
       other_fonts: 其他字體
       apply_to: 施於
-      all_han_text: 凡漢字
-      headwords_only: 惟字頭
+      all_han_text: 語料庫閱覽器及文書器
+      headwords_only: 惟字典字頭
       warn_missing_glyph: 闕字警示
+      missing_glyph_fallback: "%{font}未收此字，改用WenJin Mincho。"
       information: 字體詳情
       information_not_found: 未得詳情。

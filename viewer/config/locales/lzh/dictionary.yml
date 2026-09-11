@@ -1,4 +1,4 @@
-lzh:
+﻿lzh:
   dictionary:
     title_han: 字典
     title: 字典
@@ -53,14 +53,15 @@ lzh:
       category: '類目：'
       about: 詳情
     character:
-      not_found: 尚無此字
-      not_in_database: '庫中未有%{identifier}。'
-      try_another: 試輸入他字或萬國碼位。
+      not_found: 未收此字
+      not_in_database: '字典未收%{identifier}。'
+      try_another: 可另輸一字或萬國碼位。
       stroke_unavailable: 此字無筆順動畫。
-      stroke_library_failed: 筆順動畫不可用（HanziWriter未能載入）。
+      stroke_library_failed: 筆順動畫暫不可用。
       no_stroke_data: 此字無筆順資料。
       codepoint: '碼位：'
       unicode_block: 萬國碼區段
+      ideographic_description_sequence_deconstructions: 表意文字描述序列（IDS）拆解
       base_character: 基準字
       variants: 異體
       variant_kinds:
@@ -106,7 +107,7 @@ lzh:
       comparison: 康熙部首與《說文解字》部首不同；後者較廣，凡共見之形體皆可分類，不必為一組固定筆畫，亦不必具表義或表音之功。
       page_title: 第%{number}部 %{radical}
       heading: '第%{number}部：'
-      membership_empty_html: '<strong>部首歸屬索引尚空。</strong>請執行%{command}，依Unihan %{field}建立之。'
+      membership_empty_html: '<strong>部首瀏覽暫不可用。</strong>請稍後再試；若仍有此患，請告本站維護者。'
       about: 此部首
       back: 返部首索引
       browse_intro_html: 依Unihan %{field}所記康熙部首尋字。
@@ -115,7 +116,7 @@ lzh:
       heading_html: '%{link}部首'
       intro_html: 依《說文解字》部首尋字。許慎於東漢撰《說文解字》，立五百四十部，為文字訓詁之巨著。%{text_link}主要依字形結構析字，並以正名之說申其理，故其旨兼涉政教，非徒訓詁字義而已。許氏序曰：
       preface_translation_html: '<i>其言以文字為經藝、王政之本，前人藉以傳後，後人藉以識古；本立則道生，故天下至賾亦可條理而不亂。</i>'
-      historical_caution_html: 此說深本儒家正名之旨，固有規範之意。然許氏亦未必盡是：其書去今近二千年，近世古文字材料，尤甲骨文，皆非當時所得見。
+      historical_caution_html: 許慎立說，有其所承之學，正名亦在其中。今所得甲骨文及他古文字材料，多非許氏所見，故可參互其說與後出材料而觀之。
       comparison: 《說文》部首與康熙部首不同。其以形體相似廣分諸字，或表音，或表義，甚至僅一筆，故本站稱之為「部件」。
       text_itself: 原文
       shuowen_jiezi: 《說文解字》
@@ -127,17 +128,17 @@ lzh:
       title: 《廣韻》類目
       heading: 《廣韻》
       browse_intro_html: 依<strong>聲調</strong>（聲）與<strong>韻</strong>（韻）瀏覽《廣韻》條目。
-      categories_missing_html: '<strong>未見《廣韻》類目。</strong>今有《廣韻》內容列，而無聲調、韻之映射列；請執行卷次匯入工作以補之。'
+      categories_missing_html: '<strong>《廣韻》類目暫不可用。</strong>請稍後再試；若仍有此患，請告本站維護者。'
       none: （無）
       manual_lookup: 手動尋字
       lookup_help: 輸入一字（如王）或碼位（如U+738B），以察其《廣韻》資料。
       character_or_codepoint: 漢字／碼位
       lookup: 尋
-      character_row_missing_html: 未見<strong>%{character}</strong>之CharacterCodepoint列。
-      no_payload: 此字無《廣韻》資料列。
+      character_row_missing_html: 未見<strong>%{character}</strong>之字典記錄。
+      no_payload: 此字無《廣韻》資料。
       page_title: 《廣韻》%{category}
       category_heading: '《廣韻》：%{category}'
-      category_rows_missing_html: '<strong>未見此值之《廣韻》類目列。</strong>通常因匯入器未生成%{field}列。'
+      category_rows_missing_html: '<strong>此《廣韻》類目未見條目。</strong>'
       about_rime: 此韻
       character_information: 字之資料
       back: 返《廣韻》類目
@@ -160,7 +161,10 @@ lzh:
         unihan_definition: Unihan釋義
         hanyu_frequency: 漢語頻率（讀音與頻率）
         old_national_pronunciation: 老國音
-        cangjie_input: 倉頡輸入法
+        cangjie3_input: 第三代倉頡輸入法
+        cangjie5_input: 第五代倉頡輸入法
+        wubi86_input: 五筆字型86輸入法
+        moran_input: RIME-Moran輸入法（輔助碼）
         four_corner_input: 四角號碼檢字法
         korean_yale: 朝鮮語（耶魯式）
         general_chinese: 通字方案

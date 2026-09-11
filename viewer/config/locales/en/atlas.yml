@@ -1,4 +1,4 @@
-en:
+﻿en:
   atlas:
     title: Fanya Hanwen Atlas
     breadcrumbs: Atlas navigation
@@ -43,16 +43,16 @@ en:
       no_results: Try another name, alias, region, or period.
     missing:
       heading: Article needed
-      explanation: The atlas metadata exists, but the article has not yet been written.
+      explanation: This atlas entry exists, but its article has not yet been written.
       suggest: Suggest an article
     searches:
       heading: Search the corpus
-      explanation: These prepared searches open the corpus with useful names, variants, and scope filters already filled in. Common characters may still produce unrelated matches; narrowly scoped searches answer a different question from broad mention searches.
+      explanation: These searches open the corpus with useful names, variants, and filters already filled in. Common characters may still produce unrelated matches.
       entry_label: Find %{headword} in the corpus
       browse_assigned_texts: Browse texts assigned to this polity
     corpus_summary:
       heading: In the corpus
-      counts: The current manifest assigns %{works} works and %{documents} documents to this polity.
+      counts: The corpus currently contains %{works} works and %{documents} documents linked to this polity.
       authors_heading: Writers represented
       works_heading: Sample works
       author_count:
@@ -104,7 +104,7 @@ en:
     submission:
       create_heading: Suggest an article
       edit_heading: Suggest an edit or translation
-      explanation: Write or revise the article in Markdown, preview it in the full atlas frame, and submit it through the existing ticket workflow for editorial review.
+      explanation: Articles are written in Markdown.
       language: Article language
       action: Submission type
       actions:
@@ -146,15 +146,15 @@ en:
       evidence_links: Evidence links, one per line
       evidence_files: Supporting files
       contact_heading: Private contact details (optional)
-      contact_explanation: These details are stored privately by the ticket system and are not used as the public byline.
+      contact_explanation: These details are stored privately and are not used as the public byline.
       contact_name: Contact name
       contact_email: Email
       contact_notes: Contact note
       cc_by_agreement: I wrote this material or have the right to submit it, and I agree to its publication under CC BY.
-      store_key: Store this ticket key on this device
+      store_key: Save this ticket key on this device
       submit: Submit for review
       submitting: Submitting…
-      success: The atlas ticket was created. Save the key before leaving this page.
+      success: Ticket sent. Save the key before leaving this page.
       error_prefix: Submission failed
       change_language_warning: Changing the article language will replace the Markdown currently in the editor. Continue?
       ticket_id: Ticket ID

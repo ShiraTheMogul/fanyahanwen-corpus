@@ -1,13 +1,13 @@
-en:
+﻿en:
   javascript:
     corpus_submission:
       page_label: "Page label"
       page_text: "Page text"
       remove_page: "Remove page"
       default_page_label: "卷%{number}"
-      submitting: "Submitting ticket…"
-      error: "Error: %{message}"
-      created: "Ticket created ✅ (save the key below)"
+      submitting: "Submitting…"
+      error: "Something went wrong. Please try again."
+      created: "Ticket created. Save the key below."
       copied: "Copied!"
     corpus_reader:
       orientation:
@@ -43,7 +43,7 @@ en:
         review_submit: Review & submit
         close: Close
         add_row: Add row
-        create_ticket: Create ticket
+        create_ticket: Submit ticket
         copy_key: Copy key
         download_txt: Download txt
         open_ticket: Open ticket
@@ -81,17 +81,17 @@ en:
           tritanopia: Tritanopia
         note_marker: Note marker
       status:
-        add_one: Add at least one annotation before creating a ticket.
+        add_one: Add at least one annotation before submitting.
         material_note_required: Material note is required.
         provenance_required: Choose at least one provenance label.
         ai_details_required: Describe the AI assistance.
         ambiguous_note_required: Ambiguous/disputed character annotations require a note.
-        creating: Creating ticket…
-        error: 'Error: %{message}'
+        creating: Submitting…
+        error: Something went wrong. Please try again.
         created: Ticket created. Save the key below.
       ticket:
-        heading: Review annotation ticket
-        explanation: This preview shows the annotation ranges that will be submitted. Creating the ticket does not change the corpus directly.
+        heading: Review annotations
+        explanation: Review the annotations below before submitting.
         title: Title
         default_title: Annotation edit
         summary: Summary
@@ -117,14 +117,14 @@ en:
         evidence_files: Evidence files
         evidence_files_hint: Up to 10 files and 20 MB for this ticket. HTML, XHTML, and SVG are rejected.
         contact_details: Optional contact details
-        contact_hint: Stored separately and encrypted. Deleted after 30 days or when the ticket closes.
+        contact_hint: Stored separately and encrypted. Deleted after 30 days or when the ticket is closed.
         name: Name
         email: Email
         contact_note: Contact note
-        store_on_device: Store this ticket on this device
+        store_on_device: Save this ticket on this device
         unchecked_default: Unchecked by default.
         ticket_id: 'Ticket ID:'
-        ticket_key: 'Ticket Key:'
+        ticket_key: 'Ticket key:'
       preview:
         none: No annotations queued yet.
         kind: Kind
@@ -134,15 +134,15 @@ en:
         note: Note
     companion_material:
       status:
-        iso_load_error: 'Could not load ISO 639-3 list: %{message}'
+        iso_load_error: The language list could not be loaded. Please try again.
         invalid_type: 'Error: invalid material type.'
         material_note_required: 'Error: material note is required.'
         provenance_required: 'Error: choose at least one provenance label.'
         ai_details_required: 'Error: describe the AI assistance.'
         language_required: 'Error: choose a language from the ISO 639-3 list.'
         translation_required: 'Error: translation text is required.'
-        submitting: Submitting ticket…
-        error: 'Error: %{message}'
+        submitting: Submitting…
+        error: Something went wrong. Please try again.
         created: Ticket created. Save the key below.
       actions:
         copied: Copied!

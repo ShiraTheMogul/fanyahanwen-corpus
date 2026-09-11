@@ -48,19 +48,28 @@ export default class extends Controller {
         // change is stored, but must not replace that overlay before reload.
         const erjianActive = next.script_mode === "erjian_1" || next.script_mode === "erjian_2"
 
-        if (!erjianActive && data.han_font_stack) {
+        const scope = data.han_font_scope || document.body.dataset.hanFontScope || "all"
+        const readerEditorPage = document.body.dataset.hanFontReaderEditor === "1"
+        const headwordPage = document.body.dataset.hanFontHeadwordPage === "1"
+        const appliesHere =
+          (scope === "all" && readerEditorPage) ||
+          (scope === "headwords" && headwordPage)
+
+        document.body.classList.remove("han-font-scope-all", "han-font-scope-headwords")
+        if (appliesHere) document.body.classList.add(`han-font-scope-${scope}`)
+        document.body.dataset.hanFontScope = scope
+
+        if (!erjianActive && appliesHere && data.han_font_stack) {
           document.documentElement.style.setProperty("--han-font-stack", data.han_font_stack)
           document.body.dataset.hanFontStack = data.han_font_stack
+        } else if (!appliesHere) {
+          document.documentElement.style.removeProperty("--han-font-stack")
         }
-        if (!erjianActive && data.han_font_primary) {
+        if (!erjianActive && appliesHere && data.han_font_primary) {
           document.documentElement.style.setProperty("--han-font-primary", `"${data.han_font_primary}"`)
           document.body.dataset.hanFontPrimary = data.han_font_primary
-        }
-
-        if (data.han_font_scope) {
-          document.body.classList.remove("han-font-scope-all", "han-font-scope-headwords")
-          document.body.classList.add(`han-font-scope-${data.han_font_scope}`)
-          document.body.dataset.hanFontScope = data.han_font_scope
+        } else if (!appliesHere) {
+          document.documentElement.style.removeProperty("--han-font-primary")
         }
 
         if (data.han_font_key) document.body.dataset.hanFontKey = data.han_font_key

@@ -1,4 +1,4 @@
-# PLACEHOLDER CATALOGUE: translate values only; do not rename keys.
+﻿# PLACEHOLDER CATALOGUE: translate values only; do not rename keys.
 lzh:
   javascript:
     corpus_submission:
@@ -6,9 +6,9 @@ lzh:
       page_text: 頁文
       remove_page: 除此頁
       default_page_label: 卷%{number}
-      submitting: 正呈提案……
-      error: '誤：%{message}'
-      created: 提案已立 ✅（請留存下列提案鑰）
+      submitting: 正呈送……
+      error: 有誤，請再試。
+      created: 提案已立。請留存下列提案鑰。
       copied: 已謄錄！
     corpus_reader:
       orientation:
@@ -44,7 +44,7 @@ lzh:
         review_submit: 審閱呈案
         close: 閉
         add_row: 添一列
-        create_ticket: 立提案
+        create_ticket: 呈提案
         copy_key: 謄錄提案鑰
         download_txt: 載下txt
         open_ticket: 閱提案
@@ -82,17 +82,17 @@ lzh:
           tritanopia: 藍黃色盲
         note_marker: 註記標識
       status:
-        add_one: 立提案前，須至少添一註釋。
+        add_one: 呈送前，須至少添一註釋。
         material_note_required: 材料註記不可闕。
         provenance_required: 須至少擇一來歷標識。
         ai_details_required: 請述AI所襄助者。
         ambiguous_note_required: 疑難或有爭議之字，須附註記。
-        creating: 方立提案……
-        error: 誤：%{message}
-        created: 提案已立，請留存下列提案鑰。
+        creating: 正呈送……
+        error: 有誤，請再試。
+        created: 提案已立。請留存下列提案鑰。
       ticket:
-        heading: 審閱註釋提案
-        explanation: 此覽示將呈之註釋範圍。立提案不直改語料庫。
+        heading: 審閱註釋
+        explanation: 呈送前請覆核下列註釋。
         title: 題
         default_title: 註釋纂修
         summary: 概要
@@ -135,16 +135,16 @@ lzh:
         note: 註記
     companion_material:
       status:
-        iso_load_error: 未能載入ISO 639-3表：%{message}
+        iso_load_error: 未能載入ISO 639-3表，請再試。
         invalid_type: 誤：材料類無效。
         material_note_required: 誤：材料註記不可闕。
         provenance_required: 誤：須至少擇一來歷標識。
         ai_details_required: 誤：請述AI所襄助者。
         language_required: 誤：請自ISO 639-3表擇語言。
         translation_required: 誤：譯文不可闕。
-        submitting: 正呈提案……
-        error: 誤：%{message}
-        created: 提案已立，請留存下列提案鑰。
+        submitting: 正呈送……
+        error: 有誤，請再試。
+        created: 提案已立。請留存下列提案鑰。
       actions:
         copied: 已謄錄！
       titles:

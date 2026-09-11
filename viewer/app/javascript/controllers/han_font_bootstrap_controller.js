@@ -1,4 +1,4 @@
-import { Controller } from "@hotwired/stimulus"
+﻿import { Controller } from "@hotwired/stimulus"
 
 // Keeps Han font CSS variables "sticky" across Turbo renders and any DOM churn.
 //
@@ -16,8 +16,8 @@ export default class extends Controller {
 			document.fonts.ready.then(() => this._apply()).catch(() => this._apply())
 		}
 
-		// Turbo can re-render the document and occasionally reset root styles.
-		// Re-assert after those events.
+		// Turbo can re-render the document and leave root-level custom properties
+		// behind, so re-check whether this page is actually a font target.
 		this._onTurboLoad = () => this._apply()
 		document.addEventListener("turbo:load", this._onTurboLoad)
 		document.addEventListener("turbo:render", this._onTurboLoad)
@@ -25,14 +25,14 @@ export default class extends Controller {
 
 		// Other controllers dispatch this when preferences change.
 		this._onFontChanged = () => this._apply()
-		document.addEventListener("han-font-changed", this._onFontChanged)
+		window.addEventListener("han-font-changed", this._onFontChanged)
 	}
 
 	disconnect() {
 		document.removeEventListener("turbo:load", this._onTurboLoad)
 		document.removeEventListener("turbo:render", this._onTurboLoad)
 		document.removeEventListener("turbo:frame-load", this._onTurboLoad)
-		document.removeEventListener("han-font-changed", this._onFontChanged)
+		window.removeEventListener("han-font-changed", this._onFontChanged)
 	}
 
 	_apply() {
@@ -41,15 +41,22 @@ export default class extends Controller {
 
 		const primary = (body.dataset.hanFontPrimary || body.dataset.hanFontFamily || "").trim()
 		const stack = (body.dataset.hanFontStack || "").trim()
+		const scopeActive = body.classList.contains("han-font-scope-all") ||
+			body.classList.contains("han-font-scope-headwords")
 
-		if (primary) {
+		if (scopeActive && primary) {
 			document.documentElement.style.setProperty("--han-font-primary", `"${primary}"`)
+		} else {
+			document.documentElement.style.removeProperty("--han-font-primary")
 		}
-		if (stack) {
+		if (scopeActive && stack) {
 			document.documentElement.style.setProperty("--han-font-stack", stack)
+		} else {
+			document.documentElement.style.removeProperty("--han-font-stack")
 		}
 
-		// Let other scripts know what we're currently enforcing.
+		// Let other scripts know which family is saved, even when this page does
+		// not use it. The next reader/editor page can then apply it normally.
 		body.dataset.hanFontFamily = primary || body.dataset.hanFontFamily
 	}
 }

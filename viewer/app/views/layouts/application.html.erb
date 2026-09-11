@@ -49,16 +49,28 @@
     <% _han_warn = session.key?(:han_font_warn_missing) ? (session[:han_font_warn_missing] == true) : true %>
     <% _han_family = HanFonts.family_for(_han_font_key) %>
     <% _han_stack = HanFonts.stack_for(_han_font_key) %>
+    <% _han_reader_editor = controller_name.in?(%w[corpus_viewer word_processor]) %>
+    <% _han_headword_page = controller_name == "characters" %>
+    <% _han_scope_class =
+         if _han_scope == "headwords" && _han_headword_page
+           "han-font-scope-headwords"
+         elsif _han_scope == "all" && _han_reader_editor
+           "han-font-scope-all"
+         end %>
 
     <%= javascript_importmap_tags %>
   </head><body
 		    data-controller="han-font-bootstrap rightbar-layout site-theme<%= ' transcription-launcher' if controller_name == 'corpus_viewer' %>"
-	    class="han-font-scope-<%= _han_scope %>"
+	    class="<%= _han_scope_class %>"
 	    data-han-font-key="<%= _han_font_key %>"
 	    data-han-font-family="<%= _han_family %>"
 	    data-han-font-primary="<%= _han_family %>"
 	    data-han-font-stack="<%= _han_stack %>"
-	    data-han-font-warn-missing="<%= _han_warn ? "1" : "0" %>">
+	    data-han-font-scope="<%= _han_scope %>"
+	    data-han-font-reader-editor="<%= _han_reader_editor ? "1" : "0" %>"
+	    data-han-font-headword-page="<%= _han_headword_page ? "1" : "0" %>"
+	    data-han-font-warn-missing="<%= _han_warn ? "1" : "0" %>"
+    data-han-font-missing-glyph-message="<%= t("view_options.font.missing_glyph_fallback", font: "%FONT%") %>">
     <header class="site-header">
       <div class="site-header-inner">
         <div class="site-header-left">
@@ -127,7 +139,6 @@
 
 	      </div>
 	    </header>
-
 	    <div class="page-shell <%= content_for?(:rightbar) ? "has-rightbar" : "no-rightbar" %>">
       <main class="maincol"
         <% unless controller_name == "word_processor" %>

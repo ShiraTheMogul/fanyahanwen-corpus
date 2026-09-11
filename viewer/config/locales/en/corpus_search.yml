@@ -1,14 +1,14 @@
 ﻿en:
   corpus_search:
     title: Corpus Search
-    introduction: Search corpus body text directly. Metadata headers never produce hits or counts.
+    introduction: Search the text of works in the corpus.
     scope_tabs:
-      aria_label: Search breadth
-      targeted: Targeted search
-      full: Full corpus search
+      aria_label: Search type
+      targeted: Quick search
+      full: Full search
     full_search:
-      heading: Complete background search
-      introduction: Full corpus searches run as background jobs over the selected corpus scope. They may take a long time, but you can keep using targeted search while the job runs.
+      heading: Full search
+      introduction: Checks every text in the selected scope. Large searches may take a while.
       github_html: For repeated large-scale research, you may prefer to download the open corpus from <a href="%{url}">GitHub</a> and search it locally.
       email_label: Email me when the search is complete (optional)
       email_placeholder: you@example.com
@@ -29,17 +29,17 @@
       search_text: Search text
       find_all_terms: Find all terms within one passage
       find_any_term: Find any of these terms
-      alternatives_hint: Terms are joined with OR. A result is returned when any entered term occurs.
-      regex_hint: Ruby regular-expression syntax is used. The expression is compiled once and reused across files. Character-equivalence expansion is disabled in this mode; punctuation handling still follows the option below.
+      alternatives_hint: Find passages containing any of the entered terms.
+      regex_hint: Uses Ruby regular-expression syntax. Character-variant matching is off in this mode.
       maximum_span: Maximum span
       order: Order
       ignore_punctuation: Ignore punctuation and spacing
-      body_only_rule: Metadata headers are never searched.
+      body_only_rule: Titles, author fields, and other metadata are not searched.
       character_matching: Character matching
-      additional_filters: Scope and additional filters
+      additional_filters: Where to search
       include_folders: Included folders
       exclude_folders: Excluded folders
-      folder_hint: Tick one or more folders to limit the search. Leave every folder unticked to search all folders in the selected text layers. A selected folder always includes its descendants.
+      folder_hint: Select folders to limit the search. With none selected, all folders in the chosen text layers are searched. Selecting a folder includes its subfolders.
       search_within_folder: Search within
       exclude_folder: Exclude
       exclude_named_folder: 'Exclude %{folder}'
@@ -54,7 +54,7 @@
       year_from: Year from
       year_to: Year to
       text_witnesses: Texts and corpus layers
-      text_witnesses_hint: Received texts are searched by default. Other layers are included only when selected here.
+      text_witnesses_hint: Received texts are included by default.
       term_limit: Add between 2 and %{max} terms.
       folder_scope: Folder scope
     modes:
@@ -89,14 +89,14 @@
       period: 江戶時代 / 大越...
     actions:
       search: Search
-      request_full_search: Request full search
+      request_full_search: Start full search
       cancel_full_search: Cancel search
-      prepare_export: Prepare full ZIP export in background
-      prepare_analysis: Prepare complete analysis in background
+      prepare_export: Create ZIP
+      prepare_analysis: Create analysis
       open_source_text: Open source text at this match
       download_zip: Download ZIP
       copy_live_url: Copy live query URL
-      copy_frozen_url: Copy frozen result URL
+      copy_frozen_url: Copy saved result URL
       open_live_query: Open live query
       copied: Copied
       add_term: Add another term
@@ -105,29 +105,29 @@
       toggle_folder: Expand or collapse %{folder}
       open_received_text_folder: Open received-text folder
     results:
-      summary: 'Showing %{visible} result(s) on this page. Cached/checked candidate files: %{candidates}. Files newly scanned for this request: %{scanned}.'
-      truncated: This interactive search is partial. It stops at %{limit} hits or after a bounded cold scan; prepare a background export for the complete result set.
-      analysis_background_note: This scans the entire selected scope without the interactive hit or cold-scan cap.
-      complete_count: 'Complete interactive result count: %{count}.'
-      offset: body offset %{start}–%{finish}
+      summary: 'Showing %{visible} result(s).'
+      truncated: Quick search stops after %{limit} matches or when its search limit is reached. Use a full search for complete results.
+      analysis_background_note: A full analysis checks the entire selected set of texts.
+      complete_count: 'Complete result count: %{count}.'
+      offset: text position %{start}–%{finish}
       none: No results found.
       matched_alternatives: 'Matched alternative(s): %{terms}'
-      equivalent_forms_used: '%{count} equivalent-form match(es) explained'
-      equivalence_via: 'via %{sources}; mapping path %{path}'
+      equivalent_forms_used: '%{count} character-variant match(es)'
+      equivalence_via: 'via %{sources}'
       chars_omitted:
         one: '%{count} character omitted'
         other: '%{count} characters omitted'
     query_details:
-      heading: Query details
+      heading: Search details
       mode: Mode
       query: Query
       punctuation: Punctuation
       character_matching: Character matching
-      equivalence_registry: Character-equivalence registry version
+      equivalence_registry: Character variant data
       text_witnesses: Texts and corpus layers
       folders: Folder scope
       metadata: Metadata headers
-      profile: Normalization profile version
+      profile: Normalization rules
       live_url: Live query URL
       never_searched: Never searched or counted
       all_selected_folders: All folders in the selected corpus layers
@@ -138,14 +138,14 @@
       next: Next
       page_of: Page %{page} of %{pages}
     prepared:
-      title: Prepared Corpus Search
+      title: Saved Corpus Search
       status: Status
       query: Query
-      progress: 'Stage: %{stage}. Files: %{scanned} / %{total}. Hits found: %{hits}.'
-      zip_contents: The ZIP contains concordance results, body-only analysis data, grouped CSV tables, the exact Ruby script, SVG and PNG figures, and runtime provenance.
-      refresh_notice: This page will refresh every %{seconds} seconds while the job is running.
-      poll_notice: Progress updates automatically while the background job is running. You may leave this page and return using the frozen URL.
-      worker_waiting: This job has been queued but no worker has started it yet. In local development, run bin/corpus-search-worker in a second terminal.
+      progress: '%{stage}: %{scanned}/%{total} files · %{hits} matches'
+      zip_contents: The ZIP includes complete results, analysis tables, figures, and reproducibility files.
+      refresh_notice: This page will update every %{seconds} seconds while the search is running.
+      poll_notice: You can leave this page and return using the saved results link.
+      worker_waiting: Waiting to start.
     analysis:
       title: Corpus Search Analysis
       workspace: Search workspace
@@ -156,8 +156,8 @@
         comparison: Compare scopes
         advanced: Advanced analysis
       overview: Analysis overview
-      body_only_note: All rates use searchable body characters. Metadata headers never contribute to matches or denominators.
-      runtime: Analysis runtime
+      body_only_note: Rates are calculated from the text itself; metadata is excluded.
+      runtime: Time
       measure: Measure shown in grouped figures
       groups_omitted: '%{count} additional groups remain in the downloadable CSV table.'
       matches_per_document: Matches per document
@@ -169,17 +169,17 @@
       concentration_summary: 'Top document: %{top1}. Top five: %{top5}. Top ten: %{top10}.'
       warnings: Analysis notes and warnings
       reproducibility: Reproducibility files
-      reproducibility_note: The ZIP includes the exact Ruby script, body-only input tables, every grouped CSV, SVG and PNG figures, warnings, timing, and runtime information.
-      reproducibility_note_phase8: The frozen bundle includes the exact Ruby script, body-only input tables, aggregate CSV files, figures, method text, citation text, a corpus snapshot identifier, SHA-256 checksums, warnings, timing, and runtime information.
-      reproducibility_note_phase9: The frozen bundle includes the exact Ruby script, body-only input tables, grouped and advanced analysis tables, figures, exact-body sensitivity data, method text, citation text, a corpus snapshot identifier, SHA-256 checksums, warnings, timing, and runtime information.
+      reproducibility_note: The ZIP includes the data, analysis code, tables, figures, warnings, and timing information needed to reproduce the analysis.
+      reproducibility_note_phase8: The saved bundle includes the data, analysis code, tables, figures, method and citation text, a corpus snapshot identifier, checksums, warnings, and timing information needed to reproduce the analysis.
+      reproducibility_note_phase9: The saved bundle includes the data, analysis code, grouped and advanced analysis tables, figures, sensitivity data, method and citation text, a corpus snapshot identifier, checksums, warnings, and timing information needed to reproduce the analysis.
       snapshot_id: Corpus snapshot
-      record_id: Prepared record
+      record_id: Saved result
       completed_at: Completed
-      artifact_count: Verified artifacts
+      artifact_count: Files
       methods_summary: Citation-ready methods summary
       suggested_citation: Suggested citation
       unavailable: Analysis is unavailable
-      unavailable_note: The search export completed, but no analysis report was produced. The ZIP still contains the input data, exact Ruby script, warnings, and runtime metadata so the analysis can be run elsewhere.
+      unavailable_note: The search completed, but the analysis could not be created. Search results are still available in the ZIP.
       metrics:
         occurrences: Occurrences
         matching_documents: Matching documents
@@ -196,13 +196,13 @@
         document_role: Text or corpus layer
       advanced:
         heading: Advanced corpus analysis
-        introduction: These analyses use only body-text occurrences, nearby body characters, document exposure, and recorded dates. They do not search metadata headers.
+        introduction: These analyses use occurrences in the text, nearby text characters, document size, and recorded dates. Metadata fields are excluded.
         neighbours: Neighbouring characters
-        neighbours_note: Counts characters found within five body-text characters to the left or right of each matched passage. Punctuation, spacing, and control characters are excluded.
+        neighbours_note: Counts characters found within five text characters to the left or right of each matched passage. Punctuation, spacing, and control characters are excluded.
         character_forms: Forms actually matched
         character_forms_note: Compares each entered term with the form actually present in the source. This makes common-variant and broad-equivalence searches auditable without converting the corpus text.
         neighbour_keyness: Distinctive neighbouring characters between scopes
-        neighbour_keyness_note: For a two-scope comparison, this contrasts characters in the five-character windows around the matches. G² ranks contextual differences; the log-ratio shows which selected scope favours the character. It is not general corpus-wide keyness.
+        neighbour_keyness_note: For a two-scope comparison, this compares characters found near the matches. G² ranks how strongly the two groups differ; the log₂ ratio shows the direction and size of the difference. This describes the selected match context, not the whole corpus.
         alternatives: Alternative-term contributions
         alternatives_note: Shows which OR alternatives produced the results. One source occurrence may count for more than one alternative when their accepted character forms overlap.
         term_orders: Observed proximity orders
@@ -241,7 +241,7 @@
         log_ratio: Log₂ ratio
     comparison:
       heading: Compare two scopes
-      introduction: Apply the same text query to two groups already present in this frozen analysis. The comparison reuses its body-only dataset and runs a new, reproducible analysis without rescanning the corpus.
+      introduction: Compare the same query across two groups in this saved analysis. The comparison uses the saved results, so the corpus does not need to be searched again.
       dimension_note: Compared by %{dimension}.
       dimension: Compare by
       left_scope: Scope A
@@ -250,7 +250,7 @@
       prepare: Prepare comparison
       not_enough_groups: This analysis does not contain two groups in any supported comparison dimension.
       effect_sizes: Comparison statistics and effect sizes
-      statistics_note: The left/right rate ratio uses searchable body characters as exposure. The likelihood statistic tests equality of the two occurrence rates; it does not establish historical causation.
+      statistics_note: The A/B rate ratio uses searchable body characters as exposure. The likelihood statistic tests whether the two occurrence rates differ; it does not establish historical causation.
       table:
         scope: Scope
       effects:
@@ -268,28 +268,28 @@
         left_group: Choose Scope A.
         right_group: Choose Scope B.
         distinct: Scope A and Scope B must be different.
-        source_incomplete: The source analysis must be complete and frozen before it can be compared.
-        analysis_unavailable: The source analysis does not contain a readable R report.
+        source_incomplete: The saved source analysis must be complete before it can be compared.
+        analysis_unavailable: The source analysis does not contain a readable analysis report.
         group_missing: '%{group} is not present in the selected comparison dimension.'
     statuses:
-      queued: Queued
+      queued: Waiting
       running: Running
       complete: Complete
       failed: Failed
       cancel_requested: Cancelling
       cancelled: Cancelled
     stages:
-      queued: Queued
+      queued: Waiting
       searching: Searching
-      copying_source_dataset: Copying frozen analysis dataset
-      building_analysis_dataset: Building analysis dataset
+      copying_source_dataset: Preparing saved analysis data
+      building_analysis_dataset: Preparing analysis data
       running_analysis: Running analysis
       complete: Complete
       failed: Failed
       cancel_requested: Cancelling
       cancelled: Cancelled
     notices:
-      queued: The large search has been queued. You can keep using the site while it runs.
+      queued: The full search is waiting to start. You can keep using the site while it runs.
     errors:
       enter_sequence: Enter an exact sequence to search for.
       enter_regex: Enter a regular expression to search for.
@@ -298,11 +298,11 @@
       enter_two_terms: Enter at least two terms for a proximity search.
       enter_two_alternatives: Enter at least two alternatives for an OR search.
       term_too_long: Search terms cannot be longer than %{max} characters.
-      search_failed: 'Search failed: %{message}'
-      prepared_not_found: Prepared search not found
+      search_failed: Something went wrong while searching. Please try again. If the problem continues, let the site maintainer know.
+      prepared_not_found: Saved search not found
       download_not_ready: Download is not ready yet
-      full_search_active: You already have a full corpus search running or waiting for download. Please wait for it to finish, download it, cancel it, or let it expire.
-      full_search_busy: The full corpus search queue is currently full. Please try again later.
+      full_search_active: You already have a full search running or waiting. Please wait for it to finish, download it, cancel it, or let it expire.
+      full_search_busy: Full search is currently busy. Please try again later.
       too_many_terms: A proximity search can contain at most %{max} terms.
       too_many_alternatives: 'An OR search can contain at most %{max} alternatives.'
       folder_tree_unavailable: The folder list is not ready yet. Searches still cover every folder in the selected text layers.
@@ -326,7 +326,7 @@
     roles:
       canonical: Received text
       textual_variant: Variants
-      raw: Raw scrapes
+      raw: Raw source material
       derived_reading: Kanbun / Hanmun / Hanvan
       translation: Translation
       annotation: Annotation

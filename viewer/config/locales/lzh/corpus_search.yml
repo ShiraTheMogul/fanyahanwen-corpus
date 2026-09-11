@@ -1,22 +1,45 @@
-lzh:
+﻿lzh:
   corpus_search:
     title: 語料庫尋文
-    introduction: 直接尋正文。卷首著錄永不入所得，亦不入字數統計。
+    introduction: 尋語料庫中正文。
+    scope_tabs:
+      aria_label: 尋法
+      targeted: 速尋
+      full: 全尋
+    full_search:
+      heading: 全尋
+      introduction: 遍查所選範圍諸文；所涉甚廣者或需稍候。
+      github_html: 屢作大規模研究者，亦可自<a href="%{url}">GitHub</a>下載開放語料庫，於本機搜尋。
+      email_label: 尋畢以電郵告我（選填）
+      email_placeholder: you@example.com
+      email_hint: 此址惟用以告此次尋文完畢；信寄出後即刪其原始電郵地址。
+    progress_widget:
+      title: 全庫尋文
+      details: 見進度
+      dismiss: 藏進度欄
+    mailer:
+      complete:
+        subject: 泛亞漢文語料庫尋文已畢
+        heading: 全庫尋文已畢。
+        body: '所尋：%{query}'
+        expires: '此鏈失效於：%{expires_at}'
+        ignore: 非君所求者，略此信即可。
     form:
       mode: 尋法
       search_text: 所尋文句
       find_all_terms: 求諸詞同見於一段
       find_any_term: 求諸詞任一見於文
-      alternatives_hint: 諸詞以「或」相連；任一詞見，皆列所得。
+      alternatives_hint: 求諸詞任一見於文者。
+      regex_hint: 用Ruby正則式；此法不作異體對應。
       maximum_span: 所跨字數上限
       order: 先後
       ignore_punctuation: 略標點與空白
-      body_only_rule: 卷首著錄永不搜尋。
+      body_only_rule: 題名、作者等著錄不入搜尋。
       character_matching: 字形對應
-      additional_filters: 範圍及別項濾器
+      additional_filters: 搜尋範圍
       include_folders: 所納目錄
       exclude_folders: 所排目錄
-      folder_hint: 勾選目錄以限縮搜尋範圍；不勾則尋所選文本層內全部目錄。所勾目錄均連同其下諸目錄。
+      folder_hint: 擇目錄以限範圍；悉不擇則尋所選文本層全部目錄。所擇目錄兼其下諸目錄。
       search_within_folder: 尋此目錄
       exclude_folder: 排除
       exclude_named_folder: 排除%{folder}
@@ -24,17 +47,19 @@ lzh:
       context_characters: 前後文字數
       results_per_page: 每頁項數
       nation: 國別
+      polity: 國朝
       period: 時期
       region: 地域
       author: 作者
       year_from: 始年
       year_to: 終年
       text_witnesses: 文本與語料層
-      text_witnesses_hint: 常例只尋傳本文本；其餘各層惟勾選乃入。
+      text_witnesses_hint: 常例納傳本文本。
       term_limit: 可置二詞至%{max}詞。
       folder_scope: 目錄範圍
     modes:
       exact: 連文
+      regex: 正則式
       proximity: 鄰近
       alternatives: 任一（或）
     orders:
@@ -58,16 +83,20 @@ lzh:
       opencc_japanese_shinjitai: OpenCC日本新字體對應
     placeholders:
       sequence: 關關雎鳩在河之洲
-      term: Term %{number}
+      term: 第%{number}詞
       nation: 日本 / 越南 / 中國...
+      polity: 商 / 周 / 大清...
       period: 江戶時代 / 大越...
     actions:
       search: 尋
-      prepare_export: 另行備製全數ZIP匯出檔
+      request_full_search: 開始全尋
+      cancel_full_search: 取消搜尋
+      prepare_export: 製ZIP
+      prepare_analysis: 製分析
       open_source_text: 至原文此處
       download_zip: 載下ZIP檔
       copy_live_url: 錄活查網址
-      copy_frozen_url: 錄定本網址
+      copy_frozen_url: 錄已存結果網址
       open_live_query: 開活查
       copied: 已錄
       add_term: 增一詞
@@ -76,28 +105,29 @@ lzh:
       toggle_folder: 展合%{folder}
       open_received_text_folder: 至傳本文本目錄
     results:
-      summary: 此頁示%{visible}項。候選檔凡%{candidates}；此次新查%{scanned}檔。
-      truncated: 互動尋文有定限（至多%{limit}項，冷尋亦限所閱篇數）；欲得全數，請另行備製匯出檔。
-      complete_count: 互動尋文所得凡%{count}項。
+      summary: 此頁示%{visible}項。
+      truncated: 速尋至%{limit}項或達搜尋上限即止；欲得全數，請用全尋。
+      analysis_background_note: 全數分析遍查所選諸文。
+      complete_count: 所得凡%{count}項。
       offset: 正文字位%{start}–%{finish}
       none: 無所得。
-      equivalent_forms_used: 所中等價字形凡%{count}處
-      equivalence_via: 由%{sources}；對應路徑%{path}
       matched_alternatives: '所中任一詞：%{terms}'
+      equivalent_forms_used: 所中異體凡%{count}處
+      equivalence_via: 由%{sources}
       chars_omitted:
         one: 略%{count}字
         other: 略%{count}字
     query_details:
-      heading: 所尋詳情
+      heading: 尋文詳情
       mode: 尋法
       query: 所尋
       punctuation: 標點
       character_matching: 字形對應
-      equivalence_registry: 字形對應表版本
+      equivalence_registry: 異體資料
       text_witnesses: 文本與語料層
       folders: 目錄範圍
       metadata: 卷首著錄
-      profile: 正規化規則版本
+      profile: 正規化規則
       live_url: 活查網址
       never_searched: 永不搜尋，亦不計數
       all_selected_folders: 所選語料層內全部目錄
@@ -108,37 +138,174 @@ lzh:
       next: 後頁
       page_of: 第%{page}頁，共%{pages}頁
     prepared:
-      title: 已備尋文
+      title: 已存尋文
       status: 狀態
       query: 所尋
-      progress: 階段：%{stage}。諸檔：%{scanned}／%{total}。所得：%{hits}項。
-      zip_contents: ZIP檔內有尋文結果、正文分析資料、所用Ruby程式、分析所得及運行著錄。
-      refresh_notice: 作業未畢時，此頁每%{seconds}秒自新。
+      progress: "%{stage}：%{scanned}／%{total}檔，所得%{hits}項"
+      zip_contents: ZIP檔內有全數結果、分析表、圖及重現分析資料。
+      refresh_notice: 搜尋未畢時，此頁每%{seconds}秒自新。
+      poll_notice: 可離此頁，後以所存結果網址返回。
+      worker_waiting: 尚候開始。
+    analysis:
+      title: 尋文分析
+      workspace: 尋文工作區
+      tabs:
+        results: 所得
+        analysis: 分析
+        query_details: 所尋詳情
+        comparison: 比較範圍
+        advanced: 進階分析
+      overview: 分析總覽
+      body_only_note: 諸率皆據正文計；著錄不入。
+      runtime: 所費時間
+      measure: 分組圖所示量值
+      groups_omitted: 尚有%{count}組見於可下載CSV表。
+      matches_per_document: 各篇所得數
+      matches_per_document_note: 可見所得散布於全庫，抑集中於少數篇章。
+      proximity_spans: 鄰近跨度
+      proximity_note: 跨度自首個所中詞起，至末個所中詞末字止，以可搜尋字數計。
+      top_documents: 所得最多之篇章
+      concentration: 所得集中度
+      concentration_summary: '首篇：%{top1}。前五：%{top5}。前十：%{top10}。'
+      warnings: 分析註記及警示
+      reproducibility: 重現分析資料
+      reproducibility_note: ZIP檔內有重現分析所需之資料、分析程式、表、圖、警示及計時資料。
+      reproducibility_note_phase8: 已存資料包有重現分析所需之資料、分析程式、表、圖、方法及引據文字、語料快照識別碼、校驗碼、警示及計時資料。
+      reproducibility_note_phase9: 已存資料包有重現分析所需之資料、分析程式、分組及進階分析表、圖、敏感度資料、方法及引據文字、語料快照識別碼、校驗碼、警示及計時資料。
+      snapshot_id: 語料快照
+      record_id: 已存結果
+      completed_at: 完成
+      artifact_count: 檔案
+      methods_summary: 可供引用之方法摘要
+      suggested_citation: 建議引據
+      unavailable: 分析暫不可得
+      unavailable_note: 尋文已畢，而分析未能製成；搜尋結果仍在ZIP檔內。
+      metrics:
+        occurrences: 出現數
+        matching_documents: 有所得之篇章
+        documents: 所選篇章
+        searchable_characters: 可搜尋正文字數
+        document_prevalence: 含所尋者之篇章
+        occurrences_per_million: 每百萬字出現數
+      dimensions:
+        period: 時期
+        nation: 國別
+        region: 地域
+        author: 作者
+        folder: 目錄支系
+        document_role: 文本或語料層
+      advanced:
+        heading: 進階語料分析
+        introduction: 此諸分析只取正文所見、近旁正文、篇章字數及所錄年代；著錄欄不入。
+        neighbours: 鄰近字
+        neighbours_note: 計各所得左右五個正文字內所見之字；標點、空白及控制字符不入。
+        character_forms: 實際所中字形
+        character_forms_note: 對照所輸入之詞與原文實見字形；異體及廣義對應搜尋因而可覆核，且不改原文。
+        neighbour_keyness: 兩範圍之特色鄰字
+        neighbour_keyness_note: 比較兩範圍所得附近之字。G²示差異強弱；log₂比率示方向及幅度。此惟論所選所得之文脈，不代表全庫。
+        alternatives: 任一詞之貢獻
+        alternatives_note: 示OR搜尋中何詞產生所得；若不同詞所納字形相重，一處原文可同時計入數詞。
+        term_orders: 鄰近詞實見次序
+        term_orders_note: 依諸詞在原文實際先後，分組鄰近搜尋所得。
+        time: 各年代頻率
+        time_note: 年代可析之篇章依世紀分組。點示每百萬正文字之出現數；線示約95% Poisson區間。年代未詳者仍入總數，不入此圖。
+        model: 探索性計數模型
+        rate_ratio_century: 每世紀率比
+        rate_ratio_interval: 約95%區間
+        p_value: 趨勢p值
+        overdispersion: Poisson過度離散比
+        time_model_warning: 此為篇章層之描述模型，以可搜尋正文字數為暴露量，不能證成歷史因果趨勢。
+        dispersion: 各篇離散度
+        dispersion_note: Deviation of Proportions比較各篇所得占比與其可搜尋語料字數占比。DPnorm近0，表示所尋大致隨語料量均布；近1，表示高度集中。
+        evenness: 均勻度（1 − DPnorm）
+        document_range: 篇章分布
+        duplicates: 完全相同文本檢查
+        duplicates_note: 常例各存檔皆計；敏感度檢查另將正文全同者視作一單位。此只能見完全相同之文本，不能辨近似版本或引文。
+        show_duplicate_groups: 示最大完全相同文本組
+        bases:
+          documents_as_stored: 依現存篇章計
+          unique_exact_bodies: 依不重複之完全相同正文計
+      table:
+        document: 篇章
+        layer: 層
+        occurrences: 出現數
+        share: 所得占比
+        per_million: 每百萬字
+        character: 字
+        left: 左
+        right: 右
+        total: 總數
+        basis: 計算法
+        example: 例
+        favoured_scope: 偏多範圍
+        log_ratio: Log₂比率
+    comparison:
+      heading: 比較兩範圍
+      introduction: 以同一查詢比較此已存分析中兩組；直接用已存結果，無須重尋全庫。
+      dimension_note: 依%{dimension}比較。
+      dimension: 比較項
+      left_scope: 範圍甲
+      right_scope: 範圍乙
+      choose_group: 擇一組
+      prepare: 製比較
+      not_enough_groups: 此分析之可比較項中，未有兩組可供比較。
+      effect_sizes: 比較統計及效應量
+      statistics_note: 甲／乙率比以可搜尋正文字數為暴露量；似然統計檢驗兩出現率是否相異，不能證成歷史因果。
+      table:
+        scope: 範圍
+      effects:
+        rate_ratio_left_over_right: 率比（甲／乙）
+        rate_ratio_ci_low_95: 率比95%區間下限
+        rate_ratio_ci_high_95: 率比95%區間上限
+        log2_rate_ratio: Log2率比
+        rate_difference_per_million: 每百萬字率差
+        document_prevalence_difference_percentage_points: 篇章出現率差
+        document_prevalence_ratio: 篇章出現率比
+        poisson_log_likelihood_g2: Poisson對數似然G²
+        poisson_log_likelihood_p_value: Poisson對數似然p值
+      errors:
+        dimension: 請擇可用之比較項。
+        left_group: 請擇範圍甲。
+        right_group: 請擇範圍乙。
+        distinct: 範圍甲乙不可相同。
+        source_incomplete: 所據已存分析須先完整完成，方可比較。
+        analysis_unavailable: 所據分析無可讀之分析報告。
+        group_missing: '%{group}不在所選比較項中。'
     statuses:
       queued: 候行
       running: 行中
       complete: 已畢
       failed: 失敗
+      cancel_requested: 正取消
+      cancelled: 已取消
     stages:
       queued: 候行
       searching: 尋文中
-      building_analysis_dataset: 製分析資料表
+      copying_source_dataset: 備已存分析資料
+      building_analysis_dataset: 備分析資料
       running_analysis: 行分析
       complete: 已畢
       failed: 失敗
+      cancel_requested: 正取消
+      cancelled: 已取消
     notices:
-      queued: 大規模尋文已入列；其行時仍可照常用本站。
+      queued: 全尋尚候開始；其行時仍可照常用本站。
     errors:
-      enter_sequence: 請輸入所尋文句。
+      enter_sequence: 請輸入所尋連文。
+      enter_regex: 請輸入正則式。
+      invalid_regex: '正則式有誤：%{message}'
+      regex_too_long: 正則式不得逾%{max}字。
       enter_two_terms: 鄰近尋文須輸入至少二詞。
       enter_two_alternatives: 任一尋文須至少置二詞。
       term_too_long: 所尋各詞不得逾%{max}字。
-      search_failed: 尋文失敗：%{message}
-      prepared_not_found: 未見所備尋文。
+      search_failed: 尋文有誤，請再試；若仍有此患，請告本站維護者。
+      prepared_not_found: 未見所存尋文。
       download_not_ready: 匯出檔尚未備妥。
+      full_search_active: 已有全尋行中或候行；請俟其畢、下載、取消，或待其失效。
+      full_search_busy: 全尋今忙，請稍後再試。
       too_many_terms: 鄰近尋文至多容%{max}詞。
       too_many_alternatives: '任一尋文至多置%{max}詞。'
-      folder_tree_unavailable: 目錄清單尚未備妥；此時仍可搜尋全部目錄。
+      folder_tree_unavailable: 目錄清單尚未備妥；此時仍可搜尋所選文本層全部目錄。
     query:
       proximity_label: '%{terms}同見於不逾%{distance}搜尋字'
       alternatives_label: '%{terms}'
@@ -155,11 +322,11 @@ lzh:
         offsets: 字位自去除卷首著錄及其分隔空行後之正文起算。
         equivalence: 非字面相合者，仍記所輸入字、原文所見字、對應路徑及來源。
         canonical_source: 原始.txt檔仍為語料庫權威文本；此匯出檔乃尋文所得之衍生物。
-        analysis_dataset: document_counts.csv所載皆正文之檔案計數與可尋字數，供所附Ruby程式使用。
+        analysis_dataset: document_counts.csv載正文篇章計數及可搜尋字數，供所附Ruby程式使用。
     roles:
       canonical: 傳本文本
       textual_variant: 異文
-      raw: 原始抓取檔
+      raw: 原始材料
       derived_reading: 訓讀／韓文讀法／漢文讀法
       translation: 譯文
-      annotation: 注釋
+      annotation: 註釋

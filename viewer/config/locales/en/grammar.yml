@@ -1,4 +1,4 @@
-en:
+﻿en:
   grammar:
     title: Literary Chinese Grammar Wiki
     breadcrumbs: Grammar Wiki navigation
@@ -87,12 +87,11 @@ en:
       use_label: Individual use
     missing:
       heading: Article needed
-      explanation: The reference frame is available, but the grammatical article has not yet been written.
+      explanation: This entry has been set up, but its article has not been written yet.
       suggest: Suggest an article
     searches:
       heading: Search the corpus
-      explanation: These prepared searches open the corpus search with useful terms and settings already filled in. Search
-        matches may include other grammatical uses.
+      explanation: These searches open the corpus with useful terms and settings already filled in. Matches may include other grammatical uses.
       default_label: Find more examples in the corpus
       entry_label: Find %{headword} in the corpus
     related:
@@ -127,21 +126,20 @@ en:
       apa: APA
     ids:
       heading: Generate an entry ID
-      explanation: Generate a stable suggestion from the entry type and headword. Existing IDs are checked; a collision is
-        never overwritten automatically.
+      explanation: The site suggests an ID from the entry type and headword, and checks that it is not already in use.
       kind: Entry type
       headword: Headword
       parent: Parent ID (for an individual function)
       label: Short function label
       generate: Generate ID
       candidate: Suggested ID
-      collision: This ID already exists. Check whether the proposed entry is the same topic before using a numbered alternative.
+      collision: This ID is already in use. Check whether the proposed entry covers the same topic before using a numbered alternative.
       next_available: Unused alternative
       available: This ID is not currently used.
     submission:
       create_heading: Suggest an article
       unlisted_heading: Suggest an unlisted grammar article
-      unlisted_explanation: Use this form when the word, construction, or comparison is not yet in the Grammar Wiki catalogue. The site generates and checks the technical ID as part of the submission.
+      unlisted_explanation: Use this form when the word, construction, or comparison is not yet listed.
       unlisted_details: New entry details
       unlisted_title: Article title
       unlisted_choose_parent: Choose a function-word entry
@@ -150,8 +148,7 @@ en:
       unlisted_id_collision: This entry ID already exists. Use the existing entry page instead.
       unlisted_id_incomplete: Complete the new entry details before previewing or submitting.
       edit_heading: Suggest an edit or translation
-      explanation: Write or revise the article in Markdown, preview it in the full page frame, and submit it through the existing
-        ticket workflow for editorial review.
+      explanation: Articles are written in Markdown.
       language: Article language
       action: Submission type
       actions:
@@ -194,15 +191,15 @@ en:
       evidence_links: Evidence links, one per line
       evidence_files: Supporting files
       contact_heading: Private contact details (optional)
-      contact_explanation: These details are stored privately by the ticket system and are not used as the public byline.
+      contact_explanation: These details are stored privately and are not used as the public byline.
       contact_name: Contact name
       contact_email: Email
       contact_notes: Contact note
       cc_by_agreement: I wrote this material or have the right to submit it, and I agree to its publication under CC BY.
-      store_key: Store this ticket key on this device
+      store_key: Save this ticket key on this device
       submit: Submit for review
       submitting: Submitting…
-      success: The grammar ticket was created. Save the key before leaving this page.
+      success: Ticket sent. Save the key before leaving this page.
       error_prefix: Submission failed
       change_language_warning: Changing the article language will replace the Markdown currently in the editor. Continue?
       ticket_id: Ticket ID

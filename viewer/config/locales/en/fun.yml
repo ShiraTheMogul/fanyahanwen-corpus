@@ -1,8 +1,7 @@
-en:
+﻿en:
   fun:
     title: Fun
-    introduction: This section contains games involving Han characters for people who want to bring a gamified perspective
-      to their learning.
+    introduction: Games and exercises for practising Han characters.
     actions:
       play: Play
       pause: Pause
@@ -50,8 +49,7 @@ en:
       rightbar:
         title: Xuanji output
         remove_punctuation: Remove punctuation
-        note: This affects the extracted output only, not the SVG grid. It uses the same punctuation-stripping logic
-          as the Corpus Viewer.
+        note: This removes punctuation from the extracted text only; the grid stays unchanged.
     xiangqi:
       name_han: 象棋
       name: Xiangqi

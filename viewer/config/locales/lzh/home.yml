@@ -1,4 +1,4 @@
-# PLACEHOLDER CATALOGUE: translate values only; do not rename keys.
+﻿# PLACEHOLDER CATALOGUE: translate values only; do not rename keys.
 lzh:
   home:
     corpus_activity:
@@ -9,52 +9,76 @@ lzh:
       all_changed_files: 諸更易檔
       browse_all: 盡覽近況
     title: 卷首
+    discovery:
+      title: 泛亞漢文語料庫
+      introduction: 可依題名、地域、作者尋漢文。
+      title_search:
+        label: 依題名尋
+        placeholder: 輸入篇名，如論語
+        submit: 尋
+      browse:
+        heading: 覽語料庫
+        region: 依地域覽
+        region_description: 依地理及歷史分類覽庫中諸文。
+        author: 依作者覽
+        author_description: 尋庫中所錄之人，並閱其所署作品。
+        author_search_label: 尋作者
+        author_search_placeholder: 輸入作者，如司馬遷
+        author_search_submit: 尋
+      activity_heading: 新收與新纂
+      daily_heading: 即取一篇而讀
+      results:
+        heading: 題名搜尋所得
+        unavailable: 題名搜尋暫不可用。
+        unavailable_hint: 請稍後再試；若仍有此患，請告本站維護者。
+        count: 合「%{query}」者凡%{count}篇。
+        none: 未見合「%{query}」者。
+        date_unknown: 年代未詳
+        year_bce: 西元前%{year}年
+        year_ce: 西元%{year}年
+        other_geography: 其他
+        pagination_aria: 題名搜尋分頁
+        previous: 前頁
+        next: 後頁
+        page_status: '%{page} / %{pages}'
     hero:
       daily_reading_aria: 今日《詩經》誦讀
       summary: >-
-        歡迎來訪泛亞漢文語料庫。庫中漢文，篇幅逾《四庫全書》二倍；所收兼及亞洲諸地，且通古今，冀使漢文傳統復行於當世。
+        歡迎來訪泛亞漢文語料庫。庫中漢文篇幅逾《四庫全書》二倍，所收兼及亞洲諸地與歷代；並備閱文、尋文、治學諸具。
     introduction:
       heading: 序
       body: >-
-        泛亞漢文語料庫，收中國歷朝、朝鮮半島、日本、越南、琉球國、新加坡，及歷史上諸國諸地之漢文。漢文非死語；昔人用之，今人亦用之，其文章百體紛呈。盛時之地位，近於拉丁文，故宜等視之。此事由余一人經營，迄今約一年，事繁任重。所欲成者有三：一、以地域與文化為先，重建觀漢文之法；二、依此觀而立今世教學之制；三、建一易用之網站，使前二者得行，並使所得之學問易為人所取用。今尚未臻其成，然日有進益。
+        泛亞漢文語料庫收中國歷朝、朝鮮半島、日本、越南、琉球國、新加坡，及歷史上諸國諸地之漢文。漢文歷用於諸地諸時，文章百體，所屬社會亦各異。本計畫有三旨：一、如實呈其地域與文化之別；二、助今人教學研習；三、使語料、佐證及治學諸具易於取用。
     corpus_viewer:
       heading: 語料庫閱覽器
       link: 觀
-      introduction: >-
-        本計畫迄今之一大成，為功能詳備之語料庫閱覽器；其旨在使人人皆能便覽漢文。
+      introduction: 語料庫閱覽器備諸具，以閱覽、研習庫中漢文。
       includes: 其所備者：
       features:
-        pronunciation: >-
-          備亞洲諸語及方言之讀音旁訓：官話、日語、韓語、越語、壯語、老國音、中古漢語、上古漢語、沖繩語等。可依己語誦讀漢文。
+        pronunciation: 備亞洲諸語及方言讀音旁訓，如官話、日語、韓語、越語、壯語、老國音、中古漢語、上古漢語、沖繩語等；可擇合所學者用之。
         punctuation: 可加標點（句讀），亦可盡去之。
         underlining: 備傳統畫線法，或循原定之色，或改用易辨之配色。
         annotation_systems: 備日本、韓國、越南之漢文訓讀註法。
         fonts: 備諸字體，亦有篆書字體。
         orientation: 縱書、橫書皆可，版面隨之調整。
         character_forms: 可轉換諸漢字字形，含簡化字及已廢之簡化方案。
-        dictionary: 備詳實字典，收Unihan資料及余所輯者。
-        translations: 可呈譯文。
+        dictionary: 備合Unihan等資料及本庫考證之字典。
+        translations: 可閱譯文，亦可呈譯文。
     dictionary:
       heading: 字典
-      overview: >-
-        本站字典務求廣收。今有Unihan資料、旁訓設定、諸標音體例；閱文時，亦可於正體、簡體及原形間切換，以處理雜用異體之文。庫中又收余獨立考察及OpenCC所得之異體字資料，欲盡繫諸異體，終成文字正規化之具。敬請賜正。
-      sources: >-
-        字典主要釋義見於彈窗，取自CC-CEDICT、Unihan及《康熙字典》。《康熙字典》按特定文例自動分行，冀其易讀，迄今效果尚佳。《廣韻》與《說文解字》亦已製成可閱之字典，其排序法亦有記述。
-      planned_intro: >-
-        又欲收入更多字典，以資比勘；如《四庫全書》所用諸書：
-      wider_scope: >-
-        亦欲廣收中國以外諸國字典。所期者，在今世教學之制中，使人得藉字典沉浸學習漢文，兼助學術研究。
+      overview: 本站字典合釋義、讀音、標音、異體及字形轉換於一處。其資料兼取既有字典、Unihan及本庫所作之異體考證。
+      sources: 字典釋義及彈窗取資CC-CEDICT、Unihan及《康熙字典》。《康熙字典》條目重新分行，以便閱覽。《廣韻》與《說文解字》亦可於本站瀏覽，其排序法見各頁說明。
+      planned_intro: '後將續收歷代字典，以資比勘，包括《四庫全書》所引諸書：'
+      wider_scope: 亦擬收中國以外諸國字典，以助漢文學習及研究，兼顧其廣布諸地之書寫傳統。
     submission:
       heading: 呈新文
-      introduction: 欲增新文於庫乎？此處立待審提案，不直寫入語料庫。
+      introduction: 請擇此文所隸之集。
       open_button: 呈新文
-      path_hint_html: >-
-        請用%{first_path}或%{second_path}之類上級路徑；新文仍置於新立之作品目錄中。
+      path_hint_html: 請擇最合此文之語料分類，如%{first_path}或%{second_path}。
       parent_path_placeholder: 如：越南漢文/clean
     future_plans:
       heading: 後圖
-      body: >-
-        後欲增設列國圖譜、語法維基，並詳備異本及校正文。又欲為諸文撰梗概、簡介及提要。
+      body: 後擬增列國圖譜、語法維基，詳備異本與校正文，並為更多作品撰梗概與提要。
     publications:
       heading: 論著
       introduction: >-
@@ -70,13 +94,12 @@ lzh:
       unavailable: 今日尚無可誦之詩。
     activity:
       title: 語料近況
-      introduction: >-
-        此頁列語料庫動向索引，以便檢視新收與意外更易。所示者，乃今已載於索引之諸檔及其更易之時；可供覆核，然非一成不變之史誌，亦不能示已刪之檔。
+      introduction: 此頁列近日新收及更易之庫文，並示現存諸檔最近所記更易之時；已刪之檔不列。
       tabs_aria: 語料庫動向諸覽
       latest_texts: 新收諸文
       recent_changes: 近期更易
       latest_heading: 新收諸文目錄
-      latest_explanation: 各列為一作品目錄；所示日期，取其中已載於索引之諸檔最新者。
+      latest_explanation: 各列為一文本；所示日期，取其索引諸檔最近更易者。
       recent_heading: 近期更易諸檔
       recent_explanation_html: 檔名以可讀之文題示之，不直列原始<code>.txt</code>檔名。
       entry_count:

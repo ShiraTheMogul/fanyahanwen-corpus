@@ -5,14 +5,14 @@
       title: 泛亞漢文語料庫 Fanya Hanwen Corpus
       introduction: Find a Literary Chinese text by title, region, or author.
       title_search:
-        label: Search by Title
+        label: Title search
         placeholder: Enter a work title, e.g. 論語
         submit: Search
       browse:
         heading: Browse the corpus
-        region: Browse by Region
+        region: Browse by region
         region_description: Explore the corpus through its geographic and historical collections.
-        author: Browse by Author
+        author: Browse by author
         author_description: Find people recorded in the corpus and open the works credited to them.
         author_search_label: Search by author
         author_search_placeholder: Search an author, e.g. 司馬遷
@@ -21,8 +21,8 @@
       daily_heading: Read something now
       results:
         heading: Title search results
-        unavailable: The title index is unavailable.
-        unavailable_hint: Rebuild the work catalogue and try again.
+        unavailable: Title search is temporarily unavailable.
+        unavailable_hint: Please try again later. If the problem continues, let the site maintainer know.
         count: '%{count} works matching “%{query}”.'
         none: 'No works matched “%{query}”.'
         date_unknown: Date unknown
@@ -35,69 +35,43 @@
         page_status: '%{page} / %{pages}'
     hero:
       daily_reading_aria: Today's Shijing reading
-      summary: Welcome to Fanya Hanwen Corpus 泛亞漢文語料庫, a Literary Chinese corpus containing over twice as much text as Siku
-        Quanshu! By employing a pan-Asian, diachronic perspective, the Fanya Hanwen Corpus hopes to propel the Literary Chinese
-        tradition into the modern age.
+      summary: Welcome to Fanya Hanwen Corpus 泛亞漢文語料庫, a Literary Chinese corpus containing over twice as much text as Siku Quanshu. It brings together texts from across Asia and across history, with tools for reading, searching, and study.
     introduction:
       heading: 序 Introduction
-      body: 'Welcome to Fanya Hanwen Corpus! It contains texts from each Chinese dynasty, the Korean peninsula, Japan, Vietnam,
-        and the Ryukyu Kingdom, Singapore, and myriad historical countries and regions. Literary Chinese was and is a living
-        language with a vibrant diversity in texts; it once enjoyed a similar status to Latin during its heyday and should
-        be treated as such. This project has been ongoing for around a year with just myself. It has been a crushing amount
-        of work, attempting to produce a website that meets three goals: (i) Develop a region and culture-first view of Literary
-        Chinese, (ii) Develop a modern educational model that works with this view, and (iii) Develop an accessible website
-        that operationalises these two goals and casualises the information that comes from them. I do not believe this success
-        has been met yet, but it is progressing admirably.'
+      body: Fanya Hanwen Corpus brings together Literary Chinese texts from the Chinese dynasties, the Korean peninsula, Japan, Vietnam, the Ryukyu Kingdom, Singapore, and many historical states and regions. Literary Chinese has been used across different places, periods, and communities, producing a wide range of texts. The project has three aims—to represent that regional and cultural variety, to support modern teaching and learning, and to make the corpus, its evidence, and its research tools easy to use.
     corpus_viewer:
       heading: 語庫讀器
       link: Corpus Viewer
-      introduction: One of the biggest wins of the project so far has been an elaborate Corpus Viewer, which aims to make
-        the Literary Chinese experience as accessible as can be for everyone.
+      introduction: The Corpus Viewer provides tools for reading and studying Literary Chinese texts in the corpus.
       includes: 'This includes:'
       features:
-        pronunciation: Pronunciation annotations for myriad Asian languages and dialects; from Mandarin, Japanese, Korean,
-          and Vietnamese, to Zhuang, Old National Pronunciation, Middle Chinese, Old Chinese, Okinawan, and more! Learn to
-          recite Literary Chinese in your language!
-        punctuation: Options for punctuation (judou 句讀) or to strip it.
-        underlining: Traditional underlining systems in original colours or colour-blind adjusted ones.
+        pronunciation: Pronunciation annotations for many Asian languages and varieties, including Mandarin, Japanese, Korean, Vietnamese, Zhuang, Old National Pronunciation, Middle Chinese, Old Chinese, and Okinawan. Choose a reading system that suits what you are studying.
+        punctuation: Options for punctuation (judou 句讀) or to remove it.
+        underlining: Traditional underlining systems in their original colours or colour-blind adjusted versions.
         annotation_systems: Kanbun, hanmun, and hanvan annotations.
         fonts: Different fonts, including one for seal script.
-        orientation: Vertical or horizontal orientation with adaptations.
-        character_forms: Conversion between different character traditions, including Simplified Chinese and scrapped initiatives.
-        dictionary: A robust dictionary containing Unihan data, plus more data collected by myself.
-        translations: The option to submit translations.
+        orientation: Vertical or horizontal text with layouts adapted to each direction.
+        character_forms: Conversion between different character traditions, including Simplified Chinese and discontinued simplification standards.
+        dictionary: A dictionary combining Unihan data with additional sources and corpus research.
+        translations: Read and submit translations.
     dictionary:
       heading: 字典 Dictionary
-      overview: This website contains a fairly robust dictionary that aims to be as inclusive as possible. At present, it
-        contains Unihan data, Ruby text settings, ample phoneticization conventions, and the option to switch between Traditional
-        and Simplified Chinese (as well as the original text in case of mix/var forms) whilst viewing things. Additionally,
-        this database contains some variant form research derived from independent research and open-cc, which hopes to map
-        variants as exhaustively as possible in hopes of an eventual text normaliser. Please give feedback on this!
-      sources: The main dictionary definitions, which can appear in popups, come from CC-CEDICT, Unihan, and Kangxi Dictionary.
-        Kangxi Dictionary is regex'd to have linebreaks according to specific wording patterns in hopes of making it more
-        readable, and so far it seems to have been successful. The Guangyun and Shuowen Jiezi have also been turned into browsable
-        Dictionaries, and their sorting mechanisms have been documented.
-      planned_intro: 'There are hopes to grab more dictionaries for comparison, such as these dictionaries, which are used
-        in Siku Quanshu:'
-      wider_scope: Of course, more dictionaries are desired, such as those from non-Chinese nations. The aim is to make immersive
-        learning of Literary Chinese through dictionaries as easy as possible within modern pedagogical frameworks, whilst
-        also promoting scholarly study.
+      overview: The dictionary brings together definitions, readings, pronunciation data, character variants, and character-form conversion. It combines established dictionary and Unicode sources with additional variant research used by the corpus.
+      sources: Dictionary definitions and popups draw on CC-CEDICT, Unihan, and Kangxi Dictionary. Kangxi Dictionary entries are reformatted with line breaks for easier reading. Guangyun and Shuowen Jiezi can also be browsed on the site, with their ordering explained on the relevant pages.
+      planned_intro: 'More historical dictionaries are planned for comparison, including dictionaries cited in Siku Quanshu:'
+      wider_scope: Dictionaries from outside China are also planned. The aim is to support both Literary Chinese learning and research across the wider written tradition.
     submission:
       heading: Text Submission
-      introduction: Want to add a new text to the corpus? This creates a review ticket rather than writing straight into the
-        corpus.
+      introduction: Choose the corpus collection this text belongs in.
       open_button: Submit a text
-      path_hint_html: Use a parent path like %{first_path} or %{second_path}. The new text will still be placed inside a fresh
-        work folder.
+      path_hint_html: Choose the corpus collection that best fits the text, such as %{first_path} or %{second_path}.
       parent_path_placeholder: e.g. 越南漢文/clean
     future_plans:
       heading: 來想 Future Plans
-      body: There are hopes to implement a nation atlas, grammar wiki, and more detailed variant/corrected text items over
-        time. Synopses, blurbs, and summaries are also desired.
+      body: Planned additions include a nation atlas, a grammar wiki, more detailed treatment of variants and corrected texts, and synopses and summaries for more works.
     publications:
       heading: 所載 Publications
-      introduction: I myself (Llinos Evans) have used this corpus to produce a few publications, some before the corpus was
-        fully established. These go as follows...
+      introduction: I myself (Llinos Evans) have used this corpus to produce a few publications, some before the corpus was fully established. These go as follows...
     references:
       heading: 引據 References
       introduction: The following texts were used in the making of this website, the corpus, and more.
@@ -116,16 +90,14 @@
       browse_all: Browse all activity
     activity:
       title: 語料近況 Corpus activity
-      introduction: This page exposes the corpus activity index so additions and unexpected edits are easier to inspect. It
-        reflects the current indexed files and their modification times; it is useful for review, but it is not an immutable
-        history and cannot show deleted files.
+      introduction: See recently added and changed corpus files. This page shows the current files and their latest recorded modification times; deleted files do not appear here.
       tabs_aria: Corpus activity views
       latest_texts: Latest texts
       recent_changes: Recent changes
       latest_heading: 最新文本 Latest text folders
-      latest_explanation: Each row represents a text folder. Its date is the newest indexed file inside that folder.
+      latest_explanation: Each row is one text. The date shown is the most recent change among its indexed files.
       recent_heading: 近期變更 Recent file changes
-      recent_explanation_html: File names are presented as readable text titles rather than raw <code>.txt</code> names.
+      recent_explanation_html: File names are shown as readable text titles instead of raw <code>.txt</code> names.
       entry_count:
         one: 1 entry
         other: '%{count} entries'

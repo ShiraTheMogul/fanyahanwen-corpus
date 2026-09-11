@@ -1,7 +1,7 @@
-en:
+﻿en:
   tools:
     title: Tools
-    intro: This page gathers the various tools used by this website and presents them separately for convenient use. Other websites with useful components are also linked here.
+    intro: Use the site’s conversion, lookup, and study tools here. Related tools on other sites are linked below.
     common:
       from: From
       to: To
@@ -28,7 +28,7 @@ en:
       original: Original
     character_extractor:
       title: Character data extractor
-      description: This preserves the old Cangjie lookup while also allowing other stored character data to be extracted in bulk. Paste one character, a codepoint such as U+8BF4, or a complete sentence to produce one row for each unique Han character.
+      description: Paste a character, Unicode codepoint, Cangjie code, or passage to extract stored character data. Multiple Han characters produce one row each.
       flashcard_help: 'This can enrich flashcards: definitions, dictionary entries, and readings can be previewed on the page or downloaded as CSV.'
       input_placeholder: 'Character (for example 說), U+8BF4, or Cangjie letters (for example ABC)
 
@@ -71,8 +71,8 @@ en:
         no_han: No Han characters found.
         cangjie_letters: The input appears to be Cangjie letters, so no character lookup was performed.
         parse_failed: Could not parse a character or codepoint.
-        not_found: Not found in the database.
-        no_cangjie_property: No kCangjie property was found for this character.
+        not_found: No data found for this character.
+        no_cangjie_property: No Cangjie input was found for this character.
         no_cangjie_code: no Cangjie code
         latin: Latin
         han: Han
@@ -80,8 +80,8 @@ en:
         no_hkcards: No HKCards decomposition is available for this character.
       csv_source: '%{label} source'
     anki:
-      title: Anki deck enricher
-      description: Paste a tab-separated Anki export here and enrich one field using the characters found in another. This is useful when each note should carry Kangxi, Shuowen, Guangyun, or reading data as HTML for later AI prompting or flashcard study.
+      title: Add dictionary data to Anki cards
+      description: Paste a tab-separated Anki export, choose a field containing characters, and add dictionary or reading data to another field. The enriched file can then be imported back into Anki.
       source_field: Field to read characters from
       target_field: Field to write enrichment into
       append_mode: Append to the existing target field
@@ -174,7 +174,7 @@ en:
         ambiguous: Ambiguous numeric date; interpreted as DD/MM/YYYY (UK default).
     numerals:
       title: Numeral converter
-      description: A simple mapper for Chinese numerals that accounts for some occasional outliers and variant forms. It is not perfect, but works for most cases. It is also used to produce the more robust lunar-calendar representation shown in the site header.
+      description: Convert Chinese numerals while accounting for common variants and abbreviations. The same converter is used for the lunar-calendar date in the site header.
       placeholder: Paste text containing numbers…
       use_you: Use 有 for gaps
       use_abbreviations: Use 廿/卅/卌

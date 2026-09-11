@@ -1,7 +1,7 @@
-lzh:
+﻿lzh:
   tools:
     title: 工具
-    intro: 此頁彙列本站所用諸具，使可各自施用；他站有用之具，亦附鏈於此。
+    intro: 此頁列本站之轉換、檢索、研習諸具；他站相關工具亦附鏈於下。
     common:
       from: 自
       to: 至
@@ -28,7 +28,7 @@ lzh:
       original: 原文
     character_extractor:
       title: 漢字資料擷取
-      description: 舊有倉頡檢索之用仍存，亦可批量取庫中他種漢字資料。貼一字、如U+8BF4之碼位，或整句；諸字去其重者，各列一行。
+      description: 可貼一字、萬國碼位、倉頡碼或一段文字，以取所存漢字資料。多字則各列一行。
       flashcard_help: 可資增益卡片：釋義、字典條目及讀音，皆可先覽於頁中，亦可存為CSV。
       input_placeholder: '漢字（如說）、U+8BF4，或倉頡字母（如ABC）
 
@@ -71,8 +71,8 @@ lzh:
         no_han: 未見漢字。
         cangjie_letters: 所入似倉頡字母，故不檢字。
         parse_failed: 字或碼位不可解析。
-        not_found: 庫中未見。
-        no_cangjie_property: 此字無kCangjie屬性。
+        not_found: 此字未得資料。
+        no_cangjie_property: 未得此字倉頡碼。
         no_cangjie_code: 無倉頡碼
         latin: 拉丁字母
         han: 漢字鍵
@@ -80,8 +80,8 @@ lzh:
         no_hkcards: 此字無HKCards倉頡拆碼圖。
       csv_source: '%{label}所自'
     anki:
-      title: Anki牌組增益器
-      description: 貼上以製表符分欄之Anki匯出文，依一欄所見諸字，增益另一欄。若欲使每條筆記攜《康熙字典》《說文解字》《廣韻》或讀音資料，以HTML存之，備後日供AI提示或研習卡片，此具可用。
+      title: 為Anki卡片增添字典資料
+      description: 貼上以製表符分欄之Anki匯出文，選取含漢字之一欄，再將字典或讀音資料加入另一欄。所得檔可再匯入Anki。
       source_field: 讀字之欄
       target_field: 寫入增益之欄
       append_mode: 附於目標欄舊文之後
@@ -174,7 +174,7 @@ lzh:
         ambiguous: 數字日期有歧義；依英國慣例作日／月／年解。
     numerals:
       title: 漢字數字轉換
-      description: 一簡易映射之具，兼顧偶見之異例與異體。雖未盡善，多數情形足用。本站頁首之陰曆日期，亦由此具所成。
+      description: 轉換漢字數字，兼顧常見異體及廿、卅、卌等省寫；本站頁首之陰曆日期亦用此法。
       placeholder: 貼入含數字之文……
       use_you: 空位用「有」
       use_abbreviations: 用廿／卅／卌

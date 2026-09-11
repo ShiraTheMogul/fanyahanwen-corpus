@@ -1,4 +1,4 @@
-lzh:
+﻿lzh:
   grammar:
     title: 漢文語法維基
     breadcrumbs: 語法維基導覽
@@ -86,7 +86,7 @@ lzh:
       use_label: 個別用法
     missing:
       heading: 此篇待撰
-      explanation: 字形及辭書資料已備，而語法正文尚闕。
+      explanation: 此條已立，正文尚待撰寫。
       suggest: 建議新篇
     searches:
       heading: 檢索語料庫
@@ -125,20 +125,20 @@ lzh:
       apa: APA格式
     ids:
       heading: 生成條目識別碼
-      explanation: 依條目類別及字頭生成穩定之建議碼，並檢查重複；若重複，絕不自動覆寫。
+      explanation: 系統依條目類別及字頭建議識別碼，並查其是否已用。
       kind: 條目類別
       headword: 字頭
       parent: 母條目識別碼（個別用法）
       label: 用法短名
       generate: 生成
       candidate: 建議碼
-      collision: 此碼已存在。用帶序號之異碼前，宜先審是否同一條目。
+      collision: 此碼已用。用帶序號之異碼前，宜先審是否同一條目。
       next_available: 未用之異碼
       available: 此碼今未用。
     submission:
       create_heading: 建議新篇
       unlisted_heading: 建議未列之語法新篇
-      unlisted_explanation: 若此虛詞、句式或辨析尚未列入語法維基，請用此表。系統於提案中自生成並檢查識別碼。
+      unlisted_explanation: 此虛詞、句式或辨析尚未列入語法維基者，用此表。
       unlisted_details: 新條目資料
       unlisted_title: 篇名
       unlisted_choose_parent: 選母虛詞條目
@@ -147,7 +147,7 @@ lzh:
       unlisted_id_collision: 此條目識別碼已存在，請改用既有條目頁。
       unlisted_id_incomplete: 請先填妥新條目資料，然後預覽或提交。
       edit_heading: 建議修訂或翻譯
-      explanation: 以Markdown撰修正文，可先覽其完整頁框，再由既有提案流程送編者審核。
+      explanation: 正文用Markdown撰之。
       language: 篇章語言
       action: 提案類別
       actions:
@@ -190,18 +190,18 @@ lzh:
       evidence_links: 證據連結（一行一項）
       evidence_files: 佐證檔案
       contact_heading: 私人聯絡資料（選填）
-      contact_explanation: 此等資料惟提案系統私存，不作公開署名。
+      contact_explanation: 此等資料惟私存，不作公開署名。
       contact_name: 聯絡姓名
       contact_email: 電郵
       contact_notes: 聯絡附註
       cc_by_agreement: 此文為我所作或我有權提交，並同意以CC BY授權刊行。
-      store_key: 於本機保存提案密鑰
+      store_key: 於本機保存提案鑰
       submit: 送審
       submitting: 提交中……
-      success: 語法提案已建。離頁前請保存密鑰。
+      success: 提案已送。離頁前請留存提案鑰。
       error_prefix: 提交失敗
       change_language_warning: 更換篇章語言將以該語文章或模板取代編輯框中之Markdown。是否繼續？
-      ticket_id: 提案編號
-      ticket_key: 提案密鑰
+      ticket_id: 提案號
+      ticket_key: 提案鑰
       copy_key: 複製密鑰
       download_key: 下載密鑰

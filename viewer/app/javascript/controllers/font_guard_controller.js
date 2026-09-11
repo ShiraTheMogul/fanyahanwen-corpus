@@ -1,4 +1,4 @@
-import { Controller } from "@hotwired/stimulus"
+﻿import { Controller } from "@hotwired/stimulus"
 
 // Best-effort "does the current selected Han font cover this glyph?" check.
 // If not, we force WenJin Mincho for this element and show a short warning.
@@ -33,7 +33,16 @@ export default class extends Controller {
     return "WenJin Mincho"
   }
 
+  _warningMessage(family) {
+    const template = document.body?.dataset?.hanFontMissingGlyphMessage ||
+      "%FONT% does not include this character. WenJin Mincho is used instead."
+    return template.replace("%FONT%", family)
+  }
+
   _check() {
+    // Missing-glyph warnings belong to the dictionary-headword font mode. If
+    // the saved font only applies to the reader/editor, it is irrelevant here.
+    if (!document.body?.classList.contains("han-font-scope-headwords")) return
     if (!this._warnEnabled()) return
 
     const ch = (this.charValue || "").trim()
@@ -59,7 +68,7 @@ export default class extends Controller {
       this.element.style.fontFamily = `"${this._fallbackFamily()}", serif`
 
       // Show a warning near the headword.
-      const msg = `Primary font ${fam} does not include this character; falling back to WenJin Mincho.`
+      const msg = this._warningMessage(fam)
       const existing = this.element.parentElement?.querySelector(".han-font-warning")
       if (existing) {
         existing.textContent = msg

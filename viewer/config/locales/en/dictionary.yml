@@ -1,4 +1,4 @@
-en:
+﻿en:
   dictionary:
     title_han: 字典
     title: Dictionary
@@ -54,11 +54,11 @@ en:
       category: 'Category:'
       about: About
     character:
-      not_found: Character not found (yet)
-      not_in_database: '%{identifier} isn’t in the database!'
-      try_another: Let's try inputting another character or Unicode identifier!
+      not_found: Character not found
+      not_in_database: '%{identifier} is not in the dictionary.'
+      try_another: Enter another character or Unicode codepoint.
       stroke_unavailable: Stroke animation unavailable for this character.
-      stroke_library_failed: Stroke animation unavailable (HanziWriter failed to load).
+      stroke_library_failed: Stroke animation is temporarily unavailable.
       no_stroke_data: No stroke data available for this character.
       codepoint: 'Codepoint:'
       unicode_block: Unicode block
@@ -110,7 +110,7 @@ en:
         elements rather than a consistent set of strokes forming a semantically or phonetically meaningful component.
       page_title: Radical %{number} %{radical}
       heading: 'Radical %{number}:'
-      membership_empty_html: <strong>Radical membership index is empty.</strong> Run %{command} to build it from Unihan %{field}.
+      membership_empty_html: <strong>Radical browsing is temporarily unavailable.</strong> Please try again later. If the problem continues, let the site maintainer know.
       about: About this radical
       back: Back to radicals index
       browse_intro_html: Browse characters by Kangxi radical using Unihan %{field}.
@@ -125,9 +125,7 @@ en:
         government. Through it former people passed things down to later people, and later people recognise antiquity. Therefore
         it is said: ‘When the root is established, the Way grows.’ Thus one may know the utmost intricacies under Heaven without
         allowing them to fall into disorder.”</i>'
-      historical_caution_html: 'This is a deeply Confucian and inherently prescriptive idea rooted in <i>Zhengming</i>. Xu
-        could nevertheless be mistaken: the work is nearly two thousand years old, and modern palaeographic evidence—especially
-        oracle-bone script 甲骨文—was unavailable to him.'
+      historical_caution_html: 'Xu Shen 許慎 wrote within an intellectual and textual tradition that included <i>Zhengming</i> 正名, so whether characters reflected the usage by normal people may not be quite right. Oracle-bone inscriptions 甲骨文 and other palaeographic evidence unknown to him can now be compared with his explanations, so individual analyses can be read alongside later evidence for a very good picture!'
       comparison: Shuowen components are not the same as Kangxi radicals. They are broad categories based on visual similarity
         and may be phonetic, semantic, or even a single stroke. This is why this site calls them components.
       text_itself: The text itself
@@ -140,19 +138,17 @@ en:
       title: Guangyun categories
       heading: Guangyun 廣韻
       browse_intro_html: Browse Guangyun entries by <strong>tone</strong> (聲) and <strong>rime</strong> (韻).
-      categories_missing_html: <strong>No Guangyun categories were found.</strong> You currently have Guangyun payload rows,
-        but not the tone/rime mapping rows. Run the juan importer task to add them.
+      categories_missing_html: <strong>Guangyun categories are temporarily unavailable.</strong> Please try again later. If the problem continues, let the site maintainer know.
       none: (none)
       manual_lookup: Manual lookup
-      lookup_help: Enter a single character (e.g. 王) or a codepoint (e.g. U+738B) to inspect its Guangyun payload.
+      lookup_help: Enter a single character (e.g. 王) or a codepoint (e.g. U+738B) to inspect its Guangyun data.
       character_or_codepoint: Character / Codepoint
       lookup: Lookup
-      character_row_missing_html: No CharacterCodepoint row found for <strong>%{character}</strong>.
-      no_payload: No Guangyun payload rows found for this character.
+      character_row_missing_html: No dictionary record was found for <strong>%{character}</strong>.
+      no_payload: No Guangyun data were found for this character.
       page_title: Guangyun %{category}
       category_heading: 'Guangyun: %{category}'
-      category_rows_missing_html: <strong>No Guangyun category rows found for this value.</strong> This usually means the
-        importer did not generate %{field} rows.
+      category_rows_missing_html: <strong>No entries were found for this Guangyun category.</strong>
       about_rime: About this rime
       character_information: Character information
       back: Back to Guangyun categories
