@@ -91,5 +91,80 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 8,
+    "leishu_count": 1,
+    "categorised_citations": 8,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "重本",
+        "citations": 3
+      },
+      {
+        "label": "尚静",
+        "citations": 1
+      },
+      {
+        "label": "所重",
+        "citations": 1
+      },
+      {
+        "label": "適當",
+        "citations": 1
+      },
+      {
+        "label": "探本",
+        "citations": 1
+      },
+      {
+        "label": "神運",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "喻林",
+        "citations": 8,
+        "match": "bracket-note",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "人事門 > 重本",
+            "citations": 3,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人事門 > 尚静",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人事門 > 所重",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人事門 > 適當",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "學業門 > 探本",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "神運",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

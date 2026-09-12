@@ -3,7 +3,7 @@
   "work_id": 127212,
   "corpus_root": "四庫全書",
   "title": "宋稗𩔖鈔",
-  "is_compilation": false,
+  "is_compilation": true,
   "contained_in": [
     {
       "work_id": 80277,
@@ -523,5 +523,16 @@
       ]
     }
   ],
-  "medium": "紙"
+  "medium": "紙",
+  "compilation_note": "《宋稗類鈔》為鈔錄宋人筆記小說之編，屬類書類徵引之屬。",
+  "leishu_citation_summary": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "works_attested": 18,
+    "citations": 27,
+    "categorised_citations": 27,
+    "distinct_categories": 20,
+    "unresolved_heads": 209
+  }
 }

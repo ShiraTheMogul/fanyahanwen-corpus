@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 5496,
   "corpus_root": "中國漢文",
@@ -17,5 +17,418 @@
       "body_start_line": 5
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 33,
+    "leishu_count": 15,
+    "categorised_citations": 33,
+    "genmoku_confirmed_citations": 12,
+    "category_leaves": [
+      {
+        "label": "龜",
+        "citations": 2
+      },
+      {
+        "label": "榖",
+        "citations": 2
+      },
+      {
+        "label": "戴星",
+        "citations": 2
+      },
+      {
+        "label": "星中",
+        "citations": 1
+      },
+      {
+        "label": "穀",
+        "citations": 1
+      },
+      {
+        "label": "郊丘",
+        "citations": 1
+      },
+      {
+        "label": "公車令",
+        "citations": 1
+      },
+      {
+        "label": "龍上",
+        "citations": 1
+      },
+      {
+        "label": "魚上",
+        "citations": 1
+      },
+      {
+        "label": "虵上",
+        "citations": 1
+      },
+      {
+        "label": "鼈",
+        "citations": 1
+      },
+      {
+        "label": "長白山",
+        "citations": 1
+      },
+      {
+        "label": "御",
+        "citations": 1
+      },
+      {
+        "label": "酒",
+        "citations": 1
+      },
+      {
+        "label": "鶉",
+        "citations": 1
+      },
+      {
+        "label": "星",
+        "citations": 1
+      },
+      {
+        "label": "魚",
+        "citations": 1
+      },
+      {
+        "label": "龍",
+        "citations": 1
+      },
+      {
+        "label": "韻藻車騎",
+        "citations": 1
+      },
+      {
+        "label": "天",
+        "citations": 1
+      },
+      {
+        "label": "夜拜",
+        "citations": 1
+      },
+      {
+        "label": "星五",
+        "citations": 1
+      },
+      {
+        "label": "五星",
+        "citations": 1
+      },
+      {
+        "label": "字靈蕭",
+        "citations": 1
+      },
+      {
+        "label": "乾象總論",
+        "citations": 1
+      },
+      {
+        "label": "天道二",
+        "citations": 1
+      },
+      {
+        "label": "補註帝皇皇皇",
+        "citations": 1
+      },
+      {
+        "label": "珠露",
+        "citations": 1
+      },
+      {
+        "label": "袐書省",
+        "citations": 1
+      },
+      {
+        "label": "卿",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 9,
+        "match": "author-prefix-stripped",
+        "category_count": 9,
+        "categories": [
+          {
+            "path": "天部下 > 星中 > 星中",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "百穀部一 > 穀",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "禮儀部六 > 郊丘",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "職官部二十八 > 車府令 > 公車令",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部一 > 龍上",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鱗介部七 > 魚上",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部三 > 龜",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部五 > 虵上",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鱗介部四 > 鼈黿鼉吊 > 鼈",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 5,
+        "match": "exact",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "五榖部 > 榖",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部 > 長白山",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "巧藝部 > 御",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "食物部 > 酒",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 鶉",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "事類賦",
+        "citations": 4,
+        "match": "exact",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "天部 > 星",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鱗介部 > 魚",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鱗介部 > 龍",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鱗介部 > 龜",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "戴星",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "韻藻車騎",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "天",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "榖",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "初學記",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "夜拜",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "天部二 > 雲七 > 星五",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今合璧事類備要",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "天文門 > 五星",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "名疑",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "字靈蕭",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "圖書編",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "于知天之學 > 乾象總論",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "天道二",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定韻府拾遺",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "補註帝皇皇皇",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定駢字類編",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "珠露",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "翰苑新書",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "袐書省",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "職官分紀",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "卿",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

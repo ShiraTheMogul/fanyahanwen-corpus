@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 5024,
   "corpus_root": "中國漢文",
@@ -18,5 +18,69 @@
       "body_start_line": 8
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 3,
+    "leishu_count": 3,
+    "categorised_citations": 3,
+    "genmoku_confirmed_citations": 2,
+    "category_leaves": [
+      {
+        "label": "鼎",
+        "citations": 1
+      },
+      {
+        "label": "說",
+        "citations": 1
+      },
+      {
+        "label": "説",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "事類賦",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "服用部 > 鼎",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "人部 > 說",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "人部九 > 説",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      }
+    ]
+  }
 }

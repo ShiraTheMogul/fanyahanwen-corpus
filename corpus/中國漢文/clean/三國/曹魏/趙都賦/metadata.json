@@ -21,5 +21,204 @@
       "body_start_line": 13
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 16,
+    "leishu_count": 7,
+    "categorised_citations": 15,
+    "genmoku_confirmed_citations": 7,
+    "category_leaves": [
+      {
+        "label": "館",
+        "citations": 2
+      },
+      {
+        "label": "辯下",
+        "citations": 1
+      },
+      {
+        "label": "遊俠",
+        "citations": 1
+      },
+      {
+        "label": "富下",
+        "citations": 1
+      },
+      {
+        "label": "館驛",
+        "citations": 1
+      },
+      {
+        "label": "京邑",
+        "citations": 1
+      },
+      {
+        "label": "舞",
+        "citations": 1
+      },
+      {
+        "label": "弓",
+        "citations": 1
+      },
+      {
+        "label": "舞篇三",
+        "citations": 1
+      },
+      {
+        "label": "將帥四",
+        "citations": 1
+      },
+      {
+        "label": "弩四十七",
+        "citations": 1
+      },
+      {
+        "label": "不敢近下見百金刀",
+        "citations": 1
+      },
+      {
+        "label": "緩節兮安歌",
+        "citations": 1
+      },
+      {
+        "label": "西城善雅舞總章饒清彈",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 4,
+        "match": "author-prefix-stripped",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "人事部 > 辯下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部一百一十三 > 遊俠",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人事部一百一十二 > 富下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "居處部二十二 > 亭 > 館驛",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 4,
+        "match": "author-prefix-stripped",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "京邑部 > 京邑",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "居處部 > 館",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部 > 舞",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 弓",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 3,
+        "match": "author-prefix-stripped",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "樂部 > 舞篇三",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "武功部三 > 將帥四",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "武功部十三 > 箭四十八 > 弩四十七",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "編珠",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "不敢近下見百金刀",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "緩節兮安歌",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "公卿宅有金盃玉盌之號 > 館",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "西城善雅舞總章饒清彈",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 0,
+        "categories": []
+      }
+    ]
+  }
 }

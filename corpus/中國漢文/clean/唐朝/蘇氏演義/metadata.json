@@ -20,5 +20,109 @@
   "ca": "618–907年",
   "authors": [
     "蘇鶚"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 8,
+    "leishu_count": 4,
+    "categorised_citations": 8,
+    "genmoku_confirmed_citations": 1,
+    "category_leaves": [
+      {
+        "label": "得稱勅勅之名遂定于此",
+        "citations": 2
+      },
+      {
+        "label": "殿",
+        "citations": 2
+      },
+      {
+        "label": "宫室居處部四十三",
+        "citations": 1
+      },
+      {
+        "label": "以冕説為當",
+        "citations": 1
+      },
+      {
+        "label": "龜",
+        "citations": 1
+      },
+      {
+        "label": "五歌",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "事物紀原",
+        "citations": 4,
+        "match": "exact",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "得稱勅勅之名遂定于此",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "之始 > 宫室居處部四十三",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "以冕説為當",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "又誤已 > 殿",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "龜",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "武功部 > 殿",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "韻府羣玉",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "幺絃么六 > 五歌",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

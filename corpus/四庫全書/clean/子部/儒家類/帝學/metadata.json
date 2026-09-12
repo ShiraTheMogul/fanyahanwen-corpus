@@ -163,5 +163,139 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 13,
+    "leishu_count": 5,
+    "categorised_citations": 13,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "宋王應麟撰",
+        "citations": 3
+      },
+      {
+        "label": "標界議邊",
+        "citations": 3
+      },
+      {
+        "label": "景祐邇英延義閣",
+        "citations": 1
+      },
+      {
+        "label": "天禧觀酺詩稼穡倍登詩",
+        "citations": 1
+      },
+      {
+        "label": "聖學",
+        "citations": 1
+      },
+      {
+        "label": "謹危之意",
+        "citations": 1
+      },
+      {
+        "label": "古今源流",
+        "citations": 1
+      },
+      {
+        "label": "外閭",
+        "citations": 1
+      },
+      {
+        "label": "侍讀侍講",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "玉海",
+        "citations": 8,
+        "match": "line-initial",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "宋王應麟撰",
+            "citations": 3,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "提要 > 地理 > 標界議邊",
+            "citations": 3,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "慶元五年御書紫㣲閣 > 景祐邇英延義閣",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "聖文 > 御製詩歌 > 天禧觀酺詩稼穡倍登詩",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "聖學",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "謹危之意",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今合璧事類備要",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "古今源流",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "海録碎事",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "外閭",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "職官部 > 侍讀侍講",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

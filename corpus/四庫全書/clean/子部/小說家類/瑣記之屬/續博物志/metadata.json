@@ -187,5 +187,475 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 49,
+    "leishu_count": 9,
+    "categorised_citations": 49,
+    "genmoku_confirmed_citations": 17,
+    "category_leaves": [
+      {
+        "label": "雨",
+        "citations": 3
+      },
+      {
+        "label": "馬",
+        "citations": 2
+      },
+      {
+        "label": "蜈蚣",
+        "citations": 2
+      },
+      {
+        "label": "鼉",
+        "citations": 2
+      },
+      {
+        "label": "春",
+        "citations": 2
+      },
+      {
+        "label": "金",
+        "citations": 2
+      },
+      {
+        "label": "出世",
+        "citations": 2
+      },
+      {
+        "label": "叱之一名百靈草",
+        "citations": 2
+      },
+      {
+        "label": "聖",
+        "citations": 1
+      },
+      {
+        "label": "畫",
+        "citations": 1
+      },
+      {
+        "label": "麈尾",
+        "citations": 1
+      },
+      {
+        "label": "蛙",
+        "citations": 1
+      },
+      {
+        "label": "蜘蛛",
+        "citations": 1
+      },
+      {
+        "label": "蜮",
+        "citations": 1
+      },
+      {
+        "label": "蝨",
+        "citations": 1
+      },
+      {
+        "label": "道士",
+        "citations": 1
+      },
+      {
+        "label": "蛇",
+        "citations": 1
+      },
+      {
+        "label": "蛤",
+        "citations": 1
+      },
+      {
+        "label": "蟹",
+        "citations": 1
+      },
+      {
+        "label": "燕",
+        "citations": 1
+      },
+      {
+        "label": "鸂鶒",
+        "citations": 1
+      },
+      {
+        "label": "蟻",
+        "citations": 1
+      },
+      {
+        "label": "眉",
+        "citations": 1
+      },
+      {
+        "label": "鬼車",
+        "citations": 1
+      },
+      {
+        "label": "鱗甲能飛",
+        "citations": 1
+      },
+      {
+        "label": "索象",
+        "citations": 1
+      },
+      {
+        "label": "飛生鳥",
+        "citations": 1
+      },
+      {
+        "label": "眉間一尺",
+        "citations": 1
+      },
+      {
+        "label": "作扇",
+        "citations": 1
+      },
+      {
+        "label": "起疫",
+        "citations": 1
+      },
+      {
+        "label": "鹿臍",
+        "citations": 1
+      },
+      {
+        "label": "畢勒三寸",
+        "citations": 1
+      },
+      {
+        "label": "受哺",
+        "citations": 1
+      },
+      {
+        "label": "登數",
+        "citations": 1
+      },
+      {
+        "label": "空虛",
+        "citations": 1
+      },
+      {
+        "label": "物浮",
+        "citations": 1
+      },
+      {
+        "label": "閒客",
+        "citations": 1
+      },
+      {
+        "label": "夏革二",
+        "citations": 1
+      },
+      {
+        "label": "文籍類",
+        "citations": 1
+      },
+      {
+        "label": "龍廐中貴戚畫為圖",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 17,
+        "match": "exact",
+        "category_count": 17,
+        "categories": [
+          {
+            "path": "人部 > 聖",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "天部 > 雨",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "巧藝部 > 畫",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服飾部 > 麈尾",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 馬",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "蟲豸部 > 蛙",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "蟲豸部 > 蜈蚣",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "蟲豸部 > 蜘蛛",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "蟲豸部 > 蜮",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "蟲豸部 > 蝨",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "道部 > 道士",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 蛇",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 蛤",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 蟹",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 鼉",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 燕",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 鸂鶒",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 12,
+        "match": "bracket-note",
+        "category_count": 9,
+        "categories": [
+          {
+            "path": "春",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "金",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "雨",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "濟河事或在兹 > 蜈蚣",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "濟河事或在兹 > 蟻",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "眉",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "馬",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鬼車",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鼉",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 10,
+        "match": "line-initial",
+        "category_count": 10,
+        "categories": [
+          {
+            "path": "上山𠉀望 > 鱗甲能飛",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "出世",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "徐 > 出世",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "索象",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "螢火也古詩螢彩繞梁飛 > 飛生鳥",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見夫 > 眉間一尺",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見富人 > 作扇",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見樂章一翦梅 > 起疫",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見樂章一翦梅 > 鹿臍",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見醜男 > 畢勒三寸",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "受哺",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "登數",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "空虛",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定分類字錦",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "仄紅尾文鯉 > 物浮",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "仄黄鳥 > 閒客",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "編珠",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "叱之一名百靈草",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "同姓名録",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "夏革二",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "文籍類",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "駢志",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "龍廐中貴戚畫為圖",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -103,5 +103,79 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 7,
+    "leishu_count": 2,
+    "categorised_citations": 7,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "假譎",
+        "citations": 2
+      },
+      {
+        "label": "前身",
+        "citations": 2
+      },
+      {
+        "label": "翰林院",
+        "citations": 1
+      },
+      {
+        "label": "誕聖",
+        "citations": 1
+      },
+      {
+        "label": "靈豆",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "天中記",
+        "citations": 6,
+        "match": "bracket-note",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "假譎",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "前身",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "翰林院",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "誕聖",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "雜編 > 靈豆",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

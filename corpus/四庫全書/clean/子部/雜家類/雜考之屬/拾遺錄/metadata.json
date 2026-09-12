@@ -75,5 +75,140 @@
       "837年"
     ]
   },
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 11,
+    "leishu_count": 4,
+    "categorised_citations": 11,
+    "genmoku_confirmed_citations": 6,
+    "category_leaves": [
+      {
+        "label": "蛟",
+        "citations": 2
+      },
+      {
+        "label": "氷",
+        "citations": 1
+      },
+      {
+        "label": "房",
+        "citations": 1
+      },
+      {
+        "label": "禾",
+        "citations": 1
+      },
+      {
+        "label": "枕",
+        "citations": 1
+      },
+      {
+        "label": "明器",
+        "citations": 1
+      },
+      {
+        "label": "幔八",
+        "citations": 1
+      },
+      {
+        "label": "杖二十二",
+        "citations": 1
+      },
+      {
+        "label": "櫻桃",
+        "citations": 1
+      },
+      {
+        "label": "菱",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 4,
+        "match": "author-prefix-stripped",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "鱗介部二 > 龍下蛟螭 > 蛟",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部三十三 > 川 > 氷",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "居處部十三 > 扆宁 > 房",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 3,
+        "match": "author-prefix-stripped",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "五榖部 > 禾",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服飾部 > 枕",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "禮儀部 > 明器",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "儀飾部三 > 步障十三承塵十四 > 幔八",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "儀飾部四 > 几二十一杖二十二 > 杖二十二",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "果食部 > 櫻桃",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "果食部 > 菱",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

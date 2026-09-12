@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 5493,
   "corpus_root": "中國漢文",
@@ -17,5 +17,267 @@
       "body_start_line": 5
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 23,
+    "leishu_count": 11,
+    "categorised_citations": 22,
+    "genmoku_confirmed_citations": 7,
+    "category_leaves": [
+      {
+        "label": "五名",
+        "citations": 2
+      },
+      {
+        "label": "五慎",
+        "citations": 2
+      },
+      {
+        "label": "四機",
+        "citations": 2
+      },
+      {
+        "label": "間諜",
+        "citations": 2
+      },
+      {
+        "label": "叙兵上",
+        "citations": 1
+      },
+      {
+        "label": "劒下",
+        "citations": 1
+      },
+      {
+        "label": "據要",
+        "citations": 1
+      },
+      {
+        "label": "决戰下",
+        "citations": 1
+      },
+      {
+        "label": "禁暴",
+        "citations": 1
+      },
+      {
+        "label": "論兵",
+        "citations": 1
+      },
+      {
+        "label": "尚氣",
+        "citations": 1
+      },
+      {
+        "label": "愚暗",
+        "citations": 1
+      },
+      {
+        "label": "審勢",
+        "citations": 1
+      },
+      {
+        "label": "尚論第三十七",
+        "citations": 1
+      },
+      {
+        "label": "八陳",
+        "citations": 1
+      },
+      {
+        "label": "衆唁",
+        "citations": 1
+      },
+      {
+        "label": "腹笥",
+        "citations": 1
+      },
+      {
+        "label": "吳嘉㑹",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "山堂肆考",
+        "citations": 6,
+        "match": "exact",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "直鋭員方曲為五陣 > 五名",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "直鋭員方曲為五陣 > 五慎",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "直鋭員方曲為五陣 > 四機",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 4,
+        "match": "exact",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "兵部一 > 叙兵上 > 叙兵上",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部七十五 > 劒下",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "兵部六十三 > 絶糧道 > 據要",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部四十四 > 决戰下 > 决戰下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 4,
+        "match": "exact",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "武功部 > 間諜",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 禁暴",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 論兵",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "性行部 > 尚氣",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "性行部 > 愚暗",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "冊府元龜",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 0,
+        "categories": []
+      },
+      {
+        "leishu": "喻林",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "人事門 > 審勢",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "宋稗𩔖鈔",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "許魯齋衡 > 尚論第三十七",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "小學紺珠",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "管 > 八陳",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "衆唁",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "海録碎事",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "或問 > 腹笥",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "萬姓統譜",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "吳嘉㑹",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

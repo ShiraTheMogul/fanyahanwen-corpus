@@ -21,5 +21,246 @@
       "body_start_line": 13
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 20,
+    "leishu_count": 7,
+    "categorised_citations": 20,
+    "genmoku_confirmed_citations": 9,
+    "category_leaves": [
+      {
+        "label": "象",
+        "citations": 2
+      },
+      {
+        "label": "地",
+        "citations": 2
+      },
+      {
+        "label": "諺下",
+        "citations": 1
+      },
+      {
+        "label": "品藻下",
+        "citations": 1
+      },
+      {
+        "label": "叙聖",
+        "citations": 1
+      },
+      {
+        "label": "叙兵下",
+        "citations": 1
+      },
+      {
+        "label": "將帥下",
+        "citations": 1
+      },
+      {
+        "label": "叙學",
+        "citations": 1
+      },
+      {
+        "label": "漢髙祖皇帝",
+        "citations": 1
+      },
+      {
+        "label": "黄帝軒轅氏",
+        "citations": 1
+      },
+      {
+        "label": "叙舟中",
+        "citations": 1
+      },
+      {
+        "label": "地一",
+        "citations": 1
+      },
+      {
+        "label": "論兵一",
+        "citations": 1
+      },
+      {
+        "label": "將帥四",
+        "citations": 1
+      },
+      {
+        "label": "陣七",
+        "citations": 1
+      },
+      {
+        "label": "陣",
+        "citations": 1
+      },
+      {
+        "label": "兼二代故兼稱之",
+        "citations": 1
+      },
+      {
+        "label": "獸部",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 10,
+        "match": "author-prefix-stripped",
+        "category_count": 10,
+        "categories": [
+          {
+            "path": "人事部一百三十七 > 諺下鬭争 > 諺下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部八十八 > 品藻下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部四十二 > 叙聖",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部二 > 叙兵下 > 叙兵下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部四 > 將帥下 > 將帥下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "學部一 > 叙學",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部二 > 兕象 > 象",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "皇王部十二 > 前少帝後少帝 > 漢髙祖皇帝",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "皇王部四 > 顓頊髙陽氏 > 黄帝軒轅氏",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "舟部二 > 叙舟中",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 4,
+        "match": "author-prefix-stripped",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "地理部一 > 谷十三洞十四 > 地一",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "武功部一 > 論兵一",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "武功部三 > 將帥四",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "武功部五 > 軍容九兵勢十 > 陣七",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "地部 > 地",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 陣",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "事物紀原",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "兼二代故兼稱之",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "事類賦",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "獸部 > 象",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "初學記",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "獸部",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "地",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

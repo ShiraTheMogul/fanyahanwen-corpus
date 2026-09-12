@@ -250,5 +250,139 @@
       "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
     }
   ],
-  "provenance_schema_version": 1
+  "provenance_schema_version": 1,
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 9,
+    "leishu_count": 5,
+    "categorised_citations": 9,
+    "genmoku_confirmed_citations": 3,
+    "category_leaves": [
+      {
+        "label": "禍原",
+        "citations": 1
+      },
+      {
+        "label": "漸進",
+        "citations": 1
+      },
+      {
+        "label": "書",
+        "citations": 1
+      },
+      {
+        "label": "揚雄易太𤣥經尚書",
+        "citations": 1
+      },
+      {
+        "label": "尚書",
+        "citations": 1
+      },
+      {
+        "label": "五行",
+        "citations": 1
+      },
+      {
+        "label": "倍差",
+        "citations": 1
+      },
+      {
+        "label": "大辟",
+        "citations": 1
+      },
+      {
+        "label": "書一",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "喻林",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "人事門 > 禍原",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "學業門 > 漸進",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "學部三 > 書",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "揚雄易太𤣥經尚書",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "文學部 > 尚書",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "歲時部 > 五行",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "海録碎事",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "以文飾咁致人於罪 > 倍差",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "以文飾咁致人於罪 > 大辟",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "稗編",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "書一",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

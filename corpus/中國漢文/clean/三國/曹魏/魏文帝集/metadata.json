@@ -28,5 +28,86 @@
   "known_commentaries": [],
   "authors": [
     "曹丕"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 4,
+    "leishu_count": 4,
+    "categorised_citations": 4,
+    "genmoku_confirmed_citations": 2,
+    "category_leaves": [
+      {
+        "label": "書記",
+        "citations": 1
+      },
+      {
+        "label": "太子",
+        "citations": 1
+      },
+      {
+        "label": "漢武帝集",
+        "citations": 1
+      },
+      {
+        "label": "帳",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "文部十一 > 書記 > 書記",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "儲宫部 > 太子",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "聖文 > 御集 > 漢武帝集",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "白孔六帖",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "彈 > 帳",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -22,5 +22,181 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "266–316年"
+  "ca": "266–316年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 12,
+    "leishu_count": 8,
+    "categorised_citations": 12,
+    "genmoku_confirmed_citations": 5,
+    "category_leaves": [
+      {
+        "label": "雞棲木",
+        "citations": 2
+      },
+      {
+        "label": "簏",
+        "citations": 1
+      },
+      {
+        "label": "猴",
+        "citations": 1
+      },
+      {
+        "label": "狗上",
+        "citations": 1
+      },
+      {
+        "label": "中書令",
+        "citations": 1
+      },
+      {
+        "label": "雞",
+        "citations": 1
+      },
+      {
+        "label": "職官部上",
+        "citations": 1
+      },
+      {
+        "label": "歴代㳂革",
+        "citations": 1
+      },
+      {
+        "label": "中書總載",
+        "citations": 1
+      },
+      {
+        "label": "帝王要畧",
+        "citations": 1
+      },
+      {
+        "label": "一屋",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 4,
+        "match": "author-prefix-stripped",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "服用部七 > 簏篋 > 簏",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部二十二 > 猨猴猱玃果然 > 猴",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部十六 > 狗上",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "職官部十八 > 中書侍郎 > 中書令",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "古今事文類聚",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "鳯閣舍人 > 雞棲木",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "事類賦",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "禽部 > 雞",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "初學記",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "職官部上",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今合璧事類備要",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "歴代㳂革",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "設官部 > 中書總載",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "藝文 > 雜文 > 帝王要畧",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "韻府羣玉",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "入聲 > 一屋",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

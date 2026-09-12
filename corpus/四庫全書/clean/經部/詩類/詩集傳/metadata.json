@@ -119,5 +119,87 @@
       ]
     }
   ],
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 6,
+    "leishu_count": 3,
+    "categorised_citations": 6,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "頌",
+        "citations": 2
+      },
+      {
+        "label": "千乘",
+        "citations": 1
+      },
+      {
+        "label": "三星三五",
+        "citations": 1
+      },
+      {
+        "label": "分度",
+        "citations": 1
+      },
+      {
+        "label": "紹興毛詩叶韻補音",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "小學紺珠",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "下齊如權衡以應平 > 千乘",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "黄道環龍柱水臬 > 三星三五",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "黄道環龍柱水臬 > 分度",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "圖書編",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "語國風之正變 > 頌",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "儒林傳賛平帝時立毛詩 > 紹興毛詩叶韻補音",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

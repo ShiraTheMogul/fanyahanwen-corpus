@@ -24,5 +24,184 @@
   "known_commentaries": [],
   "authors": [
     "王粲"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 16,
+    "leishu_count": 7,
+    "categorised_citations": 16,
+    "genmoku_confirmed_citations": 11,
+    "category_leaves": [
+      {
+        "label": "樓",
+        "citations": 5
+      },
+      {
+        "label": "吟",
+        "citations": 2
+      },
+      {
+        "label": "城",
+        "citations": 2
+      },
+      {
+        "label": "黍",
+        "citations": 1
+      },
+      {
+        "label": "終南山",
+        "citations": 1
+      },
+      {
+        "label": "五穫榖畢昴之精趙代之",
+        "citations": 1
+      },
+      {
+        "label": "居處部",
+        "citations": 1
+      },
+      {
+        "label": "漳水",
+        "citations": 1
+      },
+      {
+        "label": "日二",
+        "citations": 1
+      },
+      {
+        "label": "涕横墜",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 6,
+        "match": "author-prefix-stripped",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "居處部 > 樓",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "五榖部 > 黍",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 吟",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部 > 終南山",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "居處部 > 城",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 3,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "居處部三 > 樓",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "居處部三 > 城",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "初學記",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "五穫榖畢昴之精趙代之",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "居處部",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "人事部三十三 > 嚬 > 吟",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部三十 > 隴蜀諸水 > 漳水",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "天部 > 天一日二 > 日二",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "海録碎事",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "涕横墜",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "白孔六帖",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "屋室門戸 > 樓",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

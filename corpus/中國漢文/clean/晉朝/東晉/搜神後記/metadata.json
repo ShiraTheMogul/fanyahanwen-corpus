@@ -131,5 +131,104 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "317–420年"
+  "ca": "317–420年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 6,
+    "leishu_count": 4,
+    "categorised_citations": 6,
+    "genmoku_confirmed_citations": 4,
+    "category_leaves": [
+      {
+        "label": "富",
+        "citations": 1
+      },
+      {
+        "label": "狐",
+        "citations": 1
+      },
+      {
+        "label": "魚",
+        "citations": 1
+      },
+      {
+        "label": "鹿",
+        "citations": 1
+      },
+      {
+        "label": "寒鼈魚鼈",
+        "citations": 1
+      },
+      {
+        "label": "位極人臣",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 3,
+        "match": "author-prefix-stripped",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "人部 > 富",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 狐",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 魚",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "獸部十八 > 鹿麋麂麈麑 > 鹿",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "寒鼈魚鼈",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "編珠",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "位極人臣",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

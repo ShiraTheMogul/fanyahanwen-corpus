@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 64212,
   "corpus_root": "中國漢文",
@@ -18,5 +18,184 @@
       "body_start_line": 8
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 14,
+    "leishu_count": 5,
+    "categorised_citations": 14,
+    "genmoku_confirmed_citations": 2,
+    "category_leaves": [
+      {
+        "label": "忠信",
+        "citations": 1
+      },
+      {
+        "label": "怪石",
+        "citations": 1
+      },
+      {
+        "label": "惟",
+        "citations": 1
+      },
+      {
+        "label": "朝四重四駢四",
+        "citations": 1
+      },
+      {
+        "label": "眀聖",
+        "citations": 1
+      },
+      {
+        "label": "鋡龕",
+        "citations": 1
+      },
+      {
+        "label": "韻藻廟堂",
+        "citations": 1
+      },
+      {
+        "label": "韻藻鉤深幽深",
+        "citations": 1
+      },
+      {
+        "label": "寺",
+        "citations": 1
+      },
+      {
+        "label": "泉",
+        "citations": 1
+      },
+      {
+        "label": "百工",
+        "citations": 1
+      },
+      {
+        "label": "釋教",
+        "citations": 1
+      },
+      {
+        "label": "平君子泉",
+        "citations": 1
+      },
+      {
+        "label": "諸花",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 8,
+        "match": "bracket-note",
+        "category_count": 8,
+        "categories": [
+          {
+            "path": "忠信",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "怪石",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "惟",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "朝四重四駢四",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "眀聖",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鋡龕",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "韻藻廟堂",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "韻藻鉤深幽深",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "寺",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "泉",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "産業部 > 百工",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "釋教部 > 釋教",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "御定分類字錦",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "葉浮紅 > 平君子泉",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "格致鏡原",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "花𩔖 > 諸花",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

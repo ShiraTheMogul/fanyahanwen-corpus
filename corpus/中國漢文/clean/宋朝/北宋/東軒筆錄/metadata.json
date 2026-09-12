@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 54306,
   "corpus_root": "中國漢文",
@@ -174,5 +174,148 @@
       "body_start_line": 8
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 10,
+    "leishu_count": 5,
+    "categorised_citations": 10,
+    "genmoku_confirmed_citations": 4,
+    "category_leaves": [
+      {
+        "label": "貧",
+        "citations": 1
+      },
+      {
+        "label": "面",
+        "citations": 1
+      },
+      {
+        "label": "驢",
+        "citations": 1
+      },
+      {
+        "label": "翰林學士",
+        "citations": 1
+      },
+      {
+        "label": "詞詆晏殊",
+        "citations": 1
+      },
+      {
+        "label": "繼父不容",
+        "citations": 1
+      },
+      {
+        "label": "小戊子",
+        "citations": 1
+      },
+      {
+        "label": "通判",
+        "citations": 1
+      },
+      {
+        "label": "忘本",
+        "citations": 1
+      },
+      {
+        "label": "將帥",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 4,
+        "match": "exact",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "人部 > 貧",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 面",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 驢",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "設官部 > 翰林學士",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 3,
+        "match": "line-initial",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "見天河 > 詞詆晏殊",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見義士 > 繼父不容",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見誕子 > 小戊子",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "通判",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "人事部 > 忘本",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "將帥",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

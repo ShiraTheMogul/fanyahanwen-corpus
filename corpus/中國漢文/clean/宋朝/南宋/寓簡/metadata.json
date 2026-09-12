@@ -19,5 +19,133 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "1127–1279年"
+  "ca": "1127–1279年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 11,
+    "leishu_count": 3,
+    "categorised_citations": 11,
+    "genmoku_confirmed_citations": 3,
+    "category_leaves": [
+      {
+        "label": "符命",
+        "citations": 2
+      },
+      {
+        "label": "蛇",
+        "citations": 2
+      },
+      {
+        "label": "假譎",
+        "citations": 1
+      },
+      {
+        "label": "文章",
+        "citations": 1
+      },
+      {
+        "label": "言語",
+        "citations": 1
+      },
+      {
+        "label": "魚",
+        "citations": 1
+      },
+      {
+        "label": "龜",
+        "citations": 1
+      },
+      {
+        "label": "鱗介部",
+        "citations": 1
+      },
+      {
+        "label": "熙寧七年",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "天中記",
+        "citations": 7,
+        "match": "bracket-note",
+        "category_count": 7,
+        "categories": [
+          {
+            "path": "假譎",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "徐氏中論六卷 > 文章",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "符命",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "蛇",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "言語",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "魚",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "龜",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "帝王部 > 符命",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 蛇",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "宋稗𩔖鈔",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "陳無已與 > 熙寧七年",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

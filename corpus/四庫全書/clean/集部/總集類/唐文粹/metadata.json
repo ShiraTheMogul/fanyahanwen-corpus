@@ -1288,5 +1288,396 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 202,
+    "leishu_count": 6,
+    "categorised_citations": 202,
+    "genmoku_confirmed_citations": 3,
+    "category_leaves": [
+      {
+        "label": "力量",
+        "citations": 4
+      },
+      {
+        "label": "儆戒",
+        "citations": 3
+      },
+      {
+        "label": "評詩",
+        "citations": 3
+      },
+      {
+        "label": "攝養",
+        "citations": 2
+      },
+      {
+        "label": "驍勇",
+        "citations": 2
+      },
+      {
+        "label": "譏誚",
+        "citations": 2
+      },
+      {
+        "label": "好學",
+        "citations": 2
+      },
+      {
+        "label": "阡隴",
+        "citations": 2
+      },
+      {
+        "label": "不可窺測",
+        "citations": 2
+      },
+      {
+        "label": "功業",
+        "citations": 2
+      },
+      {
+        "label": "妄誕",
+        "citations": 2
+      },
+      {
+        "label": "尚氣",
+        "citations": 2
+      },
+      {
+        "label": "隠逸",
+        "citations": 2
+      },
+      {
+        "label": "自相背馳",
+        "citations": 2
+      },
+      {
+        "label": "忠鯁",
+        "citations": 2
+      },
+      {
+        "label": "慕尚",
+        "citations": 2
+      },
+      {
+        "label": "五行",
+        "citations": 2
+      },
+      {
+        "label": "報怨",
+        "citations": 1
+      },
+      {
+        "label": "報恩",
+        "citations": 1
+      },
+      {
+        "label": "壽考",
+        "citations": 1
+      },
+      {
+        "label": "捄弊",
+        "citations": 1
+      },
+      {
+        "label": "晚境",
+        "citations": 1
+      },
+      {
+        "label": "艱難",
+        "citations": 1
+      },
+      {
+        "label": "𫝊逺",
+        "citations": 1
+      },
+      {
+        "label": "人已兩得",
+        "citations": 1
+      },
+      {
+        "label": "譽己毁人",
+        "citations": 1
+      },
+      {
+        "label": "感傷",
+        "citations": 1
+      },
+      {
+        "label": "感嘆",
+        "citations": 1
+      },
+      {
+        "label": "家世",
+        "citations": 1
+      },
+      {
+        "label": "神仙",
+        "citations": 1
+      },
+      {
+        "label": "依倚",
+        "citations": 1
+      },
+      {
+        "label": "威聲",
+        "citations": 1
+      },
+      {
+        "label": "稱誦",
+        "citations": 1
+      },
+      {
+        "label": "道士",
+        "citations": 1
+      },
+      {
+        "label": "道術",
+        "citations": 1
+      },
+      {
+        "label": "不自揣度",
+        "citations": 1
+      },
+      {
+        "label": "孤寒",
+        "citations": 1
+      },
+      {
+        "label": "自嘆",
+        "citations": 1
+      },
+      {
+        "label": "自薦",
+        "citations": 1
+      },
+      {
+        "label": "先聲",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "記纂淵海",
+        "citations": 184,
+        "match": "bracket-note",
+        "category_count": 169,
+        "categories": [
+          {
+            "path": "人情部 > 儆戒",
+            "citations": 3,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "斐然成章 > 評詩",
+            "citations": 3,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人道部 > 攝養",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "兵戎部 > 驍勇",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "名譽部 > 譏誚",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "問學部 > 好學",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "喪記部 > 阡隴",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "性行部 > 不可窺測",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "性行部 > 功業",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "性行部 > 妄誕",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "性行部 > 尚氣",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "性行部 > 隠逸",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "論議部 > 自相背馳",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人事部 > 報怨",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人事部 > 報恩",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人事部 > 壽考",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人事部 > 捄弊",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人事部 > 晚境",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人事部 > 艱難",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人事部 > 𫝊逺",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "翰苑新書",
+        "citations": 12,
+        "match": "bracket-note",
+        "category_count": 8,
+        "categories": [
+          {
+            "path": "頌徳 > 力量",
+            "citations": 4,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "上並謝啓用 > 慕尚",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "上並謝啓用 > 間濶",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "薦辟",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "頌徳 > 學問",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "頌徳 > 忠鯁",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "頌徳 > 文章",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "頌徳 > 譽望",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "人部 > 報徳",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "政術部 > 赦宥",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "歲時部 > 五行",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "五行",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "歐陽公集珠庭琳館 > 瑤壇",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "海録碎事",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "竒章嗜石",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

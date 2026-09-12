@@ -331,5 +331,130 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 8,
+    "leishu_count": 5,
+    "categorised_citations": 8,
+    "genmoku_confirmed_citations": 2,
+    "category_leaves": [
+      {
+        "label": "綾",
+        "citations": 1
+      },
+      {
+        "label": "燭",
+        "citations": 1
+      },
+      {
+        "label": "弩",
+        "citations": 1
+      },
+      {
+        "label": "帶",
+        "citations": 1
+      },
+      {
+        "label": "漁釣",
+        "citations": 1
+      },
+      {
+        "label": "起居注",
+        "citations": 1
+      },
+      {
+        "label": "辯家語為荀氏之傳葉適",
+        "citations": 1
+      },
+      {
+        "label": "左右史",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "格致鏡原",
+        "citations": 3,
+        "match": "line-initial",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "布帛類 > 綾",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "日用器物類 > 燭",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "武備𩔖 > 弩",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "服飾部 > 帶",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "産業部 > 漁釣",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "古今源流至論",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "起居注",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "稗編",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "諸家一 > 辯家語為荀氏之傳葉適",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "翰苑新書",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "左右史",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

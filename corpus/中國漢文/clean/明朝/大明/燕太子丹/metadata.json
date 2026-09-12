@@ -26,5 +26,196 @@
   ],
   "authors": [
     "鍾惺"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 14,
+    "leishu_count": 7,
+    "categorised_citations": 14,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "拾塼投蛙",
+        "citations": 2
+      },
+      {
+        "label": "馬生角",
+        "citations": 1
+      },
+      {
+        "label": "易水之歌",
+        "citations": 1
+      },
+      {
+        "label": "荆軻刺秦王",
+        "citations": 1
+      },
+      {
+        "label": "吞舌而死",
+        "citations": 1
+      },
+      {
+        "label": "筑十二",
+        "citations": 1
+      },
+      {
+        "label": "單衣十三",
+        "citations": 1
+      },
+      {
+        "label": "肉十五",
+        "citations": 1
+      },
+      {
+        "label": "田光自刎",
+        "citations": 1
+      },
+      {
+        "label": "格物總論",
+        "citations": 1
+      },
+      {
+        "label": "下",
+        "citations": 1
+      },
+      {
+        "label": "六十猶癡",
+        "citations": 1
+      },
+      {
+        "label": "膚髪",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "古今事文類聚",
+        "citations": 5,
+        "match": "line-initial",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "來歸自鎬 > 馬生角",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "埳井蛙 > 拾塼投蛙",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "拾穗而歌 > 易水之歌",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "杜季良豪俠好義 > 荆軻刺秦王",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "齒墮舌在 > 吞舌而死",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "樂部 > 竽十七 > 筑十二",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "衣冠部二 > 笏十八舄十九 > 單衣十三",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "酒食部 > 羌煮三十一胡飯三十二 > 肉十五",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "田光自刎",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "蛙 > 拾塼投蛙",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今合璧事類備要",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "格物總論",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "下",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定分類字錦",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "巧對 > 鄭公孫黑九百不死 > 六十猶癡",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "韻府羣玉",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "膚髪",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -70,5 +70,122 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "1644–1912年"
+  "ca": "1644–1912年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 8,
+    "leishu_count": 4,
+    "categorised_citations": 8,
+    "genmoku_confirmed_citations": 1,
+    "category_leaves": [
+      {
+        "label": "之世者",
+        "citations": 1
+      },
+      {
+        "label": "例",
+        "citations": 1
+      },
+      {
+        "label": "任子",
+        "citations": 1
+      },
+      {
+        "label": "聞而善之",
+        "citations": 1
+      },
+      {
+        "label": "國史",
+        "citations": 1
+      },
+      {
+        "label": "符命",
+        "citations": 1
+      },
+      {
+        "label": "淳化欹器",
+        "citations": 1
+      },
+      {
+        "label": "如酥宫樹花裝萬萬株",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "羣書考索",
+        "citations": 5,
+        "match": "bracket-note",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "之世者",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "例",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "粟二斗 > 任子",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "聞而善之",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "諸史門 > 國史",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "帝王部 > 符命",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "器用 > 欹器 > 淳化欹器",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "如酥宫樹花裝萬萬株",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

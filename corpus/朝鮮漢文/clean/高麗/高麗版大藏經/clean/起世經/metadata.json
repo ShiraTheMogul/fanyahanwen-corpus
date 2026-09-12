@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 82435,
   "corpus_root": "朝鮮漢文",
@@ -82,5 +82,114 @@
       "body_start_line": 7
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 9,
+    "leishu_count": 3,
+    "categorised_citations": 9,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "彼人懷",
+        "citations": 2
+      },
+      {
+        "label": "月",
+        "citations": 1
+      },
+      {
+        "label": "電",
+        "citations": 1
+      },
+      {
+        "label": "風",
+        "citations": 1
+      },
+      {
+        "label": "馬",
+        "citations": 1
+      },
+      {
+        "label": "此因緣名之為月",
+        "citations": 1
+      },
+      {
+        "label": "雨雹霰雪",
+        "citations": 1
+      },
+      {
+        "label": "不善者謂貪瞋癡",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "天中記",
+        "citations": 4,
+        "match": "bracket-note",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "月",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "電",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "風",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "馬",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 4,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "彼人懷",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "此因緣名之為月",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "雨雹霰雪",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定子史精華",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "不善者謂貪瞋癡",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

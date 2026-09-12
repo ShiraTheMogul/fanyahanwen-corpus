@@ -22,5 +22,150 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "317–420年"
+  "ca": "317–420年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 12,
+    "leishu_count": 5,
+    "categorised_citations": 12,
+    "genmoku_confirmed_citations": 6,
+    "category_leaves": [
+      {
+        "label": "桃",
+        "citations": 4
+      },
+      {
+        "label": "箜篌",
+        "citations": 2
+      },
+      {
+        "label": "罃",
+        "citations": 1
+      },
+      {
+        "label": "桑",
+        "citations": 1
+      },
+      {
+        "label": "甘蔗",
+        "citations": 1
+      },
+      {
+        "label": "瘧",
+        "citations": 1
+      },
+      {
+        "label": "指環",
+        "citations": 1
+      },
+      {
+        "label": "紀要",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 5,
+        "match": "exact",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "器物部三 > 魁槃 > 罃",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "木部四 > 桑",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "果部十一 > 燕薁簾薑 > 甘蔗",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "果部四 > 桃",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "疾病部六 > 隂痿陽病 > 瘧",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "指環",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "桃",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "果部 > 桃",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部 > 箜篌",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "樂部四 > 箜篌",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "菓部上 > 桃",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "全芳備祖集",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "紀要",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

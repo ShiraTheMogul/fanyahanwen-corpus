@@ -17,5 +17,88 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "1271–1368年"
+  "ca": "1271–1368年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 7,
+    "leishu_count": 2,
+    "categorised_citations": 7,
+    "genmoku_confirmed_citations": 6,
+    "category_leaves": [
+      {
+        "label": "發軍",
+        "citations": 2
+      },
+      {
+        "label": "角",
+        "citations": 1
+      },
+      {
+        "label": "伏兵",
+        "citations": 1
+      },
+      {
+        "label": "椎",
+        "citations": 1
+      },
+      {
+        "label": "蟹",
+        "citations": 1
+      },
+      {
+        "label": "登數",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 6,
+        "match": "author-prefix-stripped",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "武功部 > 發軍",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部 > 角",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 伏兵",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 椎",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 蟹",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "登數",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

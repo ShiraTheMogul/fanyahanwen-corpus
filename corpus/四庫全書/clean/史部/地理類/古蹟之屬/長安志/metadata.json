@@ -307,5 +307,236 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 25,
+    "leishu_count": 4,
+    "categorised_citations": 25,
+    "genmoku_confirmed_citations": 7,
+    "category_leaves": [
+      {
+        "label": "園圃",
+        "citations": 3
+      },
+      {
+        "label": "臺",
+        "citations": 3
+      },
+      {
+        "label": "宅",
+        "citations": 2
+      },
+      {
+        "label": "陂",
+        "citations": 2
+      },
+      {
+        "label": "亭",
+        "citations": 1
+      },
+      {
+        "label": "原",
+        "citations": 1
+      },
+      {
+        "label": "墅",
+        "citations": 1
+      },
+      {
+        "label": "苑圃",
+        "citations": 1
+      },
+      {
+        "label": "誤",
+        "citations": 1
+      },
+      {
+        "label": "閭里",
+        "citations": 1
+      },
+      {
+        "label": "鶖",
+        "citations": 1
+      },
+      {
+        "label": "宅舍",
+        "citations": 1
+      },
+      {
+        "label": "苑囿",
+        "citations": 1
+      },
+      {
+        "label": "殿",
+        "citations": 1
+      },
+      {
+        "label": "鵜鶘",
+        "citations": 1
+      },
+      {
+        "label": "唐太極宫承天門",
+        "citations": 1
+      },
+      {
+        "label": "唐延英殿",
+        "citations": 1
+      },
+      {
+        "label": "唐昆明池",
+        "citations": 1
+      },
+      {
+        "label": "拾翠",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "天中記",
+        "citations": 14,
+        "match": "bracket-note",
+        "category_count": 11,
+        "categories": [
+          {
+            "path": "園圃",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "昭明學士誤 > 宅",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "臺",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "公卿宅有金盃玉盌之號 > 亭",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "原",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "墅",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "苑圃",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "誤",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "閭里",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "陂",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鶖",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 7,
+        "match": "exact",
+        "category_count": 7,
+        "categories": [
+          {
+            "path": "地部 > 陂",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "居處部 > 園圃",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "居處部 > 宅舍",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "居處部 > 臺",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "居處部 > 苑囿",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 殿",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 鵜鶘",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 3,
+        "match": "line-initial",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "宫室 > 宫 > 唐太極宫承天門",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "宫室 > 殿 > 唐延英殿",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "雙堂元洲仙都 > 池沼 > 唐昆明池",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "唐 > 拾翠",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

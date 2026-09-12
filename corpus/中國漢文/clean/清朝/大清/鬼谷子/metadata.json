@@ -50,5 +50,404 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "1644–1912年"
+  "ca": "1644–1912年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 32,
+    "leishu_count": 17,
+    "categorised_citations": 32,
+    "genmoku_confirmed_citations": 11,
+    "category_leaves": [
+      {
+        "label": "口",
+        "citations": 4
+      },
+      {
+        "label": "指南車",
+        "citations": 2
+      },
+      {
+        "label": "名理十八",
+        "citations": 2
+      },
+      {
+        "label": "玉",
+        "citations": 2
+      },
+      {
+        "label": "無為之先",
+        "citations": 2
+      },
+      {
+        "label": "游說下",
+        "citations": 1
+      },
+      {
+        "label": "玉下",
+        "citations": 1
+      },
+      {
+        "label": "齋戒",
+        "citations": 1
+      },
+      {
+        "label": "莊子荀子",
+        "citations": 1
+      },
+      {
+        "label": "齋戒二十七",
+        "citations": 1
+      },
+      {
+        "label": "指南車五",
+        "citations": 1
+      },
+      {
+        "label": "螢",
+        "citations": 1
+      },
+      {
+        "label": "帝王",
+        "citations": 1
+      },
+      {
+        "label": "治青城",
+        "citations": 1
+      },
+      {
+        "label": "蘇張從學",
+        "citations": 1
+      },
+      {
+        "label": "備此二者以為儀衛",
+        "citations": 1
+      },
+      {
+        "label": "車",
+        "citations": 1
+      },
+      {
+        "label": "審察",
+        "citations": 1
+      },
+      {
+        "label": "珍寳",
+        "citations": 1
+      },
+      {
+        "label": "輕㨗好縁",
+        "citations": 1
+      },
+      {
+        "label": "崖蜜",
+        "citations": 1
+      },
+      {
+        "label": "蘇子",
+        "citations": 1
+      },
+      {
+        "label": "諸家二",
+        "citations": 1
+      },
+      {
+        "label": "游說",
+        "citations": 1
+      },
+      {
+        "label": "蟲類",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 6,
+        "match": "line-initial",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "人事部一百三 > 游說下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部八 > 舌 > 口",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "珎寳部四 > 玉下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "禮儀部九 > 齋戒儺 > 齋戒",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "莊子荀子",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "車部四 > 軌 > 指南車",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 4,
+        "match": "exact",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "藝文部五 > 著述十七名理十八 > 名理十八",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禮儀部十一 > 齋戒二十七 > 齋戒二十七",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "車部 > 鹿車十一 > 指南車五",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 4,
+        "match": "exact",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "人部 > 口",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "珍寶部 > 玉",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "蟲豸部 > 螢",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "車部 > 指南車",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "孔帖以方字帶下讀誤 > 口",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "帝王",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "白居易為海山院主 > 治青城",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見王府官 > 蘇張從學",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "人部一 > 口",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "寶玉部上 > 玉",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "駢志",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "無為之先",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "事物紀原",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "備此二者以為儀衛",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "事類賦",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "服用部 > 車",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "喻林",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "人事門 > 審察",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "珍寳",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定分類字錦",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "電目 > 輕㨗好縁",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "海録碎事",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "野棠開未落山櫻發欲然 > 崖蜜",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "其姓氏懸諸日月 > 蘇子",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "稗編",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "諸家二",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "經濟類編",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "武功類十三 > 游說",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "蟲類",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

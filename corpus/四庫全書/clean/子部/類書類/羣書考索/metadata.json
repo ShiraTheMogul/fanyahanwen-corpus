@@ -3,7 +3,7 @@
   "work_id": 127236,
   "corpus_root": "四庫全書",
   "title": "羣書考索",
-  "is_compilation": false,
+  "is_compilation": true,
   "contained_in": [
     {
       "work_id": 80277,
@@ -2611,5 +2611,161 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "compilation_note": "子部類書類：本書為類書，內容多為徵引他書原文；徵引關係見 corpus/index_leishu_徵引.csv，不另重複計入語料庫字數。",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 15,
+    "leishu_count": 3,
+    "categorised_citations": 15,
+    "genmoku_confirmed_citations": 5,
+    "category_leaves": [
+      {
+        "label": "天",
+        "citations": 2
+      },
+      {
+        "label": "省官",
+        "citations": 2
+      },
+      {
+        "label": "行人司",
+        "citations": 2
+      },
+      {
+        "label": "地",
+        "citations": 1
+      },
+      {
+        "label": "旗",
+        "citations": 1
+      },
+      {
+        "label": "璽",
+        "citations": 1
+      },
+      {
+        "label": "鼓",
+        "citations": 1
+      },
+      {
+        "label": "瓚",
+        "citations": 1
+      },
+      {
+        "label": "鼎",
+        "citations": 1
+      },
+      {
+        "label": "車",
+        "citations": 1
+      },
+      {
+        "label": "吏久從政",
+        "citations": 1
+      },
+      {
+        "label": "軫星木星",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "格致鏡原",
+        "citations": 9,
+        "match": "line-initial",
+        "category_count": 8,
+        "categories": [
+          {
+            "path": "乾象𩔖 > 天",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "坤輿𩔖 > 地",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "朝制類 > 旗",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "朝制類 > 璽",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "樂器𩔖 > 鼓",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禮器𩔖 > 瓚",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禮器𩔖 > 鼎",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "舟車𩔖 > 車",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 5,
+        "match": "exact",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "政術部 > 省官",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "設官部 > 行人司",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "政術部 > 吏久從政",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "御定韻府拾遺",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "軫星木星",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  },
+  "leishu_citation_summary": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "works_attested": 121,
+    "citations": 630,
+    "categorised_citations": 630,
+    "distinct_categories": 290,
+    "unresolved_heads": 4418
+  }
 }

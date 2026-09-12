@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 5482,
   "corpus_root": "中國漢文",
@@ -25,5 +25,564 @@
       "body_start_line": 5
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 57,
+    "leishu_count": 17,
+    "categorised_citations": 56,
+    "genmoku_confirmed_citations": 19,
+    "category_leaves": [
+      {
+        "label": "旄",
+        "citations": 2
+      },
+      {
+        "label": "宰相篇",
+        "citations": 2
+      },
+      {
+        "label": "吏一百七十三",
+        "citations": 2
+      },
+      {
+        "label": "三代",
+        "citations": 2
+      },
+      {
+        "label": "五帝",
+        "citations": 2
+      },
+      {
+        "label": "殺頭曼單于者",
+        "citations": 2
+      },
+      {
+        "label": "簨簴銘",
+        "citations": 2
+      },
+      {
+        "label": "叙人",
+        "citations": 1
+      },
+      {
+        "label": "鑒戒下",
+        "citations": 1
+      },
+      {
+        "label": "迷忘",
+        "citations": 1
+      },
+      {
+        "label": "待士",
+        "citations": 1
+      },
+      {
+        "label": "真愚",
+        "citations": 1
+      },
+      {
+        "label": "仁德",
+        "citations": 1
+      },
+      {
+        "label": "道徳",
+        "citations": 1
+      },
+      {
+        "label": "陣",
+        "citations": 1
+      },
+      {
+        "label": "鐸",
+        "citations": 1
+      },
+      {
+        "label": "鞀",
+        "citations": 1
+      },
+      {
+        "label": "耳",
+        "citations": 1
+      },
+      {
+        "label": "孫綽子蘇子",
+        "citations": 1
+      },
+      {
+        "label": "狂",
+        "citations": 1
+      },
+      {
+        "label": "夏禹",
+        "citations": 1
+      },
+      {
+        "label": "黄帝軒轅氏",
+        "citations": 1
+      },
+      {
+        "label": "食下",
+        "citations": 1
+      },
+      {
+        "label": "用賢四十",
+        "citations": 1
+      },
+      {
+        "label": "納諫三十三",
+        "citations": 1
+      },
+      {
+        "label": "鐸二十八",
+        "citations": 1
+      },
+      {
+        "label": "陣七",
+        "citations": 1
+      },
+      {
+        "label": "總篇二",
+        "citations": 1
+      },
+      {
+        "label": "夀",
+        "citations": 1
+      },
+      {
+        "label": "鐘",
+        "citations": 1
+      },
+      {
+        "label": "忠",
+        "citations": 1
+      },
+      {
+        "label": "鑒誡",
+        "citations": 1
+      },
+      {
+        "label": "帝王部",
+        "citations": 1
+      },
+      {
+        "label": "勤勞",
+        "citations": 1
+      },
+      {
+        "label": "伯益干啟位啟殺之",
+        "citations": 1
+      },
+      {
+        "label": "湯以薄武王以滈",
+        "citations": 1
+      },
+      {
+        "label": "遁終身無聞",
+        "citations": 1
+      },
+      {
+        "label": "帝禹夏后氏",
+        "citations": 1
+      },
+      {
+        "label": "算簴",
+        "citations": 1
+      },
+      {
+        "label": "剛",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 17,
+        "match": "line-initial",
+        "category_count": 17,
+        "categories": [
+          {
+            "path": "人事部一 > 叙人孕 > 叙人",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部一百 > 鑒戒下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部一百三十一 > 癡 > 迷忘",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部一百十六 > 待士",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部一百四十 > 知怯盜竊 > 真愚",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部六十 > 仁德仁惻 > 仁德",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部四十四 > 道徳隂徳 > 道徳",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "兵部七十二 > 節鉞 > 旄",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部三十二 > 陣 > 陣",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部六十九 > 柝 > 鐸",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部六十九 > 柝 > 鞀",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地下 > 耳",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "孫綽子蘇子",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "疾病部二 > 癎 > 狂",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "皇王部七 > 帝桀 > 夏禹",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "皇王部四 > 顓頊髙陽氏 > 黄帝軒轅氏",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "飲食部七 > 食下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 9,
+        "match": "exact",
+        "category_count": 7,
+        "categories": [
+          {
+            "path": "設官部一 > 總載篇宰相篇 > 宰相篇",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "設官部二十九 > 吏一百七十三",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "帝王部 > 優賢四十一 > 用賢四十",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "帝王部 > 誡懼三十六 > 納諫三十三",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "武功部九 > 鎧三十二盾三十三 > 鐸二十八",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "武功部五 > 軍容九兵勢十 > 陣七",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "酒食部 > 總篇二",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 6,
+        "match": "bracket-note",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "帝俊是黄帝字無稽 > 三代",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "帝俊是黄帝字無稽 > 五帝",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "夀",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鐘",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 5,
+        "match": "exact",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "人部 > 忠",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 鑒誡",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "帝王部",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "帝王部 > 勤勞",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 旄",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "伯益干啟位啟殺之",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "湯以薄武王以滈",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "遁終身無聞",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "帝王部一 > 帝禹夏后氏",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部四 > 算簴",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "事物紀原",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "殺頭曼單于者",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "見功臣 > 簨簴銘",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "白孔六帖",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "勤怠惰 > 剛",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "性情命 > 賢",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今合璧事類備要",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "樂器㫖歸",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "喻林",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "人事門 > 貴智",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "韻藻河麋射麋",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定韻府拾遺",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "補藻彊能㣲能",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "海録碎事",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "一饋七起",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "其姓氏懸諸日月 > 聱隅子",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "性行部 > 自負",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "駢志",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "帝乃許昏",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

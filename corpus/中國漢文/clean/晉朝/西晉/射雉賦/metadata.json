@@ -22,5 +22,161 @@
   "ca": "266–316年",
   "authors": [
     "潘岳"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 11,
+    "leishu_count": 6,
+    "categorised_citations": 11,
+    "genmoku_confirmed_citations": 7,
+    "category_leaves": [
+      {
+        "label": "弩",
+        "citations": 2
+      },
+      {
+        "label": "箭下",
+        "citations": 1
+      },
+      {
+        "label": "决戰下",
+        "citations": 1
+      },
+      {
+        "label": "綺",
+        "citations": 1
+      },
+      {
+        "label": "雉",
+        "citations": 1
+      },
+      {
+        "label": "⿱葉薌萁",
+        "citations": 1
+      },
+      {
+        "label": "兹化清",
+        "citations": 1
+      },
+      {
+        "label": "弩四十七",
+        "citations": 1
+      },
+      {
+        "label": "雜著",
+        "citations": 1
+      },
+      {
+        "label": "田獵",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 3,
+        "match": "author-prefix-stripped",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "兵部七十九 > 弩",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部八十一 > 射捍彈 > 箭下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部四十四 > 决戰下 > 决戰下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 3,
+        "match": "author-prefix-stripped",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "布帛部 > 綺",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 弩",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 雉",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "編珠",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "⿱葉薌萁",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "兹化清",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "武功部十三 > 箭四十八 > 弩四十七",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今事文類聚",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "雜著",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "産業部 > 田獵",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      }
+    ]
+  }
 }

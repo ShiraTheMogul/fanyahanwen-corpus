@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 5063,
   "corpus_root": "中國漢文",
@@ -42,5 +42,178 @@
       "body_start_line": 8
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 23,
+    "leishu_count": 7,
+    "categorised_citations": 23,
+    "genmoku_confirmed_citations": 2,
+    "category_leaves": [
+      {
+        "label": "詩",
+        "citations": 10
+      },
+      {
+        "label": "文章辨體二十四論呉訥",
+        "citations": 3
+      },
+      {
+        "label": "共推此生",
+        "citations": 2
+      },
+      {
+        "label": "夫妻",
+        "citations": 1
+      },
+      {
+        "label": "姊妹",
+        "citations": 1
+      },
+      {
+        "label": "鐘",
+        "citations": 1
+      },
+      {
+        "label": "俊秀",
+        "citations": 1
+      },
+      {
+        "label": "武備",
+        "citations": 1
+      },
+      {
+        "label": "端確",
+        "citations": 1
+      },
+      {
+        "label": "詩兄",
+        "citations": 1
+      },
+      {
+        "label": "藝苑四",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "天中記",
+        "citations": 11,
+        "match": "bracket-note",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "徐氏中論六卷 > 詩",
+            "citations": 8,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "夫妻",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "姊妹",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鐘",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "俊秀",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "武備",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "端確",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "稗編",
+        "citations": 3,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "文藝二 > 文章辨體二十四論呉訥",
+            "citations": 3,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "文學部 > 詩",
+            "citations": 2,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "駢志",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "共推此生",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "東坡詩詩律輸君一百籌 > 詩兄",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "藝苑四",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

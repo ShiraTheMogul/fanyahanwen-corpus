@@ -656,5 +656,317 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 69,
+    "leishu_count": 3,
+    "categorised_citations": 69,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "因難見人",
+        "citations": 2
+      },
+      {
+        "label": "不隨人轉",
+        "citations": 2
+      },
+      {
+        "label": "家世",
+        "citations": 2
+      },
+      {
+        "label": "忘本",
+        "citations": 1
+      },
+      {
+        "label": "觸類",
+        "citations": 1
+      },
+      {
+        "label": "兄弟",
+        "citations": 1
+      },
+      {
+        "label": "孫",
+        "citations": 1
+      },
+      {
+        "label": "儆戒",
+        "citations": 1
+      },
+      {
+        "label": "感嘆",
+        "citations": 1
+      },
+      {
+        "label": "不善攝養",
+        "citations": 1
+      },
+      {
+        "label": "克紹",
+        "citations": 1
+      },
+      {
+        "label": "神仙",
+        "citations": 1
+      },
+      {
+        "label": "老將",
+        "citations": 1
+      },
+      {
+        "label": "不量力",
+        "citations": 1
+      },
+      {
+        "label": "感謝",
+        "citations": 1
+      },
+      {
+        "label": "自嘆",
+        "citations": 1
+      },
+      {
+        "label": "自慰",
+        "citations": 1
+      },
+      {
+        "label": "自揆",
+        "citations": 1
+      },
+      {
+        "label": "自責",
+        "citations": 1
+      },
+      {
+        "label": "被䜛",
+        "citations": 1
+      },
+      {
+        "label": "陳情",
+        "citations": 1
+      },
+      {
+        "label": "推尊",
+        "citations": 1
+      },
+      {
+        "label": "為世輕重",
+        "citations": 1
+      },
+      {
+        "label": "睎慕",
+        "citations": 1
+      },
+      {
+        "label": "偷堕",
+        "citations": 1
+      },
+      {
+        "label": "好學",
+        "citations": 1
+      },
+      {
+        "label": "祭奠",
+        "citations": 1
+      },
+      {
+        "label": "道場追薦",
+        "citations": 1
+      },
+      {
+        "label": "氣槩",
+        "citations": 1
+      },
+      {
+        "label": "種徳",
+        "citations": 1
+      },
+      {
+        "label": "總論政事",
+        "citations": 1
+      },
+      {
+        "label": "怨望",
+        "citations": 1
+      },
+      {
+        "label": "懲創",
+        "citations": 1
+      },
+      {
+        "label": "祝頌",
+        "citations": 1
+      },
+      {
+        "label": "積漸",
+        "citations": 1
+      },
+      {
+        "label": "生辰",
+        "citations": 1
+      },
+      {
+        "label": "朋友",
+        "citations": 1
+      },
+      {
+        "label": "門生",
+        "citations": 1
+      },
+      {
+        "label": "隣里",
+        "citations": 1
+      },
+      {
+        "label": "懐鄉",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "記纂淵海",
+        "citations": 66,
+        "match": "bracket-note",
+        "category_count": 64,
+        "categories": [
+          {
+            "path": "論議部 > 因難見人",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "識見部 > 不隨人轉",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人事部 > 忘本",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人事部 > 觸類",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人倫部 > 兄弟",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人倫部 > 孫",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人情部 > 儆戒",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人情部 > 感嘆",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人道部 > 不善攝養",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人道部 > 克紹",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人道部 > 家世",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "仙道部 > 神仙",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "兵戎部 > 老將",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "分無求多 > 不量力",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "叙述部 > 感謝",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "叙述部 > 自嘆",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "叙述部 > 自慰",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "叙述部 > 自揆",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "叙述部 > 自責",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "叙述部 > 被䜛",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "翰苑新書",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "上並謝啓用 > 慕尚",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "家世",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "羣書考索",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "財用門 > 㑹計録",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

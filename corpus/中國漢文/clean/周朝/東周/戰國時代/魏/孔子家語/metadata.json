@@ -170,5 +170,287 @@
       "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
     }
   ],
-  "provenance_schema_version": 1
+  "provenance_schema_version": 1,
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 21,
+    "leishu_count": 10,
+    "categorised_citations": 21,
+    "genmoku_confirmed_citations": 10,
+    "category_leaves": [
+      {
+        "label": "雨上",
+        "citations": 1
+      },
+      {
+        "label": "宅",
+        "citations": 1
+      },
+      {
+        "label": "銘",
+        "citations": 1
+      },
+      {
+        "label": "牛中",
+        "citations": 1
+      },
+      {
+        "label": "太子二",
+        "citations": 1
+      },
+      {
+        "label": "岷山",
+        "citations": 1
+      },
+      {
+        "label": "津",
+        "citations": 1
+      },
+      {
+        "label": "御",
+        "citations": 1
+      },
+      {
+        "label": "恭敬",
+        "citations": 1
+      },
+      {
+        "label": "鏡",
+        "citations": 1
+      },
+      {
+        "label": "鏡六十五",
+        "citations": 1
+      },
+      {
+        "label": "蓋二十三",
+        "citations": 1
+      },
+      {
+        "label": "死三十",
+        "citations": 1
+      },
+      {
+        "label": "地",
+        "citations": 1
+      },
+      {
+        "label": "㑹稽諸山",
+        "citations": 1
+      },
+      {
+        "label": "總序",
+        "citations": 1
+      },
+      {
+        "label": "禮部下",
+        "citations": 1
+      },
+      {
+        "label": "去讒",
+        "citations": 1
+      },
+      {
+        "label": "家語",
+        "citations": 1
+      },
+      {
+        "label": "淳熙論語拾遺",
+        "citations": 1
+      },
+      {
+        "label": "總論政事",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 5,
+        "match": "exact",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "天部十 > 雨上 > 雨上",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "居處部八 > 宅 > 宅",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "文部六 > 銘銘誌附七辭 > 銘",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部十一 > 牛中",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "皇親部十三 > 太子二",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 5,
+        "match": "exact",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "地部 > 岷山",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部 > 津",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "巧藝部 > 御",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "帝王部 > 恭敬",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服飾部 > 鏡",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "儀飾部七 > 屩八十五屐八十六 > 鏡六十五",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "儀飾部五 > 毾㲪三十一 > 蓋二十三",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禮儀部 > 葬三十二挽歌三十三 > 死三十",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "地部 > 地",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "山部下 > 㑹稽諸山",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "冊府元龜",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "總序",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "初學記",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "禮部下",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "喻林",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "去讒",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "家語",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "焚書而獨存 > 淳熙論語拾遺",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "政事部 > 總論政事",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

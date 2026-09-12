@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 12495,
   "corpus_root": "中國漢文",
@@ -31,5 +31,218 @@
       "body_start_line": 5
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 16,
+    "leishu_count": 7,
+    "categorised_citations": 16,
+    "genmoku_confirmed_citations": 11,
+    "category_leaves": [
+      {
+        "label": "義",
+        "citations": 1
+      },
+      {
+        "label": "刻漏",
+        "citations": 1
+      },
+      {
+        "label": "沙",
+        "citations": 1
+      },
+      {
+        "label": "練",
+        "citations": 1
+      },
+      {
+        "label": "屐",
+        "citations": 1
+      },
+      {
+        "label": "衣服",
+        "citations": 1
+      },
+      {
+        "label": "笛",
+        "citations": 1
+      },
+      {
+        "label": "燭",
+        "citations": 1
+      },
+      {
+        "label": "御史臺總載",
+        "citations": 1
+      },
+      {
+        "label": "簾",
+        "citations": 1
+      },
+      {
+        "label": "雅樂中",
+        "citations": 1
+      },
+      {
+        "label": "立花磗",
+        "citations": 1
+      },
+      {
+        "label": "韻藻豐末毫末",
+        "citations": 1
+      },
+      {
+        "label": "唐太和野史",
+        "citations": 1
+      },
+      {
+        "label": "工部",
+        "citations": 1
+      },
+      {
+        "label": "御史臺",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 9,
+        "match": "exact",
+        "category_count": 9,
+        "categories": [
+          {
+            "path": "人部 > 義",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "儀飾部 > 刻漏",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部 > 沙",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "布帛部 > 練",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服飾部 > 屐",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服飾部 > 衣服",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部 > 笛",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "火部 > 燭",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "設官部 > 御史臺總載",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "服用部二 > 幄幕 > 簾",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部二 > 雅樂中",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "宋仁宗 > 立花磗",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "韻藻豐末毫末",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "藝文 > 雜文 > 唐太和野史",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "翰苑新書",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "工部",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "職官部 > 御史臺",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

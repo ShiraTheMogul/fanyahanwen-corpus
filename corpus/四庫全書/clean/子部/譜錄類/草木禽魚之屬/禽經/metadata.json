@@ -87,5 +87,785 @@
       "1781年"
     ]
   },
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 121,
+    "leishu_count": 14,
+    "categorised_citations": 121,
+    "genmoku_confirmed_citations": 20,
+    "category_leaves": [
+      {
+        "label": "雉",
+        "citations": 5
+      },
+      {
+        "label": "總禽",
+        "citations": 4
+      },
+      {
+        "label": "鵝塚",
+        "citations": 4
+      },
+      {
+        "label": "鷺",
+        "citations": 3
+      },
+      {
+        "label": "鵁鶄",
+        "citations": 3
+      },
+      {
+        "label": "鸛",
+        "citations": 3
+      },
+      {
+        "label": "鷹弭角",
+        "citations": 3
+      },
+      {
+        "label": "一為鴟",
+        "citations": 3
+      },
+      {
+        "label": "沸河",
+        "citations": 3
+      },
+      {
+        "label": "鶴怨鷄嗔",
+        "citations": 3
+      },
+      {
+        "label": "鸞",
+        "citations": 2
+      },
+      {
+        "label": "鳩",
+        "citations": 2
+      },
+      {
+        "label": "鵝",
+        "citations": 2
+      },
+      {
+        "label": "鶚",
+        "citations": 2
+      },
+      {
+        "label": "鶡",
+        "citations": 2
+      },
+      {
+        "label": "鷹",
+        "citations": 2
+      },
+      {
+        "label": "摯祭鳥",
+        "citations": 2
+      },
+      {
+        "label": "同之號鬭雞亦號開府",
+        "citations": 2
+      },
+      {
+        "label": "何益",
+        "citations": 2
+      },
+      {
+        "label": "像地尾像緯",
+        "citations": 2
+      },
+      {
+        "label": "䳭鴒",
+        "citations": 1
+      },
+      {
+        "label": "孔雀",
+        "citations": 1
+      },
+      {
+        "label": "隼",
+        "citations": 1
+      },
+      {
+        "label": "鳯",
+        "citations": 1
+      },
+      {
+        "label": "鴻鴈",
+        "citations": 1
+      },
+      {
+        "label": "鷓鴣",
+        "citations": 1
+      },
+      {
+        "label": "鷗",
+        "citations": 1
+      },
+      {
+        "label": "鷸",
+        "citations": 1
+      },
+      {
+        "label": "鸚鵡",
+        "citations": 1
+      },
+      {
+        "label": "彈",
+        "citations": 1
+      },
+      {
+        "label": "烏",
+        "citations": 1
+      },
+      {
+        "label": "燕",
+        "citations": 1
+      },
+      {
+        "label": "翡翠",
+        "citations": 1
+      },
+      {
+        "label": "雞",
+        "citations": 1
+      },
+      {
+        "label": "鴈",
+        "citations": 1
+      },
+      {
+        "label": "鴨",
+        "citations": 1
+      },
+      {
+        "label": "鵜鶘",
+        "citations": 1
+      },
+      {
+        "label": "鵲",
+        "citations": 1
+      },
+      {
+        "label": "鶴",
+        "citations": 1
+      },
+      {
+        "label": "鶻",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "天中記",
+        "citations": 29,
+        "match": "bracket-note",
+        "category_count": 20,
+        "categories": [
+          {
+            "path": "總禽",
+            "citations": 4,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鷺",
+            "citations": 3,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "雉",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鵁鶄",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鸛",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鸞",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "䳭鴒",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "孔雀",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "隼",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鳩",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鳯",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鴻鴈",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鵝",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鶚",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鶡",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鷓鴣",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鷗",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鷸",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鷹",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鸚鵡",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 20,
+        "match": "author-prefix-stripped",
+        "category_count": 18,
+        "categories": [
+          {
+            "path": "鳥部 > 雉",
+            "citations": 3,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "巧藝部 > 彈",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 烏",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 燕",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 翡翠",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 雞",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 鴈",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 鴨",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 鵜鶘",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 鵝",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 鵲",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 鶚",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 鶡",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 鶴",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 鶻",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 鷹",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 鸑鷟",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 鸛",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "海録碎事",
+        "citations": 15,
+        "match": "exact",
+        "category_count": 11,
+        "categories": [
+          {
+            "path": "晨風懐苦心注鷹鷂屬 > 鷹弭角",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "林鳥朝嘲水鳥夜㖡 > 一為鴟",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "林鳥朝嘲水鳥夜㖡 > 沸河",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "池棲子孫鶴堂宿弟兄仙 > 鶴怨鷄嗔",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "一為鴟",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "和鸞",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "林鳥朝嘲水鳥夜㖡 > 冠鳥",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "林鳥朝嘲水鳥夜㖡 > 毅鳥",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "沸河",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鶴怨鷄嗔",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鷹弭角",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定分類字錦",
+        "citations": 12,
+        "match": "exact",
+        "category_count": 11,
+        "categories": [
+          {
+            "path": "仄神雀 > 摯祭鳥",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "仄神雀 > 瑤光散以膺擊",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "仄神雀 > 茹沫 > 巢門",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "仄黄鳥 > 平依人嘉賔",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "仄黄鳥 > 應玉衡",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "仄黄鳥 > 戴勝 > 一宿",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "仄黄鳥 > 振鷺雪客",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "仄黄鳥 > 觜曲如鈎曬翅 > 尼巢為池朝鳴大風",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "仄黄鳥 > 語新",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "仄黄鳥 > 謝豹",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "仄黄鳥 > 錦籠送",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 11,
+        "match": "line-initial",
+        "category_count": 11,
+        "categories": [
+          {
+            "path": "月令鴻鴈來賔 > 鴈信鴻智",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "燕狂鶯喜",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禽",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "螢火也古詩螢彩繞梁飛 > 愛力愛毛",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見元日 > 巢止數枝",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見妻 > 啄則偃絲",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見火 > 善避矰繳",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見火 > 背飛向宿",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見鸛 > 咮匾善唼",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "陶 > 尋常丈尺",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "𫝊信 > 披帶",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 7,
+        "match": "bracket-note",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "同之號鬭雞亦號開府",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "乾睪一名鸚鵡",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "卵孟虧去之",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "懐中縁臂上久之乃去",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "於庶龜",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鴚",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "駢志",
+        "citations": 7,
+        "match": "exact",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "鵝塚",
+            "citations": 4,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "何益",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "東海",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 6,
+        "match": "bracket-note",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "吸呷一呷",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "有巢",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "雄飛",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "韻藻增懷妊",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "韻藻翡翠",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鴻翥騰翥",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "格致鏡原",
+        "citations": 4,
+        "match": "line-initial",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "獸𩔖 > 𧰼",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鳥𩔖 > 鳩",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鳥𩔖 > 鵁鶄",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鳥𩔖 > 鶺鴒",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "喻林",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "人事門 > 善用",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "太山雨天下小山雨一國",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "物宐門 > 殊性",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "花木鳥獸集𩔖",
+        "citations": 3,
+        "match": "line-initial",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "子瞻戲王介甫字",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "少陵詩江上小堂巢翡翠 > 杜鵑",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "雜俎或言燕蟄井底舊",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "編珠",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "像地尾像緯",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "羽族部一 > 鳥",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定子史精華",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "視而生舞而不下",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

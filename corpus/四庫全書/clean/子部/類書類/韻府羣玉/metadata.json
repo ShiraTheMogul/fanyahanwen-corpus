@@ -3,7 +3,7 @@
   "work_id": 127247,
   "corpus_root": "四庫全書",
   "title": "韻府羣玉",
-  "is_compilation": false,
+  "is_compilation": true,
   "contained_in": [
     {
       "work_id": 80277,
@@ -307,5 +307,99 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "compilation_note": "子部類書類：本書為類書，內容多為徵引他書原文；徵引關係見 corpus/index_leishu_徵引.csv，不另重複計入語料庫字數。",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 6,
+    "leishu_count": 2,
+    "categorised_citations": 6,
+    "genmoku_confirmed_citations": 5,
+    "category_leaves": [
+      {
+        "label": "貢舉",
+        "citations": 1
+      },
+      {
+        "label": "毦",
+        "citations": 1
+      },
+      {
+        "label": "珂",
+        "citations": 1
+      },
+      {
+        "label": "灰",
+        "citations": 1
+      },
+      {
+        "label": "驢",
+        "citations": 1
+      },
+      {
+        "label": "笑",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 5,
+        "match": "exact",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "政術部 > 貢舉",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 毦",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 珂",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "火部 > 灰",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 驢",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "史且以葛榮為爾朱更誤 > 笑",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  },
+  "leishu_citation_summary": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "works_attested": 76,
+    "citations": 128,
+    "categorised_citations": 128,
+    "distinct_categories": 82,
+    "unresolved_heads": 3747
+  }
 }

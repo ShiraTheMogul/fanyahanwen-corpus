@@ -39,5 +39,78 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "1368–1644年"
+  "ca": "1368–1644年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 5,
+    "leishu_count": 3,
+    "categorised_citations": 5,
+    "genmoku_confirmed_citations": 2,
+    "category_leaves": [
+      {
+        "label": "鼈",
+        "citations": 2
+      },
+      {
+        "label": "尚書",
+        "citations": 1
+      },
+      {
+        "label": "柷敔",
+        "citations": 1
+      },
+      {
+        "label": "葬三十二",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "文學部 > 尚書",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部 > 柷敔",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "格致鏡原",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "水族𩔖五 > 鼈",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "禮儀部 > 葬三十二挽歌三十三 > 葬三十二",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

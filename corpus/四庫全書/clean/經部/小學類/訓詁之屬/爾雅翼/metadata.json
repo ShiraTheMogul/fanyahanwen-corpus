@@ -451,5 +451,453 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 57,
+    "leishu_count": 5,
+    "categorised_citations": 57,
+    "genmoku_confirmed_citations": 27,
+    "category_leaves": [
+      {
+        "label": "驢",
+        "citations": 3
+      },
+      {
+        "label": "麻",
+        "citations": 3
+      },
+      {
+        "label": "騾",
+        "citations": 3
+      },
+      {
+        "label": "梓",
+        "citations": 2
+      },
+      {
+        "label": "粱",
+        "citations": 2
+      },
+      {
+        "label": "葵",
+        "citations": 2
+      },
+      {
+        "label": "魚",
+        "citations": 2
+      },
+      {
+        "label": "雉",
+        "citations": 2
+      },
+      {
+        "label": "鵲",
+        "citations": 2
+      },
+      {
+        "label": "苽",
+        "citations": 2
+      },
+      {
+        "label": "麥",
+        "citations": 1
+      },
+      {
+        "label": "楛",
+        "citations": 1
+      },
+      {
+        "label": "楝",
+        "citations": 1
+      },
+      {
+        "label": "檉",
+        "citations": 1
+      },
+      {
+        "label": "熊",
+        "citations": 1
+      },
+      {
+        "label": "猩猩",
+        "citations": 1
+      },
+      {
+        "label": "駱駝",
+        "citations": 1
+      },
+      {
+        "label": "蜻蜓",
+        "citations": 1
+      },
+      {
+        "label": "蜜",
+        "citations": 1
+      },
+      {
+        "label": "蛇",
+        "citations": 1
+      },
+      {
+        "label": "蝦",
+        "citations": 1
+      },
+      {
+        "label": "蟹",
+        "citations": 1
+      },
+      {
+        "label": "黿",
+        "citations": 1
+      },
+      {
+        "label": "伯勞",
+        "citations": 1
+      },
+      {
+        "label": "鳥",
+        "citations": 1
+      },
+      {
+        "label": "鵠",
+        "citations": 1
+      },
+      {
+        "label": "謬誤",
+        "citations": 1
+      },
+      {
+        "label": "蛙",
+        "citations": 1
+      },
+      {
+        "label": "稻",
+        "citations": 1
+      },
+      {
+        "label": "羆",
+        "citations": 1
+      },
+      {
+        "label": "薤",
+        "citations": 1
+      },
+      {
+        "label": "蘘荷",
+        "citations": 1
+      },
+      {
+        "label": "駱駞",
+        "citations": 1
+      },
+      {
+        "label": "鬼目",
+        "citations": 1
+      },
+      {
+        "label": "鳩",
+        "citations": 1
+      },
+      {
+        "label": "鳯",
+        "citations": 1
+      },
+      {
+        "label": "鵬",
+        "citations": 1
+      },
+      {
+        "label": "鶯",
+        "citations": 1
+      },
+      {
+        "label": "鹿",
+        "citations": 1
+      },
+      {
+        "label": "芡實",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 27,
+        "match": "exact",
+        "category_count": 25,
+        "categories": [
+          {
+            "path": "木部 > 梓",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 驢",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "五榖部 > 粱",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "五榖部 > 麥",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "五榖部 > 麻",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "木部 > 楛",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "木部 > 楝",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "木部 > 檉",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 熊",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 猩猩",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 駱駝",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 騾",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "菜蔬部 > 葵",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "蟲豸部 > 蜻蜓",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "食物部 > 蜜",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 蛇",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 蝦",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 蟹",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 魚",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 黿",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 23,
+        "match": "bracket-note",
+        "category_count": 21,
+        "categories": [
+          {
+            "path": "苽",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "駱駞 > 騾",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "子于時喧然傳之 > 謬誤",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "濟河事或在兹 > 蛙",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "稻",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "粱",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "羆",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "葵",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "薤",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "蘘荷",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "駱駞",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "駱駞 > 驢",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鬼目",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "魚",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鳩",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鳯",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鵬",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鵲",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鶯",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鹿",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "格致鏡原",
+        "citations": 4,
+        "match": "line-initial",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "果類 > 芡實",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "果類 > 菱",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "穀𩔖 > 麻",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鳥𩔖 > 雉",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "駢志",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "之熊經",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "轅下",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "飛則蜮沈鵙鳴則蛇結",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

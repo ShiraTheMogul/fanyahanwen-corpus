@@ -22,5 +22,280 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "前221–前206年"
+  "ca": "前221–前206年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 25,
+    "leishu_count": 8,
+    "categorised_citations": 25,
+    "genmoku_confirmed_citations": 10,
+    "category_leaves": [
+      {
+        "label": "將帥四",
+        "citations": 4
+      },
+      {
+        "label": "幕二",
+        "citations": 1
+      },
+      {
+        "label": "勸賞六",
+        "citations": 1
+      },
+      {
+        "label": "論兵一",
+        "citations": 1
+      },
+      {
+        "label": "兵勢十",
+        "citations": 1
+      },
+      {
+        "label": "騎八",
+        "citations": 1
+      },
+      {
+        "label": "旗",
+        "citations": 1
+      },
+      {
+        "label": "叙兵下",
+        "citations": 1
+      },
+      {
+        "label": "撫士下",
+        "citations": 1
+      },
+      {
+        "label": "將帥下",
+        "citations": 1
+      },
+      {
+        "label": "簞",
+        "citations": 1
+      },
+      {
+        "label": "幕",
+        "citations": 1
+      },
+      {
+        "label": "敘皇王下",
+        "citations": 1
+      },
+      {
+        "label": "穴",
+        "citations": 1
+      },
+      {
+        "label": "旌旗",
+        "citations": 1
+      },
+      {
+        "label": "賢",
+        "citations": 1
+      },
+      {
+        "label": "將帥",
+        "citations": 1
+      },
+      {
+        "label": "與士卒一體",
+        "citations": 1
+      },
+      {
+        "label": "趨事赴功",
+        "citations": 1
+      },
+      {
+        "label": "莊子七篇",
+        "citations": 1
+      },
+      {
+        "label": "草枯",
+        "citations": 1
+      },
+      {
+        "label": "武經七書",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "北堂書鈔",
+        "citations": 9,
+        "match": "exact",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "武功部三 > 將帥四",
+            "citations": 4,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "儀飾部三 > 步障十三承塵十四 > 幕二",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "政術部 > 佞邪九貪暴十 > 勸賞六",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "武功部一 > 論兵一",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "武功部五 > 軍容九兵勢十 > 兵勢十",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "武功部五 > 軍容九兵勢十 > 騎八",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 7,
+        "match": "author-prefix-stripped",
+        "category_count": 7,
+        "categories": [
+          {
+            "path": "兵部七十一 > 旌 > 旗",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部二 > 叙兵下 > 叙兵下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部十二 > 撫士下 > 撫士下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部四 > 將帥下 > 將帥下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "器物部五 > 簞爵 > 簞",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服用部二 > 幄幕 > 幕",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "皇王部二 > 敘皇王下 > 敘皇王下",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "地部 > 穴",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 旌旗",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "人部四 > 賢",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武部 > 將帥",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "兵戎部 > 與士卒一體",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "兵戎部 > 趨事赴功",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "小學紺珠",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "敕牒 > 莊子七篇",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "草枯",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "讀書紀數畧",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "陰符三百言 > 武經七書",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

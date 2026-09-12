@@ -40,5 +40,103 @@
         }
       ]
     }
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 5,
+    "leishu_count": 5,
+    "categorised_citations": 5,
+    "genmoku_confirmed_citations": 2,
+    "category_leaves": [
+      {
+        "label": "見㡬",
+        "citations": 1
+      },
+      {
+        "label": "秋",
+        "citations": 1
+      },
+      {
+        "label": "雪",
+        "citations": 1
+      },
+      {
+        "label": "貧",
+        "citations": 1
+      },
+      {
+        "label": "額為天灸以厭疫",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "喻林",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "人事門 > 見㡬",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "秋",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "天部十二 > 露 > 雪",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "人部 > 貧",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "編珠",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "額為天灸以厭疫",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

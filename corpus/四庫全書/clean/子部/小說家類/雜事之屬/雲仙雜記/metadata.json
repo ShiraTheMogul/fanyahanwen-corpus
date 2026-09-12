@@ -187,5 +187,212 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 18,
+    "leishu_count": 4,
+    "categorised_citations": 18,
+    "genmoku_confirmed_citations": 6,
+    "category_leaves": [
+      {
+        "label": "光範",
+        "citations": 1
+      },
+      {
+        "label": "多",
+        "citations": 1
+      },
+      {
+        "label": "掌舍",
+        "citations": 1
+      },
+      {
+        "label": "摘句",
+        "citations": 1
+      },
+      {
+        "label": "流芳",
+        "citations": 1
+      },
+      {
+        "label": "韻藻六卿",
+        "citations": 1
+      },
+      {
+        "label": "韻藻明清水清",
+        "citations": 1
+      },
+      {
+        "label": "栟櫚",
+        "citations": 1
+      },
+      {
+        "label": "障泥",
+        "citations": 1
+      },
+      {
+        "label": "酒",
+        "citations": 1
+      },
+      {
+        "label": "蛤蜊",
+        "citations": 1
+      },
+      {
+        "label": "蟹",
+        "citations": 1
+      },
+      {
+        "label": "魚",
+        "citations": 1
+      },
+      {
+        "label": "似扇含暉",
+        "citations": 1
+      },
+      {
+        "label": "萬鈞小連城鷓",
+        "citations": 1
+      },
+      {
+        "label": "蓋漆方士",
+        "citations": 1
+      },
+      {
+        "label": "影重連竹隂",
+        "citations": 1
+      },
+      {
+        "label": "履",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 7,
+        "match": "bracket-note",
+        "category_count": 7,
+        "categories": [
+          {
+            "path": "光範",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "多",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "掌舍",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "摘句",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "流芳",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "韻藻六卿",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "韻藻明清水清",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 6,
+        "match": "exact",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "木部 > 栟櫚",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 障泥",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "食物部 > 酒",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 蛤蜊",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 蟹",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 魚",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "御定分類字錦",
+        "citations": 4,
+        "match": "bracket-note",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "仄香案 > 似扇含暉",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "建策三篋 > 萬鈞小連城鷓",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "建策三篋 > 蓋漆方士",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "戢武天禄 > 影重連竹隂",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "格致鏡原",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "冠服𩔖 > 履",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

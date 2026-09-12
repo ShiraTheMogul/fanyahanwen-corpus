@@ -78,5 +78,82 @@
       "879年"
     ]
   },
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 4,
+    "leishu_count": 4,
+    "categorised_citations": 4,
+    "genmoku_confirmed_citations": 1,
+    "category_leaves": [
+      {
+        "label": "石",
+        "citations": 2
+      },
+      {
+        "label": "勢處故人",
+        "citations": 1
+      },
+      {
+        "label": "小如斗上霄石",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "石",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "陳陛延友 > 勢處故人",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定分類字錦",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "鷹頭 > 小如斗上霄石",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "地部 > 石",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 62630,
   "corpus_root": "中國漢文",
@@ -152,5 +152,411 @@
       "body_start_line": 8
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 38,
+    "leishu_count": 9,
+    "categorised_citations": 38,
+    "genmoku_confirmed_citations": 12,
+    "category_leaves": [
+      {
+        "label": "星",
+        "citations": 2
+      },
+      {
+        "label": "月",
+        "citations": 2
+      },
+      {
+        "label": "海",
+        "citations": 2
+      },
+      {
+        "label": "妓妾",
+        "citations": 2
+      },
+      {
+        "label": "長大人",
+        "citations": 1
+      },
+      {
+        "label": "牛",
+        "citations": 1
+      },
+      {
+        "label": "狗",
+        "citations": 1
+      },
+      {
+        "label": "羊",
+        "citations": 1
+      },
+      {
+        "label": "豕",
+        "citations": 1
+      },
+      {
+        "label": "錢",
+        "citations": 1
+      },
+      {
+        "label": "芷",
+        "citations": 1
+      },
+      {
+        "label": "蛇",
+        "citations": 1
+      },
+      {
+        "label": "螺",
+        "citations": 1
+      },
+      {
+        "label": "魚",
+        "citations": 1
+      },
+      {
+        "label": "鶬",
+        "citations": 1
+      },
+      {
+        "label": "四留銘",
+        "citations": 1
+      },
+      {
+        "label": "養前生母",
+        "citations": 1
+      },
+      {
+        "label": "因姓名為謎",
+        "citations": 1
+      },
+      {
+        "label": "月下高吟",
+        "citations": 1
+      },
+      {
+        "label": "一脰兩翅",
+        "citations": 1
+      },
+      {
+        "label": "乞樹",
+        "citations": 1
+      },
+      {
+        "label": "玉華侍郎",
+        "citations": 1
+      },
+      {
+        "label": "天繪",
+        "citations": 1
+      },
+      {
+        "label": "誤國之報",
+        "citations": 1
+      },
+      {
+        "label": "婦人擎盤",
+        "citations": 1
+      },
+      {
+        "label": "海鰍",
+        "citations": 1
+      },
+      {
+        "label": "亭",
+        "citations": 1
+      },
+      {
+        "label": "天",
+        "citations": 1
+      },
+      {
+        "label": "雹",
+        "citations": 1
+      },
+      {
+        "label": "鬼車",
+        "citations": 1
+      },
+      {
+        "label": "雨雹",
+        "citations": 1
+      },
+      {
+        "label": "一宫",
+        "citations": 1
+      },
+      {
+        "label": "車",
+        "citations": 1
+      },
+      {
+        "label": "荘鄰里",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 12,
+        "match": "exact",
+        "category_count": 12,
+        "categories": [
+          {
+            "path": "人部 > 長大人",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "天部 > 星",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 牛",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 狗",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 羊",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 豕",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "珍寶部 > 錢",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "草部 > 芷",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 蛇",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 螺",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 魚",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 鶬",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 11,
+        "match": "line-initial",
+        "category_count": 11,
+        "categories": [
+          {
+            "path": "唐肅宗 > 四留銘",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "宋 > 養前生母",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "宋張亢性 > 因姓名為謎",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "得龜圓五尺 > 月下高吟",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "晋王羲之好鴞炙 > 一脰兩翅",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見仙 > 乞樹",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見天 > 玉華侍郎",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見琵琶 > 天繪",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見貶謫 > 誤國之報",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "贈龜 > 婦人擎盤",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "𫝊沫 > 海鰍",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 7,
+        "match": "bracket-note",
+        "category_count": 7,
+        "categories": [
+          {
+            "path": "公卿宅有金盃玉盌之號 > 亭",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "天",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "星",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "月",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "海",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "雹",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鬼車",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "地理部 > 海",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "災異部 > 雨雹",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "妓妾",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定駢字類編",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "一宫",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "格致鏡原",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "乾象𩔖 > 月",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "花木鳥獸集𩔖",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "小 > 車",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "萬姓統譜",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "荘鄰里",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

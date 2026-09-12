@@ -43,5 +43,227 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "960–1127年"
+  "ca": "960–1127年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 20,
+    "leishu_count": 7,
+    "categorised_citations": 20,
+    "genmoku_confirmed_citations": 4,
+    "category_leaves": [
+      {
+        "label": "將帥",
+        "citations": 3
+      },
+      {
+        "label": "四曹事",
+        "citations": 2
+      },
+      {
+        "label": "兄弟",
+        "citations": 1
+      },
+      {
+        "label": "帝王符瑞",
+        "citations": 1
+      },
+      {
+        "label": "師旅",
+        "citations": 1
+      },
+      {
+        "label": "稀",
+        "citations": 1
+      },
+      {
+        "label": "面",
+        "citations": 1
+      },
+      {
+        "label": "宫殿儉",
+        "citations": 1
+      },
+      {
+        "label": "燭",
+        "citations": 1
+      },
+      {
+        "label": "拾遺",
+        "citations": 1
+      },
+      {
+        "label": "殿庭争勝",
+        "citations": 1
+      },
+      {
+        "label": "守主不離",
+        "citations": 1
+      },
+      {
+        "label": "喉骨太髙",
+        "citations": 1
+      },
+      {
+        "label": "奭束帛",
+        "citations": 1
+      },
+      {
+        "label": "厯代沿革",
+        "citations": 1
+      },
+      {
+        "label": "宣撫",
+        "citations": 1
+      },
+      {
+        "label": "漕舉",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 7,
+        "match": "bracket-note",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "將帥",
+            "citations": 3,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "兄弟",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "帝王符瑞",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "師旅",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "稀",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 4,
+        "match": "exact",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "人部 > 面",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "居處部 > 宫殿儉",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "火部 > 燭",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "設官部 > 拾遺",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 3,
+        "match": "line-initial",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "唐孟郊年五十舉進士第 > 殿庭争勝",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見賤士 > 守主不離",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見隠士 > 喉骨太髙",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "羣書考索",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "四曹事",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "奭束帛",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今合璧事類備要",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "厯代沿革",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "翰苑新書",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "宣撫",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "科舉部 > 漕舉",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

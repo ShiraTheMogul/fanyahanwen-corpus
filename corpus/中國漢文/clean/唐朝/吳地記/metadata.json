@@ -102,5 +102,392 @@
       "前510年",
       "前514年"
     ]
+  },
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 36,
+    "leishu_count": 9,
+    "categorised_citations": 36,
+    "genmoku_confirmed_citations": 19,
+    "category_leaves": [
+      {
+        "label": "湖",
+        "citations": 2
+      },
+      {
+        "label": "臺",
+        "citations": 2
+      },
+      {
+        "label": "支硎山",
+        "citations": 2
+      },
+      {
+        "label": "塘",
+        "citations": 1
+      },
+      {
+        "label": "洲",
+        "citations": 1
+      },
+      {
+        "label": "海",
+        "citations": 1
+      },
+      {
+        "label": "包山",
+        "citations": 1
+      },
+      {
+        "label": "姑蘇山",
+        "citations": 1
+      },
+      {
+        "label": "硯石山",
+        "citations": 1
+      },
+      {
+        "label": "粟山",
+        "citations": 1
+      },
+      {
+        "label": "陽城山",
+        "citations": 1
+      },
+      {
+        "label": "城上",
+        "citations": 1
+      },
+      {
+        "label": "城下",
+        "citations": 1
+      },
+      {
+        "label": "宅",
+        "citations": 1
+      },
+      {
+        "label": "門下",
+        "citations": 1
+      },
+      {
+        "label": "鷰",
+        "citations": 1
+      },
+      {
+        "label": "城",
+        "citations": 1
+      },
+      {
+        "label": "諱",
+        "citations": 1
+      },
+      {
+        "label": "妓",
+        "citations": 1
+      },
+      {
+        "label": "宗衮又誤",
+        "citations": 1
+      },
+      {
+        "label": "穴",
+        "citations": 1
+      },
+      {
+        "label": "縣",
+        "citations": 1
+      },
+      {
+        "label": "虎丘山",
+        "citations": 1
+      },
+      {
+        "label": "谿",
+        "citations": 1
+      },
+      {
+        "label": "魚",
+        "citations": 1
+      },
+      {
+        "label": "金華赤羊",
+        "citations": 1
+      },
+      {
+        "label": "門",
+        "citations": 1
+      },
+      {
+        "label": "田獵",
+        "citations": 1
+      },
+      {
+        "label": "太湖中穹窿山有銅闕",
+        "citations": 1
+      },
+      {
+        "label": "杏者東方嵗星之精",
+        "citations": 1
+      },
+      {
+        "label": "地部中",
+        "citations": 1
+      },
+      {
+        "label": "三星",
+        "citations": 1
+      },
+      {
+        "label": "告訴",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 15,
+        "match": "author-prefix-stripped",
+        "category_count": 14,
+        "categories": [
+          {
+            "path": "地部三十一 > 湖潭 > 湖",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部三十九 > 沙 > 塘",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部三十四 > 湍灘 > 洲",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部二十五 > 海江 > 海",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部十一 > 卞山 > 包山",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部十一 > 卞山 > 姑蘇山",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部十一 > 卞山 > 硯石山",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部十一 > 卞山 > 粟山",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部十一 > 卞山 > 陽城山",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "居處部二十 > 城上 > 城上",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "居處部二十一 > 城下 > 城下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "居處部八 > 宅 > 宅",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "居處部十一 > 門 > 門下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "羽族部九 > 大雀 > 鷰",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 6,
+        "match": "bracket-note",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "城",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "大武帝賜名懐逺 > 諱",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "妓",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "宗衮又誤",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "穴",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "縣",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 4,
+        "match": "exact",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "地部 > 虎丘山",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部 > 谿",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "居處部 > 臺",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 魚",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "圖書編",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "年重修㑹仙亭記 > 支硎山",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "金華赤羊",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "居處部三 > 門",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "居處部二 > 臺",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "産業部 > 田獵",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "太湖中穹窿山有銅闕",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "杏者東方嵗星之精",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "初學記",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "地部中",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定駢字類編",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "三星",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "駢志",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "告訴",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
   }
 }

@@ -559,5 +559,79 @@
       "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
     }
   ],
-  "provenance_schema_version": 1
+  "provenance_schema_version": 1,
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 6,
+    "leishu_count": 2,
+    "categorised_citations": 6,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "評詩",
+        "citations": 2
+      },
+      {
+        "label": "道場追薦",
+        "citations": 1
+      },
+      {
+        "label": "評文下",
+        "citations": 1
+      },
+      {
+        "label": "邸驛",
+        "citations": 1
+      },
+      {
+        "label": "尉",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "記纂淵海",
+        "citations": 4,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "斐然成章 > 評詩",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "喪記部 > 道場追薦",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "著述部 > 評文下",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "公𪠘 > 邸驛",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "誤 > 尉",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

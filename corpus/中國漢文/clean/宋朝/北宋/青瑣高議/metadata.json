@@ -307,5 +307,87 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "960–1127年"
+  "ca": "960–1127年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 5,
+    "leishu_count": 3,
+    "categorised_citations": 5,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "女",
+        "citations": 1
+      },
+      {
+        "label": "昭明學士誤",
+        "citations": 1
+      },
+      {
+        "label": "笛",
+        "citations": 1
+      },
+      {
+        "label": "錦羽兒",
+        "citations": 1
+      },
+      {
+        "label": "風水",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "天中記",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "女",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "昭明學士誤",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "歎服之 > 笛",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "海録碎事",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "錦羽兒",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "伎術部 > 風水",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

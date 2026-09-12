@@ -19,5 +19,80 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "960–1127年"
+  "ca": "960–1127年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 6,
+    "leishu_count": 2,
+    "categorised_citations": 6,
+    "genmoku_confirmed_citations": 4,
+    "category_leaves": [
+      {
+        "label": "海",
+        "citations": 2
+      },
+      {
+        "label": "石",
+        "citations": 2
+      },
+      {
+        "label": "貓",
+        "citations": 1
+      },
+      {
+        "label": "諱",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 4,
+        "match": "exact",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "地部 > 海",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部 > 石",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 貓",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "禮儀部 > 諱",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "海",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "石",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -25,5 +25,87 @@
   ],
   "authors": [
     "張華"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 5,
+    "leishu_count": 3,
+    "categorised_citations": 5,
+    "genmoku_confirmed_citations": 1,
+    "category_leaves": [
+      {
+        "label": "託比",
+        "citations": 1
+      },
+      {
+        "label": "大小",
+        "citations": 1
+      },
+      {
+        "label": "藩籬",
+        "citations": 1
+      },
+      {
+        "label": "鵾雞",
+        "citations": 1
+      },
+      {
+        "label": "雜著",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "喻林",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "人事門 > 託比",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "物宐門 > 大小",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "居處部二十五 > 華表 > 藩籬",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "羽族部三 > 鴻鵠 > 鵾雞",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今事文類聚",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "寒雀楊廷秀 > 雜著",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

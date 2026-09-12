@@ -21,5 +21,366 @@
   "known_commentaries": [],
   "authors": [
     "諸葛亮"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 31,
+    "leishu_count": 13,
+    "categorised_citations": 31,
+    "genmoku_confirmed_citations": 12,
+    "category_leaves": [
+      {
+        "label": "旗十八",
+        "citations": 3
+      },
+      {
+        "label": "幔",
+        "citations": 3
+      },
+      {
+        "label": "麾",
+        "citations": 2
+      },
+      {
+        "label": "叙兵噐",
+        "citations": 1
+      },
+      {
+        "label": "旗",
+        "citations": 1
+      },
+      {
+        "label": "刀下",
+        "citations": 1
+      },
+      {
+        "label": "旛",
+        "citations": 1
+      },
+      {
+        "label": "陣",
+        "citations": 1
+      },
+      {
+        "label": "法令",
+        "citations": 1
+      },
+      {
+        "label": "彭排",
+        "citations": 1
+      },
+      {
+        "label": "鹿角",
+        "citations": 1
+      },
+      {
+        "label": "祭禮下",
+        "citations": 1
+      },
+      {
+        "label": "幔八",
+        "citations": 1
+      },
+      {
+        "label": "角二十九",
+        "citations": 1
+      },
+      {
+        "label": "陣七",
+        "citations": 1
+      },
+      {
+        "label": "麾二十二",
+        "citations": 1
+      },
+      {
+        "label": "弩四十七",
+        "citations": 1
+      },
+      {
+        "label": "刀",
+        "citations": 1
+      },
+      {
+        "label": "武部",
+        "citations": 1
+      },
+      {
+        "label": "器物叢談",
+        "citations": 1
+      },
+      {
+        "label": "稼穡凡治野以下劑致甿",
+        "citations": 1
+      },
+      {
+        "label": "舉青",
+        "citations": 1
+      },
+      {
+        "label": "齊内政寄令變周之譜",
+        "citations": 1
+      },
+      {
+        "label": "矯詔",
+        "citations": 1
+      },
+      {
+        "label": "弓弩",
+        "citations": 1
+      },
+      {
+        "label": "將領軍伍",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 11,
+        "match": "author-prefix-stripped",
+        "category_count": 10,
+        "categories": [
+          {
+            "path": "兵部七十二 > 節鉞 > 麾",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部七十 > 叙兵噐牙 > 叙兵噐",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "兵部七十一 > 旌 > 旗",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部七十七 > 鋏鈹 > 刀下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部七十二 > 節鉞 > 旛",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "兵部三十二 > 陣 > 陣",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部二十七 > 法令 > 法令",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部八十八 > 椎 > 彭排",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部六十八 > 弋 > 鹿角",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "禮儀部五 > 祭禮下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 8,
+        "match": "bracket-note",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "武功部八 > 旒二十三 > 旗十八",
+            "citations": 3,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "儀飾部三 > 步障十三承塵十四 > 幔八",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "武功部九 > 鎧三十二盾三十三 > 角二十九",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "武功部五 > 軍容九兵勢十 > 陣七",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "武功部八 > 旒二十三 > 麾二十二",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "武功部十三 > 箭四十八 > 弩四十七",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "服飾部 > 幔",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 刀",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "初學記",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "武部",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今合璧事類備要",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "器物叢談",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "圖書編",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "稼穡凡治野以下劑致甿",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "幔",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "漢文帝詔朝有進善之旌 > 舉青",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "帝王經世圖譜",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "齊内政寄令變周之譜",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "矯詔",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定駢字類編",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "弓弩",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "書叙指南",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "將領軍伍",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "服飾部 > 幔",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      }
+    ]
+  }
 }

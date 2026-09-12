@@ -25,5 +25,164 @@
   "ca": "1127–1279年",
   "authors": [
     "洪芻"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 12,
+    "leishu_count": 7,
+    "categorised_citations": 12,
+    "genmoku_confirmed_citations": 1,
+    "category_leaves": [
+      {
+        "label": "香",
+        "citations": 2
+      },
+      {
+        "label": "七陽",
+        "citations": 2
+      },
+      {
+        "label": "犀角燕口",
+        "citations": 1
+      },
+      {
+        "label": "薔薇水",
+        "citations": 1
+      },
+      {
+        "label": "返魂",
+        "citations": 1
+      },
+      {
+        "label": "沉香",
+        "citations": 1
+      },
+      {
+        "label": "韻藻豐末毫末",
+        "citations": 1
+      },
+      {
+        "label": "碎錄",
+        "citations": 1
+      },
+      {
+        "label": "香序宋范",
+        "citations": 1
+      },
+      {
+        "label": "香鑪",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "山堂肆考",
+        "citations": 3,
+        "match": "line-initial",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "見樂章一翦梅 > 犀角燕口",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見樂章一翦梅 > 薔薇水",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見樂章一翦梅 > 返魂",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "沉香",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "韻藻豐末毫末",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "格致鏡原",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "燕賞器物𩔖 > 香",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "韻府羣玉",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "洹沙炊沙 > 七陽",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "全芳備祖集",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "碎錄",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今事文類聚",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "香序宋范",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "服飾部 > 香鑪",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      }
+    ]
+  }
 }

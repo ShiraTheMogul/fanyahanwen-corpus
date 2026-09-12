@@ -17,5 +17,123 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "1271–1368年"
+  "ca": "1271–1368年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 11,
+    "leishu_count": 3,
+    "categorised_citations": 11,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "州郡部",
+        "citations": 3
+      },
+      {
+        "label": "十卷漢侯苞撰",
+        "citations": 1
+      },
+      {
+        "label": "國",
+        "citations": 1
+      },
+      {
+        "label": "周九畿籍",
+        "citations": 1
+      },
+      {
+        "label": "周王城周城成周九六城",
+        "citations": 1
+      },
+      {
+        "label": "周房中樂",
+        "citations": 1
+      },
+      {
+        "label": "桑林樂二樂",
+        "citations": 1
+      },
+      {
+        "label": "魯大庭氏庫",
+        "citations": 1
+      },
+      {
+        "label": "四家詩鄭樵",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "玉海",
+        "citations": 7,
+        "match": "author-prefix-stripped",
+        "category_count": 7,
+        "categories": [
+          {
+            "path": "十卷漢侯苞撰",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "地理 > 京輔 > 國",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "地理 > 地理書 > 周九畿籍",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "淮南子鯀作九仞之城 > 周王城周城成周九六城",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "漢志有商樂鼓員十四人 > 周房中樂",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "莊子堯有大章呂氏春秋 > 桑林樂二樂",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "食貨 > 府庫 > 魯大庭氏庫",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "初學記",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "州郡部",
+            "citations": 3,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "稗編",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "可以湎 > 四家詩鄭樵",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

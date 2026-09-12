@@ -2467,5 +2467,622 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 72,
+    "leishu_count": 18,
+    "categorised_citations": 72,
+    "genmoku_confirmed_citations": 32,
+    "category_leaves": [
+      {
+        "label": "竽",
+        "citations": 3
+      },
+      {
+        "label": "笛",
+        "citations": 3
+      },
+      {
+        "label": "柷敔",
+        "citations": 2
+      },
+      {
+        "label": "琴",
+        "citations": 2
+      },
+      {
+        "label": "磬",
+        "citations": 2
+      },
+      {
+        "label": "笙",
+        "citations": 2
+      },
+      {
+        "label": "觱篥",
+        "citations": 2
+      },
+      {
+        "label": "神農琴炎帝五絃瑟",
+        "citations": 2
+      },
+      {
+        "label": "鐸",
+        "citations": 2
+      },
+      {
+        "label": "六律為之音",
+        "citations": 2
+      },
+      {
+        "label": "樂舞考",
+        "citations": 2
+      },
+      {
+        "label": "之則史之原起於黄帝",
+        "citations": 2
+      },
+      {
+        "label": "徳",
+        "citations": 1
+      },
+      {
+        "label": "倡優",
+        "citations": 1
+      },
+      {
+        "label": "壎",
+        "citations": 1
+      },
+      {
+        "label": "瑟",
+        "citations": 1
+      },
+      {
+        "label": "簫",
+        "citations": 1
+      },
+      {
+        "label": "籥",
+        "citations": 1
+      },
+      {
+        "label": "角",
+        "citations": 1
+      },
+      {
+        "label": "鐘",
+        "citations": 1
+      },
+      {
+        "label": "鼓",
+        "citations": 1
+      },
+      {
+        "label": "芝",
+        "citations": 1
+      },
+      {
+        "label": "舜簫玉琯鳳簫",
+        "citations": 1
+      },
+      {
+        "label": "咸平隨月律皇祐隨月律",
+        "citations": 1
+      },
+      {
+        "label": "少昊建鼓",
+        "citations": 1
+      },
+      {
+        "label": "淳熈三器圖議",
+        "citations": 1
+      },
+      {
+        "label": "湯晨露歌",
+        "citations": 1
+      },
+      {
+        "label": "紹興玉磬",
+        "citations": 1
+      },
+      {
+        "label": "唐阮咸",
+        "citations": 1
+      },
+      {
+        "label": "音樂",
+        "citations": 1
+      },
+      {
+        "label": "伏羲琴伏羲五絃琴",
+        "citations": 1
+      },
+      {
+        "label": "周三鐘",
+        "citations": 1
+      },
+      {
+        "label": "葛天氏歌八闋八曲",
+        "citations": 1
+      },
+      {
+        "label": "正月十五日",
+        "citations": 1
+      },
+      {
+        "label": "雅樂下",
+        "citations": 1
+      },
+      {
+        "label": "鐃",
+        "citations": 1
+      },
+      {
+        "label": "錞于",
+        "citations": 1
+      },
+      {
+        "label": "塤",
+        "citations": 1
+      },
+      {
+        "label": "皷",
+        "citations": 1
+      },
+      {
+        "label": "筑",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 23,
+        "match": "author-prefix-stripped",
+        "category_count": 16,
+        "categories": [
+          {
+            "path": "樂部 > 竽",
+            "citations": 3,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部 > 柷敔",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部 > 琴",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部 > 磬",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部 > 笙",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部 > 觱篥",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 徳",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部 > 倡優",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部 > 壎",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部 > 瑟",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部 > 簫",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部 > 籥",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部 > 角",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部 > 鐘",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部 > 鼓",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "草部 > 芝",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 13,
+        "match": "author-prefix-stripped",
+        "category_count": 12,
+        "categories": [
+          {
+            "path": "音樂 > 樂器 > 神農琴炎帝五絃瑟",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "師因樂之器以考音 > 舜簫玉琯鳳簫",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "律厯 > 律吕下 > 咸平隨月律皇祐隨月律",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "於鼓 > 少昊建鼓",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "王朴律準尺三司布帛尺 > 量衡 > 淳熈三器圖議",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "聖文 > 御製詩歌 > 湯晨露歌",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鄭以楚金鑄三鐘 > 紹興玉磬",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "隋志琴經一卷琴説一卷 > 唐阮咸",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "音樂",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "音樂 > 樂器 > 伏羲琴伏羲五絃琴",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "音樂 > 樂器 > 周三鐘",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "音樂 > 樂章 > 葛天氏歌八闋八曲",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 11,
+        "match": "author-prefix-stripped",
+        "category_count": 10,
+        "categories": [
+          {
+            "path": "樂部二十二 > 壤撫相舂牘拍板 > 鐸",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "時序部十五 > 三月三日 > 正月十五日",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部三 > 雅樂下律吕 > 雅樂下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部二十二 > 壤撫相舂牘拍板 > 鐃",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部十三 > 鐘錞于 > 錞于",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部十九 > 簫笳笙竽簧塤 > 塤",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部十二 > 皷柷敔筍簴 > 皷",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "樂部十八 > 笛篪籥管 > 笛",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部十四 > 凖 > 筑",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部四 > 厯代樂",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "圖書編",
+        "citations": 5,
+        "match": "author-prefix-stripped",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "六律為之音",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "樂悉屏去之 > 樂舞考",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "羽音使人整齊而好禮 > 八音總考",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "事物紀原",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "之則史之原起於黄帝",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "明也今京東之俗猶然",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 3,
+        "match": "author-prefix-stripped",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "樂部 > 樂總一",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "樂部 > 歌篇二",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "樂部 > 竽十七 > 筑十二",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 3,
+        "match": "line-initial",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "笛 > 龍吟",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見將帥上 > 八面",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "𠉀風能飛 > 助梵樂",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "事類賦",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "樂部 > 笛",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "初學記",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "嵗時部下",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "大驚",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "屈賈壘",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定駢字類編",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "花錫",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "格致鏡原",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "玩戲器物𩔖 > 擊壤抛堶",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "海録碎事",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "追北",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "白孔六帖",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "愆陽伏隂為炭相得望氣 > 正月十五",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "樂部 > 笛",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "韻府羣玉",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "糙䒃暴 > 二十一箇",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "龍筋鳳髓判",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "極為號又應國姓",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -1400,5 +1400,88 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 6,
+    "leishu_count": 2,
+    "categorised_citations": 6,
+    "genmoku_confirmed_citations": 4,
+    "category_leaves": [
+      {
+        "label": "中書舍人",
+        "citations": 1
+      },
+      {
+        "label": "吏部尚書",
+        "citations": 1
+      },
+      {
+        "label": "吏部郎中",
+        "citations": 1
+      },
+      {
+        "label": "樞密使",
+        "citations": 1
+      },
+      {
+        "label": "歴代㳂革",
+        "citations": 1
+      },
+      {
+        "label": "歴代沿革",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 4,
+        "match": "author-prefix-stripped",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "設官部 > 中書舍人",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "設官部 > 吏部尚書",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "設官部 > 吏部郎中",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "設官部 > 樞密使",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "古今合璧事類備要",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "歴代㳂革",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "縣尉 > 歴代沿革",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

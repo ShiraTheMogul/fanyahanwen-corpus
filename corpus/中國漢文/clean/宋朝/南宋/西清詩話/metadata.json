@@ -43,5 +43,280 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "1127–1279年"
+  "ca": "1127–1279年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 24,
+    "leishu_count": 8,
+    "categorised_citations": 24,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "琴",
+        "citations": 2
+      },
+      {
+        "label": "鬼詩",
+        "citations": 2
+      },
+      {
+        "label": "不及第果然",
+        "citations": 1
+      },
+      {
+        "label": "夫婦",
+        "citations": 1
+      },
+      {
+        "label": "妓妾",
+        "citations": 1
+      },
+      {
+        "label": "宫殿禁苑",
+        "citations": 1
+      },
+      {
+        "label": "母子",
+        "citations": 1
+      },
+      {
+        "label": "雨",
+        "citations": 1
+      },
+      {
+        "label": "雪",
+        "citations": 1
+      },
+      {
+        "label": "嘲殺風景",
+        "citations": 1
+      },
+      {
+        "label": "退之得趣",
+        "citations": 1
+      },
+      {
+        "label": "上天無因",
+        "citations": 1
+      },
+      {
+        "label": "王蘇相誚",
+        "citations": 1
+      },
+      {
+        "label": "晉卿盡逐",
+        "citations": 1
+      },
+      {
+        "label": "妾侍",
+        "citations": 1
+      },
+      {
+        "label": "御覽天下作日下",
+        "citations": 1
+      },
+      {
+        "label": "下第",
+        "citations": 1
+      },
+      {
+        "label": "主試",
+        "citations": 1
+      },
+      {
+        "label": "韻藻天時",
+        "citations": 1
+      },
+      {
+        "label": "詩評嚴羽",
+        "citations": 1
+      },
+      {
+        "label": "兩不相下",
+        "citations": 1
+      },
+      {
+        "label": "坦活套人名",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 9,
+        "match": "bracket-note",
+        "category_count": 8,
+        "categories": [
+          {
+            "path": "琴",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "不及第果然",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "夫婦",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "妓妾",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "宫殿禁苑",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "母子",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "雨",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "雪",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 5,
+        "match": "line-initial",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "宋張亢性 > 嘲殺風景",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "柳公雙𤨏 > 退之得趣",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "續歸田録蜀人石 > 上天無因",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見名士 > 王蘇相誚",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見翰林學士 > 晉卿盡逐",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 4,
+        "match": "bracket-note",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "妾侍",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "御覽天下作日下",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "舉為五老榜 > 下第",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "舉為五老榜 > 主試",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今事文類聚",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "夜深韓偓 > 鬼詩",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "韻藻天時",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "稗編",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "文藝三 > 詩評嚴羽",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "論議部 > 兩不相下",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "韻府羣玉",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "坦活套人名",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

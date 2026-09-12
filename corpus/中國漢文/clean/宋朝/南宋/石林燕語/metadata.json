@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 63755,
   "corpus_root": "中國漢文",
@@ -119,5 +119,377 @@
       "body_start_line": 8
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 34,
+    "leishu_count": 10,
+    "categorised_citations": 34,
+    "genmoku_confirmed_citations": 10,
+    "category_leaves": [
+      {
+        "label": "芙蓉",
+        "citations": 3
+      },
+      {
+        "label": "禮部郎中",
+        "citations": 2
+      },
+      {
+        "label": "逆旅",
+        "citations": 1
+      },
+      {
+        "label": "居處部",
+        "citations": 1
+      },
+      {
+        "label": "松",
+        "citations": 1
+      },
+      {
+        "label": "蟬",
+        "citations": 1
+      },
+      {
+        "label": "烏",
+        "citations": 1
+      },
+      {
+        "label": "碧油紅斾",
+        "citations": 1
+      },
+      {
+        "label": "改準為貨",
+        "citations": 1
+      },
+      {
+        "label": "避㑹作當",
+        "citations": 1
+      },
+      {
+        "label": "匍匐弔君謨",
+        "citations": 1
+      },
+      {
+        "label": "不謫蜀公",
+        "citations": 1
+      },
+      {
+        "label": "年力康強",
+        "citations": 1
+      },
+      {
+        "label": "僦舎而居",
+        "citations": 1
+      },
+      {
+        "label": "都虞候",
+        "citations": 1
+      },
+      {
+        "label": "癃老弱悉分配外州",
+        "citations": 1
+      },
+      {
+        "label": "移文定議",
+        "citations": 1
+      },
+      {
+        "label": "衞親軍起於後唐",
+        "citations": 1
+      },
+      {
+        "label": "階凡十有五",
+        "citations": 1
+      },
+      {
+        "label": "延接",
+        "citations": 1
+      },
+      {
+        "label": "漸漸之石",
+        "citations": 1
+      },
+      {
+        "label": "三衙",
+        "citations": 1
+      },
+      {
+        "label": "郎中",
+        "citations": 1
+      },
+      {
+        "label": "公𪠘",
+        "citations": 1
+      },
+      {
+        "label": "酒",
+        "citations": 1
+      },
+      {
+        "label": "殿學士",
+        "citations": 1
+      },
+      {
+        "label": "袐書省",
+        "citations": 1
+      },
+      {
+        "label": "紀要",
+        "citations": 1
+      },
+      {
+        "label": "格物叢話",
+        "citations": 1
+      },
+      {
+        "label": "衛兵下",
+        "citations": 1
+      },
+      {
+        "label": "三日一入",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 10,
+        "match": "exact",
+        "category_count": 7,
+        "categories": [
+          {
+            "path": "花部 > 芙蓉",
+            "citations": 3,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "設官部 > 禮部郎中",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 逆旅",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "居處部",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "木部 > 松",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "蟲豸部 > 蟬",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 烏",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 7,
+        "match": "line-initial",
+        "category_count": 7,
+        "categories": [
+          {
+            "path": "宋 > 碧油紅斾",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "晉 > 改準為貨",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "晉 > 避㑹作當",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "漢孔光薨公卿百官會弔 > 匍匐弔君謨",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見同僚 > 不謫蜀公",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見太子太傅 > 年力康強",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見御史大夫 > 僦舎而居",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "羣書考索",
+        "citations": 5,
+        "match": "exact",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "揮使之上 > 都虞候",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "癃老弱悉分配外州",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "移文定議",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "衞親軍起於後唐",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "階凡十有五",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 4,
+        "match": "bracket-note",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "接物部 > 延接",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "漸漸之石",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "職官部 > 三衙",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "職官部 > 郎中",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "公𪠘",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "酒",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "翰苑新書",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "殿學士",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "袐書省",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "全芳備祖集",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "紀要",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今合璧事類備要",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "格物叢話",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今源流至論",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "南北軍 > 城門校尉 > 衛兵下",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定分類字錦",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "龍紀六等 > 三日一入",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -28,5 +28,174 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "581–618年"
+  "ca": "581–618年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 16,
+    "leishu_count": 7,
+    "categorised_citations": 16,
+    "genmoku_confirmed_citations": 3,
+    "category_leaves": [
+      {
+        "label": "中和節",
+        "citations": 2
+      },
+      {
+        "label": "元日",
+        "citations": 2
+      },
+      {
+        "label": "泬寥兮天髙而氣清",
+        "citations": 2
+      },
+      {
+        "label": "肅澄風髙木歛",
+        "citations": 2
+      },
+      {
+        "label": "字傅咸燕賦有其說",
+        "citations": 2
+      },
+      {
+        "label": "冬至",
+        "citations": 2
+      },
+      {
+        "label": "晦日",
+        "citations": 1
+      },
+      {
+        "label": "元正",
+        "citations": 1
+      },
+      {
+        "label": "碎録",
+        "citations": 1
+      },
+      {
+        "label": "月晦",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "白孔六帖",
+        "citations": 4,
+        "match": "exact",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "愆陽伏隂為炭相得望氣 > 中和節",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "愆陽伏隂為炭相得望氣 > 元日",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "愆陽伏隂為炭相得望氣 > 晦日",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "編珠",
+        "citations": 4,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "泬寥兮天髙而氣清",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "肅澄風髙木歛",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "事物紀原",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "字傅咸燕賦有其說",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "歲時部 > 元正",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "歲時部 > 冬至",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "翰苑新書",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "慶賀 > 元日",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "慶賀 > 冬至",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "全芳備祖集",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "碎録",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "嵗時部中 > 月晦",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      }
+    ]
+  }
 }

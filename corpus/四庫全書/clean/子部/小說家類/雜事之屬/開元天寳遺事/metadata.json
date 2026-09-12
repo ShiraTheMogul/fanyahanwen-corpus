@@ -72,5 +72,157 @@
       ]
     }
   ],
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 12,
+    "leishu_count": 5,
+    "categorised_citations": 12,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "紀要",
+        "citations": 2
+      },
+      {
+        "label": "兄弟",
+        "citations": 1
+      },
+      {
+        "label": "硯",
+        "citations": 1
+      },
+      {
+        "label": "相風",
+        "citations": 1
+      },
+      {
+        "label": "鴿",
+        "citations": 1
+      },
+      {
+        "label": "鷄",
+        "citations": 1
+      },
+      {
+        "label": "及第",
+        "citations": 1
+      },
+      {
+        "label": "挽夫跨",
+        "citations": 1
+      },
+      {
+        "label": "雲窓",
+        "citations": 1
+      },
+      {
+        "label": "縣官",
+        "citations": 1
+      },
+      {
+        "label": "宴櫻桃之熟和以糖酪",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "記纂淵海",
+        "citations": 6,
+        "match": "bracket-note",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "人倫部 > 兄弟",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "字學部 > 硯",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "測候部 > 相風",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禽部 > 鴿",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禽部 > 鷄",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "科舉部 > 及第",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "全芳備祖集",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "紀要",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "挽夫跨",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "雲窓",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "翰苑新書",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "縣官",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "宴櫻桃之熟和以糖酪",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

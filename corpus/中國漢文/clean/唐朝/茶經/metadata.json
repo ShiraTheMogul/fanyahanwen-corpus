@@ -35,5 +35,190 @@
   "ca": "618–907年",
   "authors": [
     "陸羽"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 22,
+    "leishu_count": 10,
+    "categorised_citations": 22,
+    "genmoku_confirmed_citations": 2,
+    "category_leaves": [
+      {
+        "label": "茶",
+        "citations": 13
+      },
+      {
+        "label": "碎錄",
+        "citations": 2
+      },
+      {
+        "label": "茶篇八",
+        "citations": 2
+      },
+      {
+        "label": "胡人鞾",
+        "citations": 1
+      },
+      {
+        "label": "爛石礫壤",
+        "citations": 1
+      },
+      {
+        "label": "顧渚貢茶始末",
+        "citations": 1
+      },
+      {
+        "label": "茗",
+        "citations": 1
+      },
+      {
+        "label": "瀘州",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "天中記",
+        "citations": 6,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "茶",
+            "citations": 6,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "事類賦",
+        "citations": 3,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "飲食部 > 茶",
+            "citations": 3,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 3,
+        "match": "line-initial",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "唐 > 胡人鞾",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "爛石礫壤",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "茶",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "全芳備祖集",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "碎錄",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "酒食部 > 黍篇十四 > 茶篇八",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "食物部 > 茶",
+            "citations": 2,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "古今事文類聚",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "龍茶録後序歐陽永叔 > 顧渚貢茶始末",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "飲食部二十五 > 茗",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "飲食部 > 茶",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "潼川路 > 瀘州",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

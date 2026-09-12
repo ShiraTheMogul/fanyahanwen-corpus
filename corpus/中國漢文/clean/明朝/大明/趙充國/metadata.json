@@ -26,5 +26,385 @@
   ],
   "authors": [
     "鍾惺"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 44,
+    "leishu_count": 15,
+    "categorised_citations": 28,
+    "genmoku_confirmed_citations": 2,
+    "category_leaves": [
+      {
+        "label": "屯營",
+        "citations": 2
+      },
+      {
+        "label": "漢振旅還京師",
+        "citations": 1
+      },
+      {
+        "label": "漢南北軍屯五營五校",
+        "citations": 1
+      },
+      {
+        "label": "漢四海圖籍古圖書",
+        "citations": 1
+      },
+      {
+        "label": "漢麒麟閣名臣圖",
+        "citations": 1
+      },
+      {
+        "label": "唐廣闗輔糴",
+        "citations": 1
+      },
+      {
+        "label": "韜畧",
+        "citations": 1
+      },
+      {
+        "label": "事難遥度",
+        "citations": 1
+      },
+      {
+        "label": "審於取捨",
+        "citations": 1
+      },
+      {
+        "label": "狥私忘公",
+        "citations": 1
+      },
+      {
+        "label": "圖上方略",
+        "citations": 1
+      },
+      {
+        "label": "枕席過師",
+        "citations": 1
+      },
+      {
+        "label": "橋七十所",
+        "citations": 1
+      },
+      {
+        "label": "一先",
+        "citations": 1
+      },
+      {
+        "label": "二蕭",
+        "citations": 1
+      },
+      {
+        "label": "電",
+        "citations": 1
+      },
+      {
+        "label": "九邊總論",
+        "citations": 1
+      },
+      {
+        "label": "輔豐穰之歳亦可行之",
+        "citations": 1
+      },
+      {
+        "label": "田",
+        "citations": 1
+      },
+      {
+        "label": "兵食",
+        "citations": 1
+      },
+      {
+        "label": "韓増寛和有守世載令聞",
+        "citations": 1
+      },
+      {
+        "label": "張騫二",
+        "citations": 1
+      },
+      {
+        "label": "君卿㳺卿穉卿次卿翁",
+        "citations": 1
+      },
+      {
+        "label": "博學",
+        "citations": 1
+      },
+      {
+        "label": "趙壮侯",
+        "citations": 1
+      },
+      {
+        "label": "席上過師",
+        "citations": 1
+      },
+      {
+        "label": "趙禹",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "冊府元龜",
+        "citations": 16,
+        "match": "line-initial",
+        "category_count": 0,
+        "categories": []
+      },
+      {
+        "leishu": "玉海",
+        "citations": 5,
+        "match": "line-initial",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "之 > 漢振旅還京師",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "兵制 > 兵制 > 漢南北軍屯五營五校",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "南史江子一續黄圖 > 漢四海圖籍古圖書",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "蓺文 > 圖繪名臣 > 漢麒麟閣名臣圖",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "食貨 > 理財 > 唐廣闗輔糴",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 4,
+        "match": "exact",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "兵戎部 > 韜畧",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "論議部 > 事難遥度",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "識見部 > 審於取捨",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "識見部 > 狥私忘公",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今事文類聚",
+        "citations": 3,
+        "match": "line-initial",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "圖上方略",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "張耳杖馬箠下數城 > 枕席過師",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "橋 > 橋七十所",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "韻府羣玉",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "下平聲 > 一先",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "磨塼成鏡 > 二蕭",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "電",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "圖書編",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "且緩而待數十年之後 > 九邊總論",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "輔豐穰之歳亦可行之",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "地部 > 田",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 屯營",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "羣書考索",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "兵制門 > 兵食",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "韓増寛和有守世載令聞",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "同姓名録",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "幷上其樂詩三章 > 張騫二",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "名疑",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "君卿㳺卿穉卿次卿翁",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "不得不除 > 博學",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "見賤士 > 趙壮侯",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "海録碎事",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "文規武畧譽流朝野 > 席上過師",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "白孔六帖",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "寇戎 > 屯營",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "萬姓統譜",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "趙禹",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

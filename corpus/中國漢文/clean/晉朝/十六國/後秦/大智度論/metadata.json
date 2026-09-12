@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 73573,
   "corpus_root": "中國漢文",
@@ -1108,5 +1108,223 @@
       "body_start_line": 13
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 24,
+    "leishu_count": 2,
+    "categorised_citations": 24,
+    "genmoku_confirmed_citations": 1,
+    "category_leaves": [
+      {
+        "label": "勢阻",
+        "citations": 2
+      },
+      {
+        "label": "審勢",
+        "citations": 2
+      },
+      {
+        "label": "相資",
+        "citations": 2
+      },
+      {
+        "label": "勢盛",
+        "citations": 1
+      },
+      {
+        "label": "品藻",
+        "citations": 1
+      },
+      {
+        "label": "審宜",
+        "citations": 1
+      },
+      {
+        "label": "審理",
+        "citations": 1
+      },
+      {
+        "label": "尚實",
+        "citations": 1
+      },
+      {
+        "label": "待時",
+        "citations": 1
+      },
+      {
+        "label": "所重",
+        "citations": 1
+      },
+      {
+        "label": "有獲",
+        "citations": 1
+      },
+      {
+        "label": "無及",
+        "citations": 1
+      },
+      {
+        "label": "考僞",
+        "citations": 1
+      },
+      {
+        "label": "色欲",
+        "citations": 1
+      },
+      {
+        "label": "貴智",
+        "citations": 1
+      },
+      {
+        "label": "難欺",
+        "citations": 1
+      },
+      {
+        "label": "執守",
+        "citations": 1
+      },
+      {
+        "label": "珍異",
+        "citations": 1
+      },
+      {
+        "label": "者能入",
+        "citations": 1
+      },
+      {
+        "label": "持體",
+        "citations": 1
+      },
+      {
+        "label": "菩薩",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "喻林",
+        "citations": 23,
+        "match": "bracket-note",
+        "category_count": 20,
+        "categories": [
+          {
+            "path": "人事門 > 勢阻",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人事門 > 審勢",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人事門 > 相資",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人事門 > 勢盛",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人事門 > 品藻",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人事門 > 審宜",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人事門 > 審理",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人事門 > 尚實",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人事門 > 待時",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人事門 > 所重",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人事門 > 有獲",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人事門 > 無及",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人事門 > 考僞",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人事門 > 色欲",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人事門 > 貴智",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人事門 > 難欺",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "執守",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "物宜門 > 珍異",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "者能入",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "臣術門 > 持體",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "釋教部 > 菩薩",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      }
+    ]
+  }
 }

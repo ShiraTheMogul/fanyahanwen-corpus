@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 4662,
   "corpus_root": "中國漢文",
@@ -152,5 +152,98 @@
       "body_start_line": 8
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 10,
+    "leishu_count": 1,
+    "categorised_citations": 10,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "州髙祖遣兵擊敗之",
+        "citations": 2
+      },
+      {
+        "label": "鳥獸第一",
+        "citations": 2
+      },
+      {
+        "label": "之中當得作佛",
+        "citations": 1
+      },
+      {
+        "label": "死",
+        "citations": 1
+      },
+      {
+        "label": "腹泥",
+        "citations": 1
+      },
+      {
+        "label": "蟬兒者有名多花子者",
+        "citations": 1
+      },
+      {
+        "label": "通夜呈祥道俗稱慶",
+        "citations": 1
+      },
+      {
+        "label": "鳥血流遍體而顔色不變",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "廣博物志",
+        "citations": 10,
+        "match": "bracket-note",
+        "category_count": 8,
+        "categories": [
+          {
+            "path": "州髙祖遣兵擊敗之",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鳥獸第一",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "之中當得作佛",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "死",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "腹泥",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "蟬兒者有名多花子者",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "通夜呈祥道俗稱慶",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鳥血流遍體而顔色不變",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

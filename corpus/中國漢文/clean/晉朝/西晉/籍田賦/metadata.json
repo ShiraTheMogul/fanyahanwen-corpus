@@ -25,5 +25,240 @@
   ],
   "authors": [
     "潘岳"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 19,
+    "leishu_count": 8,
+    "categorised_citations": 19,
+    "genmoku_confirmed_citations": 6,
+    "category_leaves": [
+      {
+        "label": "籍田",
+        "citations": 3
+      },
+      {
+        "label": "雲䍐",
+        "citations": 1
+      },
+      {
+        "label": "幕",
+        "citations": 1
+      },
+      {
+        "label": "圃",
+        "citations": 1
+      },
+      {
+        "label": "輦",
+        "citations": 1
+      },
+      {
+        "label": "幰",
+        "citations": 1
+      },
+      {
+        "label": "幕二",
+        "citations": 1
+      },
+      {
+        "label": "蓋二十三",
+        "citations": 1
+      },
+      {
+        "label": "幰二十二",
+        "citations": 1
+      },
+      {
+        "label": "輪十三",
+        "citations": 1
+      },
+      {
+        "label": "轅十二",
+        "citations": 1
+      },
+      {
+        "label": "輦四",
+        "citations": 1
+      },
+      {
+        "label": "馬",
+        "citations": 1
+      },
+      {
+        "label": "禮部下",
+        "citations": 1
+      },
+      {
+        "label": "雜著",
+        "citations": 1
+      },
+      {
+        "label": "重農",
+        "citations": 1
+      },
+      {
+        "label": "千畆甸",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 7,
+        "match": "author-prefix-stripped",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "禮儀部十六 > 廵狩籍田 > 籍田",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "儀式部 > 警蹕 > 雲䍐",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "服用部二 > 幄幕 > 幕",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "資産部四 > 園圃 > 圃",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "車部三 > 輦 > 輦",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "車部五 > 䋺茵 > 幰",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 6,
+        "match": "author-prefix-stripped",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "儀飾部三 > 步障十三承塵十四 > 幕二",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "儀飾部五 > 毾㲪三十一 > 蓋二十三",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "車部 > 覆軨二十四茵二十五 > 幰二十二",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "車部 > 覆軨二十四茵二十五 > 輪十三",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "車部 > 覆軨二十四茵二十五 > 轅十二",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "車部 > 鹿車十一 > 輦四",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "事類賦",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "獸部 > 馬",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "初學記",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "禮部下",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今事文類聚",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "雜著",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定子史精華",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "茅茨不翦采椽不斷 > 重農",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "海録碎事",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "千畆甸",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "禮部中 > 籍田",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      }
+    ]
+  }
 }

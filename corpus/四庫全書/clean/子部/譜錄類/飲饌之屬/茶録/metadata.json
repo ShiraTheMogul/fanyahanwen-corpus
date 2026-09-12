@@ -68,5 +68,152 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 12,
+    "leishu_count": 6,
+    "categorised_citations": 12,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "茶",
+        "citations": 4
+      },
+      {
+        "label": "煮茗",
+        "citations": 1
+      },
+      {
+        "label": "一水兩水",
+        "citations": 1
+      },
+      {
+        "label": "驛官庫",
+        "citations": 1
+      },
+      {
+        "label": "細漚",
+        "citations": 1
+      },
+      {
+        "label": "茗戰",
+        "citations": 1
+      },
+      {
+        "label": "茗粥",
+        "citations": 1
+      },
+      {
+        "label": "酒醴飲食部四十六",
+        "citations": 1
+      },
+      {
+        "label": "水",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "山堂肆考",
+        "citations": 3,
+        "match": "line-initial",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "見伏日 > 煮茗",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見雪 > 一水兩水",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見雪 > 驛官庫",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "海録碎事",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "細漚",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "茗戰",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "茗粥",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "茶",
+            "citations": 3,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "事物紀原",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "于鑚木造火之後 > 酒醴飲食部四十六",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "茶",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "五行部 > 水",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

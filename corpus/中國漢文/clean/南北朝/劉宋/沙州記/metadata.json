@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 4387,
   "corpus_root": "中國漢文",
@@ -18,5 +18,248 @@
       "body_start_line": 8
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 18,
+    "leishu_count": 10,
+    "categorised_citations": 18,
+    "genmoku_confirmed_citations": 9,
+    "category_leaves": [
+      {
+        "label": "齒",
+        "citations": 2
+      },
+      {
+        "label": "關",
+        "citations": 2
+      },
+      {
+        "label": "雀",
+        "citations": 2
+      },
+      {
+        "label": "大桞谷水",
+        "citations": 1
+      },
+      {
+        "label": "沙",
+        "citations": 1
+      },
+      {
+        "label": "鳥鼠山",
+        "citations": 1
+      },
+      {
+        "label": "羊鶻山",
+        "citations": 1
+      },
+      {
+        "label": "西王母樗蒲山",
+        "citations": 1
+      },
+      {
+        "label": "橋",
+        "citations": 1
+      },
+      {
+        "label": "阜七",
+        "citations": 1
+      },
+      {
+        "label": "寒二十五",
+        "citations": 1
+      },
+      {
+        "label": "狗山",
+        "citations": 1
+      },
+      {
+        "label": "寒",
+        "citations": 1
+      },
+      {
+        "label": "與鼠同穴",
+        "citations": 1
+      },
+      {
+        "label": "東",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 6,
+        "match": "exact",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "人事部九 > 頤頷承漿 > 齒",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部三十 > 隴蜀諸水 > 大桞谷水",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "地部三十九 > 沙 > 沙",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部五 > 積石山 > 鳥鼠山",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部十五 > 靈鳥山 > 羊鶻山",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部十五 > 靈鳥山 > 西王母樗蒲山",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 3,
+        "match": "author-prefix-stripped",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "人部 > 齒",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "居處部 > 橋",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "居處部 > 關",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "地理部一 > 谷十三洞十四 > 阜七",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "歲時部四 > 凶荒篇二十八 > 寒二十五",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "事類賦",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "禽部 > 雀",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "初學記",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "狗山",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "寒",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "盡食⿰蚄 > 與鼠同穴",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定駢字類編",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "欽定四庫全書 > 方隅門一 > 東",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "花木鳥獸集𩔖",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "雜俎或言燕蟄井底舊 > 雀",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "地部 > 關",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      }
+    ]
+  }
 }

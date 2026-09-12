@@ -54,7 +54,23 @@ def fold_notes(text):
         if note: out.append('〈'+note+'〉')
     return ''.join(out)
 
-def clean_text(src):
+ASCII_RUN=re.compile(r'(?<=[\u3400-\u9fff\uf900-\ufaff])[ ]+(?=[\u3400-\u9fff\uf900-\ufaff])')
+
+def normalise_spaces(text):
+    """ASCII space between two Han characters -> ideographic space (U+3000).
+
+    The corpus convention is the ideographic space; the Kanripo 四庫 ingestion
+    uses ASCII spaces as its citation separator instead — 910,457 of them across
+    51 of the 63 works in 子部/類書類 (御定駢字類編 alone has 345,506). Only runs
+    sitting BETWEEN two Han characters are converted, so spaces in Latin text,
+    in the title columns and in mixed-script lines are left alone.
+
+    Not applied by default: it touches a lot of text and should be a deliberate
+    pass. Enable with --normalise-spaces.
+    """
+    return ASCII_RUN.sub('\u3000', text)
+
+def clean_text(src, normalise=False):
     lines=src.split('\n')
     out=[]; buf=[]
     def flush():
@@ -71,17 +87,20 @@ def clean_text(src):
         if d>0:                      # heading: own line, indent preserved
             flush()
             out.append(fold_notes(ln.rstrip()))
-        else:                        # body: rejoin the woodblock wrapping
+        else:                        # body: keep the woodblock line as-is
             buf.append(fold_notes(ln.strip()))
     flush()
     while out and out[-1]=='': out.pop()
-    return '\n'.join(out)+'\n'
+    txt='\n'.join(out)+'\n'
+    return normalise_spaces(txt) if normalise else txt
 
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument('root'); ap.add_argument('--archive', default='')
     ap.add_argument('--apply', action='store_true')
     ap.add_argument('--limit', type=int, default=0)
+    ap.add_argument('--normalise-spaces', action='store_true',
+                    help='ASCII space between Han characters -> U+3000')
     a=ap.parse_args()
     n=changed=0
     for dirpath,_,files in os.walk(a.root):
@@ -89,7 +108,7 @@ def main():
             if not f.endswith('.txt'): continue
             p=os.path.join(dirpath,f)
             src=open(p,encoding='utf-8-sig',errors='replace').read()
-            dst=clean_text(src)
+            dst=clean_text(src, a.normalise_spaces)
             n+=1
             if dst==src: continue
             changed+=1

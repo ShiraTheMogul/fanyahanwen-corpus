@@ -123,5 +123,320 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 29,
+    "leishu_count": 9,
+    "categorised_citations": 29,
+    "genmoku_confirmed_citations": 17,
+    "category_leaves": [
+      {
+        "label": "品藻",
+        "citations": 2
+      },
+      {
+        "label": "嘲戲",
+        "citations": 2
+      },
+      {
+        "label": "草",
+        "citations": 2
+      },
+      {
+        "label": "丁部下",
+        "citations": 2
+      },
+      {
+        "label": "仁",
+        "citations": 1
+      },
+      {
+        "label": "剛",
+        "citations": 1
+      },
+      {
+        "label": "勇",
+        "citations": 1
+      },
+      {
+        "label": "徳",
+        "citations": 1
+      },
+      {
+        "label": "禄養",
+        "citations": 1
+      },
+      {
+        "label": "聰敏",
+        "citations": 1
+      },
+      {
+        "label": "讓",
+        "citations": 1
+      },
+      {
+        "label": "貧",
+        "citations": 1
+      },
+      {
+        "label": "鑒誡",
+        "citations": 1
+      },
+      {
+        "label": "恭敬",
+        "citations": 1
+      },
+      {
+        "label": "叙人",
+        "citations": 1
+      },
+      {
+        "label": "施惠下",
+        "citations": 1
+      },
+      {
+        "label": "龍下",
+        "citations": 1
+      },
+      {
+        "label": "矣是謂人一之我萬之",
+        "citations": 1
+      },
+      {
+        "label": "賢",
+        "citations": 1
+      },
+      {
+        "label": "一至",
+        "citations": 1
+      },
+      {
+        "label": "石經",
+        "citations": 1
+      },
+      {
+        "label": "龍",
+        "citations": 1
+      },
+      {
+        "label": "人部",
+        "citations": 1
+      },
+      {
+        "label": "始皇虎口日角",
+        "citations": 1
+      },
+      {
+        "label": "知人",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 14,
+        "match": "exact",
+        "category_count": 12,
+        "categories": [
+          {
+            "path": "人部 > 品藻",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 嘲戲",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 仁",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 剛",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 勇",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 徳",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 禄養",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 聰敏",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 讓",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 貧",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 鑒誡",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "帝王部 > 恭敬",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 4,
+        "match": "exact",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "人事部一 > 叙人孕 > 叙人",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部一百十八 > 施惠下",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "百卉部一 > 鹿豆鹿葱 > 草",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部二 > 龍下蛟螭 > 龍下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "駢志",
+        "citations": 3,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "丁部下",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "矣是謂人一之我萬之",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "大武帝賜名懐逺 > 賢",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "誤 > 草",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "海録碎事",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "一至",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "石經",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "事類賦",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "鱗介部 > 龍",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "初學記",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "人部",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "始皇虎口日角",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "知人",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

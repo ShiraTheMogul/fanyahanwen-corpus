@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 65029,
   "corpus_root": "中國漢文",
@@ -119,5 +119,174 @@
       "body_start_line": 8
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 12,
+    "leishu_count": 6,
+    "categorised_citations": 12,
+    "genmoku_confirmed_citations": 1,
+    "category_leaves": [
+      {
+        "label": "巳為路人",
+        "citations": 1
+      },
+      {
+        "label": "超出畦徑",
+        "citations": 1
+      },
+      {
+        "label": "難進易退",
+        "citations": 1
+      },
+      {
+        "label": "作慶老堂",
+        "citations": 1
+      },
+      {
+        "label": "元日",
+        "citations": 1
+      },
+      {
+        "label": "舟船",
+        "citations": 1
+      },
+      {
+        "label": "陳",
+        "citations": 1
+      },
+      {
+        "label": "陽",
+        "citations": 1
+      },
+      {
+        "label": "紀要",
+        "citations": 1
+      },
+      {
+        "label": "御史所攻布由是出",
+        "citations": 1
+      },
+      {
+        "label": "刺史",
+        "citations": 1
+      },
+      {
+        "label": "魚",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "山堂肆考",
+        "citations": 4,
+        "match": "line-initial",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "見主簿 > 巳為路人",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見名士 > 超出畦徑",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見水 > 難進易退",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見耆英 > 作慶老堂",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 4,
+        "match": "bracket-note",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "元日",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "竹影掃秋月荷花落古池 > 舟船",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "類姓 > 陳",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "類姓 > 陽",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "全芳備祖集",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "紀要",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "名賢氏族言行類稿",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "御史所攻布由是出",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "刺史",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "鱗介部 > 魚",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      }
+    ]
+  }
 }

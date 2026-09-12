@@ -26,5 +26,119 @@
   ],
   "authors": [
     "鍾惺"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 7,
+    "leishu_count": 6,
+    "categorised_citations": 6,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "德怨",
+        "citations": 1
+      },
+      {
+        "label": "解危",
+        "citations": 1
+      },
+      {
+        "label": "宋章定撰",
+        "citations": 1
+      },
+      {
+        "label": "不居",
+        "citations": 1
+      },
+      {
+        "label": "惡言不出口茍語不留耳",
+        "citations": 1
+      },
+      {
+        "label": "十六葉",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "經濟類編",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "人事類五 > 德怨",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "臣類六 > 解危",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "冊府元龜",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 0,
+        "categories": []
+      },
+      {
+        "leishu": "名賢氏族言行類稿",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "宋章定撰",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "喻林",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "臣術門 > 不居",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定子史精華",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "惡言不出口茍語不留耳",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "韻府羣玉",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "匼姶 > 十六葉",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

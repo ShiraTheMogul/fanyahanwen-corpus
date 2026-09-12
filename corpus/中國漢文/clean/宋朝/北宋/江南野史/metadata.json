@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 55239,
   "corpus_root": "中國漢文",
@@ -119,5 +119,321 @@
       "body_start_line": 8
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 28,
+    "leishu_count": 8,
+    "categorised_citations": 28,
+    "genmoku_confirmed_citations": 2,
+    "category_leaves": [
+      {
+        "label": "後主頓顙",
+        "citations": 2
+      },
+      {
+        "label": "妓",
+        "citations": 2
+      },
+      {
+        "label": "陳陶酷嗜",
+        "citations": 1
+      },
+      {
+        "label": "同聖賢名",
+        "citations": 1
+      },
+      {
+        "label": "金榜標名",
+        "citations": 1
+      },
+      {
+        "label": "陳金誇妻",
+        "citations": 1
+      },
+      {
+        "label": "善寫細字",
+        "citations": 1
+      },
+      {
+        "label": "許聘數人",
+        "citations": 1
+      },
+      {
+        "label": "弟子服縗",
+        "citations": 1
+      },
+      {
+        "label": "南史俱不為改正",
+        "citations": 1
+      },
+      {
+        "label": "忠",
+        "citations": 1
+      },
+      {
+        "label": "子于時喧然傳之",
+        "citations": 1
+      },
+      {
+        "label": "晉書之誤",
+        "citations": 1
+      },
+      {
+        "label": "月",
+        "citations": 1
+      },
+      {
+        "label": "甘蔗",
+        "citations": 1
+      },
+      {
+        "label": "下第",
+        "citations": 1
+      },
+      {
+        "label": "前名及第",
+        "citations": 1
+      },
+      {
+        "label": "鄉舉",
+        "citations": 1
+      },
+      {
+        "label": "夫婦",
+        "citations": 1
+      },
+      {
+        "label": "衆材之上已而果然",
+        "citations": 1
+      },
+      {
+        "label": "江",
+        "citations": 1
+      },
+      {
+        "label": "矢",
+        "citations": 1
+      },
+      {
+        "label": "慠慢",
+        "citations": 1
+      },
+      {
+        "label": "日",
+        "citations": 1
+      },
+      {
+        "label": "䱹三十九",
+        "citations": 1
+      },
+      {
+        "label": "夫妻附",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "山堂肆考",
+        "citations": 9,
+        "match": "line-initial",
+        "category_count": 8,
+        "categories": [
+          {
+            "path": "佛言善度愛河能褰欲網 > 後主頓顙",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "地理志潤州土貢鱘魚鮓 > 陳陶酷嗜",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "宋汪應辰字聖錫本名洋 > 同聖賢名",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "白 > 金榜標名",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見太常卿 > 陳金誇妻",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見寵妾 > 善寫細字",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見父 > 許聘數人",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "請車 > 弟子服縗",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 7,
+        "match": "bracket-note",
+        "category_count": 7,
+        "categories": [
+          {
+            "path": "南史俱不為改正",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "大武帝賜名懐逺 > 忠",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "妓",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "子于時喧然傳之",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "晉書之誤",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "月",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "甘蔗",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "科舉部 > 下第",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "科舉部 > 前名及第",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "科舉部 > 鄉舉",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "夫婦",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "衆材之上已而果然",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "類姓 > 江",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "人部 > 妓",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 矢",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "白孔六帖",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "壯 > 慠慢",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "大方方不中矩方而無涯 > 日",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "酒食部 > 䱹三十九 > 䱹三十九",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今合璧事類備要",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "親屬門 > 夫妻附",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

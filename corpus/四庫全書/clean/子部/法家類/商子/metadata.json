@@ -117,5 +117,490 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 41,
+    "leishu_count": 19,
+    "categorised_citations": 41,
+    "genmoku_confirmed_citations": 12,
+    "category_leaves": [
+      {
+        "label": "父子",
+        "citations": 3
+      },
+      {
+        "label": "叙賢",
+        "citations": 2
+      },
+      {
+        "label": "孝弟",
+        "citations": 2
+      },
+      {
+        "label": "應",
+        "citations": 2
+      },
+      {
+        "label": "紀要",
+        "citations": 2
+      },
+      {
+        "label": "肉",
+        "citations": 1
+      },
+      {
+        "label": "叙聖",
+        "citations": 1
+      },
+      {
+        "label": "晏子田俅子",
+        "citations": 1
+      },
+      {
+        "label": "木上",
+        "citations": 1
+      },
+      {
+        "label": "耕",
+        "citations": 1
+      },
+      {
+        "label": "錢下",
+        "citations": 1
+      },
+      {
+        "label": "勢然",
+        "citations": 1
+      },
+      {
+        "label": "神運",
+        "citations": 1
+      },
+      {
+        "label": "仁",
+        "citations": 1
+      },
+      {
+        "label": "智",
+        "citations": 1
+      },
+      {
+        "label": "牀",
+        "citations": 1
+      },
+      {
+        "label": "木",
+        "citations": 1
+      },
+      {
+        "label": "名器",
+        "citations": 1
+      },
+      {
+        "label": "能知稼穡般戲之事",
+        "citations": 1
+      },
+      {
+        "label": "鳥獸第一",
+        "citations": 1
+      },
+      {
+        "label": "有民",
+        "citations": 1
+      },
+      {
+        "label": "重農",
+        "citations": 1
+      },
+      {
+        "label": "鳥飛而上咸以為真鳯凰",
+        "citations": 1
+      },
+      {
+        "label": "李子",
+        "citations": 1
+      },
+      {
+        "label": "湯武五庫",
+        "citations": 1
+      },
+      {
+        "label": "仰橋仰",
+        "citations": 1
+      },
+      {
+        "label": "子",
+        "citations": 1
+      },
+      {
+        "label": "刑總一",
+        "citations": 1
+      },
+      {
+        "label": "見姓苑",
+        "citations": 1
+      },
+      {
+        "label": "父母",
+        "citations": 1
+      },
+      {
+        "label": "秦分",
+        "citations": 1
+      },
+      {
+        "label": "橋者父道",
+        "citations": 1
+      },
+      {
+        "label": "邵康節作正𤣥章俊卿",
+        "citations": 1
+      },
+      {
+        "label": "梓",
+        "citations": 1
+      },
+      {
+        "label": "庫藏",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 8,
+        "match": "line-initial",
+        "category_count": 7,
+        "categories": [
+          {
+            "path": "人事部四十三 > 叙賢",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部一十六 > 膏 > 肉",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部四十二 > 叙聖",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "晏子田俅子",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "木部一 > 木上",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "産資部二 > 農耕 > 耕",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "資産部十六 > 錢下貲財 > 錢下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "喻林",
+        "citations": 4,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "德行門 > 孝弟",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人事門 > 勢然",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "神運",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 4,
+        "match": "exact",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "人部 > 仁",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 智",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服飾部 > 牀",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "木部 > 木",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "名器",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "能知稼穡般戲之事",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鳥獸第一",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "駢志",
+        "citations": 3,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "應",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "有民",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "全芳備祖集",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "紀要",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定子史精華",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "茅茨不翦采椽不斷 > 重農",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鳥飛而上咸以為真鳯凰",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "其姓氏懸諸日月 > 李子",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "食貨 > 府庫 > 湯武五庫",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "父子",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "韻府羣玉",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "仰橋仰",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "子",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "刑法部 > 刑總一",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今姓氏書辯證",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "見姓苑",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "宗衮又誤 > 父母",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "秦分",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "海録碎事",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "橋者父道",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "稗編",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "諸家一 > 邵康節作正𤣥章俊卿",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "經濟類編",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "人倫類一 > 父子",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "木部中 > 梓",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "居處部 > 庫藏",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 5484,
   "corpus_root": "中國漢文",
@@ -17,5 +17,544 @@
       "body_start_line": 5
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 62,
+    "leishu_count": 12,
+    "categorised_citations": 62,
+    "genmoku_confirmed_citations": 27,
+    "category_leaves": [
+      {
+        "label": "論兵一",
+        "citations": 4
+      },
+      {
+        "label": "陣",
+        "citations": 3
+      },
+      {
+        "label": "將帥四",
+        "citations": 3
+      },
+      {
+        "label": "法令",
+        "citations": 2
+      },
+      {
+        "label": "擊市",
+        "citations": 2
+      },
+      {
+        "label": "蓋",
+        "citations": 1
+      },
+      {
+        "label": "星",
+        "citations": 1
+      },
+      {
+        "label": "宅舍",
+        "citations": 1
+      },
+      {
+        "label": "鼓",
+        "citations": 1
+      },
+      {
+        "label": "守備",
+        "citations": 1
+      },
+      {
+        "label": "弩",
+        "citations": 1
+      },
+      {
+        "label": "征伐",
+        "citations": 1
+      },
+      {
+        "label": "攻戰",
+        "citations": 1
+      },
+      {
+        "label": "旌旗",
+        "citations": 1
+      },
+      {
+        "label": "矛",
+        "citations": 1
+      },
+      {
+        "label": "矢",
+        "citations": 1
+      },
+      {
+        "label": "示信",
+        "citations": 1
+      },
+      {
+        "label": "示必死",
+        "citations": 1
+      },
+      {
+        "label": "號令",
+        "citations": 1
+      },
+      {
+        "label": "軍整",
+        "citations": 1
+      },
+      {
+        "label": "神",
+        "citations": 1
+      },
+      {
+        "label": "武功四十六",
+        "citations": 1
+      },
+      {
+        "label": "兵勢十",
+        "citations": 1
+      },
+      {
+        "label": "陣七",
+        "citations": 1
+      },
+      {
+        "label": "旗十八",
+        "citations": 1
+      },
+      {
+        "label": "攻戰十一",
+        "citations": 1
+      },
+      {
+        "label": "矛三十八",
+        "citations": 1
+      },
+      {
+        "label": "弩四十七",
+        "citations": 1
+      },
+      {
+        "label": "纓五",
+        "citations": 1
+      },
+      {
+        "label": "衣二十",
+        "citations": 1
+      },
+      {
+        "label": "叙兵上",
+        "citations": 1
+      },
+      {
+        "label": "劒下",
+        "citations": 1
+      },
+      {
+        "label": "征伐下",
+        "citations": 1
+      },
+      {
+        "label": "箭下",
+        "citations": 1
+      },
+      {
+        "label": "㦸下",
+        "citations": 1
+      },
+      {
+        "label": "孛星",
+        "citations": 1
+      },
+      {
+        "label": "妖星",
+        "citations": 1
+      },
+      {
+        "label": "孫綽子蘇子",
+        "citations": 1
+      },
+      {
+        "label": "葢",
+        "citations": 1
+      },
+      {
+        "label": "總叙冠",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 18,
+        "match": "exact",
+        "category_count": 17,
+        "categories": [
+          {
+            "path": "武功部 > 陣",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "儀飾部 > 蓋",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "天部 > 星",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "居處部 > 宅舍",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部 > 鼓",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 守備",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 弩",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 征伐",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 攻戰",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 旌旗",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 矛",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 矢",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 示信",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 示必死",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 號令",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 軍整",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "靈異部 > 神",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 16,
+        "match": "bracket-note",
+        "category_count": 11,
+        "categories": [
+          {
+            "path": "武功部一 > 論兵一",
+            "citations": 4,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "武功部三 > 將帥四",
+            "citations": 3,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "帝王部 > 武功四十六",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "武功部五 > 軍容九兵勢十 > 兵勢十",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "武功部五 > 軍容九兵勢十 > 陣七",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "武功部八 > 旒二十三 > 旗十八",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "武功部六 > 攻戰十一",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "武功部十一 > 戈三十七矛三十八 > 矛三十八",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "武功部十三 > 箭四十八 > 弩四十七",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "衣冠部一 > 帽九 > 纓五",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "衣冠部三 > 絡帶三十 > 衣二十",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 15,
+        "match": "line-initial",
+        "category_count": 14,
+        "categories": [
+          {
+            "path": "兵部二十七 > 法令 > 法令",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部一 > 叙兵上 > 叙兵上",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部七十五 > 劒下",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "兵部三十二 > 陣 > 陣",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部三十六 > 征伐 > 征伐下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部八十一 > 射捍彈 > 箭下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部八十四 > 矛 > 㦸下",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "咎徴部二 > 漢&KR0382;星 > 孛星",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "天部七 > 妖星 > 妖星",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "孫綽子蘇子",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "服用部四 > 扇葢 > 葢",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "服章部一 > 總叙冠",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服章部三 > 冕纓弁 > 纓",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "資産部八 > 賣買駔儈 > 屠",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "初學記",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "居處部",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "武部",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "見納諫 > 擊市",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "天道二",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "至而斷",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "兵制 > 司馬穰苴兵法",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "其姓氏懸諸日月 > 補闕子",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "事類賦",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "服用部 > 冠",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "盖",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "稗編",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "諸家二 > 呉子高似孫",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "羣書㑹元截江網",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "太祖 > 七書撮要",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "居處部 > 宅",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

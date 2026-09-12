@@ -345,5 +345,252 @@
       ]
     }
   ],
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 22,
+    "leishu_count": 5,
+    "categorised_citations": 22,
+    "genmoku_confirmed_citations": 7,
+    "category_leaves": [
+      {
+        "label": "楊梅",
+        "citations": 2
+      },
+      {
+        "label": "薦獻",
+        "citations": 1
+      },
+      {
+        "label": "石",
+        "citations": 1
+      },
+      {
+        "label": "代官",
+        "citations": 1
+      },
+      {
+        "label": "藏書",
+        "citations": 1
+      },
+      {
+        "label": "帶",
+        "citations": 1
+      },
+      {
+        "label": "甘蔗",
+        "citations": 1
+      },
+      {
+        "label": "南臺",
+        "citations": 1
+      },
+      {
+        "label": "虚正寢",
+        "citations": 1
+      },
+      {
+        "label": "郡將示題",
+        "citations": 1
+      },
+      {
+        "label": "王聶成怨",
+        "citations": 1
+      },
+      {
+        "label": "窮逹不同",
+        "citations": 1
+      },
+      {
+        "label": "恐罹譴責",
+        "citations": 1
+      },
+      {
+        "label": "帝",
+        "citations": 1
+      },
+      {
+        "label": "御史",
+        "citations": 1
+      },
+      {
+        "label": "石晉髙祖",
+        "citations": 1
+      },
+      {
+        "label": "教授",
+        "citations": 1
+      },
+      {
+        "label": "鴛鴦",
+        "citations": 1
+      },
+      {
+        "label": "𤓰",
+        "citations": 1
+      },
+      {
+        "label": "前名及第",
+        "citations": 1
+      },
+      {
+        "label": "使相",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 7,
+        "match": "exact",
+        "category_count": 7,
+        "categories": [
+          {
+            "path": "人部 > 薦獻",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部 > 石",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "政術部 > 代官",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文學部 > 藏書",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服飾部 > 帶",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "果部 > 楊梅",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "果部 > 甘蔗",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 6,
+        "match": "line-initial",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "唐𤣥宗 > 南臺",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "宋 > 虚正寢",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "宋仁宗 > 郡將示題",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "宋鄧洵美連山人 > 王聶成怨",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "宋鄧洵美連山人 > 窮逹不同",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見祖父祖母 > 恐罹譴責",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 4,
+        "match": "bracket-note",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "帝",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "御史",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "石晉髙祖",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "石晉髙祖 > 教授",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "楊梅",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鴛鴦",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "𤓰",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "科舉部 > 前名及第",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "職官部 > 使相",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

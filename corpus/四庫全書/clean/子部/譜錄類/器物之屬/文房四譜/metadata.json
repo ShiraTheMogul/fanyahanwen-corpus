@@ -137,5 +137,134 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 11,
+    "leishu_count": 6,
+    "categorised_citations": 11,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "硯",
+        "citations": 4
+      },
+      {
+        "label": "紙",
+        "citations": 2
+      },
+      {
+        "label": "九子墨",
+        "citations": 1
+      },
+      {
+        "label": "紙為良田",
+        "citations": 1
+      },
+      {
+        "label": "譯經浄堂",
+        "citations": 1
+      },
+      {
+        "label": "夏禹螺書",
+        "citations": 1
+      },
+      {
+        "label": "墨",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "事類賦",
+        "citations": 5,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "什物部 > 硯",
+            "citations": 4,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "什物部 > 紙",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "海録碎事",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "九子墨",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "紙為良田",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "晉書之誤 > 紙",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "粘粉𢃄香 > 譯經浄堂",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "聖文 > 御書 > 夏禹螺書",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "字學部 > 墨",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

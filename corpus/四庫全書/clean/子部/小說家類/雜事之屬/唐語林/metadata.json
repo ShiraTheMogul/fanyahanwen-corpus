@@ -163,5 +163,253 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 22,
+    "leishu_count": 8,
+    "categorised_citations": 22,
+    "genmoku_confirmed_citations": 3,
+    "category_leaves": [
+      {
+        "label": "妓",
+        "citations": 2
+      },
+      {
+        "label": "方正",
+        "citations": 2
+      },
+      {
+        "label": "絳桃栁枝",
+        "citations": 2
+      },
+      {
+        "label": "御覽天下作日下",
+        "citations": 1
+      },
+      {
+        "label": "硯",
+        "citations": 1
+      },
+      {
+        "label": "笏",
+        "citations": 1
+      },
+      {
+        "label": "登第",
+        "citations": 1
+      },
+      {
+        "label": "道路",
+        "citations": 1
+      },
+      {
+        "label": "傳笏三世",
+        "citations": 1
+      },
+      {
+        "label": "柳枝",
+        "citations": 1
+      },
+      {
+        "label": "參軍鬻獄",
+        "citations": 1
+      },
+      {
+        "label": "華山",
+        "citations": 1
+      },
+      {
+        "label": "竈",
+        "citations": 1
+      },
+      {
+        "label": "染",
+        "citations": 1
+      },
+      {
+        "label": "三遍即誦",
+        "citations": 1
+      },
+      {
+        "label": "切毁之百姓大獲其利",
+        "citations": 1
+      },
+      {
+        "label": "紀要",
+        "citations": 1
+      },
+      {
+        "label": "宋朝晉代名臣集",
+        "citations": 1
+      },
+      {
+        "label": "嚴郢",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "天中記",
+        "citations": 9,
+        "match": "bracket-note",
+        "category_count": 7,
+        "categories": [
+          {
+            "path": "妓",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "語林汧公勉崔樞事並同 > 方正",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "御覽天下作日下",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "晉書之誤 > 硯",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "笏",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "舉為五老榜 > 登第",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "道路",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 3,
+        "match": "line-initial",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "唐宣宗 > 傳笏三世",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "旁妻 > 柳枝",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見前㫁刑 > 參軍鬻獄",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "地部 > 華山",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "居處部 > 竈",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "産業部 > 染",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "古今事文類聚",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "送妾桃葉 > 絳桃栁枝",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "駢志",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "三遍即誦",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "切毁之百姓大獲其利",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "全芳備祖集",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "紀要",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "隋志荀爽集一卷 > 宋朝晉代名臣集",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "萬姓統譜",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "嚴郢",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

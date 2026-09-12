@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 54383,
   "corpus_root": "中國漢文",
@@ -18,5 +18,148 @@
       "body_start_line": 8
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 13,
+    "leishu_count": 5,
+    "categorised_citations": 13,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "城市藩禦部四十四",
+        "citations": 2
+      },
+      {
+        "label": "酒醴飲食部四十六",
+        "citations": 2
+      },
+      {
+        "label": "因折蓋之形而制曲蓋",
+        "citations": 2
+      },
+      {
+        "label": "服御行幸",
+        "citations": 1
+      },
+      {
+        "label": "詔敕",
+        "citations": 1
+      },
+      {
+        "label": "鑄錢",
+        "citations": 1
+      },
+      {
+        "label": "治地龍子之後",
+        "citations": 1
+      },
+      {
+        "label": "雍",
+        "citations": 1
+      },
+      {
+        "label": "草木第五十八",
+        "citations": 1
+      },
+      {
+        "label": "歸市吳市",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "事物紀原",
+        "citations": 6,
+        "match": "exact",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "之始 > 城市藩禦部四十四",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "于鑚木造火之後 > 酒醴飲食部四十六",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "因折蓋之形而制曲蓋",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "服御行幸",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "詔敕",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鑄錢",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今姓氏書辯證",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "治地龍子之後",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鍾 > 雍",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "宋稗𩔖鈔",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "常熟潘永因編 > 草木第五十八",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "歸市吳市",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

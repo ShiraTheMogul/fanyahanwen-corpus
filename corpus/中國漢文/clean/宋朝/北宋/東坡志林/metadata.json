@@ -65,5 +65,281 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "960–1127年"
+  "ca": "960–1127年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 26,
+    "leishu_count": 7,
+    "categorised_citations": 26,
+    "genmoku_confirmed_citations": 12,
+    "category_leaves": [
+      {
+        "label": "書",
+        "citations": 3
+      },
+      {
+        "label": "棲賢",
+        "citations": 2
+      },
+      {
+        "label": "乞假",
+        "citations": 1
+      },
+      {
+        "label": "忠",
+        "citations": 1
+      },
+      {
+        "label": "節操",
+        "citations": 1
+      },
+      {
+        "label": "貧",
+        "citations": 1
+      },
+      {
+        "label": "馬",
+        "citations": 1
+      },
+      {
+        "label": "虸蚄蟲",
+        "citations": 1
+      },
+      {
+        "label": "蚊",
+        "citations": 1
+      },
+      {
+        "label": "蛙",
+        "citations": 1
+      },
+      {
+        "label": "魚",
+        "citations": 1
+      },
+      {
+        "label": "同年皆窮",
+        "citations": 1
+      },
+      {
+        "label": "措大不足",
+        "citations": 1
+      },
+      {
+        "label": "以書問東坡",
+        "citations": 1
+      },
+      {
+        "label": "瀑布",
+        "citations": 1
+      },
+      {
+        "label": "包容",
+        "citations": 1
+      },
+      {
+        "label": "識者所窺",
+        "citations": 1
+      },
+      {
+        "label": "當火于庭",
+        "citations": 1
+      },
+      {
+        "label": "貧賤",
+        "citations": 1
+      },
+      {
+        "label": "饌食",
+        "citations": 1
+      },
+      {
+        "label": "雜著",
+        "citations": 1
+      },
+      {
+        "label": "三星行韓愈",
+        "citations": 1
+      },
+      {
+        "label": "宰相下",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 12,
+        "match": "exact",
+        "category_count": 10,
+        "categories": [
+          {
+            "path": "巧藝部 > 書",
+            "citations": 3,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 乞假",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 忠",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 節操",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 貧",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 馬",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "蟲豸部 > 虸蚄蟲",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "蟲豸部 > 蚊",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "蟲豸部 > 蛙",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 魚",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 5,
+        "match": "line-initial",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "四幷堂在 > 棲賢",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "按左傳止載孔子 > 同年皆窮",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "杜詩滑憶雕胡飯 > 措大不足",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "漢上谷王次仲始作楷書 > 以書問東坡",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "地理部 > 瀑布",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "性行部 > 包容",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "性行部 > 識者所窺",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "當火于庭",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "貧賤",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "饌食",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "全芳備祖集",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "雜著",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今事文類聚",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "三星行韓愈",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今源流至論",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "宰相下",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -701,5 +701,138 @@
       ]
     }
   ],
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 12,
+    "leishu_count": 2,
+    "categorised_citations": 12,
+    "genmoku_confirmed_citations": 7,
+    "category_leaves": [
+      {
+        "label": "鹿",
+        "citations": 2
+      },
+      {
+        "label": "李",
+        "citations": 1
+      },
+      {
+        "label": "狐",
+        "citations": 1
+      },
+      {
+        "label": "鼠",
+        "citations": 1
+      },
+      {
+        "label": "蒲",
+        "citations": 1
+      },
+      {
+        "label": "僧",
+        "citations": 1
+      },
+      {
+        "label": "雞",
+        "citations": 1
+      },
+      {
+        "label": "水",
+        "citations": 1
+      },
+      {
+        "label": "池",
+        "citations": 1
+      },
+      {
+        "label": "風",
+        "citations": 1
+      },
+      {
+        "label": "鴿",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 7,
+        "match": "exact",
+        "category_count": 7,
+        "categories": [
+          {
+            "path": "果部 > 李",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 狐",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 鹿",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 鼠",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "草部 > 蒲",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "釋教部 > 僧",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 雞",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 5,
+        "match": "bracket-note",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "水",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "池",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "風",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鴿",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鹿",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

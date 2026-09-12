@@ -22,5 +22,44 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "266–316年"
+  "ca": "266–316年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 2,
+    "leishu_count": 1,
+    "categorised_citations": 2,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "財成",
+        "citations": 1
+      },
+      {
+        "label": "韻藻光宅",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "財成",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "韻藻光宅",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

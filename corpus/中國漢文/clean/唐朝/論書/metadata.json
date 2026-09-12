@@ -23,5 +23,238 @@
   "ca": "618–907年",
   "authors": [
     "亞棲"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 20,
+    "leishu_count": 10,
+    "categorised_citations": 20,
+    "genmoku_confirmed_citations": 5,
+    "category_leaves": [
+      {
+        "label": "書中",
+        "citations": 3
+      },
+      {
+        "label": "撥鐙序林韞",
+        "citations": 2
+      },
+      {
+        "label": "書",
+        "citations": 2
+      },
+      {
+        "label": "不修飾",
+        "citations": 2
+      },
+      {
+        "label": "三十六書法歐陽詢",
+        "citations": 1
+      },
+      {
+        "label": "書說黄庭堅",
+        "citations": 1
+      },
+      {
+        "label": "草書勢袁昂",
+        "citations": 1
+      },
+      {
+        "label": "藝文部六",
+        "citations": 1
+      },
+      {
+        "label": "歎賞二十一諫諍二十二",
+        "citations": 1
+      },
+      {
+        "label": "報不充賜",
+        "citations": 1
+      },
+      {
+        "label": "泰厲",
+        "citations": 1
+      },
+      {
+        "label": "評書取諭",
+        "citations": 1
+      },
+      {
+        "label": "者何為不至三公毅慙",
+        "citations": 1
+      },
+      {
+        "label": "產而能書",
+        "citations": 1
+      },
+      {
+        "label": "齊王僧䖍書賦",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "稗編",
+        "citations": 5,
+        "match": "line-initial",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "文藝十二 > 撥鐙序林韞",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "文藝七 > 三十六書法歐陽詢",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "文藝十 > 書說黄庭堅",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "文藝十 > 草書勢袁昂",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 4,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "道 > 書中",
+            "citations": 3,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂 > 書",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "藝文部六",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "藝文部六 > 歎賞二十一諫諍二十二",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "報不充賜",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "泰厲",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "駢志",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "不修飾",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今事文類聚",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "蘭亭序殉𦵏 > 評書取諭",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "者何為不至三公毅慙",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定子史精華",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "產而能書",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "巧藝部 > 書",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "藝文 > 小學 > 齊王僧䖍書賦",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

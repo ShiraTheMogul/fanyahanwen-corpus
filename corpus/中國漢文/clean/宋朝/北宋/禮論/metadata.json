@@ -19,5 +19,193 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "960–1127年"
+  "ca": "960–1127年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 15,
+    "leishu_count": 7,
+    "categorised_citations": 15,
+    "genmoku_confirmed_citations": 7,
+    "category_leaves": [
+      {
+        "label": "明堂",
+        "citations": 4
+      },
+      {
+        "label": "冠",
+        "citations": 2
+      },
+      {
+        "label": "旐",
+        "citations": 1
+      },
+      {
+        "label": "塜墓四",
+        "citations": 1
+      },
+      {
+        "label": "叙禮下",
+        "citations": 1
+      },
+      {
+        "label": "重",
+        "citations": 1
+      },
+      {
+        "label": "禮部上",
+        "citations": 1
+      },
+      {
+        "label": "禮部下",
+        "citations": 1
+      },
+      {
+        "label": "禮儀部",
+        "citations": 1
+      },
+      {
+        "label": "虞五禮三禮五典",
+        "citations": 1
+      },
+      {
+        "label": "禮春官",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 6,
+        "match": "author-prefix-stripped",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "禮儀部三十一 > 輓歌方相 > 旐",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "禮儀部三十九 > 塜墓四",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禮儀部二 > 叙禮下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "禮儀部二十七 > 重死 > 重",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "禮儀部十九 > 冠婚姻上 > 冠",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "禮儀部十二 > 明堂",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "初學記",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "禮部上",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禮部下",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "冠",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "明堂",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "禮儀部",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "禮儀部 > 明堂",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "禮儀 > 禮制 > 虞五禮三禮五典",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "羣書考索",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "經籍門 > 禮春官",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "禮部上 > 明堂",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      }
+    ]
+  }
 }

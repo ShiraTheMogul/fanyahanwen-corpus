@@ -54,5 +54,436 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "266–316年"
+  "ca": "266–316年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 41,
+    "leishu_count": 14,
+    "categorised_citations": 41,
+    "genmoku_confirmed_citations": 5,
+    "category_leaves": [
+      {
+        "label": "祭祀總上十八",
+        "citations": 8
+      },
+      {
+        "label": "霽十四",
+        "citations": 1
+      },
+      {
+        "label": "漢六",
+        "citations": 1
+      },
+      {
+        "label": "旌十九",
+        "citations": 1
+      },
+      {
+        "label": "肉十五",
+        "citations": 1
+      },
+      {
+        "label": "越王約法",
+        "citations": 1
+      },
+      {
+        "label": "劔魚",
+        "citations": 1
+      },
+      {
+        "label": "尉魚",
+        "citations": 1
+      },
+      {
+        "label": "梁水魴",
+        "citations": 1
+      },
+      {
+        "label": "蟬罅生",
+        "citations": 1
+      },
+      {
+        "label": "百囊罟",
+        "citations": 1
+      },
+      {
+        "label": "筏",
+        "citations": 1
+      },
+      {
+        "label": "蚌",
+        "citations": 1
+      },
+      {
+        "label": "蚶",
+        "citations": 1
+      },
+      {
+        "label": "魚",
+        "citations": 1
+      },
+      {
+        "label": "鵜鶘",
+        "citations": 1
+      },
+      {
+        "label": "櫻桃",
+        "citations": 1
+      },
+      {
+        "label": "雩祭",
+        "citations": 1
+      },
+      {
+        "label": "杜䳌",
+        "citations": 1
+      },
+      {
+        "label": "糓",
+        "citations": 1
+      },
+      {
+        "label": "勅付之",
+        "citations": 1
+      },
+      {
+        "label": "去",
+        "citations": 1
+      },
+      {
+        "label": "朱鼈浮於波上必大雨",
+        "citations": 1
+      },
+      {
+        "label": "星",
+        "citations": 1
+      },
+      {
+        "label": "鵲",
+        "citations": 1
+      },
+      {
+        "label": "身有涎",
+        "citations": 1
+      },
+      {
+        "label": "象鑣",
+        "citations": 1
+      },
+      {
+        "label": "碎録",
+        "citations": 1
+      },
+      {
+        "label": "待成",
+        "citations": 1
+      },
+      {
+        "label": "鷺",
+        "citations": 1
+      },
+      {
+        "label": "鶌鵃",
+        "citations": 1
+      },
+      {
+        "label": "平與水母游駮瑕委蛇",
+        "citations": 1
+      },
+      {
+        "label": "尊彛",
+        "citations": 1
+      },
+      {
+        "label": "蟲類",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "北堂書鈔",
+        "citations": 12,
+        "match": "exact",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "禮儀部九 > 祭祀總上十八",
+            "citations": 8,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "天部三 > 風篇十六雨篇十七 > 霽十四",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "天部二 > 雲七 > 漢六",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "武功部八 > 旒二十三 > 旌十九",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "酒食部 > 羌煮三十一胡飯三十二 > 肉十五",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "海録碎事",
+        "citations": 6,
+        "match": "line-initial",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "小鳥聞批頰㣲蟲弄叩頭 > 越王約法",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "舊説黿脂得火可以燃鐡 > 劔魚",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "蚌一名含漿 > 尉魚",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "蚌一名含漿 > 梁水魴",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "蝦蟇一名立針 > 蟬罅生",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "𤣥洲因水勢而施技 > 百囊罟",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 5,
+        "match": "exact",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "舟部 > 筏",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 蚌",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 蚶",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 魚",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 鵜鶘",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 4,
+        "match": "bracket-note",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "果食部 > 櫻桃",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "祭祀部 > 雩祭",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禽部 > 杜䳌",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "飲食部 > 糓",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "勅付之",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "去",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "朱鼈浮於波上必大雨",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "事類賦",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "天部 > 星",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禽部 > 鵲",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "⿰水多⿰ > 身有涎",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "龜鼎 > 象鑣",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "全芳備祖集",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "碎録",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "喻林",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "人事門 > 待成",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "鷺",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "鶌鵃",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定分類字錦",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "仄紅尾文鯉 > 平與水母游駮瑕委蛇",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "器用 > 尊彛",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "蟲類",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

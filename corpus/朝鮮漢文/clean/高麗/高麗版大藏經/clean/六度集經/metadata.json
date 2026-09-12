@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 82285,
   "corpus_root": "朝鮮漢文",
@@ -67,5 +67,87 @@
       "body_start_line": 7
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 5,
+    "leishu_count": 3,
+    "categorised_citations": 5,
+    "genmoku_confirmed_citations": 1,
+    "category_leaves": [
+      {
+        "label": "鴿王",
+        "citations": 1
+      },
+      {
+        "label": "游戲車上",
+        "citations": 1
+      },
+      {
+        "label": "蛺蝶一名春駒",
+        "citations": 1
+      },
+      {
+        "label": "鳥獸第一",
+        "citations": 1
+      },
+      {
+        "label": "菩薩",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "山堂肆考",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "寳手菩薩手中出無量花 > 鴿王",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "游戲車上",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "蛺蝶一名春駒",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鳥獸第一",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "釋教部 > 菩薩",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      }
+    ]
+  }
 }

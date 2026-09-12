@@ -307,5 +307,265 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 24,
+    "leishu_count": 6,
+    "categorised_citations": 24,
+    "genmoku_confirmed_citations": 6,
+    "category_leaves": [
+      {
+        "label": "知名",
+        "citations": 2
+      },
+      {
+        "label": "馬",
+        "citations": 2
+      },
+      {
+        "label": "鴿",
+        "citations": 2
+      },
+      {
+        "label": "任重",
+        "citations": 1
+      },
+      {
+        "label": "合薌合",
+        "citations": 1
+      },
+      {
+        "label": "如渴",
+        "citations": 1
+      },
+      {
+        "label": "聯綴",
+        "citations": 1
+      },
+      {
+        "label": "郵亭",
+        "citations": 1
+      },
+      {
+        "label": "韻藻天心",
+        "citations": 1
+      },
+      {
+        "label": "債負",
+        "citations": 1
+      },
+      {
+        "label": "堰埭",
+        "citations": 1
+      },
+      {
+        "label": "熊",
+        "citations": 1
+      },
+      {
+        "label": "猩猩",
+        "citations": 1
+      },
+      {
+        "label": "名字",
+        "citations": 1
+      },
+      {
+        "label": "諱",
+        "citations": 1
+      },
+      {
+        "label": "排調",
+        "citations": 1
+      },
+      {
+        "label": "以手䕶腰",
+        "citations": 1
+      },
+      {
+        "label": "畏日貍",
+        "citations": 1
+      },
+      {
+        "label": "平寄親嘗荷葉包茘",
+        "citations": 1
+      },
+      {
+        "label": "冠諸菜",
+        "citations": 1
+      },
+      {
+        "label": "卜省弗省",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 8,
+        "match": "bracket-note",
+        "category_count": 7,
+        "categories": [
+          {
+            "path": "知名",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "任重",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "合薌合",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "如渴",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "聯綴",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "郵亭",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "韻藻天心",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 6,
+        "match": "author-prefix-stripped",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "人部 > 債負",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部 > 堰埭",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 熊",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 猩猩",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 馬",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 鴿",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 5,
+        "match": "bracket-note",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "大武帝賜名懐逺 > 名字",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "大武帝賜名懐逺 > 諱",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "語林汧公勉崔樞事並同 > 排調",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "馬",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鴿",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "見烏 > 以手䕶腰",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鶴龜 > 畏日貍",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定分類字錦",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "殽胾蟻慕 > 平寄親嘗荷葉包茘",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "金榮 > 冠諸菜",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定韻府拾遺",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "卜省弗省",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -25,5 +25,273 @@
   ],
   "authors": [
     "潘岳"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 23,
+    "leishu_count": 8,
+    "categorised_citations": 23,
+    "genmoku_confirmed_citations": 4,
+    "category_leaves": [
+      {
+        "label": "棗",
+        "citations": 3
+      },
+      {
+        "label": "柰",
+        "citations": 2
+      },
+      {
+        "label": "柿",
+        "citations": 2
+      },
+      {
+        "label": "卿",
+        "citations": 1
+      },
+      {
+        "label": "葵",
+        "citations": 1
+      },
+      {
+        "label": "大谷梨",
+        "citations": 1
+      },
+      {
+        "label": "延國胄",
+        "citations": 1
+      },
+      {
+        "label": "時藿向陽",
+        "citations": 1
+      },
+      {
+        "label": "郊祖展義",
+        "citations": 1
+      },
+      {
+        "label": "頓足舞",
+        "citations": 1
+      },
+      {
+        "label": "桃",
+        "citations": 1
+      },
+      {
+        "label": "靈䑓",
+        "citations": 1
+      },
+      {
+        "label": "宴㑹",
+        "citations": 1
+      },
+      {
+        "label": "授條鷦鷯長",
+        "citations": 1
+      },
+      {
+        "label": "洛",
+        "citations": 1
+      },
+      {
+        "label": "竹",
+        "citations": 1
+      },
+      {
+        "label": "杏",
+        "citations": 1
+      },
+      {
+        "label": "饗燕篇六",
+        "citations": 1
+      },
+      {
+        "label": "母子",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "天中記",
+        "citations": 5,
+        "match": "bracket-note",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "卿",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "柰",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "柿",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "棗",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "葵",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "海録碎事",
+        "citations": 5,
+        "match": "bracket-note",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "大谷梨",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "延國胄",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "時藿向陽",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "郊祖展義",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "頓足舞",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 4,
+        "match": "author-prefix-stripped",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "果部二 > 棗",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "果部四 > 桃",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禮儀部十三 > 辟雍靈䑓學校 > 靈䑓",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禮儀部十八 > 贄 > 宴㑹",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "白孔六帖",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "授條鷦鷯長",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "柰胡桃 > 棗",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "萍蘋桑 > 柿",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "地部 > 洛",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "木部 > 竹",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "菓部上 > 柰",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "菓部下 > 杏",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "禮儀部三 > 饗燕篇六",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今合璧事類備要",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "親屬門 > 母子",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

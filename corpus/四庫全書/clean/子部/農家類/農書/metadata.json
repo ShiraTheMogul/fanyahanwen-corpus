@@ -293,5 +293,269 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 19,
+    "leishu_count": 11,
+    "categorised_citations": 19,
+    "genmoku_confirmed_citations": 6,
+    "category_leaves": [
+      {
+        "label": "地",
+        "citations": 2
+      },
+      {
+        "label": "冬至",
+        "citations": 2
+      },
+      {
+        "label": "封杏繁杏",
+        "citations": 1
+      },
+      {
+        "label": "挺",
+        "citations": 1
+      },
+      {
+        "label": "采鱗",
+        "citations": 1
+      },
+      {
+        "label": "粟",
+        "citations": 1
+      },
+      {
+        "label": "周藉禮",
+        "citations": 1
+      },
+      {
+        "label": "漢汜勝之書農書",
+        "citations": 1
+      },
+      {
+        "label": "至道勸農使",
+        "citations": 1
+      },
+      {
+        "label": "五運六氣總論",
+        "citations": 1
+      },
+      {
+        "label": "行地上各有方位",
+        "citations": 1
+      },
+      {
+        "label": "黍",
+        "citations": 1
+      },
+      {
+        "label": "冬",
+        "citations": 1
+      },
+      {
+        "label": "夏八",
+        "citations": 1
+      },
+      {
+        "label": "河鯉",
+        "citations": 1
+      },
+      {
+        "label": "大方方不中矩方而無涯",
+        "citations": 1
+      },
+      {
+        "label": "種植王磐",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 3,
+        "match": "author-prefix-stripped",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "封杏繁杏",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "挺",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "采鱗",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 3,
+        "match": "author-prefix-stripped",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "五榖部 > 粟",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部 > 地",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "歲時部 > 冬至",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "禮儀 > 耕藉 > 周藉禮",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見東都苑類 > 漢汜勝之書農書",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見東都苑類 > 至道勸農使",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "圖書編",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "推而得之 > 五運六氣總論",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "行地上各有方位",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "時序部十三 > 立冬冬至 > 冬至",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "百榖部六 > 黍稔粱東薔 > 黍",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "事類賦",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "嵗時部第二 > 冬",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "歲時部二 > 秋篇九冬篇十 > 夏八",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定分類字錦",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "仄紅尾文鯉 > 河鯉",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "白孔六帖",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "大方方不中矩方而無涯",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "稗編",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "諸家三 > 種植王磐",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "地部 > 地",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -28,5 +28,488 @@
       "264年",
       "311年"
     ]
+  },
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 48,
+    "leishu_count": 11,
+    "categorised_citations": 48,
+    "genmoku_confirmed_citations": 23,
+    "category_leaves": [
+      {
+        "label": "池",
+        "citations": 4
+      },
+      {
+        "label": "馬",
+        "citations": 3
+      },
+      {
+        "label": "九月九日",
+        "citations": 2
+      },
+      {
+        "label": "香鑪",
+        "citations": 2
+      },
+      {
+        "label": "甘",
+        "citations": 2
+      },
+      {
+        "label": "以為盡已所懐謂之確論",
+        "citations": 2
+      },
+      {
+        "label": "狗山",
+        "citations": 2
+      },
+      {
+        "label": "忠勇",
+        "citations": 1
+      },
+      {
+        "label": "孫亮",
+        "citations": 1
+      },
+      {
+        "label": "棨㦸",
+        "citations": 1
+      },
+      {
+        "label": "望楚山",
+        "citations": 1
+      },
+      {
+        "label": "石梁山",
+        "citations": 1
+      },
+      {
+        "label": "薤山",
+        "citations": 1
+      },
+      {
+        "label": "伯叔",
+        "citations": 1
+      },
+      {
+        "label": "鄧州",
+        "citations": 1
+      },
+      {
+        "label": "書臺",
+        "citations": 1
+      },
+      {
+        "label": "馬五",
+        "citations": 1
+      },
+      {
+        "label": "鹿",
+        "citations": 1
+      },
+      {
+        "label": "酒下",
+        "citations": 1
+      },
+      {
+        "label": "黍",
+        "citations": 1
+      },
+      {
+        "label": "厠",
+        "citations": 1
+      },
+      {
+        "label": "洲",
+        "citations": 1
+      },
+      {
+        "label": "賓客",
+        "citations": 1
+      },
+      {
+        "label": "隱逸",
+        "citations": 1
+      },
+      {
+        "label": "香爐",
+        "citations": 1
+      },
+      {
+        "label": "人部",
+        "citations": 1
+      },
+      {
+        "label": "山南道",
+        "citations": 1
+      },
+      {
+        "label": "梅",
+        "citations": 1
+      },
+      {
+        "label": "宅舍",
+        "citations": 1
+      },
+      {
+        "label": "帝慙回車而反",
+        "citations": 1
+      },
+      {
+        "label": "秋",
+        "citations": 1
+      },
+      {
+        "label": "九月九日二十",
+        "citations": 1
+      },
+      {
+        "label": "主簿一百四十",
+        "citations": 1
+      },
+      {
+        "label": "來羅浮山騰空往還",
+        "citations": 1
+      },
+      {
+        "label": "鳥獸第一",
+        "citations": 1
+      },
+      {
+        "label": "柑",
+        "citations": 1
+      },
+      {
+        "label": "保身",
+        "citations": 1
+      },
+      {
+        "label": "季和過爐",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 15,
+        "match": "exact",
+        "category_count": 15,
+        "categories": [
+          {
+            "path": "人事部五十八 > 忠勇",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "偏霸部二 > 孫休孫皓 > 孫亮",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "儀式部二 > 棨㦸節 > 棨㦸",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "地部三十二 > 壑 > 池",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部八 > 長圍山 > 望楚山",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部八 > 長圍山 > 石梁山",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部八 > 長圍山 > 薤山",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "宗親部二 > 伯叔",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "州郡部十四 > 均州随州 > 鄧州",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "時序部十七 > 七月十五日九月九日 > 九月九日",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服用部五 > 唾壺書臺香爐 > 書臺",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "獸部九 > 馬五",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部十八 > 鹿麋麂麈麑 > 鹿",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "飲食部三 > 酒下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "飲食部八 > 飯飱黍 > 黍",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 8,
+        "match": "bracket-note",
+        "category_count": 8,
+        "categories": [
+          {
+            "path": "九月九日",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "厠",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "池",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "洲",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "賓客",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "隱逸",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "香爐",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "馬",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 6,
+        "match": "exact",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "人部",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部 > 池",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "州郡部 > 山南道",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服飾部 > 香鑪",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "果部 > 梅",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 馬",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 5,
+        "match": "exact",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "居處部四 > 宅舍",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服飾部下 > 香鑪",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "水部下 > 池",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部上 > 馬",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "菓部上 > 甘",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "駢志",
+        "citations": 3,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "以為盡已所懐謂之確論",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "帝慙回車而反",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "事類賦",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "嵗時部第二 > 秋",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "果部 > 甘",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "初學記",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "狗山",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "歲時部三 > 夏至二十三 > 九月九日二十",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "設官部二十一 > 主簿一百四十",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "來羅浮山騰空往還",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鳥獸第一",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "果食部 > 柑",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "識見部 > 保身",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "五代徐 > 季和過爐",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
   }
 }

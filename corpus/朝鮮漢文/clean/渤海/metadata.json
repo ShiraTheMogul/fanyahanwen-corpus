@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 81970,
   "corpus_root": "朝鮮漢文",
@@ -60,5 +60,295 @@
       "body_start_line": 2
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 24,
+    "leishu_count": 11,
+    "categorised_citations": 22,
+    "genmoku_confirmed_citations": 4,
+    "category_leaves": [
+      {
+        "label": "四海附",
+        "citations": 2
+      },
+      {
+        "label": "司徒",
+        "citations": 1
+      },
+      {
+        "label": "慶號萬石君",
+        "citations": 1
+      },
+      {
+        "label": "損震諫議大夫和蕃使",
+        "citations": 1
+      },
+      {
+        "label": "時避地南康",
+        "citations": 1
+      },
+      {
+        "label": "見姓苑",
+        "citations": 1
+      },
+      {
+        "label": "唐新羅百濟",
+        "citations": 1
+      },
+      {
+        "label": "悖慢",
+        "citations": 1
+      },
+      {
+        "label": "烏桓",
+        "citations": 1
+      },
+      {
+        "label": "張敞上書",
+        "citations": 1
+      },
+      {
+        "label": "巨鰲戴山",
+        "citations": 1
+      },
+      {
+        "label": "巨鼇戴山",
+        "citations": 1
+      },
+      {
+        "label": "勿吉",
+        "citations": 1
+      },
+      {
+        "label": "東平入氐七度",
+        "citations": 1
+      },
+      {
+        "label": "黔中長沙於",
+        "citations": 1
+      },
+      {
+        "label": "贊華",
+        "citations": 1
+      },
+      {
+        "label": "見枕",
+        "citations": 1
+      },
+      {
+        "label": "雪",
+        "citations": 1
+      },
+      {
+        "label": "歴代年號",
+        "citations": 1
+      },
+      {
+        "label": "總論政事",
+        "citations": 1
+      },
+      {
+        "label": "七虞",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "元和姓纂",
+        "citations": 5,
+        "match": "line-initial",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "司徒",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "慶號萬石君",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "損震諫議大夫和蕃使",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "時避地南康",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見姓苑",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "冊府元龜",
+        "citations": 5,
+        "match": "line-initial",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "帝王部 > 唐新羅百濟",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "帝王部 > 悖慢",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "帝王部 > 烏桓",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "古今事文類聚",
+        "citations": 3,
+        "match": "line-initial",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "吕文穆 > 張敞上書",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "巨鰲戴山",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "巨鼇戴山",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "圖書編",
+        "citations": 3,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "來朝必細雨 > 四海附",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "里東濵大海 > 勿吉",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "羣書考索",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "東平入氐七度",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "黔中長沙於",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今姓氏書辯證",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "贊華",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "龜兹進枕 > 見枕",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "天部 > 雪",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "律厯 > 歴代年號",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "政事部 > 總論政事",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "韻府羣玉",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "上平聲 > 七虞",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -103,5 +103,87 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 6,
+    "leishu_count": 3,
+    "categorised_citations": 6,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "棘下生",
+        "citations": 2
+      },
+      {
+        "label": "蜼彝",
+        "citations": 1
+      },
+      {
+        "label": "周牧監長伯九牧九采",
+        "citations": 1
+      },
+      {
+        "label": "魯兩社",
+        "citations": 1
+      },
+      {
+        "label": "沂山",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "玉海",
+        "citations": 3,
+        "match": "author-prefix-stripped",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "器用 > 尊彛 > 周六尊六彝 > 蜼彝",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "官制 > 牧守 > 周牧監長伯九牧九采",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "稷 > 魯兩社",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "實賔録",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "荀奉倩袁曜卿 > 棘下生",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "圖書編",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "浮島皆登陟所見者 > 沂山",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

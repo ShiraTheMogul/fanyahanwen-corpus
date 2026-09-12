@@ -437,5 +437,132 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 10,
+    "leishu_count": 3,
+    "categorised_citations": 10,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "父母",
+        "citations": 1
+      },
+      {
+        "label": "寺",
+        "citations": 1
+      },
+      {
+        "label": "閣",
+        "citations": 1
+      },
+      {
+        "label": "江",
+        "citations": 1
+      },
+      {
+        "label": "海",
+        "citations": 1
+      },
+      {
+        "label": "誤",
+        "citations": 1
+      },
+      {
+        "label": "馬",
+        "citations": 1
+      },
+      {
+        "label": "唐梁公埭",
+        "citations": 1
+      },
+      {
+        "label": "祥符雙廟讚",
+        "citations": 1
+      },
+      {
+        "label": "里",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "天中記",
+        "citations": 7,
+        "match": "bracket-note",
+        "category_count": 7,
+        "categories": [
+          {
+            "path": "宗衮又誤 > 父母",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "寺",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "昭明學士誤 > 閣",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "江",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "海",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "誤",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "馬",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "地理 > 陂塘堰湖隄埭 > 唐梁公埭",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "藝文 > 序贊 > 祥符雙廟讚",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "駢志",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "里",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

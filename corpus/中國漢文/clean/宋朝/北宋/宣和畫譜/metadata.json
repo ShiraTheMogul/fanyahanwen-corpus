@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 52554,
   "corpus_root": "中國漢文",
@@ -229,5 +229,198 @@
       "body_start_line": 8
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 24,
+    "leishu_count": 5,
+    "categorised_citations": 24,
+    "genmoku_confirmed_citations": 8,
+    "category_leaves": [
+      {
+        "label": "畫",
+        "citations": 9
+      },
+      {
+        "label": "韻藻河圖",
+        "citations": 2
+      },
+      {
+        "label": "增恣撾數撾",
+        "citations": 1
+      },
+      {
+        "label": "夢蝶",
+        "citations": 1
+      },
+      {
+        "label": "弓弩手通身手",
+        "citations": 1
+      },
+      {
+        "label": "怪石",
+        "citations": 1
+      },
+      {
+        "label": "愛惹僧十八",
+        "citations": 1
+      },
+      {
+        "label": "慧眼",
+        "citations": 1
+      },
+      {
+        "label": "白馬寺",
+        "citations": 1
+      },
+      {
+        "label": "縫裳姸",
+        "citations": 1
+      },
+      {
+        "label": "身",
+        "citations": 1
+      },
+      {
+        "label": "韻藻餓鶻囘鶻",
+        "citations": 1
+      },
+      {
+        "label": "鳬鴈",
+        "citations": 1
+      },
+      {
+        "label": "畫品",
+        "citations": 1
+      },
+      {
+        "label": "呼眞眞",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 13,
+        "match": "bracket-note",
+        "category_count": 12,
+        "categories": [
+          {
+            "path": "韻藻河圖",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "增恣撾數撾",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "夢蝶",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "弓弩手通身手",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "怪石",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "愛惹僧十八",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "慧眼",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "白馬寺",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "縫裳姸",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "身",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "韻藻餓鶻囘鶻",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鳬鴈",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 8,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "巧藝部 > 畫",
+            "citations": 8,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "畫品",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定分類字錦",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "星流 > 呼眞眞",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定子史精華",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "巧歷不能得 > 畫",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

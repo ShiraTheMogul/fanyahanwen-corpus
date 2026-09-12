@@ -68,5 +68,597 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 57,
+    "leishu_count": 18,
+    "categorised_citations": 57,
+    "genmoku_confirmed_citations": 23,
+    "category_leaves": [
+      {
+        "label": "攻戰",
+        "citations": 2
+      },
+      {
+        "label": "攻戰十一",
+        "citations": 2
+      },
+      {
+        "label": "鼓",
+        "citations": 1
+      },
+      {
+        "label": "將帥",
+        "citations": 1
+      },
+      {
+        "label": "征伐",
+        "citations": 1
+      },
+      {
+        "label": "斧鉞",
+        "citations": 1
+      },
+      {
+        "label": "旌旗",
+        "citations": 1
+      },
+      {
+        "label": "武",
+        "citations": 1
+      },
+      {
+        "label": "殳",
+        "citations": 1
+      },
+      {
+        "label": "示信",
+        "citations": 1
+      },
+      {
+        "label": "禁暴",
+        "citations": 1
+      },
+      {
+        "label": "訓練",
+        "citations": 1
+      },
+      {
+        "label": "陣",
+        "citations": 1
+      },
+      {
+        "label": "輿",
+        "citations": 1
+      },
+      {
+        "label": "鉞",
+        "citations": 1
+      },
+      {
+        "label": "將帥上",
+        "citations": 1
+      },
+      {
+        "label": "料敵上",
+        "citations": 1
+      },
+      {
+        "label": "勝",
+        "citations": 1
+      },
+      {
+        "label": "罷兵",
+        "citations": 1
+      },
+      {
+        "label": "叙刑下",
+        "citations": 1
+      },
+      {
+        "label": "春下",
+        "citations": 1
+      },
+      {
+        "label": "鼔吹樂",
+        "citations": 1
+      },
+      {
+        "label": "賞賜",
+        "citations": 1
+      },
+      {
+        "label": "市",
+        "citations": 1
+      },
+      {
+        "label": "叙車下",
+        "citations": 1
+      },
+      {
+        "label": "周禮類",
+        "citations": 1
+      },
+      {
+        "label": "法令而死生足以相託",
+        "citations": 1
+      },
+      {
+        "label": "車輅類",
+        "citations": 1
+      },
+      {
+        "label": "者四十年",
+        "citations": 1
+      },
+      {
+        "label": "論南北軍僅盈數萬耳",
+        "citations": 1
+      },
+      {
+        "label": "禮地官",
+        "citations": 1
+      },
+      {
+        "label": "邊為澮",
+        "citations": 1
+      },
+      {
+        "label": "晉三軍六軍二軍被廬法",
+        "citations": 1
+      },
+      {
+        "label": "晉廣車軘車",
+        "citations": 1
+      },
+      {
+        "label": "隆興車陣",
+        "citations": 1
+      },
+      {
+        "label": "周振旅陳",
+        "citations": 1
+      },
+      {
+        "label": "周五兵五盾七兵",
+        "citations": 1
+      },
+      {
+        "label": "論兵一",
+        "citations": 1
+      },
+      {
+        "label": "井田總論",
+        "citations": 1
+      },
+      {
+        "label": "田有溝洫遂人掌之",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 14,
+        "match": "exact",
+        "category_count": 13,
+        "categories": [
+          {
+            "path": "武功部 > 攻戰",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部 > 鼓",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 將帥",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 征伐",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 斧鉞",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 旌旗",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 武",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 殳",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 示信",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 禁暴",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 訓練",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 陣",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "車部 > 輿",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 11,
+        "match": "exact",
+        "category_count": 11,
+        "categories": [
+          {
+            "path": "兵部七十二 > 節鉞 > 鉞",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部三 > 將帥上 > 將帥上",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部二十一 > 料敵上 > 料敵上",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部五十三 > 勝 > 勝",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部五十八 > 罷兵偃武 > 罷兵",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "刑法部二 > 叙刑下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "時序部五 > 春分 > 春下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部五 > 鼓吹樂四夷樂 > 鼔吹樂",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "治道部十四 > 賞賜",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "資産部七 > 市",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "車部二 > 叙車下",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "羣書考索",
+        "citations": 7,
+        "match": "exact",
+        "category_count": 7,
+        "categories": [
+          {
+            "path": "周禮類",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "法令而死生足以相託",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禮器門 > 車輅類",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "者四十年",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "論南北軍僅盈數萬耳",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "責大臣也葢深 > 禮地官",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "雍州土黄壌田上上 > 邊為澮",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 5,
+        "match": "exact",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "之得失皆當詳考 > 晉三軍六軍二軍被廬法",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "兵制 > 車戰 > 晉廣車軘車",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "兵制 > 車戰 > 隆興車陣",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "兵制 > 陣法 > 周振旅陳",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "廋翼與燕王書致襦鎧 > 雜兵器 > 周五兵五盾七兵",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "武功部六 > 攻戰十一",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "武功部一 > 論兵一",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "圖書編",
+        "citations": 3,
+        "match": "author-prefix-stripped",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "以周禮為定 > 井田總論",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "田有溝洫遂人掌之",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "者幾希",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "經濟類編",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "刑法類二 > 執法",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "天類三 > 災異",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "兵戎部 > 戰功",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "論議部 > 兩不相入",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "事物紀原",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "石為攻城械號將軍礮",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "厯代制度詳說",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "開皇三年",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今姓氏書辯證",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "氏",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "名賢氏族言行類稿",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "良",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "喻林",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "政治門 > 明刑",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "小學紺珠",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "器用類 > 三代輦",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "帝王經世圖譜",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "四縣為都之圖",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "徧報",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "白孔六帖",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "專命專殺 > 軍矯命",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "羣書㑹元截江網",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "太祖 > 七書撮要",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

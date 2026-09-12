@@ -20,5 +20,212 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "618–907年"
+  "ca": "618–907年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 20,
+    "leishu_count": 4,
+    "categorised_citations": 19,
+    "genmoku_confirmed_citations": 5,
+    "category_leaves": [
+      {
+        "label": "井",
+        "citations": 2
+      },
+      {
+        "label": "龍",
+        "citations": 2
+      },
+      {
+        "label": "富",
+        "citations": 1
+      },
+      {
+        "label": "事佛",
+        "citations": 1
+      },
+      {
+        "label": "妬婦",
+        "citations": 1
+      },
+      {
+        "label": "父母",
+        "citations": 1
+      },
+      {
+        "label": "春分",
+        "citations": 1
+      },
+      {
+        "label": "槐",
+        "citations": 1
+      },
+      {
+        "label": "水",
+        "citations": 1
+      },
+      {
+        "label": "舉為五老榜",
+        "citations": 1
+      },
+      {
+        "label": "酒",
+        "citations": 1
+      },
+      {
+        "label": "鏡",
+        "citations": 1
+      },
+      {
+        "label": "騾",
+        "citations": 1
+      },
+      {
+        "label": "報徳",
+        "citations": 1
+      },
+      {
+        "label": "水總載",
+        "citations": 1
+      },
+      {
+        "label": "鼈",
+        "citations": 1
+      },
+      {
+        "label": "評文下",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "天中記",
+        "citations": 13,
+        "match": "bracket-note",
+        "category_count": 13,
+        "categories": [
+          {
+            "path": "事也誤 > 富",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "事佛",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "井",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "妬婦",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "宗衮又誤 > 父母",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "春分",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "槐",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "水",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "舉為五老榜",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "酒",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鏡",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "駱駞 > 騾",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "龍",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 5,
+        "match": "author-prefix-stripped",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "人部 > 報徳",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部 > 井",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部 > 水總載",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 鼈",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 龍",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 0,
+        "categories": []
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "著述部 > 評文下",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

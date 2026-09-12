@@ -40,5 +40,363 @@
         }
       ]
     }
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 37,
+    "leishu_count": 11,
+    "categorised_citations": 37,
+    "genmoku_confirmed_citations": 18,
+    "category_leaves": [
+      {
+        "label": "月",
+        "citations": 7
+      },
+      {
+        "label": "天",
+        "citations": 6
+      },
+      {
+        "label": "虹霓",
+        "citations": 2
+      },
+      {
+        "label": "羮",
+        "citations": 2
+      },
+      {
+        "label": "日",
+        "citations": 2
+      },
+      {
+        "label": "太始",
+        "citations": 1
+      },
+      {
+        "label": "天部下",
+        "citations": 1
+      },
+      {
+        "label": "漢",
+        "citations": 1
+      },
+      {
+        "label": "氣",
+        "citations": 1
+      },
+      {
+        "label": "柱",
+        "citations": 1
+      },
+      {
+        "label": "兔",
+        "citations": 1
+      },
+      {
+        "label": "射",
+        "citations": 1
+      },
+      {
+        "label": "蘆",
+        "citations": 1
+      },
+      {
+        "label": "夀",
+        "citations": 1
+      },
+      {
+        "label": "鼇",
+        "citations": 1
+      },
+      {
+        "label": "虹",
+        "citations": 1
+      },
+      {
+        "label": "日二",
+        "citations": 1
+      },
+      {
+        "label": "月四",
+        "citations": 1
+      },
+      {
+        "label": "佞邪九",
+        "citations": 1
+      },
+      {
+        "label": "鼇抃",
+        "citations": 1
+      },
+      {
+        "label": "蔽虧",
+        "citations": 1
+      },
+      {
+        "label": "諸家五",
+        "citations": 1
+      },
+      {
+        "label": "樂章",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 10,
+        "match": "author-prefix-stripped",
+        "category_count": 9,
+        "categories": [
+          {
+            "path": "天部四 > 日下月 > 月",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "天部一 > 天部上 > 太始",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "天部二 > 刻漏 > 天部下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "天部八 > 漢霞 > 漢",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "天部十五 > 霾曀 > 氣",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "天部十四 > 虹霓 > 虹霓",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "居處部十五 > 梁棟 > 柱",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部十九 > 麞麕兎 > 兔",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "飲食部十九 > 羮臛飲漿 > 羮",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 6,
+        "match": "author-prefix-stripped",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "天部 > 天",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "天部 > 日",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "天部 > 月",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "天部 > 虹霓",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "巧藝部 > 射",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "草部 > 蘆",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 5,
+        "match": "author-prefix-stripped",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "天",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "夀",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "羮",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鼇",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "事類賦",
+        "citations": 4,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "天部 > 天",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "天部 > 月",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 4,
+        "match": "author-prefix-stripped",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "天部上 > 天",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "天部上 > 日",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "天部上 > 月",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "天部下 > 虹",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "天部 > 天一日二 > 日二",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "天部二 > 雲七 > 月四",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "政術部 > 佞邪九貪暴十 > 佞邪九",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今事文類聚",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "巨鼇戴山 > 鼇抃",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "蔽虧",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "稗編",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "諸家五",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "樂部 > 樂章",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "月",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

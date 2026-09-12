@@ -91,5 +91,462 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 37,
+    "leishu_count": 15,
+    "categorised_citations": 37,
+    "genmoku_confirmed_citations": 6,
+    "category_leaves": [
+      {
+        "label": "公子子旗之後",
+        "citations": 2
+      },
+      {
+        "label": "自揆",
+        "citations": 1
+      },
+      {
+        "label": "不足輕重",
+        "citations": 1
+      },
+      {
+        "label": "好學",
+        "citations": 1
+      },
+      {
+        "label": "氣槩",
+        "citations": 1
+      },
+      {
+        "label": "傾蓋",
+        "citations": 1
+      },
+      {
+        "label": "心隨事移",
+        "citations": 1
+      },
+      {
+        "label": "力所不及",
+        "citations": 1
+      },
+      {
+        "label": "公平",
+        "citations": 1
+      },
+      {
+        "label": "正直",
+        "citations": 1
+      },
+      {
+        "label": "臂",
+        "citations": 1
+      },
+      {
+        "label": "帝王部",
+        "citations": 1
+      },
+      {
+        "label": "豕",
+        "citations": 1
+      },
+      {
+        "label": "璧",
+        "citations": 1
+      },
+      {
+        "label": "五帝",
+        "citations": 1
+      },
+      {
+        "label": "樂",
+        "citations": 1
+      },
+      {
+        "label": "水",
+        "citations": 1
+      },
+      {
+        "label": "猪",
+        "citations": 1
+      },
+      {
+        "label": "風",
+        "citations": 1
+      },
+      {
+        "label": "之堯乃作歌",
+        "citations": 1
+      },
+      {
+        "label": "大雷擊其首",
+        "citations": 1
+      },
+      {
+        "label": "天氣為䰟地氣為魄",
+        "citations": 1
+      },
+      {
+        "label": "馬",
+        "citations": 1
+      },
+      {
+        "label": "有殿中侍御史万俟著",
+        "citations": 1
+      },
+      {
+        "label": "交接",
+        "citations": 1
+      },
+      {
+        "label": "重生",
+        "citations": 1
+      },
+      {
+        "label": "五氣",
+        "citations": 1
+      },
+      {
+        "label": "五運六氣",
+        "citations": 1
+      },
+      {
+        "label": "傾蓋相語",
+        "citations": 1
+      },
+      {
+        "label": "傾蓋而語",
+        "citations": 1
+      },
+      {
+        "label": "六龍",
+        "citations": 1
+      },
+      {
+        "label": "聱隅子",
+        "citations": 1
+      },
+      {
+        "label": "淮南子",
+        "citations": 1
+      },
+      {
+        "label": "治道",
+        "citations": 1
+      },
+      {
+        "label": "自叙",
+        "citations": 1
+      },
+      {
+        "label": "輕重殊稱多少異實",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "記纂淵海",
+        "citations": 7,
+        "match": "bracket-note",
+        "category_count": 7,
+        "categories": [
+          {
+            "path": "叙述部 > 自揆",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "名譽部 > 不足輕重",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "問學部 > 好學",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "性行部 > 氣槩",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "接物部 > 傾蓋",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禾黍與稂莠雨來同日滋 > 心隨事移",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "論議部 > 力所不及",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 6,
+        "match": "author-prefix-stripped",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "人部 > 公平",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 正直",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 臂",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "帝王部",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 豕",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "珍寶部 > 璧",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 5,
+        "match": "author-prefix-stripped",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "帝俊是黄帝字無稽 > 五帝",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "樂",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "水",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "猪",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "風",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 4,
+        "match": "bracket-note",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "之堯乃作歌",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "大雷擊其首",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "天氣為䰟地氣為魄",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "馬",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今姓氏書辯證",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "公子子旗之後",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "有殿中侍御史万俟著",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "喻林",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "人事門 > 交接",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人事門 > 重生",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "小學紺珠",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "觀象宣明崇元 > 五氣",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "觀象宣明崇元 > 五運六氣",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今事文類聚",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "廉頗與藺相如為刎頸交 > 傾蓋相語",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "傾蓋而語",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定駢字類編",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "六龍",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "其姓氏懸諸日月 > 聱隅子",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "稗編",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "諸家二 > 淮南子",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "經濟類編",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "政治類一 > 治道",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "翰苑新書",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "通問 > 自叙",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "駢志",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "輕重殊稱多少異實",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

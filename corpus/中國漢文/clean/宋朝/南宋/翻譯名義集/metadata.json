@@ -21,5 +21,35 @@
       "body_start_line": 10
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 1,
+    "leishu_count": 1,
+    "categorised_citations": 1,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "布",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "格致鏡原",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "布帛類 > 布",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

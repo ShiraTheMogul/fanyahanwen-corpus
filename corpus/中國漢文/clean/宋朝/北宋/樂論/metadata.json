@@ -19,5 +19,183 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "960–1127年"
+  "ca": "960–1127年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 14,
+    "leishu_count": 7,
+    "categorised_citations": 14,
+    "genmoku_confirmed_citations": 6,
+    "category_leaves": [
+      {
+        "label": "琴",
+        "citations": 3
+      },
+      {
+        "label": "樂總一",
+        "citations": 2
+      },
+      {
+        "label": "律二十九",
+        "citations": 1
+      },
+      {
+        "label": "琴十",
+        "citations": 1
+      },
+      {
+        "label": "舞篇三",
+        "citations": 1
+      },
+      {
+        "label": "吟",
+        "citations": 1
+      },
+      {
+        "label": "雅樂下",
+        "citations": 1
+      },
+      {
+        "label": "琴下",
+        "citations": 1
+      },
+      {
+        "label": "琴上",
+        "citations": 1
+      },
+      {
+        "label": "諧神明而和人聲",
+        "citations": 1
+      },
+      {
+        "label": "韻藻抵捂",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "北堂書鈔",
+        "citations": 5,
+        "match": "author-prefix-stripped",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "樂部 > 樂總一",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "樂部 > 律二十九 > 律二十九",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "樂部 > 瑟九琴十 > 琴十",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "樂部 > 舞篇三",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 4,
+        "match": "author-prefix-stripped",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "人事部三十三 > 嚬 > 吟",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部三 > 雅樂下律吕 > 雅樂下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部十七 > 琴下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部十五 > 琴上",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "事類賦",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "樂部 > 琴",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "諧神明而和人聲",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "韻藻抵捂",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "樂部 > 琴",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "樂部四 > 琴",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      }
+    ]
+  }
 }

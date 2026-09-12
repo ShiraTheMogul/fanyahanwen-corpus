@@ -361,5 +361,96 @@
       "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
     }
   ],
-  "provenance_schema_version": 1
+  "provenance_schema_version": 1,
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 6,
+    "leishu_count": 3,
+    "categorised_citations": 6,
+    "genmoku_confirmed_citations": 1,
+    "category_leaves": [
+      {
+        "label": "紀功",
+        "citations": 1
+      },
+      {
+        "label": "漢太初官名",
+        "citations": 1
+      },
+      {
+        "label": "漢樂府",
+        "citations": 1
+      },
+      {
+        "label": "郡",
+        "citations": 1
+      },
+      {
+        "label": "都邑",
+        "citations": 1
+      },
+      {
+        "label": "射",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "玉海",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "之 > 紀功",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "官制 > 官名 > 漢太初官名",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "迎風露寒 > 府 > 漢樂府",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "郡",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "都邑",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "巧藝部 > 射",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      }
+    ]
+  }
 }

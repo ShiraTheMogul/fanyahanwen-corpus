@@ -91,5 +91,117 @@
       "前93年"
     ]
   },
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 16,
+    "leishu_count": 5,
+    "categorised_citations": 16,
+    "genmoku_confirmed_citations": 6,
+    "category_leaves": [
+      {
+        "label": "鼎",
+        "citations": 11
+      },
+      {
+        "label": "鱗介部",
+        "citations": 1
+      },
+      {
+        "label": "㸑鼎鐘",
+        "citations": 1
+      },
+      {
+        "label": "韻藻樽酒",
+        "citations": 1
+      },
+      {
+        "label": "龜",
+        "citations": 1
+      },
+      {
+        "label": "他鼎遇鼎",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "事類賦",
+        "citations": 6,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "服用部 > 鼎",
+            "citations": 6,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 6,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "器物部 > 鼎",
+            "citations": 5,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "㸑鼎鐘",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "韻藻樽酒",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "龜",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定韻府拾遺",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "他鼎遇鼎",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

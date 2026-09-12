@@ -91,5 +91,61 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 3,
+    "leishu_count": 2,
+    "categorised_citations": 3,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "宫牆",
+        "citations": 1
+      },
+      {
+        "label": "誓墓",
+        "citations": 1
+      },
+      {
+        "label": "公卿宅有金盃玉盌之號",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "宫牆",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "誓墓",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "公卿宅有金盃玉盌之號",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 4473,
   "corpus_root": "中國漢文",
@@ -18,5 +18,417 @@
       "body_start_line": 8
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 37,
+    "leishu_count": 13,
+    "categorised_citations": 37,
+    "genmoku_confirmed_citations": 14,
+    "category_leaves": [
+      {
+        "label": "蟻",
+        "citations": 3
+      },
+      {
+        "label": "正月十五日",
+        "citations": 2
+      },
+      {
+        "label": "膾",
+        "citations": 2
+      },
+      {
+        "label": "臛",
+        "citations": 2
+      },
+      {
+        "label": "露",
+        "citations": 2
+      },
+      {
+        "label": "膾十九",
+        "citations": 2
+      },
+      {
+        "label": "獄",
+        "citations": 1
+      },
+      {
+        "label": "過所",
+        "citations": 1
+      },
+      {
+        "label": "腫",
+        "citations": 1
+      },
+      {
+        "label": "鬼上",
+        "citations": 1
+      },
+      {
+        "label": "黄雀",
+        "citations": 1
+      },
+      {
+        "label": "蠶",
+        "citations": 1
+      },
+      {
+        "label": "龍下",
+        "citations": 1
+      },
+      {
+        "label": "上元",
+        "citations": 1
+      },
+      {
+        "label": "兄弟",
+        "citations": 1
+      },
+      {
+        "label": "紗",
+        "citations": 1
+      },
+      {
+        "label": "鳯",
+        "citations": 1
+      },
+      {
+        "label": "露二十",
+        "citations": 1
+      },
+      {
+        "label": "臛篇五",
+        "citations": 1
+      },
+      {
+        "label": "粥",
+        "citations": 1
+      },
+      {
+        "label": "嘷",
+        "citations": 1
+      },
+      {
+        "label": "蜉蝣戴盆不能上山",
+        "citations": 1
+      },
+      {
+        "label": "鳥獸第一",
+        "citations": 1
+      },
+      {
+        "label": "相率而去",
+        "citations": 1
+      },
+      {
+        "label": "轅下",
+        "citations": 1
+      },
+      {
+        "label": "紀要",
+        "citations": 1
+      },
+      {
+        "label": "祀神",
+        "citations": 1
+      },
+      {
+        "label": "諸食饌",
+        "citations": 1
+      },
+      {
+        "label": "揚稠必昴萃約實箕張",
+        "citations": 1
+      },
+      {
+        "label": "七夕",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 11,
+        "match": "author-prefix-stripped",
+        "category_count": 10,
+        "categories": [
+          {
+            "path": "時序部十五 > 三月三日 > 正月十五日",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "刑法部九 > 獄",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "文部十四 > 零丁 > 過所",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "疾病部六 > 隂痿陽病 > 腫",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "神鬼部三 > 鬼上",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "羽族部九 > 黄雀",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "資産部五 > 機杼梭 > 蠶",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "飲食部二十 > 膾脯鯖鮓八珍 > 膾",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "飲食部十九 > 羮臛飲漿 > 臛",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部二 > 龍下蛟螭 > 龍下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 6,
+        "match": "bracket-note",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "上元",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "宗衮又誤 > 兄弟",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "濟河事或在兹 > 蟻",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "紗",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "露",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鳯",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 4,
+        "match": "exact",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "酒食部 > 羌煮三十一胡飯三十二 > 膾十九",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "天部四 > 電篇二十四霹靂二十五 > 露二十",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "酒食部 > 黍篇十四 > 臛篇五",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 4,
+        "match": "exact",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "蟲豸部 > 蟻",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "食物部 > 粥",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "食物部 > 膾",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "食物部 > 臛",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "嘷",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "蜉蝣戴盆不能上山",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鳥獸第一",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "駢志",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "相率而去",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "轅下",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "全芳備祖集",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "紀要",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "見貧士 > 祀神",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "格致鏡原",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "飲食𩔖 > 諸食饌",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "編珠",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "揚稠必昴萃約實箕張",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "蟲豸部 > 蟻",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "天文部 > 露",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "七夕",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

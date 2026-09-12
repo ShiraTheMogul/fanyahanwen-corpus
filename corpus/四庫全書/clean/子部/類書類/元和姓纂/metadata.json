@@ -3,7 +3,7 @@
   "work_id": 127189,
   "corpus_root": "四庫全書",
   "title": "元和姓纂",
-  "is_compilation": false,
+  "is_compilation": true,
   "contained_in": [
     {
       "work_id": 80277,
@@ -187,5 +187,297 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "compilation_note": "子部類書類：本書為類書，內容多為徵引他書原文；徵引關係見 corpus/index_leishu_徵引.csv，不另重複計入語料庫字數。",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 429,
+    "leishu_count": 1,
+    "categorised_citations": 429,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "出姓苑",
+        "citations": 25
+      },
+      {
+        "label": "氏",
+        "citations": 9
+      },
+      {
+        "label": "人宰公",
+        "citations": 6
+      },
+      {
+        "label": "其子若孫以王父字為氏",
+        "citations": 6
+      },
+      {
+        "label": "出姓解",
+        "citations": 6
+      },
+      {
+        "label": "為靈公大夫能治賓客",
+        "citations": 6
+      },
+      {
+        "label": "無子字",
+        "citations": 6
+      },
+      {
+        "label": "為氏",
+        "citations": 5
+      },
+      {
+        "label": "三霰更不收",
+        "citations": 4
+      },
+      {
+        "label": "作喜乃有施氏姓",
+        "citations": 4
+      },
+      {
+        "label": "出後魏官氏志",
+        "citations": 4
+      },
+      {
+        "label": "古天子昊英氏之後",
+        "citations": 4
+      },
+      {
+        "label": "唐咸通中有蠙固知音律",
+        "citations": 4
+      },
+      {
+        "label": "報之",
+        "citations": 4
+      },
+      {
+        "label": "嫘為氏",
+        "citations": 4
+      },
+      {
+        "label": "帥",
+        "citations": 4
+      },
+      {
+        "label": "師古為正",
+        "citations": 4
+      },
+      {
+        "label": "是也其先以地為氏",
+        "citations": 4
+      },
+      {
+        "label": "梁于氏",
+        "citations": 4
+      },
+      {
+        "label": "系唐有士孫瑞集十卷",
+        "citations": 4
+      },
+      {
+        "label": "興令丁若某字堅固",
+        "citations": 4
+      },
+      {
+        "label": "莊子舜友有石户之農",
+        "citations": 4
+      },
+      {
+        "label": "十一模",
+        "citations": 4
+      },
+      {
+        "label": "西域天竺人姓",
+        "citations": 3
+      },
+      {
+        "label": "七尾",
+        "citations": 2
+      },
+      {
+        "label": "二仙",
+        "citations": 2
+      },
+      {
+        "label": "丌元實",
+        "citations": 2
+      },
+      {
+        "label": "之後為公仇氏",
+        "citations": 2
+      },
+      {
+        "label": "乙門又舊滎陽四姓",
+        "citations": 2
+      },
+      {
+        "label": "事唐",
+        "citations": 2
+      },
+      {
+        "label": "三十一巧",
+        "citations": 2
+      },
+      {
+        "label": "人",
+        "citations": 2
+      },
+      {
+        "label": "人為甲者或以世官為氏",
+        "citations": 2
+      },
+      {
+        "label": "以務相為氏今駁去",
+        "citations": 2
+      },
+      {
+        "label": "以國為氏",
+        "citations": 2
+      },
+      {
+        "label": "以飯",
+        "citations": 2
+      },
+      {
+        "label": "絞",
+        "citations": 2
+      },
+      {
+        "label": "侍中有傳",
+        "citations": 2
+      },
+      {
+        "label": "侯氏託為景族子",
+        "citations": 2
+      },
+      {
+        "label": "倚",
+        "citations": 2
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "古今姓氏書辯證",
+        "citations": 429,
+        "match": "exact",
+        "category_count": 178,
+        "categories": [
+          {
+            "path": "出姓苑",
+            "citations": 25,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "氏",
+            "citations": 9,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人宰公",
+            "citations": 6,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "其子若孫以王父字為氏",
+            "citations": 6,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "出姓解",
+            "citations": 6,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "為靈公大夫能治賓客",
+            "citations": 6,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "無子字",
+            "citations": 6,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "為氏",
+            "citations": 5,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "三霰更不收",
+            "citations": 4,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "作喜乃有施氏姓",
+            "citations": 4,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "出後魏官氏志",
+            "citations": 4,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "古天子昊英氏之後",
+            "citations": 4,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "唐咸通中有蠙固知音律",
+            "citations": 4,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "報之",
+            "citations": 4,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "嫘為氏",
+            "citations": 4,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "帥",
+            "citations": 4,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "師古為正",
+            "citations": 4,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "是也其先以地為氏",
+            "citations": 4,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "梁于氏",
+            "citations": 4,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "系唐有士孫瑞集十卷",
+            "citations": 4,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  },
+  "leishu_citation_summary": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "works_attested": 35,
+    "citations": 342,
+    "categorised_citations": 342,
+    "distinct_categories": 211,
+    "unresolved_heads": 118
+  }
 }

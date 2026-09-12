@@ -1754,5 +1754,105 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "960–1127年"
+  "ca": "960–1127年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 7,
+    "leishu_count": 3,
+    "categorised_citations": 7,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "君子澤",
+        "citations": 1
+      },
+      {
+        "label": "帝王崇位益崇",
+        "citations": 1
+      },
+      {
+        "label": "廢不治所自治道君治",
+        "citations": 1
+      },
+      {
+        "label": "衰壟擢壟",
+        "citations": 1
+      },
+      {
+        "label": "指如籤",
+        "citations": 1
+      },
+      {
+        "label": "重曜兩曜",
+        "citations": 1
+      },
+      {
+        "label": "蒼頡丙寅死辛未塟",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定韻府拾遺",
+        "citations": 4,
+        "match": "bracket-note",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "君子澤",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "帝王崇位益崇",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "廢不治所自治道君治",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "衰壟擢壟",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "指如籤",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "重曜兩曜",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "蒼頡丙寅死辛未塟",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

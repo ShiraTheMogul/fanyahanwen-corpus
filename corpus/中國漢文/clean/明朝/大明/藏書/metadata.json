@@ -17,5 +17,189 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "1368–1644年"
+  "ca": "1368–1644年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 12,
+    "leishu_count": 9,
+    "categorised_citations": 12,
+    "genmoku_confirmed_citations": 2,
+    "category_leaves": [
+      {
+        "label": "月日甫里陸游務觀記",
+        "citations": 2
+      },
+      {
+        "label": "古今事實",
+        "citations": 1
+      },
+      {
+        "label": "徳",
+        "citations": 1
+      },
+      {
+        "label": "講論",
+        "citations": 1
+      },
+      {
+        "label": "寫書十七",
+        "citations": 1
+      },
+      {
+        "label": "箴銘",
+        "citations": 1
+      },
+      {
+        "label": "文學部",
+        "citations": 1
+      },
+      {
+        "label": "乾道三年",
+        "citations": 1
+      },
+      {
+        "label": "藝文",
+        "citations": 1
+      },
+      {
+        "label": "玩好",
+        "citations": 1
+      },
+      {
+        "label": "天禧元年",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "古今事文類聚",
+        "citations": 3,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "書巢記陸務觀 > 月日甫里陸游務觀記",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "渙渥自天震惶無地改中 > 古今事實",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "人部 > 徳",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文學部 > 講論",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "藝文部 > 廢學二十三 > 寫書十七",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今源流至論",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "箴銘",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古儷府",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "文學部",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "宋稗𩔖鈔",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "常熟潘永因編 > 乾道三年",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "藝文",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "襟懐部 > 玩好",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "文名天下李邕字㤗和既 > 天禧元年",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -24,5 +24,61 @@
       "body_start_line": 13
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 3,
+    "leishu_count": 2,
+    "categorised_citations": 3,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "假夢通靈",
+        "citations": 1
+      },
+      {
+        "label": "汎清瑟",
+        "citations": 1
+      },
+      {
+        "label": "笛",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "海録碎事",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "假夢通靈",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "汎清瑟",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "白孔六帖",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "空桑 > 笛",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -60,5 +60,156 @@
       ]
     }
   ],
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 17,
+    "leishu_count": 6,
+    "categorised_citations": 17,
+    "genmoku_confirmed_citations": 13,
+    "category_leaves": [
+      {
+        "label": "史傳",
+        "citations": 4
+      },
+      {
+        "label": "遊俠",
+        "citations": 3
+      },
+      {
+        "label": "貧",
+        "citations": 2
+      },
+      {
+        "label": "史",
+        "citations": 2
+      },
+      {
+        "label": "節操",
+        "citations": 1
+      },
+      {
+        "label": "鑒誡",
+        "citations": 1
+      },
+      {
+        "label": "魏應璩百一詩",
+        "citations": 1
+      },
+      {
+        "label": "禦邊十三",
+        "citations": 1
+      },
+      {
+        "label": "古詩",
+        "citations": 1
+      },
+      {
+        "label": "不遇",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 9,
+        "match": "author-prefix-stripped",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "人部 > 遊俠",
+            "citations": 3,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 貧",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文學部 > 史",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 節操",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 鑒誡",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 4,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "雜文部一 > 史傳",
+            "citations": 4,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "初學記",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "魏應璩百一詩",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "武功部七 > 功勲十五 > 禦邊十三",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今事文類聚",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "致仕後客位咨目朱元晦 > 古詩",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "逢此百憂尚寐無覺我心 > 不遇",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

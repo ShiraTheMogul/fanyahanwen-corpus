@@ -1856,5 +1856,471 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 97,
+    "leishu_count": 11,
+    "categorised_citations": 97,
+    "genmoku_confirmed_citations": 6,
+    "category_leaves": [
+      {
+        "label": "羣祀類",
+        "citations": 13
+      },
+      {
+        "label": "樂器類",
+        "citations": 9
+      },
+      {
+        "label": "冕服類",
+        "citations": 6
+      },
+      {
+        "label": "后服類",
+        "citations": 5
+      },
+      {
+        "label": "禘祫類",
+        "citations": 5
+      },
+      {
+        "label": "圭璧類",
+        "citations": 4
+      },
+      {
+        "label": "宗",
+        "citations": 2
+      },
+      {
+        "label": "天文類",
+        "citations": 2
+      },
+      {
+        "label": "天文器類",
+        "citations": 2
+      },
+      {
+        "label": "笏類",
+        "citations": 2
+      },
+      {
+        "label": "牲牢類",
+        "citations": 2
+      },
+      {
+        "label": "祼類",
+        "citations": 2
+      },
+      {
+        "label": "酒醴類",
+        "citations": 2
+      },
+      {
+        "label": "邊為澮",
+        "citations": 2
+      },
+      {
+        "label": "飬老總叙",
+        "citations": 2
+      },
+      {
+        "label": "太學總序",
+        "citations": 2
+      },
+      {
+        "label": "禮",
+        "citations": 2
+      },
+      {
+        "label": "上為陶唐氏",
+        "citations": 1
+      },
+      {
+        "label": "謂仲春季春仲秋",
+        "citations": 1
+      },
+      {
+        "label": "兄弟",
+        "citations": 1
+      },
+      {
+        "label": "周武成柴望大告武成成",
+        "citations": 1
+      },
+      {
+        "label": "士門",
+        "citations": 1
+      },
+      {
+        "label": "釋菜於門内",
+        "citations": 1
+      },
+      {
+        "label": "旂常類",
+        "citations": 1
+      },
+      {
+        "label": "舃屨類",
+        "citations": 1
+      },
+      {
+        "label": "典禮",
+        "citations": 1
+      },
+      {
+        "label": "禮門",
+        "citations": 1
+      },
+      {
+        "label": "壇壝類",
+        "citations": 1
+      },
+      {
+        "label": "鄉飲酒類",
+        "citations": 1
+      },
+      {
+        "label": "裴氏之姓不一",
+        "citations": 1
+      },
+      {
+        "label": "諸帝合",
+        "citations": 1
+      },
+      {
+        "label": "貞觀中始加黄鉞豹尾",
+        "citations": 1
+      },
+      {
+        "label": "封國疆制考",
+        "citations": 1
+      },
+      {
+        "label": "祀天祀帝之辨",
+        "citations": 1
+      },
+      {
+        "label": "稼穡凡治野以下劑致甿",
+        "citations": 1
+      },
+      {
+        "label": "帶",
+        "citations": 1
+      },
+      {
+        "label": "冠",
+        "citations": 1
+      },
+      {
+        "label": "婚姻",
+        "citations": 1
+      },
+      {
+        "label": "明堂",
+        "citations": 1
+      },
+      {
+        "label": "朝日夕月",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "羣書考索",
+        "citations": 73,
+        "match": "exact",
+        "category_count": 30,
+        "categories": [
+          {
+            "path": "禮門 > 羣祀類",
+            "citations": 13,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "樂門 > 樂器類",
+            "citations": 9,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禮器門 > 冕服類",
+            "citations": 6,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禮器門 > 后服類",
+            "citations": 5,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禮門 > 禘祫類",
+            "citations": 5,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "兄弟 > 宗",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "律歴門 > 天文類",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "歴數門 > 天文器類",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禮器門 > 圭璧類",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禮器門 > 笏類",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禮門 > 圭璧類",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禮門 > 牲牢類",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禮門 > 祼類",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禮門 > 酒醴類",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "雍州土黄壌田上上 > 邊為澮",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "上為陶唐氏",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "五學之説 > 謂仲春季春仲秋",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "兄弟",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "周武成柴望大告武成成",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "士門",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "圖書編",
+        "citations": 7,
+        "match": "author-prefix-stripped",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "一詣學而講課缺然 > 飬老總叙",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "太學總序",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "千乗徒一百六十萬人 > 封國疆制考",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "方以御田祖以祈甘雨 > 祀天祀帝之辨",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "稼穡凡治野以下劑致甿",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 5,
+        "match": "author-prefix-stripped",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "服飾部 > 帶",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "禮儀部 > 冠",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "禮儀部 > 婚姻",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "禮儀部 > 明堂",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "禮儀部 > 朝日夕月",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "稗編",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "吏一 > 論臺諫宋志",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禮一 > 論周禮六天書趙汸",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禮一 > 論魯郊之僭",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "人事部三 > 姓名 > 名",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部十二 > 皷柷敔筍簴 > 皷",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "禮儀部 > 禮",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "鼓",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "格致鏡原",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "武備𩔖 > 矢",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "奠之禮遂以著令 > 周入學舍采釋奠",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "萬姓統譜",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "沈兼善 > 沈義",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "讀書紀數畧",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "東周西周 > 史記八書",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -21,5 +21,70 @@
   "known_commentaries": [],
   "authors": [
     "張耒"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 4,
+    "leishu_count": 2,
+    "categorised_citations": 4,
+    "genmoku_confirmed_citations": 1,
+    "category_leaves": [
+      {
+        "label": "子于時喧然傳之",
+        "citations": 1
+      },
+      {
+        "label": "排調",
+        "citations": 1
+      },
+      {
+        "label": "髑髏",
+        "citations": 1
+      },
+      {
+        "label": "蜘蛛",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "天中記",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "子于時喧然傳之",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "語林汧公勉崔樞事並同 > 排調",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "髑髏",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "蟲豸部 > 蜘蛛",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      }
+    ]
+  }
 }

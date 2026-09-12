@@ -458,5 +458,157 @@
       ]
     }
   ],
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 11,
+    "leishu_count": 5,
+    "categorised_citations": 11,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "仁厚",
+        "citations": 1
+      },
+      {
+        "label": "内修",
+        "citations": 1
+      },
+      {
+        "label": "敬畏",
+        "citations": 1
+      },
+      {
+        "label": "不齊",
+        "citations": 1
+      },
+      {
+        "label": "夙慧",
+        "citations": 1
+      },
+      {
+        "label": "登第",
+        "citations": 1
+      },
+      {
+        "label": "惟",
+        "citations": 1
+      },
+      {
+        "label": "樓舩",
+        "citations": 1
+      },
+      {
+        "label": "乾道四經解",
+        "citations": 1
+      },
+      {
+        "label": "補遺",
+        "citations": 1
+      },
+      {
+        "label": "雜草",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "喻林",
+        "citations": 4,
+        "match": "bracket-note",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "仁厚",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "内修",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "敬畏",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "物宜門 > 不齊",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "夙慧",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "舉為五老榜 > 登第",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "惟",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "樓舩",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "儒林之篇 > 乾道四經解",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "律厯 > 歴代年號 > 補遺",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "格致鏡原",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "草𩔖 > 雜草",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

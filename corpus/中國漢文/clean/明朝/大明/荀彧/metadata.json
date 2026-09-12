@@ -26,5 +26,189 @@
   ],
   "authors": [
     "鍾惺"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 21,
+    "leishu_count": 8,
+    "categorised_citations": 13,
+    "genmoku_confirmed_citations": 1,
+    "category_leaves": [
+      {
+        "label": "千鈞",
+        "citations": 2
+      },
+      {
+        "label": "避亂去鄉",
+        "citations": 1
+      },
+      {
+        "label": "三日猶香",
+        "citations": 1
+      },
+      {
+        "label": "二令君美",
+        "citations": 1
+      },
+      {
+        "label": "薦多卿相",
+        "citations": 1
+      },
+      {
+        "label": "間關",
+        "citations": 1
+      },
+      {
+        "label": "緩慢",
+        "citations": 1
+      },
+      {
+        "label": "無謀",
+        "citations": 1
+      },
+      {
+        "label": "列",
+        "citations": 1
+      },
+      {
+        "label": "食子公無我字",
+        "citations": 1
+      },
+      {
+        "label": "弩",
+        "citations": 1
+      },
+      {
+        "label": "荀恱申鑒",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "冊府元龜",
+        "citations": 8,
+        "match": "line-initial",
+        "category_count": 0,
+        "categories": []
+      },
+      {
+        "leishu": "古今事文類聚",
+        "citations": 4,
+        "match": "line-initial",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "不忘土風 > 避亂去鄉",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "晉 > 三日猶香",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "晉 > 二令君美",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "趙武薦白屋之士六十家 > 薦多卿相",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "見將帥 > 千鈞",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "小人喜悅之貌 > 間關",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "人事部 > 緩慢",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "識見部 > 無謀",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "同姓名録",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "列",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "名疑",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "食子公無我字",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "武功部 > 弩",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "萬姓統譜",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "荀恱申鑒",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

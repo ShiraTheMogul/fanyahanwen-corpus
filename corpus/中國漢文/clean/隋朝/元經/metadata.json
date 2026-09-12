@@ -175,5 +175,283 @@
       "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
     }
   ],
-  "provenance_schema_version": 1
+  "provenance_schema_version": 1,
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 23,
+    "leishu_count": 10,
+    "categorised_citations": 23,
+    "genmoku_confirmed_citations": 14,
+    "category_leaves": [
+      {
+        "label": "道部",
+        "citations": 3
+      },
+      {
+        "label": "養生",
+        "citations": 2
+      },
+      {
+        "label": "堂",
+        "citations": 1
+      },
+      {
+        "label": "道觀",
+        "citations": 1
+      },
+      {
+        "label": "射",
+        "citations": 1
+      },
+      {
+        "label": "斧鉞",
+        "citations": 1
+      },
+      {
+        "label": "手",
+        "citations": 1
+      },
+      {
+        "label": "圭",
+        "citations": 1
+      },
+      {
+        "label": "傳授下",
+        "citations": 1
+      },
+      {
+        "label": "衣",
+        "citations": 1
+      },
+      {
+        "label": "理所",
+        "citations": 1
+      },
+      {
+        "label": "沙幕",
+        "citations": 1
+      },
+      {
+        "label": "韻藻負荷",
+        "citations": 1
+      },
+      {
+        "label": "古今源流",
+        "citations": 1
+      },
+      {
+        "label": "後魏安遲氏改為安氏",
+        "citations": 1
+      },
+      {
+        "label": "鸚鵡",
+        "citations": 1
+      },
+      {
+        "label": "綢繆宮陛贊",
+        "citations": 1
+      },
+      {
+        "label": "天鎧解鎧",
+        "citations": 1
+      },
+      {
+        "label": "天文類",
+        "citations": 1
+      },
+      {
+        "label": "自安",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 8,
+        "match": "author-prefix-stripped",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "道部",
+            "citations": 3,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "居處部 > 堂",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "居處部 > 道觀",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "巧藝部 > 射",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 斧鉞",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "道部 > 養生",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 6,
+        "match": "author-prefix-stripped",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "人事部十一 > 指&KR0438; > 手",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "珎寳部五 > 圭璧 > 圭",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "道部二十 > 傳授下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "道部十 > 養生",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "道部十七 > 帷帳席 > 衣",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "道部十六 > 理所",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "沙幕",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "韻藻負荷",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今合璧事類備要",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "古今源流",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今姓氏書辯證",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "後魏安遲氏改為安氏",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "鸚鵡",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定分類字錦",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "龍紀六等 > 綢繆宮陛贊",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定韻府拾遺",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "天鎧解鎧",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "羣書考索",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "律歴門 > 天文類",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "駢志",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "自安",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

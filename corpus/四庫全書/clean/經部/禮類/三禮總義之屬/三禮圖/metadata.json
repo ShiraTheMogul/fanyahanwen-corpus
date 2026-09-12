@@ -115,5 +115,696 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 132,
+    "leishu_count": 16,
+    "categorised_citations": 132,
+    "genmoku_confirmed_citations": 47,
+    "category_leaves": [
+      {
+        "label": "明陳耀文撰",
+        "citations": 9
+      },
+      {
+        "label": "后服類",
+        "citations": 6
+      },
+      {
+        "label": "簫",
+        "citations": 4
+      },
+      {
+        "label": "冠",
+        "citations": 4
+      },
+      {
+        "label": "冕",
+        "citations": 3
+      },
+      {
+        "label": "簧",
+        "citations": 3
+      },
+      {
+        "label": "冠一",
+        "citations": 3
+      },
+      {
+        "label": "服食部",
+        "citations": 3
+      },
+      {
+        "label": "簠簋",
+        "citations": 2
+      },
+      {
+        "label": "通天冠",
+        "citations": 2
+      },
+      {
+        "label": "磬",
+        "citations": 2
+      },
+      {
+        "label": "壺",
+        "citations": 2
+      },
+      {
+        "label": "笄",
+        "citations": 2
+      },
+      {
+        "label": "笏",
+        "citations": 2
+      },
+      {
+        "label": "明堂",
+        "citations": 2
+      },
+      {
+        "label": "樂部下",
+        "citations": 2
+      },
+      {
+        "label": "琴",
+        "citations": 2
+      },
+      {
+        "label": "瑟",
+        "citations": 2
+      },
+      {
+        "label": "冠冕首飾部十四",
+        "citations": 2
+      },
+      {
+        "label": "誓盟",
+        "citations": 1
+      },
+      {
+        "label": "鐸",
+        "citations": 1
+      },
+      {
+        "label": "瓢",
+        "citations": 1
+      },
+      {
+        "label": "禁",
+        "citations": 1
+      },
+      {
+        "label": "豐",
+        "citations": 1
+      },
+      {
+        "label": "甒",
+        "citations": 1
+      },
+      {
+        "label": "鑊",
+        "citations": 1
+      },
+      {
+        "label": "匕",
+        "citations": 1
+      },
+      {
+        "label": "机",
+        "citations": 1
+      },
+      {
+        "label": "爵",
+        "citations": 1
+      },
+      {
+        "label": "筐",
+        "citations": 1
+      },
+      {
+        "label": "洗",
+        "citations": 1
+      },
+      {
+        "label": "瓉",
+        "citations": 1
+      },
+      {
+        "label": "觚",
+        "citations": 1
+      },
+      {
+        "label": "觥",
+        "citations": 1
+      },
+      {
+        "label": "敦牟",
+        "citations": 1
+      },
+      {
+        "label": "爼豆",
+        "citations": 1
+      },
+      {
+        "label": "鉶",
+        "citations": 1
+      },
+      {
+        "label": "卜下",
+        "citations": 1
+      },
+      {
+        "label": "屏風",
+        "citations": 1
+      },
+      {
+        "label": "幄",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 52,
+        "match": "line-initial",
+        "category_count": 49,
+        "categories": [
+          {
+            "path": "器物部四 > 欓 > 簠簋",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "服章部二 > 長冠樊噲冠 > 通天冠",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部十四 > 凖 > 磬",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部一百二十一 > 誓盟質 > 誓盟",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "兵部六十九 > 柝 > 鐸",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "器物部七 > 碾 > 瓢",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "器物部七 > 碾 > 禁",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "器物部七 > 碾 > 豐",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "器物部三 > 魁槃 > 甒",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "器物部二 > 箄甑帶 > 鑊",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "器物部五 > 簞爵 > 匕",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "器物部五 > 簞爵 > 机",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "器物部五 > 簞爵 > 爵",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "器物部五 > 簞爵 > 筐",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "器物部六 > 壺洗 > 壺",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "器物部六 > 壺洗 > 洗",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "器物部六 > 壺洗 > 瓉",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "器物部六 > 壺洗 > 觚",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "器物部六 > 壺洗 > 觥",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "器物部四 > 欓 > 敦牟",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 14,
+        "match": "exact",
+        "category_count": 12,
+        "categories": [
+          {
+            "path": "衣冠部一 > 帽九 > 冠一",
+            "citations": 3,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "儀飾部七 > 屩八十五屐八十六 > 屨八十一",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "儀飾部三 > 步障十三承塵十四 > 屏風十一",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "儀飾部三 > 步障十三承塵十四 > 幄一",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "儀飾部三 > 步障十三承塵十四 > 幕二",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "樂部 > 竽十七 > 竽十七",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "樂部 > 竽十七 > 笙十五",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "武功部十三 > 箭四十八 > 箭四十八",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "武功部十四 > 鞭六十一 > 射桿五十一",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "衣冠部二 > 笏十八舄十九 > 法服十",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "衣冠部二 > 笏十八舄十九 > 笏十八",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "衣冠部二 > 笏十八舄十九 > 舄十九",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 14,
+        "match": "bracket-note",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "明陳耀文撰",
+            "citations": 9,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "冕",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "屛風",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "歎服之 > 簫",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "笄",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "笏",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "羣書考索",
+        "citations": 8,
+        "match": "author-prefix-stripped",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "禮器門 > 后服類",
+            "citations": 6,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禮器門 > 冕服類",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禮器門 > 器用類",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "初學記",
+        "citations": 7,
+        "match": "exact",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "服食部",
+            "citations": 3,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "樂部下",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "器用部",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "盭草",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 7,
+        "match": "line-initial",
+        "category_count": 7,
+        "categories": [
+          {
+            "path": "宋 > 却敵",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "宋 > 惠文",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "宋 > 進賢",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "王朗為司空作複篆書 > 飾金",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見志士 > 冕",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見志士 > 𤣥表",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見樵人 > 却非",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 7,
+        "match": "exact",
+        "category_count": 7,
+        "categories": [
+          {
+            "path": "器物部 > 壺",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "器物部 > 盆",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服飾部 > 珮",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部 > 琴",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部 > 瑟",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部 > 簧",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 弓",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 6,
+        "match": "bracket-note",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "樂部 > 方響",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "樂部 > 琴",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "樂部 > 瑟",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "樂部 > 簧",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "樂部 > 簫",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "樂部 > 鍾",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 5,
+        "match": "exact",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "噐用 > 堯禺氏玉舜昭華玉 > 周大圭介圭",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "師因樂之器以考音 > 周南籥豳籥",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "車服 > 冕服 > 周大裘冕良裘功裘",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "音樂 > 樂 > 漢樂經",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "音樂 > 樂器 > 舜五弦琴",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "事類賦",
+        "citations": 4,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "服用部 > 冠",
+            "citations": 4,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "事物紀原",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "因折蓋之形而制曲蓋 > 冠冕首飾部十四",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "樂部四 > 簫",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "禮部上 > 明堂",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "小學紺珠",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "有孔子之易 > 補亡詩六篇",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "以知之",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "格致鏡原",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "冠服𩔖 > 履",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "海録碎事",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "鄧緦",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -115,5 +115,219 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 20,
+    "leishu_count": 6,
+    "categorised_citations": 20,
+    "genmoku_confirmed_citations": 6,
+    "category_leaves": [
+      {
+        "label": "無脣",
+        "citations": 2
+      },
+      {
+        "label": "紅嘴蟲",
+        "citations": 2
+      },
+      {
+        "label": "周宣王時有兔舞鎬",
+        "citations": 2
+      },
+      {
+        "label": "筋大",
+        "citations": 1
+      },
+      {
+        "label": "蟹寄殻",
+        "citations": 1
+      },
+      {
+        "label": "鑿亦不脱",
+        "citations": 1
+      },
+      {
+        "label": "虎威",
+        "citations": 1
+      },
+      {
+        "label": "渾儀",
+        "citations": 1
+      },
+      {
+        "label": "殿",
+        "citations": 1
+      },
+      {
+        "label": "象",
+        "citations": 1
+      },
+      {
+        "label": "蝶",
+        "citations": 1
+      },
+      {
+        "label": "鱗介部",
+        "citations": 1
+      },
+      {
+        "label": "鰒魚",
+        "citations": 1
+      },
+      {
+        "label": "匏",
+        "citations": 1
+      },
+      {
+        "label": "嵗陽",
+        "citations": 1
+      },
+      {
+        "label": "蝨",
+        "citations": 1
+      },
+      {
+        "label": "雜論理氣",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "山堂肆考",
+        "citations": 8,
+        "match": "line-initial",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "周宣王時有兎舞鎬 > 無脣",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見前石蠧 > 紅嘴蟲",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "櫻生 > 筋大",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見侍中 > 蟹寄殻",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "雜俎千人 > 鑿亦不脱",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "駿馬也唐詩銀鞍白鼻騧 > 虎威",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 6,
+        "match": "exact",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "儀飾部 > 渾儀",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 殿",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 象",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "蟲豸部 > 蝶",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 鰒魚",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "匏",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "嵗陽",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "花木鳥獸集𩔖",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "宋徽宗 > 周宣王時有兔舞鎬",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "格致鏡原",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "昆蟲𩔖 > 蝨",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "稗編",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "諸家十七 > 雜論理氣",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -17,5 +17,317 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "1644–1912年"
+  "ca": "1644–1912年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 25,
+    "leishu_count": 12,
+    "categorised_citations": 25,
+    "genmoku_confirmed_citations": 6,
+    "category_leaves": [
+      {
+        "label": "陂",
+        "citations": 2
+      },
+      {
+        "label": "吏民常祀",
+        "citations": 2
+      },
+      {
+        "label": "曾參居此䲭梟不入城郭",
+        "citations": 2
+      },
+      {
+        "label": "言語",
+        "citations": 1
+      },
+      {
+        "label": "戰上",
+        "citations": 1
+      },
+      {
+        "label": "水銀",
+        "citations": 1
+      },
+      {
+        "label": "王浮神異記王琰冥神記",
+        "citations": 1
+      },
+      {
+        "label": "葬送四",
+        "citations": 1
+      },
+      {
+        "label": "虞浦厲學王肅議禮",
+        "citations": 1
+      },
+      {
+        "label": "立夏",
+        "citations": 1
+      },
+      {
+        "label": "立春",
+        "citations": 1
+      },
+      {
+        "label": "立秋",
+        "citations": 1
+      },
+      {
+        "label": "隂陽注之殊失其㫖",
+        "citations": 1
+      },
+      {
+        "label": "忌日",
+        "citations": 1
+      },
+      {
+        "label": "魏芍陂茹陂",
+        "citations": 1
+      },
+      {
+        "label": "秦趙燕長城",
+        "citations": 1
+      },
+      {
+        "label": "省墓",
+        "citations": 1
+      },
+      {
+        "label": "禁錮終身",
+        "citations": 1
+      },
+      {
+        "label": "地利",
+        "citations": 1
+      },
+      {
+        "label": "黑雲",
+        "citations": 1
+      },
+      {
+        "label": "乙夜觀書",
+        "citations": 1
+      },
+      {
+        "label": "冡墓",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 6,
+        "match": "line-initial",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "人事部三十一 > 言語",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部三十九 > 戰上 > 戰上",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "學部六 > 博學博物 > 水銀",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "王浮神異記王琰冥神記",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禮儀部三十五 > 葬送四",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "虞浦厲學王肅議禮",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 5,
+        "match": "author-prefix-stripped",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "立夏",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "立春",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "立秋",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "陂",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "隂陽注之殊失其㫖",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今事文類聚",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "僧指示𦵏地 > 吏民常祀",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "地部 > 陂",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "禮儀部 > 忌日",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "地理 > 陂塘堰湖隄埭 > 魏芍陂茹陂",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "淮南子鯀作九仞之城 > 秦趙燕長城",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "駢志",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "曾參居此䲭梟不入城郭",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今合璧事類備要",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "墓地門 > 省墓",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "禁錮終身",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "地利",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定駢字類編",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "黑雲",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "海録碎事",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "乙夜觀書",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "禮部下 > 冡墓",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -3,7 +3,7 @@
   "work_id": 127217,
   "corpus_root": "四庫全書",
   "title": "山堂肆考",
-  "is_compilation": false,
+  "is_compilation": true,
   "contained_in": [
     {
       "work_id": 80277,
@@ -923,5 +923,383 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "compilation_note": "子部類書類：本書為類書，內容多為徵引他書原文；徵引關係見 corpus/index_leishu_徵引.csv，不另重複計入語料庫字數。",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 218,
+    "leishu_count": 3,
+    "categorised_citations": 218,
+    "genmoku_confirmed_citations": 204,
+    "category_leaves": [
+      {
+        "label": "設官部",
+        "citations": 12
+      },
+      {
+        "label": "御筆",
+        "citations": 9
+      },
+      {
+        "label": "嘲戲",
+        "citations": 7
+      },
+      {
+        "label": "書",
+        "citations": 7
+      },
+      {
+        "label": "畫",
+        "citations": 5
+      },
+      {
+        "label": "侍御史",
+        "citations": 5
+      },
+      {
+        "label": "太守",
+        "citations": 5
+      },
+      {
+        "label": "縣令",
+        "citations": 5
+      },
+      {
+        "label": "城",
+        "citations": 4
+      },
+      {
+        "label": "去官",
+        "citations": 4
+      },
+      {
+        "label": "觀察使",
+        "citations": 4
+      },
+      {
+        "label": "聰敏",
+        "citations": 3
+      },
+      {
+        "label": "嬪妃",
+        "citations": 3
+      },
+      {
+        "label": "君道",
+        "citations": 3
+      },
+      {
+        "label": "薪",
+        "citations": 3
+      },
+      {
+        "label": "縣尉",
+        "citations": 3
+      },
+      {
+        "label": "圍棊",
+        "citations": 3
+      },
+      {
+        "label": "奴婢",
+        "citations": 2
+      },
+      {
+        "label": "祖孫",
+        "citations": 2
+      },
+      {
+        "label": "宅舍",
+        "citations": 2
+      },
+      {
+        "label": "射",
+        "citations": 2
+      },
+      {
+        "label": "御製",
+        "citations": 2
+      },
+      {
+        "label": "詩",
+        "citations": 2
+      },
+      {
+        "label": "刀",
+        "citations": 2
+      },
+      {
+        "label": "驢",
+        "citations": 2
+      },
+      {
+        "label": "銀",
+        "citations": 2
+      },
+      {
+        "label": "蝗",
+        "citations": 2
+      },
+      {
+        "label": "太常博士",
+        "citations": 2
+      },
+      {
+        "label": "工部尚書",
+        "citations": 2
+      },
+      {
+        "label": "廷尉平",
+        "citations": 2
+      },
+      {
+        "label": "御史中丞",
+        "citations": 2
+      },
+      {
+        "label": "提刑按察使",
+        "citations": 2
+      },
+      {
+        "label": "王侯官屬總載",
+        "citations": 2
+      },
+      {
+        "label": "王府侍讀",
+        "citations": 2
+      },
+      {
+        "label": "王府記室參軍",
+        "citations": 2
+      },
+      {
+        "label": "翰林學士",
+        "citations": 2
+      },
+      {
+        "label": "翰林院總載",
+        "citations": 2
+      },
+      {
+        "label": "轉運使",
+        "citations": 2
+      },
+      {
+        "label": "人部",
+        "citations": 1
+      },
+      {
+        "label": "乞假",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 204,
+        "match": "exact",
+        "category_count": 116,
+        "categories": [
+          {
+            "path": "設官部",
+            "citations": 12,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "帝王部 > 御筆",
+            "citations": 9,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 嘲戲",
+            "citations": 7,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "巧藝部 > 書",
+            "citations": 7,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "巧藝部 > 畫",
+            "citations": 5,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "設官部 > 侍御史",
+            "citations": 5,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "設官部 > 太守",
+            "citations": 5,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "設官部 > 縣令",
+            "citations": 5,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "居處部 > 城",
+            "citations": 4,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "政術部 > 去官",
+            "citations": 4,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "設官部 > 觀察使",
+            "citations": 4,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 聰敏",
+            "citations": 3,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "后妃部 > 嬪妃",
+            "citations": 3,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "政術部 > 君道",
+            "citations": 3,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "火部 > 薪",
+            "citations": 3,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "設官部 > 縣尉",
+            "citations": 3,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 奴婢",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 祖孫",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "居處部 > 宅舍",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "巧藝部 > 圍棊",
+            "citations": 2,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "格致鏡原",
+        "citations": 11,
+        "match": "line-initial",
+        "category_count": 11,
+        "categories": [
+          {
+            "path": "布帛類 > 布",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "昆蟲𩔖 > 蝶",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "昆蟲𩔖 > 諸蟲",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "朝制類 > 璽",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "水族𩔖 > 各種魚",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "水族𩔖 > 鯽",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "獸𩔖 > 䑕",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "玩戲器物𩔖 > 圍棊",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "花𩔖 > 荷花",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "身體𩔖 > 手",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鳥𩔖 > 梟",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定韻府拾遺",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "補註衣緋著",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "軫星木星",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "針錐",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  },
+  "leishu_citation_summary": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "works_attested": 279,
+    "citations": 3155,
+    "categorised_citations": 3025,
+    "distinct_categories": 2782,
+    "unresolved_heads": 2398
+  }
 }

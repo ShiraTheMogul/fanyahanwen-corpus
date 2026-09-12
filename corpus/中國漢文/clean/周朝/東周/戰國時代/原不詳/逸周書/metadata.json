@@ -80,5 +80,138 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "前475–前256年"
+  "ca": "前475–前256年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 8,
+    "leishu_count": 6,
+    "categorised_citations": 8,
+    "genmoku_confirmed_citations": 3,
+    "category_leaves": [
+      {
+        "label": "器物總載",
+        "citations": 1
+      },
+      {
+        "label": "封爵總載",
+        "citations": 1
+      },
+      {
+        "label": "春分",
+        "citations": 1
+      },
+      {
+        "label": "蹈仁",
+        "citations": 1
+      },
+      {
+        "label": "吐綬雞",
+        "citations": 1
+      },
+      {
+        "label": "周文鶾",
+        "citations": 1
+      },
+      {
+        "label": "水草",
+        "citations": 1
+      },
+      {
+        "label": "禾生于屋",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "器物部 > 器物總載",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "封爵部 > 封爵總載",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "歲時部 > 春分",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "喻林",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "蹈仁",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "格致鏡原",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "鳥𩔖 > 吐綬雞",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "祥瑞 > 動物 > 周文鶾",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "草部 > 水草",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "駢志",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "禾生于屋",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

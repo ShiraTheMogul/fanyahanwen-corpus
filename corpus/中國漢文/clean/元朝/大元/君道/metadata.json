@@ -17,5 +17,319 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "1271–1368年"
+  "ca": "1271–1368年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 40,
+    "leishu_count": 14,
+    "categorised_citations": 27,
+    "genmoku_confirmed_citations": 1,
+    "category_leaves": [
+      {
+        "label": "宋謝維新撰",
+        "citations": 4
+      },
+      {
+        "label": "學書大㫖",
+        "citations": 2
+      },
+      {
+        "label": "政術部",
+        "citations": 2
+      },
+      {
+        "label": "宋章如愚編",
+        "citations": 2
+      },
+      {
+        "label": "昧禍",
+        "citations": 1
+      },
+      {
+        "label": "愼行",
+        "citations": 1
+      },
+      {
+        "label": "求士",
+        "citations": 1
+      },
+      {
+        "label": "親王",
+        "citations": 1
+      },
+      {
+        "label": "後集",
+        "citations": 1
+      },
+      {
+        "label": "巽命",
+        "citations": 1
+      },
+      {
+        "label": "晚境",
+        "citations": 1
+      },
+      {
+        "label": "父",
+        "citations": 1
+      },
+      {
+        "label": "說苑二十目",
+        "citations": 1
+      },
+      {
+        "label": "貞觀政要四十篇",
+        "citations": 1
+      },
+      {
+        "label": "四統",
+        "citations": 1
+      },
+      {
+        "label": "道永保天命",
+        "citations": 1
+      },
+      {
+        "label": "徳行封",
+        "citations": 1
+      },
+      {
+        "label": "鑪定團定",
+        "citations": 1
+      },
+      {
+        "label": "螻蟻穴",
+        "citations": 1
+      },
+      {
+        "label": "帝王類一",
+        "citations": 1
+      },
+      {
+        "label": "三公",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "喻林",
+        "citations": 16,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "人事門 > 昧禍",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "愼行",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "求士",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今合璧事類備要",
+        "citations": 6,
+        "match": "line-initial",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "宋謝維新撰",
+            "citations": 4,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "帝屬門 > 親王",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "後集",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "圖書編",
+        "citations": 3,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "今只是強解將去耳 > 學書大㫖",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "彖象必有得意於言外者 > 巽命",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "政術部",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "羣書考索",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "宋章如愚編",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "人事部 > 晚境",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人倫部 > 父",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "讀書紀數畧",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "上略中略下略 > 說苑二十目",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "貞觀政要四十篇",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "小學紺珠",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "咨難為謀 > 四統",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "道永保天命",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "封爵部 > 徳行封",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "御定韻府拾遺",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "鑪定團定",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "海録碎事",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "螻蟻穴",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "經濟類編",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "帝王類一",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "職官分紀",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "三公",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

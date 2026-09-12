@@ -25,5 +25,126 @@
   "ca": "317–420年",
   "categories": [
     "書法"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 9,
+    "leishu_count": 5,
+    "categorised_citations": 9,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "水硯城池",
+        "citations": 3
+      },
+      {
+        "label": "墨",
+        "citations": 1
+      },
+      {
+        "label": "硯",
+        "citations": 1
+      },
+      {
+        "label": "晉四體書勢",
+        "citations": 1
+      },
+      {
+        "label": "晉王羲之書",
+        "citations": 1
+      },
+      {
+        "label": "用筆説鍾繇",
+        "citations": 1
+      },
+      {
+        "label": "篆書",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "海録碎事",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "㸃翰芳春色傳盃明月光 > 水硯城池",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "水硯城池",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "事類賦",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "什物部 > 墨",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "什物部 > 硯",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "藝文 > 小學 > 晉四體書勢",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "藝文 > 小學 > 晉王羲之書",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "稗編",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "文藝七 > 用筆説鍾繇",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "字學部 > 篆書",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

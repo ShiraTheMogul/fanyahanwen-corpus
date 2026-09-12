@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 5491,
   "corpus_root": "中國漢文",
@@ -17,5 +17,317 @@
       "body_start_line": 5
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 28,
+    "leishu_count": 11,
+    "categorised_citations": 28,
+    "genmoku_confirmed_citations": 14,
+    "category_leaves": [
+      {
+        "label": "天",
+        "citations": 3
+      },
+      {
+        "label": "刑法",
+        "citations": 3
+      },
+      {
+        "label": "言語",
+        "citations": 3
+      },
+      {
+        "label": "賢",
+        "citations": 2
+      },
+      {
+        "label": "地",
+        "citations": 2
+      },
+      {
+        "label": "鏡",
+        "citations": 2
+      },
+      {
+        "label": "人部",
+        "citations": 1
+      },
+      {
+        "label": "叙賢",
+        "citations": 1
+      },
+      {
+        "label": "律令",
+        "citations": 1
+      },
+      {
+        "label": "天部下",
+        "citations": 1
+      },
+      {
+        "label": "三",
+        "citations": 1
+      },
+      {
+        "label": "律令十三",
+        "citations": 1
+      },
+      {
+        "label": "地一",
+        "citations": 1
+      },
+      {
+        "label": "天一",
+        "citations": 1
+      },
+      {
+        "label": "無雹",
+        "citations": 1
+      },
+      {
+        "label": "應物",
+        "citations": 1
+      },
+      {
+        "label": "李子",
+        "citations": 1
+      },
+      {
+        "label": "慎",
+        "citations": 1
+      },
+      {
+        "label": "勢均力敵",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 6,
+        "match": "exact",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "人部",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 賢",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部 > 地",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "天部 > 天",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "政術部 > 刑法",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服飾部 > 鏡",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 5,
+        "match": "exact",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "人事部三十一 > 言語",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部四十三 > 叙賢",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "刑法部四 > 律令",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "天部二 > 刻漏 > 天部下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "治道部五 > 三",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 5,
+        "match": "exact",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "刑法",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部三 > 言語",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部四 > 賢",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "天部上 > 天",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "刑法部 > 幽囚十二律令十三 > 律令十三",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "地理部一 > 谷十三洞十四 > 地一",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "天部 > 天一日二 > 天一",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "地",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "天",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "言語",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "名賢氏族言行類稿",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "無雹",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "喻林",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "人事門 > 應物",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "其姓氏懸諸日月 > 李子",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "白孔六帖",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "什器儲跱 > 鏡",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "經濟類編",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "人事類一 > 慎",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "禾黍與稂莠雨來同日滋 > 勢均力敵",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

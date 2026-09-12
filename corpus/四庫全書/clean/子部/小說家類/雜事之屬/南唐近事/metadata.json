@@ -101,5 +101,220 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 18,
+    "leishu_count": 6,
+    "categorised_citations": 18,
+    "genmoku_confirmed_citations": 3,
+    "category_leaves": [
+      {
+        "label": "舌",
+        "citations": 2
+      },
+      {
+        "label": "湖",
+        "citations": 2
+      },
+      {
+        "label": "九月九日",
+        "citations": 1
+      },
+      {
+        "label": "吝嗇",
+        "citations": 1
+      },
+      {
+        "label": "妬婦",
+        "citations": 1
+      },
+      {
+        "label": "嗤鄙",
+        "citations": 1
+      },
+      {
+        "label": "帶",
+        "citations": 1
+      },
+      {
+        "label": "詩",
+        "citations": 1
+      },
+      {
+        "label": "猫",
+        "citations": 1
+      },
+      {
+        "label": "言語",
+        "citations": 1
+      },
+      {
+        "label": "貪",
+        "citations": 1
+      },
+      {
+        "label": "幃",
+        "citations": 1
+      },
+      {
+        "label": "橘皮榜",
+        "citations": 1
+      },
+      {
+        "label": "燈燭",
+        "citations": 1
+      },
+      {
+        "label": "及第",
+        "citations": 1
+      },
+      {
+        "label": "與所徵三十四人西",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "天中記",
+        "citations": 11,
+        "match": "bracket-note",
+        "category_count": 11,
+        "categories": [
+          {
+            "path": "九月九日",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "吝嗇",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "妬婦",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "子于時喧然傳之 > 嗤鄙",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "孔帖以方字帶下讀誤 > 舌",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "帶",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "徐氏中論六卷 > 詩",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "湖",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "猫",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "言語",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "貪",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "人部 > 舌",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部 > 湖",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服飾部 > 幃",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "宋 > 橘皮榜",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "白孔六帖",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "彈 > 燈燭",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "科舉部 > 及第",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "駢志",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "與所徵三十四人西",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

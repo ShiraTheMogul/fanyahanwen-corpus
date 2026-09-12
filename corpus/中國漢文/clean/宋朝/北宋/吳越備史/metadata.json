@@ -54,5 +54,237 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "960–1127年"
+  "ca": "960–1127年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 19,
+    "leishu_count": 6,
+    "categorised_citations": 19,
+    "genmoku_confirmed_citations": 8,
+    "category_leaves": [
+      {
+        "label": "潮濤",
+        "citations": 1
+      },
+      {
+        "label": "書",
+        "citations": 1
+      },
+      {
+        "label": "勤官",
+        "citations": 1
+      },
+      {
+        "label": "帳",
+        "citations": 1
+      },
+      {
+        "label": "枕",
+        "citations": 1
+      },
+      {
+        "label": "虎",
+        "citations": 1
+      },
+      {
+        "label": "麟",
+        "citations": 1
+      },
+      {
+        "label": "神異",
+        "citations": 1
+      },
+      {
+        "label": "前身",
+        "citations": 1
+      },
+      {
+        "label": "孔帖以方字帶下讀誤",
+        "citations": 1
+      },
+      {
+        "label": "射",
+        "citations": 1
+      },
+      {
+        "label": "潮",
+        "citations": 1
+      },
+      {
+        "label": "生辰",
+        "citations": 1
+      },
+      {
+        "label": "畫品",
+        "citations": 1
+      },
+      {
+        "label": "蹲宫",
+        "citations": 1
+      },
+      {
+        "label": "武肅木枕",
+        "citations": 1
+      },
+      {
+        "label": "補註臥虎非虎",
+        "citations": 1
+      },
+      {
+        "label": "之為也俗謂之倀",
+        "citations": 1
+      },
+      {
+        "label": "錢銅",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 8,
+        "match": "exact",
+        "category_count": 8,
+        "categories": [
+          {
+            "path": "地部 > 潮濤",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "巧藝部 > 書",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "政術部 > 勤官",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服飾部 > 帳",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服飾部 > 枕",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 虎",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 麟",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "靈異部 > 神異",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 6,
+        "match": "bracket-note",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "前身",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "孔帖以方字帶下讀誤",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "射",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "潮",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "生辰",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "畫品",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "見勇敢 > 蹲宫",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "韻詩為君留下相思枕 > 武肅木枕",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定韻府拾遺",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "補註臥虎非虎",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "花木鳥獸集𩔖",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "白帖宋 > 之為也俗謂之倀",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "錢銅",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

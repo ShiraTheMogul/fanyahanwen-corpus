@@ -21,5 +21,262 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "1368–1644年"
+  "ca": "1368–1644年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 54,
+    "leishu_count": 9,
+    "categorised_citations": 54,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "茶",
+        "citations": 29
+      },
+      {
+        "label": "茶篇八",
+        "citations": 7
+      },
+      {
+        "label": "碎錄",
+        "citations": 2
+      },
+      {
+        "label": "紀要",
+        "citations": 2
+      },
+      {
+        "label": "乗雷摘",
+        "citations": 1
+      },
+      {
+        "label": "㴩湖含膏",
+        "citations": 1
+      },
+      {
+        "label": "出茶三般",
+        "citations": 1
+      },
+      {
+        "label": "鶴嶺",
+        "citations": 1
+      },
+      {
+        "label": "龍安騎火",
+        "citations": 1
+      },
+      {
+        "label": "稱為草魁",
+        "citations": 1
+      },
+      {
+        "label": "玉壘",
+        "citations": 1
+      },
+      {
+        "label": "酹墳",
+        "citations": 1
+      },
+      {
+        "label": "金沙",
+        "citations": 1
+      },
+      {
+        "label": "龜蒙入租",
+        "citations": 1
+      },
+      {
+        "label": "雲脚",
+        "citations": 1
+      },
+      {
+        "label": "㩁茶",
+        "citations": 1
+      },
+      {
+        "label": "韻藻受茶",
+        "citations": 1
+      },
+      {
+        "label": "津盟津天津雲津",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "事類賦",
+        "citations": 26,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "飲食部 > 茶",
+            "citations": 26,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 11,
+        "match": "line-initial",
+        "category_count": 11,
+        "categories": [
+          {
+            "path": "乗雷摘",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "唐 > 㴩湖含膏",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "唐 > 出茶三般",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "唐 > 鶴嶺",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "唐 > 龍安騎火",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "稱為草魁",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見雪 > 玉壘",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見雪 > 酹墳",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見雪 > 金沙",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見雪 > 龜蒙入租",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "雲脚",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 7,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "酒食部 > 黍篇十四 > 茶篇八",
+            "citations": 7,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "全芳備祖集",
+        "citations": 4,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "碎錄",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "紀要",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "茶",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今源流至論",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "㩁茶",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "韻藻受茶",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "格致鏡原",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "飲食𩔖 > 茶",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "韻府羣玉",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "津盟津天津雲津",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

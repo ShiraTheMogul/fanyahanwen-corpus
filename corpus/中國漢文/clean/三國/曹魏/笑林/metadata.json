@@ -22,5 +22,474 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "220–280年"
+  "ca": "220–280年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 47,
+    "leishu_count": 11,
+    "categorised_citations": 47,
+    "genmoku_confirmed_citations": 16,
+    "category_leaves": [
+      {
+        "label": "布",
+        "citations": 4
+      },
+      {
+        "label": "鹽",
+        "citations": 2
+      },
+      {
+        "label": "酪酥",
+        "citations": 2
+      },
+      {
+        "label": "吝嗇",
+        "citations": 2
+      },
+      {
+        "label": "嗤鄙",
+        "citations": 2
+      },
+      {
+        "label": "筍",
+        "citations": 2
+      },
+      {
+        "label": "珍寳",
+        "citations": 2
+      },
+      {
+        "label": "煑簀",
+        "citations": 2
+      },
+      {
+        "label": "諺下",
+        "citations": 1
+      },
+      {
+        "label": "臍",
+        "citations": 1
+      },
+      {
+        "label": "鐺",
+        "citations": 1
+      },
+      {
+        "label": "鞾",
+        "citations": 1
+      },
+      {
+        "label": "李",
+        "citations": 1
+      },
+      {
+        "label": "火下",
+        "citations": 1
+      },
+      {
+        "label": "螳螂",
+        "citations": 1
+      },
+      {
+        "label": "肉",
+        "citations": 1
+      },
+      {
+        "label": "羮",
+        "citations": 1
+      },
+      {
+        "label": "夫妻",
+        "citations": 1
+      },
+      {
+        "label": "屩",
+        "citations": 1
+      },
+      {
+        "label": "肥",
+        "citations": 1
+      },
+      {
+        "label": "酥酪",
+        "citations": 1
+      },
+      {
+        "label": "人倫三",
+        "citations": 1
+      },
+      {
+        "label": "為竹中高士",
+        "citations": 1
+      },
+      {
+        "label": "藝苑一",
+        "citations": 1
+      },
+      {
+        "label": "火",
+        "citations": 1
+      },
+      {
+        "label": "豆",
+        "citations": 1
+      },
+      {
+        "label": "鎗",
+        "citations": 1
+      },
+      {
+        "label": "酪蘇",
+        "citations": 1
+      },
+      {
+        "label": "屩八十五",
+        "citations": 1
+      },
+      {
+        "label": "䭔五十一",
+        "citations": 1
+      },
+      {
+        "label": "酥四十五",
+        "citations": 1
+      },
+      {
+        "label": "肉十五",
+        "citations": 1
+      },
+      {
+        "label": "熨斗",
+        "citations": 1
+      },
+      {
+        "label": "竹",
+        "citations": 1
+      },
+      {
+        "label": "紀要",
+        "citations": 1
+      },
+      {
+        "label": "隨歩減錢",
+        "citations": 1
+      },
+      {
+        "label": "銅鐵",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 12,
+        "match": "exact",
+        "category_count": 12,
+        "categories": [
+          {
+            "path": "人事部一百三十七 > 諺下鬭争 > 諺下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部十二 > 臍腰 > 臍",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "器物部二 > 箄甑帶 > 鐺",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "布帛部七 > 紵白疊 > 布",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服章部十五 > 屩屧 > 鞾",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "果部五 > 杏李 > 李",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "火部二 > 火下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "蟲豸部三 > 螳螂",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "飲食部二十一 > 肉炙 > 肉",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "飲食部二十三 > 鹽醤 > 鹽",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "飲食部十九 > 羮臛飲漿 > 羮",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "飲食部十六 > 酪酥",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 11,
+        "match": "bracket-note",
+        "category_count": 9,
+        "categories": [
+          {
+            "path": "吝嗇",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "子于時喧然傳之 > 嗤鄙",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "夫妻",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "屩",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "布",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "肥",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "誤 > 筍",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "酥酪",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鹽",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 5,
+        "match": "bracket-note",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "珍寳",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人倫三",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "為竹中高士",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "藝苑一",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 5,
+        "match": "exact",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "布帛部 > 布",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "火部 > 火",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "百榖部 > 豆",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "雜器物部 > 鎗",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "食物部 > 酪蘇",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 4,
+        "match": "exact",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "儀飾部七 > 屩八十五屐八十六 > 屩八十五",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "酒食部 > 糠五十八糟五十九 > 䭔五十一",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "酒食部 > 糠五十八糟五十九 > 酥四十五",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "酒食部 > 羌煮三十一胡飯三十二 > 肉十五",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 4,
+        "match": "exact",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "布帛部 > 布",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服飾部 > 熨斗",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "木部 > 竹",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "食物部 > 酪酥",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "海録碎事",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "煑簀",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "音果割也文粹有𠜴竹記 > 煑簀",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "全芳備祖集",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "紀要",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "見三公 > 隨歩減錢",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定駢字類編",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "銅鐵",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "格致鏡原",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "蔬𩔖 > 筍",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

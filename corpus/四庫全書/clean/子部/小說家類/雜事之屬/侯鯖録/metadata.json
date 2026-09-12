@@ -163,5 +163,272 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 26,
+    "leishu_count": 7,
+    "categorised_citations": 26,
+    "genmoku_confirmed_citations": 2,
+    "category_leaves": [
+      {
+        "label": "酒",
+        "citations": 3
+      },
+      {
+        "label": "翰林院",
+        "citations": 2
+      },
+      {
+        "label": "妓妾",
+        "citations": 2
+      },
+      {
+        "label": "井",
+        "citations": 1
+      },
+      {
+        "label": "蚌",
+        "citations": 1
+      },
+      {
+        "label": "主試",
+        "citations": 1
+      },
+      {
+        "label": "雨",
+        "citations": 1
+      },
+      {
+        "label": "曾棲鳳凰",
+        "citations": 1
+      },
+      {
+        "label": "一爵一肉",
+        "citations": 1
+      },
+      {
+        "label": "不諱父名",
+        "citations": 1
+      },
+      {
+        "label": "作詩餞行",
+        "citations": 1
+      },
+      {
+        "label": "宸翰為文",
+        "citations": 1
+      },
+      {
+        "label": "錢用省陌",
+        "citations": 1
+      },
+      {
+        "label": "詩和裴傑",
+        "citations": 1
+      },
+      {
+        "label": "人類",
+        "citations": 1
+      },
+      {
+        "label": "寵姬",
+        "citations": 1
+      },
+      {
+        "label": "納采附問名",
+        "citations": 1
+      },
+      {
+        "label": "馬",
+        "citations": 1
+      },
+      {
+        "label": "蝦",
+        "citations": 1
+      },
+      {
+        "label": "楊栁",
+        "citations": 1
+      },
+      {
+        "label": "知貢舉",
+        "citations": 1
+      },
+      {
+        "label": "十九皓",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "天中記",
+        "citations": 9,
+        "match": "bracket-note",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "酒",
+            "citations": 3,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "翰林院",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "井",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "濟河事或在兹 > 蚌",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "舉為五老榜 > 主試",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "雨",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 7,
+        "match": "line-initial",
+        "category_count": 7,
+        "categories": [
+          {
+            "path": "曾棲鳳凰",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見三公 > 一爵一肉",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見嘲謔 > 不諱父名",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見父 > 作詩餞行",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見祭酒 > 宸翰為文",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見祭酒 > 錢用省陌",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "詩和裴傑",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "妓妾",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人類",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今合璧事類備要",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "人品門 > 寵姬",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "納采附問名",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "獸部 > 馬",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 蝦",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "木部 > 楊栁",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "科舉部 > 知貢舉",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "韻府羣玉",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "表玉表銅表 > 十九皓",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

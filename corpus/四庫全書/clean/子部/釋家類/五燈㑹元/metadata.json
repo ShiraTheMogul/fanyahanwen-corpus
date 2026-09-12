@@ -381,5 +381,106 @@
       ]
     }
   ],
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 8,
+    "leishu_count": 2,
+    "categorised_citations": 8,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "成都",
+        "citations": 1
+      },
+      {
+        "label": "敷展増展",
+        "citations": 1
+      },
+      {
+        "label": "澗底苗苦𤓰苗水",
+        "citations": 1
+      },
+      {
+        "label": "皇華白華",
+        "citations": 1
+      },
+      {
+        "label": "雄飛",
+        "citations": 1
+      },
+      {
+        "label": "韻藻有無",
+        "citations": 1
+      },
+      {
+        "label": "驢背驘背",
+        "citations": 1
+      },
+      {
+        "label": "給牒",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 7,
+        "match": "bracket-note",
+        "category_count": 7,
+        "categories": [
+          {
+            "path": "成都",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "敷展増展",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "澗底苗苦𤓰苗水",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "皇華白華",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "雄飛",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "韻藻有無",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "驢背驘背",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定分類字錦",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "五戒勝果 > 給牒",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

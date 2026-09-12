@@ -22,5 +22,221 @@
   "ca": "317–420年",
   "categories": [
     "祖臺之"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 19,
+    "leishu_count": 5,
+    "categorised_citations": 19,
+    "genmoku_confirmed_citations": 10,
+    "category_leaves": [
+      {
+        "label": "釧",
+        "citations": 2
+      },
+      {
+        "label": "桐",
+        "citations": 2
+      },
+      {
+        "label": "四時纂要續定命録",
+        "citations": 1
+      },
+      {
+        "label": "潮水",
+        "citations": 1
+      },
+      {
+        "label": "星中",
+        "citations": 1
+      },
+      {
+        "label": "盒",
+        "citations": 1
+      },
+      {
+        "label": "衫",
+        "citations": 1
+      },
+      {
+        "label": "牛下",
+        "citations": 1
+      },
+      {
+        "label": "豕",
+        "citations": 1
+      },
+      {
+        "label": "食下",
+        "citations": 1
+      },
+      {
+        "label": "鰌蝥",
+        "citations": 1
+      },
+      {
+        "label": "鈴五十五",
+        "citations": 1
+      },
+      {
+        "label": "小吏一百七十四",
+        "citations": 1
+      },
+      {
+        "label": "總篇一",
+        "citations": 1
+      },
+      {
+        "label": "牛",
+        "citations": 1
+      },
+      {
+        "label": "螢",
+        "citations": 1
+      },
+      {
+        "label": "地部下",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 11,
+        "match": "line-initial",
+        "category_count": 11,
+        "categories": [
+          {
+            "path": "四時纂要續定命録",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "地部三十三 > 川 > 潮水",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "天部下 > 星中 > 星中",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服用部二十 > 釧指環 > 釧",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服用部十九 > 多羅嚴器 > 盒",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "服章部十 > 衫襜褕 > 衫",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "木部五 > 楊柳 > 桐",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部十二 > 牛下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部十五 > 豕",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "飲食部七 > 食下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部十五 > 陵龍石矩玳瑁 > 鰌蝥",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "儀飾部六 > 粉六十四 > 鈴五十五",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "設官部二十九 > 小吏一百七十四",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "酒食部 > 總篇一",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "牛",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "釧",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "木部 > 桐",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "蟲豸部 > 螢",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "初學記",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "地部下",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

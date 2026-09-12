@@ -87,5 +87,96 @@
       "851年"
     ]
   },
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 7,
+    "leishu_count": 3,
+    "categorised_citations": 7,
+    "genmoku_confirmed_citations": 2,
+    "category_leaves": [
+      {
+        "label": "品藻下",
+        "citations": 2
+      },
+      {
+        "label": "言語部五",
+        "citations": 1
+      },
+      {
+        "label": "言語部六",
+        "citations": 1
+      },
+      {
+        "label": "牛",
+        "citations": 1
+      },
+      {
+        "label": "諱",
+        "citations": 1
+      },
+      {
+        "label": "又作仲瑗",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定子史精華",
+        "citations": 4,
+        "match": "line-initial",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "監造李之綱 > 品藻下",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "欽定四庫全書 > 言語部五",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "欽定四庫全書 > 言語部六",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "獸部 > 牛",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "禮儀部 > 諱",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "名疑",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "又作仲瑗",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

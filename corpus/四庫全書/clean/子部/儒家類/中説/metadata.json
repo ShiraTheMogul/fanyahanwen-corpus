@@ -187,5 +187,139 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 9,
+    "leishu_count": 5,
+    "categorised_citations": 9,
+    "genmoku_confirmed_citations": 3,
+    "category_leaves": [
+      {
+        "label": "地利",
+        "citations": 1
+      },
+      {
+        "label": "如灑如相如",
+        "citations": 1
+      },
+      {
+        "label": "韻藻東作",
+        "citations": 1
+      },
+      {
+        "label": "射策",
+        "citations": 1
+      },
+      {
+        "label": "尚書",
+        "citations": 1
+      },
+      {
+        "label": "文章",
+        "citations": 1
+      },
+      {
+        "label": "太元",
+        "citations": 1
+      },
+      {
+        "label": "事竟不行",
+        "citations": 1
+      },
+      {
+        "label": "門弟",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "地利",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "如灑如相如",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "韻藻東作",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "文學部 > 射策",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文學部 > 尚書",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文學部 > 文章",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "古今源流至論",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "太元",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "事竟不行",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "薦女請婚 > 門弟",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

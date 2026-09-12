@@ -137,5 +137,229 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 24,
+    "leishu_count": 5,
+    "categorised_citations": 24,
+    "genmoku_confirmed_citations": 5,
+    "category_leaves": [
+      {
+        "label": "奉柩朝祖",
+        "citations": 4
+      },
+      {
+        "label": "内恕恐悲",
+        "citations": 2
+      },
+      {
+        "label": "載柩陳器",
+        "citations": 2
+      },
+      {
+        "label": "宗廟昭穆考",
+        "citations": 1
+      },
+      {
+        "label": "四時之祭",
+        "citations": 1
+      },
+      {
+        "label": "告字",
+        "citations": 1
+      },
+      {
+        "label": "宿賓",
+        "citations": 1
+      },
+      {
+        "label": "拜尊長",
+        "citations": 1
+      },
+      {
+        "label": "筮賓",
+        "citations": 1
+      },
+      {
+        "label": "見執友",
+        "citations": 1
+      },
+      {
+        "label": "設盥洗",
+        "citations": 1
+      },
+      {
+        "label": "陳冠服",
+        "citations": 1
+      },
+      {
+        "label": "春分",
+        "citations": 1
+      },
+      {
+        "label": "禮儀部",
+        "citations": 1
+      },
+      {
+        "label": "冠",
+        "citations": 1
+      },
+      {
+        "label": "喪服",
+        "citations": 1
+      },
+      {
+        "label": "婚姻",
+        "citations": 1
+      },
+      {
+        "label": "古禮經傳通解",
+        "citations": 1
+      },
+      {
+        "label": "唐書禮樂志序歐陽修",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "圖書編",
+        "citations": 10,
+        "match": "line-initial",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "奉柩朝祖",
+            "citations": 4,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "内恕恐悲",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "載柩陳器",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "有可考耳 > 宗廟昭穆考",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "祝皆免 > 四時之祭",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 7,
+        "match": "line-initial",
+        "category_count": 7,
+        "categories": [
+          {
+            "path": "告字",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "宿賓",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "拜尊長",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "筮賓",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見執友",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "設盥洗",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "陳冠服",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 5,
+        "match": "exact",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "歲時部 > 春分",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "禮儀部",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "禮儀部 > 冠",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "禮儀部 > 喪服",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "禮儀部 > 婚姻",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "藝文 > 唐禮志禮粹禮論禮繩愆 > 古禮經傳通解",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "稗編",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "禮十 > 唐書禮樂志序歐陽修",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

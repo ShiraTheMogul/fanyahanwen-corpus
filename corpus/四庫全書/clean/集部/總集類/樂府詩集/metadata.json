@@ -1256,5 +1256,87 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 5,
+    "leishu_count": 3,
+    "categorised_citations": 5,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "林",
+        "citations": 1
+      },
+      {
+        "label": "汾曲委曲",
+        "citations": 1
+      },
+      {
+        "label": "百篇",
+        "citations": 1
+      },
+      {
+        "label": "紫玉歌",
+        "citations": 1
+      },
+      {
+        "label": "其序稱於",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "林",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "汾曲委曲",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "百篇",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "見山中 > 紫玉歌",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "編珠",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "編珠類書類 > 其序稱於",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

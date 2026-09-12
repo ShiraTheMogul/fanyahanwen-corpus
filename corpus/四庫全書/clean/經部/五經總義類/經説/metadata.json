@@ -116,5 +116,233 @@
       ]
     }
   ],
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 19,
+    "leishu_count": 7,
+    "categorised_citations": 19,
+    "genmoku_confirmed_citations": 9,
+    "category_leaves": [
+      {
+        "label": "社稷",
+        "citations": 3
+      },
+      {
+        "label": "秋分",
+        "citations": 2
+      },
+      {
+        "label": "孝上",
+        "citations": 1
+      },
+      {
+        "label": "夏至",
+        "citations": 1
+      },
+      {
+        "label": "夏上",
+        "citations": 1
+      },
+      {
+        "label": "臣",
+        "citations": 1
+      },
+      {
+        "label": "者本之賈䕶劉歆",
+        "citations": 1
+      },
+      {
+        "label": "周百二十國寳書",
+        "citations": 1
+      },
+      {
+        "label": "漢六緯河洛七緯内學",
+        "citations": 1
+      },
+      {
+        "label": "周封八百國千八百國",
+        "citations": 1
+      },
+      {
+        "label": "臣術",
+        "citations": 1
+      },
+      {
+        "label": "歲時部",
+        "citations": 1
+      },
+      {
+        "label": "冬至",
+        "citations": 1
+      },
+      {
+        "label": "祭祀總上十八",
+        "citations": 1
+      },
+      {
+        "label": "五緯",
+        "citations": 1
+      },
+      {
+        "label": "之",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 6,
+        "match": "author-prefix-stripped",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "人事部五十三 > 孝上",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "時序部八 > 夏至 > 夏至",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "時序部六 > 夏上 > 夏上",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "時序部十 > 秋分 > 秋分",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "治道部二 > 臣",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "禮儀部十一 > 靈星 > 社稷",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 5,
+        "match": "exact",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "者本之賈䕶劉歆",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "藝文 > 古史 > 周百二十國寳書",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "藝文 > 蓺術 > 漢六緯河洛七緯内學",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "謹之 > 周封八百國千八百國",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "郊祀 > 社稷",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 4,
+        "match": "author-prefix-stripped",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "政術部 > 臣術",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "歲時部",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "歲時部 > 冬至",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "歲時部 > 秋分",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "禮儀部九 > 祭祀總上十八",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今源流至論",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "社稷",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "五緯",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "羣書考索",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "之",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

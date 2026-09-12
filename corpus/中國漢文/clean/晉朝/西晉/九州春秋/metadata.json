@@ -29,5 +29,501 @@
       "192年",
       "201年"
     ]
+  },
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 47,
+    "leishu_count": 11,
+    "categorised_citations": 47,
+    "genmoku_confirmed_citations": 24,
+    "category_leaves": [
+      {
+        "label": "雞",
+        "citations": 4
+      },
+      {
+        "label": "喜",
+        "citations": 2
+      },
+      {
+        "label": "藥",
+        "citations": 2
+      },
+      {
+        "label": "米",
+        "citations": 2
+      },
+      {
+        "label": "酒",
+        "citations": 2
+      },
+      {
+        "label": "聰敏",
+        "citations": 1
+      },
+      {
+        "label": "諫諍六",
+        "citations": 1
+      },
+      {
+        "label": "汗",
+        "citations": 1
+      },
+      {
+        "label": "掌",
+        "citations": 1
+      },
+      {
+        "label": "髀股",
+        "citations": 1
+      },
+      {
+        "label": "警備",
+        "citations": 1
+      },
+      {
+        "label": "戰不顧親",
+        "citations": 1
+      },
+      {
+        "label": "馬二",
+        "citations": 1
+      },
+      {
+        "label": "虎賁中郎將",
+        "citations": 1
+      },
+      {
+        "label": "司徒下",
+        "citations": 1
+      },
+      {
+        "label": "功曹叅軍",
+        "citations": 1
+      },
+      {
+        "label": "郡國相",
+        "citations": 1
+      },
+      {
+        "label": "糜粥",
+        "citations": 1
+      },
+      {
+        "label": "錢",
+        "citations": 1
+      },
+      {
+        "label": "設官部",
+        "citations": 1
+      },
+      {
+        "label": "三公總載",
+        "citations": 1
+      },
+      {
+        "label": "大司徒",
+        "citations": 1
+      },
+      {
+        "label": "不得不除",
+        "citations": 1
+      },
+      {
+        "label": "勇敢",
+        "citations": 1
+      },
+      {
+        "label": "妬婦",
+        "citations": 1
+      },
+      {
+        "label": "手",
+        "citations": 1
+      },
+      {
+        "label": "徳譽",
+        "citations": 1
+      },
+      {
+        "label": "粥",
+        "citations": 1
+      },
+      {
+        "label": "几",
+        "citations": 1
+      },
+      {
+        "label": "司徒",
+        "citations": 1
+      },
+      {
+        "label": "謀策五",
+        "citations": 1
+      },
+      {
+        "label": "總載三公",
+        "citations": 1
+      },
+      {
+        "label": "粥篇十",
+        "citations": 1
+      },
+      {
+        "label": "入貲",
+        "citations": 1
+      },
+      {
+        "label": "尚氣",
+        "citations": 1
+      },
+      {
+        "label": "鷄",
+        "citations": 1
+      },
+      {
+        "label": "職官部上",
+        "citations": 1
+      },
+      {
+        "label": "地不竭如江河避鋭擊惰",
+        "citations": 1
+      },
+      {
+        "label": "勇",
+        "citations": 1
+      },
+      {
+        "label": "勇㨗誡而釋之",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 16,
+        "match": "exact",
+        "category_count": 16,
+        "categories": [
+          {
+            "path": "人事部 > 喜",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部七十三 > 慈愛恭敬智聰明強記 > 聰敏",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部九十七 > 諫諍六",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部二十八 > 欠嚏 > 汗",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部十一 > 指&KR0438; > 掌",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部十三 > 踝 > 髀股",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部六十一 > 警備 > 警備",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部四十一 > 戰傷 > 戰不顧親",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部六 > 馬二",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "羽族部五 > 雞",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "職官部三十九 > 騎都尉 > 虎賁中郎將",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "職官部六 > 司徒下司空 > 司徒下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "職官部六十二 > 司法叅軍五官掾 > 功曹叅軍",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "職官部四十六 > 府長史府司馬 > 郡國相",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "藥部一 > 藥",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "飲食部十七 > 胡飯 > 糜粥",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 8,
+        "match": "exact",
+        "category_count": 8,
+        "categories": [
+          {
+            "path": "五榖部 > 米",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 喜",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "珍寶部 > 錢",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "藥部 > 藥",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "設官部",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "設官部 > 三公總載",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "設官部 > 大司徒",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 雞",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 7,
+        "match": "bracket-note",
+        "category_count": 7,
+        "categories": [
+          {
+            "path": "不得不除",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "勇敢",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "妬婦",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "孔帖以方字帶下讀誤 > 手",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "徳譽",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "粥",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "酒",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 4,
+        "match": "exact",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "服飾部 > 几",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "職官部三 > 司徒",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "食物部 > 米",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部中 > 雞",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 3,
+        "match": "author-prefix-stripped",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "武功部四 > 謀策五號令六 > 謀策五",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "設官部二 > 總載三公",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "酒食部 > 黍篇十四 > 粥篇十",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "仕宦部 > 入貲",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "性行部 > 尚氣",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禽部 > 鷄",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "事類賦",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "禽部 > 雞",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "飲食部 > 酒",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "初學記",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "職官部上",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定子史精華",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "地不竭如江河避鋭擊惰",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "白孔六帖",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "壯 > 勇",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "駢志",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "勇㨗誡而釋之",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
   }
 }

@@ -139,5 +139,97 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 8,
+    "leishu_count": 2,
+    "categorised_citations": 8,
+    "genmoku_confirmed_citations": 6,
+    "category_leaves": [
+      {
+        "label": "瑪瑙",
+        "citations": 2
+      },
+      {
+        "label": "玻瓈",
+        "citations": 1
+      },
+      {
+        "label": "瑇瑁",
+        "citations": 1
+      },
+      {
+        "label": "蜈蚣",
+        "citations": 1
+      },
+      {
+        "label": "龍",
+        "citations": 1
+      },
+      {
+        "label": "妾侍",
+        "citations": 1
+      },
+      {
+        "label": "髭鬚",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 6,
+        "match": "author-prefix-stripped",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "珍寶部 > 瑪瑙",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "珍寶部 > 玻瓈",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "珍寶部 > 瑇瑁",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "蟲豸部 > 蜈蚣",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 龍",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "妾侍",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "孔帖以方字帶下讀誤 > 髭鬚",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

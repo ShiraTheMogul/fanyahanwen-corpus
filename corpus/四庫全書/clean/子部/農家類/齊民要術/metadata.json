@@ -144,5 +144,555 @@
       ]
     }
   ],
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 55,
+    "leishu_count": 14,
+    "categorised_citations": 55,
+    "genmoku_confirmed_citations": 11,
+    "category_leaves": [
+      {
+        "label": "韻藻木桃",
+        "citations": 2
+      },
+      {
+        "label": "桐",
+        "citations": 2
+      },
+      {
+        "label": "梓",
+        "citations": 2
+      },
+      {
+        "label": "酒",
+        "citations": 2
+      },
+      {
+        "label": "竹",
+        "citations": 2
+      },
+      {
+        "label": "種植王磐",
+        "citations": 2
+      },
+      {
+        "label": "増賣餳",
+        "citations": 1
+      },
+      {
+        "label": "小槽",
+        "citations": 1
+      },
+      {
+        "label": "折骨",
+        "citations": 1
+      },
+      {
+        "label": "挼穗",
+        "citations": 1
+      },
+      {
+        "label": "石榴",
+        "citations": 1
+      },
+      {
+        "label": "苓耳枲耳爵耳䑕耳",
+        "citations": 1
+      },
+      {
+        "label": "荼苦勞苦",
+        "citations": 1
+      },
+      {
+        "label": "韻藻歸沐",
+        "citations": 1
+      },
+      {
+        "label": "粟",
+        "citations": 1
+      },
+      {
+        "label": "黍",
+        "citations": 1
+      },
+      {
+        "label": "柞",
+        "citations": 1
+      },
+      {
+        "label": "歲時部",
+        "citations": 1
+      },
+      {
+        "label": "羊",
+        "citations": 1
+      },
+      {
+        "label": "馬",
+        "citations": 1
+      },
+      {
+        "label": "餺飥",
+        "citations": 1
+      },
+      {
+        "label": "栗",
+        "citations": 1
+      },
+      {
+        "label": "棗",
+        "citations": 1
+      },
+      {
+        "label": "葵",
+        "citations": 1
+      },
+      {
+        "label": "鬼目",
+        "citations": 1
+      },
+      {
+        "label": "丘薆逮重谷",
+        "citations": 1
+      },
+      {
+        "label": "李",
+        "citations": 1
+      },
+      {
+        "label": "穀菜生水中",
+        "citations": 1
+      },
+      {
+        "label": "筑草名",
+        "citations": 1
+      },
+      {
+        "label": "荲草似冬藍蒸食之酢",
+        "citations": 1
+      },
+      {
+        "label": "鳥獸第一",
+        "citations": 1
+      },
+      {
+        "label": "將奠",
+        "citations": 1
+      },
+      {
+        "label": "數攪偏攪不攪",
+        "citations": 1
+      },
+      {
+        "label": "旺雜旺",
+        "citations": 1
+      },
+      {
+        "label": "補藻常撓",
+        "citations": 1
+      },
+      {
+        "label": "補註唇吻鴟吻",
+        "citations": 1
+      },
+      {
+        "label": "補註讀讖",
+        "citations": 1
+      },
+      {
+        "label": "諸家四",
+        "citations": 1
+      },
+      {
+        "label": "碎錄",
+        "citations": 1
+      },
+      {
+        "label": "碎録",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 10,
+        "match": "bracket-note",
+        "category_count": 9,
+        "categories": [
+          {
+            "path": "韻藻木桃",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "増賣餳",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "小槽",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "折骨",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "挼穗",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "石榴",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "苓耳枲耳爵耳䑕耳",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "荼苦勞苦",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "韻藻歸沐",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 10,
+        "match": "exact",
+        "category_count": 10,
+        "categories": [
+          {
+            "path": "五榖部 > 粟",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "五榖部 > 黍",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "木部 > 柞",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "木部 > 桐",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "木部 > 梓",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "歲時部",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 羊",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 馬",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "食物部 > 酒",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "食物部 > 餺飥",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 7,
+        "match": "bracket-note",
+        "category_count": 7,
+        "categories": [
+          {
+            "path": "栗",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "梓",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "棗",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "竹",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "葵",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "酒",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鬼目",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 6,
+        "match": "bracket-note",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "丘薆逮重谷",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "李",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "穀菜生水中",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "筑草名",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "荲草似冬藍蒸食之酢",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鳥獸第一",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定韻府拾遺",
+        "citations": 6,
+        "match": "bracket-note",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "將奠",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "數攪偏攪不攪",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "旺雜旺",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "補藻常撓",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "補註唇吻鴟吻",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "補註讀讖",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "稗編",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "諸家三 > 種植王磐",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "諸家四",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "全芳備祖集",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "碎錄",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "碎録",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "時序部十二 > 冬下 > 冬下",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "木部五 > 楊柳 > 桐",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "御定分類字錦",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "殽胾蟻慕 > 碧浮 > 餳白",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "殽胾蟻慕 > 麥醤",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "海録碎事",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "始為牛耕",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "種蔥月",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "竹",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "魚蟹",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今合璧事類備要",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "格物總論",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "見春",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "木部 > 梧桐",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

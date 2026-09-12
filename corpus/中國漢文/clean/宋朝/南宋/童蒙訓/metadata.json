@@ -29,5 +29,86 @@
   "ca": "1084–1145年",
   "categories": [
     "儒家"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 5,
+    "leishu_count": 4,
+    "categorised_citations": 5,
+    "genmoku_confirmed_citations": 1,
+    "category_leaves": [
+      {
+        "label": "詩翁城西野桃尋小紅",
+        "citations": 2
+      },
+      {
+        "label": "格物藂話",
+        "citations": 1
+      },
+      {
+        "label": "干謁",
+        "citations": 1
+      },
+      {
+        "label": "交承",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "詩翁城西野桃尋小紅",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今合璧事類備要",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "格物藂話",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "人部 > 干謁",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "仕宦部 > 交承",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

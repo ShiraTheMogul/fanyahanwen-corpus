@@ -19,5 +19,70 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "1127–1279年"
+  "ca": "1127–1279年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 4,
+    "leishu_count": 2,
+    "categorised_citations": 4,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "萱草",
+        "citations": 1
+      },
+      {
+        "label": "辟雍",
+        "citations": 1
+      },
+      {
+        "label": "論農道戴埴",
+        "citations": 1
+      },
+      {
+        "label": "相術之難戴埴",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "天中記",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "誤 > 萱草",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "辟雍",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "稗編",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "諸家三 > 論農道戴埴",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "諸家二十四 > 相術之難戴埴",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

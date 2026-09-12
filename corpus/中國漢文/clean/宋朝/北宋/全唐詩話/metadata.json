@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 50939,
   "corpus_root": "中國漢文",
@@ -75,5 +75,150 @@
       "body_start_line": 8
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 15,
+    "leishu_count": 3,
+    "categorised_citations": 15,
+    "genmoku_confirmed_citations": 5,
+    "category_leaves": [
+      {
+        "label": "詩",
+        "citations": 4
+      },
+      {
+        "label": "凡例",
+        "citations": 1
+      },
+      {
+        "label": "化猿",
+        "citations": 1
+      },
+      {
+        "label": "天際眞人想",
+        "citations": 1
+      },
+      {
+        "label": "手板",
+        "citations": 1
+      },
+      {
+        "label": "牛眠",
+        "citations": 1
+      },
+      {
+        "label": "章句",
+        "citations": 1
+      },
+      {
+        "label": "籬窺",
+        "citations": 1
+      },
+      {
+        "label": "豔逸",
+        "citations": 1
+      },
+      {
+        "label": "鄉舉",
+        "citations": 1
+      },
+      {
+        "label": "博物",
+        "citations": 1
+      },
+      {
+        "label": "漆板詔板",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 9,
+        "match": "bracket-note",
+        "category_count": 9,
+        "categories": [
+          {
+            "path": "凡例",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "化猿",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "天際眞人想",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "手板",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "牛眠",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "章句",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "籬窺",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "豔逸",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鄉舉",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 5,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "文學部 > 詩",
+            "citations": 4,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 博物",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "御定韻府拾遺",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "漆板詔板",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

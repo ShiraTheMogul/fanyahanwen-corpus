@@ -85,5 +85,196 @@
       "902年"
     ]
   },
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 15,
+    "leishu_count": 7,
+    "categorised_citations": 15,
+    "genmoku_confirmed_citations": 4,
+    "category_leaves": [
+      {
+        "label": "不得不除",
+        "citations": 2
+      },
+      {
+        "label": "蝶",
+        "citations": 2
+      },
+      {
+        "label": "七月七日",
+        "citations": 1
+      },
+      {
+        "label": "智察",
+        "citations": 1
+      },
+      {
+        "label": "竹",
+        "citations": 1
+      },
+      {
+        "label": "鼠",
+        "citations": 1
+      },
+      {
+        "label": "聰敏",
+        "citations": 1
+      },
+      {
+        "label": "管",
+        "citations": 1
+      },
+      {
+        "label": "鍼",
+        "citations": 1
+      },
+      {
+        "label": "紀要",
+        "citations": 1
+      },
+      {
+        "label": "格物總論",
+        "citations": 1
+      },
+      {
+        "label": "大蒙唐",
+        "citations": 1
+      },
+      {
+        "label": "揚州",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "天中記",
+        "citations": 6,
+        "match": "bracket-note",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "不得不除",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "七月七日",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "智察",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "竹",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鼠",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 4,
+        "match": "exact",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "人部 > 聰敏",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部 > 管",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "産業部 > 鍼",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "蟲豸部 > 蝶",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "全芳備祖集",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "紀要",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今合璧事類備要",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "格物總論",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "大蒙唐",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "白孔六帖",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "麟 > 蝶",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "揚州",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

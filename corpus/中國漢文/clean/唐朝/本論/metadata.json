@@ -23,5 +23,79 @@
   "ca": "618–907年",
   "authors": [
     "牛希濟"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 6,
+    "leishu_count": 2,
+    "categorised_citations": 6,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "鬻僧",
+        "citations": 2
+      },
+      {
+        "label": "旛二十一",
+        "citations": 1
+      },
+      {
+        "label": "春七",
+        "citations": 1
+      },
+      {
+        "label": "吏一百七十三",
+        "citations": 1
+      },
+      {
+        "label": "排異端",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "北堂書鈔",
+        "citations": 3,
+        "match": "author-prefix-stripped",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "武功部八 > 旒二十三 > 旛二十一",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "歲時部二 > 秋篇九冬篇十 > 春七",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "設官部二十九 > 吏一百七十三",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今源流至論",
+        "citations": 3,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "鬻僧",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "排異端",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

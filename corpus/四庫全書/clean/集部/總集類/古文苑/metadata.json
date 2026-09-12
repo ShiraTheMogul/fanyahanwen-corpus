@@ -308,5 +308,139 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 9,
+    "leishu_count": 5,
+    "categorised_citations": 9,
+    "genmoku_confirmed_citations": 1,
+    "category_leaves": [
+      {
+        "label": "内記室",
+        "citations": 1
+      },
+      {
+        "label": "嘲熱客",
+        "citations": 1
+      },
+      {
+        "label": "徑寸心",
+        "citations": 1
+      },
+      {
+        "label": "太僕寺",
+        "citations": 1
+      },
+      {
+        "label": "臺",
+        "citations": 1
+      },
+      {
+        "label": "告僕夫",
+        "citations": 1
+      },
+      {
+        "label": "陸佐公石闕刻漏二銘",
+        "citations": 1
+      },
+      {
+        "label": "御筆",
+        "citations": 1
+      },
+      {
+        "label": "菊花",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "海録碎事",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "内記室",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "嘲熱客",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "徑寸心",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "互見樓 > 太僕寺",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "臺",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "告僕夫",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "文選 > 陸佐公石闕刻漏二銘",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "帝王部 > 御筆",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "格致鏡原",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "花𩔖 > 菊花",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

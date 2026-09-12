@@ -19,5 +19,218 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "960–1127年"
+  "ca": "960–1127年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 16,
+    "leishu_count": 7,
+    "categorised_citations": 16,
+    "genmoku_confirmed_citations": 5,
+    "category_leaves": [
+      {
+        "label": "報徳",
+        "citations": 1
+      },
+      {
+        "label": "訓子",
+        "citations": 1
+      },
+      {
+        "label": "桃",
+        "citations": 1
+      },
+      {
+        "label": "旱",
+        "citations": 1
+      },
+      {
+        "label": "魚",
+        "citations": 1
+      },
+      {
+        "label": "武階類",
+        "citations": 1
+      },
+      {
+        "label": "上意遂解",
+        "citations": 1
+      },
+      {
+        "label": "置六員",
+        "citations": 1
+      },
+      {
+        "label": "階凡十有五",
+        "citations": 1
+      },
+      {
+        "label": "畏落坑塹",
+        "citations": 1
+      },
+      {
+        "label": "待子嚴肅",
+        "citations": 1
+      },
+      {
+        "label": "補漏得子",
+        "citations": 1
+      },
+      {
+        "label": "雜著",
+        "citations": 1
+      },
+      {
+        "label": "翰林院",
+        "citations": 1
+      },
+      {
+        "label": "婚姻而以地望明貴賤",
+        "citations": 1
+      },
+      {
+        "label": "狀元及第",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 5,
+        "match": "exact",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "人部 > 報徳",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 訓子",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "果部 > 桃",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "歲時部 > 旱",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 魚",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "羣書考索",
+        "citations": 4,
+        "match": "exact",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "官制門 > 武階類",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "給本仍傳送之 > 上意遂解",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "置六員",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "階凡十有五",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 3,
+        "match": "line-initial",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "畏落坑塹",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見侍中 > 待子嚴肅",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見山 > 補漏得子",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "全芳備祖集",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "雜著",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "翰林院",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "婚姻而以地望明貴賤",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "科舉部 > 狀元及第",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

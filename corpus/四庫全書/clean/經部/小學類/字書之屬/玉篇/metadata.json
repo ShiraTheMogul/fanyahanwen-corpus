@@ -383,5 +383,182 @@
       ]
     }
   ],
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 12,
+    "leishu_count": 7,
+    "categorised_citations": 12,
+    "genmoku_confirmed_citations": 4,
+    "category_leaves": [
+      {
+        "label": "玉",
+        "citations": 1
+      },
+      {
+        "label": "牧",
+        "citations": 1
+      },
+      {
+        "label": "餌",
+        "citations": 1
+      },
+      {
+        "label": "誕聖",
+        "citations": 1
+      },
+      {
+        "label": "騾",
+        "citations": 1
+      },
+      {
+        "label": "圖籙",
+        "citations": 1
+      },
+      {
+        "label": "網罟罝羅",
+        "citations": 1
+      },
+      {
+        "label": "漁父",
+        "citations": 1
+      },
+      {
+        "label": "釋義",
+        "citations": 1
+      },
+      {
+        "label": "十九代",
+        "citations": 1
+      },
+      {
+        "label": "卒",
+        "citations": 1
+      },
+      {
+        "label": "榖籠",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "珍寶部 > 玉",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "産業部 > 牧",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "食物部 > 餌",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "誕聖",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "駱駞 > 騾",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "白孔六帖",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "寺 > 圖籙",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "筭 > 網罟罝羅",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "竹影掃秋月荷花落古池 > 漁父",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "釋義",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今姓氏書辯證",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "之 > 十九代",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "兵部三十一 > 卒騎 > 卒",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "榖籠",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

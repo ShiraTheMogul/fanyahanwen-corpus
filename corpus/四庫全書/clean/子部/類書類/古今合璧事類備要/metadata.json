@@ -3,7 +3,7 @@
   "work_id": 127199,
   "corpus_root": "四庫全書",
   "title": "古今合璧事類備要",
-  "is_compilation": false,
+  "is_compilation": true,
   "contained_in": [
     {
       "work_id": 80277,
@@ -4469,5 +4469,16 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "compilation_note": "子部類書類：本書為類書，內容多為徵引他書原文；徵引關係見 corpus/index_leishu_徵引.csv，不另重複計入語料庫字數。",
+  "leishu_citation_summary": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "works_attested": 129,
+    "citations": 231,
+    "categorised_citations": 231,
+    "distinct_categories": 125,
+    "unresolved_heads": 4763
+  }
 }

@@ -907,5 +907,261 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 55,
+    "leishu_count": 5,
+    "categorised_citations": 55,
+    "genmoku_confirmed_citations": 41,
+    "category_leaves": [
+      {
+        "label": "州郡部",
+        "citations": 32
+      },
+      {
+        "label": "江",
+        "citations": 2
+      },
+      {
+        "label": "井泉",
+        "citations": 2
+      },
+      {
+        "label": "水總載",
+        "citations": 1
+      },
+      {
+        "label": "石",
+        "citations": 1
+      },
+      {
+        "label": "谿",
+        "citations": 1
+      },
+      {
+        "label": "帝誕",
+        "citations": 1
+      },
+      {
+        "label": "枇杷",
+        "citations": 1
+      },
+      {
+        "label": "蛟",
+        "citations": 1
+      },
+      {
+        "label": "魚",
+        "citations": 1
+      },
+      {
+        "label": "鶴",
+        "citations": 1
+      },
+      {
+        "label": "昭明學士誤",
+        "citations": 1
+      },
+      {
+        "label": "紙",
+        "citations": 1
+      },
+      {
+        "label": "水",
+        "citations": 1
+      },
+      {
+        "label": "湖",
+        "citations": 1
+      },
+      {
+        "label": "生辰",
+        "citations": 1
+      },
+      {
+        "label": "石榴",
+        "citations": 1
+      },
+      {
+        "label": "誕聖",
+        "citations": 1
+      },
+      {
+        "label": "常山",
+        "citations": 1
+      },
+      {
+        "label": "韻藻雨雪",
+        "citations": 1
+      },
+      {
+        "label": "鶴亦有蒼色者謂之赤頰",
+        "citations": 1
+      },
+      {
+        "label": "墉皆甃葺蠧弊永除",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 41,
+        "match": "exact",
+        "category_count": 10,
+        "categories": [
+          {
+            "path": "州郡部",
+            "citations": 32,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部 > 水總載",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部 > 江",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部 > 石",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部 > 谿",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "帝王部 > 帝誕",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "果部 > 枇杷",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 蛟",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 魚",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 鶴",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 8,
+        "match": "bracket-note",
+        "category_count": 8,
+        "categories": [
+          {
+            "path": "昭明學士誤",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "晉書之誤 > 紙",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "水",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "江",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "湖",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "生辰",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "石榴",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "誕聖",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 4,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "井泉",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "常山",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "韻藻雨雪",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "鶴亦有蒼色者謂之赤頰",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "駢志",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "墉皆甃葺蠧弊永除",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

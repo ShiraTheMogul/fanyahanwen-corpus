@@ -79,5 +79,100 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 6,
+    "leishu_count": 4,
+    "categorised_citations": 6,
+    "genmoku_confirmed_citations": 3,
+    "category_leaves": [
+      {
+        "label": "蛟",
+        "citations": 2
+      },
+      {
+        "label": "二十官",
+        "citations": 1
+      },
+      {
+        "label": "漢樂均",
+        "citations": 1
+      },
+      {
+        "label": "冬",
+        "citations": 1
+      },
+      {
+        "label": "禮經四",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "玉海",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "官制 > 古官名 > 二十官",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鄭以楚金鑄三鐘 > 漢樂均",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "嵗時部上 > 冬",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部上 > 蛟",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "鱗介部 > 蛟",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "稗編",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "禮經四",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

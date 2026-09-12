@@ -46,5 +46,138 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "1644–1912年"
+  "ca": "1644–1912年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 11,
+    "leishu_count": 6,
+    "categorised_citations": 8,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "一簣之釁",
+        "citations": 1
+      },
+      {
+        "label": "氾崇蘭",
+        "citations": 1
+      },
+      {
+        "label": "咸池",
+        "citations": 1
+      },
+      {
+        "label": "有墨",
+        "citations": 1
+      },
+      {
+        "label": "碎錄",
+        "citations": 1
+      },
+      {
+        "label": "少尹",
+        "citations": 1
+      },
+      {
+        "label": "白㲲",
+        "citations": 1
+      },
+      {
+        "label": "異獸",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "海録碎事",
+        "citations": 5,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "一簣之釁",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "氾崇蘭",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "咸池",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "有墨",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "全芳備祖集",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "碎錄",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "少尹",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "見治盗 > 白㲲",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "格致鏡原",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "獸類 > 異獸",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

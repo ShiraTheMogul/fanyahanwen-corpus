@@ -25,5 +25,199 @@
   "ca": "1077–1148年",
   "categories": [
     "詩話"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 14,
+    "leishu_count": 8,
+    "categorised_citations": 14,
+    "genmoku_confirmed_citations": 2,
+    "category_leaves": [
+      {
+        "label": "託酒逺",
+        "citations": 2
+      },
+      {
+        "label": "上竿伎晏同叔",
+        "citations": 1
+      },
+      {
+        "label": "大體",
+        "citations": 1
+      },
+      {
+        "label": "長竿",
+        "citations": 1
+      },
+      {
+        "label": "霖雨",
+        "citations": 1
+      },
+      {
+        "label": "以酒杜人",
+        "citations": 1
+      },
+      {
+        "label": "詩有三種",
+        "citations": 1
+      },
+      {
+        "label": "鼻",
+        "citations": 1
+      },
+      {
+        "label": "魚虎",
+        "citations": 1
+      },
+      {
+        "label": "主試",
+        "citations": 1
+      },
+      {
+        "label": "珊瑚詩話張表臣",
+        "citations": 1
+      },
+      {
+        "label": "河豚",
+        "citations": 1
+      },
+      {
+        "label": "體勢",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "古今事文類聚",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "託酒逺",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "上竿伎晏同叔",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "大體",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "長竿",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "霖雨",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "見狂肆 > 以酒杜人",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見雪 > 詩有三種",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "人部 > 鼻",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 魚虎",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "舉為五老榜 > 主試",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "稗編",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "文藝三 > 珊瑚詩話張表臣",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "水族部 > 河豚",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "體勢",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

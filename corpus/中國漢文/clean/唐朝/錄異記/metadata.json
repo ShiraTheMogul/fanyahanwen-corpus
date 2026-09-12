@@ -83,5 +83,96 @@
   "known_commentaries": [],
   "authors": [
     "杜光庭"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 8,
+    "leishu_count": 3,
+    "categorised_citations": 8,
+    "genmoku_confirmed_citations": 5,
+    "category_leaves": [
+      {
+        "label": "鼠",
+        "citations": 2
+      },
+      {
+        "label": "鱗介部",
+        "citations": 2
+      },
+      {
+        "label": "禮部郎中",
+        "citations": 1
+      },
+      {
+        "label": "墮車",
+        "citations": 1
+      },
+      {
+        "label": "隂雨時嘗聞鞉角聲甚亮",
+        "citations": 1
+      },
+      {
+        "label": "萎㽔鎖",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 5,
+        "match": "exact",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "獸部 > 鼠",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "設官部 > 禮部郎中",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "墮車",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "隂雨時嘗聞鞉角聲甚亮",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "牛轡也天子耕藉田所執 > 萎㽔鎖",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -187,5 +187,210 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 20,
+    "leishu_count": 6,
+    "categorised_citations": 20,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "釋義",
+        "citations": 3
+      },
+      {
+        "label": "浮圖名議",
+        "citations": 2
+      },
+      {
+        "label": "辨證",
+        "citations": 2
+      },
+      {
+        "label": "文章",
+        "citations": 1
+      },
+      {
+        "label": "琴",
+        "citations": 1
+      },
+      {
+        "label": "統運",
+        "citations": 1
+      },
+      {
+        "label": "辨字",
+        "citations": 1
+      },
+      {
+        "label": "郡守",
+        "citations": 1
+      },
+      {
+        "label": "龍",
+        "citations": 1
+      },
+      {
+        "label": "飛越江湖",
+        "citations": 1
+      },
+      {
+        "label": "四美",
+        "citations": 1
+      },
+      {
+        "label": "社前火前",
+        "citations": 1
+      },
+      {
+        "label": "碎錄",
+        "citations": 1
+      },
+      {
+        "label": "評效玉川子",
+        "citations": 1
+      },
+      {
+        "label": "天",
+        "citations": 1
+      },
+      {
+        "label": "二十五徑",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 13,
+        "match": "bracket-note",
+        "category_count": 9,
+        "categories": [
+          {
+            "path": "釋義",
+            "citations": 3,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "浮圖名議",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "辨證",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "文章",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "琴",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "統運",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "辨字",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "郡守",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "龍",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 3,
+        "match": "line-initial",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "目 > 飛越江湖",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見喪友 > 四美",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見雪 > 社前火前",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "全芳備祖集",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "碎錄",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今事文類聚",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "辯董秦 > 評效玉川子",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "天",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "韻府羣玉",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "□二十三禡 > 二十三漾 > 二十五徑",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

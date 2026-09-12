@@ -26,5 +26,100 @@
   ],
   "authors": [
     "鍾惺"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 7,
+    "leishu_count": 6,
+    "categorised_citations": 4,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "緇帶下帶",
+        "citations": 1
+      },
+      {
+        "label": "仲尼對梁君",
+        "citations": 1
+      },
+      {
+        "label": "得士",
+        "citations": 1
+      },
+      {
+        "label": "冕服類",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "冊府元龜",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 0,
+        "categories": []
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "緇帶下帶",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "稗編",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "政 > 仲尼對梁君",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "經濟類編",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "銓衡類四 > 得士",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "羣書考索",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "禮器門 > 冕服類",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "萬姓統譜",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 0,
+        "categories": []
+      }
+    ]
+  }
 }

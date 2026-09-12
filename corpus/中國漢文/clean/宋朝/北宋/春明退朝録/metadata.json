@@ -19,5 +19,219 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "960–1127年"
+  "ca": "960–1127年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 18,
+    "leishu_count": 6,
+    "categorised_citations": 18,
+    "genmoku_confirmed_citations": 4,
+    "category_leaves": [
+      {
+        "label": "郎官",
+        "citations": 2
+      },
+      {
+        "label": "卿監",
+        "citations": 1
+      },
+      {
+        "label": "宫殿禁苑",
+        "citations": 1
+      },
+      {
+        "label": "服御行幸",
+        "citations": 1
+      },
+      {
+        "label": "知制誥",
+        "citations": 1
+      },
+      {
+        "label": "諌官",
+        "citations": 1
+      },
+      {
+        "label": "霜",
+        "citations": 1
+      },
+      {
+        "label": "殿",
+        "citations": 1
+      },
+      {
+        "label": "冬至",
+        "citations": 1
+      },
+      {
+        "label": "簽書樞密院",
+        "citations": 1
+      },
+      {
+        "label": "納節降麻",
+        "citations": 1
+      },
+      {
+        "label": "隆儒",
+        "citations": 1
+      },
+      {
+        "label": "外朝内朝",
+        "citations": 1
+      },
+      {
+        "label": "徐氏中論六卷",
+        "citations": 1
+      },
+      {
+        "label": "海",
+        "citations": 1
+      },
+      {
+        "label": "玉蕊花",
+        "citations": 1
+      },
+      {
+        "label": "禮部",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 7,
+        "match": "bracket-note",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "郎官",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "卿監",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "宫殿禁苑",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "服御行幸",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "知制誥",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "諌官",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 4,
+        "match": "exact",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "天部 > 霜",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 殿",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "歲時部 > 冬至",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "設官部 > 簽書樞密院",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 3,
+        "match": "line-initial",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "唐 > 納節降麻",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "唐髙宗 > 隆儒",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "宋 > 外朝内朝",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "徐氏中論六卷",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "海",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "格致鏡原",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "花𩔖 > 玉蕊花",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "翰苑新書",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "禮部",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

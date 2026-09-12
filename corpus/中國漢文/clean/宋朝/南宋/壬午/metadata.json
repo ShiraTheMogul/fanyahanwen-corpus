@@ -19,5 +19,121 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "1127–1279年"
+  "ca": "1127–1279年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 12,
+    "leishu_count": 4,
+    "categorised_citations": 8,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "紹興宿衛親兵",
+        "citations": 1
+      },
+      {
+        "label": "唐賜階勲爵",
+        "citations": 1
+      },
+      {
+        "label": "太平興國登聞院理檢院",
+        "citations": 1
+      },
+      {
+        "label": "張九齡奏置",
+        "citations": 1
+      },
+      {
+        "label": "唐親享太廟",
+        "citations": 1
+      },
+      {
+        "label": "唐常平倉藏粟米令",
+        "citations": 1
+      },
+      {
+        "label": "此兩制",
+        "citations": 1
+      },
+      {
+        "label": "蕃來貢",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "玉海",
+        "citations": 6,
+        "match": "bracket-note",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "兵制 > 步兵之額百八十三在 > 紹興宿衛親兵",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "官制 > 官品 > 唐賜階勲爵",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "宫室 > 院 > 太平興國登聞院理檢院",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "月分東西道兩節度 > 張九齡奏置",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "郊祀 > 宗廟禘祫親饗 > 唐親享太廟",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "食貨 > 倉庾 > 唐常平倉藏粟米令",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "冊府元龜",
+        "citations": 4,
+        "match": "line-initial",
+        "category_count": 0,
+        "categories": []
+      },
+      {
+        "leishu": "事物紀原",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "此兩制",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "羣書考索",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "蕃來貢",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

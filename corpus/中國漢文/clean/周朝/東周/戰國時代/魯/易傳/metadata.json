@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 5499,
   "corpus_root": "中國漢文",
@@ -46,5 +46,666 @@
       "body_start_line": 5
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 72,
+    "leishu_count": 21,
+    "categorised_citations": 72,
+    "genmoku_confirmed_citations": 26,
+    "category_leaves": [
+      {
+        "label": "日",
+        "citations": 5
+      },
+      {
+        "label": "霜",
+        "citations": 5
+      },
+      {
+        "label": "井",
+        "citations": 3
+      },
+      {
+        "label": "李泌戲荅以遣之",
+        "citations": 3
+      },
+      {
+        "label": "雲七",
+        "citations": 3
+      },
+      {
+        "label": "河",
+        "citations": 2
+      },
+      {
+        "label": "雷",
+        "citations": 2
+      },
+      {
+        "label": "立故處",
+        "citations": 2
+      },
+      {
+        "label": "災異",
+        "citations": 2
+      },
+      {
+        "label": "隱逸",
+        "citations": 1
+      },
+      {
+        "label": "冰",
+        "citations": 1
+      },
+      {
+        "label": "月",
+        "citations": 1
+      },
+      {
+        "label": "虹霓",
+        "citations": 1
+      },
+      {
+        "label": "周易",
+        "citations": 1
+      },
+      {
+        "label": "木",
+        "citations": 1
+      },
+      {
+        "label": "狗",
+        "citations": 1
+      },
+      {
+        "label": "風",
+        "citations": 1
+      },
+      {
+        "label": "雨土",
+        "citations": 1
+      },
+      {
+        "label": "赤雪",
+        "citations": 1
+      },
+      {
+        "label": "日上",
+        "citations": 1
+      },
+      {
+        "label": "伯勞",
+        "citations": 1
+      },
+      {
+        "label": "仍為造像寫經月餘遂死",
+        "citations": 1
+      },
+      {
+        "label": "作害卒有巫蠱之事果應",
+        "citations": 1
+      },
+      {
+        "label": "始皇虎口日角",
+        "citations": 1
+      },
+      {
+        "label": "攫公孫子之腓而噬之",
+        "citations": 1
+      },
+      {
+        "label": "繫上方奪封",
+        "citations": 1
+      },
+      {
+        "label": "藝苑一",
+        "citations": 1
+      },
+      {
+        "label": "黒帝亡二日並出",
+        "citations": 1
+      },
+      {
+        "label": "情厥妖䑕舞門",
+        "citations": 1
+      },
+      {
+        "label": "結大如彈丸",
+        "citations": 1
+      },
+      {
+        "label": "蝗",
+        "citations": 1
+      },
+      {
+        "label": "螟",
+        "citations": 1
+      },
+      {
+        "label": "蟊",
+        "citations": 1
+      },
+      {
+        "label": "賊",
+        "citations": 1
+      },
+      {
+        "label": "木連理",
+        "citations": 1
+      },
+      {
+        "label": "井三十二",
+        "citations": 1
+      },
+      {
+        "label": "星",
+        "citations": 1
+      },
+      {
+        "label": "儆戒",
+        "citations": 1
+      },
+      {
+        "label": "奢侈",
+        "citations": 1
+      },
+      {
+        "label": "水波木揺",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 12,
+        "match": "author-prefix-stripped",
+        "category_count": 11,
+        "categories": [
+          {
+            "path": "天部 > 日",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 隱逸",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部 > 井",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部 > 冰",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部 > 河",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "天部 > 月",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "天部 > 虹霓",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "天部 > 霜",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文學部 > 周易",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "木部 > 木",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 狗",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 8,
+        "match": "exact",
+        "category_count": 8,
+        "categories": [
+          {
+            "path": "咎徴部三 > 霹靂無雲而雷 > 風",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "咎徴部四 > 雨續雨帛 > 雨土",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "咎徵部五 > 紫蜺 > 赤雪",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "天部三 > 日上 > 日上",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "天部十三 > 電 > 雷",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "天部十四 > 虹霓 > 霜",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "居處部十七 > 井 > 井",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "羽族部十 > 鴟茅鴟鳶 > 伯勞",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 7,
+        "match": "bracket-note",
+        "category_count": 7,
+        "categories": [
+          {
+            "path": "仍為造像寫經月餘遂死",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "作害卒有巫蠱之事果應",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "始皇虎口日角",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "攫公孫子之腓而噬之",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "繫上方奪封",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "藝苑一",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "黒帝亡二日並出",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "駢志",
+        "citations": 7,
+        "match": "author-prefix-stripped",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "李泌戲荅以遣之",
+            "citations": 3,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "立故處",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "情厥妖䑕舞門",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "結大如彈丸",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 6,
+        "match": "author-prefix-stripped",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "天部上 > 日",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "災異部 > 蝗",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "災異部 > 螟",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "災異部 > 蟊",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "災異部 > 賊",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "祥瑞部上 > 木連理",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 4,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "天部二 > 雲七 > 雲七",
+            "citations": 3,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "地理部三 > 井三十二氷三十三 > 井三十二",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 4,
+        "match": "bracket-note",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "井",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "日",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "星",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "河",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 4,
+        "match": "author-prefix-stripped",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "天文部 > 霜",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人情部 > 儆戒",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "性行部 > 奢侈",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "海録碎事",
+        "citations": 3,
+        "match": "author-prefix-stripped",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "水波木揺",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "薄食",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "雞生角",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 3,
+        "match": "author-prefix-stripped",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "善京氏 > 漢易林",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "父業 > 漢易傳",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "祥瑞 > 地瑞 > 宋河清頌",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "事類賦",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "天部 > 日",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "天部 > 雷",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "春温",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "盤根",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "經濟類編",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "天類四 > 災異",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "初學記",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "九澤陽",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "喻林",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "人事門 > 失道",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "圖書編",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "不成",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定子史精華",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "化空桑",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定駢字類編",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "霜月 > 虹",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "白孔六帖",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "露 > 霜",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "編珠",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "位極人臣",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "翰苑新書",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "慶賀 > 冬至",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

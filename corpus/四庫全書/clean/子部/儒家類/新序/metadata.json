@@ -187,5 +187,1203 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 262,
+    "leishu_count": 25,
+    "categorised_citations": 260,
+    "genmoku_confirmed_citations": 115,
+    "category_leaves": [
+      {
+        "label": "臺",
+        "citations": 7
+      },
+      {
+        "label": "魚",
+        "citations": 5
+      },
+      {
+        "label": "諫諍七",
+        "citations": 3
+      },
+      {
+        "label": "泣",
+        "citations": 3
+      },
+      {
+        "label": "杖",
+        "citations": 3
+      },
+      {
+        "label": "裘",
+        "citations": 3
+      },
+      {
+        "label": "桃",
+        "citations": 3
+      },
+      {
+        "label": "諷",
+        "citations": 3
+      },
+      {
+        "label": "羮",
+        "citations": 3
+      },
+      {
+        "label": "蛇",
+        "citations": 3
+      },
+      {
+        "label": "忠",
+        "citations": 3
+      },
+      {
+        "label": "論兵一",
+        "citations": 3
+      },
+      {
+        "label": "人倫三",
+        "citations": 3
+      },
+      {
+        "label": "政猶張琴瑟",
+        "citations": 3
+      },
+      {
+        "label": "義中",
+        "citations": 2
+      },
+      {
+        "label": "骨",
+        "citations": 2
+      },
+      {
+        "label": "奴婢",
+        "citations": 2
+      },
+      {
+        "label": "智",
+        "citations": 2
+      },
+      {
+        "label": "言語",
+        "citations": 2
+      },
+      {
+        "label": "綬",
+        "citations": 2
+      },
+      {
+        "label": "弓",
+        "citations": 2
+      },
+      {
+        "label": "褐",
+        "citations": 2
+      },
+      {
+        "label": "麋",
+        "citations": 2
+      },
+      {
+        "label": "寳",
+        "citations": 2
+      },
+      {
+        "label": "大理卿",
+        "citations": 2
+      },
+      {
+        "label": "肉",
+        "citations": 2
+      },
+      {
+        "label": "貧",
+        "citations": 2
+      },
+      {
+        "label": "射",
+        "citations": 2
+      },
+      {
+        "label": "人部",
+        "citations": 2
+      },
+      {
+        "label": "富",
+        "citations": 2
+      },
+      {
+        "label": "謳謡",
+        "citations": 2
+      },
+      {
+        "label": "壇",
+        "citations": 2
+      },
+      {
+        "label": "善政",
+        "citations": 2
+      },
+      {
+        "label": "論政",
+        "citations": 2
+      },
+      {
+        "label": "梳枇",
+        "citations": 2
+      },
+      {
+        "label": "縣令",
+        "citations": 2
+      },
+      {
+        "label": "帝王",
+        "citations": 2
+      },
+      {
+        "label": "義烈",
+        "citations": 2
+      },
+      {
+        "label": "龍",
+        "citations": 2
+      },
+      {
+        "label": "酷虐",
+        "citations": 2
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 72,
+        "match": "exact",
+        "category_count": 69,
+        "categories": [
+          {
+            "path": "人事部九十八 > 諫諍七",
+            "citations": 3,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部六十二 > 義中",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部 > 謳",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部一十六 > 膏 > 骨",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部一百 > 鑒戒下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部一百一十二 > 富下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部一百一十五 > 禮賢",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部一百二十七 > 窮凍 > 窮",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部一百二十九 > 泣啼 > 泣",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部一百十六 > 待士",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部一百四十一 > 傭保奴婢 > 奴婢",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部七十一 > 信謹慎 > 信",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部七十三 > 慈愛恭敬智聰明強記 > 智",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人事部七十九 > 烈士",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部七十六 > 勇五",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部三十一 > 言語",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部二十三 > 醜丈夫醜婦人 > 醜丈夫",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部二十九 > 影跡 > 聲",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部五十一 > 父子交絶交 > 絶交",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人事部五十九 > 忠貞",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 38,
+        "match": "exact",
+        "category_count": 34,
+        "categories": [
+          {
+            "path": "人部 > 諷",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 貧",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "居處部 > 臺",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "巧藝部 > 射",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 勇",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 奴婢",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 富",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 師",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 恐懼",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 智",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 泣",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 言語",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 謳謡",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 遊覽",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 鑒誡",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "儀飾部 > 綬",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "居處部 > 壇",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "居處部 > 牆壁",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "政術部 > 君道",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 33,
+        "match": "bracket-note",
+        "category_count": 24,
+        "categories": [
+          {
+            "path": "臺",
+            "citations": 4,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "大武帝賜名懐逺 > 忠",
+            "citations": 3,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "帝王",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "義烈",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "羮",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "龍",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "事也誤 > 富",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "互見樓 > 大理卿",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "勇敢",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "匏",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "夙慧",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "師第",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "御覽天下作日下 > 捷悟",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "朋友",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "牆",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "縣令",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "蛇",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "裘",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "褐",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "酒",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 27,
+        "match": "bracket-note",
+        "category_count": 23,
+        "categories": [
+          {
+            "path": "武功部一 > 論兵一",
+            "citations": 3,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "帝王部 > 廢立七十 > 奢侈六十九",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "政術部 > 遺愛十九 > 德化十七",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "儀飾部四 > 几二十一杖二十二 > 杖二十二",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "地理部一 > 谷十三洞十四 > 阪九",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "帝王部 > 武功四十六",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "政術部",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "政術部 > 異績三十五 > 勸課三十四",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "政術部 > 異績三十五 > 振䘏三十",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "政術部 > 臣術四",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "政術部 > 薦賢十四",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "政術部 > 論政一",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "樂部 > 竽十七 > 竽十七",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "武功部二 > 講武二征伐三 > 征伐二",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "武功部八 > 旒二十三 > 旗十八",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "武功部十二 > 彈四十五 > 㦸三十九",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "舉無失才",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "舟部 > 筰十七檣十八帆十九 > 檝十四",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "藝文部三 > 好學十博學十二 > 好學十一",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "衣冠部三 > 絡帶三十 > 褐二十五",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 18,
+        "match": "bracket-note",
+        "category_count": 16,
+        "categories": [
+          {
+            "path": "人倫三",
+            "citations": 3,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "不知其所",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "凡建國佐后立市設其次",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "勾踐封范蠡子於苦竹城",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "右挈竽行歌而出",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "天道二",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "嫁",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "寡人治之遂不受",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "斧扆下",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "有延洪夀光之酒",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "此魚也固辭不受",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "為上客",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禹時渠搜来獻裘",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禽夏后",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "者火精雀者當崩余當立",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "藝苑一",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 17,
+        "match": "exact",
+        "category_count": 15,
+        "categories": [
+          {
+            "path": "人部三 > 謳謡",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人部八 > 諷",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部十九 > 奴",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部十九 > 泣",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部十八 > 懐舊",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "居處部二 > 臺",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "居處部四 > 壇",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服飾部下 > 釵 > 梳枇",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "治政部上 > 善政",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "治政部上 > 論政",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "職官部五 > 廷尉",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "職官部六 > 令長",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "軍器部 > 弓",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部上 > 魚",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部一 > 鶴",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 8,
+        "match": "bracket-note",
+        "category_count": 8,
+        "categories": [
+          {
+            "path": "性行部 > 愚弄",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "政事部 > 斂怨",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "政事部 > 酷虐",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "水族部 > 魚",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禾黍與稂莠雨來同日滋 > 離合無親疎",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "論議部 > 愛適為害",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "論議部 > 此無彼誚",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "預哂愁胡面 > 麋",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 7,
+        "match": "bracket-note",
+        "category_count": 7,
+        "categories": [
+          {
+            "path": "卿監",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "類姓 > 任",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "類姓 > 孟",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "類姓 > 宋",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "類姓 > 寗",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "類姓 > 徐",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "類姓 > 葉",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "事類賦",
+        "citations": 6,
+        "match": "exact",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "寳貨部 > 珠",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "寳貨部 > 金",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "服用部 > 杖",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "果部 > 桃",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鱗介部 > 蛇",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鱗介部 > 魚",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "名賢氏族言行類稿",
+        "citations": 6,
+        "match": "author-prefix-stripped",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "人遺狐白之裘",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "卿秦有虞香",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "宋章定撰",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "州人",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "我王國",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "逐之",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 4,
+        "match": "line-initial",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "炮烙之刑 > 歩過六尺被刑",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見仙 > 禁従者",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見仙 > 繞輪",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見祖父祖母 > 披裘帶索",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "小學紺珠",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "免鶉鷃 > 動植類 > 雞五徳",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "北門側 > 齊五子",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "名臣類 > 漢三傑",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "海録碎事",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "霜澇 > 政猶張琴瑟",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "政猶張琴瑟",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "蒙求集註",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "孝文賈頗有力以夀終",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "寳",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "初學記",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "人部",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "武部",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今姓氏書辯證",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "中尉",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "𠉯 > 西王",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "七十二道",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "采地",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "兵制 > 周文王錄劒古良劒",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "藝文 > 著書别集 > 漢新序說苑唐續說苑",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "白孔六帖",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "奢侈",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "浴日温源愈出孔賜浴 > 珠",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "駢志",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "□呼□切",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "元和姓纂",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "邱趙襄子家臣楚隆",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "全芳備祖集",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "紀要",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "名疑",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "敬發",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "喻林",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "人事門 > 異趨",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "編珠",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "株因書梅花梁以志之",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -1630,5 +1630,546 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 72,
+    "leishu_count": 6,
+    "categorised_citations": 72,
+    "genmoku_confirmed_citations": 24,
+    "category_leaves": [
+      {
+        "label": "侍御史",
+        "citations": 3
+      },
+      {
+        "label": "修撰",
+        "citations": 3
+      },
+      {
+        "label": "侍讀學士",
+        "citations": 2
+      },
+      {
+        "label": "刑部尚書",
+        "citations": 2
+      },
+      {
+        "label": "起居注",
+        "citations": 2
+      },
+      {
+        "label": "侍讀",
+        "citations": 2
+      },
+      {
+        "label": "國史院",
+        "citations": 2
+      },
+      {
+        "label": "都統",
+        "citations": 2
+      },
+      {
+        "label": "人部",
+        "citations": 1
+      },
+      {
+        "label": "政術部",
+        "citations": 1
+      },
+      {
+        "label": "使絶域",
+        "citations": 1
+      },
+      {
+        "label": "設官部",
+        "citations": 1
+      },
+      {
+        "label": "史官",
+        "citations": 1
+      },
+      {
+        "label": "太師",
+        "citations": 1
+      },
+      {
+        "label": "太常博士",
+        "citations": 1
+      },
+      {
+        "label": "太常卿",
+        "citations": 1
+      },
+      {
+        "label": "御史中丞",
+        "citations": 1
+      },
+      {
+        "label": "樞密使",
+        "citations": 1
+      },
+      {
+        "label": "知樞密院",
+        "citations": 1
+      },
+      {
+        "label": "編修",
+        "citations": 1
+      },
+      {
+        "label": "上治兵䇿",
+        "citations": 1
+      },
+      {
+        "label": "元昊稱臣",
+        "citations": 1
+      },
+      {
+        "label": "參較得失",
+        "citations": 1
+      },
+      {
+        "label": "安民力學",
+        "citations": 1
+      },
+      {
+        "label": "極陳時弊",
+        "citations": 1
+      },
+      {
+        "label": "不由科第",
+        "citations": 1
+      },
+      {
+        "label": "在館自守",
+        "citations": 1
+      },
+      {
+        "label": "安集勞来",
+        "citations": 1
+      },
+      {
+        "label": "射虜",
+        "citations": 1
+      },
+      {
+        "label": "擊戎",
+        "citations": 1
+      },
+      {
+        "label": "破羌",
+        "citations": 1
+      },
+      {
+        "label": "遁盜",
+        "citations": 1
+      },
+      {
+        "label": "議講官禮",
+        "citations": 1
+      },
+      {
+        "label": "召對羣玉殿",
+        "citations": 1
+      },
+      {
+        "label": "從易焚書",
+        "citations": 1
+      },
+      {
+        "label": "賜詩寵行",
+        "citations": 1
+      },
+      {
+        "label": "分直崇政",
+        "citations": 1
+      },
+      {
+        "label": "少卿",
+        "citations": 1
+      },
+      {
+        "label": "侍郎",
+        "citations": 1
+      },
+      {
+        "label": "史館校勘",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 24,
+        "match": "exact",
+        "category_count": 18,
+        "categories": [
+          {
+            "path": "設官部 > 侍御史",
+            "citations": 3,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "設官部 > 侍讀學士",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "設官部 > 修撰",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "設官部 > 刑部尚書",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "設官部 > 起居注",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "政術部",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "政術部 > 使絶域",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "設官部",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "設官部 > 侍讀",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "設官部 > 史官",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "設官部 > 太師",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "設官部 > 太常博士",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "設官部 > 太常卿",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "設官部 > 御史中丞",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "設官部 > 樞密使",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "設官部 > 知樞密院",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "設官部 > 編修",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 17,
+        "match": "line-initial",
+        "category_count": 17,
+        "categories": [
+          {
+            "path": "宋 > 上治兵䇿",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "宋 > 元昊稱臣",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "宋 > 參較得失",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "宋 > 安民力學",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "宋 > 極陳時弊",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "宋仁宗 > 不由科第",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "改𨽻秘書 > 在館自守",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "白居易 > 安集勞来",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "白居易 > 射虜",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "白居易 > 擊戎",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "白居易 > 破羌",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "白居易 > 遁盜",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "終無折𠂻 > 議講官禮",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見丞相 > 召對羣玉殿",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見推官 > 從易焚書",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見翰林學士 > 賜詩寵行",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "起居省 > 分直崇政",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 15,
+        "match": "bracket-note",
+        "category_count": 15,
+        "categories": [
+          {
+            "path": "垂銀棘庭印持斧栢臺綱 > 少卿",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "職官部 > 侍郎",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "職官部 > 史館校勘",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "職官部 > 太傅",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "職官部 > 太子侍讀侍講",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "職官部 > 太子諭徳",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "職官部 > 太學博士",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "職官部 > 正字",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "職官部 > 正言",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "職官部 > 王府直講",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "職官部 > 王府翊善",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "職官部 > 王府贊讀",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "職官部 > 知院",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "職官部 > 秘書監",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "論議部 > 小不足以處大",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "翰苑新書",
+        "citations": 12,
+        "match": "exact",
+        "category_count": 10,
+        "categories": [
+          {
+            "path": "國史院",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "都統",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "京尹",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "刑部",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "太學",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "安撫使附",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "幕職官",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "曹官",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "王府官屬",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "諫院",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "京兆尹",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "侍讀",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "修撰",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今合璧事類備要",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "歴代㳂革",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

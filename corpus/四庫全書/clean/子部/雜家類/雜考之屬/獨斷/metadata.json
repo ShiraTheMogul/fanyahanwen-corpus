@@ -80,5 +80,766 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 115,
+    "leishu_count": 16,
+    "categorised_citations": 114,
+    "genmoku_confirmed_citations": 48,
+    "category_leaves": [
+      {
+        "label": "帝王",
+        "citations": 5
+      },
+      {
+        "label": "帝王總載",
+        "citations": 3
+      },
+      {
+        "label": "車",
+        "citations": 3
+      },
+      {
+        "label": "鹵簿一",
+        "citations": 3
+      },
+      {
+        "label": "總篇一",
+        "citations": 3
+      },
+      {
+        "label": "夏至",
+        "citations": 3
+      },
+      {
+        "label": "綬",
+        "citations": 2
+      },
+      {
+        "label": "豹尾",
+        "citations": 2
+      },
+      {
+        "label": "鹵簿",
+        "citations": 2
+      },
+      {
+        "label": "諸王",
+        "citations": 2
+      },
+      {
+        "label": "詔",
+        "citations": 2
+      },
+      {
+        "label": "冕",
+        "citations": 2
+      },
+      {
+        "label": "幘",
+        "citations": 2
+      },
+      {
+        "label": "冠",
+        "citations": 2
+      },
+      {
+        "label": "冠一",
+        "citations": 2
+      },
+      {
+        "label": "幘四",
+        "citations": 2
+      },
+      {
+        "label": "諸王一百四十八",
+        "citations": 2
+      },
+      {
+        "label": "通天冠",
+        "citations": 2
+      },
+      {
+        "label": "漢巧士冠却非冠",
+        "citations": 2
+      },
+      {
+        "label": "漢進賢冠",
+        "citations": 2
+      },
+      {
+        "label": "帝戚部",
+        "citations": 2
+      },
+      {
+        "label": "乘黄令",
+        "citations": 2
+      },
+      {
+        "label": "儀飾部",
+        "citations": 1
+      },
+      {
+        "label": "璽",
+        "citations": 1
+      },
+      {
+        "label": "蓋",
+        "citations": 1
+      },
+      {
+        "label": "婦人封",
+        "citations": 1
+      },
+      {
+        "label": "徳行封",
+        "citations": 1
+      },
+      {
+        "label": "帝王部",
+        "citations": 1
+      },
+      {
+        "label": "制誥",
+        "citations": 1
+      },
+      {
+        "label": "書記",
+        "citations": 1
+      },
+      {
+        "label": "章奏",
+        "citations": 1
+      },
+      {
+        "label": "㦸",
+        "citations": 1
+      },
+      {
+        "label": "蜡臘",
+        "citations": 1
+      },
+      {
+        "label": "宰相",
+        "citations": 1
+      },
+      {
+        "label": "豹尾四",
+        "citations": 1
+      },
+      {
+        "label": "璽十三",
+        "citations": 1
+      },
+      {
+        "label": "綬十五",
+        "citations": 1
+      },
+      {
+        "label": "㦸三十九",
+        "citations": 1
+      },
+      {
+        "label": "夏至二十三",
+        "citations": 1
+      },
+      {
+        "label": "蜡臘十三",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 25,
+        "match": "author-prefix-stripped",
+        "category_count": 22,
+        "categories": [
+          {
+            "path": "帝王部 > 帝王總載",
+            "citations": 3,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "車部 > 車",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "儀飾部",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "儀飾部 > 璽",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "儀飾部 > 綬",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "儀飾部 > 蓋",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "儀飾部 > 豹尾",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "儀飾部 > 鹵簿",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "封爵部 > 婦人封",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "封爵部 > 徳行封",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "帝戚部 > 諸王",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "帝王部",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文學部 > 制誥",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文學部 > 書記",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文學部 > 章奏",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文學部 > 詔",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服飾部 > 冕",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服飾部 > 幘",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 㦸",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "歲時部 > 蜡臘",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 23,
+        "match": "author-prefix-stripped",
+        "category_count": 16,
+        "categories": [
+          {
+            "path": "儀飾部一 > 漏刻十一相風十二 > 鹵簿一",
+            "citations": 3,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "封爵部上 > 總篇一親戚封二 > 總篇一",
+            "citations": 3,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "衣冠部一 > 帽九 > 冠一",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "衣冠部一 > 帽九 > 幘四",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "設官部二十二 > 諸王一百四十八",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "儀飾部一 > 漏刻十一相風十二 > 豹尾四",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "儀飾部二 > 綬十五 > 璽十三",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "儀飾部二 > 綬十五 > 綬十五",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "武功部十二 > 彈四十五 > 㦸三十九",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "歲時部三 > 夏至二十三 > 夏至二十三",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "歲時部三 > 夏至二十三 > 蜡臘十三",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "歲時部二 > 秋篇九冬篇十 > 夏八",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禮儀部八 > 宗廟十六社稷十七 > 社稷十七",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "衣冠部二 > 笏十八舄十九 > 法服十",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "車部 > 覆軨二十四茵二十五 > 葢二十三",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "車部 > 覆軨二十四茵二十五 > 轂十五",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 21,
+        "match": "author-prefix-stripped",
+        "category_count": 20,
+        "categories": [
+          {
+            "path": "服章部二 > 長冠樊噲冠 > 通天冠",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部一百三十七 > 諺下鬭争 > 諺下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "儀式部 > 警蹕 > 豹尾",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "儀式部三 > 璽綬 > 綬",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "儀式部二 > 棨㦸節 > 鹵簿",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "封建部四 > 誅貶 > 遜讓",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "居處部十三 > 扆宁 > 陛",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文部九 > 教誡 > 䇿",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文部九 > 教誡 > 詔",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文部十一 > 書記 > 議",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "時序部八 > 夏至 > 夏至",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "時序部十八 > 臘膢 > 臘",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服章部三 > 冕纓弁 > 冕",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服章部二 > 長冠樊噲冠 > 方山冠",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服章部二 > 長冠樊噲冠 > 武弁",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服章部四 > 幘㡌巾接離障日 > 幘",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "疾病部三 > 跛躄尰 > 秃",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禮儀部十六 > 廵狩籍田 > 廵狩",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "車部五 > 䋺茵 > 盖",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "車部五 > 䋺茵 > 轄",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 15,
+        "match": "exact",
+        "category_count": 13,
+        "categories": [
+          {
+            "path": "車服 > 冕服 > 漢巧士冠却非冠",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "車服 > 冕服 > 漢進賢冠",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "書封功臣則有誓 > 漢璽書",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "書封功臣則有誓 > 漢賜方國手迹",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "稷 > 漢茅土",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "車服 > 冕服 > 冕龍衮",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "車服 > 冕服 > 漢五時服羣臣法服",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "車服 > 冕服 > 漢劉氏冠長冠齊冠",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "車服 > 冕服 > 漢却敵冠",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "車服 > 冕服 > 漢幘赤幘納言幘帽翠帽",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "車服 > 冕服 > 漢爵弁",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "車服 > 冕服 > 漢通天冠五時袍",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "車服 > 冕服 > 漢逺遊冠",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 9,
+        "match": "bracket-note",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "帝王",
+            "citations": 5,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "夏至",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "公卿宅有金盃玉盌之號 > 亭",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "閏",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 6,
+        "match": "author-prefix-stripped",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "嵗時部上 > 夏",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "帝王部一 > 總載帝王",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "禮部中 > 巡狩",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "職官部一 > 相國",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "職官部一 > 諸王",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "舟車部 > 舟 > 車",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "至而斷",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "趙國化之",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "青城丈人戴葢天之冠",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "初學記",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "帝戚部",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "喻林",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "政治門 > 要地",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "羣書考索",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "禮器門 > 冕服類",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禮門 > 鹵簿儀衞",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "職官分紀",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "乘黄令",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "事物紀原",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "因折蓋之形而制曲蓋 > 冠冕首飾部十四",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "事類賦",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "服用部 > 冠",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "海録碎事",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "需頭",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "編珠",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "上見六劍下見龍鱗刀",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "服御行幸",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

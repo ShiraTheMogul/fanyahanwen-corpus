@@ -21,5 +21,138 @@
   "known_commentaries": [],
   "authors": [
     "諸葛亮"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 8,
+    "leishu_count": 6,
+    "categorised_citations": 8,
+    "genmoku_confirmed_citations": 1,
+    "category_leaves": [
+      {
+        "label": "雅州",
+        "citations": 1
+      },
+      {
+        "label": "夏中",
+        "citations": 1
+      },
+      {
+        "label": "諳練",
+        "citations": 1
+      },
+      {
+        "label": "際㑹",
+        "citations": 1
+      },
+      {
+        "label": "夏",
+        "citations": 1
+      },
+      {
+        "label": "諸葛出師",
+        "citations": 1
+      },
+      {
+        "label": "總將帥",
+        "citations": 1
+      },
+      {
+        "label": "總將軍",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "州郡部十二 > 戎州 > 雅州",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "時序部七 > 夏中 > 夏中",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "兵戎部 > 諳練",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "逢此百憂尚寐無覺我心 > 際㑹",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "事類賦",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "嵗時部 > 夏",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今事文類聚",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "阿𫎇學識 > 諸葛出師",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "翰苑新書",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "總將帥",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "職官分紀",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "總將軍",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

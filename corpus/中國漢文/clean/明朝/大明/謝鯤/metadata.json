@@ -26,5 +26,136 @@
   ],
   "authors": [
     "鍾惺"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 18,
+    "leishu_count": 7,
+    "categorised_citations": 7,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "挑女折齒",
+        "citations": 1
+      },
+      {
+        "label": "妖鹿惑人",
+        "citations": 1
+      },
+      {
+        "label": "言語",
+        "citations": 1
+      },
+      {
+        "label": "清歌鼓瑟",
+        "citations": 1
+      },
+      {
+        "label": "贓賄",
+        "citations": 1
+      },
+      {
+        "label": "各有所長",
+        "citations": 1
+      },
+      {
+        "label": "琛國琛",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "冊府元龜",
+        "citations": 11,
+        "match": "line-initial",
+        "category_count": 0,
+        "categories": []
+      },
+      {
+        "leishu": "古今事文類聚",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "折脅摺齒 > 挑女折齒",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "歌鹿鳴詩 > 妖鹿惑人",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "言語",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "見義士 > 清歌鼓瑟",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "白孔六帖",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "殺人 > 贓賄",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "論議部 > 各有所長",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "韻府羣玉",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "琛國琛",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

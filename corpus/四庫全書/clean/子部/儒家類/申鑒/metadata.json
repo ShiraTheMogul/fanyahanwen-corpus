@@ -127,5 +127,302 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 20,
+    "leishu_count": 13,
+    "categorised_citations": 20,
+    "genmoku_confirmed_citations": 5,
+    "category_leaves": [
+      {
+        "label": "叙聖",
+        "citations": 1
+      },
+      {
+        "label": "鏡",
+        "citations": 1
+      },
+      {
+        "label": "帝堯陶唐氏",
+        "citations": 1
+      },
+      {
+        "label": "太史令",
+        "citations": 1
+      },
+      {
+        "label": "小惡",
+        "citations": 1
+      },
+      {
+        "label": "機要",
+        "citations": 1
+      },
+      {
+        "label": "為妾",
+        "citations": 1
+      },
+      {
+        "label": "眼驚",
+        "citations": 1
+      },
+      {
+        "label": "爛石上",
+        "citations": 1
+      },
+      {
+        "label": "錢寡",
+        "citations": 1
+      },
+      {
+        "label": "雞",
+        "citations": 1
+      },
+      {
+        "label": "太史",
+        "citations": 1
+      },
+      {
+        "label": "去讒",
+        "citations": 1
+      },
+      {
+        "label": "莊子七篇",
+        "citations": 1
+      },
+      {
+        "label": "彼人懷",
+        "citations": 1
+      },
+      {
+        "label": "墜網綱",
+        "citations": 1
+      },
+      {
+        "label": "聖",
+        "citations": 1
+      },
+      {
+        "label": "漢武功爵",
+        "citations": 1
+      },
+      {
+        "label": "鹽鐵十論",
+        "citations": 1
+      },
+      {
+        "label": "友諞佞部田切",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 4,
+        "match": "author-prefix-stripped",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "人事部四十二 > 叙聖",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服用部十九 > 多羅嚴器 > 鏡",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "皇王部五 > 帝堯陶唐氏 > 帝堯陶唐氏",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "職官部三十三 > 大長秋 > 太史令",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 4,
+        "match": "bracket-note",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "小惡",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "機要",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "為妾",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "眼驚",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定韻府拾遺",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "爛石上",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "錢寡",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "事類賦",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "禽部 > 雞",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "設官部七 > 車府令武庫令 > 太史",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "喻林",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "去讒",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "小學紺珠",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "敕牒 > 莊子七篇",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "彼人懷",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定分類字錦",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "耕富春 > 墜網綱",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "人部 > 聖",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "謹之 > 漢武功爵",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "讀書紀數畧",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "四子講徳論 > 鹽鐵十論",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "駢志",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "友諞佞部田切",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

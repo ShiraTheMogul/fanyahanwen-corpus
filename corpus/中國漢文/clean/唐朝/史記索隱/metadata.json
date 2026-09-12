@@ -37,5 +37,95 @@
   ],
   "authors": [
     "司馬貞"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 5,
+    "leishu_count": 4,
+    "categorised_citations": 5,
+    "genmoku_confirmed_citations": 1,
+    "category_leaves": [
+      {
+        "label": "漢勞軍細桞",
+        "citations": 1
+      },
+      {
+        "label": "漢茂陵書",
+        "citations": 1
+      },
+      {
+        "label": "蜂午",
+        "citations": 1
+      },
+      {
+        "label": "交廣諸山",
+        "citations": 1
+      },
+      {
+        "label": "狂",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "玉海",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "兵制 > 講武田獵 > 漢勞軍細桞",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "藝文 > 著書别集 > 漢茂陵書",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今事文類聚",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "張衡思𤣥賦簡元辰而俶 > 蜂午",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "地部 > 交廣諸山",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "駢志",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "狂",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

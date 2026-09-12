@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 4351,
   "corpus_root": "中國漢文",
@@ -18,5 +18,201 @@
       "body_start_line": 8
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 15,
+    "leishu_count": 7,
+    "categorised_citations": 15,
+    "genmoku_confirmed_citations": 9,
+    "category_leaves": [
+      {
+        "label": "詩",
+        "citations": 2
+      },
+      {
+        "label": "春秋",
+        "citations": 2
+      },
+      {
+        "label": "施惠下",
+        "citations": 1
+      },
+      {
+        "label": "叙經典",
+        "citations": 1
+      },
+      {
+        "label": "誡",
+        "citations": 1
+      },
+      {
+        "label": "周易",
+        "citations": 1
+      },
+      {
+        "label": "神",
+        "citations": 1
+      },
+      {
+        "label": "文部",
+        "citations": 1
+      },
+      {
+        "label": "標廣絶交論",
+        "citations": 1
+      },
+      {
+        "label": "釋時論晉王沉",
+        "citations": 1
+      },
+      {
+        "label": "獺",
+        "citations": 1
+      },
+      {
+        "label": "終身讓路",
+        "citations": 1
+      },
+      {
+        "label": "貧",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 6,
+        "match": "author-prefix-stripped",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "人事部一百十八 > 施惠下",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "學部三 > 易詩書 > 詩",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "學部二 > 叙經典",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "學部四 > 禮春秋孝經 > 春秋",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文部九 > 教誡 > 誡",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文部二 > 詩",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 3,
+        "match": "author-prefix-stripped",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "文學部 > 周易",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文學部 > 春秋",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "靈異部 > 神",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "初學記",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "文部",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "標廣絶交論",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今事文類聚",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "釋時論晉王沉",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "獺",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "海録碎事",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "終身讓路",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "人部十九 > 貧",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      }
+    ]
+  }
 }

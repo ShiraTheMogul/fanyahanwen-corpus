@@ -21,5 +21,130 @@
   "known_commentaries": [],
   "authors": [
     "姚信"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 10,
+    "leishu_count": 6,
+    "categorised_citations": 10,
+    "genmoku_confirmed_citations": 5,
+    "category_leaves": [
+      {
+        "label": "人部",
+        "citations": 2
+      },
+      {
+        "label": "絲",
+        "citations": 2
+      },
+      {
+        "label": "為繒為錦",
+        "citations": 2
+      },
+      {
+        "label": "聖",
+        "citations": 2
+      },
+      {
+        "label": "仁德",
+        "citations": 1
+      },
+      {
+        "label": "品藻",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "初學記",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "人部",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "人事部六十 > 仁德仁惻 > 仁德",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "布帛部一 > 綵染 > 絲",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "見餽遺 > 為繒為錦",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "人部六 > 品藻",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部四 > 聖",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "事類賦",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "寳貨部 > 絲",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "人部 > 聖",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      }
+    ]
+  }
 }

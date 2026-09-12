@@ -25,5 +25,105 @@
   "ca": "1127–1279年",
   "categories": [
     "詩話"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 7,
+    "leishu_count": 3,
+    "categorised_citations": 7,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "十輩",
+        "citations": 1
+      },
+      {
+        "label": "見排馬排",
+        "citations": 1
+      },
+      {
+        "label": "韻藻琅玕",
+        "citations": 1
+      },
+      {
+        "label": "韻藻鉤深幽深",
+        "citations": 1
+      },
+      {
+        "label": "騰躍波濤",
+        "citations": 1
+      },
+      {
+        "label": "額黄深暈",
+        "citations": 1
+      },
+      {
+        "label": "魚虎",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 4,
+        "match": "bracket-note",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "十輩",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見排馬排",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "韻藻琅玕",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "韻藻鉤深幽深",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定分類字錦",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "仄紅尾文鯉 > 騰躍波濤",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "仄韻友 > 額黄深暈",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "螢火也古詩螢彩繞梁飛 > 魚虎",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

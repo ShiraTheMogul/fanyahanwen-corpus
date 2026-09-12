@@ -211,5 +211,136 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 11,
+    "leishu_count": 4,
+    "categorised_citations": 11,
+    "genmoku_confirmed_citations": 6,
+    "category_leaves": [
+      {
+        "label": "石",
+        "citations": 2
+      },
+      {
+        "label": "地圖疑始於此",
+        "citations": 2
+      },
+      {
+        "label": "鞭",
+        "citations": 1
+      },
+      {
+        "label": "㦸上",
+        "citations": 1
+      },
+      {
+        "label": "阿",
+        "citations": 1
+      },
+      {
+        "label": "星上",
+        "citations": 1
+      },
+      {
+        "label": "糓梁傳春秋正義",
+        "citations": 1
+      },
+      {
+        "label": "橋",
+        "citations": 1
+      },
+      {
+        "label": "兜鍪",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 5,
+        "match": "line-initial",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "兵部九十 > 枊 > 鞭",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部八十三 > 㦸上",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "地部二十一 > 墟培塿 > 阿",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "天部五 > 星上 > 星上",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "糓梁傳春秋正義",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 3,
+        "match": "author-prefix-stripped",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "地部 > 石",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "居處部 > 橋",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 兜鍪",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "事物紀原",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "地圖疑始於此",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "石",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

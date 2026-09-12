@@ -3,7 +3,7 @@
   "work_id": 127245,
   "corpus_root": "四庫全書",
   "title": "錦繡萬花谷",
-  "is_compilation": false,
+  "is_compilation": true,
   "contained_in": [
     {
       "work_id": 80277,
@@ -1507,5 +1507,126 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "compilation_note": "子部類書類：本書為類書，內容多為徵引他書原文；徵引關係見 corpus/index_leishu_徵引.csv，不另重複計入語料庫字數。",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 14,
+    "leishu_count": 2,
+    "categorised_citations": 14,
+    "genmoku_confirmed_citations": 12,
+    "category_leaves": [
+      {
+        "label": "書",
+        "citations": 4
+      },
+      {
+        "label": "貴",
+        "citations": 2
+      },
+      {
+        "label": "戒慎",
+        "citations": 2
+      },
+      {
+        "label": "節操",
+        "citations": 1
+      },
+      {
+        "label": "政術部",
+        "citations": 1
+      },
+      {
+        "label": "寛政",
+        "citations": 1
+      },
+      {
+        "label": "擇官",
+        "citations": 1
+      },
+      {
+        "label": "像",
+        "citations": 1
+      },
+      {
+        "label": "馬具",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 12,
+        "match": "exact",
+        "category_count": 7,
+        "categories": [
+          {
+            "path": "巧藝部 > 書",
+            "citations": 4,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 貴",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "后妃部 > 戒慎",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 節操",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "政術部",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "政術部 > 寛政",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "政術部 > 擇官",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "格致鏡原",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "像",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "馬具",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  },
+  "leishu_citation_summary": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "works_attested": 188,
+    "citations": 813,
+    "categorised_citations": 813,
+    "distinct_categories": 330,
+    "unresolved_heads": 2473
+  }
 }

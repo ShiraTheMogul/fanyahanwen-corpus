@@ -17,5 +17,69 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "1271–1368年"
+  "ca": "1271–1368年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 3,
+    "leishu_count": 3,
+    "categorised_citations": 3,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "碎録",
+        "citations": 1
+      },
+      {
+        "label": "牡丹",
+        "citations": 1
+      },
+      {
+        "label": "惟",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "全芳備祖集",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "碎録",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "誤 > 牡丹",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "惟",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

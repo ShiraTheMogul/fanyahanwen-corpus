@@ -69,5 +69,237 @@
       "preservation": "recoverable from PALCC Git history; not duplicated in working tree"
     }
   ],
-  "provenance_schema_version": 1
+  "provenance_schema_version": 1,
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 25,
+    "leishu_count": 6,
+    "categorised_citations": 25,
+    "genmoku_confirmed_citations": 9,
+    "category_leaves": [
+      {
+        "label": "誠",
+        "citations": 3
+      },
+      {
+        "label": "理學異同",
+        "citations": 2
+      },
+      {
+        "label": "聖",
+        "citations": 2
+      },
+      {
+        "label": "賢",
+        "citations": 2
+      },
+      {
+        "label": "幾善惡",
+        "citations": 2
+      },
+      {
+        "label": "周子通書",
+        "citations": 1
+      },
+      {
+        "label": "太極論",
+        "citations": 1
+      },
+      {
+        "label": "樂道",
+        "citations": 1
+      },
+      {
+        "label": "義利",
+        "citations": 1
+      },
+      {
+        "label": "闗洛之學",
+        "citations": 1
+      },
+      {
+        "label": "徳",
+        "citations": 1
+      },
+      {
+        "label": "羞恥",
+        "citations": 1
+      },
+      {
+        "label": "勸學",
+        "citations": 1
+      },
+      {
+        "label": "文章",
+        "citations": 1
+      },
+      {
+        "label": "栟櫚",
+        "citations": 1
+      },
+      {
+        "label": "䕶短",
+        "citations": 1
+      },
+      {
+        "label": "隂陽",
+        "citations": 1
+      },
+      {
+        "label": "思齊",
+        "citations": 1
+      },
+      {
+        "label": "書",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "古今源流至論",
+        "citations": 10,
+        "match": "bracket-note",
+        "category_count": 7,
+        "categories": [
+          {
+            "path": "誠",
+            "citations": 3,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "理學異同",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "周子通書",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "太極論",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "太極論 > 樂道",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "義利",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "闗洛之學",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 9,
+        "match": "exact",
+        "category_count": 7,
+        "categories": [
+          {
+            "path": "人部 > 聖",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 賢",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 徳",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 羞恥",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文學部 > 勸學",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文學部 > 文章",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "木部 > 栟櫚",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "圖書編",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "之共學乎孟氏之學 > 幾善惡",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "問學部 > 䕶短",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "混元部 > 隂陽",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定分類字錦",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "天縱愛日 > 思齊",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "白孔六帖",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "書籍借書 > 書",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

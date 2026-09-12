@@ -307,5 +307,518 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 71,
+    "leishu_count": 15,
+    "categorised_citations": 71,
+    "genmoku_confirmed_citations": 47,
+    "category_leaves": [
+      {
+        "label": "文章",
+        "citations": 7
+      },
+      {
+        "label": "賦",
+        "citations": 4
+      },
+      {
+        "label": "毛詩",
+        "citations": 3
+      },
+      {
+        "label": "移",
+        "citations": 3
+      },
+      {
+        "label": "詩",
+        "citations": 3
+      },
+      {
+        "label": "誦讀",
+        "citations": 3
+      },
+      {
+        "label": "制誥",
+        "citations": 2
+      },
+      {
+        "label": "尚書",
+        "citations": 2
+      },
+      {
+        "label": "春秋",
+        "citations": 2
+      },
+      {
+        "label": "檄",
+        "citations": 2
+      },
+      {
+        "label": "禮記",
+        "citations": 2
+      },
+      {
+        "label": "詔",
+        "citations": 2
+      },
+      {
+        "label": "五室三四",
+        "citations": 2
+      },
+      {
+        "label": "元日",
+        "citations": 2
+      },
+      {
+        "label": "睦親",
+        "citations": 1
+      },
+      {
+        "label": "借書",
+        "citations": 1
+      },
+      {
+        "label": "文字",
+        "citations": 1
+      },
+      {
+        "label": "書籍",
+        "citations": 1
+      },
+      {
+        "label": "校書",
+        "citations": 1
+      },
+      {
+        "label": "章奏",
+        "citations": 1
+      },
+      {
+        "label": "著述",
+        "citations": 1
+      },
+      {
+        "label": "藏書",
+        "citations": 1
+      },
+      {
+        "label": "賜書",
+        "citations": 1
+      },
+      {
+        "label": "頌",
+        "citations": 1
+      },
+      {
+        "label": "神",
+        "citations": 1
+      },
+      {
+        "label": "宋朝四渠四河",
+        "citations": 1
+      },
+      {
+        "label": "虞八伯",
+        "citations": 1
+      },
+      {
+        "label": "長八伯夏九牧",
+        "citations": 1
+      },
+      {
+        "label": "周五射三射",
+        "citations": 1
+      },
+      {
+        "label": "漢尚書",
+        "citations": 1
+      },
+      {
+        "label": "周十二鐘",
+        "citations": 1
+      },
+      {
+        "label": "浡興",
+        "citations": 1
+      },
+      {
+        "label": "浮河",
+        "citations": 1
+      },
+      {
+        "label": "神異",
+        "citations": 1
+      },
+      {
+        "label": "水",
+        "citations": 1
+      },
+      {
+        "label": "劍",
+        "citations": 1
+      },
+      {
+        "label": "彈",
+        "citations": 1
+      },
+      {
+        "label": "麒麟",
+        "citations": 1
+      },
+      {
+        "label": "立冬",
+        "citations": 1
+      },
+      {
+        "label": "夏八",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 46,
+        "match": "author-prefix-stripped",
+        "category_count": 23,
+        "categories": [
+          {
+            "path": "文學部 > 文章",
+            "citations": 7,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文學部 > 賦",
+            "citations": 4,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文學部 > 毛詩",
+            "citations": 3,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文學部 > 移",
+            "citations": 3,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文學部 > 詩",
+            "citations": 3,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文學部 > 誦讀",
+            "citations": 3,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文學部 > 制誥",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文學部 > 尚書",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文學部 > 春秋",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文學部 > 檄",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文學部 > 禮記",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文學部 > 詔",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "帝王部 > 睦親",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文學部 > 借書",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文學部 > 文字",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文學部 > 書籍",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文學部 > 校書",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文學部 > 章奏",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文學部 > 著述",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文學部 > 藏書",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 6,
+        "match": "author-prefix-stripped",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "地理 > 河渠 > 宋朝四渠四河",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "官制 > 古官名 > 虞八伯",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "官制 > 牧守 > 長八伯夏九牧",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禮儀 > 射 > 周五射三射",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "良習小夏侯 > 漢尚書",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "音樂 > 樂器 > 周十二鐘",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "浡興",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "浮河",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "神異",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "事類賦",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "地部 > 水",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "服用部 > 劍",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "圖書編",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "五室三四",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "兵部八十一 > 射捍彈 > 彈",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "時序部十四 > 元日 > 元日",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "祥瑞部 > 麒麟",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "節序部 > 立冬",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "歲時部二 > 秋篇九冬篇十 > 夏八",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "元日",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "小學紺珠",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "管 > 兩塾",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "山鄉里祀之不絶",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定韻府拾遺",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "五行生高第生",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定駢字類編",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "桑樹",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "稗編",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "書一",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "羣書考索",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "賓之",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

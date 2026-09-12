@@ -32,5 +32,115 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "960–1127年"
+  "ca": "960–1127年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 9,
+    "leishu_count": 2,
+    "categorised_citations": 9,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "富",
+        "citations": 1
+      },
+      {
+        "label": "任誕",
+        "citations": 1
+      },
+      {
+        "label": "公卿宅有金盃玉盌之號",
+        "citations": 1
+      },
+      {
+        "label": "刺史",
+        "citations": 1
+      },
+      {
+        "label": "大武帝賜名懐逺",
+        "citations": 1
+      },
+      {
+        "label": "政誤",
+        "citations": 1
+      },
+      {
+        "label": "星",
+        "citations": 1
+      },
+      {
+        "label": "生辰",
+        "citations": 1
+      },
+      {
+        "label": "君",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "天中記",
+        "citations": 8,
+        "match": "bracket-note",
+        "category_count": 8,
+        "categories": [
+          {
+            "path": "事也誤 > 富",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "任誕",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "公卿宅有金盃玉盌之號",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "刺史",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "大武帝賜名懐逺",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "政誤",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "星",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "生辰",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "君",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

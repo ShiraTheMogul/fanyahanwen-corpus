@@ -94,5 +94,171 @@
       ]
     }
   ],
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 15,
+    "leishu_count": 5,
+    "categorised_citations": 15,
+    "genmoku_confirmed_citations": 8,
+    "category_leaves": [
+      {
+        "label": "攻具下",
+        "citations": 2
+      },
+      {
+        "label": "陣",
+        "citations": 2
+      },
+      {
+        "label": "黄帝與蚩尤戰即有之",
+        "citations": 2
+      },
+      {
+        "label": "叙兵噐",
+        "citations": 1
+      },
+      {
+        "label": "隊伍",
+        "citations": 1
+      },
+      {
+        "label": "出師",
+        "citations": 1
+      },
+      {
+        "label": "訓兵",
+        "citations": 1
+      },
+      {
+        "label": "火攻",
+        "citations": 1
+      },
+      {
+        "label": "水戰",
+        "citations": 1
+      },
+      {
+        "label": "黄帝握竒文風后握機",
+        "citations": 1
+      },
+      {
+        "label": "漢黄屋左纛",
+        "citations": 1
+      },
+      {
+        "label": "日城果下",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 7,
+        "match": "exact",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "兵部六十八 > 弋 > 攻具下",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部七十 > 叙兵噐牙 > 叙兵噐",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "兵部三十 > 隊伍 > 隊伍",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部三十七 > 軍行 > 出師",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部三十二 > 陣 > 陣",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部二十八 > 訓兵 > 訓兵",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "事物紀原",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "黄帝與蚩尤戰即有之",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "火攻",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "武功部 > 水戰",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 陣",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "兵制 > 黄帝握竒文風后握機",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "旂 > 漢黄屋左纛",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "日城果下",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

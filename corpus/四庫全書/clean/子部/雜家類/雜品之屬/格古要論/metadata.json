@@ -103,5 +103,137 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 12,
+    "leishu_count": 3,
+    "categorised_citations": 12,
+    "genmoku_confirmed_citations": 5,
+    "category_leaves": [
+      {
+        "label": "油",
+        "citations": 2
+      },
+      {
+        "label": "瑪瑙",
+        "citations": 2
+      },
+      {
+        "label": "字帖",
+        "citations": 1
+      },
+      {
+        "label": "璽",
+        "citations": 1
+      },
+      {
+        "label": "銀",
+        "citations": 1
+      },
+      {
+        "label": "七",
+        "citations": 1
+      },
+      {
+        "label": "珍寶部",
+        "citations": 1
+      },
+      {
+        "label": "瑇瑁",
+        "citations": 1
+      },
+      {
+        "label": "金",
+        "citations": 1
+      },
+      {
+        "label": "楠",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "格致鏡原",
+        "citations": 6,
+        "match": "line-initial",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "日用器物類 > 油",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "文具𩔖 > 字帖",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "朝制類 > 璽",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "珍寶𩔖 > 瑪瑙",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "珍寶𩔖 > 銀",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 5,
+        "match": "exact",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "文學部 > 七",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "珍寶部",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "珍寶部 > 瑇瑁",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "珍寶部 > 瑪瑙",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "珍寶部 > 金",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "楠",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

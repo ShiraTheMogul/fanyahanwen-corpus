@@ -19,5 +19,341 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "960–1127年"
+  "ca": "960–1127年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 27,
+    "leishu_count": 10,
+    "categorised_citations": 27,
+    "genmoku_confirmed_citations": 4,
+    "category_leaves": [
+      {
+        "label": "解紛",
+        "citations": 1
+      },
+      {
+        "label": "墨",
+        "citations": 1
+      },
+      {
+        "label": "評字",
+        "citations": 1
+      },
+      {
+        "label": "鵝",
+        "citations": 1
+      },
+      {
+        "label": "豕",
+        "citations": 1
+      },
+      {
+        "label": "饌",
+        "citations": 1
+      },
+      {
+        "label": "三公宰相",
+        "citations": 1
+      },
+      {
+        "label": "事也誤",
+        "citations": 1
+      },
+      {
+        "label": "海",
+        "citations": 1
+      },
+      {
+        "label": "相",
+        "citations": 1
+      },
+      {
+        "label": "菱",
+        "citations": 1
+      },
+      {
+        "label": "帽",
+        "citations": 1
+      },
+      {
+        "label": "鏡",
+        "citations": 1
+      },
+      {
+        "label": "牛",
+        "citations": 1
+      },
+      {
+        "label": "鍼",
+        "citations": 1
+      },
+      {
+        "label": "簪花",
+        "citations": 1
+      },
+      {
+        "label": "簪帽",
+        "citations": 1
+      },
+      {
+        "label": "埋脯",
+        "citations": 1
+      },
+      {
+        "label": "下錦",
+        "citations": 1
+      },
+      {
+        "label": "南董",
+        "citations": 1
+      },
+      {
+        "label": "湃湃泙湃",
+        "citations": 1
+      },
+      {
+        "label": "竹",
+        "citations": 1
+      },
+      {
+        "label": "隱夜見",
+        "citations": 1
+      },
+      {
+        "label": "碎録",
+        "citations": 1
+      },
+      {
+        "label": "入口消流雨染烟蒸",
+        "citations": 1
+      },
+      {
+        "label": "論坑冶馬端臨",
+        "citations": 1
+      },
+      {
+        "label": "花",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "記纂淵海",
+        "citations": 6,
+        "match": "bracket-note",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "人事部 > 解紛",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "字學部 > 墨",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "字學部 > 評字",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禽部 > 鵝",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "預哂愁胡面 > 豕",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "飲食部 > 饌",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 5,
+        "match": "bracket-note",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "三公宰相",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "事也誤",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "海",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "相",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "菱",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 4,
+        "match": "author-prefix-stripped",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "服飾部 > 帽",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服飾部 > 鏡",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 牛",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "産業部 > 鍼",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 3,
+        "match": "line-initial",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "杜甫詩脱帽露頂王公前 > 簪花",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "簪帽",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見縣令 > 埋脯",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "下錦",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "南董",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "湃湃泙湃",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "竹",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "隱夜見",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "全芳備祖集",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "碎録",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定分類字錦",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "和鼎解渴 > 如十斛籠 > 入口消流雨染烟蒸",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "稗編",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "户八 > 論坑冶馬端臨",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "花木鳥獸集𩔖",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "石門貢生吳寳芝撰 > 花",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

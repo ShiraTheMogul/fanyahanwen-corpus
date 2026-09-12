@@ -19,5 +19,147 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "960–1127年"
+  "ca": "960–1127年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 14,
+    "leishu_count": 6,
+    "categorised_citations": 14,
+    "genmoku_confirmed_citations": 3,
+    "category_leaves": [
+      {
+        "label": "婚姻十一",
+        "citations": 4
+      },
+      {
+        "label": "宋謝維新撰",
+        "citations": 2
+      },
+      {
+        "label": "士冠禮考",
+        "citations": 2
+      },
+      {
+        "label": "冠禮",
+        "citations": 1
+      },
+      {
+        "label": "舅姑",
+        "citations": 1
+      },
+      {
+        "label": "婚姻上",
+        "citations": 1
+      },
+      {
+        "label": "鴈",
+        "citations": 1
+      },
+      {
+        "label": "德祐二年",
+        "citations": 1
+      },
+      {
+        "label": "釋菜於門内",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "北堂書鈔",
+        "citations": 4,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "禮儀部五 > 冠十婚姻十一 > 婚姻十一",
+            "citations": 4,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今合璧事類備要",
+        "citations": 3,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "宋謝維新撰",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "古今合璧事類備要總目 > 冠禮",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 3,
+        "match": "author-prefix-stripped",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "宗親部七 > 姊妹舅姑嫂叔娣姒 > 舅姑",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "禮儀部十九 > 冠婚姻上 > 婚姻上",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "羽族部四 > 雉白雉射雉 > 鴈",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "圖書編",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "却是偽也必須用時之服 > 士冠禮考",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "宋帝顯 > 德祐二年",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "羣書考索",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "為製贊僉刊石置於太學 > 釋菜於門内",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

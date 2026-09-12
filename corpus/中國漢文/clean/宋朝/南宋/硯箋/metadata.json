@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 63769,
   "corpus_root": "中國漢文",
@@ -18,5 +18,44 @@
       "body_start_line": 8
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 2,
+    "leishu_count": 1,
+    "categorised_citations": 2,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "善墨製墨",
+        "citations": 1
+      },
+      {
+        "label": "老脉株脉",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定韻府拾遺",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "善墨製墨",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "老脉株脉",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

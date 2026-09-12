@@ -26,5 +26,145 @@
   ],
   "authors": [
     "鍾惺"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 11,
+    "leishu_count": 7,
+    "categorised_citations": 8,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "梅福為仙",
+        "citations": 1
+      },
+      {
+        "label": "為市門卒",
+        "citations": 1
+      },
+      {
+        "label": "族子宗易於下親屬竭",
+        "citations": 1
+      },
+      {
+        "label": "隠逸",
+        "citations": 1
+      },
+      {
+        "label": "武功四十六",
+        "citations": 1
+      },
+      {
+        "label": "啇山四皓不如淮陽一老",
+        "citations": 1
+      },
+      {
+        "label": "周繫世世本",
+        "citations": 1
+      },
+      {
+        "label": "西漢全節八人",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "冊府元龜",
+        "citations": 3,
+        "match": "line-initial",
+        "category_count": 0,
+        "categories": []
+      },
+      {
+        "leishu": "古今事文類聚",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "崆峒問道 > 梅福為仙",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "百里奚舉於市 > 為市門卒",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "白孔六帖",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "族子宗易於下親屬竭",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "隠逸徵聘 > 隠逸",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "帝王部 > 武功四十六",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "啇山四皓不如淮陽一老",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "夏書司商所掌表於周典 > 周繫世世本",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "讀書紀數畧",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "賢太守十一人 > 西漢全節八人",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

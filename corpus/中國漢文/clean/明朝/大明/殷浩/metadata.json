@@ -26,5 +26,263 @@
   ],
   "authors": [
     "鍾惺"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 28,
+    "leishu_count": 11,
+    "categorised_citations": 18,
+    "genmoku_confirmed_citations": 1,
+    "category_leaves": [
+      {
+        "label": "夢",
+        "citations": 2
+      },
+      {
+        "label": "四支",
+        "citations": 1
+      },
+      {
+        "label": "十一尤",
+        "citations": 1
+      },
+      {
+        "label": "二十五有",
+        "citations": 1
+      },
+      {
+        "label": "足心酸活套團",
+        "citations": 1
+      },
+      {
+        "label": "飯裹飯",
+        "citations": 1
+      },
+      {
+        "label": "書空咄咄",
+        "citations": 1
+      },
+      {
+        "label": "束之高閣",
+        "citations": 1
+      },
+      {
+        "label": "詠曹顔逺詩",
+        "citations": 1
+      },
+      {
+        "label": "火雞燒營",
+        "citations": 1
+      },
+      {
+        "label": "呉遂大貴達",
+        "citations": 1
+      },
+      {
+        "label": "阿源",
+        "citations": 1
+      },
+      {
+        "label": "貶謫附祠居",
+        "citations": 1
+      },
+      {
+        "label": "晉三李陽",
+        "citations": 1
+      },
+      {
+        "label": "牙後慧",
+        "citations": 1
+      },
+      {
+        "label": "殷仲文",
+        "citations": 1
+      },
+      {
+        "label": "舅甥",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "冊府元龜",
+        "citations": 10,
+        "match": "line-initial",
+        "category_count": 0,
+        "categories": []
+      },
+      {
+        "leishu": "韻府羣玉",
+        "citations": 5,
+        "match": "exact",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "上平聲 > 四支",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "下平聲 > 十一尤",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "竝 > 二十五有",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "足心酸活套團",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "飯裹飯",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今事文類聚",
+        "citations": 4,
+        "match": "line-initial",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "令尹子文三已之無愠色 > 書空咄咄",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "破琴絶 > 束之高閣",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "詩話 > 詠曹顔逺詩",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "雞鳴為善 > 火雞燒營",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "小字錄",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "呉遂大貴達",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "阿源",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今合璧事類備要",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "仕進門 > 貶謫附祠居",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "同姓名録",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "仲遠所擒 > 晉三李陽",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "靈異部 > 夢",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "海録碎事",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "牙後慧",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "白孔六帖",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "謝恩夢 > 夢",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "萬姓統譜",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "殷仲文",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "舅甥",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

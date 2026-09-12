@@ -23,5 +23,327 @@
   "known_commentaries": [],
   "categories": [
     "賦"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 35,
+    "leishu_count": 13,
+    "categorised_citations": 35,
+    "genmoku_confirmed_citations": 7,
+    "category_leaves": [
+      {
+        "label": "月",
+        "citations": 15
+      },
+      {
+        "label": "苔",
+        "citations": 2
+      },
+      {
+        "label": "地",
+        "citations": 1
+      },
+      {
+        "label": "秋",
+        "citations": 1
+      },
+      {
+        "label": "台室",
+        "citations": 1
+      },
+      {
+        "label": "孤奉明恩",
+        "citations": 1
+      },
+      {
+        "label": "幽介",
+        "citations": 1
+      },
+      {
+        "label": "氷淨",
+        "citations": 1
+      },
+      {
+        "label": "秋引",
+        "citations": 1
+      },
+      {
+        "label": "素娥",
+        "citations": 1
+      },
+      {
+        "label": "絲桐練響",
+        "citations": 1
+      },
+      {
+        "label": "蘭路",
+        "citations": 1
+      },
+      {
+        "label": "塵",
+        "citations": 1
+      },
+      {
+        "label": "林",
+        "citations": 1
+      },
+      {
+        "label": "百篇",
+        "citations": 1
+      },
+      {
+        "label": "天部",
+        "citations": 1
+      },
+      {
+        "label": "月四",
+        "citations": 1
+      },
+      {
+        "label": "雜著",
+        "citations": 1
+      },
+      {
+        "label": "竹",
+        "citations": 1
+      },
+      {
+        "label": "九光",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "事類賦",
+        "citations": 11,
+        "match": "author-prefix-stripped",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "天部 > 月",
+            "citations": 9,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "地部 > 地",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "嵗時部第二 > 秋",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "海録碎事",
+        "citations": 8,
+        "match": "bracket-note",
+        "category_count": 8,
+        "categories": [
+          {
+            "path": "台室",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "孤奉明恩",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "幽介",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "氷淨",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "秋引",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "素娥",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "絲桐練響",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "蘭路",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 4,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "天部 > 月",
+            "citations": 3,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "草部 > 苔",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "地部二 > 塵 > 塵",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "百卉部七 > 綸組帛布離南地榆 > 苔",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "林",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "百篇",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "初學記",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "天部",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "天部二 > 雲七 > 月四",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今事文類聚",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "雜著",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "竹",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定子史精華",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "爝火息光萬物 > 月",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "白孔六帖",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "大方方不中矩方而無涯 > 月",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "編珠",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "九光",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "天部上 > 月",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      }
+    ]
+  }
 }

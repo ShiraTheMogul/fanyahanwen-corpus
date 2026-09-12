@@ -25,5 +25,179 @@
   "ca": "1053–1101年",
   "categories": [
     "詩話"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 14,
+    "leishu_count": 6,
+    "categorised_citations": 14,
+    "genmoku_confirmed_citations": 5,
+    "category_leaves": [
+      {
+        "label": "美婦人",
+        "citations": 2
+      },
+      {
+        "label": "看人富貴",
+        "citations": 2
+      },
+      {
+        "label": "嬪妃",
+        "citations": 1
+      },
+      {
+        "label": "詩",
+        "citations": 1
+      },
+      {
+        "label": "歲時部",
+        "citations": 1
+      },
+      {
+        "label": "鱟",
+        "citations": 1
+      },
+      {
+        "label": "文選文粹文鑑",
+        "citations": 1
+      },
+      {
+        "label": "評文",
+        "citations": 1
+      },
+      {
+        "label": "雜體",
+        "citations": 1
+      },
+      {
+        "label": "韓文",
+        "citations": 1
+      },
+      {
+        "label": "瑤臺第一層",
+        "citations": 1
+      },
+      {
+        "label": "捫蝨",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 5,
+        "match": "exact",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "人部 > 美婦人",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "后妃部 > 嬪妃",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文學部 > 詩",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "歲時部",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 鱟",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "古今源流至論",
+        "citations": 4,
+        "match": "exact",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "文選文粹文鑑",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "評文",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "雜體",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "韓文",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今事文類聚",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "讀史二首白居易 > 看人富貴",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "美婦人",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "𢷬衣篇 > 瑤臺第一層",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "捫蝨",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

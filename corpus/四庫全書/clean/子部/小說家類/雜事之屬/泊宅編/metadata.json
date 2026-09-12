@@ -103,5 +103,114 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 8,
+    "leishu_count": 3,
+    "categorised_citations": 8,
+    "genmoku_confirmed_citations": 5,
+    "category_leaves": [
+      {
+        "label": "殿",
+        "citations": 1
+      },
+      {
+        "label": "狗",
+        "citations": 1
+      },
+      {
+        "label": "織",
+        "citations": 1
+      },
+      {
+        "label": "牡蠣",
+        "citations": 1
+      },
+      {
+        "label": "蛇",
+        "citations": 1
+      },
+      {
+        "label": "猫",
+        "citations": 1
+      },
+      {
+        "label": "驢",
+        "citations": 1
+      },
+      {
+        "label": "垂魚釣鱉",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 5,
+        "match": "exact",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "武功部 > 殿",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 狗",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "産業部 > 織",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 牡蠣",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 蛇",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "猫",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "駱駞 > 驢",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "見探花 > 垂魚釣鱉",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

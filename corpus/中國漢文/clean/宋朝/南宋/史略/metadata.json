@@ -87,5 +87,239 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "1127–1279年"
+  "ca": "1127–1279年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 20,
+    "leishu_count": 9,
+    "categorised_citations": 20,
+    "genmoku_confirmed_citations": 3,
+    "category_leaves": [
+      {
+        "label": "員已上總知教門公事",
+        "citations": 3
+      },
+      {
+        "label": "明也今京東之俗猶然",
+        "citations": 2
+      },
+      {
+        "label": "春",
+        "citations": 2
+      },
+      {
+        "label": "嵗",
+        "citations": 1
+      },
+      {
+        "label": "次乃設位于氐星之間",
+        "citations": 1
+      },
+      {
+        "label": "贈不空司空",
+        "citations": 1
+      },
+      {
+        "label": "道觀一皆以天慶為名",
+        "citations": 1
+      },
+      {
+        "label": "桃花",
+        "citations": 1
+      },
+      {
+        "label": "僧賜紫",
+        "citations": 1
+      },
+      {
+        "label": "尼",
+        "citations": 1
+      },
+      {
+        "label": "桃",
+        "citations": 1
+      },
+      {
+        "label": "僧",
+        "citations": 1
+      },
+      {
+        "label": "春下",
+        "citations": 1
+      },
+      {
+        "label": "祇園伽藍",
+        "citations": 1
+      },
+      {
+        "label": "寺",
+        "citations": 1
+      },
+      {
+        "label": "遺",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "事物紀原",
+        "citations": 9,
+        "match": "author-prefix-stripped",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "員已上總知教門公事",
+            "citations": 3,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "明也今京東之俗猶然",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "嵗",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "次乃設位于氐星之間",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "贈不空司空",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "道觀一皆以天慶為名",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 3,
+        "match": "author-prefix-stripped",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "花卉部 > 桃花",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "釋部 > 僧賜紫",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "釋部 > 尼",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "果部 > 桃",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "釋教部 > 僧",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "事類賦",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "嵗時部 > 春",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "時序部五 > 春分 > 春下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "御定分類字錦",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "守中元侣仙羣 > 祇園伽藍",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "格致鏡原",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "宫室𩔖 > 寺",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "編珠",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "遺",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "春",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

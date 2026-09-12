@@ -25,5 +25,106 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "1368–1644年"
+  "ca": "1368–1644年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 11,
+    "leishu_count": 2,
+    "categorised_citations": 11,
+    "genmoku_confirmed_citations": 8,
+    "category_leaves": [
+      {
+        "label": "哈密",
+        "citations": 2
+      },
+      {
+        "label": "安南",
+        "citations": 2
+      },
+      {
+        "label": "南浦",
+        "citations": 2
+      },
+      {
+        "label": "恒山",
+        "citations": 1
+      },
+      {
+        "label": "長白山",
+        "citations": 1
+      },
+      {
+        "label": "臺",
+        "citations": 1
+      },
+      {
+        "label": "奄羅樹",
+        "citations": 1
+      },
+      {
+        "label": "三徑",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 8,
+        "match": "exact",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "邊塞部 > 哈密",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "邊塞部 > 安南",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部 > 恒山",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部 > 長白山",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "居處部 > 臺",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "木部 > 奄羅樹",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "南浦",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "三徑",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

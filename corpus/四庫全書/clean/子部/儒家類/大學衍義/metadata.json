@@ -583,5 +583,95 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 7,
+    "leishu_count": 4,
+    "categorised_citations": 7,
+    "genmoku_confirmed_citations": 4,
+    "category_leaves": [
+      {
+        "label": "好學",
+        "citations": 2
+      },
+      {
+        "label": "尊師",
+        "citations": 2
+      },
+      {
+        "label": "三幹總論",
+        "citations": 1
+      },
+      {
+        "label": "名字",
+        "citations": 1
+      },
+      {
+        "label": "五臣解孟子",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 4,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "帝王部 > 好學",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "帝王部 > 尊師",
+            "citations": 2,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "圖書編",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "荆揚之分 > 三幹總論",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "大武帝賜名懐逺 > 名字",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "讀書紀數畧",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "唐六家孟子 > 五臣解孟子",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

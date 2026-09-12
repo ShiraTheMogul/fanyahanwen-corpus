@@ -61,5 +61,331 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "960–1127年"
+  "ca": "960–1127年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 29,
+    "leishu_count": 11,
+    "categorised_citations": 29,
+    "genmoku_confirmed_citations": 5,
+    "category_leaves": [
+      {
+        "label": "姓氏",
+        "citations": 3
+      },
+      {
+        "label": "元吉",
+        "citations": 2
+      },
+      {
+        "label": "大夫季𤓰怱",
+        "citations": 2
+      },
+      {
+        "label": "今嶺南多此姓",
+        "citations": 1
+      },
+      {
+        "label": "六術",
+        "citations": 1
+      },
+      {
+        "label": "左傳越大夫謳陽之後",
+        "citations": 1
+      },
+      {
+        "label": "兒",
+        "citations": 1
+      },
+      {
+        "label": "邦",
+        "citations": 1
+      },
+      {
+        "label": "萬福府統軍岐才慶州人",
+        "citations": 1
+      },
+      {
+        "label": "四江",
+        "citations": 1
+      },
+      {
+        "label": "父子",
+        "citations": 1
+      },
+      {
+        "label": "洞",
+        "citations": 1
+      },
+      {
+        "label": "財利",
+        "citations": 1
+      },
+      {
+        "label": "芝",
+        "citations": 1
+      },
+      {
+        "label": "螺",
+        "citations": 1
+      },
+      {
+        "label": "履",
+        "citations": 1
+      },
+      {
+        "label": "諸匠具",
+        "citations": 1
+      },
+      {
+        "label": "巵",
+        "citations": 1
+      },
+      {
+        "label": "以為黄帝堯舜之事",
+        "citations": 1
+      },
+      {
+        "label": "火災",
+        "citations": 1
+      },
+      {
+        "label": "蕩夕陽",
+        "citations": 1
+      },
+      {
+        "label": "等謹案",
+        "citations": 1
+      },
+      {
+        "label": "漢居官姓號",
+        "citations": 1
+      },
+      {
+        "label": "鸕鷀",
+        "citations": 1
+      },
+      {
+        "label": "釋義",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "古今姓氏書辯證",
+        "citations": 11,
+        "match": "author-prefix-stripped",
+        "category_count": 9,
+        "categories": [
+          {
+            "path": "元吉",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "大夫季𤓰怱",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "今嶺南多此姓",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "代北三字姓 > 六術",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "左傳越大夫謳陽之後",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "後漢 > 兒",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "江 > 邦",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "萬福府統軍岐才慶州人",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見姓苑 > 四江",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 5,
+        "match": "exact",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "人部 > 父子",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部 > 洞",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "産業部 > 財利",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "草部 > 芝",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 螺",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "姓氏急就篇",
+        "citations": 3,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "姓氏",
+            "citations": 3,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "格致鏡原",
+        "citations": 3,
+        "match": "author-prefix-stripped",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "冠服𩔖 > 履",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "匠具 > 諸匠具",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "日用器物類 > 巵",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "事物紀原",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "以為黄帝堯舜之事",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今合璧事類備要",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "災異門 > 火災",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定分類字錦",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "紫錦 > 蕩夕陽",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定韻府拾遺",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "欽定四庫全書子部十一 > 提要 > 等謹案",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "夏書司商所掌表於周典 > 漢居官姓號",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "禽部 > 鸕鷀",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "釋義",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -139,5 +139,228 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 14,
+    "leishu_count": 11,
+    "categorised_citations": 14,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "鵲",
+        "citations": 2
+      },
+      {
+        "label": "竽十七",
+        "citations": 1
+      },
+      {
+        "label": "秋分二十二",
+        "citations": 1
+      },
+      {
+        "label": "侯賞東郭書辭乃賞犂彌",
+        "citations": 1
+      },
+      {
+        "label": "往往以分士卒為梁名將",
+        "citations": 1
+      },
+      {
+        "label": "九光",
+        "citations": 1
+      },
+      {
+        "label": "號食祿糕",
+        "citations": 1
+      },
+      {
+        "label": "即占歲為起於黄帝",
+        "citations": 1
+      },
+      {
+        "label": "天",
+        "citations": 1
+      },
+      {
+        "label": "鹽法利弊",
+        "citations": 1
+      },
+      {
+        "label": "八樂",
+        "citations": 1
+      },
+      {
+        "label": "夏至之樂",
+        "citations": 1
+      },
+      {
+        "label": "三白草",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "北堂書鈔",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "樂部 > 竽十七 > 竽十七",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "歲時部三 > 夏至二十三 > 秋分二十二",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "名賢氏族言行類稿",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "侯賞東郭書辭乃賞犂彌",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "往往以分士卒為梁名將",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "編珠",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "九光",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "號食祿糕",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "事物紀原",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "即占歲為起於黄帝",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "事類賦",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "天部 > 天",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "圖書編",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "鹽法利弊",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "鵲",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "小學紺珠",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "清廟為頌始 > 八樂",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "劉憑事始女媧氏造簫 > 夏至之樂",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定分類字錦",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "仄木德東節 > 夢欣石冷 > 三白草",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "禽部 > 鵲",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

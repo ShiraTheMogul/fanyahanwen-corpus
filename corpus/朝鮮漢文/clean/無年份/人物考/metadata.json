@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 81976,
   "corpus_root": "朝鮮漢文",
@@ -243,5 +243,88 @@
       "body_start_line": 6
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 7,
+    "leishu_count": 2,
+    "categorised_citations": 7,
+    "genmoku_confirmed_citations": 6,
+    "category_leaves": [
+      {
+        "label": "言志",
+        "citations": 2
+      },
+      {
+        "label": "信",
+        "citations": 1
+      },
+      {
+        "label": "干謁",
+        "citations": 1
+      },
+      {
+        "label": "逆旅",
+        "citations": 1
+      },
+      {
+        "label": "遊覽",
+        "citations": 1
+      },
+      {
+        "label": "髙舉逺覽",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 6,
+        "match": "exact",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "人部 > 言志",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 信",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 干謁",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 逆旅",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 遊覽",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "識見部 > 髙舉逺覽",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

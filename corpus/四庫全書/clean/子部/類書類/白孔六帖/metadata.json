@@ -3,7 +3,7 @@
   "work_id": 127230,
   "corpus_root": "四庫全書",
   "title": "白孔六帖",
-  "is_compilation": false,
+  "is_compilation": true,
   "contained_in": [
     {
       "work_id": 80277,
@@ -1267,5 +1267,186 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "compilation_note": "子部類書類：本書為類書，內容多為徵引他書原文；徵引關係見 corpus/index_leishu_徵引.csv，不另重複計入語料庫字數。",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 15,
+    "leishu_count": 5,
+    "categorised_citations": 15,
+    "genmoku_confirmed_citations": 6,
+    "category_leaves": [
+      {
+        "label": "魚",
+        "citations": 2
+      },
+      {
+        "label": "禮部",
+        "citations": 2
+      },
+      {
+        "label": "羅",
+        "citations": 1
+      },
+      {
+        "label": "都督",
+        "citations": 1
+      },
+      {
+        "label": "酒",
+        "citations": 1
+      },
+      {
+        "label": "蛇",
+        "citations": 1
+      },
+      {
+        "label": "闒茸",
+        "citations": 1
+      },
+      {
+        "label": "太子少傅",
+        "citations": 1
+      },
+      {
+        "label": "樞宻使",
+        "citations": 1
+      },
+      {
+        "label": "樞宻院",
+        "citations": 1
+      },
+      {
+        "label": "帽",
+        "citations": 1
+      },
+      {
+        "label": "時序",
+        "citations": 1
+      },
+      {
+        "label": "三日",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 6,
+        "match": "exact",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "鱗介部 > 魚",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "布帛部 > 羅",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "設官部 > 都督",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "食物部 > 酒",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 蛇",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 6,
+        "match": "bracket-note",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "職官部 > 禮部",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "性行部 > 闒茸",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "職官部 > 太子少傅",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "職官部 > 樞宻使",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "職官部 > 樞宻院",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "帽",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "時序",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "三日",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  },
+  "leishu_citation_summary": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "works_attested": 206,
+    "citations": 1160,
+    "categorised_citations": 1160,
+    "distinct_categories": 551,
+    "unresolved_heads": 4246
+  }
 }

@@ -91,5 +91,171 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 13,
+    "leishu_count": 5,
+    "categorised_citations": 13,
+    "genmoku_confirmed_citations": 3,
+    "category_leaves": [
+      {
+        "label": "龍",
+        "citations": 2
+      },
+      {
+        "label": "上已",
+        "citations": 1
+      },
+      {
+        "label": "水",
+        "citations": 1
+      },
+      {
+        "label": "羊",
+        "citations": 1
+      },
+      {
+        "label": "道路",
+        "citations": 1
+      },
+      {
+        "label": "𡨕遇",
+        "citations": 1
+      },
+      {
+        "label": "槐",
+        "citations": 1
+      },
+      {
+        "label": "三月三日",
+        "citations": 1
+      },
+      {
+        "label": "殺",
+        "citations": 1
+      },
+      {
+        "label": "越",
+        "citations": 1
+      },
+      {
+        "label": "鳥聲",
+        "citations": 1
+      },
+      {
+        "label": "或如人皆夀萬嵗",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "天中記",
+        "citations": 6,
+        "match": "bracket-note",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "上已",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "水",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "羊",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "道路",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "龍",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "𡨕遇",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "木部 > 槐",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "歲時部 > 三月三日",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 龍",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "駢志",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "殺",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "越",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "𢷬衣篇 > 鳥聲",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "編珠",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "或如人皆夀萬嵗",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

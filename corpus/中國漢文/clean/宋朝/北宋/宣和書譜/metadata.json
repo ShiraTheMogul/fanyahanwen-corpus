@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 52553,
   "corpus_root": "中國漢文",
@@ -18,5 +18,141 @@
       "body_start_line": 8
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 25,
+    "leishu_count": 3,
+    "categorised_citations": 25,
+    "genmoku_confirmed_citations": 16,
+    "category_leaves": [
+      {
+        "label": "書",
+        "citations": 14
+      },
+      {
+        "label": "御筆",
+        "citations": 2
+      },
+      {
+        "label": "封鉅",
+        "citations": 1
+      },
+      {
+        "label": "思文烈文織文",
+        "citations": 1
+      },
+      {
+        "label": "楚",
+        "citations": 1
+      },
+      {
+        "label": "羊質",
+        "citations": 1
+      },
+      {
+        "label": "訓整",
+        "citations": 1
+      },
+      {
+        "label": "遷繹保繹",
+        "citations": 1
+      },
+      {
+        "label": "合天矩",
+        "citations": 1
+      },
+      {
+        "label": "沉著痛快一臺二妙",
+        "citations": 1
+      },
+      {
+        "label": "鐵門限",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 16,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "巧藝部 > 書",
+            "citations": 14,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "帝王部 > 御筆",
+            "citations": 2,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 6,
+        "match": "bracket-note",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "封鉅",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "思文烈文織文",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "楚",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "羊質",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "訓整",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "遷繹保繹",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定分類字錦",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "星流 > 合天矩",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "星流 > 沉著痛快一臺二妙",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "星流 > 鐵門限",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

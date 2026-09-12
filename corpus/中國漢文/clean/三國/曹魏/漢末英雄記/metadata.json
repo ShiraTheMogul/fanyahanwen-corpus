@@ -28,5 +28,53 @@
       "193年",
       "198年"
     ]
+  },
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 3,
+    "leishu_count": 1,
+    "categorised_citations": 3,
+    "genmoku_confirmed_citations": 3,
+    "category_leaves": [
+      {
+        "label": "烈士",
+        "citations": 1
+      },
+      {
+        "label": "勇五",
+        "citations": 1
+      },
+      {
+        "label": "祭禮下",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "人事部七十九 > 烈士",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部七十六 > 勇五",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "禮儀部五 > 祭禮下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      }
+    ]
   }
 }

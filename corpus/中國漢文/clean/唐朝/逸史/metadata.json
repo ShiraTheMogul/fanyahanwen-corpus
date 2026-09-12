@@ -20,5 +20,273 @@
   "ca": "618–907年",
   "authors": [
     "盧肇"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 23,
+    "leishu_count": 8,
+    "categorised_citations": 23,
+    "genmoku_confirmed_citations": 5,
+    "category_leaves": [
+      {
+        "label": "箜篌",
+        "citations": 3
+      },
+      {
+        "label": "月",
+        "citations": 2
+      },
+      {
+        "label": "橋",
+        "citations": 2
+      },
+      {
+        "label": "前身",
+        "citations": 1
+      },
+      {
+        "label": "史且以葛榮為爾朱更誤",
+        "citations": 1
+      },
+      {
+        "label": "笛",
+        "citations": 1
+      },
+      {
+        "label": "符命",
+        "citations": 1
+      },
+      {
+        "label": "鵬",
+        "citations": 1
+      },
+      {
+        "label": "頭",
+        "citations": 1
+      },
+      {
+        "label": "鶴",
+        "citations": 1
+      },
+      {
+        "label": "相術",
+        "citations": 1
+      },
+      {
+        "label": "圃",
+        "citations": 1
+      },
+      {
+        "label": "韻藻長笛",
+        "citations": 1
+      },
+      {
+        "label": "黄庭教孫子教",
+        "citations": 1
+      },
+      {
+        "label": "先知",
+        "citations": 1
+      },
+      {
+        "label": "吉兆",
+        "citations": 1
+      },
+      {
+        "label": "樂",
+        "citations": 1
+      },
+      {
+        "label": "尉遲打鐡",
+        "citations": 1
+      },
+      {
+        "label": "藍",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "天中記",
+        "citations": 8,
+        "match": "exact",
+        "category_count": 8,
+        "categories": [
+          {
+            "path": "前身",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "史且以葛榮為爾朱更誤",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "月",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "橋",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "歎服之 > 笛",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "歎服之 > 箜篌",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "符命",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鵬",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 5,
+        "match": "exact",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "人部 > 頭",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "天部 > 月",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "居處部 > 橋",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部 > 箜篌",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 鶴",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "伎術部 > 相術",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "樂部 > 箜篌",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "民業部 > 圃",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "韻藻長笛",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "黄庭教孫子教",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "先知",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "吉兆",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "六帖補",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "伶樂婢皁 > 樂",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "漢武帝 > 尉遲打鐡",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定駢字類編",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "朱霞 > 藍",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

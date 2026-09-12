@@ -12056,5 +12056,271 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 21,
+    "leishu_count": 8,
+    "categorised_citations": 21,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "得子",
+        "citations": 1
+      },
+      {
+        "label": "風水",
+        "citations": 1
+      },
+      {
+        "label": "阡隴",
+        "citations": 1
+      },
+      {
+        "label": "及第",
+        "citations": 1
+      },
+      {
+        "label": "竹",
+        "citations": 1
+      },
+      {
+        "label": "禅定",
+        "citations": 1
+      },
+      {
+        "label": "競渡",
+        "citations": 1
+      },
+      {
+        "label": "審宜",
+        "citations": 1
+      },
+      {
+        "label": "施徳",
+        "citations": 1
+      },
+      {
+        "label": "無益",
+        "citations": 1
+      },
+      {
+        "label": "遭遇",
+        "citations": 1
+      },
+      {
+        "label": "難知",
+        "citations": 1
+      },
+      {
+        "label": "昭明學士誤",
+        "citations": 1
+      },
+      {
+        "label": "馬",
+        "citations": 1
+      },
+      {
+        "label": "口賦",
+        "citations": 1
+      },
+      {
+        "label": "天祚",
+        "citations": 1
+      },
+      {
+        "label": "唐文思博要",
+        "citations": 1
+      },
+      {
+        "label": "天聖記里鼓車大章車",
+        "citations": 1
+      },
+      {
+        "label": "府皆天子私藏耳",
+        "citations": 1
+      },
+      {
+        "label": "前代君臣事迹十四篇",
+        "citations": 1
+      },
+      {
+        "label": "提要",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "記纂淵海",
+        "citations": 7,
+        "match": "bracket-note",
+        "category_count": 7,
+        "categories": [
+          {
+            "path": "人倫部 > 得子",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "伎術部 > 風水",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "喪記部 > 阡隴",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "科舉部 > 及第",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "竹部 > 竹",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "釋部 > 禅定",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "雜戲部 > 競渡",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "喻林",
+        "citations": 5,
+        "match": "bracket-note",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "人事門 > 審宜",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人事門 > 施徳",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人事門 > 無益",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人事門 > 遭遇",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人事門 > 難知",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "昭明學士誤",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "馬",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "口賦",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "天祚",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "藝文 > 承詔撰述類書 > 唐文思博要",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "車服 > 車輿 > 天聖記里鼓車大章車",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "羣書考索",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "府皆天子私藏耳",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "讀書紀數畧",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "帝範十二篇 > 前代君臣事迹十四篇",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "龍筋鳳髓判",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "龍筋鳳髓判類書類 > 提要",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

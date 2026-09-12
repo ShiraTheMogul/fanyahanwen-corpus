@@ -187,5 +187,299 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 28,
+    "leishu_count": 8,
+    "categorised_citations": 28,
+    "genmoku_confirmed_citations": 10,
+    "category_leaves": [
+      {
+        "label": "伏",
+        "citations": 3
+      },
+      {
+        "label": "司隷校尉八十一",
+        "citations": 2
+      },
+      {
+        "label": "御史中丞八十五",
+        "citations": 2
+      },
+      {
+        "label": "太官令",
+        "citations": 2
+      },
+      {
+        "label": "幄一",
+        "citations": 1
+      },
+      {
+        "label": "掾一百三十七",
+        "citations": 1
+      },
+      {
+        "label": "博士一百三十二",
+        "citations": 1
+      },
+      {
+        "label": "國子祭酒一百三十一",
+        "citations": 1
+      },
+      {
+        "label": "奉車都尉一百",
+        "citations": 1
+      },
+      {
+        "label": "謁者僕射九十一",
+        "citations": 1
+      },
+      {
+        "label": "素",
+        "citations": 1
+      },
+      {
+        "label": "綈",
+        "citations": 1
+      },
+      {
+        "label": "綺",
+        "citations": 1
+      },
+      {
+        "label": "幄",
+        "citations": 1
+      },
+      {
+        "label": "指環",
+        "citations": 1
+      },
+      {
+        "label": "薦蓆",
+        "citations": 1
+      },
+      {
+        "label": "絮巾",
+        "citations": 1
+      },
+      {
+        "label": "侍御史",
+        "citations": 1
+      },
+      {
+        "label": "夏",
+        "citations": 1
+      },
+      {
+        "label": "几",
+        "citations": 1
+      },
+      {
+        "label": "文馬",
+        "citations": 1
+      },
+      {
+        "label": "南軍",
+        "citations": 1
+      },
+      {
+        "label": "宗廟",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "北堂書鈔",
+        "citations": 11,
+        "match": "author-prefix-stripped",
+        "category_count": 9,
+        "categories": [
+          {
+            "path": "設官部十三 > 司隷校尉八十一",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "設官部十四 > 謁者僕射九十一 > 御史中丞八十五",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "儀飾部三 > 步障十三承塵十四 > 幄一",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "設官部七 > 車府令武庫令 > 太官令",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "設官部二十 > 掾一百三十七",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "設官部十九 > 學士一百三十三 > 博士一百三十二",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "設官部十九 > 學士一百三十三 > 國子祭酒一百三十一",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "設官部十五 > 都尉一百一都䕶一百二 > 奉車都尉一百",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "設官部十四 > 謁者僕射九十一 > 謁者僕射九十一",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 9,
+        "match": "author-prefix-stripped",
+        "category_count": 9,
+        "categories": [
+          {
+            "path": "布帛部一 > 綵染 > 素",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "布帛部三 > 罽紬 > 綈",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "布帛部三 > 罽紬 > 綺",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服用部二 > 幄幕 > 幄",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服用部二十 > 釧指環 > 指環",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服用部十一 > 薦蓆",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "服用部十八 > 手巾絮巾 > 絮巾",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "職官部二十七 > 太官令 > 太官令",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "職官部二十五 > 監察御史 > 侍御史",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "事類賦",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "嵗時部 > 夏",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "服用部 > 几",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "伏",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "初學記",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "文馬",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今源流至論",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "南北軍 > 南軍",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "歲時部 > 伏",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "禮部上 > 宗廟",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      }
+    ]
+  }
 }

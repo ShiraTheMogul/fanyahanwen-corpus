@@ -29,5 +29,122 @@
       "name": "義淨",
       "role": "translator"
     }
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 10,
+    "leishu_count": 4,
+    "categorised_citations": 10,
+    "genmoku_confirmed_citations": 3,
+    "category_leaves": [
+      {
+        "label": "佛寺",
+        "citations": 3
+      },
+      {
+        "label": "凡建國佐后立市設其次",
+        "citations": 1
+      },
+      {
+        "label": "死",
+        "citations": 1
+      },
+      {
+        "label": "洹道",
+        "citations": 1
+      },
+      {
+        "label": "珍寳",
+        "citations": 1
+      },
+      {
+        "label": "鳥獸第一",
+        "citations": 1
+      },
+      {
+        "label": "道釋部",
+        "citations": 1
+      },
+      {
+        "label": "兩塔",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "廣博物志",
+        "citations": 5,
+        "match": "bracket-note",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "凡建國佐后立市設其次",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "死",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "洹道",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "珍寳",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鳥獸第一",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "居處部 > 佛寺",
+            "citations": 3,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "初學記",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "道釋部",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "寺在台州府西南舊 > 兩塔",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

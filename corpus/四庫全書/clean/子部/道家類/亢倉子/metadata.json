@@ -86,5 +86,367 @@
       "750年"
     ]
   },
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 33,
+    "leishu_count": 11,
+    "categorised_citations": 33,
+    "genmoku_confirmed_citations": 5,
+    "category_leaves": [
+      {
+        "label": "蜺氣",
+        "citations": 2
+      },
+      {
+        "label": "勾越簳",
+        "citations": 2
+      },
+      {
+        "label": "應",
+        "citations": 2
+      },
+      {
+        "label": "捨之",
+        "citations": 2
+      },
+      {
+        "label": "三全",
+        "citations": 1
+      },
+      {
+        "label": "百神",
+        "citations": 1
+      },
+      {
+        "label": "神異",
+        "citations": 1
+      },
+      {
+        "label": "聖人",
+        "citations": 1
+      },
+      {
+        "label": "阿唯",
+        "citations": 1
+      },
+      {
+        "label": "正直",
+        "citations": 1
+      },
+      {
+        "label": "劒",
+        "citations": 1
+      },
+      {
+        "label": "弩",
+        "citations": 1
+      },
+      {
+        "label": "矢",
+        "citations": 1
+      },
+      {
+        "label": "劒下",
+        "citations": 1
+      },
+      {
+        "label": "箭下",
+        "citations": 1
+      },
+      {
+        "label": "子思子愼子",
+        "citations": 1
+      },
+      {
+        "label": "吳王用之於我也乃逐之",
+        "citations": 1
+      },
+      {
+        "label": "次民氏是為次是氏",
+        "citations": 1
+      },
+      {
+        "label": "郝豆神名靈殖姓樂",
+        "citations": 1
+      },
+      {
+        "label": "災異",
+        "citations": 1
+      },
+      {
+        "label": "治道",
+        "citations": 1
+      },
+      {
+        "label": "求賢",
+        "citations": 1
+      },
+      {
+        "label": "劍",
+        "citations": 1
+      },
+      {
+        "label": "箭",
+        "citations": 1
+      },
+      {
+        "label": "魏飛景劒寶劒",
+        "citations": 1
+      },
+      {
+        "label": "荘子",
+        "citations": 1
+      },
+      {
+        "label": "趨向不同",
+        "citations": 1
+      },
+      {
+        "label": "糓",
+        "citations": 1
+      },
+      {
+        "label": "古帝王",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "山堂肆考",
+        "citations": 5,
+        "match": "exact",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "見墳墓 > 蜺氣",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見習射 > 勾越簳",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "文藝傳嚅嚌道真 > 三全",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 4,
+        "match": "exact",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "百神",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "神異",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "聖人",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "阿唯",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 4,
+        "match": "author-prefix-stripped",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "人部 > 正直",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 劒",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 弩",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 矢",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "駢志",
+        "citations": 4,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "應",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "捨之",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 3,
+        "match": "line-initial",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "兵部七十五 > 劒下",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "兵部八十一 > 射捍彈 > 箭下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "子思子愼子",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "吳王用之於我也乃逐之",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "次民氏是為次是氏",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "郝豆神名靈殖姓樂",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "經濟類編",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "天類三 > 災異",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "政治類一 > 治道",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "銓衡類三 > 求賢",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "事類賦",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "服用部 > 劍",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "服用部 > 箭",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "兵制 > 周文王錄劒古良劒 > 魏飛景劒寶劒",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "其姓氏懸諸日月 > 荘子",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "論議部 > 趨向不同",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "飲食部 > 糓",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "古帝王",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

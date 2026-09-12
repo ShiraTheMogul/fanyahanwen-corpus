@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 4461,
   "corpus_root": "中國漢文",
@@ -18,5 +18,419 @@
       "body_start_line": 8
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 37,
+    "leishu_count": 10,
+    "categorised_citations": 37,
+    "genmoku_confirmed_citations": 14,
+    "category_leaves": [
+      {
+        "label": "九月九日",
+        "citations": 3
+      },
+      {
+        "label": "屐",
+        "citations": 2
+      },
+      {
+        "label": "圍棊",
+        "citations": 1
+      },
+      {
+        "label": "握槊",
+        "citations": 1
+      },
+      {
+        "label": "枕",
+        "citations": 1
+      },
+      {
+        "label": "犬",
+        "citations": 1
+      },
+      {
+        "label": "蓴",
+        "citations": 1
+      },
+      {
+        "label": "釧",
+        "citations": 1
+      },
+      {
+        "label": "香爐",
+        "citations": 1
+      },
+      {
+        "label": "馬",
+        "citations": 1
+      },
+      {
+        "label": "凶夢",
+        "citations": 1
+      },
+      {
+        "label": "箭下",
+        "citations": 1
+      },
+      {
+        "label": "鈴",
+        "citations": 1
+      },
+      {
+        "label": "籃",
+        "citations": 1
+      },
+      {
+        "label": "書臺",
+        "citations": 1
+      },
+      {
+        "label": "牛下",
+        "citations": 1
+      },
+      {
+        "label": "紫菜",
+        "citations": 1
+      },
+      {
+        "label": "芥",
+        "citations": 1
+      },
+      {
+        "label": "裘",
+        "citations": 1
+      },
+      {
+        "label": "歌",
+        "citations": 1
+      },
+      {
+        "label": "牛",
+        "citations": 1
+      },
+      {
+        "label": "狗",
+        "citations": 1
+      },
+      {
+        "label": "香爐三十七",
+        "citations": 1
+      },
+      {
+        "label": "箭筒四十九",
+        "citations": 1
+      },
+      {
+        "label": "餅篇十三",
+        "citations": 1
+      },
+      {
+        "label": "仁傑賭袍",
+        "citations": 1
+      },
+      {
+        "label": "噪庭",
+        "citations": 1
+      },
+      {
+        "label": "賜紫",
+        "citations": 1
+      },
+      {
+        "label": "道士",
+        "citations": 1
+      },
+      {
+        "label": "凶兆",
+        "citations": 1
+      },
+      {
+        "label": "竒恠",
+        "citations": 1
+      },
+      {
+        "label": "書",
+        "citations": 1
+      },
+      {
+        "label": "周成王時黒狐見",
+        "citations": 1
+      },
+      {
+        "label": "香鑪",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "天中記",
+        "citations": 10,
+        "match": "bracket-note",
+        "category_count": 10,
+        "categories": [
+          {
+            "path": "九月九日",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "圍棊",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "屐",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "握槊",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "枕",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "犬",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "蓴",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "釧",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "香爐",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "馬",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 10,
+        "match": "exact",
+        "category_count": 10,
+        "categories": [
+          {
+            "path": "人事部四十一 > 凶夢",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部八十一 > 射捍彈 > 箭下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部六十九 > 柝 > 鈴",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "器物部九 > 籠籝 > 籃",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "時序部十七 > 七月十五日九月九日 > 九月九日",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服用部五 > 唾壺書臺香爐 > 書臺",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "服章部十五 > 屩屧 > 屐",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部十二 > 牛下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "菜茹部五 > 波稜 > 紫菜",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "菜茹部五 > 波稜 > 芥",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 5,
+        "match": "exact",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "服飾部 > 裘",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部 > 歌",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "歲時部 > 九月九日",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 牛",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 狗",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "儀飾部六 > 粉六十四 > 香爐三十七",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "武功部十四 > 鞭六十一 > 箭筒四十九",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "酒食部 > 黍篇十四 > 餅篇十三",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "仁傑賭袍",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "周成王時黒狐見 > 噪庭",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "仕宦部 > 賜紫",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "其間多得道之所 > 道士",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "凶兆",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "竒恠",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "書",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "花木鳥獸集𩔖",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "郭氏𤣥中記狐千嵗為 > 周成王時黒狐見",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "服飾部下 > 香鑪",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -26,5 +26,129 @@
   ],
   "authors": [
     "鍾惺"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 10,
+    "leishu_count": 6,
+    "categorised_citations": 7,
+    "genmoku_confirmed_citations": 1,
+    "category_leaves": [
+      {
+        "label": "失政",
+        "citations": 1
+      },
+      {
+        "label": "置母於誓",
+        "citations": 1
+      },
+      {
+        "label": "愛共叔段",
+        "citations": 1
+      },
+      {
+        "label": "兄弟",
+        "citations": 1
+      },
+      {
+        "label": "掩口",
+        "citations": 1
+      },
+      {
+        "label": "不間於言兄良共被",
+        "citations": 1
+      },
+      {
+        "label": "知悔",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "冊府元龜",
+        "citations": 4,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "帝王部 > 失政",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "古今事文類聚",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "夀母 > 置母於誓",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "愛共叔段",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今合璧事類備要",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "親屬門 > 兄弟",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "掩口",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "白孔六帖",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "不間於言兄良共被",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "叙述部 > 知悔",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

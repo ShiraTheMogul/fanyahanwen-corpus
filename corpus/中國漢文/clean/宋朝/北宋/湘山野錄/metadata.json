@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 55536,
   "corpus_root": "中國漢文",
@@ -42,5 +42,147 @@
       "body_start_line": 8
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 9,
+    "leishu_count": 6,
+    "categorised_citations": 9,
+    "genmoku_confirmed_citations": 1,
+    "category_leaves": [
+      {
+        "label": "無如堯佐",
+        "citations": 1
+      },
+      {
+        "label": "處訥厯學",
+        "citations": 1
+      },
+      {
+        "label": "玉童",
+        "citations": 1
+      },
+      {
+        "label": "蹈襲",
+        "citations": 1
+      },
+      {
+        "label": "正朔",
+        "citations": 1
+      },
+      {
+        "label": "五院",
+        "citations": 1
+      },
+      {
+        "label": "貧",
+        "citations": 1
+      },
+      {
+        "label": "豆",
+        "citations": 1
+      },
+      {
+        "label": "監司",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "山堂肆考",
+        "citations": 3,
+        "match": "line-initial",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "見丞相 > 無如堯佐",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見詩 > 處訥厯學",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "贈龜 > 玉童",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "問學部 > 蹈襲",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "律厯部 > 正朔",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "五院",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "人部 > 貧",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "格致鏡原",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "穀𩔖 > 豆",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "監司",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

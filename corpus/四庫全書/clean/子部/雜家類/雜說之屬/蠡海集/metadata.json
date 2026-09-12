@@ -84,5 +84,107 @@
       "1777年"
     ]
   },
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 9,
+    "leishu_count": 1,
+    "categorised_citations": 9,
+    "genmoku_confirmed_citations": 9,
+    "category_leaves": [
+      {
+        "label": "絡緯",
+        "citations": 1
+      },
+      {
+        "label": "蚯蚓",
+        "citations": 1
+      },
+      {
+        "label": "蜻蜓",
+        "citations": 1
+      },
+      {
+        "label": "螽斯",
+        "citations": 1
+      },
+      {
+        "label": "蟋蟀",
+        "citations": 1
+      },
+      {
+        "label": "蟬",
+        "citations": 1
+      },
+      {
+        "label": "鱗介部",
+        "citations": 1
+      },
+      {
+        "label": "蛤",
+        "citations": 1
+      },
+      {
+        "label": "魚",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 9,
+        "match": "exact",
+        "category_count": 9,
+        "categories": [
+          {
+            "path": "蟲豸部 > 絡緯",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "蟲豸部 > 蚯蚓",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "蟲豸部 > 蜻蜓",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "蟲豸部 > 螽斯",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "蟲豸部 > 蟋蟀",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "蟲豸部 > 蟬",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 蛤",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 魚",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      }
+    ]
+  }
 }

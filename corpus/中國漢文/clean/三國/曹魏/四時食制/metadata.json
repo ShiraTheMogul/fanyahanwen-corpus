@@ -24,5 +24,151 @@
   "known_commentaries": [],
   "authors": [
     "曹操"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 13,
+    "leishu_count": 2,
+    "categorised_citations": 13,
+    "genmoku_confirmed_citations": 7,
+    "category_leaves": [
+      {
+        "label": "鮎魚",
+        "citations": 1
+      },
+      {
+        "label": "䱎䲛",
+        "citations": 1
+      },
+      {
+        "label": "鯉魚",
+        "citations": 1
+      },
+      {
+        "label": "鯨鯢魚",
+        "citations": 1
+      },
+      {
+        "label": "䰷魚䱻魚冉遺魚鰠魚",
+        "citations": 1
+      },
+      {
+        "label": "䱐䰽魚",
+        "citations": 1
+      },
+      {
+        "label": "望魚",
+        "citations": 1
+      },
+      {
+        "label": "蕃蹹魚",
+        "citations": 1
+      },
+      {
+        "label": "蕭拆魚",
+        "citations": 1
+      },
+      {
+        "label": "斑魚",
+        "citations": 1
+      },
+      {
+        "label": "疏齒魚",
+        "citations": 1
+      },
+      {
+        "label": "蒲魚",
+        "citations": 1
+      },
+      {
+        "label": "魚",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 12,
+        "match": "author-prefix-stripped",
+        "category_count": 12,
+        "categories": [
+          {
+            "path": "鱗介部九 > 鱓魚 > 鮎魚",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部八 > 䱎䲛魚 > 䱎䲛",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鱗介部八 > 䱎䲛魚 > 鯉魚",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部十 > 人魚虎魚 > 鯨鯢魚",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部十一 > 䰷魚䱻魚冉遺魚鰠魚",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鱗介部十一 > 䰷魚䱻魚冉遺魚鰠魚 > 䱐䰽魚",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鱗介部十一 > 䰷魚䱻魚冉遺魚鰠魚 > 望魚",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部十一 > 䰷魚䱻魚冉遺魚鰠魚 > 蕃蹹魚",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鱗介部十一 > 䰷魚䱻魚冉遺魚鰠魚 > 蕭拆魚",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部十二 > 鮞魚細赤魚鰥魚直魚 > 斑魚",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鱗介部十二 > 鮞魚細赤魚鰥魚直魚 > 疏齒魚",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鱗介部十二 > 鮞魚細赤魚鰥魚直魚 > 蒲魚",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "鱗介部 > 魚",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -187,5 +187,191 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 30,
+    "leishu_count": 7,
+    "categorised_citations": 30,
+    "genmoku_confirmed_citations": 19,
+    "category_leaves": [
+      {
+        "label": "書",
+        "citations": 18
+      },
+      {
+        "label": "二竟",
+        "citations": 1
+      },
+      {
+        "label": "徐刮",
+        "citations": 1
+      },
+      {
+        "label": "恬靜",
+        "citations": 1
+      },
+      {
+        "label": "折骨",
+        "citations": 1
+      },
+      {
+        "label": "沙幕",
+        "citations": 1
+      },
+      {
+        "label": "神異",
+        "citations": 1
+      },
+      {
+        "label": "之相似",
+        "citations": 1
+      },
+      {
+        "label": "其㣲",
+        "citations": 1
+      },
+      {
+        "label": "晉書之誤",
+        "citations": 1
+      },
+      {
+        "label": "草書",
+        "citations": 1
+      },
+      {
+        "label": "尊卑共服",
+        "citations": 1
+      },
+      {
+        "label": "紫褥裹皮布裹",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 18,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "巧藝部 > 書",
+            "citations": 18,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 6,
+        "match": "bracket-note",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "二竟",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "徐刮",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "恬靜",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "折骨",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "沙幕",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "神異",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "之相似",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "其㣲",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "晉書之誤",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "工藝部六 > 章草書行書 > 草書",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "御定分類字錦",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "翼善珠瑱 > 尊卑共服",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定韻府拾遺",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "紫褥裹皮布裹",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

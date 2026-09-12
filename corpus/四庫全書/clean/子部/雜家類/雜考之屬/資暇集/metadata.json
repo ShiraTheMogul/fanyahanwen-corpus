@@ -103,5 +103,197 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 16,
+    "leishu_count": 6,
+    "categorised_citations": 16,
+    "genmoku_confirmed_citations": 2,
+    "category_leaves": [
+      {
+        "label": "酒",
+        "citations": 2
+      },
+      {
+        "label": "驢",
+        "citations": 2
+      },
+      {
+        "label": "厠",
+        "citations": 1
+      },
+      {
+        "label": "諱",
+        "citations": 1
+      },
+      {
+        "label": "帝王",
+        "citations": 1
+      },
+      {
+        "label": "硯",
+        "citations": 1
+      },
+      {
+        "label": "偏提",
+        "citations": 1
+      },
+      {
+        "label": "星貨鋪",
+        "citations": 1
+      },
+      {
+        "label": "藥欄",
+        "citations": 1
+      },
+      {
+        "label": "帝王總載",
+        "citations": 1
+      },
+      {
+        "label": "投子",
+        "citations": 1
+      },
+      {
+        "label": "曲",
+        "citations": 1
+      },
+      {
+        "label": "借書一癡",
+        "citations": 1
+      },
+      {
+        "label": "提要",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "天中記",
+        "citations": 7,
+        "match": "bracket-note",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "酒",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "厠",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "大武帝賜名懐逺 > 諱",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "帝王",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "晉書之誤 > 硯",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "駱駞 > 驢",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "海録碎事",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "偏提",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "星貨鋪",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "藥欄",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "帝王部 > 帝王總載",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 驢",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "博奕部 > 投子",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "樂部 > 曲",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今事文類聚",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "雜著 > 借書一癡",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "白孔六帖",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "提要",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

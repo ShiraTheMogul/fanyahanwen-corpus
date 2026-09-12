@@ -139,5 +139,288 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 26,
+    "leishu_count": 7,
+    "categorised_citations": 26,
+    "genmoku_confirmed_citations": 10,
+    "category_leaves": [
+      {
+        "label": "日",
+        "citations": 2
+      },
+      {
+        "label": "雷",
+        "citations": 2
+      },
+      {
+        "label": "雹",
+        "citations": 2
+      },
+      {
+        "label": "狼",
+        "citations": 2
+      },
+      {
+        "label": "金",
+        "citations": 2
+      },
+      {
+        "label": "石",
+        "citations": 1
+      },
+      {
+        "label": "符命",
+        "citations": 1
+      },
+      {
+        "label": "兔",
+        "citations": 1
+      },
+      {
+        "label": "虎",
+        "citations": 1
+      },
+      {
+        "label": "鼠",
+        "citations": 1
+      },
+      {
+        "label": "雀",
+        "citations": 1
+      },
+      {
+        "label": "史且以葛榮為爾朱更誤",
+        "citations": 1
+      },
+      {
+        "label": "猫",
+        "citations": 1
+      },
+      {
+        "label": "虹",
+        "citations": 1
+      },
+      {
+        "label": "出獵",
+        "citations": 1
+      },
+      {
+        "label": "黄褐",
+        "citations": 1
+      },
+      {
+        "label": "趙璘移牀",
+        "citations": 1
+      },
+      {
+        "label": "蝙蝠繞庭",
+        "citations": 1
+      },
+      {
+        "label": "凶兆",
+        "citations": 1
+      },
+      {
+        "label": "金銀",
+        "citations": 1
+      },
+      {
+        "label": "病已立",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 10,
+        "match": "exact",
+        "category_count": 10,
+        "categories": [
+          {
+            "path": "地部 > 石",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "天部 > 日",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "天部 > 雷",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "天部 > 雹",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "帝王部 > 符命",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 兔",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 狼",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 虎",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 鼠",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 雀",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 7,
+        "match": "bracket-note",
+        "category_count": 7,
+        "categories": [
+          {
+            "path": "史且以葛榮為爾朱更誤",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "日",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "猫",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "虹",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "金",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "雷",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "雹",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 4,
+        "match": "line-initial",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "五代史後唐 > 出獵",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "櫻生 > 黄褐",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "王韶之始興記宋 > 趙璘移牀",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見宫嬪 > 蝙蝠繞庭",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "凶兆",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "金銀",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "白孔六帖",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "麻縠 > 金",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "花木鳥獸集𩔖",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "宋徽宗 > 狼",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "駢志",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "病已立",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

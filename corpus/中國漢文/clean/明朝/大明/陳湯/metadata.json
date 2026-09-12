@@ -26,5 +26,194 @@
   ],
   "authors": [
     "鍾惺"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 22,
+    "leishu_count": 9,
+    "categorised_citations": 13,
+    "genmoku_confirmed_citations": 1,
+    "category_leaves": [
+      {
+        "label": "吉語",
+        "citations": 3
+      },
+      {
+        "label": "倚任",
+        "citations": 1
+      },
+      {
+        "label": "武暢四海",
+        "citations": 1
+      },
+      {
+        "label": "坐贜百萬",
+        "citations": 1
+      },
+      {
+        "label": "因杅浮沮樓舡戈舡下瀨",
+        "citations": 1
+      },
+      {
+        "label": "漢舉茂才建武詔書",
+        "citations": 1
+      },
+      {
+        "label": "國論",
+        "citations": 1
+      },
+      {
+        "label": "劉猛李恪",
+        "citations": 1
+      },
+      {
+        "label": "章介菴科目議",
+        "citations": 1
+      },
+      {
+        "label": "陳容",
+        "citations": 1
+      },
+      {
+        "label": "四支",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "冊府元龜",
+        "citations": 10,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "帝王部 > 倚任",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "海録碎事",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "傷敗踵係羽書日聞 > 吉語",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "吉語",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今事文類聚",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "張耳杖馬箠下數城 > 武暢四海",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "有麥辭米 > 坐贜百萬",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "因杅浮沮樓舡戈舡下瀨",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "選舉 > 科舉 > 漢舉茂才建武詔書",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今源流至論",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "國論",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "同姓名録",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "中外同名 > 劉猛李恪",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "圖書編",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "近來頗尚 > 章介菴科目議",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "萬姓統譜",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "陳容",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "韻府羣玉",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "上平聲 > 四支",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

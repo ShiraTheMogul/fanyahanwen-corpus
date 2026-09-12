@@ -247,5 +247,172 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 15,
+    "leishu_count": 4,
+    "categorised_citations": 15,
+    "genmoku_confirmed_citations": 8,
+    "category_leaves": [
+      {
+        "label": "馬",
+        "citations": 3
+      },
+      {
+        "label": "量",
+        "citations": 1
+      },
+      {
+        "label": "星",
+        "citations": 1
+      },
+      {
+        "label": "畫",
+        "citations": 1
+      },
+      {
+        "label": "釋教",
+        "citations": 1
+      },
+      {
+        "label": "魚",
+        "citations": 1
+      },
+      {
+        "label": "鼈",
+        "citations": 1
+      },
+      {
+        "label": "博覽",
+        "citations": 1
+      },
+      {
+        "label": "名籍",
+        "citations": 1
+      },
+      {
+        "label": "報不充賜",
+        "citations": 1
+      },
+      {
+        "label": "補短尺短",
+        "citations": 1
+      },
+      {
+        "label": "閨閫",
+        "citations": 1
+      },
+      {
+        "label": "祭竈喧夜傾銀",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 8,
+        "match": "exact",
+        "category_count": 7,
+        "categories": [
+          {
+            "path": "獸部 > 馬",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "器物部 > 量",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "天部 > 星",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "巧藝部 > 畫",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "釋教部 > 釋教",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 魚",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 鼈",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 5,
+        "match": "bracket-note",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "博覽",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "名籍",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "報不充賜",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "補短尺短",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "閨閫",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "馬",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定分類字錦",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "爽節激暑 > 祭竈喧夜傾銀",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 52445,
   "corpus_root": "中國漢文",
@@ -119,5 +119,489 @@
       "body_start_line": 8
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 55,
+    "leishu_count": 7,
+    "categorised_citations": 54,
+    "genmoku_confirmed_citations": 42,
+    "category_leaves": [
+      {
+        "label": "孝",
+        "citations": 3
+      },
+      {
+        "label": "言語",
+        "citations": 2
+      },
+      {
+        "label": "人部",
+        "citations": 2
+      },
+      {
+        "label": "口",
+        "citations": 2
+      },
+      {
+        "label": "居喪三十五",
+        "citations": 2
+      },
+      {
+        "label": "肉",
+        "citations": 1
+      },
+      {
+        "label": "貴盛",
+        "citations": 1
+      },
+      {
+        "label": "鑒戒上",
+        "citations": 1
+      },
+      {
+        "label": "諫諍一",
+        "citations": 1
+      },
+      {
+        "label": "美丈夫上",
+        "citations": 1
+      },
+      {
+        "label": "孝上",
+        "citations": 1
+      },
+      {
+        "label": "讓上",
+        "citations": 1
+      },
+      {
+        "label": "膝",
+        "citations": 1
+      },
+      {
+        "label": "叙交友",
+        "citations": 1
+      },
+      {
+        "label": "叙聖",
+        "citations": 1
+      },
+      {
+        "label": "叙刑上",
+        "citations": 1
+      },
+      {
+        "label": "罪",
+        "citations": 1
+      },
+      {
+        "label": "簠簋",
+        "citations": 1
+      },
+      {
+        "label": "子",
+        "citations": 1
+      },
+      {
+        "label": "雅樂中",
+        "citations": 1
+      },
+      {
+        "label": "臣",
+        "citations": 1
+      },
+      {
+        "label": "太子二",
+        "citations": 1
+      },
+      {
+        "label": "宗廟",
+        "citations": 1
+      },
+      {
+        "label": "祭禮中",
+        "citations": 1
+      },
+      {
+        "label": "富",
+        "citations": 1
+      },
+      {
+        "label": "徳",
+        "citations": 1
+      },
+      {
+        "label": "忠孝",
+        "citations": 1
+      },
+      {
+        "label": "母子",
+        "citations": 1
+      },
+      {
+        "label": "父子",
+        "citations": 1
+      },
+      {
+        "label": "父母",
+        "citations": 1
+      },
+      {
+        "label": "諫父母",
+        "citations": 1
+      },
+      {
+        "label": "貴",
+        "citations": 1
+      },
+      {
+        "label": "鑒誡",
+        "citations": 1
+      },
+      {
+        "label": "帝孝",
+        "citations": 1
+      },
+      {
+        "label": "樂總載",
+        "citations": 1
+      },
+      {
+        "label": "交友",
+        "citations": 1
+      },
+      {
+        "label": "友悌",
+        "citations": 1
+      },
+      {
+        "label": "德",
+        "citations": 1
+      },
+      {
+        "label": "讓",
+        "citations": 1
+      },
+      {
+        "label": "忠",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 20,
+        "match": "classic-unheld",
+        "category_count": 20,
+        "categories": [
+          {
+            "path": "人事部一十六 > 膏 > 肉",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部一百一十一 > 貴盛",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部三十一 > 言語",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部九十九 > 鑒戒上",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部九十二 > 諫諍一",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部二十 > 美丈夫上",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "人事部五十三 > 孝上",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部六十四 > 讓上",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部十三 > 踝 > 膝",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部四十七 > 叙交友交友 > 叙交友",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人事部四十二 > 叙聖",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "刑法部一 > 叙刑上",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "刑法部七 > 贓貨罪 > 罪",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "器物部四 > 欓 > 簠簋",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "宗親部八 > 子",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部二 > 雅樂中",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "治道部二 > 臣",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "皇親部十三 > 太子二",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禮儀部十 > 宗廟神主 > 宗廟",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "禮儀部四 > 祭禮中",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 16,
+        "match": "classic-unheld",
+        "category_count": 14,
+        "categories": [
+          {
+            "path": "人部",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 孝",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 口",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 富",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 徳",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 忠孝",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 母子",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 父子",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 父母",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 諫父母",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 貴",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 鑒誡",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "帝王部 > 帝孝",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部 > 樂總載",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 10,
+        "match": "classic-unheld",
+        "category_count": 9,
+        "categories": [
+          {
+            "path": "人部一 > 口",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部三 > 言語",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部五 > 交友",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部五 > 友悌",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部五 > 德",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部五 > 讓",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部四 > 孝",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部四 > 忠",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "禮 > 論樂",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 6,
+        "match": "classic-unheld",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "禮儀部 > 奪禮三十八 > 居喪三十五",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "樂部 > 樂總一",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禮儀部 > 葬三十二挽歌三十三 > 葬三十二",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禮儀部七 > 法則十五",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "衣冠部二 > 笏十八舄十九 > 法服十",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "初學記",
+        "citations": 1,
+        "match": "classic-unheld",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "八音克諧五色不",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "喻林",
+        "citations": 1,
+        "match": "classic-unheld",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "敬臣",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "白孔六帖",
+        "citations": 1,
+        "match": "classic-unheld",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "一齊之義驚死 > 妾",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -22,5 +22,92 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "266–316年"
+  "ca": "266–316年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 6,
+    "leishu_count": 3,
+    "categorised_citations": 6,
+    "genmoku_confirmed_citations": 4,
+    "category_leaves": [
+      {
+        "label": "鹿角",
+        "citations": 2
+      },
+      {
+        "label": "防汗",
+        "citations": 1
+      },
+      {
+        "label": "弋",
+        "citations": 1
+      },
+      {
+        "label": "武功類七",
+        "citations": 1
+      },
+      {
+        "label": "武功類八",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 3,
+        "match": "author-prefix-stripped",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "兵部九十 > 枊 > 防汗",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部六十八 > 弋 > 弋",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "兵部六十八 > 弋 > 鹿角",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "經濟類編",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "武功類七",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "武功類八",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "武功部 > 鹿角",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -223,5 +223,261 @@
       ]
     }
   ],
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 20,
+    "leishu_count": 10,
+    "categorised_citations": 19,
+    "genmoku_confirmed_citations": 8,
+    "category_leaves": [
+      {
+        "label": "簫",
+        "citations": 2
+      },
+      {
+        "label": "槐",
+        "citations": 2
+      },
+      {
+        "label": "字",
+        "citations": 1
+      },
+      {
+        "label": "封泥書",
+        "citations": 1
+      },
+      {
+        "label": "栢",
+        "citations": 1
+      },
+      {
+        "label": "臣",
+        "citations": 1
+      },
+      {
+        "label": "日變為五色玄黄",
+        "citations": 1
+      },
+      {
+        "label": "助喪",
+        "citations": 1
+      },
+      {
+        "label": "滋液以生",
+        "citations": 1
+      },
+      {
+        "label": "含類",
+        "citations": 1
+      },
+      {
+        "label": "星",
+        "citations": 1
+      },
+      {
+        "label": "物類相感",
+        "citations": 1
+      },
+      {
+        "label": "山",
+        "citations": 1
+      },
+      {
+        "label": "周祀天三禮",
+        "citations": 1
+      },
+      {
+        "label": "因舊史以修春秋",
+        "citations": 1
+      },
+      {
+        "label": "徧天下",
+        "citations": 1
+      },
+      {
+        "label": "后妃",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 5,
+        "match": "exact",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "人事部四 > 頭上 > 字",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文部二十二 > 水滴器 > 封泥書",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "木部三 > 栢槐 > 栢",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部十九 > 簫笳笙竽簧塤 > 簫",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "治道部二 > 臣",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 5,
+        "match": "line-initial",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "日變為五色玄黄",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "漢孔光薨公卿百官會弔 > 助喪",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見喪妻 > 滋液以生",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "韓文公詩𠉀館若魚鱗 > 含類",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "天部 > 星",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部 > 簫",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "木部 > 槐",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "論議部 > 物類相感",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "格致鏡原",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "坤輿𩔖 > 山",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "郊祀 > 郊祀 > 周祀天三禮",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "稗編",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "春秋一 > 因舊史以修春秋",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "編珠",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "徧天下",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "羣書考索",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "學 > 后妃",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "藝文類聚",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "木部上 > 槐",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      }
+    ]
+  }
 }

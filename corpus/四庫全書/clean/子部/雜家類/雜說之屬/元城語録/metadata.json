@@ -67,5 +67,88 @@
       ]
     }
   ],
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 6,
+    "leishu_count": 2,
+    "categorised_citations": 6,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "心服",
+        "citations": 1
+      },
+      {
+        "label": "正直",
+        "citations": 1
+      },
+      {
+        "label": "識者所窺",
+        "citations": 1
+      },
+      {
+        "label": "漸染",
+        "citations": 1
+      },
+      {
+        "label": "傳注",
+        "citations": 1
+      },
+      {
+        "label": "國論",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "記纂淵海",
+        "citations": 4,
+        "match": "bracket-note",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "名譽部 > 心服",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "性行部 > 正直",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "性行部 > 識者所窺",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "物理部 > 漸染",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今源流至論",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "傳注",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "國論",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

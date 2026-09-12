@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 54313,
   "corpus_root": "中國漢文",
@@ -64,5 +64,333 @@
       "body_start_line": 8
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 28,
+    "leishu_count": 9,
+    "categorised_citations": 28,
+    "genmoku_confirmed_citations": 6,
+    "category_leaves": [
+      {
+        "label": "畫",
+        "citations": 2
+      },
+      {
+        "label": "前身",
+        "citations": 1
+      },
+      {
+        "label": "吉兆",
+        "citations": 1
+      },
+      {
+        "label": "工",
+        "citations": 1
+      },
+      {
+        "label": "淡細碎為工",
+        "citations": 1
+      },
+      {
+        "label": "玉而弃書畫於道",
+        "citations": 1
+      },
+      {
+        "label": "知制誥",
+        "citations": 1
+      },
+      {
+        "label": "總官制",
+        "citations": 1
+      },
+      {
+        "label": "郡守",
+        "citations": 1
+      },
+      {
+        "label": "夢登塔上",
+        "citations": 1
+      },
+      {
+        "label": "趙昌畫花",
+        "citations": 1
+      },
+      {
+        "label": "醒後畫地",
+        "citations": 1
+      },
+      {
+        "label": "擲卵",
+        "citations": 1
+      },
+      {
+        "label": "大蛇盤鼓",
+        "citations": 1
+      },
+      {
+        "label": "蛇盤鼓上",
+        "citations": 1
+      },
+      {
+        "label": "攻戰",
+        "citations": 1
+      },
+      {
+        "label": "寤前生",
+        "citations": 1
+      },
+      {
+        "label": "蛇",
+        "citations": 1
+      },
+      {
+        "label": "鶻",
+        "citations": 1
+      },
+      {
+        "label": "刺史",
+        "citations": 1
+      },
+      {
+        "label": "翰林院",
+        "citations": 1
+      },
+      {
+        "label": "士自絳始",
+        "citations": 1
+      },
+      {
+        "label": "揮使",
+        "citations": 1
+      },
+      {
+        "label": "禁衛五重",
+        "citations": 1
+      },
+      {
+        "label": "鐡林騎",
+        "citations": 1
+      },
+      {
+        "label": "雜評",
+        "citations": 1
+      },
+      {
+        "label": "四廂",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 8,
+        "match": "bracket-note",
+        "category_count": 8,
+        "categories": [
+          {
+            "path": "前身",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "吉兆",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "工",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "淡細碎為工",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "玉而弃書畫於道",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "知制誥",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "總官制",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "郡守",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 6,
+        "match": "line-initial",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "宋 > 夢登塔上",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "宋 > 趙昌畫花",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "宋 > 醒後畫地",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "翮輕勁 > 擲卵",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見誕子 > 大蛇盤鼓",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見貶謫 > 蛇盤鼓上",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 6,
+        "match": "exact",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "巧藝部 > 畫",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 攻戰",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "靈異部 > 寤前生",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 蛇",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 鶻",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "刺史",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "翰林院",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "羣書考索",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "士自絳始",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "祗候 > 揮使",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "小學紺珠",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "赤熊辟邪苣文刀 > 禁衛五重",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "海録碎事",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "鐡林騎",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "稗編",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "畫二 > 雜評",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "職官部 > 四廂",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

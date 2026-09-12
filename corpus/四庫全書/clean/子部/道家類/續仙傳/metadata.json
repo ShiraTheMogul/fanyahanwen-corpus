@@ -65,5 +65,357 @@
       ]
     }
   ],
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 34,
+    "leishu_count": 9,
+    "categorised_citations": 34,
+    "genmoku_confirmed_citations": 6,
+    "category_leaves": [
+      {
+        "label": "水",
+        "citations": 2
+      },
+      {
+        "label": "笙",
+        "citations": 2
+      },
+      {
+        "label": "稻",
+        "citations": 2
+      },
+      {
+        "label": "穫一莖七穗一莖九穗",
+        "citations": 2
+      },
+      {
+        "label": "五梁禾三味麥",
+        "citations": 2
+      },
+      {
+        "label": "神仙",
+        "citations": 2
+      },
+      {
+        "label": "九月九日",
+        "citations": 1
+      },
+      {
+        "label": "柰",
+        "citations": 1
+      },
+      {
+        "label": "栗",
+        "citations": 1
+      },
+      {
+        "label": "石",
+        "citations": 1
+      },
+      {
+        "label": "酒",
+        "citations": 1
+      },
+      {
+        "label": "隂陽注之殊失其㫖",
+        "citations": 1
+      },
+      {
+        "label": "風",
+        "citations": 1
+      },
+      {
+        "label": "𤓰",
+        "citations": 1
+      },
+      {
+        "label": "水總載",
+        "citations": 1
+      },
+      {
+        "label": "狗",
+        "citations": 1
+      },
+      {
+        "label": "仙",
+        "citations": 1
+      },
+      {
+        "label": "龍",
+        "citations": 1
+      },
+      {
+        "label": "龍睛",
+        "citations": 1
+      },
+      {
+        "label": "金剪",
+        "citations": 1
+      },
+      {
+        "label": "吹叢霄",
+        "citations": 1
+      },
+      {
+        "label": "麟脂螭髓",
+        "citations": 1
+      },
+      {
+        "label": "感嘆",
+        "citations": 1
+      },
+      {
+        "label": "道術",
+        "citations": 1
+      },
+      {
+        "label": "神僊",
+        "citations": 1
+      },
+      {
+        "label": "紀要",
+        "citations": 1
+      },
+      {
+        "label": "饑甚取白石煮食之",
+        "citations": 1
+      },
+      {
+        "label": "榖父蚕母",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "天中記",
+        "citations": 12,
+        "match": "bracket-note",
+        "category_count": 11,
+        "categories": [
+          {
+            "path": "水",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "九月九日",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "柰",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "栗",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "歎服之 > 笙",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "石",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "稻",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "酒",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "隂陽注之殊失其㫖",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "風",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "𤓰",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 6,
+        "match": "exact",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "五榖部 > 稻",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部 > 水總載",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部 > 笙",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 狗",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "道部 > 仙",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 龍",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 4,
+        "match": "line-initial",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "唐𤣥宗 > 龍睛",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "栁葉篆始於晉衞瓘 > 金剪",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見仙 > 吹叢霄",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見子 > 麟脂螭髓",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "編珠",
+        "citations": 4,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "穫一莖七穗一莖九穗",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "西山禾東極豆 > 五梁禾三味麥",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "人情部 > 感嘆",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "仙道部 > 神仙",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "其間多得道之所 > 道術",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "神仙",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "神僊",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "全芳備祖集",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "紀要",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "饑甚取白石煮食之",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "海録碎事",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "田家作苦斗酒自勞 > 榖父蚕母",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

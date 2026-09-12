@@ -48,5 +48,96 @@
         }
       ]
     }
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 6,
+    "leishu_count": 3,
+    "categorised_citations": 6,
+    "genmoku_confirmed_citations": 1,
+    "category_leaves": [
+      {
+        "label": "橫山呉氏佚老菴吕伯恭",
+        "citations": 1
+      },
+      {
+        "label": "古詩",
+        "citations": 1
+      },
+      {
+        "label": "詠貧士陶潛",
+        "citations": 1
+      },
+      {
+        "label": "戰死髑髏",
+        "citations": 1
+      },
+      {
+        "label": "刀",
+        "citations": 1
+      },
+      {
+        "label": "自叙",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "古今事文類聚",
+        "citations": 4,
+        "match": "author-prefix-stripped",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "橫山呉氏佚老菴吕伯恭",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "汴都賦周邦彦 > 古詩",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "詠貧士陶潛",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "髑髏頌黄魯直 > 戰死髑髏",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "武功部 > 刀",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "翰苑新書",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "通問 > 自叙",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

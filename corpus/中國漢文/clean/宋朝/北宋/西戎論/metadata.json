@@ -19,5 +19,35 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "960–1127年"
+  "ca": "960–1127年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 2,
+    "leishu_count": 1,
+    "categorised_citations": 2,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "揔序西戎",
+        "citations": 2
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "四夷部十五 > 天竺 > 揔序西戎",
+            "citations": 2,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -120,5 +120,373 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "960–1127年"
+  "ca": "960–1127年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 32,
+    "leishu_count": 10,
+    "categorised_citations": 32,
+    "genmoku_confirmed_citations": 13,
+    "category_leaves": [
+      {
+        "label": "鶴",
+        "citations": 3
+      },
+      {
+        "label": "忠",
+        "citations": 1
+      },
+      {
+        "label": "柏",
+        "citations": 1
+      },
+      {
+        "label": "牡丹",
+        "citations": 1
+      },
+      {
+        "label": "叩頭蟲",
+        "citations": 1
+      },
+      {
+        "label": "守宫",
+        "citations": 1
+      },
+      {
+        "label": "蛙",
+        "citations": 1
+      },
+      {
+        "label": "蜣蜋",
+        "citations": 1
+      },
+      {
+        "label": "蝗",
+        "citations": 1
+      },
+      {
+        "label": "蛟",
+        "citations": 1
+      },
+      {
+        "label": "魚",
+        "citations": 1
+      },
+      {
+        "label": "鴈",
+        "citations": 1
+      },
+      {
+        "label": "蹙融",
+        "citations": 1
+      },
+      {
+        "label": "評詩",
+        "citations": 1
+      },
+      {
+        "label": "詩",
+        "citations": 1
+      },
+      {
+        "label": "櫻桃",
+        "citations": 1
+      },
+      {
+        "label": "海棠",
+        "citations": 1
+      },
+      {
+        "label": "栁",
+        "citations": 1
+      },
+      {
+        "label": "總禽",
+        "citations": 1
+      },
+      {
+        "label": "驢",
+        "citations": 1
+      },
+      {
+        "label": "鷹",
+        "citations": 1
+      },
+      {
+        "label": "誇鶴胎生",
+        "citations": 1
+      },
+      {
+        "label": "熊館",
+        "citations": 1
+      },
+      {
+        "label": "熊",
+        "citations": 1
+      },
+      {
+        "label": "述異𫝊荀",
+        "citations": 1
+      },
+      {
+        "label": "鶴亦有蒼色者謂之赤頰",
+        "citations": 1
+      },
+      {
+        "label": "韻藻瀝滴",
+        "citations": 1
+      },
+      {
+        "label": "罨畫",
+        "citations": 1
+      },
+      {
+        "label": "工",
+        "citations": 1
+      },
+      {
+        "label": "穴而蟄始春而出",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 13,
+        "match": "exact",
+        "category_count": 12,
+        "categories": [
+          {
+            "path": "鳥部 > 鶴",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 忠",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "木部 > 柏",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "花部 > 牡丹",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "蟲豸部 > 叩頭蟲",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "蟲豸部 > 守宫",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "蟲豸部 > 蛙",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "蟲豸部 > 蜣蜋",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "蟲豸部 > 蝗",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 蛟",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 魚",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 鴈",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 6,
+        "match": "bracket-note",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "博奕部 > 蹙融",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "斐然成章 > 評詩",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "斐然成章 > 詩",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "果食部 > 櫻桃",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "白花倒燭天夜明 > 海棠",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禽部 > 鶴",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 4,
+        "match": "bracket-note",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "栁",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "總禽",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "駱駞 > 驢",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鷹",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "見墳墓 > 誇鶴胎生",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見宫嬪 > 熊館",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "花木鳥獸集𩔖",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "熊",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "述異𫝊荀",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "鶴亦有蒼色者謂之赤頰",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "韻藻瀝滴",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "海録碎事",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "罨畫",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "工",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "駢志",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "穴而蟄始春而出",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

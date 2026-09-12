@@ -22,5 +22,205 @@
   "ca": "266–316年",
   "authors": [
     "潘岳"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 16,
+    "leishu_count": 7,
+    "categorised_citations": 16,
+    "genmoku_confirmed_citations": 6,
+    "category_leaves": [
+      {
+        "label": "風",
+        "citations": 2
+      },
+      {
+        "label": "貂蟬",
+        "citations": 2
+      },
+      {
+        "label": "隱逸",
+        "citations": 1
+      },
+      {
+        "label": "霜",
+        "citations": 1
+      },
+      {
+        "label": "夏",
+        "citations": 1
+      },
+      {
+        "label": "秋",
+        "citations": 1
+      },
+      {
+        "label": "投紱",
+        "citations": 1
+      },
+      {
+        "label": "曈曨",
+        "citations": 1
+      },
+      {
+        "label": "熠燿",
+        "citations": 1
+      },
+      {
+        "label": "貂七",
+        "citations": 1
+      },
+      {
+        "label": "虎賁中郎將九十三",
+        "citations": 1
+      },
+      {
+        "label": "秋下",
+        "citations": 1
+      },
+      {
+        "label": "歳時部",
+        "citations": 1
+      },
+      {
+        "label": "神仙",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 4,
+        "match": "author-prefix-stripped",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "天部 > 風",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 隱逸",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服飾部 > 貂蟬",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "事類賦",
+        "citations": 3,
+        "match": "author-prefix-stripped",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "天部 > 霜",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "嵗時部 > 夏",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "嵗時部第二 > 秋",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "海録碎事",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "投紱",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "曈曨",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鼯鼠一名飛生 > 熠燿",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "衣冠部一 > 帽九 > 貂七",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "設官部十五 > 都尉一百一都䕶一百二 > 虎賁中郎將九十三",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "時序部十 > 秋分 > 秋下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服章部五 > 帢幍綃頭 > 貂蟬",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "初學記",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "歳時部",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "仙道部 > 神仙",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

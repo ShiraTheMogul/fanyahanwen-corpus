@@ -1219,5 +1219,175 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 13,
+    "leishu_count": 5,
+    "categorised_citations": 13,
+    "genmoku_confirmed_citations": 1,
+    "category_leaves": [
+      {
+        "label": "蒙成",
+        "citations": 1
+      },
+      {
+        "label": "溪",
+        "citations": 1
+      },
+      {
+        "label": "居不容",
+        "citations": 1
+      },
+      {
+        "label": "表裏相應",
+        "citations": 1
+      },
+      {
+        "label": "山礬",
+        "citations": 1
+      },
+      {
+        "label": "梔子花",
+        "citations": 1
+      },
+      {
+        "label": "蘭",
+        "citations": 1
+      },
+      {
+        "label": "蠟梅",
+        "citations": 1
+      },
+      {
+        "label": "硯",
+        "citations": 1
+      },
+      {
+        "label": "釋語",
+        "citations": 1
+      },
+      {
+        "label": "格物總論",
+        "citations": 1
+      },
+      {
+        "label": "奊𡔢",
+        "citations": 1
+      },
+      {
+        "label": "石",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "記纂淵海",
+        "citations": 8,
+        "match": "bracket-note",
+        "category_count": 8,
+        "categories": [
+          {
+            "path": "叙述部 > 蒙成",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "地理部 > 溪",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "居不容",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "性行部 > 表裏相應",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "白花倒燭天夜明 > 山礬",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "白花倒燭天夜明 > 梔子花",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "白花倒燭天夜明 > 蘭",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "花卉部 > 蠟梅",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "硯",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "釋語",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今合璧事類備要",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "格物總論",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "奊𡔢",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "地部 > 石",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      }
+    ]
+  }
 }

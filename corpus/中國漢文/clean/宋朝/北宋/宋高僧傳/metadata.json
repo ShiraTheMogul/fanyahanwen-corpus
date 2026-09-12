@@ -351,5 +351,115 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "960–1127年"
+  "ca": "960–1127年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 11,
+    "leishu_count": 2,
+    "categorised_citations": 11,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "僧",
+        "citations": 3
+      },
+      {
+        "label": "嵩山",
+        "citations": 1
+      },
+      {
+        "label": "閣",
+        "citations": 1
+      },
+      {
+        "label": "李",
+        "citations": 1
+      },
+      {
+        "label": "栁",
+        "citations": 1
+      },
+      {
+        "label": "桐",
+        "citations": 1
+      },
+      {
+        "label": "狐",
+        "citations": 1
+      },
+      {
+        "label": "鷄",
+        "citations": 1
+      },
+      {
+        "label": "尋生如故",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "天中記",
+        "citations": 10,
+        "match": "bracket-note",
+        "category_count": 8,
+        "categories": [
+          {
+            "path": "依天竺用正與夏同 > 僧",
+            "citations": 3,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "嵩山",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "昭明學士誤 > 閣",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "李",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "栁",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "桐",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "狐",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鷄",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "駢志",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "尋生如故",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

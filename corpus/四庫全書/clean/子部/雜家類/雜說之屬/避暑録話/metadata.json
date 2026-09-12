@@ -91,5 +91,123 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 9,
+    "leishu_count": 3,
+    "categorised_citations": 9,
+    "genmoku_confirmed_citations": 3,
+    "category_leaves": [
+      {
+        "label": "如雷",
+        "citations": 1
+      },
+      {
+        "label": "無怨",
+        "citations": 1
+      },
+      {
+        "label": "韻藻行怪神怪",
+        "citations": 1
+      },
+      {
+        "label": "顛木灌木",
+        "citations": 1
+      },
+      {
+        "label": "龍焙",
+        "citations": 1
+      },
+      {
+        "label": "蛙",
+        "citations": 1
+      },
+      {
+        "label": "酒",
+        "citations": 1
+      },
+      {
+        "label": "龍",
+        "citations": 1
+      },
+      {
+        "label": "熏蒸三庚",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 5,
+        "match": "bracket-note",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "如雷",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "無怨",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "韻藻行怪神怪",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "顛木灌木",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "龍焙",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "蟲豸部 > 蛙",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "食物部 > 酒",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 龍",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "御定分類字錦",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "仄木德東節 > 熏蒸三庚",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

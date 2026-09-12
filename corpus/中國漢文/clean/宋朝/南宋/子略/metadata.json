@@ -76,5 +76,142 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "1127–1279年"
+  "ca": "1127–1279年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 12,
+    "leishu_count": 2,
+    "categorised_citations": 12,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "邵康節作正𤣥章俊卿",
+        "citations": 1
+      },
+      {
+        "label": "韓非",
+        "citations": 1
+      },
+      {
+        "label": "諸家二",
+        "citations": 1
+      },
+      {
+        "label": "呉子高似孫",
+        "citations": 1
+      },
+      {
+        "label": "握竒經",
+        "citations": 1
+      },
+      {
+        "label": "淮南子",
+        "citations": 1
+      },
+      {
+        "label": "王充論衡",
+        "citations": 1
+      },
+      {
+        "label": "論六韜",
+        "citations": 1
+      },
+      {
+        "label": "附論賈誼進説於君朱熹",
+        "citations": 1
+      },
+      {
+        "label": "道徳經通考",
+        "citations": 1
+      },
+      {
+        "label": "師第",
+        "citations": 1
+      },
+      {
+        "label": "徐氏中論六卷",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "稗編",
+        "citations": 10,
+        "match": "author-prefix-stripped",
+        "category_count": 10,
+        "categories": [
+          {
+            "path": "諸家一 > 邵康節作正𤣥章俊卿",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "諸家一 > 韓非",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "諸家二",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "諸家二 > 呉子高似孫",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "諸家二 > 握竒經",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "諸家二 > 淮南子",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "諸家二 > 王充論衡",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "諸家二 > 論六韜",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "諸家二 > 附論賈誼進説於君朱熹",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "諸家二十六 > 道徳經通考",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "師第",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "徐氏中論六卷",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

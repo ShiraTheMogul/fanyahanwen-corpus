@@ -28,5 +28,88 @@
   "authors": [
     "白居易"
   ],
-  "date_label": "806年"
+  "date_label": "806年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 6,
+    "leishu_count": 2,
+    "categorised_citations": 6,
+    "genmoku_confirmed_citations": 3,
+    "category_leaves": [
+      {
+        "label": "帳",
+        "citations": 1
+      },
+      {
+        "label": "衣服",
+        "citations": 1
+      },
+      {
+        "label": "裳",
+        "citations": 1
+      },
+      {
+        "label": "粧飾",
+        "citations": 1
+      },
+      {
+        "label": "悼亡",
+        "citations": 1
+      },
+      {
+        "label": "蠱惑",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "服飾部 > 帳",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服飾部 > 衣服",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服飾部 > 裳",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "不念昔者伊余来塈 > 粧飾",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "勤把鉛花記宫様 > 悼亡",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "堅貞 > 蠱惑",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

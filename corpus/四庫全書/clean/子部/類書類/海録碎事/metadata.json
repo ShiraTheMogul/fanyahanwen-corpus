@@ -3,7 +3,7 @@
   "work_id": 127228,
   "corpus_root": "四庫全書",
   "title": "海録碎事",
-  "is_compilation": false,
+  "is_compilation": true,
   "contained_in": [
     {
       "work_id": 80277,
@@ -351,5 +351,301 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "compilation_note": "子部類書類：本書為類書，內容多為徵引他書原文；徵引關係見 corpus/index_leishu_徵引.csv，不另重複計入語料庫字數。",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 26,
+    "leishu_count": 7,
+    "categorised_citations": 26,
+    "genmoku_confirmed_citations": 13,
+    "category_leaves": [
+      {
+        "label": "書",
+        "citations": 2
+      },
+      {
+        "label": "敗將",
+        "citations": 2
+      },
+      {
+        "label": "布",
+        "citations": 1
+      },
+      {
+        "label": "柏",
+        "citations": 1
+      },
+      {
+        "label": "斧鉞",
+        "citations": 1
+      },
+      {
+        "label": "枚",
+        "citations": 1
+      },
+      {
+        "label": "水戰",
+        "citations": 1
+      },
+      {
+        "label": "犒師",
+        "citations": 1
+      },
+      {
+        "label": "軍刑",
+        "citations": 1
+      },
+      {
+        "label": "翰林院總載",
+        "citations": 1
+      },
+      {
+        "label": "惜春鳥",
+        "citations": 1
+      },
+      {
+        "label": "中元",
+        "citations": 1
+      },
+      {
+        "label": "元日",
+        "citations": 1
+      },
+      {
+        "label": "山",
+        "citations": 1
+      },
+      {
+        "label": "大浣布",
+        "citations": 1
+      },
+      {
+        "label": "社",
+        "citations": 1
+      },
+      {
+        "label": "祈雨",
+        "citations": 1
+      },
+      {
+        "label": "秋",
+        "citations": 1
+      },
+      {
+        "label": "除夕",
+        "citations": 1
+      },
+      {
+        "label": "菱紙",
+        "citations": 1
+      },
+      {
+        "label": "收華歛實",
+        "citations": 1
+      },
+      {
+        "label": "山隂",
+        "citations": 1
+      },
+      {
+        "label": "口",
+        "citations": 1
+      },
+      {
+        "label": "絲布",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 13,
+        "match": "exact",
+        "category_count": 11,
+        "categories": [
+          {
+            "path": "巧藝部 > 書",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 敗將",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "布帛部 > 布",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "木部 > 柏",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 斧鉞",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 枚",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 水戰",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 犒師",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "武功部 > 軍刑",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "設官部 > 翰林院總載",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 惜春鳥",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 8,
+        "match": "bracket-note",
+        "category_count": 8,
+        "categories": [
+          {
+            "path": "中元",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "元日",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "地 > 山",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "大浣布",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "社",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "祈雨",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "秋",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "除夕",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "菱紙",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定分類字錦",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "和鼎解渴 > 收華歛實",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定駢字類編",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "山隂",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "格致鏡原",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "身體𩔖 > 口",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "絲布",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  },
+  "leishu_citation_summary": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "works_attested": 219,
+    "citations": 1094,
+    "categorised_citations": 1091,
+    "distinct_categories": 1042,
+    "unresolved_heads": 1532
+  }
 }

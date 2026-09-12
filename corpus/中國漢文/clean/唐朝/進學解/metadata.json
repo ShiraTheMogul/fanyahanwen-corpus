@@ -23,5 +23,217 @@
   "ca": "618–907年",
   "authors": [
     "韓愈"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 15,
+    "leishu_count": 8,
+    "categorised_citations": 15,
+    "genmoku_confirmed_citations": 5,
+    "category_leaves": [
+      {
+        "label": "好學",
+        "citations": 1
+      },
+      {
+        "label": "儒術",
+        "citations": 1
+      },
+      {
+        "label": "經典總載",
+        "citations": 1
+      },
+      {
+        "label": "誦讀",
+        "citations": 1
+      },
+      {
+        "label": "百工",
+        "citations": 1
+      },
+      {
+        "label": "師說韓愈",
+        "citations": 1
+      },
+      {
+        "label": "雜著",
+        "citations": 1
+      },
+      {
+        "label": "捄弊",
+        "citations": 1
+      },
+      {
+        "label": "蹈襲",
+        "citations": 1
+      },
+      {
+        "label": "二十七沁",
+        "citations": 1
+      },
+      {
+        "label": "坦活套人名",
+        "citations": 1
+      },
+      {
+        "label": "舉薦",
+        "citations": 1
+      },
+      {
+        "label": "孟子類",
+        "citations": 1
+      },
+      {
+        "label": "太學",
+        "citations": 1
+      },
+      {
+        "label": "宰相",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 5,
+        "match": "author-prefix-stripped",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "帝王部 > 好學",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文學部 > 儒術",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文學部 > 經典總載",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "文學部 > 誦讀",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "産業部 > 百工",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "古今事文類聚",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "師說韓愈",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "章甫冠 > 雜著",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "人事部 > 捄弊",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "問學部 > 蹈襲",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "韻府羣玉",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "□二十三禡 > 二十七沁",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "坦活套人名",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "白孔六帖",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "失所舉 > 舉薦",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "羣書考索",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "諸子百家門 > 孟子類",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "翰苑新書",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "太學",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "職官分紀",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "宰相",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

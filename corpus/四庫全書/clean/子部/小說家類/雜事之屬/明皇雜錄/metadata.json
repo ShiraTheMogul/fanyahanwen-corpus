@@ -101,5 +101,328 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 26,
+    "leishu_count": 10,
+    "categorised_citations": 26,
+    "genmoku_confirmed_citations": 12,
+    "category_leaves": [
+      {
+        "label": "觱篥",
+        "citations": 2
+      },
+      {
+        "label": "帳",
+        "citations": 1
+      },
+      {
+        "label": "枕",
+        "citations": 1
+      },
+      {
+        "label": "枇杷",
+        "citations": 1
+      },
+      {
+        "label": "人日",
+        "citations": 1
+      },
+      {
+        "label": "駱駝",
+        "citations": 1
+      },
+      {
+        "label": "羮",
+        "citations": 1
+      },
+      {
+        "label": "餅",
+        "citations": 1
+      },
+      {
+        "label": "蛟",
+        "citations": 1
+      },
+      {
+        "label": "畫龍",
+        "citations": 1
+      },
+      {
+        "label": "温泉",
+        "citations": 1
+      },
+      {
+        "label": "因才取禍",
+        "citations": 1
+      },
+      {
+        "label": "舞劍",
+        "citations": 1
+      },
+      {
+        "label": "饌",
+        "citations": 1
+      },
+      {
+        "label": "歌",
+        "citations": 1
+      },
+      {
+        "label": "舞",
+        "citations": 1
+      },
+      {
+        "label": "豆",
+        "citations": 1
+      },
+      {
+        "label": "琵琶",
+        "citations": 1
+      },
+      {
+        "label": "正字",
+        "citations": 1
+      },
+      {
+        "label": "雨",
+        "citations": 1
+      },
+      {
+        "label": "紀要",
+        "citations": 1
+      },
+      {
+        "label": "聞歌罷酒",
+        "citations": 1
+      },
+      {
+        "label": "眸子",
+        "citations": 1
+      },
+      {
+        "label": "𧰼",
+        "citations": 1
+      },
+      {
+        "label": "灋術",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 9,
+        "match": "exact",
+        "category_count": 9,
+        "categories": [
+          {
+            "path": "服飾部 > 帳",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服飾部 > 枕",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "果部 > 枇杷",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部 > 觱篥",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "歲時部 > 人日",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "獸部 > 駱駝",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "食物部 > 羮",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "食物部 > 餅",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 蛟",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 5,
+        "match": "bracket-note",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "伎術部 > 畫龍",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "地理部 > 温泉",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "論議部 > 因才取禍",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "雜戲部 > 舞劍",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "飲食部 > 饌",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "歎服之 > 歌",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "歎服之 > 舞",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "豆",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 3,
+        "match": "author-prefix-stripped",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "樂部二十一 > 琵琶羯皷 > 琵琶",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "樂部二十二 > 壤撫相舂牘拍板 > 觱篥",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "職官部三十二 > 校書郎正字 > 正字",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "事類賦",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "天部 > 雨",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "全芳備祖集",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "紀要",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "晉武帝受禪罷雞鳴曲 > 聞歌罷酒",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "眸子",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "格致鏡原",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "獸𩔖 > 𧰼",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "白孔六帖",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "寺 > 灋術",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

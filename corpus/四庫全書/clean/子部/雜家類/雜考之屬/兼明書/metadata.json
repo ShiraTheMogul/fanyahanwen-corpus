@@ -127,5 +127,62 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 4,
+    "leishu_count": 1,
+    "categorised_citations": 4,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "諱",
+        "citations": 1
+      },
+      {
+        "label": "三皇",
+        "citations": 1
+      },
+      {
+        "label": "五帝",
+        "citations": 1
+      },
+      {
+        "label": "雨",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "天中記",
+        "citations": 4,
+        "match": "bracket-note",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "大武帝賜名懐逺 > 諱",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "専故立卜筮以質神靈 > 三皇",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "帝俊是黄帝字無稽 > 五帝",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "雨",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

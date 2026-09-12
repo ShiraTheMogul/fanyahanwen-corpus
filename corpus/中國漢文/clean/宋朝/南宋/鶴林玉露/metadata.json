@@ -208,5 +208,259 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "1127–1279年"
+  "ca": "1127–1279年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 21,
+    "leishu_count": 7,
+    "categorised_citations": 21,
+    "genmoku_confirmed_citations": 8,
+    "category_leaves": [
+      {
+        "label": "冰",
+        "citations": 2
+      },
+      {
+        "label": "貢舉",
+        "citations": 1
+      },
+      {
+        "label": "芝",
+        "citations": 1
+      },
+      {
+        "label": "蜂",
+        "citations": 1
+      },
+      {
+        "label": "蜈蚣",
+        "citations": 1
+      },
+      {
+        "label": "蝗",
+        "citations": 1
+      },
+      {
+        "label": "蟹",
+        "citations": 1
+      },
+      {
+        "label": "倉庚",
+        "citations": 1
+      },
+      {
+        "label": "假譎",
+        "citations": 1
+      },
+      {
+        "label": "主試",
+        "citations": 1
+      },
+      {
+        "label": "蛇",
+        "citations": 1
+      },
+      {
+        "label": "杖藜應門",
+        "citations": 1
+      },
+      {
+        "label": "法隂陽",
+        "citations": 1
+      },
+      {
+        "label": "稱夀彤廷",
+        "citations": 1
+      },
+      {
+        "label": "攫巾",
+        "citations": 1
+      },
+      {
+        "label": "退黄",
+        "citations": 1
+      },
+      {
+        "label": "持帖堂",
+        "citations": 1
+      },
+      {
+        "label": "韻藻長笛",
+        "citations": 1
+      },
+      {
+        "label": "泉寺燒笋而食",
+        "citations": 1
+      },
+      {
+        "label": "貓",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 8,
+        "match": "exact",
+        "category_count": 8,
+        "categories": [
+          {
+            "path": "地部 > 冰",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "政術部 > 貢舉",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "草部 > 芝",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "蟲豸部 > 蜂",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "蟲豸部 > 蜈蚣",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "蟲豸部 > 蝗",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 蟹",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 倉庚",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 4,
+        "match": "bracket-note",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "假譎",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "冰",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "舉為五老榜 > 主試",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "蛇",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定分類字錦",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "仄香案 > 杖藜應門",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "星流 > 法隂陽",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "配地脩外 > 稱夀彤廷",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 2,
+        "match": "line-initial",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "見春 > 攫巾",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "退黄",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "持帖堂",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "韻藻長笛",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "宋稗𩔖鈔",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "常熟潘永因編 > 泉寺燒笋而食",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "花木鳥獸集𩔖",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "洞㝠記 > 貓",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

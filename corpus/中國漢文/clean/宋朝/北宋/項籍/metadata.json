@@ -19,5 +19,111 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "960–1127年"
+  "ca": "960–1127年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 7,
+    "leishu_count": 5,
+    "categorised_citations": 6,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "三覺",
+        "citations": 1
+      },
+      {
+        "label": "十二錫",
+        "citations": 1
+      },
+      {
+        "label": "情",
+        "citations": 1
+      },
+      {
+        "label": "漢髙祖皇帝",
+        "citations": 1
+      },
+      {
+        "label": "十八王",
+        "citations": 1
+      },
+      {
+        "label": "項燕",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "韻府羣玉",
+        "citations": 3,
+        "match": "author-prefix-stripped",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "入聲 > 三覺",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "入聲 > 十二錫",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "情",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "冊府元龜",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 0,
+        "categories": []
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "皇王部十二 > 前少帝後少帝 > 漢髙祖皇帝",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "小學紺珠",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "西秦前燕後燕南燕 > 十八王",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "萬姓統譜",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "項燕",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

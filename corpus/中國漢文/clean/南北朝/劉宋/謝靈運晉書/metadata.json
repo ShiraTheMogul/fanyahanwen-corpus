@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 4443,
   "corpus_root": "中國漢文",
@@ -18,5 +18,239 @@
       "body_start_line": 8
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 18,
+    "leishu_count": 9,
+    "categorised_citations": 18,
+    "genmoku_confirmed_citations": 5,
+    "category_leaves": [
+      {
+        "label": "職官部上",
+        "citations": 2
+      },
+      {
+        "label": "扇",
+        "citations": 2
+      },
+      {
+        "label": "貞女上",
+        "citations": 1
+      },
+      {
+        "label": "竹上",
+        "citations": 1
+      },
+      {
+        "label": "左右僕射",
+        "citations": 1
+      },
+      {
+        "label": "御史中丞下",
+        "citations": 1
+      },
+      {
+        "label": "太尉",
+        "citations": 1
+      },
+      {
+        "label": "夜拜",
+        "citations": 1
+      },
+      {
+        "label": "木部",
+        "citations": 1
+      },
+      {
+        "label": "明陳耀文撰",
+        "citations": 1
+      },
+      {
+        "label": "中丞",
+        "citations": 1
+      },
+      {
+        "label": "中書令",
+        "citations": 1
+      },
+      {
+        "label": "扇二十四",
+        "citations": 1
+      },
+      {
+        "label": "歴代㳂革",
+        "citations": 1
+      },
+      {
+        "label": "臺主",
+        "citations": 1
+      },
+      {
+        "label": "開府儀同三司",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 5,
+        "match": "exact",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "人事部八十 > 貞女上",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "竹部一 > 竹上",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "職官部九 > 左右僕射 > 左右僕射",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "職官部二十四 > 御史中丞下持書侍御史 > 御史中丞下",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "職官部五 > 太尉司徒上 > 太尉",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "初學記",
+        "citations": 4,
+        "match": "exact",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "職官部上",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "夜拜",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "木部",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "明陳耀文撰",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "誤合璧復因之亦誤 > 中丞",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "服飾部 > 扇",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "設官部 > 中書令",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "儀飾部五 > 毾㲪三十一 > 扇二十四",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今合璧事類備要",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "歴代㳂革",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "見公主 > 臺主",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "白孔六帖",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "彈 > 扇",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "翰苑新書",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "開府儀同三司",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

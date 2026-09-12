@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 55750,
   "corpus_root": "中國漢文",
@@ -18,5 +18,310 @@
       "body_start_line": 8
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 28,
+    "leishu_count": 6,
+    "categorised_citations": 28,
+    "genmoku_confirmed_citations": 3,
+    "category_leaves": [
+      {
+        "label": "前身",
+        "citations": 2
+      },
+      {
+        "label": "蜂",
+        "citations": 2
+      },
+      {
+        "label": "㓜悟",
+        "citations": 1
+      },
+      {
+        "label": "兵説",
+        "citations": 1
+      },
+      {
+        "label": "史官",
+        "citations": 1
+      },
+      {
+        "label": "宫觀",
+        "citations": 1
+      },
+      {
+        "label": "文章",
+        "citations": 1
+      },
+      {
+        "label": "服御行幸",
+        "citations": 1
+      },
+      {
+        "label": "相副",
+        "citations": 1
+      },
+      {
+        "label": "衆材之上已而果然",
+        "citations": 1
+      },
+      {
+        "label": "後一日生",
+        "citations": 1
+      },
+      {
+        "label": "裹橘令射",
+        "citations": 1
+      },
+      {
+        "label": "浮脆輕艶",
+        "citations": 1
+      },
+      {
+        "label": "揣聼骨聲",
+        "citations": 1
+      },
+      {
+        "label": "移時不道一字",
+        "citations": 1
+      },
+      {
+        "label": "靈運來謁",
+        "citations": 1
+      },
+      {
+        "label": "儆戒",
+        "citations": 1
+      },
+      {
+        "label": "期待",
+        "citations": 1
+      },
+      {
+        "label": "有定力",
+        "citations": 1
+      },
+      {
+        "label": "氣槩",
+        "citations": 1
+      },
+      {
+        "label": "門生",
+        "citations": 1
+      },
+      {
+        "label": "生辰",
+        "citations": 1
+      },
+      {
+        "label": "酒",
+        "citations": 1
+      },
+      {
+        "label": "刀",
+        "citations": 1
+      },
+      {
+        "label": "蟫",
+        "citations": 1
+      },
+      {
+        "label": "樞府",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 9,
+        "match": "bracket-note",
+        "category_count": 9,
+        "categories": [
+          {
+            "path": "㓜悟",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "兵説",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "前身",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "史官",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "宫觀",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "文章",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "服御行幸",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "相副",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "衆材之上已而果然",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 6,
+        "match": "line-initial",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "按左傳止載孔子 > 後一日生",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "蜥蜴 > 裹橘令射",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見名士 > 浮脆輕艶",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見故人 > 揣聼骨聲",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見星 > 移時不道一字",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見義士 > 靈運來謁",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 5,
+        "match": "bracket-note",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "人情部 > 儆戒",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "居不容 > 期待",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "性行部 > 有定力",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "性行部 > 氣槩",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "薦女請婚 > 門生",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 4,
+        "match": "bracket-note",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "前身",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "濟河事或在兹 > 蜂",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "生辰",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "酒",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "武功部 > 刀",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "蟲豸部 > 蜂",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "蟲豸部 > 蟫",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "古今源流至論",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "樞府",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -235,5 +235,126 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 8,
+    "leishu_count": 5,
+    "categorised_citations": 8,
+    "genmoku_confirmed_citations": 2,
+    "category_leaves": [
+      {
+        "label": "風",
+        "citations": 2
+      },
+      {
+        "label": "舜十二州",
+        "citations": 1
+      },
+      {
+        "label": "紹興刻漏刻漏圖",
+        "citations": 1
+      },
+      {
+        "label": "周吉皇乗",
+        "citations": 1
+      },
+      {
+        "label": "眉",
+        "citations": 1
+      },
+      {
+        "label": "為治不可以有所懲",
+        "citations": 1
+      },
+      {
+        "label": "禮經四",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "玉海",
+        "citations": 3,
+        "match": "exact",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "地理 > 郡國 > 舜十二州",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "律厯 > 堯刻漏 > 紹興刻漏刻漏圖",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "祥瑞 > 瑞馬 > 周吉皇乗",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "人事部六 > 面眉 > 眉",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "天部九 > 風相風 > 風",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "事類賦",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "天部 > 風",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "八面鋒",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "八面鋒目録類書類 > 為治不可以有所懲",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "稗編",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "禮經四",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

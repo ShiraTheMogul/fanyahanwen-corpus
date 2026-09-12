@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 63176,
   "corpus_root": "中國漢文",
@@ -119,5 +119,181 @@
       "body_start_line": 8
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 15,
+    "leishu_count": 4,
+    "categorised_citations": 15,
+    "genmoku_confirmed_citations": 4,
+    "category_leaves": [
+      {
+        "label": "墨",
+        "citations": 2
+      },
+      {
+        "label": "富",
+        "citations": 1
+      },
+      {
+        "label": "柏",
+        "citations": 1
+      },
+      {
+        "label": "蟹",
+        "citations": 1
+      },
+      {
+        "label": "龍",
+        "citations": 1
+      },
+      {
+        "label": "江",
+        "citations": 1
+      },
+      {
+        "label": "圍棊",
+        "citations": 1
+      },
+      {
+        "label": "鵬",
+        "citations": 1
+      },
+      {
+        "label": "鸚鵡",
+        "citations": 1
+      },
+      {
+        "label": "林",
+        "citations": 1
+      },
+      {
+        "label": "鄉舉",
+        "citations": 1
+      },
+      {
+        "label": "韻藻繩繫",
+        "citations": 1
+      },
+      {
+        "label": "總",
+        "citations": 1
+      },
+      {
+        "label": "柑",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "天中記",
+        "citations": 5,
+        "match": "bracket-note",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "事也誤 > 富",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "晉書之誤 > 墨",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "柏",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "濟河事或在兹 > 蟹",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "龍",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 4,
+        "match": "author-prefix-stripped",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "地部 > 江",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "巧藝部 > 圍棊",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 鵬",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 鸚鵡",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "林",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鄉舉",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "韻藻繩繫",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "格致鏡原",
+        "citations": 3,
+        "match": "line-initial",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "文具𩔖 > 墨",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "木𩔖 > 總",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "果𩔖 > 柑",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

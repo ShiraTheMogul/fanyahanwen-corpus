@@ -26,5 +26,352 @@
   ],
   "authors": [
     "鍾惺"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 30,
+    "leishu_count": 16,
+    "categorised_citations": 23,
+    "genmoku_confirmed_citations": 0,
+    "category_leaves": [
+      {
+        "label": "喜徵論李徳裕",
+        "citations": 1
+      },
+      {
+        "label": "著新語",
+        "citations": 1
+      },
+      {
+        "label": "使南越",
+        "citations": 1
+      },
+      {
+        "label": "燈花占瑞",
+        "citations": 1
+      },
+      {
+        "label": "數過擊鮮",
+        "citations": 1
+      },
+      {
+        "label": "不出書吾已矣夫",
+        "citations": 1
+      },
+      {
+        "label": "生禹于石紐",
+        "citations": 1
+      },
+      {
+        "label": "膳雖閔曾不能以率養",
+        "citations": 1
+      },
+      {
+        "label": "格物總論",
+        "citations": 1
+      },
+      {
+        "label": "燈燭總論",
+        "citations": 1
+      },
+      {
+        "label": "讒譖",
+        "citations": 1
+      },
+      {
+        "label": "相時處事",
+        "citations": 1
+      },
+      {
+        "label": "鵲",
+        "citations": 1
+      },
+      {
+        "label": "申香拂葢十",
+        "citations": 1
+      },
+      {
+        "label": "感通",
+        "citations": 1
+      },
+      {
+        "label": "王昶家戒李膺家録",
+        "citations": 1
+      },
+      {
+        "label": "浮石",
+        "citations": 1
+      },
+      {
+        "label": "詠靡盬",
+        "citations": 1
+      },
+      {
+        "label": "摩故道新道",
+        "citations": 1
+      },
+      {
+        "label": "上相",
+        "citations": 1
+      },
+      {
+        "label": "春秋類",
+        "citations": 1
+      },
+      {
+        "label": "奉使",
+        "citations": 1
+      },
+      {
+        "label": "遂",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "冊府元龜",
+        "citations": 7,
+        "match": "line-initial",
+        "category_count": 0,
+        "categories": []
+      },
+      {
+        "leishu": "古今事文類聚",
+        "citations": 5,
+        "match": "line-initial",
+        "category_count": 5,
+        "categories": [
+          {
+            "path": "喜徵論李徳裕",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "晩年著書 > 著新語",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "無憂客使 > 使南越",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "燈花占瑞",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "賢否不類 > 數過擊鮮",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "駢志",
+        "citations": 3,
+        "match": "line-initial",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "不出書吾已矣夫",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "生禹于石紐",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "膳雖閔曾不能以率養",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今合璧事類備要",
+        "citations": 2,
+        "match": "author-prefix-stripped",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "格物總論",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "燈燭總論",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "性行部 > 讒譖",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "論議部 > 相時處事",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "事類賦",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "禽部 > 鵲",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "初學記",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "申香拂葢十",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "喻林",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "人事門 > 感通",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "王昶家戒李膺家録",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "見宗族 > 浮石",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定分類字錦",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "還玉謁者 > 詠靡盬",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定子史精華",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "摩故道新道",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "海録碎事",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "魏定制置大丞相第一品 > 上相",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "羣書考索",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "六經門 > 春秋類",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "職官分紀",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "奉使",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "韻府羣玉",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "遂",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

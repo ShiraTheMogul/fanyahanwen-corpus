@@ -115,5 +115,169 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 15,
+    "leishu_count": 2,
+    "categorised_citations": 15,
+    "genmoku_confirmed_citations": 7,
+    "category_leaves": [
+      {
+        "label": "勺藥",
+        "citations": 1
+      },
+      {
+        "label": "受策",
+        "citations": 1
+      },
+      {
+        "label": "嘉瑞",
+        "citations": 1
+      },
+      {
+        "label": "四照",
+        "citations": 1
+      },
+      {
+        "label": "坐法黥息我",
+        "citations": 1
+      },
+      {
+        "label": "夷𨽻",
+        "citations": 1
+      },
+      {
+        "label": "巨細",
+        "citations": 1
+      },
+      {
+        "label": "拔暈",
+        "citations": 1
+      },
+      {
+        "label": "仁",
+        "citations": 1
+      },
+      {
+        "label": "信",
+        "citations": 1
+      },
+      {
+        "label": "井",
+        "citations": 1
+      },
+      {
+        "label": "湖",
+        "citations": 1
+      },
+      {
+        "label": "羅",
+        "citations": 1
+      },
+      {
+        "label": "屏風",
+        "citations": 1
+      },
+      {
+        "label": "鵬",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 8,
+        "match": "bracket-note",
+        "category_count": 8,
+        "categories": [
+          {
+            "path": "勺藥",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "受策",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "嘉瑞",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "四照",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "坐法黥息我",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "夷𨽻",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "巨細",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "拔暈",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 7,
+        "match": "exact",
+        "category_count": 7,
+        "categories": [
+          {
+            "path": "人部 > 仁",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "人部 > 信",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部 > 井",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部 > 湖",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "布帛部 > 羅",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服飾部 > 屏風",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鳥部 > 鵬",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      }
+    ]
+  }
 }

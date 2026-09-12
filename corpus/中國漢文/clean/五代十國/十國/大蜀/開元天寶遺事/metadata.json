@@ -53,5 +53,177 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "907–960年"
+  "ca": "907–960年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 15,
+    "leishu_count": 3,
+    "categorised_citations": 15,
+    "genmoku_confirmed_citations": 1,
+    "category_leaves": [
+      {
+        "label": "受代",
+        "citations": 1
+      },
+      {
+        "label": "牋",
+        "citations": 1
+      },
+      {
+        "label": "筆架",
+        "citations": 1
+      },
+      {
+        "label": "猿",
+        "citations": 1
+      },
+      {
+        "label": "鶻",
+        "citations": 1
+      },
+      {
+        "label": "鸎",
+        "citations": 1
+      },
+      {
+        "label": "主簿",
+        "citations": 1
+      },
+      {
+        "label": "牡丹",
+        "citations": 1
+      },
+      {
+        "label": "花",
+        "citations": 1
+      },
+      {
+        "label": "俳優",
+        "citations": 1
+      },
+      {
+        "label": "玉",
+        "citations": 1
+      },
+      {
+        "label": "童兒",
+        "citations": 1
+      },
+      {
+        "label": "鑿飲",
+        "citations": 1
+      },
+      {
+        "label": "韻藻文茵",
+        "citations": 1
+      },
+      {
+        "label": "蜘蛛",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "記纂淵海",
+        "citations": 10,
+        "match": "bracket-note",
+        "category_count": 10,
+        "categories": [
+          {
+            "path": "仕宦部 > 受代",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "字學部 > 牋",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "字學部 > 筆架",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "獸部 > 猿",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禽部 > 鶻",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禽部 > 鸎",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "職官部 > 主簿",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "花卉部 > 牡丹",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "花卉部 > 花",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "雜戲部 > 俳優",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 4,
+        "match": "bracket-note",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "玉",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "童兒",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "鑿飲",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "韻藻文茵",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "蟲豸部 > 蜘蛛",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      }
+    ]
+  }
 }

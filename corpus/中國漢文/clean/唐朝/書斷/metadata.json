@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 25081,
   "corpus_root": "中國漢文",
@@ -34,5 +34,491 @@
       "body_start_line": 5
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 57,
+    "leishu_count": 11,
+    "categorised_citations": 57,
+    "genmoku_confirmed_citations": 11,
+    "category_leaves": [
+      {
+        "label": "草書",
+        "citations": 5
+      },
+      {
+        "label": "書",
+        "citations": 4
+      },
+      {
+        "label": "篆書",
+        "citations": 3
+      },
+      {
+        "label": "草賢",
+        "citations": 3
+      },
+      {
+        "label": "楷書",
+        "citations": 2
+      },
+      {
+        "label": "章草",
+        "citations": 2
+      },
+      {
+        "label": "評字",
+        "citations": 2
+      },
+      {
+        "label": "行書",
+        "citations": 2
+      },
+      {
+        "label": "𨽻書",
+        "citations": 2
+      },
+      {
+        "label": "卧鳳閣",
+        "citations": 2
+      },
+      {
+        "label": "字",
+        "citations": 1
+      },
+      {
+        "label": "筆",
+        "citations": 1
+      },
+      {
+        "label": "紙",
+        "citations": 1
+      },
+      {
+        "label": "飛白",
+        "citations": 1
+      },
+      {
+        "label": "八分書",
+        "citations": 1
+      },
+      {
+        "label": "古文",
+        "citations": 1
+      },
+      {
+        "label": "之相似",
+        "citations": 1
+      },
+      {
+        "label": "晉秘書令史善八分",
+        "citations": 1
+      },
+      {
+        "label": "氣為氣候直時書",
+        "citations": 1
+      },
+      {
+        "label": "穆若清風",
+        "citations": 1
+      },
+      {
+        "label": "虵書行書散𨽻書龍",
+        "citations": 1
+      },
+      {
+        "label": "西域書有驢脣書蓮葉書",
+        "citations": 1
+      },
+      {
+        "label": "三具",
+        "citations": 1
+      },
+      {
+        "label": "離方遁圓",
+        "citations": 1
+      },
+      {
+        "label": "遊天戲海",
+        "citations": 1
+      },
+      {
+        "label": "左伯",
+        "citations": 1
+      },
+      {
+        "label": "亞聖",
+        "citations": 1
+      },
+      {
+        "label": "凌雲",
+        "citations": 1
+      },
+      {
+        "label": "得伯英之肉",
+        "citations": 1
+      },
+      {
+        "label": "號連綿書",
+        "citations": 1
+      },
+      {
+        "label": "見蛇鬬而草書長殆非誕",
+        "citations": 1
+      },
+      {
+        "label": "戱論",
+        "citations": 1
+      },
+      {
+        "label": "王迹",
+        "citations": 1
+      },
+      {
+        "label": "韻藻泰液",
+        "citations": 1
+      },
+      {
+        "label": "晉書之誤",
+        "citations": 1
+      },
+      {
+        "label": "繼妻",
+        "citations": 1
+      },
+      {
+        "label": "雍熈草書",
+        "citations": 1
+      },
+      {
+        "label": "尺牘爰書八分書",
+        "citations": 1
+      },
+      {
+        "label": "書法",
+        "citations": 1
+      },
+      {
+        "label": "敝帚",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "記纂淵海",
+        "citations": 16,
+        "match": "bracket-note",
+        "category_count": 11,
+        "categories": [
+          {
+            "path": "字學部 > 草書",
+            "citations": 3,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "字學部 > 楷書",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "字學部 > 章草",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "字學部 > 評字",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "字學部 > 字",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "字學部 > 筆",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "字學部 > 篆書",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "字學部 > 紙",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "字學部 > 行書",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "字學部 > 飛白",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "字學部 > 𨽻書",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "太平御覽",
+        "citations": 12,
+        "match": "exact",
+        "category_count": 7,
+        "categories": [
+          {
+            "path": "樂 > 書",
+            "citations": 4,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "工藝部六 > 章草書行書 > 篆書",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "工藝部六 > 章草書行書 > 草書",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "工藝部六 > 章草書行書 > 八分書",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "工藝部六 > 章草書行書 > 古文",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "工藝部六 > 章草書行書 > 行書",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "工藝部六 > 章草書行書 > 𨽻書",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "廣博物志",
+        "citations": 8,
+        "match": "author-prefix-stripped",
+        "category_count": 7,
+        "categories": [
+          {
+            "path": "卧鳳閣",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "之相似",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "晉秘書令史善八分",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "氣為氣候直時書",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "穆若清風",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "虵書行書散𨽻書龍",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "西域書有驢脣書蓮葉書",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "山堂肆考",
+        "citations": 4,
+        "match": "line-initial",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "三具",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "大禹作鐘鼎書 > 離方遁圓",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見寵妾 > 遊天戲海",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見文章 > 左伯",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "海録碎事",
+        "citations": 4,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "𨽻書 > 草賢",
+            "citations": 2,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "亞聖",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "草賢",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 4,
+        "match": "bracket-note",
+        "category_count": 4,
+        "categories": [
+          {
+            "path": "凌雲",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "得伯英之肉",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "號連綿書",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見蛇鬬而草書長殆非誕",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "戱論",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "王迹",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "韻藻泰液",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "晉書之誤",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "繼妻",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 2,
+        "match": "exact",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "聖文 > 御書 > 雍熈草書",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "藝文 > 小學 > 尺牘爰書八分書",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今合璧事類備要",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "儒業門 > 書法",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定分類字錦",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "紫錦 > 敝帚",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

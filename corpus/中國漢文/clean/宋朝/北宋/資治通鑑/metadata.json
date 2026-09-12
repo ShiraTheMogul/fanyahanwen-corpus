@@ -3244,5 +3244,229 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "960–1127年"
+  "ca": "960–1127年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 20,
+    "leishu_count": 5,
+    "categorised_citations": 20,
+    "genmoku_confirmed_citations": 14,
+    "category_leaves": [
+      {
+        "label": "徳行封",
+        "citations": 2
+      },
+      {
+        "label": "伐功",
+        "citations": 1
+      },
+      {
+        "label": "俸禄",
+        "citations": 1
+      },
+      {
+        "label": "威嚴",
+        "citations": 1
+      },
+      {
+        "label": "寛政",
+        "citations": 1
+      },
+      {
+        "label": "疾惡",
+        "citations": 1
+      },
+      {
+        "label": "簿書",
+        "citations": 1
+      },
+      {
+        "label": "舉按",
+        "citations": 1
+      },
+      {
+        "label": "舉親",
+        "citations": 1
+      },
+      {
+        "label": "賞賜",
+        "citations": 1
+      },
+      {
+        "label": "辭官",
+        "citations": 1
+      },
+      {
+        "label": "黜免",
+        "citations": 1
+      },
+      {
+        "label": "玉",
+        "citations": 1
+      },
+      {
+        "label": "漼",
+        "citations": 1
+      },
+      {
+        "label": "白馬寺",
+        "citations": 1
+      },
+      {
+        "label": "皇后",
+        "citations": 1
+      },
+      {
+        "label": "郡守",
+        "citations": 1
+      },
+      {
+        "label": "君臣不可爭能",
+        "citations": 1
+      },
+      {
+        "label": "師正異之卒謚貞一先生",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 14,
+        "match": "exact",
+        "category_count": 13,
+        "categories": [
+          {
+            "path": "封爵部 > 徳行封",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "政術部 > 伐功",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "政術部 > 俸禄",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "政術部 > 威嚴",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "政術部 > 寛政",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "政術部 > 疾惡",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "政術部 > 簿書",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "政術部 > 舉按",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "政術部 > 舉親",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "政術部 > 賞賜",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "政術部 > 辭官",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "政術部 > 黜免",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "珍寶部 > 玉",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "御定佩文韻府",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "漼",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "白馬寺",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "皇后",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "郡守",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今事文類聚",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "詩話 > 君臣不可爭能",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "名賢氏族言行類稿",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "師正異之卒謚貞一先生",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

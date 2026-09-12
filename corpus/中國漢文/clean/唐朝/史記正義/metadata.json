@@ -34,5 +34,191 @@
   "ca": "前206–9年",
   "categories": [
     "歷史"
-  ]
+  ],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 13,
+    "leishu_count": 7,
+    "categorised_citations": 13,
+    "genmoku_confirmed_citations": 1,
+    "category_leaves": [
+      {
+        "label": "唐伊婁渠埭",
+        "citations": 1
+      },
+      {
+        "label": "漢鴻臺",
+        "citations": 1
+      },
+      {
+        "label": "封列侯位次簿",
+        "citations": 1
+      },
+      {
+        "label": "黄帝四經",
+        "citations": 1
+      },
+      {
+        "label": "晉竹書紀年古文官書",
+        "citations": 1
+      },
+      {
+        "label": "魯雩壇",
+        "citations": 1
+      },
+      {
+        "label": "觀",
+        "citations": 1
+      },
+      {
+        "label": "禮",
+        "citations": 1
+      },
+      {
+        "label": "亡國四十二",
+        "citations": 1
+      },
+      {
+        "label": "太常掌故",
+        "citations": 1
+      },
+      {
+        "label": "五湖",
+        "citations": 1
+      },
+      {
+        "label": "五府",
+        "citations": 1
+      },
+      {
+        "label": "御製",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "玉海",
+        "citations": 6,
+        "match": "bracket-note",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "地理 > 河渠 > 唐伊婁渠埭",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "太霞瓠瓜 > 臺 > 漢鴻臺",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "官制 > 褒功詔封 > 封列侯位次簿",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "藝文 > 經 > 黄帝四經",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "行 > 晉竹書紀年古文官書",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "郊祀 > 祠壇 > 魯雩壇",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "天中記",
+        "citations": 2,
+        "match": "bracket-note",
+        "category_count": 2,
+        "categories": [
+          {
+            "path": "昭明學士誤 > 觀",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "禮",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "北堂書鈔",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "政術部 > 亡徴四十一亡國四十二 > 亡國四十二",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今源流至論",
+        "citations": 1,
+        "match": "line-initial",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "太常掌故",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "圖書編",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "也遼陽塞外有鴨緑江 > 五湖",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "小學紺珠",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "管 > 五府",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "帝王部 > 御製",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 55142,
   "corpus_root": "中國漢文",
@@ -18,5 +18,331 @@
       "body_start_line": 8
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 30,
+    "leishu_count": 7,
+    "categorised_citations": 30,
+    "genmoku_confirmed_citations": 7,
+    "category_leaves": [
+      {
+        "label": "蟹",
+        "citations": 2
+      },
+      {
+        "label": "御史中丞",
+        "citations": 2
+      },
+      {
+        "label": "惟用咨報",
+        "citations": 1
+      },
+      {
+        "label": "盛度丁度",
+        "citations": 1
+      },
+      {
+        "label": "獻吕文穆",
+        "citations": 1
+      },
+      {
+        "label": "三處各合",
+        "citations": 1
+      },
+      {
+        "label": "不得館職",
+        "citations": 1
+      },
+      {
+        "label": "預浩造塔",
+        "citations": 1
+      },
+      {
+        "label": "必主王封",
+        "citations": 1
+      },
+      {
+        "label": "果贈僕射",
+        "citations": 1
+      },
+      {
+        "label": "骨類多遜",
+        "citations": 1
+      },
+      {
+        "label": "萊公甚惜",
+        "citations": 1
+      },
+      {
+        "label": "相術",
+        "citations": 1
+      },
+      {
+        "label": "糝",
+        "citations": 1
+      },
+      {
+        "label": "餅",
+        "citations": 1
+      },
+      {
+        "label": "魚",
+        "citations": 1
+      },
+      {
+        "label": "命術",
+        "citations": 1
+      },
+      {
+        "label": "柿",
+        "citations": 1
+      },
+      {
+        "label": "金橘",
+        "citations": 1
+      },
+      {
+        "label": "三衙",
+        "citations": 1
+      },
+      {
+        "label": "茶",
+        "citations": 1
+      },
+      {
+        "label": "饌",
+        "citations": 1
+      },
+      {
+        "label": "幕官",
+        "citations": 1
+      },
+      {
+        "label": "總官制",
+        "citations": 1
+      },
+      {
+        "label": "通判",
+        "citations": 1
+      },
+      {
+        "label": "身章撮要",
+        "citations": 1
+      },
+      {
+        "label": "褁桃核",
+        "citations": 1
+      },
+      {
+        "label": "雜評",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "山堂肆考",
+        "citations": 10,
+        "match": "line-initial",
+        "category_count": 10,
+        "categories": [
+          {
+            "path": "宋仁宗 > 惟用咨報",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "宋汪應辰字聖錫本名洋 > 盛度丁度",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見丞相 > 獻吕文穆",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見喪事 > 三處各合",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見喪事 > 不得館職",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見富人 > 預浩造塔",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見狀元 > 必主王封",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見狀元 > 果贈僕射",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見誕子 > 骨類多遜",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "見道士 > 萊公甚惜",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 7,
+        "match": "exact",
+        "category_count": 6,
+        "categories": [
+          {
+            "path": "鱗介部 > 蟹",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "方術部 > 相術",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "設官部 > 御史中丞",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "食物部 > 糝",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "食物部 > 餅",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "鱗介部 > 魚",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "記纂淵海",
+        "citations": 7,
+        "match": "bracket-note",
+        "category_count": 7,
+        "categories": [
+          {
+            "path": "伎術部 > 命術",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "果食部 > 柿",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "果食部 > 金橘",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "職官部 > 三衙",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "職官部 > 御史中丞",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "飲食部 > 茶",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "飲食部 > 饌",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "錦繡萬花谷",
+        "citations": 3,
+        "match": "bracket-note",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "幕官",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "總官制",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "通判",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "古今合璧事類備要",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "身章撮要",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定分類字錦",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "聚貨通貨 > 褁桃核",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "稗編",
+        "citations": 1,
+        "match": "bracket-note",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "畫二 > 雜評",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

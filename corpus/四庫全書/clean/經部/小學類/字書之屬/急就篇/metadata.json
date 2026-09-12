@@ -115,5 +115,121 @@
     }
   ],
   "provenance_schema_version": 1,
-  "medium": "紙"
+  "medium": "紙",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 7,
+    "leishu_count": 5,
+    "categorised_citations": 7,
+    "genmoku_confirmed_citations": 3,
+    "category_leaves": [
+      {
+        "label": "獄",
+        "citations": 1
+      },
+      {
+        "label": "典屬國",
+        "citations": 1
+      },
+      {
+        "label": "蕪菁",
+        "citations": 1
+      },
+      {
+        "label": "四十四有",
+        "citations": 1
+      },
+      {
+        "label": "夜拜",
+        "citations": 1
+      },
+      {
+        "label": "設官部",
+        "citations": 1
+      },
+      {
+        "label": "尺牘爰書八分書",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "太平御覽",
+        "citations": 3,
+        "match": "author-prefix-stripped",
+        "category_count": 3,
+        "categories": [
+          {
+            "path": "刑法部九 > 獄",
+            "citations": 1,
+            "genmoku_confirmed": false
+          },
+          {
+            "path": "職官部三十 > 左右藏令 > 典屬國",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "菜茹部四 > 蕪菁 > 蕪菁",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "元和姓纂",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "大夫井伯漢司徒掾井宗 > 四十四有",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "初學記",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "夜拜",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      },
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 1,
+        "match": "author-prefix-stripped",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "設官部",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      },
+      {
+        "leishu": "玉海",
+        "citations": 1,
+        "match": "exact",
+        "category_count": 1,
+        "categories": [
+          {
+            "path": "藝文 > 小學 > 尺牘爰書八分書",
+            "citations": 1,
+            "genmoku_confirmed": false
+          }
+        ]
+      }
+    ]
+  }
 }

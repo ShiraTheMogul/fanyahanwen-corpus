@@ -32,5 +32,116 @@
     }
   ],
   "known_commentaries": [],
-  "ca": "1271–1368年"
+  "ca": "1271–1368年",
+  "leishu_attestation": {
+    "schema_version": 1,
+    "generated": "2026-09-12",
+    "method": "corpus/scripts/leishu_attestation.py — 曰/云 head, bracket-note and line-initial idioms; category context from indentation depth, or from the work’s own 原目 where the transcription is flat",
+    "citations": 11,
+    "leishu_count": 1,
+    "categorised_citations": 11,
+    "genmoku_confirmed_citations": 11,
+    "category_leaves": [
+      {
+        "label": "絲",
+        "citations": 2
+      },
+      {
+        "label": "水總載",
+        "citations": 1
+      },
+      {
+        "label": "畫",
+        "citations": 1
+      },
+      {
+        "label": "綃",
+        "citations": 1
+      },
+      {
+        "label": "屏風",
+        "citations": 1
+      },
+      {
+        "label": "屐",
+        "citations": 1
+      },
+      {
+        "label": "席",
+        "citations": 1
+      },
+      {
+        "label": "簾",
+        "citations": 1
+      },
+      {
+        "label": "履",
+        "citations": 1
+      },
+      {
+        "label": "守宫",
+        "citations": 1
+      }
+    ],
+    "by_leishu": [
+      {
+        "leishu": "御定淵鑑𩔖函",
+        "citations": 11,
+        "match": "exact",
+        "category_count": 10,
+        "categories": [
+          {
+            "path": "布帛部 > 絲",
+            "citations": 2,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "地部 > 水總載",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "巧藝部 > 畫",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "布帛部 > 綃",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服飾部 > 屏風",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服飾部 > 屐",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服飾部 > 席",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "服飾部 > 簾",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "禮儀部 > 履",
+            "citations": 1,
+            "genmoku_confirmed": true
+          },
+          {
+            "path": "蟲豸部 > 守宫",
+            "citations": 1,
+            "genmoku_confirmed": true
+          }
+        ]
+      }
+    ]
+  }
 }
