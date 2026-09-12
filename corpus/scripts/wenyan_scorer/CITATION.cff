@@ -1,0 +1,30 @@
+﻿cff-version: 1.2.0
+message: "If you use this software, please cite it and Pulleyblank (2000)."
+type: software
+title: "Wenyan Scorer 文言得手器: an auditable implementation of Pulleyblank's Literary Chinese syntax"
+authors:
+  - family-names: "Evans"
+    given-names: "Llinos"
+    alias: "汐洛思"
+    orcid: "https://orcid.org/0009-0007-4733-5800"
+license: GPL-3.0-or-later
+version: "4.0.0"
+repository-code: "https://github.com/ShiraTheMogul/wenyan-scorer"
+keywords:
+  - Literary Chinese
+  - Classical Chinese
+  - 文言
+  - 漢文
+  - corpus linguistics
+  - historical linguistics
+references:
+  - type: book
+    title: "Outline of Classical Chinese Grammar"
+    authors:
+      - family-names: "Pulleyblank"
+        given-names: "Edwin G."
+    year: 2000
+    publisher:
+      name: "UBC Press"
+    location:
+      name: "Vancouver"

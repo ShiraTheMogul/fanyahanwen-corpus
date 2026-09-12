@@ -1,19 +1,32 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=61"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "wenyan_syntax"
-version = "0.8.0"
-description = "Pulleyblank-aligned construction-first syntactic scorer for Literary Chinese"
+name = "wenyan-scorer"
+version = "4.0.0"
+description = "Construction-based scorer for Literary Chinese using Pulleyblank (2000)"
 readme = "README.md"
 requires-python = ">=3.9"
-license = {text = "MIT"}
-authors = [{name = "fanyahanwen corpus tooling"}]
+license = { text = "GPL-3.0-or-later" }
+authors = [{ name = "Llinos Evans" }]
+keywords = [
+    "literary chinese", "literary sinitic", "wenyan", "kanbun", "hanmun",
+    "han van", "classical chinese", "corpus linguistics", "historical linguistics",
+]
+
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/ShiraTheMogul/wenyan-scorer"
+Source = "https://github.com/ShiraTheMogul/wenyan-scorer"
+
+[project.optional-dependencies]
+calibrate = ["numpy>=1.21"]
+calibrate-fast = ["numpy>=1.21", "scikit-learn>=1.0"]
+
+[project.scripts]
+wenyan-scorer = "wenyan_scorer.__main__:main"
 
 [tool.setuptools]
-package-dir = {"" = "."}
-
-[tool.setuptools.packages.find]
-where = ["."]
-include = ["wenyan_syntax*"]
+packages = ["wenyan_scorer", "wenyan_scorer.rulesets"]
