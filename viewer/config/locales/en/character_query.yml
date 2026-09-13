@@ -1,0 +1,309 @@
+﻿en:
+  character_query:
+    title: Character constraint query
+    description: >-
+      Find every character attested for a given syllable, narrow the set with
+      further constraints, and draw meanings from whichever historical
+      dictionaries you choose. The syllable carries its own tonal precision:
+      "yi" returns every tone, while "yi1" or "yī" returns only the first.
+    slot_inventory_title: Syllable inventory
+    slot_inventory_description: >-
+      Every syllable a reading system is attested to have, with the number of
+      characters in each. An inventory belongs to a system rather than to the
+      language as a whole: Cantonese holds syllables Mandarin does not,
+      Guǎngyùn 廣韻 is organised by xiǎoyùn 小韻 small rimes rather than by
+      syllable, and Japanese on'yomi 音讀 carries no tone to remove.
+    families:
+      sino_tibetan: Sino-Tibetan
+      japonic: Japonic
+      koreanic: Koreanic
+      austroasiatic: Austroasiatic
+      kra_dai: Kra-Dai
+    branches:
+      mandarin: Mandarin 官話
+      jin: Jin 晉語
+      wu: Wu 吳語
+      hui: Huizhou 徽語
+      gan: Gan 贛語
+      hakka: Hakka 客家話
+      min: Min 閩語
+      xiang: Xiang 湘語
+      yue: Yue 粵語
+      pinghua: Pinghua 平話
+      other_sinitic: Other Sinitic topolects
+      old_chinese: Old Chinese 上古
+      early_middle_chinese: Early Middle Chinese 前期中古
+      late_middle_chinese: Late Middle Chinese 後期中古
+      early_mandarin: Early Mandarin 近代
+      constructed: Constructed and superseded
+    branch_hints:
+      mandarin: Guānhuà
+      jin: Jìnyǔ
+      wu: Wúyǔ
+      hui: Huīyǔ
+      gan: Gànyǔ
+      hakka: Kèjiāhuà
+      min: Mǐnyǔ
+      xiang: Xiāngyǔ
+      yue: Yuèyǔ
+      pinghua: Pínghuà
+      old_chinese: shànggǔ — reconstruction only; no book of the period survives
+      early_middle_chinese: qiánqī zhōnggǔ — the 切韻 system, and the books that record it
+      late_middle_chinese: hòuqī zhōnggǔ — the rime-table language of Tang Chang'an
+      early_mandarin: jìndài — after the 12th century; Jin, Yuan and Ming
+      constructed: Neither historical nor a topolect
+      japanese: Japanese
+      okinawan: Okinawan, Uchinaaguchi
+      korean: Korean
+      jejueo: Jejueo
+      vietnamese: Vietnamese
+      zhuang: Zhuang
+    sections:
+      reading: Reading
+      also_read_as: Also read as
+      rime_books: Rime books 韻書
+      graphic_form: Graphic form
+      results: Results
+      inventory: Inventory
+    help:
+      slot: >-
+        A bare syllable returns every tone; add a tone number or mark to bind
+        one. yi returns all of them, yi1 and yī only the first.
+      umlaut: >-
+        v is accepted for ü, as keyboards input it: lv gives lü, nv gives nü.
+      secondary: >-
+        Restricts the set to characters that also carry this syllable in a
+        second system. This is what makes cross-topolect homophony tractable.
+      secondary_blank: >-
+        Type a syllable to narrow the results to characters that also read that
+        way here. Leave it empty and this system just adds its column, so you
+        can see every result's reading in it without filtering anything. Leave
+        it empty while giving a character above and the search reads that
+        character's own syllable here instead — which is how you compare 是
+        across Beijing and Shanghai without having to know that this source
+        writes the Shanghai onset zɦ rather than z.
+      rime_books: >-
+        Filters against one of the corpus's own parsed books, using that
+        book's categories. A tone or a rhyme category is a claim its compiler
+        made, so it only means anything inside the book that made it: 廣韻,
+        集韻, 五音集韻, 切韻 and 洪武正韻 each file 上聲 differently, and 麻 heads
+        a section in six of them naming a different rime in each. Choose the
+        book and the boxes below fill with its own vocabulary.
+      rime_book_from_source: >-
+        The source chosen above is a rime book, so these are its own
+        categories.
+      rime_book_required: >-
+        Choose a book and its own tones and categories appear here.
+      graphic_form: >-
+        Narrows by written form rather than by sound. The radical is the Kangxi
+        number, 1 to 214.
+      homophone: >-
+        Give a character and the search returns everything sharing its
+        readings in the chosen system. Tick "match tone too" to require the
+        tone to agree as well as the syllable.
+      ids: >-
+        Choose a layout, then fill the slots you care about and leave the rest
+        as ?. ⿰木? finds characters built left-to-right with 木 on the left;
+        ⿰?木 finds 木 on the right. A slot left open matches whatever sits
+        there, however complicated.
+      component: >-
+        Any component anywhere in the character, at any depth, regardless of
+        how it is arranged. Use the structure builder below to say where.
+      per_page: >-
+        How many characters one screen shows. It is not a limit on the search:
+        the count above is always the true total, and the CSV always holds
+        every match.
+      group_variants: >-
+        Folds variant spellings of one character into a single row; every
+        member keeps its own readings and quotations, listed as rows beneath
+        the head. "By script" is OpenCC, which joins 当 to 當 and nothing
+        looser. "By variant" is the Taiwan Ministry of Education 異體字字典,
+        which is broader and editorial — it joins 蕩 to 蘯 and 簜, and also
+        records 壹 as a variant of 一. "By both" takes the closure of the two.
+      inventory: >-
+        Every syllable a reading system is attested to have, with the number of
+        characters in each. An inventory belongs to a system rather than to the
+        language as a whole: Cantonese holds syllables Mandarin does not,
+        Guǎngyùn 廣韻 is organised by xiǎoyùn 小韻 small rimes rather than by
+        syllable, and Japanese on'yomi 音讀 carries no tone to remove.
+    groups:
+      named_systems: Reconstructions and reference
+      rime_books: Attested books 韻書
+      common_choices: Commonly consulted
+      all_localities: All localities
+    systems:
+      mandarin: Mandarin 漢語拼音
+      mandarin_broad: Mandarin, including rarer attested readings
+      cantonese: Cantonese 粵拼
+      japanese_on: Japanese 音讀
+      korean_hangul: Korean 한글
+      vietnamese: Vietnamese Quốc ngữ
+      zhuang: Zhuang Vahcuengh
+      general_chinese: General Chinese 通字 (Chao, 1983)
+      laoguoyin: Old National Pronunciation 老國音
+      okinawan_shuri: Shuri 首里 (NINJAL)
+      jejueo: Jejueo, hangul 한글 (Yang, Yang & O’Grady, 2020)
+      old_chinese_bs2014: Old Chinese (Baxter & Sagart, 2014)
+      middle_chinese_bs2014: Middle Chinese (Baxter & Sagart, 2014)
+      middle_chinese_bs2006: Middle Chinese (Baxter, 2006)
+      zhongyuan: Zhōngyuán Yīnyùn 中原音韻 (1324)
+      menggu_ziyun: 蒙古字韻, Phags-pa
+    system_hints:
+      mandarin: Hànyǔ Pīnyīn
+      cantonese: Jyutping
+      japanese_on: on'yomi
+      korean_hangul: hangul
+      general_chinese: Tōngzì
+      laoguoyin: Lǎoguó Yīn
+      zhongyuan: Zhōngyuán Yīnyùn
+      menggu_ziyun: Měnggǔ Zìyùn
+    labels:
+      family: Language family
+      branch: Language or topolect
+      system: Reading system
+      slot: Syllable
+      slot_placeholder: "yi, yi1, ji6, KOU"
+      slot_or_blank: blank = just show it
+      examples: For example
+      group_variants: Group variants
+      group_none: Keep separate
+      group_opencc: By script (OpenCC)
+      group_moe: By variant (MOE 異體字)
+      group_both: By both
+      show_codepoints: Show codepoints
+      scheme: Typed in
+      scheme_as_typed: As the system stores it
+      scheme_mandarin: Mandarin schemes
+      scheme_cantonese: Cantonese schemes
+      secondary_constraint: Also read as
+      meaning_columns: Meanings to include
+      combine: How this joins the reading
+      combine_and: and — characters satisfying both
+      combine_or: or — characters satisfying either
+      rime_book: Book 韻書
+      rime_book_hint: yùnshū — which book's own categories to use
+      rime_book_blank: Choose a book first
+      rime_tone: Tone 聲調
+      rime_tone_hint: shēngdiào — as this book files it
+      rime_section: Rhyme category 韻目
+      rime_section_radical: Radical 部首
+      rime_section_hint: the section this book files the character under
+      fanqie: Fanqie 反切
+      fanqie_hint: fǎnqiè — the spelling as this book gives it, 徳紅切 or 徳紅
+      small_rime: Small rime 小韻
+      small_rime_hint: xiǎoyùn — the homophone group's number within its rhyme
+      radical: Radical 部首
+      radical_hint: bùshǒu — Kangxi number, 1 to 214
+      radical_grid: Choose from all 214
+      radical_title: "%{number} — %{glyph}"
+      stroke_count:
+        one: 1 stroke
+        other: "%{count} strokes"
+      stroke_count_unknown: Stroke count not recorded
+      component: Contains component
+      ids: Build a structure (IDS)
+      ids_short: Compose
+      clear_ids: Clear the structure
+      homophone_of: Homophones of
+      or: or
+      match_tone: Match tone too
+      add_constraint: Add another reading
+      remove_constraint: Remove
+      total_strokes: Stroke count
+      common_only: Everyday characters only
+      output_mode: Show as
+      output_table: Table
+      output_annotation: Annotation block
+      per_page: Characters per page
+      per_page_all: All on one page
+      run: Search
+      show_slots: Show inventory
+      characters: Characters
+      slots: syllables
+      tones: By tone
+    table:
+      character: Character
+      codepoint: Codepoint
+      results_for: "%{count} characters read %{slot}."
+      narrowed: "Narrowed to %{total} by your other constraints."
+      matched: Matched reading
+      rare_reading_hint: Recorded only as a rare or compound-specific reading.
+      showing_range: "Showing %{first}–%{last} of %{total}."
+      pager_aria: Result pages
+      previous: Previous
+      next: Next
+      empty: Nothing matches every constraint at once.
+      variant_count:
+        one: 1 variant form
+        other: "%{count} variant forms"
+    annotation:
+      heading: Annotation block
+      needs_author: gloss needed
+      copy_hint: >-
+        Where the corpus holds no citable English gloss, the slot is left as
+        [gloss] for you to write. Kroll and Pleco are under copyright and are
+        not held here, so nothing is filled in under a borrowed attribution.
+    coverage:
+      sparse: "%{system} has readings for only %{count} characters."
+    technical:
+      toggle: Technical detail
+      intro: Where the set came from, and which fields were consulted.
+      step_primary: "%{system}, syllable %{slot}"
+      step_primary_toned: "%{system}, syllable %{slot}, tone %{tone}"
+      step_secondary: "also %{system} %{slot}"
+      step_dictionary: rime book constraint
+      step_radical: "radical %{radical}"
+      step_strokes: "%{strokes} strokes"
+      step_common: everyday characters only
+      step_group_variants: variant forms grouped
+      step_component: "contains %{component}"
+      step_ids: "IDS starting %{expression}"
+      remaining: remaining
+      fields: Fields consulted
+      broadened: rarer attested readings included
+    periods:
+      old_chinese: Old Chinese 上古
+      early_middle_chinese: Early Middle Chinese 前期中古
+      late_middle_chinese: Late Middle Chinese 後期中古
+      early_mandarin: Early Mandarin 近代
+    rime_book_hints:
+      廣韻: "Compiled 1008, Song, but evidence for the earlier system — the Tang and Song revisions “did not, on the whole, disturb Lu Fayan's phonological categories” (Pulleyblank 1984). 平聲 is bound in two fascicles, 上平聲 and 下平聲."
+      切韻: "601, Sui. The Early Middle Chinese standard itself. Lost; the corpus holds two modern reconstructions of it, which differ from each other."
+      集韻: "Compiled 1039, Song. A much larger revision in the 切韻 line; 176 rhyme categories against 廣韻's 199."
+      五音集韻: "1212, Jin. Rearranges 集韻 under the 36 initials, but also merges — 160 rhyme categories — so it records a later system rather than a reshelved earlier one."
+      洪武正韻: "1375, Ming. A prescriptive standard with 76 rhyme categories; it restored the 入聲 that 中原音韻 had already lost fifty years earlier."
+      玉篇: "A 字書 arranged by 部首, not a rime book; it records 反切 but no tone sections. Edition matters here — this is the 1013 大廣益會玉篇 recension, whereas Pulleyblank draws on the Liang original “as opposed to the revised edition of the Song period”."
+    errors:
+      missing_slot: Choose a reading system and enter a syllable.
+      missing_criteria: >-
+        Enter something to search for: a syllable, a character to find
+        homophones of, a component, or an IDS sequence.
+      character_not_found: >-
+        %{value} is not in the character database.
+      no_readings_for_character: >-
+        %{value} has no recorded reading in that system, so it has no
+        homophones to find there.
+      unknown_system: That reading system is not available. Choose another.
+      unparsable_slot: "%{spec} is not a syllable this system recognises."
+      no_reading_in_system: >-
+        %{value} has no recorded reading in %{system}, so there is nothing to
+        compare there.
+      slot_not_in_system: >-
+        %{system} has no syllable %{value}.
+      did_you_mean: "Closest in its inventory: %{list}."
+      no_inventory_for_rime_book: >-
+        A rime book has no syllable inventory. It spells with 反切, and every
+        romanisation of that spelling — Baxter & Sagart, Pulleyblank, Karlgren
+        — is that scholar's reading of it, not the book's own. Use the book's
+        tones, rhyme categories and 反切 instead.
+      rime_book_conflict: >-
+        Two different books were named: %{system} as the source, and another
+        in the rime-book filters. The source won, and the filters were applied
+        to it. Clear one of them.
+      rime_book_not_chosen: >-
+        Choose which book the rime-book filters apply to. 廣韻, 集韻, 五音集韻,
+        切韻 and 洪武正韻 each assign these categories themselves, so a filter
+        with no book behind it would return a set none of them asserted.
+      unexpected: >-
+        Something went wrong running that query. Nothing was changed. Try
+        again, or narrow the constraints.

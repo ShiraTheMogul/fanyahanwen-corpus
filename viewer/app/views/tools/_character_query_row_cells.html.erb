@@ -1,0 +1,24 @@
+<%#
+  Every column of a result row except the character itself, so a head row and
+  a variant row are rendered by the same code and cannot drift apart.
+%>
+<% if show_codepoints %>
+  <td class="cq-cp">U+<%= row[:codepoint].to_i.to_s(16).upcase %></td>
+<% end %>
+
+<% Array(row[:matched]).each do |group| %>
+  <td class="cq-matched">
+    <% Array(group[:readings]).each do |hit| %>
+      <span class="cq-matched-reading" title="<%= hit[:field] %> &#183; <%= hit[:source] %>">
+        <%= hit[:reading] %><%
+        %><% if hit[:system].to_s.end_with?("_broad") %><span class="cq-matched-rare" title="<%= t("character_query.table.rare_reading_hint") %>">&#8226;</span><% end %>
+      </span>
+    <% end %>
+  </td>
+<% end %>
+
+<% column_fields.each do |field| %>
+  <td class="<%= "han" if field.start_with?("kangxi", "shuowen", "guangyun") %>">
+    <%= Array(row.dig(:properties, field)).map { |entry| entry[:value] }.uniq.join(" / ") %>
+  </td>
+<% end %>

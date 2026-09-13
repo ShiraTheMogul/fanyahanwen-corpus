@@ -1,0 +1,45 @@
+<%= turbo_frame_tag "character_query_slots_out" do %>
+  <% if message.present? %>
+    <p class="cq-message"><%= message %></p>
+  <% elsif slots.empty? %>
+    <p class="cq-message"><%= t("character_query.table.empty") %></p>
+  <% else %>
+    <p class="cq-summary">
+      <%= t("character_query.systems.#{system}",
+             default: CharacterQuery::ReadingSystem.definition(system)&.dig(:label) || system) %>
+      <%= t("tools.common.label_separator") %>
+      <%= slots.size %> <%= t("character_query.labels.slots") %>
+    </p>
+    <div class="cq-tablewrap">
+      <table class="cq-table">
+        <thead>
+          <tr>
+            <th><%= t("character_query.labels.slot") %></th>
+            <th><%= t("character_query.labels.characters") %></th>
+            <th><%= t("character_query.labels.examples") %></th>
+            <th><%= t("character_query.labels.tones") %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% slots.each do |row| %>
+            <tr>
+              <td class="cq-slot"><%= row[:slot] %></td>
+              <td class="cq-count"><%= row[:count] %></td>
+              <%# A syllable on its own says nothing about what sits in it.
+                  A handful of characters makes the inventory usable to
+                  someone hunting for a slot they cannot yet spell. %>
+              <td class="han cq-examples"><%= Array(row[:examples]).join(" ") %></td>
+              <td class="cq-tones">
+                <% if row[:tones].blank? %>
+                  &#8212;
+                <% else %>
+                  <%= row[:tones].sort_by { |tone, _| tone.to_i }.map { |tone, count| "#{tone}:#{count}" }.join("  ") %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+<% end %>

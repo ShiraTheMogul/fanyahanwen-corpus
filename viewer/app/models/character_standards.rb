@@ -228,14 +228,52 @@ module CharacterStandards
     unihan_script_convert(value, fallback_mode)
   end
 
+  # Where OpenCC's own data lives, when it is not where the library expects.
+  #
+  # libopencc resolves a bare config name such as "s2t" against a directory
+  # compiled into it at build time — /usr/share/opencc on a distribution
+  # build. A copy installed without root has its data somewhere else, that
+  # directory does not exist, and every conversion fails inside opencc_open
+  # before it reads a single character.
+  #
+  # OPENCC_DATA_DIR names the directory holding the .json configs and their
+  # .ocd2 dictionaries. Set, a bare name resolves to an absolute path there.
+  # Unset, the name passes through untouched and the library's own default
+  # applies — which is the right behaviour on any machine with a system
+  # OpenCC, and is why this changes nothing in development.
+  #
+  # Read from the environment on each call rather than frozen into a constant,
+  # so a console session can point at a different data directory without a
+  # reload.
+  def opencc_data_dir
+    value = ENV["OPENCC_DATA_DIR"].to_s.strip
+    value.empty? ? nil : value
+  end
+
+  # A name becomes a path; a path stays a path. The second case matters
+  # because mainland_traditional passes a config file of its own.
+  def opencc_config_reference(config)
+    name = config.to_s
+    dir = opencc_data_dir
+    return name if dir.nil? || name.include?("/")
+
+    File.join(dir, "#{name}.json")
+  end
+
   def opencc_convert(text, config)
     require "opencc" unless defined?(::OpenCC)
 
-    if ::OpenCC.respond_to?(config)
+    reference = opencc_config_reference(config)
+
+    # The gem's named shortcuts (OpenCC.s2t and friends) hand the bare name to
+    # the library, so they are only usable when the library can find its own
+    # data. With a data directory configured we go through Converter with an
+    # absolute path instead.
+    if reference == config.to_s && ::OpenCC.respond_to?(config)
       return ::OpenCC.public_send(config, text.to_s)
     end
 
-    converter = ::OpenCC::Converter.new(config.to_s)
+    converter = ::OpenCC::Converter.new(reference)
     begin
       converter.convert(text.to_s)
     ensure

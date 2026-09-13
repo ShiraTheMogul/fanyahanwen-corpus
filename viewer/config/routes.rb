@@ -15,6 +15,9 @@ Rails.application.routes.draw do
 	post "/tools/phonetic/mandarin", to: "tools#phonetic_mandarin", as: :tools_phonetic_mandarin
 	post "/tools/phonetic/cantonese", to: "tools#phonetic_cantonese", as: :tools_phonetic_cantonese
 	
+	post "/tools/character_query", to: "tools#character_query", as: :tools_character_query
+	post "/tools/character_query/slots", to: "tools#character_query_slots", as: :tools_character_query_slots
+	
 	# Normalized historical dictionary catalogue
 	get "/dictionary/catalogue", to: "dictionary_catalogue#index", as: :dictionary_catalogue
 	get "/dictionary/catalogue/:corpus_work_id/sections/:section_sequence/entries", to: "dictionary_catalogue#entries", as: :dictionary_catalogue_section_entries

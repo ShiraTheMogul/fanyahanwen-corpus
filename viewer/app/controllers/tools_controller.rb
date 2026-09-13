@@ -3,6 +3,8 @@
 require "csv"
 
 class ToolsController < ApplicationController
+  include CharacterQueryable
+
   EXTRACTOR_OPTIONS = [
     ["tools.character_extractor.options.cangjie", "cangjie"],
     ["tools.character_extractor.options.unicode_definition", "unicode_definition"],

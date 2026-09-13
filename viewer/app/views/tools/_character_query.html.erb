@@ -1,0 +1,498 @@
+﻿<%#
+  Constraint query form. Begins with an <h2> so tools_picker_controller
+  discovers it as a panel automatically, like the existing tool sections.
+
+  Both forms POST. The picker keeps the open panel in the URL hash and re-reads
+  it on popstate, so a GET here changes the path, leaves the picker with no
+  panel to reopen, and breaks the back button.
+
+  Sectioned panels, not one flat grid: a flat grid split logical groups across
+  columns and left explanations orphaned beside unrelated controls.
+
+  Guidance is a (?) affordance and romanisation is a hover title. Neither
+  earns a line of its own.
+%>
+<h2><%= t("character_query.title") %></h2>
+
+<p class="cq-intro"><%= t("character_query.description") %></p>
+
+<%
+  column_options = ToolsController::ENRICHABLE_FIELD_OPTIONS.map { |field, key| [t(key), field] }
+
+  scheme_label = ->(key) { key.to_s.tr("_", " ") }
+  scheme_groups = [
+    [t("character_query.labels.scheme_mandarin"),
+     Phoneticization::Converters::MANDARIN_SCHEMES.keys.map { |k| [scheme_label.call(k), k] }],
+    [t("character_query.labels.scheme_cantonese"),
+     Phoneticization::Converters::CANTONESE_SCHEMES.keys.map { |k| [scheme_label.call(k), k] }]
+  ]
+  # The corpus's own rime books and character dictionaries, grouped by period
+  # and each carrying its own vocabulary. Nothing here is hardcoded: see
+  # CharacterQuery::RimeBooks.
+  #
+  # The list this replaces was five hardcoded strings — 上平聲 下平聲 上聲
+  # 去聲 入聲 — which are 廣韻's own fascicle headings and no other book's.
+  # 上平聲 and 下平聲 are not even tones: 平聲 was too long for one 卷 and was
+  # bound in two. Offering them under a heading reading "Middle Chinese tone",
+  # with no book named and no book filter applied, meant picking 上聲 searched
+  # 廣韻, 集韻, 五音集韻, 切韻 AND 洪武正韻 at once — a Ming standard included —
+  # while plain 平聲, which is what every book except 廣韻 writes, could not be
+  # asked for at all.
+  rime_books = CharacterQuery::RimeBooks.books
+  rime_book_options =
+    rime_books.group_by { |book| book[:period] }.map do |period, list|
+      [t("character_query.periods.#{period}", default: period.humanize),
+       list.map { |book| ["#{book[:label]}（#{book[:year]}）", book[:id]] }]
+    end
+  rime_book_data = rime_books.to_h do |book|
+    [book[:id], {
+      "label" => book[:label],
+      "axis" => book[:section_axis].to_s,
+      "facets" => book[:facets].map(&:to_s),
+      "work_id" => book[:work_id],
+      "tones" => CharacterQuery::RimeBooks.vocabulary(book[:id])[:tones],
+      "rhymes" => CharacterQuery::RimeBooks.vocabulary(book[:id])[:rhymes]
+    }]
+  end
+
+  # Arranged by stroke count, and derived from the corpus rather than a
+  # hardcoded table. See CharacterQuery::KangxiRadicals.
+  radical_groups = CharacterQuery::KangxiRadicals.groups
+
+  per_page_options =
+    CharacterQuery::Query::PER_PAGE_CHOICES.map { |size| [size.to_s, size] } +
+    [[t("character_query.labels.per_page_all"), "all"]]
+%>
+
+<%# Rendered once; every picker on the panel reads it. %>
+<script type="application/json" id="cq-picker-data"><%= raw character_query_picker.to_json %></script>
+
+<%#
+  The controller wraps the form AND the output frame. Paging buttons are
+  rendered into the frame by the server, so they have to fall inside the same
+  Stimulus scope as the hidden page field they set; a controller mounted on the
+  form alone would leave them out of reach.
+%>
+<div data-controller="character-query-form"
+     data-action="character-query:system-changed->character-query-form#primarySystemChanged"
+     data-character-query-form-max-rows-value="8">
+
+<%= form_with url: tools_character_query_path, method: :post,
+              data: { turbo_frame: "character_query_out",
+                      character_query_form_target: "form" } do %>
+  <div class="cq-sections">
+
+    <fieldset class="cq-panel cq-panel--wide" data-controller="character-query"
+              data-character-query-payload-id-value="cq-picker-data">
+      <legend><%= t("character_query.sections.reading") %></legend>
+
+      <%= render "tools/character_query_picker",
+                 prefix: "cq", system_name: "system",
+                 family_default: "sino_tibetan", branch_default: "mandarin",
+                 system_default: "mandarin", include_blank: false %>
+
+      <%# Two ways in, as two cards nested inside this panel rather than a
+          table. They are alternatives, not a sequence — name the syllable, or
+          name a character and let the tool read its syllables off — so "or"
+          sits between them and filling either greys the other out. Asking for
+          /yi/ AND "whatever 一 rhymes with" is the same question twice, and
+          the second answer would silently overwrite the first.
+
+          A table was wrong here twice over: its header row rendered as a
+          full-width banner across the panel, and 50/50 columns pushed two
+          short inputs to opposite ends of the screen. %>
+      <div class="cq-choices">
+        <div class="cq-choice" data-character-query-form-target="slotSide">
+          <div class="cq-choice-head">
+            <label for="cq_slot"><%= t("character_query.labels.slot") %></label>
+            <%= tag.span "?", class: "cq-help", tabindex: 0, role: "note",
+                    title: t("character_query.help.slot") %>
+            <%# Shown only where ü is a letter distinction, which is Mandarin. %>
+            <%= tag.span "?", class: "cq-help", tabindex: 0, role: "note", hidden: true,
+                    data: { character_query_target: "umlautHelp" },
+                    title: t("character_query.help.umlaut") %>
+          </div>
+          <div class="cq-choice-body">
+            <%= text_field_tag :slot, nil, id: "cq_slot", size: 12,
+                    placeholder: t("character_query.labels.slot_placeholder"), autocomplete: "off",
+                    data: { character_query_form_target: "slotInput",
+                            action: "input->character-query-form#sideChanged" } %>
+            <span class="cq-subfield">
+              <label for="cq_scheme"><%= t("character_query.labels.scheme") %></label>
+              <%= select_tag :scheme, grouped_options_for_select(scheme_groups, nil),
+                      include_blank: t("character_query.labels.scheme_as_typed"), id: "cq_scheme" %>
+            </span>
+          </div>
+        </div>
+
+        <div class="cq-choice-or"><span><%= t("character_query.labels.or") %></span></div>
+
+        <div class="cq-choice" data-character-query-form-target="homophoneSide">
+          <div class="cq-choice-head">
+            <label for="cq_homophone_of"><%= t("character_query.labels.homophone_of") %></label>
+            <%= tag.span "?", class: "cq-help", tabindex: 0, role: "note",
+                    title: t("character_query.help.homophone") %>
+          </div>
+          <div class="cq-choice-body">
+            <%= text_field_tag :homophone_of, nil, id: "cq_homophone_of", size: 4,
+                    class: "han cq-charbox", autocomplete: "off", maxlength: 2,
+                    data: { character_query_form_target: "homophoneInput",
+                            action: "input->character-query-form#sideChanged" } %>
+            <label class="cq-check">
+              <%= check_box_tag :match_tone, "1", false %>
+              <%= t("character_query.labels.match_tone") %>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <%# Extra readings, added on demand. One reading is the common case and
+          should cost nothing on screen. %>
+      <div class="cq-extra-rows" data-character-query-form-target="rows"></div>
+
+      <template data-character-query-form-target="rowTemplate">
+        <div class="cq-extra-row" data-cq-row
+             data-controller="character-query"
+             data-character-query-payload-id-value="cq-picker-data">
+          <span class="cq-rowlabel"><%= t("character_query.sections.also_read_as") %></span>
+          <%= render "tools/character_query_picker",
+                     prefix: "cq_secondary___INDEX__", system_name: "secondary_system[]",
+                     family_default: "sino_tibetan", branch_default: "yue",
+                     system_default: "cantonese", include_blank: true %>
+          <%# Blank is meaningful here when a character was given above: it
+              means "whatever that character reads as in this system", which
+              is how you compare 是 across Beijing and Shanghai without
+              knowing that Xiaoxuetang writes the Shanghai onset zɦ, not z. %>
+          <span class="cq-subfield">
+            <label for="cq_secondary___INDEX___slot"><%= t("character_query.labels.slot") %></label>
+            <%= text_field_tag "secondary_slot[]", nil, id: "cq_secondary___INDEX___slot", size: 22,
+                    placeholder: t("character_query.labels.slot_or_blank"), autocomplete: "off" %>
+            <%= tag.span "?", class: "cq-help", tabindex: 0, role: "note",
+                    title: t("character_query.help.secondary_blank") %>
+          </span>
+          <span class="cq-subfield">
+            <label for="cq_secondary___INDEX___scheme"><%= t("character_query.labels.scheme") %></label>
+            <%= select_tag "secondary_scheme[]", grouped_options_for_select(scheme_groups, nil),
+                    include_blank: t("character_query.labels.scheme_as_typed"),
+                    id: "cq_secondary___INDEX___scheme" %>
+          </span>
+          <button type="button" class="cq-rowbtn"
+                  data-action="character-query-form#removeRow"
+                  title="<%= t("character_query.labels.remove_constraint") %>">&minus;</button>
+        </div>
+      </template>
+
+      <div class="cq-row">
+        <button type="button" class="cq-addbtn"
+                data-character-query-form-target="addButton"
+                data-action="character-query-form#addRow">
+          + <%= t("character_query.labels.add_constraint") %>
+        </button>
+        <%= tag.span "?", class: "cq-help", tabindex: 0, role: "note",
+                title: t("character_query.help.secondary") %>
+      </div>
+    </fieldset>
+
+    <%#
+      Rime books and character dictionaries.
+
+      The book comes FIRST and everything below it is that book's own
+      vocabulary, read from its own sections. Nothing here can fire without a
+      book named, in the interface or in Query — a tone with no source behind
+      it is a claim no compiler made.
+
+      The books differ in what they can even be asked. 玉篇 is a 字書: it is
+      arranged by 部首 and records no tone, so its section box says 部首 and
+      its tone box is not offered. Query enforces the same thing server-side,
+      so a hand-built POST cannot get round it either.
+    %>
+    <fieldset class="cq-panel" data-character-query-form-target="rimePanel"
+              data-books="<%= rime_book_data.to_json %>">
+      <legend>
+        <%= t("character_query.sections.rime_books") %>
+        <%= tag.span "?", class: "cq-help", tabindex: 0, role: "note",
+                title: t("character_query.help.rime_books") %>
+      </legend>
+
+      <div class="cq-row">
+        <span class="cq-subfield cq-subfield--wide"
+              data-character-query-form-target="rimeBookField">
+          <label for="cq_dictionary_work_id" title="<%= t("character_query.labels.rime_book_hint") %>">
+            <%= t("character_query.labels.rime_book") %>
+          </label>
+          <%= select_tag :dictionary_work_id,
+                grouped_options_for_select(rime_book_options),
+                include_blank: t("character_query.labels.rime_book_blank"),
+                id: "cq_dictionary_work_id", class: "han",
+                data: { character_query_form_target: "rimeBook",
+                        action: "character-query-form#rimeBookChanged" } %>
+        </span>
+      </div>
+
+      <%# How this book joins the reading above it.
+
+          AND is the narrower question and the default. OR matters because
+          the two sides cover very different amounts of the language: Baxter
+          & Sagart reconstruct about 4,000 characters where 廣韻 files 16,079,
+          so under AND the book can only ever subtract from what Baxter
+          happens to have. Under OR it can contribute. %>
+      <div class="cq-row cq-combine" data-character-query-form-target="combineRow">
+        <fieldset class="cq-combine__set">
+          <legend class="cq-combine__legend"><%= t("character_query.labels.combine") %></legend>
+          <% %w[and or].each do |mode| %>
+            <label class="cq-combine__option">
+              <%= radio_button_tag :combine, mode, mode == "and", id: "cq_combine_#{mode}" %>
+              <span><%= t("character_query.labels.combine_#{mode}") %></span>
+            </label>
+          <% end %>
+        </fieldset>
+      </div>
+
+      <div class="cq-row cq-row--facets">
+        <span class="cq-subfield" data-character-query-form-target="rimeToneField">
+          <label for="cq_rime_tone" title="<%= t("character_query.labels.rime_tone_hint") %>">
+            <%= t("character_query.labels.rime_tone") %>
+          </label>
+          <%= select_tag :rime_tone, options_for_select([["", ""]]),
+                id: "cq_rime_tone", class: "han", disabled: true,
+                data: { character_query_form_target: "rimeTone" } %>
+        </span>
+
+        <span class="cq-subfield" data-character-query-form-target="rimeSectionField">
+          <%# Two labels on one control, because the axis is the book's, not
+              ours: 韻目 in a 韻書, 部首 in 玉篇. Both strings are carried on the
+              element so the swap needs no second request. %>
+          <label for="cq_rhyme_label" data-character-query-form-target="rimeSectionLabel"
+                 data-rhyme-label="<%= t("character_query.labels.rime_section") %>"
+                 data-radical-label="<%= t("character_query.labels.rime_section_radical") %>"
+                 title="<%= t("character_query.labels.rime_section_hint") %>"><%=
+            t("character_query.labels.rime_section") %></label>
+          <%= text_field_tag :rhyme_label, nil, id: "cq_rhyme_label", size: 6,
+                  class: "han", autocomplete: "off", disabled: true, list: "cq-rime-sections",
+                  data: { character_query_form_target: "rimeSection" } %>
+          <datalist id="cq-rime-sections" data-character-query-form-target="rimeSectionList"></datalist>
+        </span>
+
+        <span class="cq-subfield" data-character-query-form-target="fanqieField">
+          <label for="cq_fanqie" title="<%= t("character_query.labels.fanqie_hint") %>">
+            <%= t("character_query.labels.fanqie") %>
+          </label>
+          <%= text_field_tag :fanqie, nil, id: "cq_fanqie", size: 6,
+                  class: "han", autocomplete: "off", disabled: true,
+                  placeholder: "徳紅切",
+                  data: { character_query_form_target: "fanqie" } %>
+        </span>
+
+        <span class="cq-subfield" data-character-query-form-target="smallRimeField">
+          <label for="cq_small_rime" title="<%= t("character_query.labels.small_rime_hint") %>">
+            <%= t("character_query.labels.small_rime") %>
+          </label>
+          <%= number_field_tag :small_rime, nil, id: "cq_small_rime", min: 1,
+                  class: "cq-num", disabled: true,
+                  data: { character_query_form_target: "smallRime" } %>
+        </span>
+      </div>
+
+      <p class="cq-facet-note" data-character-query-form-target="rimeNote"
+         hidden><%= t("character_query.help.rime_book_required") %></p>
+
+      <%# Shown instead when the source above is itself a rime book: there is
+          one book in play, not two, so asking for a second would only create
+          the conflict the server has to warn about. %>
+      <p class="cq-facet-note" data-character-query-form-target="sourceNote"
+         hidden><%= t("character_query.help.rime_book_from_source") %></p>
+    </fieldset>
+
+    <fieldset class="cq-panel">
+      <legend>
+        <%= t("character_query.sections.graphic_form") %>
+        <%= tag.span "?", class: "cq-help", tabindex: 0, role: "note",
+                title: t("character_query.help.graphic_form") %>
+      </legend>
+
+      <%# Each picker is a button beside the box it fills, opening a panel over
+          the page — the same shape as 組字 Compose in the header, which is
+          where a reader has already met it. %>
+      <div class="cq-row">
+        <span class="cq-subfield">
+          <label for="cq_radical" title="<%= t("character_query.labels.radical_hint") %>">
+            <%= t("character_query.labels.radical") %>
+          </label>
+          <%= number_field_tag :radical, nil, id: "cq_radical", min: 1, max: 214,
+                  class: "cq-num", data: { character_query_form_target: "radicalInput" } %>
+
+          <details class="cq-popover" data-character-query-form-target="radicalGrid">
+            <summary class="cq-popover__toggle" title="<%= t("character_query.labels.radical_grid") %>">
+              <span class="han">部</span>
+              <span class="cq-popover__english"><%= t("character_query.labels.radical_grid") %></span>
+            </summary>
+            <div class="cq-popover__panel">
+              <div class="cq-radical-rows">
+                <% radical_groups.each do |strokes, radicals| %>
+                  <div class="cq-radical-row">
+                    <div class="cq-radical-label">
+                      <strong><%= strokes ? t("character_query.labels.stroke_count", count: strokes) : t("character_query.labels.stroke_count_unknown") %></strong>
+                    </div>
+                    <div class="cq-radical-glyphs">
+                      <% radicals.each do |radical| %>
+                        <button type="button" class="cq-radical"
+                                title="<%= t("character_query.labels.radical_title", number: radical[:number], glyph: radical[:glyph]) %>"
+                                data-radical-number="<%= radical[:number] %>"
+                                data-action="character-query-form#chooseRadical">
+                          <span class="han"><%= radical[:glyph] %></span>
+                          <span class="cq-radical-n"><%= radical[:number] %></span>
+                        </button>
+                      <% end %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </details>
+        </span>
+
+        <span class="cq-subfield">
+          <label for="cq_total_strokes"><%= t("character_query.labels.total_strokes") %></label>
+          <%= number_field_tag :total_strokes, nil, id: "cq_total_strokes", min: 1, max: 64, class: "cq-num" %>
+        </span>
+      </div>
+
+      <%# All 214, grouped by stroke count, which is how someone who does not
+          know a radical's name finds it — the same lookup skill the IDS
+          palette is arranged around. %>
+      <%# The site's own IDS builder, the same partial the header, the word
+          processor and both IDS games render, behind the same 組字 button the
+          header uses. Its "?" means an open slot, so ⿰木? finds anything with
+          木 on the left and ⿰?木 anything with 木 on the right — neither of
+          which a plain text box could express. %>
+      <div class="cq-row">
+        <span class="cq-subfield">
+          <label for="cq_component"><%= t("character_query.labels.component") %></label>
+          <%= text_field_tag :component, nil, id: "cq_component", size: 4,
+                  class: "han cq-charbox", autocomplete: "off", maxlength: 2 %>
+          <%= tag.span "?", class: "cq-help", tabindex: 0, role: "note",
+                  title: t("character_query.help.component") %>
+
+          <details class="cq-popover" data-character-query-form-target="idsPanel">
+            <summary class="cq-popover__toggle" title="<%= t("character_query.labels.ids") %>">
+              <span class="han">組字</span>
+              <span class="cq-popover__english"><%= t("character_query.labels.ids_short") %></span>
+              <code class="cq-ids-preview" data-character-query-form-target="idsPreview">?</code>
+            </summary>
+            <div class="cq-popover__panel">
+              <p class="cq-hint"><%= t("character_query.help.ids") %></p>
+              <div data-action="ids-constructor:changed->character-query-form#idsChanged">
+                <%= render "shared/ids_builder",
+                           compact: true,
+                           show_palette: true,
+                           palette_open: false,
+                           show_search: false,
+                           search_url: "/characters/structure" %>
+              </div>
+              <button type="button" class="cq-rowbtn" data-action="character-query-form#clearIds">
+                <%= t("character_query.labels.clear_ids") %>
+              </button>
+            </div>
+          </details>
+          <%= hidden_field_tag :ids_expression, nil, id: "cq_ids_expression",
+                  data: { character_query_form_target: "idsExpression" } %>
+        </span>
+      </div>
+    </fieldset>
+
+    <fieldset class="cq-panel cq-panel--wide">
+      <legend><%= t("character_query.sections.results") %></legend>
+
+      <div class="cq-row">
+        <span class="cq-subfield cq-subfield--stack">
+          <label for="cq_columns"><%= t("character_query.labels.meaning_columns") %></label>
+          <%= select_tag "columns[]", options_for_select(column_options, %w[kDefinition]),
+                  multiple: true, size: 6, id: "cq_columns" %>
+        </span>
+
+        <span class="cq-subfield cq-subfield--stack">
+          <label class="cq-check">
+            <%= check_box_tag :common_only, "1", false %>
+            <%= t("character_query.labels.common_only") %>
+          </label>
+          <%# Codepoints matter to some readers and are noise to the rest, so
+              they are a choice rather than a fixed column. %>
+          <label class="cq-check">
+            <%= check_box_tag :show_codepoints, "1", true %>
+            <%= t("character_query.labels.show_codepoints") %>
+          </label>
+          <%# Two sources, because they answer different questions: OpenCC
+              normalises script (当/當), MOE's 異體字字典 records orthographic
+              variance proper (蕩/蘯/簜). Either, or their closure. %>
+          <span class="cq-subfield">
+            <label for="cq_group_variants"><%= t("character_query.labels.group_variants") %></label>
+            <%= select_tag :group_variants,
+                    options_for_select([[t("character_query.labels.group_none"), ""],
+                                        [t("character_query.labels.group_opencc"), "opencc"],
+                                        [t("character_query.labels.group_moe"), "moe"],
+                                        [t("character_query.labels.group_both"), "both"]], ""),
+                    id: "cq_group_variants" %>
+            <%= tag.span "?", class: "cq-help", tabindex: 0, role: "note",
+                    title: t("character_query.help.group_variants") %>
+          </span>
+          <span class="cq-subfield">
+            <label for="cq_output_mode"><%= t("character_query.labels.output_mode") %></label>
+            <%= select_tag :output_mode,
+                    options_for_select([[t("character_query.labels.output_table"), "table"],
+                                        [t("character_query.labels.output_annotation"), "annotation"]], "table"),
+                    id: "cq_output_mode" %>
+          </span>
+          <%# Page size, not a result cap. The total is always the true count
+              and the CSV always holds every match; this only decides how much
+              of it one screen renders. "All" is offered because a ceiling on
+              what exists is a ceiling on the work. %>
+          <span class="cq-subfield">
+            <label for="cq_per_page"><%= t("character_query.labels.per_page") %></label>
+            <%= select_tag :per_page,
+                    options_for_select(per_page_options, CharacterQuery::Query::DEFAULT_PER_PAGE),
+                    id: "cq_per_page" %>
+            <%= tag.span "?", class: "cq-help", tabindex: 0, role: "note",
+                    title: t("character_query.help.per_page") %>
+          </span>
+          <%= hidden_field_tag :page, 1, id: "cq_page",
+                  data: { character_query_form_target: "page" } %>
+        </span>
+      </div>
+    </fieldset>
+  </div>
+
+  <div class="cq-actions">
+    <button type="submit" data-action="character-query-form#resetPage"><%= t("character_query.labels.run") %></button>
+    <button type="submit" name="download" value="csv" formtarget="_top" data-turbo="false"><%= t("tools.common.download_csv") %></button>
+  </div>
+<% end %>
+
+<%= turbo_frame_tag "character_query_out" do %>
+  <pre class="tool-output"></pre>
+<% end %>
+</div>
+
+<h3><%= t("character_query.slot_inventory_title") %></h3>
+
+<%= form_with url: tools_character_query_slots_path, method: :post,
+              data: { turbo_frame: "character_query_slots_out" } do %>
+  <fieldset class="cq-panel" data-controller="character-query"
+            data-character-query-payload-id-value="cq-picker-data">
+    <legend>
+      <%= t("character_query.sections.inventory") %>
+      <%= tag.span "?", class: "cq-help", tabindex: 0, role: "note",
+              title: t("character_query.help.inventory") %>
+    </legend>
+    <%= render "tools/character_query_picker",
+               prefix: "cq_slots", system_name: "system",
+               family_default: "sino_tibetan", branch_default: "mandarin",
+               system_default: "mandarin", include_blank: false %>
+    <div class="cq-row">
+      <button type="submit"><%= t("character_query.labels.show_slots") %></button>
+    </div>
+  </fieldset>
+<% end %>
+
+<%= turbo_frame_tag "character_query_slots_out" do %>
+  <pre class="tool-output"></pre>
+<% end %>

@@ -1,0 +1,248 @@
+﻿<%= turbo_frame_tag "character_query_out" do %>
+  <%
+    technical_fields =
+      if defined?(result) && result
+        (Array(params[:columns]).map(&:to_s) +
+         [CharacterQuery::ReadingSystem.definition(system)&.dig(:field)]).compact.uniq
+      else
+        []
+      end
+    column_fields =
+      Array(params[:columns]).map(&:to_s).select { |f| ToolsController::ENRICHABLE_FIELD_OPTIONS.key?(f) }
+
+    # Both computed once, outside the row loop. The ordered list of constrained
+    # systems is what the matched-reading headers and every row's cells are
+    # keyed on, so the two stay aligned by construction.
+    system_label = ->(id) { t("character_query.systems.#{id}",
+                              default: CharacterQuery::ReadingSystem.definition(id)&.dig(:label) || id.to_s) }
+    matched_systems = defined?(result) && result ? Array(result.matched_systems) : []
+    show_codepoints = params[:show_codepoints].present?
+  %>
+
+  <% if message.present? %>
+    <p class="cq-message"><%= message %></p>
+  <% elsif result.nil? || result.rows.empty? %>
+    <%# A specific reason beats a bare "nothing found" whenever there is one. %>
+    <% spoken = Array(result&.warnings).filter_map do |warning|
+         system_name = system_label
+         case warning[:code]
+         when :no_criteria then t("character_query.errors.missing_criteria")
+         when :rime_book_not_chosen then t("character_query.errors.rime_book_not_chosen")
+         when :rime_book_conflict
+           t("character_query.errors.rime_book_conflict",
+             system: system_name.call(warning[:system]))
+         when :character_not_found then t("character_query.errors.character_not_found", value: warning[:value])
+         when :no_readings_for_character then t("character_query.errors.no_readings_for_character", value: warning[:value])
+         when :no_reading_in_system
+           t("character_query.errors.no_reading_in_system",
+             value: warning[:value], system: system_name.call(warning[:system]))
+         when :slot_not_in_system
+           # A syllable that is not in the inventory at all is usually a
+           # spelling difference rather than a mistake — Shanghai writes zɦɿ
+           # where most of Wu writes zɿ — so name the nearest slots that do
+           # exist instead of stopping at "nothing found".
+           near = Array(warning[:suggestions])
+           base = t("character_query.errors.slot_not_in_system",
+                    value: warning[:value], system: system_name.call(warning[:system]))
+           near.any? ? "#{base} #{t('character_query.errors.did_you_mean',
+                                    list: near.map { |s| "#{s[:slot]} (#{s[:count]})" }.join(', '))}" : base
+         end
+       end %>
+    <% if spoken.any? %>
+      <% spoken.uniq.each do |line| %>
+        <p class="cq-message"><%= line %></p>
+      <% end %>
+    <% else %>
+      <p class="cq-message"><%= t("character_query.table.empty") %></p>
+    <% end %>
+    <% if result&.steps.present? %>
+      <%= render "tools/character_query_steps", steps: result.steps, fields: technical_fields %>
+    <% end %>
+  <% else %>
+    <p class="cq-summary">
+      <%= t("character_query.table.results_for",
+             count: result.primary_count, slot: [slot, tone].compact.join) %>
+      <% if result.total != result.primary_count %>
+        <%= t("character_query.table.narrowed", total: result.total) %>
+      <% end %>
+      <%# Which slice of the whole is on screen. Never a truncation notice:
+          nothing has been cut, and the CSV holds every match either way. %>
+      <% if result.page_count.to_i > 1 %>
+        <%= t("character_query.table.showing_range",
+               first: result.offset.to_i + 1,
+               last: result.offset.to_i + result.rows.size,
+               total: result.total) %>
+      <% end %>
+    </p>
+
+    <%# Warnings that matter even when the search succeeded. The block above
+        only speaks when there are no rows, which is right for "nothing
+        matched and here is why" — but a source conflict changes what the
+        rows MEAN, so it has to be said over a full table too. %>
+    <% Array(result.warnings).each do |warning| %>
+      <% next unless warning[:code] == :rime_book_conflict %>
+      <p class="cq-message cq-message--warn">
+        <%= t("character_query.errors.rime_book_conflict",
+               system: t("character_query.systems.#{warning[:system]}",
+                         default: CharacterQuery::ReadingSystem.definition(warning[:system])&.dig(:label) || warning[:system])) %>
+      </p>
+    <% end %>
+
+    <%# A thin record shortens a result without being a strict constraint.
+        The figure says that on its own; the paragraph explaining it did not
+        earn its space. %>
+    <% result.coverage.each do |system_id, figures| %>
+      <% next if figures.blank? || figures[:character_count].to_i >= 5_000 %>
+      <p class="cq-coverage">
+        <%= t("character_query.coverage.sparse",
+               system: t("character_query.systems.#{system_id}",
+                         default: CharacterQuery::ReadingSystem.definition(system_id)&.dig(:label) || system_id),
+               count: figures[:character_count]) %>
+      </p>
+    <% end %>
+
+    <% if output_mode == "annotation" %>
+      <h4><%= t("character_query.annotation.heading") %></h4>
+      <p class="cq-hint"><%= t("character_query.annotation.copy_hint") %></p>
+      <dl class="cq-annotations">
+        <% annotation_entries.each do |entry| %>
+          <dt class="han">
+            <%= entry[:char] %>
+            <% if entry[:reading].present? %><span class="cq-reading"><%= entry[:reading] %></span><% end %>
+            <% if entry[:gloss_needs_author] %>
+              <span class="cq-flag"><%= t("character_query.annotation.needs_author") %></span>
+            <% end %>
+          </dt>
+          <dd>
+            <div class="cq-gloss"><%= entry[:gloss] %></div>
+            <% entry[:quotations].each do |quotation| %>
+              <div class="cq-quotation han">
+                <% if quotation[:work_title].present? %><span class="cq-work">&#x300A;<%= quotation[:work_title] %>&#x300B;</span><% end %>
+                <%= quotation[:text] %>
+              </div>
+            <% end %>
+          </dd>
+        <% end %>
+      </dl>
+
+      <textarea class="cq-annotation-text" rows="10" readonly><%= annotation_text %></textarea>
+    <% else %>
+      <div class="cq-tablewrap">
+        <table class="cq-table">
+          <thead>
+            <tr>
+              <th><%= t("character_query.table.character") %></th>
+              <% if show_codepoints %>
+                <th><%= t("character_query.table.codepoint") %></th>
+              <% end %>
+              <%# Why this character is in the set, one column per constrained
+                  system. 湯 answers a search for yáng because 漢語大字典
+                  records 湯谷 yánggǔ — correct, and it looks like an error
+                  until the reading is on the row. With a second system
+                  constrained, both readings show, which is the comparison
+                  that was actually asked for. %>
+              <% matched_systems.each do |system_id| %>
+                <th title="<%= t("character_query.table.matched") %>"><%= system_label.call(system_id) %></th>
+              <% end %>
+              <% column_fields.each do |field| %>
+                <th><%= t(ToolsController::ENRICHABLE_FIELD_OPTIONS.fetch(field, field)) %></th>
+              <% end %>
+            </tr>
+          </thead>
+
+          <%#
+            One <tbody> per character, holding its head row and, when it has
+            variant forms, one full row per variant.
+
+            A variant used to be a <details> nested inside the character cell,
+            with its own miniature layout. That forced the character column
+            wide enough to hold a whole record, and anything longer than a
+            Unihan gloss — a Kangxi definition, say — made a mess of it. A
+            variant is another character with the same columns, so it is
+            another row: the table's own architecture does the work, the
+            columns stay put, and nothing is set in small type. Han script is
+            hard enough to read at full size.
+
+            Several <tbody> elements in one table is valid, and it is what lets
+            a disclosure span rows, which a <details> cannot do.
+          %>
+          <% result.rows.each do |row| %>
+            <tbody class="cq-group">
+              <tr>
+                <%# The glyph sits on its own line with the toggle beneath it.
+                    Inline, the button shunted the character sideways, so rows
+                    with variants no longer lined up with rows without — and a
+                    column of Han characters that does not share a left edge is
+                    exactly as bad as it sounds. %>
+                <td class="han cq-char">
+                  <span class="cq-char-glyph"><%= row[:char] %></span>
+                  <% if row[:variants].present? %>
+                    <button type="button" class="cq-variant-toggle"
+                            aria-expanded="false"
+                            title="<%= t("character_query.table.variant_count", count: row[:variants].size) %>"
+                            data-action="character-query-form#toggleVariants">
+                      <span aria-hidden="true">&#9656;</span>
+                      <span class="cq-variant-count"><%= row[:variants].size %></span>
+                    </button>
+                  <% end %>
+                </td>
+                <%= render "tools/character_query_row_cells",
+                           row: row, show_codepoints: show_codepoints,
+                           matched_systems: matched_systems, column_fields: column_fields %>
+              </tr>
+
+              <% row[:variants].each do |variant| %>
+                <tr class="cq-variant-row" hidden>
+                  <td class="han cq-char cq-char--variant">
+                    <span class="cq-char-glyph">
+                      <span class="cq-variant-mark" aria-hidden="true">&#8627;</span><%= variant[:char] %>
+                    </span>
+                  </td>
+                  <%= render "tools/character_query_row_cells",
+                             row: variant, show_codepoints: show_codepoints,
+                             matched_systems: matched_systems, column_fields: column_fields %>
+                </tr>
+              <% end %>
+            </tbody>
+          <% end %>
+        </table>
+      </div>
+    <% end %>
+
+    <%# Paging. These buttons sit inside the output frame but drive the hidden
+        page field on the form, which is why character-query-form wraps both.
+        Ends and neighbours only: a strip of forty numbered buttons is worse
+        than a box you can type into, and the box is the per-page control. %>
+    <% if result.page_count.to_i > 1 %>
+      <%
+        page = result.page.to_i
+        last = result.page_count.to_i
+        steps = [1, page - 1, page, page + 1, last].uniq.select { |n| n.between?(1, last) }.sort
+      %>
+      <nav class="cq-pager" aria-label="<%= t("character_query.table.pager_aria") %>">
+        <button type="button" class="cq-pagebtn" data-page="<%= page - 1 %>"
+                data-action="character-query-form#goToPage" <%= "disabled" if page <= 1 %>>
+          &lsaquo; <%= t("character_query.table.previous") %>
+        </button>
+
+        <% steps.each_with_index do |number, index| %>
+          <% if index.positive? && number > steps[index - 1] + 1 %>
+            <span class="cq-pagegap">&hellip;</span>
+          <% end %>
+          <button type="button"
+                  class="cq-pagebtn<%= " is-current" if number == page %>"
+                  data-page="<%= number %>"
+                  data-action="character-query-form#goToPage"
+                  <%= "aria-current=page" if number == page %>><%= number %></button>
+        <% end %>
+
+        <button type="button" class="cq-pagebtn" data-page="<%= page + 1 %>"
+                data-action="character-query-form#goToPage" <%= "disabled" if page >= last %>>
+          <%= t("character_query.table.next") %> &rsaquo;
+        </button>
+      </nav>
+    <% end %>
+
+    <%= render "tools/character_query_steps", steps: result.steps, fields: technical_fields %>
+  <% end %>
+<% end %>

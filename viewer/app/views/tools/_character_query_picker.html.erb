@@ -1,0 +1,37 @@
+<%#
+  One family -> language/topolect -> system picker.
+
+  Does NOT declare data-controller itself. The enclosing fieldset does, so
+  controls that sit beside the picker — the ü help, for one — are inside the
+  same Stimulus scope. Locals:
+    prefix        — id prefix, e.g. "cq"
+    system_name   — form field name for the chosen system
+    family_default / branch_default / system_default
+    include_blank — allow "no constraint" (the secondary row)
+%>
+<div class="cq-picker">
+  <span class="cq-subfield">
+    <label for="<%= prefix %>_family"><%= t("character_query.labels.family") %></label>
+    <%= select_tag "#{prefix}_family",
+            options_for_select(character_query_picker["families"], family_default),
+            id: "#{prefix}_family",
+            data: { character_query_target: "family", initial: family_default,
+                    action: "change->character-query#familyChanged" } %>
+  </span>
+
+  <span class="cq-subfield">
+    <label for="<%= prefix %>_branch"><%= t("character_query.labels.branch") %></label>
+    <%= select_tag "#{prefix}_branch", nil, id: "#{prefix}_branch",
+            data: { character_query_target: "branch", initial: branch_default,
+                    action: "change->character-query#branchChanged" } %>
+  </span>
+
+  <span class="cq-subfield" data-character-query-target="systemWrap">
+    <label for="<%= prefix %>_system"><%= t("character_query.labels.system") %></label>
+    <%= select_tag system_name, nil, id: "#{prefix}_system",
+            data: { character_query_target: "system", initial: system_default,
+                    action: "change->character-query#systemChanged",
+                    include_blank: include_blank ? "true" : "false",
+                    blank_label: "—" } %>
+  </span>
+</div>

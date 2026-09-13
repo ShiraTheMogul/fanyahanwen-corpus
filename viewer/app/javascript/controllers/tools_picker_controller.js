@@ -78,6 +78,7 @@ export default class extends Controller {
       ["anki_enrich_out", "anki"],
       ["era_calendar_out", "era-calendar"],
       ["lunar_out", "lunar-calendar"],
+      ["character_query_out", "character-query"],
       ["numerals_out", "numerals"]
     ]
 

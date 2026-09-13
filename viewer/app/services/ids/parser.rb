@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+﻿# frozen_string_literal: true
 
 module Ids
   class Parser
@@ -90,6 +90,33 @@ module Ids
 
       def loose_components(expression)
         tokenize(normalize(expression)).reject { |token| OPERATORS.include?(token) }
+      end
+
+      # Whether an expression describes a whole character or stops part-way.
+      #
+      # IDS is Polish notation: the operator comes first and its operands
+      # follow, so one counter is enough. Start owing one node; each token
+      # pays off one debt and incurs as many as its own arity.
+      #
+      #   ⿰木目   1 -> ⿰ 0+2=2 -> 木 1 -> 目 0    complete
+      #   ⿰木     1 -> ⿰ 0+2=2 -> 木 1            one operand short
+      #   ⿰木目目  1 -> ... -> 0, then a token with nothing owed  too many
+      #
+      # Anything that will not tokenise is reported incomplete rather than
+      # raising, so a caller can treat "cannot tell" and "not whole" alike.
+      def complete?(expression)
+        tokens = tokenize(normalize(expression))
+        return false if tokens.empty?
+
+        owed = 1
+        tokens.each do |token|
+          return false if owed.zero?
+
+          owed += operator_arity(token).to_i - 1
+        end
+        owed.zero?
+      rescue ParseError, StandardError
+        false
       end
 
       private

@@ -1,0 +1,119 @@
+# Reference varieties per family, for the constraint engine's family picker.
+#
+# PROMOTION RULE (stated, so the list itself makes no linguistic claim):
+#   a locality is promoted if it is the seat of a provincial capital, a
+#   direct-administered municipality, or a special administrative region.
+#
+# The rule is verifiable against a gazetteer and asserts nothing about
+# prestige or speaker numbers. Speaker figures per locality do not exist in
+# any usable form, and "prestige" and "most-spoken" diverge precisely where it
+# matters (Suzhou vs Shanghai for Wu; Xiamen vs Taiwan for Min Nan), so
+# neither is used as the basis here.
+#
+# The rule is allowed to return nothing. An empty `promote` list is a correct
+# answer, and the interface states the absence instead of substituting
+# something. It is also allowed to be overridden by name: add an entry with
+# basis_kind "editorial" and your own source note, and it will be promoted
+# alongside (or instead of) the rule-derived ones.
+#
+# `locality` values are the ids used by the pronunciation field keys, ZERO-PADDED
+# TO THREE DIGITS: reading_yue_xiaoxuetang_272_ipa -> "272", and
+# reading_jin_xiaoxuetang_073_ipa -> "073", not "73". The registry tolerates
+# either form, but write them padded to match the field keys. Labels are NOT
+# repeated here; they come from config/locales/<code>/pronunciation_data.yml
+# so there is one name for each place, in one place.
+
+families:
+  mandarin:
+    promote:
+      - locality: "027"
+        basis: "municipality"
+        basis_kind: "administrative_seat"
+      - locality: "028"
+        basis: "Shandong provincial capital"
+        basis_kind: "administrative_seat"
+      - locality: "046"
+        basis: "Shaanxi provincial capital"
+        basis_kind: "administrative_seat"
+      - locality: "047"
+        basis: "Hubei provincial capital (Wuchang)"
+        basis_kind: "administrative_seat"
+      - locality: "057"
+        basis: "Anhui provincial capital"
+        basis_kind: "administrative_seat"
+
+  jin:
+    promote:
+      - locality: "073"
+        basis: "Shanxi provincial capital"
+        basis_kind: "administrative_seat"
+
+  wu:
+    promote:
+      - locality: "120"
+        basis: "municipality"
+        basis_kind: "administrative_seat"
+      - locality: "128"
+        basis: "Zhejiang provincial capital"
+        basis_kind: "administrative_seat"
+
+  hui:
+    promote: []
+    absence_reason: "all six localities in this dataset are county-level; the rule promotes none"
+
+  gan:
+    promote:
+      - locality: "176"
+        basis: "Jiangxi provincial capital"
+        basis_kind: "administrative_seat"
+
+  hakka:
+    # The rule promotes Hong Kong here, which would be a poor reference for
+    # Hakka - it is a marginal Hakka area. Suppressed as a rule artefact
+    # rather than shipped. Meixian is the obvious candidate and is
+    # prefecture-level, so the rule cannot reach it; promote it by hand when
+    # you have a source note you are happy to stand behind.
+    suppress: ["373"]
+    promote: []
+    absence_reason: "no administrative seat in this dataset is a Hakka-speaking centre; Hong Kong is suppressed as a rule artefact"
+    # - locality: "365"
+    #   basis: "conventionally cited in the descriptive literature"
+    #   basis_kind: "editorial"
+    #   note: "add your source here before enabling"
+
+  min:
+    promote:
+      - locality: "240"
+        basis: "Fujian provincial capital"
+        basis_kind: "administrative_seat"
+
+  xiang:
+    promote:
+      - locality: "215"
+        basis: "Hunan provincial capital"
+        basis_kind: "administrative_seat"
+
+  yue:
+    promote:
+      - locality: "272"
+        basis: "Guangdong provincial capital"
+        basis_kind: "administrative_seat"
+      - locality: "284"
+        basis: "special administrative region"
+        basis_kind: "administrative_seat"
+      - locality: "286"
+        basis: "special administrative region"
+        basis_kind: "administrative_seat"
+      - locality: "294"
+        basis: "Guangxi regional capital"
+        basis_kind: "administrative_seat"
+
+  pinghua:
+    promote:
+      - locality: "356"
+        basis: "Guangxi regional capital"
+        basis_kind: "administrative_seat"
+
+  other_sinitic:
+    promote: []
+    absence_reason: "an unclassified set rather than a family; no administrative seats present"

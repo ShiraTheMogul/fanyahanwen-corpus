@@ -1,0 +1,55 @@
+<%#
+  Technical detail, behind a toggle. Field names, sources and per-step counts
+  live here and nowhere else: useful to someone citing the tool, invisible to
+  someone who just wants the characters.
+%>
+<% if steps.present? %>
+  <details class="cq-steps">
+    <summary><%= t("character_query.technical.toggle") %></summary>
+    <p class="cq-hint"><%= t("character_query.technical.intro") %></p>
+    <ol>
+      <% steps.each do |step| %>
+        <%
+          detail = step[:detail] || {}
+          system_label =
+            if detail[:system].present?
+              t("character_query.systems.#{detail[:system]}",
+                default: CharacterQuery::ReadingSystem.definition(detail[:system])&.dig(:label) || detail[:system])
+            end
+
+          line =
+            case step[:kind]
+            when :primary
+              key = detail[:tone].present? ? "step_primary_toned" : "step_primary"
+              t("character_query.technical.#{key}", system: system_label, slot: detail[:slot], tone: detail[:tone])
+            when :secondary
+              t("character_query.technical.step_secondary", system: system_label,
+                 slot: [detail[:slot], detail[:tone]].compact.join)
+            when :dictionary then t("character_query.technical.step_dictionary")
+            when :radical then t("character_query.technical.step_radical", radical: detail[:radical])
+            when :total_strokes then t("character_query.technical.step_strokes", strokes: detail[:strokes])
+            when :common_only then t("character_query.technical.step_common")
+            when :group_variants then t("character_query.technical.step_group_variants")
+            when :component then t("character_query.technical.step_component", component: detail[:component])
+            when :ids then t("character_query.technical.step_ids", expression: detail[:expression])
+            else step[:kind].to_s.tr("_", " ")
+            end
+        %>
+        <li>
+          <%= line %>
+          <% if step[:kind] == :primary && detail[:broadened] %>
+            <span class="cq-hint">(<%= t("character_query.technical.broadened") %>)</span>
+          <% end %>
+          <span class="cq-remaining"><%= step[:remaining] %> <%= t("character_query.technical.remaining") %></span>
+        </li>
+      <% end %>
+    </ol>
+
+    <% if fields.present? %>
+      <p>
+        <strong><%= t("character_query.technical.fields") %><%= t("tools.common.label_separator") %></strong>
+        <code><%= fields.join(", ") %></code>
+      </p>
+    <% end %>
+  </details>
+<% end %>

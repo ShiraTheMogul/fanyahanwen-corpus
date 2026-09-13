@@ -23,6 +23,7 @@ gem "pundit"
 gem "sidekiq"
 gem "roo"
 gem "pdf-reader"
+gem "benchmark" # to be taken out of standard
 
 # Chinese stuff 
 gem "opencc-rb", "1.0.6", require: false
