@@ -1,0 +1,29 @@
+{
+  "name": "Traditional Chinese to Mainland Traditional (PRC standard)",
+  "normalization": [
+    {
+      "dict": {
+        "type": "text",
+        "file": "mainland_traditional_cjk_compatibility.txt"
+      }
+    }
+  ],
+  "conversion_chain": [
+    {
+      "dict": {
+        "type": "group",
+        "match_policy": "short_circuit",
+        "dicts": [
+          {
+            "type": "text",
+            "file": "mainland_traditional_phrases.txt"
+          },
+          {
+            "type": "text",
+            "file": "mainland_traditional_characters.txt"
+          }
+        ]
+      }
+    }
+  ]
+}

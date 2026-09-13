@@ -145,3 +145,8 @@ category_migration.apply.jsonl
 fanya_category_grouping_2026-09-11.xlsx
 fanyahanwen_leishu_原目_overlay_2026-09-12.zip
 /Claude outputs
+
+# Deploy staging. Created by script/deploy_current_snapshot_to_margay.sh on the
+# server side and rebuilt by every run; never source.
+/.deploy-incoming/
+overlong_paths.txt
