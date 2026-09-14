@@ -671,7 +671,7 @@ export default class extends Controller {
     const spans = this._spans()
     for (let i = 0; i < spans.length; i++) {
       const el = spans[i]
-      el.classList.remove("ne-title", "ne-person", "ne-place", "ne-office", "ne-ambiguous-character", "ne-auto-title", "ne-note-anchor")
+      el.classList.remove("ne-title", "ne-person", "ne-place", "ne-office", "ne-ambiguous-character", "ne-words-of-christ", "ne-auto-title", "ne-note-anchor")
       el.removeAttribute("data-ne-note")
     }
   }
@@ -720,6 +720,7 @@ export default class extends Controller {
     if (kind === "place") return "ne-place"
     if (kind === "office") return "ne-office"
     if (kind === "ambiguous_character") return "ne-ambiguous-character"
+    if (kind === "words_of_christ") return "ne-words-of-christ"
     return null
   }
 

@@ -3,7 +3,7 @@
 const STORAGE_KEY = "corpus.authority.auto_annotations.v1"
 const SUPPRESSION_PREFIX = "corpus.authority.suppressed.v1:"
 const STYLE_ID = "authority-auto-annotations-style"
-const MANUAL_CLASSES = ["ne-title", "ne-person", "ne-place", "ne-office", "ne-ambiguous-character"]
+const MANUAL_CLASSES = ["ne-title", "ne-person", "ne-place", "ne-office", "ne-ambiguous-character", "ne-words-of-christ"]
 
 function ui(key, fallback, variables = {}) {
   const value = t(key, variables)

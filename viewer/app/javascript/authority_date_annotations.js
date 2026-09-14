@@ -1,5 +1,5 @@
 const STYLE_ID = "authority-date-annotations-style"
-const MANUAL_CLASSES = ["ne-title", "ne-person", "ne-place", "ne-office", "ne-ambiguous-character"]
+const MANUAL_CLASSES = ["ne-title", "ne-person", "ne-place", "ne-office", "ne-ambiguous-character", "ne-words-of-christ"]
 
 function ensureStyle() {
   if (document.getElementById(STYLE_ID)) return

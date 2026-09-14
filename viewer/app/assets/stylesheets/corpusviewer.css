@@ -499,6 +499,7 @@
   --ne-person: #d69e2e;
   --ne-place: #2f855a;
   --ne-office: #c53030;
+  --ne-words-of-christ: #c0202a;
   --ne-note: #2b6cb0;
 }
 
@@ -538,6 +539,16 @@ html.cv-annotations-on .corpus-textflow .ne-title-auto {
   text-decoration-style: wavy;
   text-decoration-thickness: 2px;
   text-underline-offset: 0.15em;
+}
+
+/* 朱字 — the words of Christ.  Colour, not an underline: the red letter IS
+   the mark in the printed books, so it must not read as another entity type. */
+.corpus-textflow .ne-words-of-christ {
+  color: var(--ne-words-of-christ);
+}
+
+html.cv-annotations-off .corpus-textflow .ne-words-of-christ {
+  color: inherit;
 }
 
 /* Auto titles should be visually slightly lighter than manual titles */
