@@ -179,32 +179,36 @@ def enumerate_docs(root: str | Path, *, skip_raw: bool = True) -> Iterator[Doc]:
 
 
 def enumerate_from_index(index_csv: str | Path, corpus_root_dir: str | Path) -> Iterator[Doc]:
-    """Enumerate from index_corpus.csv instead of walking.
+    """Enumerate documents from an index instead of walking.
 
-    Much faster where the index is current, which as of 2026-09-11 means
-    中國漢文 and 朝鮮漢文 only. `clean_path` uses Windows separators; they are
-    normalised here.
+    Reads index_corpus_v2_pages.csv, which build_corpus_index.py builds from
+    the folders themselves (columns: corpus_root, grouping, work, page_title,
+    chars, empty, path). The old index_corpus.csv layout (clean_path,
+    char_count_clean, is_empty_page, work_title, times, category) is still
+    accepted, but that file was deleted on 2026-11-02 for being stale.
+    `chars` is 0 when the index was built with --no-chars; that only affects
+    the size used for scheduling, not what is scanned.
     """
     import csv
 
     base = Path(corpus_root_dir)
     with open(index_csv, encoding="utf-8-sig", newline="") as f:
         for r in csv.DictReader(f):
-            if r.get("is_empty_page") == "1":
+            if (r.get("empty") or r.get("is_empty_page")) == "1":
                 continue
-            cp = (r.get("clean_path") or "").replace("\\", "/")
+            cp = (r.get("path") or r.get("clean_path") or "").replace("\\", "/")
             if not cp:
                 continue
             p = base / cp
             try:
-                size = int(r.get("char_count_clean") or 0)
+                size = int(r.get("chars") or r.get("char_count_clean") or 0)
             except ValueError:
                 size = 0
             yield Doc(
                 path=str(p), rel=cp,
                 corpus_root=r.get("corpus_root") or "",
-                category=r.get("category") or "",
-                work=r.get("work_title") or "",
+                category=r.get("grouping") or r.get("category") or "",
+                work=r.get("work") or r.get("work_title") or "",
                 period=r.get("times") or "",
                 title=r.get("page_title") or "",
                 size=size,

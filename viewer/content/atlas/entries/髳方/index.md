@@ -1,4 +1,4 @@
----
+﻿---
 id: 中國漢文--商殷朝--髳方
 kind: polity
 title: Maofang

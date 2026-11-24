@@ -846,6 +846,110 @@ pre.xiangqi-board.theme-mono {
   fill: rgba(31, 95, 191, 0.18);
 }
 
+/* 第三圖, 紅線界畫.
+ *
+ * 康萬民 rules this figure rather than colouring it, and says why: it is the
+ * lattice on rows and columns 1, 8, 15, 22, 29 plus both diagonals, and it
+ * crosses every other figure, so colouring its cells red would make it fight
+ * with 第五圖, 第六圖 and 第七圖 for the same characters —
+ *
+ *   但餘圖有於此圖借字有礙　今推縱横初行八行紅書　余以紅線界畫即準之　讀者審焉
+ *
+ * The lines are drawn before the cells so they pass UNDER the characters, the
+ * way a woven line would. Thin and semi-transparent for the same reason: they
+ * are the 界畫, marking the figure off, not competing with it. */
+.xuanji-rulings {
+  pointer-events: none;
+}
+
+.xuanji-ruling {
+  stroke: var(--xuanji-red);
+  stroke-width: 1.2;
+  stroke-opacity: 0.45;
+  stroke-linecap: round;
+}
+
+/* 仁嗟斜至春親 and 琴廊斜至基津. Fainter than the lattice because they cross
+ * every band, and at this size two full diagonals quickly become the loudest
+ * thing on the grid. */
+.xuanji-ruling-diagonal {
+  stroke-width: 1;
+  stroke-opacity: 0.3;
+  stroke-dasharray: 3 3;
+}
+
+/* The rhyme verdict for the current reading.
+ *
+ * 叶 means the even lines' finals share a class in that rhyme book, · that they
+ * do not, ? that the book lists too few of them to say. Five books, because
+ * 康萬民's whole account of his own count is that 起宗 worked with one standard
+ * and missed what another would have let through. */
+.xuanji-rhyme {
+  margin: 0.5rem 0 0.75rem;
+  font-size: 0.9rem;
+}
+
+.xuanji-rhyme-finals {
+  margin-bottom: 0.35rem;
+}
+
+.xuanji-rhyme-label {
+  opacity: 0.7;
+}
+
+.xuanji-rhyme-finals [lang] {
+  font-family: var(--han-font-stack);
+  font-size: 1.15rem;
+  letter-spacing: 0.08em;
+}
+
+.xuanji-rhyme-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.1rem;
+}
+
+.xuanji-rhyme-row {
+  display: grid;
+  grid-template-columns: 1.4em 10em auto;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+.xuanji-rhyme-mark {
+  text-align: center;
+  font-family: var(--han-font-stack);
+}
+
+.xuanji-rhyme-row.is-rhyming .xuanji-rhyme-mark {
+  color: var(--xuanji-red);
+  font-weight: 600;
+}
+
+.xuanji-rhyme-row.is-not {
+  opacity: 0.45;
+}
+
+.xuanji-rhyme-row.is-unknown {
+  opacity: 0.6;
+}
+
+.xuanji-rhyme-book,
+.xuanji-rhyme-class {
+  font-family: var(--han-font-stack);
+}
+
+.xuanji-rhyme-class {
+  opacity: 0.85;
+}
+
+.xuanji-rhyme-gap {
+  opacity: 0.6;
+  font-size: 0.85em;
+}
+
 .xuanji-output pre {
   max-height: 70vh;
   overflow: auto;

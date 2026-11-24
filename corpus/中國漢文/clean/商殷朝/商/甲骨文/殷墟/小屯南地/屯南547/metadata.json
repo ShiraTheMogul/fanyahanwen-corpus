@@ -88,6 +88,35 @@
           "value": "8cecc6e2a92a"
         }
       ],
+      "body_start_line": 1,
+      "transcription_type": "寬式"
+    },
+    {
+      "file": "屯南547.2_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/小屯南地/屯南547/屯南547.2_ASDC.txt",
+      "title": "屯南547.2",
+      "segment": 2,
+      "source_locator": "547.2",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "小屯南地甲骨",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "91848"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "547.2"
+        }
+      ],
       "body_start_line": 1
     }
   ],
@@ -101,5 +130,21 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "joins": [
+    {
+      "group_id": "綴彙0363",
+      "number_in_book": "363",
+      "composition": [
+        "屯南547＋屯南550"
+      ],
+      "pieces": [
+        "屯南547",
+        "屯南550"
+      ],
+      "joiner": "肖楠",
+      "source": "蔡哲茂：《甲骨綴合彙編（圖版篇）》，新北市：花木蘭文化出版社，2011年，〈組別號碼表〉第18頁",
+      "note": "綴合者（據〈綴合者編號〉）：肖楠。"
+    }
+  ]
 }

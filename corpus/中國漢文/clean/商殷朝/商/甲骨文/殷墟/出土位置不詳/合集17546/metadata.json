@@ -25,7 +25,9 @@
   "categories": [
     "不詳",
     "出土文獻",
-    "甲骨文"
+    "甲骨文",
+    "記事刻辭",
+    "骨臼刻辭"
   ],
   "sources": [
     {
@@ -44,5 +46,42 @@
     }
   ],
   "is_compilation": false,
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "documents": [
+    {
+      "file": "合集17546_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集17546/合集17546_ASDC.txt",
+      "title": "合集17546",
+      "source_locator": "17546",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "23742"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "17546"
+        }
+      ],
+      "body_start_line": 1
+    }
+  ],
+  "record_inscription": [
+    {
+      "type": "骨臼刻辭",
+      "serial_in_table": 280,
+      "ocr_check": "order",
+      "source": "方稚松：《殷墟甲骨文五種記事刻辭研究》，首都師範大學博士學位論文（指導教師：黃天樹），2007年，〈論文相關材料列表〉表四"
+    }
+  ]
 }

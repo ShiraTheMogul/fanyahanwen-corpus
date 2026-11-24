@@ -121,7 +121,8 @@
           "value": "8cd302511b39"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 69386,
@@ -157,6 +158,63 @@
           "value": "859a6b439666"
         }
       ],
+      "body_start_line": 1,
+      "transcription_type": "寬式"
+    },
+    {
+      "file": "合集13016.1_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集13016/合集13016.1_ASDC.txt",
+      "title": "合集13016.1",
+      "segment": 1,
+      "source_locator": "13016.1",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "14353"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "13016.1"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "合集13016.2_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集13016/合集13016.2_ASDC.txt",
+      "title": "合集13016.2",
+      "segment": 2,
+      "source_locator": "13016.2",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "14354"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "13016.2"
+        }
+      ],
       "body_start_line": 1
     }
   ],
@@ -171,5 +229,29 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "authors": [
+    {
+      "name": "〔？｜CDP-9FF4〕",
+      "role": "卜X貞"
+    }
+  ],
+  "diviner_groups": [
+    {
+      "name": "〔？｜CDP-9FF4〕",
+      "group": "賓",
+      "group_lipeng": null,
+      "group_chen": null,
+      "period_dong": null,
+      "basis": "同版",
+      "evidence": "63/63 pieces shared with 賓組 diviners"
+    }
+  ],
+  "script_group": {
+    "groups": [
+      "賓三"
+    ],
+    "source": "楊郁彥：《甲骨文合集分組分類總表》，臺北：藝文印書館，2005年",
+    "method": "掃描本逐格比對字形模板讀出（score≥0.80），未能確認之格不錄"
+  }
 }

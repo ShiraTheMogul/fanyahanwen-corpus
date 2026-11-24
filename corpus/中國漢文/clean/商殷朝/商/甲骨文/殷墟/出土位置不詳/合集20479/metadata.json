@@ -44,5 +44,101 @@
     }
   ],
   "is_compilation": false,
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "documents": [
+    {
+      "file": "合集20479.1_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集20479/合集20479.1_ASDC.txt",
+      "title": "合集20479.1",
+      "segment": 1,
+      "source_locator": "20479.1",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "28743"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "20479.1"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "合集20479.2_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集20479/合集20479.2_ASDC.txt",
+      "title": "合集20479.2",
+      "segment": 2,
+      "source_locator": "20479.2",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "28744"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "20479.2"
+        }
+      ],
+      "body_start_line": 1
+    }
+  ],
+  "authors": [
+    {
+      "name": "王",
+      "role": "卜X貞"
+    }
+  ],
+  "joins": [
+    {
+      "group_id": "綴彙0546",
+      "number_in_book": "546",
+      "composition": [
+        "合補6627（20479＋20480）"
+      ],
+      "pieces": [
+        "合補6627",
+        "合集20479",
+        "合集20480"
+      ],
+      "joiner": "嚴一萍",
+      "source": "蔡哲茂：《甲骨綴合彙編（圖版篇）》，新北市：花木蘭文化出版社，2011年，〈組別號碼表〉第25頁",
+      "note": "綴合者（據〈綴合者編號〉）：嚴一萍。"
+    }
+  ],
+  "jilin_2024": {
+    "joins": [
+      {
+        "group_id": "吉大2024-7-8-0119",
+        "composition": "大系1568=合補06627[合集20479—合集20480（續補1.83.3、羅四274）]",
+        "listed_under": [
+          "合集20479",
+          "合集20480"
+        ],
+        "joiners": "常玉芝；嚴一萍",
+        "cited": "常玉芝：《甲骨綴合新補》，《殷都學刊》1994 年第 1 期，第 7-11頁。蔡哲茂：《甲骨綴合彙編（圖版篇）》第 546，新北：花木蘭文化出版社，2011年，第489頁。",
+        "source": "曾心：《〈甲骨文合集〉第七、八冊綜合整理》，吉林大學碩士學位論文（指導教師：何景成），2024年，綴合或復原表"
+      }
+    ]
+  }
 }

@@ -101,6 +101,91 @@
           "value": "b3945e33643e"
         }
       ],
+      "body_start_line": 1,
+      "transcription_type": "寬式"
+    },
+    {
+      "file": "合集22133.1_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集22133/合集22133.1_ASDC.txt",
+      "title": "合集22133.1",
+      "segment": 1,
+      "source_locator": "22133.1",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "32503"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "22133.1"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "合集22133.2_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集22133/合集22133.2_ASDC.txt",
+      "title": "合集22133.2",
+      "segment": 2,
+      "source_locator": "22133.2",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "32504"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "22133.2"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "合集22133.3_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集22133/合集22133.3_ASDC.txt",
+      "title": "合集22133.3",
+      "segment": 3,
+      "source_locator": "22133.3",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "32505"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "22133.3"
+        }
+      ],
       "body_start_line": 1
     }
   ],
@@ -114,5 +199,55 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "script_group": {
+    "groups": [
+      "婦女類"
+    ],
+    "source": "楊郁彥：《甲骨文合集分組分類總表》，臺北：藝文印書館，2005年",
+    "method": "掃描本逐格比對字形模板讀出（score≥0.80），未能確認之格不錄"
+  },
+  "joins": [
+    {
+      "group_id": "綴彙0232",
+      "number_in_book": "232",
+      "composition": [
+        "乙8787＋乙8989（持井康孝）＋綴集358〔拼合集29（22133＋22144）＋合補6898（22225＋20703）〕＋乙S8798（謝湘筠）＋22140＋22142＋乙8845＋乙補7338倒＋乙補7364＋乙補7380＋乙補7367（蔣玉斌）"
+      ],
+      "pieces": [
+        "乙8787",
+        "乙8989",
+        "合集22133",
+        "合集22144",
+        "合補6898",
+        "合集22225",
+        "合集20703",
+        "乙S8798",
+        "合集22140",
+        "合集22142",
+        "乙8845",
+        "乙補7338",
+        "乙補7364",
+        "乙補7380",
+        "乙補7367"
+      ],
+      "joiner": "持井康孝",
+      "source": "蔡哲茂：《甲骨綴合彙編（圖版篇）》，新北市：花木蘭文化出版社，2011年，〈組別號碼表〉第13頁",
+      "note": "綴合者（據〈綴合者編號〉）：持井康孝。"
+    }
+  ],
+  "jilin_2024": {
+    "joins": [
+      {
+        "group_id": "吉大2024-7-8-0146",
+        "composition": "大系63034=子合0088【史語所R043804（乙8787+乙8989）+乙8845（史語所R044896）+乙8798（史語所R043821）+史語所R043840[合集22225（乙8827）+乙8744+合集22144（乙8705）+合集20703（乙8747+乙8850）]+合集22133+合集22140（乙8876、史語所R044932）+合集22142（乙8851、史語所R044903）+乙補7367（史語所R043776）+乙補7364（史語所R043758）+乙補7338倒（史語所R043708）+乙補7380（史語所R043810）】",
+        "listed_under": [
+          "合集20703"
+        ],
+        "joiners": "持井康孝；白玉崢；黃天樹；常耀華；謝湘筠；蔣玉斌",
+        "cited": "黃天樹：《甲骨新綴11例》，《考古與文物》1996年第4期；收入《黃天樹古文字論集》，北京：學苑出版社，2006 年，第 250-254頁。收錄到黃天樹：《甲骨拼合集》第 29 則，北京：學苑出版社，2010年，第32頁。蔡哲茂：《甲骨綴合集》第 358，臺北：樂學書局有限公司，1999年，第347頁。謝湘筠：《殷墟甲骨新綴二十組》，《東華人文學報》第十一期，2007年7月，第1-16頁。謝湘筠：《殷墟第十五次發掘所得甲骨新綴九組》，先秦網 2006 年 11 月 13 日：https://www.xianqin.org/blog/archives/840.html。收錄到蔡哲茂：《甲骨綴合彙編（圖版篇）》第 232，新北：花木蘭文化出版社，2011年，第199頁。蔣玉斌：《蔣玉斌甲骨綴合總表（300組）》第126組，先秦網2011年 3 月 20 日：https://www.xianqin.org/blog/archives/2305.html。蔣玉斌啊：《殷墟第十五次發掘 YH251、330 兩坑所得甲骨綴合補遺》，先秦網2007 年 1 月 15 日：https://www.xianqin.org/blog/archives/18041.html。蔣玉斌：《殷商子卜辭合集》第0088正，北京：學苑出版社，2015年，第84頁。",
+        "source": "曾心：《〈甲骨文合集〉第七、八冊綜合整理》，吉林大學碩士學位論文（指導教師：何景成），2024年，綴合或復原表"
+      }
+    ]
+  }
 }

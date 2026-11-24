@@ -87,6 +87,119 @@
           "value": "201ac73e6754"
         }
       ],
+      "body_start_line": 1,
+      "transcription_type": "寬式"
+    },
+    {
+      "file": "英藏2564.1_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/英藏2564/英藏2564.1_ASDC.txt",
+      "title": "英藏2564.1",
+      "segment": 1,
+      "source_locator": "2564.1",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "英國所藏甲骨",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "96603"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "2564.1"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "英藏2564.3_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/英藏2564/英藏2564.3_ASDC.txt",
+      "title": "英藏2564.3",
+      "segment": 3,
+      "source_locator": "2564.3",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "英國所藏甲骨",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "96605"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "2564.3"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "英藏2564.4_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/英藏2564/英藏2564.4_ASDC.txt",
+      "title": "英藏2564.4",
+      "segment": 4,
+      "source_locator": "2564.4",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "英國所藏甲骨",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "96606"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "2564.4"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "英藏2564.5_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/英藏2564/英藏2564.5_ASDC.txt",
+      "title": "英藏2564.5",
+      "segment": 5,
+      "source_locator": "2564.5",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "英國所藏甲骨",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "96607"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "2564.5"
+        }
+      ],
       "body_start_line": 1
     }
   ],
@@ -100,5 +213,22 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "joins": [
+    {
+      "group_id": "綴彙0271",
+      "number_in_book": "271",
+      "composition": [
+        "36968＋41762（英2564）"
+      ],
+      "pieces": [
+        "合集36968",
+        "合集41762",
+        "英2564"
+      ],
+      "joiner": "董作賓",
+      "source": "蔡哲茂：《甲骨綴合彙編（圖版篇）》，新北市：花木蘭文化出版社，2011年，〈組別號碼表〉第15頁",
+      "note": "綴合者（據〈綴合者編號〉）：董作賓。"
+    }
+  ]
 }

@@ -44,5 +44,57 @@
     }
   ],
   "is_compilation": false,
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "documents": [
+    {
+      "file": "合集19053_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集19053/合集19053_ASDC.txt",
+      "title": "合集19053",
+      "source_locator": "19053",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "26140"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "19053"
+        }
+      ],
+      "body_start_line": 1
+    }
+  ],
+  "script_group": {
+    "groups": [
+      "典賓"
+    ],
+    "source": "楊郁彥：《甲骨文合集分組分類總表》，臺北：藝文印書館，2005年",
+    "method": "掃描本逐格比對字形模板讀出（score≥0.80），未能確認之格不錄"
+  },
+  "joins": [
+    {
+      "group_id": "綴彙0605",
+      "number_in_book": "605",
+      "composition": [
+        "19053＜殷文卅三上.6＋7255（趙鵬、郜麗梅）"
+      ],
+      "pieces": [
+        "合集19053",
+        "合集7255"
+      ],
+      "joiner": "朱孔陽",
+      "source": "蔡哲茂：《甲骨綴合彙編（圖版篇）》，新北市：花木蘭文化出版社，2011年，〈組別號碼表〉第27頁",
+      "note": "綴合者（據〈綴合者編號〉）：朱孔陽。此組號碼經與原書圖版逐字核對。"
+    }
+  ]
 }

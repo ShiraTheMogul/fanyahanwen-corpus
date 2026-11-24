@@ -192,7 +192,8 @@
           "value": "b91d0a4b24c7"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 72429,
@@ -228,7 +229,8 @@
           "value": "8e08b2d22f76"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 72430,
@@ -264,7 +266,8 @@
           "value": "0c8dbbfd21ae"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 72431,
@@ -300,7 +303,8 @@
           "value": "713ba4a04f46"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 72432,
@@ -336,7 +340,8 @@
           "value": "81e351316994"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 72433,
@@ -372,7 +377,8 @@
           "value": "6d19d55c5ac8"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 72434,
@@ -408,6 +414,35 @@
           "value": "4168f3199f4b"
         }
       ],
+      "body_start_line": 1,
+      "transcription_type": "寬式"
+    },
+    {
+      "file": "英藏203.3_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/英藏203/英藏203.3_ASDC.txt",
+      "title": "英藏203.3",
+      "segment": 3,
+      "source_locator": "203.3",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "英國所藏甲骨",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "95439"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "203.3"
+        }
+      ],
       "body_start_line": 1
     }
   ],
@@ -427,5 +462,35 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "authors": [
+    {
+      "name": "爭",
+      "role": "卜X貞"
+    },
+    {
+      "name": "〔？｜CDP-83A4〕",
+      "role": "卜X貞"
+    }
+  ],
+  "diviner_groups": [
+    {
+      "name": "爭",
+      "group": "賓",
+      "group_lipeng": "賓",
+      "group_chen": "賓",
+      "period_dong": "1",
+      "table_name": "爭",
+      "basis": "宋鎮豪、劉源2006"
+    },
+    {
+      "name": "〔？｜CDP-83A4〕",
+      "group": "賓",
+      "group_lipeng": null,
+      "group_chen": null,
+      "period_dong": null,
+      "basis": "同版",
+      "evidence": "97/97 pieces shared with 賓組 diviners"
+    }
+  ]
 }

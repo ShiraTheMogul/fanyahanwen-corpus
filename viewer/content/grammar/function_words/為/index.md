@@ -1,4 +1,4 @@
----
+﻿---
 title: 為
 id: fw-70ba
 kind: function_word

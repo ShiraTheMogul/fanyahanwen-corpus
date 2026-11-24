@@ -1,4 +1,4 @@
-# Atlas source structure
+﻿# Atlas source structure
 
 `content/atlas/entries/` contains human-edited polity records and articles.
 `content/atlas/periods/` contains typed period and subperiod records.

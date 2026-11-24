@@ -120,7 +120,8 @@
           "value": "f38c3f2a46d9"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 74860,
@@ -156,6 +157,63 @@
           "value": "b1da5a762638"
         }
       ],
+      "body_start_line": 1,
+      "transcription_type": "寬式"
+    },
+    {
+      "file": "合集23915.1_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集23915/合集23915.1_ASDC.txt",
+      "title": "合集23915.1",
+      "segment": 1,
+      "source_locator": "23915.1",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "36470"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "23915.1"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "合集23915.4_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集23915/合集23915.4_ASDC.txt",
+      "title": "合集23915.4",
+      "segment": 4,
+      "source_locator": "23915.4",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "36473"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "23915.4"
+        }
+      ],
       "body_start_line": 1
     }
   ],
@@ -170,5 +228,27 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "authors": [
+    {
+      "name": "王",
+      "role": "卜X貞"
+    }
+  ],
+  "joins": [
+    {
+      "group_id": "綴彙0524",
+      "number_in_book": "524",
+      "composition": [
+        "23912＋23915"
+      ],
+      "pieces": [
+        "合集23912",
+        "合集23915"
+      ],
+      "joiner": "嚴一萍",
+      "source": "蔡哲茂：《甲骨綴合彙編（圖版篇）》，新北市：花木蘭文化出版社，2011年，〈組別號碼表〉第24頁",
+      "note": "綴合者（據〈綴合者編號〉）：嚴一萍。"
+    }
+  ]
 }

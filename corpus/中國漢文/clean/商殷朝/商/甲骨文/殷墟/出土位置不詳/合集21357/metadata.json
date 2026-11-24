@@ -44,5 +44,55 @@
     }
   ],
   "is_compilation": false,
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "documents": [
+    {
+      "file": "合集21357_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集21357/合集21357_ASDC.txt",
+      "title": "合集21357",
+      "source_locator": "21357",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "30497"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "21357"
+        }
+      ],
+      "body_start_line": 1
+    }
+  ],
+  "script_group": {
+    "groups": [
+      "𠂤小字"
+    ],
+    "source": "楊郁彥：《甲骨文合集分組分類總表》，臺北：藝文印書館，2005年",
+    "method": "掃描本逐格比對字形模板讀出（score≥0.80），未能確認之格不錄"
+  },
+  "jilin_2024": {
+    "joins": [
+      {
+        "group_id": "吉大2024-7-8-0064",
+        "composition": "大系1305[合集20160（上博21691·29）+合集21357]",
+        "listed_under": [
+          "合集20160"
+        ],
+        "joiners": "李愛輝",
+        "cited": "李愛輝：《甲骨拼合第 222 則》，先秦網 2013 年 5 月 5 日：https://www.xianqin.org/blog/archives/2957.html。又收錄到黃天樹：《甲骨拼合四集》第929則，北京：學苑出版社，2016年，第139頁。",
+        "source": "曾心：《〈甲骨文合集〉第七、八冊綜合整理》，吉林大學碩士學位論文（指導教師：何景成），2024年，綴合或復原表"
+      }
+    ]
+  }
 }

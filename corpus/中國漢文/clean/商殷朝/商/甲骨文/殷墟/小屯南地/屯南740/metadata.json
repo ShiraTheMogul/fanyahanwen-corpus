@@ -107,7 +107,8 @@
           "value": "db8e6efa86c7"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 85843,
@@ -143,6 +144,91 @@
           "value": "21958740e78e"
         }
       ],
+      "body_start_line": 1,
+      "transcription_type": "寬式"
+    },
+    {
+      "file": "屯南740.1_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/小屯南地/屯南740/屯南740.1_ASDC.txt",
+      "title": "屯南740.1",
+      "segment": 1,
+      "source_locator": "740.1",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "小屯南地甲骨",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "92390"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "740.1"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "屯南740.4_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/小屯南地/屯南740/屯南740.4_ASDC.txt",
+      "title": "屯南740.4",
+      "segment": 4,
+      "source_locator": "740.4",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "小屯南地甲骨",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "92393"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "740.4"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "屯南740.5_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/小屯南地/屯南740/屯南740.5_ASDC.txt",
+      "title": "屯南740.5",
+      "segment": 5,
+      "source_locator": "740.5",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "小屯南地甲骨",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "92394"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "740.5"
+        }
+      ],
       "body_start_line": 1
     }
   ],
@@ -157,5 +243,22 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "joins": [
+    {
+      "group_id": "綴彙0045",
+      "number_in_book": "45",
+      "composition": [
+        "合補6615（32906＋屯南740）"
+      ],
+      "pieces": [
+        "合補6615",
+        "合集32906",
+        "屯南740"
+      ],
+      "joiner": "許進雄",
+      "source": "蔡哲茂：《甲骨綴合彙編（圖版篇）》，新北市：花木蘭文化出版社，2011年，〈組別號碼表〉第6頁",
+      "note": "綴合者（據〈綴合者編號〉）：許進雄。"
+    }
+  ]
 }

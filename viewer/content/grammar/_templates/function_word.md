@@ -1,4 +1,4 @@
-## Explanation
+﻿## Explanation
 
 Provide a basic, fluff-free explanation of what the word does.
 

@@ -45,7 +45,9 @@
   ],
   "categories": [
     "出土文獻",
-    "甲骨文"
+    "甲骨文",
+    "記事刻辭",
+    "骨臼刻辭"
   ],
   "sources": [
     "https://inscription.asdc.sinica.edu.tw",
@@ -86,7 +88,8 @@
           "value": "7650c00164d2"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     }
   ],
   "transcriptions": [
@@ -99,5 +102,20 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "script_group": {
+    "groups": [
+      "典賓"
+    ],
+    "source": "楊郁彥：《甲骨文合集分組分類總表》，臺北：藝文印書館，2005年",
+    "method": "掃描本逐格比對字形模板讀出（score≥0.80），未能確認之格不錄"
+  },
+  "record_inscription": [
+    {
+      "type": "骨臼刻辭",
+      "serial_in_table": 375,
+      "ocr_check": "both",
+      "source": "方稚松：《殷墟甲骨文五種記事刻辭研究》，首都師範大學博士學位論文（指導教師：黃天樹），2007年，〈論文相關材料列表〉表四"
+    }
+  ]
 }

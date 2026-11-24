@@ -44,5 +44,54 @@
     }
   ],
   "is_compilation": false,
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "documents": [
+    {
+      "file": "合集16057_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集16057/合集16057_ASDC.txt",
+      "title": "合集16057",
+      "source_locator": "16057",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "20668"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "16057"
+        }
+      ],
+      "body_start_line": 1
+    }
+  ],
+  "script_group": {
+    "groups": [
+      "典賓"
+    ],
+    "source": "楊郁彥：《甲骨文合集分組分類總表》，臺北：藝文印書館，2005年",
+    "method": "掃描本逐格比對字形模板讀出（score≥0.80），未能確認之格不錄"
+  },
+  "jilin_2024": {
+    "joins": [
+      {
+        "group_id": "吉大2024-1-2-0490",
+        "composition": "合集02461+《合集》01004+《乙補》6878+無號甲+《合集》16057+《乙補》2093+《乙》7892+《乙補》1926+《合集》15103（史語所、蔡哲茂綴合）+《乙》1203+《乙》7899+R044129（林宏明綴合）",
+        "listed_under": [
+          "合集02461"
+        ],
+        "cited": "《契合集》218；林宏明：《甲骨新綴第830-834例》，中國社會科學院古代史研究所先秦史研究室網站，2018年12月28日，網址：https://www.xianqin.org/blog/archives/11319.html",
+        "source": "朱胄：《〈甲骨文合集〉第一、二冊綜合整理》，吉林大學碩士學位論文（指導教師：李春桃），2024年，附錄二《甲骨文摹本大系》（《甲骨文合集》第一、二冊部分）暫未收入之綴合表"
+      }
+    ]
+  }
 }

@@ -240,7 +240,8 @@
           "value": "53936361b2f1"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 75723,
@@ -276,7 +277,8 @@
           "value": "3b17ce12c165"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 75724,
@@ -312,7 +314,8 @@
           "value": "d5c5b6daa005"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 75725,
@@ -348,7 +351,8 @@
           "value": "f3cda615b535"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 75726,
@@ -384,7 +388,8 @@
           "value": "a159a068863b"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 75727,
@@ -420,7 +425,8 @@
           "value": "9a21c9338e80"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 75728,
@@ -456,7 +462,8 @@
           "value": "f34cbb3852fd"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 75720,
@@ -492,7 +499,8 @@
           "value": "d0ddb0cdcb57"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 75721,
@@ -528,6 +536,63 @@
           "value": "c3d5660615cc"
         }
       ],
+      "body_start_line": 1,
+      "transcription_type": "寬式"
+    },
+    {
+      "file": "合集24803.7_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集24803/合集24803.7_ASDC.txt",
+      "title": "合集24803.7",
+      "segment": 7,
+      "source_locator": "24803.7",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "38457"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "24803.7"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "合集24803.8_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集24803/合集24803.8_ASDC.txt",
+      "title": "合集24803.8",
+      "segment": 8,
+      "source_locator": "24803.8",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "38458"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "24803.8"
+        }
+      ],
       "body_start_line": 1
     }
   ],
@@ -549,5 +614,18 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "authors": [
+    {
+      "name": "〔？｜ASDC:B069〕",
+      "role": "卜X貞"
+    }
+  ],
+  "script_group": {
+    "groups": [
+      "出二"
+    ],
+    "source": "楊郁彥：《甲骨文合集分組分類總表》，臺北：藝文印書館，2005年",
+    "method": "掃描本逐格比對字形模板讀出（score≥0.80），未能確認之格不錄"
+  }
 }

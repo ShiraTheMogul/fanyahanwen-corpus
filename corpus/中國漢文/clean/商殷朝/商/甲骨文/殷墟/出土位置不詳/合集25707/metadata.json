@@ -120,7 +120,8 @@
           "value": "9d9ba6c6ad2c"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 76160,
@@ -156,6 +157,91 @@
           "value": "9778e02e5ea8"
         }
       ],
+      "body_start_line": 1,
+      "transcription_type": "寬式"
+    },
+    {
+      "file": "合集25707.1_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集25707/合集25707.1_ASDC.txt",
+      "title": "合集25707.1",
+      "segment": 1,
+      "source_locator": "25707.1",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "40233"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "25707.1"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "合集25707.4_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集25707/合集25707.4_ASDC.txt",
+      "title": "合集25707.4",
+      "segment": 4,
+      "source_locator": "25707.4",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "40236"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "25707.4"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "合集25707.5_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集25707/合集25707.5_ASDC.txt",
+      "title": "合集25707.5",
+      "segment": 5,
+      "source_locator": "25707.5",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "40237"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "25707.5"
+        }
+      ],
       "body_start_line": 1
     }
   ],
@@ -170,5 +256,29 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "authors": [
+    {
+      "name": "行",
+      "role": "卜X貞"
+    }
+  ],
+  "diviner_groups": [
+    {
+      "name": "行",
+      "group": "出",
+      "group_lipeng": "出",
+      "group_chen": "出",
+      "period_dong": "2",
+      "table_name": "行",
+      "basis": "宋鎮豪、劉源2006"
+    }
+  ],
+  "script_group": {
+    "groups": [
+      "出二"
+    ],
+    "source": "楊郁彥：《甲骨文合集分組分類總表》，臺北：藝文印書館，2005年",
+    "method": "掃描本逐格比對字形模板讀出（score≥0.80），未能確認之格不錄"
+  }
 }

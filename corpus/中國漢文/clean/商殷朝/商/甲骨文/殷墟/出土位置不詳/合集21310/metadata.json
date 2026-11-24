@@ -44,5 +44,96 @@
     }
   ],
   "is_compilation": false,
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "documents": [
+    {
+      "file": "合集21310.1_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集21310/合集21310.1_ASDC.txt",
+      "title": "合集21310.1",
+      "segment": 1,
+      "source_locator": "21310.1",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "30359"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "21310.1"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "合集21310.2_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集21310/合集21310.2_ASDC.txt",
+      "title": "合集21310.2",
+      "segment": 2,
+      "source_locator": "21310.2",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "30360"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "21310.2"
+        }
+      ],
+      "body_start_line": 1
+    }
+  ],
+  "joins": [
+    {
+      "group_id": "綴彙0165",
+      "number_in_book": "165",
+      "composition": [
+        "合補6862、拼合集21（20964＋21310）＋21025＋20986（蔣玉斌綴）"
+      ],
+      "pieces": [
+        "合補6862",
+        "合集20964",
+        "合集21310",
+        "合集21025",
+        "合集20986"
+      ],
+      "joiner": "黃天樹",
+      "source": "蔡哲茂：《甲骨綴合彙編（圖版篇）》，新北市：花木蘭文化出版社，2011年，〈組別號碼表〉第10頁",
+      "note": "綴合者（據〈綴合者編號〉）：黃天樹。"
+    }
+  ],
+  "jilin_2024": {
+    "joins": [
+      {
+        "group_id": "吉大2024-7-8-0188",
+        "composition": "大系1933【合補06862[合集20964+合集21310]+合集21025+合集20986】",
+        "listed_under": [
+          "合集20964"
+        ],
+        "joiners": "蔣玉斌；黃天樹",
+        "cited": "蔣玉斌：《蔣玉斌甲骨綴合總表（300組）》第112組，先秦網2011年 3 月 20 日：https://www.xianqin.org/blog/archives/2305.html。蔣玉斌：《殷墟 B119、YH006、YH044 三坑甲骨新綴》，《中國文字研究》，2007（01），鄭州：大象出版社，2007年，第14-18頁。黃天樹所綴收錄到蔡哲茂：《甲骨綴合彙編（圖版篇）》第 165，新北：花木蘭文化出版社，2011年，第127頁。",
+        "source": "曾心：《〈甲骨文合集〉第七、八冊綜合整理》，吉林大學碩士學位論文（指導教師：何景成），2024年，綴合或復原表"
+      }
+    ]
+  }
 }

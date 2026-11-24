@@ -52,7 +52,9 @@ module ShangAtlasArticleVerifier
         next
       end
 
-      body = article_body(article_path.read(encoding: "UTF-8"))
+      # "bom|utf-8" strips a leading byte-order mark; plain "UTF-8" keeps it,
+      # and a kept BOM makes the front-matter test below fail.
+      body = article_body(article_path.read(encoding: "bom|utf-8"))
       BANNED_TEXT.each do |phrase|
         errors << "#{relative(article_path, root)}: contains banned generated wording #{phrase.inspect}" if body.include?(phrase)
       end

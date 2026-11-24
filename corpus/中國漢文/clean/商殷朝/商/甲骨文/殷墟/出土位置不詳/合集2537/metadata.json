@@ -111,15 +111,34 @@
     {
       "scheme": "legacy_work_id",
       "value": "110994"
+    },
+    {
+      "scheme": "甲骨文合集",
+      "value": "02537"
     }
   ],
   "categories": [
     "出土文獻",
-    "甲骨文"
+    "甲骨文",
+    "不詳"
   ],
   "sources": [
     "https://inscription.asdc.sinica.edu.tw",
-    "甲骨文合集"
+    "甲骨文合集",
+    {
+      "kind": "image_source",
+      "title": "甲骨文合集",
+      "creator": "Guo, Moruo 郭沫若",
+      "creator_role": "chief editor",
+      "contributor": "Hu, Houxuan 胡厚宣",
+      "contributor_role": "general editor",
+      "corporate_contributor": "中國社會科學院歷史研究所《甲骨文合集》編輯組",
+      "corporate_contributor_role": "compiler",
+      "date": "1978–1982",
+      "publisher": "中華書局",
+      "citation": "Guo, Moruo 郭沫若 (Chief Ed.) & Hu, Houxuan 胡厚宣 (General Ed.) (with 中國社會科學院歷史研究所《甲骨文合集》編輯組). (1978–1982). 甲骨文合集. 中華書局.",
+      "source_note": "Image witness matched to this object by the 甲骨文合集 catalogue number encoded in the source filename. The importer does not infer whether an individual source image is a rubbing, photograph, or tracing."
+    }
   ],
   "is_compilation": false,
   "documents": [
@@ -157,7 +176,8 @@
           "value": "8434f0b55205"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 75985,
@@ -193,7 +213,8 @@
           "value": "f955f8431c99"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 75986,
@@ -229,7 +250,8 @@
           "value": "cb15978187e1"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 75987,
@@ -265,7 +287,8 @@
           "value": "f868b04befd5"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 75988,
@@ -301,6 +324,91 @@
           "value": "6d31f4505da7"
         }
       ],
+      "body_start_line": 1,
+      "transcription_type": "寬式"
+    },
+    {
+      "file": "合集2537.1_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集2537/合集2537.1_ASDC.txt",
+      "title": "合集2537.1",
+      "segment": 1,
+      "source_locator": "2537.1",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "39496"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "2537.1"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "合集2537.7_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集2537/合集2537.7_ASDC.txt",
+      "title": "合集2537.7",
+      "segment": 7,
+      "source_locator": "2537.7",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "39502"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "2537.7"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "合集2537.8_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集2537/合集2537.8_ASDC.txt",
+      "title": "合集2537.8",
+      "segment": 8,
+      "source_locator": "2537.8",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "39503"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "2537.8"
+        }
+      ],
       "body_start_line": 1
     }
   ],
@@ -318,5 +426,15 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "merged_from": [
+    "殷墟/出土位置不詳/合集02537"
+  ],
+  "script_group": {
+    "groups": [
+      "典賓"
+    ],
+    "source": "楊郁彥：《甲骨文合集分組分類總表》，臺北：藝文印書館，2005年",
+    "method": "掃描本逐格比對字形模板讀出（score≥0.80），未能確認之格不錄"
+  }
 }

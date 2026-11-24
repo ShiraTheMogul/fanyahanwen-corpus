@@ -1,4 +1,4 @@
----
+﻿---
 id: 中國漢文--商殷朝--薛邳
 kind: polity
 title: Xue or Pi

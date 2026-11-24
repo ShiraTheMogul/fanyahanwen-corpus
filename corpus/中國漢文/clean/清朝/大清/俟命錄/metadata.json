@@ -1,9 +1,27 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 74688,
   "corpus_root": "中國漢文",
   "macro_region": "中國",
   "period": "清朝",
+  "period_phase": "晚清",
+  "period_phase_opium": "晚清",
+  "period_phase_detail": {
+    "year": 1853,
+    "basis": "author (Wikisource page header: 方宗誠) — all 2 Qing persons named 方宗誠 agree: CBDB 120872 index year 1826; CBDB 65637 1818–1888 [namesakes agree] | 二分 from limits 1853–1911: latest reign-year written in the text: 咸豐三年 = 1853 (6 reign dates, earliest 順治元年)",
+    "spans": [
+      "晚清"
+    ],
+    "spans_opium": [
+      "清前期",
+      "晚清"
+    ],
+    "pass": "qing_phase_fill 2026-11-13",
+    "schemes": {
+      "period_phase": "三分：清初 1644–1683、盛清 1684–1799、晚清 1800–1911",
+      "period_phase_opium": "二分（鴉片戰爭）：清前期 1644–1839、晚清 1840–1911"
+    }
+  },
   "polity": "大清",
   "title": "俟命錄",
   "work_base_title": "俟命錄",

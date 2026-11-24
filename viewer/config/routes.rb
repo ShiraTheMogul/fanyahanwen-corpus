@@ -123,6 +123,7 @@ Rails.application.routes.draw do
 	get "/fun/xuanji", to: "xuanji#show", as: :xuanji
 	post "/fun/xuanji/sync_colors", to: "xuanji#sync_colors", as: :xuanji_sync_colors
 	post "/fun/xuanji/phoneticize", to: "xuanji#phoneticize", as: :xuanji_phoneticize
+	post "/fun/xuanji/rhyme", to: "xuanji#rhyme", as: :xuanji_rhyme
 	get "/fun/transcription", to: "transcription#show", as: :transcription
 	get "/fun/deconstruction",
 		to: "character_games#deconstruction",

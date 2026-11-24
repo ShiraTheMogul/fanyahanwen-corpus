@@ -44,5 +44,85 @@
     }
   ],
   "is_compilation": false,
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "documents": [
+    {
+      "file": "合集20163.1_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集20163/合集20163.1_ASDC.txt",
+      "title": "合集20163.1",
+      "segment": 1,
+      "source_locator": "20163.1",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "28136"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "20163.1"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "合集20163.2_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集20163/合集20163.2_ASDC.txt",
+      "title": "合集20163.2",
+      "segment": 2,
+      "source_locator": "20163.2",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "28137"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "20163.2"
+        }
+      ],
+      "body_start_line": 1
+    }
+  ],
+  "script_group": {
+    "groups": [
+      "𠂤小字"
+    ],
+    "source": "楊郁彥：《甲骨文合集分組分類總表》，臺北：藝文印書館，2005年",
+    "method": "掃描本逐格比對字形模板讀出（score≥0.80），未能確認之格不錄"
+  },
+  "jilin_2024": {
+    "joins": [
+      {
+        "group_id": "吉大2024-7-8-0065",
+        "composition": "大系1308【史語所ZR026032[史語所R026032{合集20163（乙129+乙234）+乙補5}+合集20475（乙229+乙121、史語所R026119）+乙補84（史語所R026488）]+廣東省文物商店2】",
+        "listed_under": [
+          "合集20163",
+          "合集20475"
+        ],
+        "joiners": "林宏明；蔣玉斌",
+        "cited": "林宏明：《醉古集-甲骨的綴合與研究》第 162，臺北：萬卷樓圖書股份有限公司，2011年，第181頁。蔣玉斌：《蔣玉斌甲骨綴合總表（300組）》第091組，先秦網2011年 3 月 20 日：https://www.xianqin.org/blog/archives/2305.html。蔣玉斌：《殷墟 B119、YH006、YH044 三坑甲骨新綴》，《中國文字研究》，2007（01），鄭州：大象出版社，2007 年，第 14-18 頁。蔣玉斌：《甲骨舊綴之新加綴》，先秦網 2014 年 12 月 25 日：https://www.xianqin.org/blog/archives/4887.htm。",
+        "source": "曾心：《〈甲骨文合集〉第七、八冊綜合整理》，吉林大學碩士學位論文（指導教師：何景成），2024年，綴合或復原表"
+      }
+    ]
+  }
 }

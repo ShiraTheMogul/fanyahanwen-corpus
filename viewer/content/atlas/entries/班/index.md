@@ -1,4 +1,4 @@
----
+﻿---
 id: 中國漢文--商殷朝--班
 kind: polity
 title: Ban

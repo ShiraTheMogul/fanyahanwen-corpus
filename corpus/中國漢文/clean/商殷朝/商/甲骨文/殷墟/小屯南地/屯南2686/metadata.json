@@ -192,7 +192,8 @@
           "value": "2237a3f915c1"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 76502,
@@ -228,7 +229,8 @@
           "value": "4fbf3bd141f9"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 76503,
@@ -264,7 +266,8 @@
           "value": "91371217610a"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 76504,
@@ -300,7 +303,8 @@
           "value": "923e4e5fa134"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 76505,
@@ -336,7 +340,8 @@
           "value": "7ea30c45977f"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 76506,
@@ -372,7 +377,8 @@
           "value": "ef8c6457d497"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 76507,
@@ -408,6 +414,35 @@
           "value": "2bfd502fe940"
         }
       ],
+      "body_start_line": 1,
+      "transcription_type": "寬式"
+    },
+    {
+      "file": "屯南2686.8_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/小屯南地/屯南2686/屯南2686.8_ASDC.txt",
+      "title": "屯南2686.8",
+      "segment": 8,
+      "source_locator": "2686.8",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "小屯南地甲骨",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "88608"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "2686.8"
+        }
+      ],
       "body_start_line": 1
     }
   ],
@@ -427,5 +462,24 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "joins": [
+    {
+      "group_id": "綴彙0344",
+      "number_in_book": "344",
+      "composition": [
+        "正：屯南2686＋屯南2697",
+        "反：屯南2687＋屯南2685"
+      ],
+      "pieces": [
+        "屯南2686",
+        "屯南2697",
+        "屯南2687",
+        "屯南2685"
+      ],
+      "joiner": "肖楠",
+      "source": "蔡哲茂：《甲骨綴合彙編（圖版篇）》，新北市：花木蘭文化出版社，2011年，〈組別號碼表〉第18頁",
+      "note": "綴合者（據〈綴合者編號〉）：肖楠。"
+    }
+  ]
 }

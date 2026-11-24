@@ -107,7 +107,8 @@
           "value": "bd1d0369f78e"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 84355,
@@ -143,7 +144,8 @@
           "value": "22c1cde080cf"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     }
   ],
   "transcriptions": [
@@ -157,5 +159,30 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "script_group": {
+    "groups": [
+      "黃類"
+    ],
+    "source": "楊郁彥：《甲骨文合集分組分類總表》，臺北：藝文印書館，2005年",
+    "method": "掃描本逐格比對字形模板讀出（score≥0.80），未能確認之格不錄"
+  },
+  "joins": [
+    {
+      "group_id": "綴彙0682",
+      "number_in_book": "682",
+      "composition": [
+        "41867（英2593）＋41871（英2588）"
+      ],
+      "pieces": [
+        "合集41867",
+        "英2593",
+        "合集41871",
+        "英2588"
+      ],
+      "joiner": "門藝",
+      "source": "蔡哲茂：《甲骨綴合彙編（圖版篇）》，新北市：花木蘭文化出版社，2011年，〈組別號碼表〉第30頁",
+      "note": "綴合者（據〈綴合者編號〉）：門藝。"
+    }
+  ]
 }

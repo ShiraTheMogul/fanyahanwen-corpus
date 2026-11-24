@@ -77,15 +77,34 @@
     {
       "scheme": "legacy_work_id",
       "value": "119000"
+    },
+    {
+      "scheme": "甲骨文合集",
+      "value": "06384"
     }
   ],
   "categories": [
     "出土文獻",
-    "甲骨文"
+    "甲骨文",
+    "不詳"
   ],
   "sources": [
     "https://inscription.asdc.sinica.edu.tw",
-    "甲骨文合集"
+    "甲骨文合集",
+    {
+      "kind": "image_source",
+      "title": "甲骨文合集",
+      "creator": "Guo, Moruo 郭沫若",
+      "creator_role": "chief editor",
+      "contributor": "Hu, Houxuan 胡厚宣",
+      "contributor_role": "general editor",
+      "corporate_contributor": "中國社會科學院歷史研究所《甲骨文合集》編輯組",
+      "corporate_contributor_role": "compiler",
+      "date": "1978–1982",
+      "publisher": "中華書局",
+      "citation": "Guo, Moruo 郭沫若 (Chief Ed.) & Hu, Houxuan 胡厚宣 (General Ed.) (with 中國社會科學院歷史研究所《甲骨文合集》編輯組). (1978–1982). 甲骨文合集. 中華書局.",
+      "source_note": "Image witness matched to this object by the 甲骨文合集 catalogue number encoded in the source filename. The importer does not infer whether an individual source image is a rubbing, photograph, or tracing."
+    }
   ],
   "is_compilation": false,
   "documents": [
@@ -123,7 +142,8 @@
           "value": "5c8b25cd2a8e"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 85449,
@@ -159,7 +179,8 @@
           "value": "87b91b646b1f"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 85450,
@@ -195,6 +216,35 @@
           "value": "5c0c8d7da641"
         }
       ],
+      "body_start_line": 1,
+      "transcription_type": "寬式"
+    },
+    {
+      "file": "合集6384.1_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集6384/合集6384.1_ASDC.txt",
+      "title": "合集6384.1",
+      "segment": 1,
+      "source_locator": "6384.1",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "80184"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "6384.1"
+        }
+      ],
       "body_start_line": 1
     }
   ],
@@ -210,5 +260,33 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "merged_from": [
+    "殷墟/出土位置不詳/合集06384"
+  ],
+  "script_group": {
+    "groups": [
+      "典賓"
+    ],
+    "source": "楊郁彥：《甲骨文合集分組分類總表》，臺北：藝文印書館，2005年",
+    "method": "掃描本逐格比對字形模板讀出（score≥0.80），未能確認之格不錄"
+  },
+  "joins": [
+    {
+      "group_id": "綴彙0523",
+      "number_in_book": "523",
+      "composition": [
+        "合補1874〔6384＋6387（39879重）"
+      ],
+      "pieces": [
+        "合補1874",
+        "合集6384",
+        "合集6387",
+        "合集39879"
+      ],
+      "joiner": "嚴一萍",
+      "source": "蔡哲茂：《甲骨綴合彙編（圖版篇）》，新北市：花木蘭文化出版社，2011年，〈組別號碼表〉第24頁",
+      "note": "綴合者（據〈綴合者編號〉）：嚴一萍。OCR轉錄，括號未能全部對齊，請以原書為準。"
+    }
+  ]
 }

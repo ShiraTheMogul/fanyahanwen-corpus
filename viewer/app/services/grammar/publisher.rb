@@ -73,6 +73,15 @@ module Grammar
       FileUtils.mkdir_p(path.dirname)
       Tempfile.create(["grammar-entry", ".md"], path.dirname.to_s) do |file|
         file.binmode
+        # Han-bearing text files in this repository carry a UTF-8 BOM, and this
+        # writes the article itself. Without this, publishing a submission over
+        # an existing article would quietly take its BOM off.
+        #
+        # `binmode` above means bytes, so the mark is written as bytes. Readers
+        # are unaffected either way: everything that parses an article goes
+        # through Grammar::MarkdownDocument, which drops a leading BOM.
+        content = content.dup.force_encoding("UTF-8")
+        content = "\uFEFF#{content}" unless content.start_with?("\uFEFF")
         file.write(content)
         file.flush
         file.fsync

@@ -77,7 +77,25 @@
       "catalogue": "殷周金文集成",
       "source_locator": "10033",
       "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
-      "transcription_source_label": "ASDC"
+      "transcription_source_label": "ASDC",
+      "transcription_type": "寬式"
+    },
+    {
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "殷周金文暨青銅器資料庫",
+      "source_label": "ASDC青銅器庫",
+      "medium": "金文",
+      "file": "集成10033_ASDC青銅器庫.txt",
+      "path": "中國漢文/clean/商殷朝/商/金文/商代晚期/集成10033/集成10033_ASDC青銅器庫.txt",
+      "title": "集成10033",
+      "transcription_type": "寬式",
+      "reading": "史語所《殷周金文暨青銅器資料庫》釋文",
+      "alternate": true,
+      "inscription_block": 1,
+      "rubbing_source": "彙編",
+      "line_breaks": "依資料庫「／」分行",
+      "url": "https://bronze.asdc.sinica.edu.tw/rubbing.php?10033"
     }
   ],
   "canonical_identifier": {
@@ -97,5 +115,64 @@
   "ca": "前1600–前1046年",
   "material": {
     "type": "青銅"
-  }
+  },
+  "asdc_bronze_db": {
+    "source": "中央研究院歷史語言研究所《殷周金文暨青銅器資料庫》",
+    "url": "https://bronze.asdc.sinica.edu.tw/rubbing.php?10033",
+    "record": "10033",
+    "器名": "旅盤",
+    "銅器時代": "商代晚期",
+    "出土地點": [
+      "河南省安陽市 （傳）",
+      "河南省安陽市"
+    ],
+    "現藏": "美國舊金山亞洲藝術博物館布倫戴奇藏品（B60B1001）\nAvery Brundage Collection, Asian Art Museum of San Francisco, San Francisco, California, USA",
+    "流傳": "日本神戶廣海二三郎氏舊藏",
+    "尺寸": "口徑33cm",
+    "inscriptions": [
+      {
+        "資料出處": "彙編",
+        "銘文位置": "器內壁",
+        "銘文總字數": "1",
+        "著錄": [
+          {
+            "book": "總集",
+            "ref_id": "216",
+            "loc": "6664"
+          },
+          {
+            "book": "日精華",
+            "ref_id": "309",
+            "loc": "1.85"
+          },
+          {
+            "book": "彙編",
+            "ref_id": "171",
+            "loc": "8.1316"
+          },
+          {
+            "book": "青全",
+            "ref_id": "93",
+            "loc": "3：177"
+          },
+          {
+            "book": "薩克勒（1990）",
+            "ref_id": "287",
+            "loc": "28頁Fig19"
+          },
+          {
+            "book": "薩克勒（1987）",
+            "ref_id": "286",
+            "loc": "524頁Fig103.3"
+          }
+        ]
+      }
+    ]
+  },
+  "vessel_type": "盤",
+  "vessel_type_source": "中央研究院歷史語言研究所《殷周金文暨青銅器資料庫》器名「旅盤」",
+  "collection": "美國舊金山亞洲藝術博物館布倫戴奇藏品（B60B1001）\nAvery Brundage Collection, Asian Art Museum of San Francisco, San Francisco, California, USA",
+  "notes": [
+    "〔中央研究院歷史語言研究所《殷周金文暨青銅器資料庫》〕現藏美國舊金山亞洲藝術博物館布倫戴奇藏品（B60B1001）\nAvery Brundage Collection, Asian Art Museum of San Francisco, San Francisco, California, USA。"
+  ]
 }

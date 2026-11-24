@@ -50,9 +50,9 @@
   "documents": [
     {
       "document_id": 94526,
-      "file": "新收NA0803_ASDC.txt",
-      "path": "中國漢文/clean/商殷朝/商/金文/商代晚期或西周早期/新收NA0803/新收NA0803_ASDC.txt",
-      "title": "新收NA0803",
+      "file": "新收NA0803_ASDC_2.txt",
+      "path": "中國漢文/clean/商殷朝/商/金文/商代晚期或西周早期/新收NA0803/新收NA0803_ASDC_2.txt",
+      "title": "新收NA0803（2）",
       "medium": "金文",
       "identifiers": [
         {
@@ -80,7 +80,73 @@
       "catalogue": "新收殷周青銅器銘文暨器影彙編",
       "source_locator": "NA0803",
       "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
-      "transcription_source_label": "ASDC"
+      "transcription_source_label": "ASDC",
+      "transcription_type": "寬式"
+    },
+    {
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "source_label": "ASDC",
+      "catalogue": "新收殷周青銅器銘文暨器影彙編",
+      "medium": "金文",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "117837"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "NA0803"
+        },
+        {
+          "scheme": "no_bronze_components",
+          "value": "1"
+        }
+      ],
+      "body_start_line": 1,
+      "file": "新收NA0803_ASDC_1.txt",
+      "path": "中國漢文/clean/商殷朝/商/金文/商代晚期或西周早期/新收NA0803/新收NA0803_ASDC_1.txt",
+      "title": "新收NA0803（1）",
+      "transcription_type": "寬式"
+    },
+    {
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "殷周金文暨青銅器資料庫",
+      "source_label": "ASDC青銅器庫",
+      "medium": "金文",
+      "file": "新收NA0803_ASDC青銅器庫_1.txt",
+      "path": "中國漢文/clean/商殷朝/商/金文/商代晚期或西周早期/新收NA0803/新收NA0803_ASDC青銅器庫_1.txt",
+      "title": "新收NA0803",
+      "transcription_type": "寬式",
+      "reading": "史語所《殷周金文暨青銅器資料庫》釋文",
+      "alternate": true,
+      "inscription_block": 1,
+      "rubbing_source": "《高家堡戈國墓》八十一：3",
+      "line_breaks": "依資料庫「／」分行",
+      "url": "https://bronze.asdc.sinica.edu.tw/rubbing.php?NA0803"
+    },
+    {
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "殷周金文暨青銅器資料庫",
+      "source_label": "ASDC青銅器庫",
+      "medium": "金文",
+      "file": "新收NA0803_ASDC青銅器庫_2.txt",
+      "path": "中國漢文/clean/商殷朝/商/金文/商代晚期或西周早期/新收NA0803/新收NA0803_ASDC青銅器庫_2.txt",
+      "title": "新收NA0803",
+      "transcription_type": "寬式",
+      "reading": "史語所《殷周金文暨青銅器資料庫》釋文",
+      "alternate": true,
+      "inscription_block": 2,
+      "rubbing_source": "《高家堡戈國墓》八十一：4",
+      "line_breaks": "依資料庫「／」分行",
+      "url": "https://bronze.asdc.sinica.edu.tw/rubbing.php?NA0803"
     }
   ],
   "canonical_identifier": {
@@ -100,5 +166,62 @@
   "ca": "前1600–前1046年",
   "material": {
     "type": "青銅"
-  }
+  },
+  "asdc_bronze_db": {
+    "source": "中央研究院歷史語言研究所《殷周金文暨青銅器資料庫》",
+    "url": "https://bronze.asdc.sinica.edu.tw/rubbing.php?NA0803",
+    "record": "NA0803",
+    "器名": "令鉞",
+    "銅器時代": "商代晚期或西周早期",
+    "出土年代": "1971　~　1991年",
+    "出土地點": [
+      "陝西省涇陽縣興隆鄉高家堡M4：14",
+      "陝西省涇陽縣興隆鎮高家堡村"
+    ],
+    "現藏": "陝西省涇陽縣博物館",
+    "尺寸": "通長19.5、刃寬12.4、肩寬8.4、內長6.5、內末厚0.7cm",
+    "image_caption": "【陝西金文集成】（10）1110",
+    "inscriptions": [
+      {
+        "資料出處": "《高家堡戈國墓》八十一：3",
+        "銘文位置": "正面內上",
+        "銘文總字數": "2",
+        "著錄": [
+          {
+            "book": "高家堡",
+            "ref_id": "458",
+            "loc": "頁98"
+          },
+          {
+            "book": "陝西金文集成",
+            "ref_id": "682",
+            "loc": "（10）1110"
+          }
+        ]
+      },
+      {
+        "資料出處": "《高家堡戈國墓》八十一：4",
+        "銘文位置": "背面內上",
+        "銘文總字數": "2",
+        "著錄": [
+          {
+            "book": "高家堡",
+            "ref_id": "458",
+            "loc": "頁98"
+          },
+          {
+            "book": "陝西金文集成",
+            "ref_id": "682",
+            "loc": "（10）1110"
+          }
+        ]
+      }
+    ]
+  },
+  "vessel_type": "鉞",
+  "vessel_type_source": "中央研究院歷史語言研究所《殷周金文暨青銅器資料庫》器名「令鉞」",
+  "collection": "陝西省涇陽縣博物館",
+  "notes": [
+    "〔中央研究院歷史語言研究所《殷周金文暨青銅器資料庫》〕現藏陝西省涇陽縣博物館。"
+  ]
 }

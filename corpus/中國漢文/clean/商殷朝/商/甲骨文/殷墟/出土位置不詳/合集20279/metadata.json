@@ -121,7 +121,8 @@
           "value": "970214b16353"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 72425,
@@ -157,6 +158,91 @@
           "value": "dc709d293c30"
         }
       ],
+      "body_start_line": 1,
+      "transcription_type": "寬式"
+    },
+    {
+      "file": "合集20279.2_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集20279/合集20279.2_ASDC.txt",
+      "title": "合集20279.2",
+      "segment": 2,
+      "source_locator": "20279.2",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "28335"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "20279.2"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "合集20279.4_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集20279/合集20279.4_ASDC.txt",
+      "title": "合集20279.4",
+      "segment": 4,
+      "source_locator": "20279.4",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "28337"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "20279.4"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "合集20279.5_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集20279/合集20279.5_ASDC.txt",
+      "title": "合集20279.5",
+      "segment": 5,
+      "source_locator": "20279.5",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "28338"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "20279.5"
+        }
+      ],
       "body_start_line": 1
     }
   ],
@@ -171,5 +257,25 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "authors": [
+    {
+      "name": "王",
+      "role": "卜X貞"
+    }
+  ],
+  "jilin_2024": {
+    "joins": [
+      {
+        "group_id": "吉大2024-7-8-0086",
+        "composition": "合集20279（山拓306、大系1400）-合集40818（英藏1784、大系1434）",
+        "listed_under": [
+          "合集20279"
+        ],
+        "joiners": "展翔",
+        "cited": "展翔：《殷契綴合第 32、33 則》，先秦史網 2020 年 11 月 1 日：https://www.xianqin.org/blog/archives/14359.html。",
+        "source": "曾心：《〈甲骨文合集〉第七、八冊綜合整理》，吉林大學碩士學位論文（指導教師：何景成），2024年，綴合或復原表"
+      }
+    ]
+  }
 }

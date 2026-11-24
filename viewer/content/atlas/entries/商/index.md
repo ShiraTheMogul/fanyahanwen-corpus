@@ -1,4 +1,4 @@
----
+﻿---
 id: shang
 kind: polity
 title: Shang

@@ -101,6 +101,35 @@
           "value": "42f7cbcc94e7"
         }
       ],
+      "body_start_line": 1,
+      "transcription_type": "寬式"
+    },
+    {
+      "file": "合集23912.2_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集23912/合集23912.2_ASDC.txt",
+      "title": "合集23912.2",
+      "segment": 2,
+      "source_locator": "23912.2",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "36466"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "23912.2"
+        }
+      ],
       "body_start_line": 1
     }
   ],
@@ -114,5 +143,21 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "joins": [
+    {
+      "group_id": "綴彙0524",
+      "number_in_book": "524",
+      "composition": [
+        "23912＋23915"
+      ],
+      "pieces": [
+        "合集23912",
+        "合集23915"
+      ],
+      "joiner": "嚴一萍",
+      "source": "蔡哲茂：《甲骨綴合彙編（圖版篇）》，新北市：花木蘭文化出版社，2011年，〈組別號碼表〉第24頁",
+      "note": "綴合者（據〈綴合者編號〉）：嚴一萍。"
+    }
+  ]
 }

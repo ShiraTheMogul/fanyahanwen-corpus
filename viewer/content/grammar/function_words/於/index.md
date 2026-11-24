@@ -1,4 +1,4 @@
----
+﻿---
 title: 於
 id: fw-u65bc
 kind: function_word

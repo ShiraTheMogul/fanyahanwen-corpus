@@ -1,4 +1,4 @@
----
+﻿---
 id: 中國漢文--商殷朝--井方
 kind: polity
 title: Jingfang

@@ -290,9 +290,9 @@ def build_parser() -> argparse.ArgumentParser:
     sc.add_argument("--workers", type=int, default=0, help="0 = one per CPU")
     sc.add_argument("--limit", type=int, default=None, help="stop after N new documents")
     sc.add_argument("--index", default=None,
-                    help="enumerate from index_corpus.csv instead of walking. "
-                         "Faster, but the index is stale: it omits 四庫全書, "
-                         "維基大典, 礦藝大典 and 琉球漢文 entirely")
+                    help="enumerate from an index instead of walking: pass "
+                         "corpus/index_corpus_v2_pages.csv (rebuilt from disk by "
+                         "build_corpus_index.py). Faster than walking")
     sc.add_argument("--include-raw", action="store_true",
                     help="also scan raw/ (default: clean/ only — raw/ is the "
                          "same works again)")

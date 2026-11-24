@@ -151,7 +151,9 @@
   "categories": [
     "出土文獻",
     "甲骨文",
-    "用"
+    "用",
+    "記事刻辭",
+    "骨面刻辭（歷組）"
   ],
   "sources": [
     "https://inscription.asdc.sinica.edu.tw",
@@ -193,7 +195,8 @@
           "value": "d7c969f95adf"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 86039,
@@ -229,7 +232,8 @@
           "value": "8eca4cc265cc"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 86040,
@@ -265,7 +269,8 @@
           "value": "df8550e41e14"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 86041,
@@ -301,7 +306,8 @@
           "value": "170cc994805e"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 86042,
@@ -337,7 +343,8 @@
           "value": "25145a1226b3"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 86043,
@@ -373,7 +380,8 @@
           "value": "654b300ab1b2"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 86044,
@@ -409,6 +417,35 @@
           "value": "e027a8719681"
         }
       ],
+      "body_start_line": 1,
+      "transcription_type": "寬式"
+    },
+    {
+      "file": "屯南783.8_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/小屯南地/屯南783/屯南783.8_ASDC.txt",
+      "title": "屯南783.8",
+      "segment": 8,
+      "source_locator": "783.8",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "小屯南地甲骨",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "92535"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "783.8"
+        }
+      ],
       "body_start_line": 1
     }
   ],
@@ -428,5 +465,13 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "record_inscription": [
+    {
+      "type": "骨面刻辭（歷組）",
+      "serial_in_table": 173,
+      "ocr_check": "both",
+      "source": "方稚松：《殷墟甲骨文五種記事刻辭研究》，首都師範大學博士學位論文（指導教師：黃天樹），2007年，〈論文相關材料列表〉表六"
+    }
+  ]
 }

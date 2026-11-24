@@ -190,7 +190,8 @@
           "value": "851919ab8df0"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 72736,
@@ -227,7 +228,8 @@
           "value": "6be23fe45494"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 72737,
@@ -264,7 +266,8 @@
           "value": "cc679ba6726f"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 72738,
@@ -301,7 +304,8 @@
           "value": "bcc06df39f02"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 72739,
@@ -338,7 +342,8 @@
           "value": "e81d2d08b26d"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 72740,
@@ -375,6 +380,63 @@
           "value": "35a20c60a714"
         }
       ],
+      "body_start_line": 1,
+      "transcription_type": "寬式"
+    },
+    {
+      "file": "合集21007反.0_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集21007/合集21007反.0_ASDC.txt",
+      "title": "合集21007反.0",
+      "segment": 0,
+      "source_locator": "21007反.0",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "29762"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "21007反.0"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "合集21007正.1_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集21007/合集21007正.1_ASDC.txt",
+      "title": "合集21007正.1",
+      "segment": 1,
+      "source_locator": "21007正.1",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "29763"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "21007正.1"
+        }
+      ],
       "body_start_line": 1
     }
   ],
@@ -393,5 +455,13 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "script_group": {
+    "groups": [
+      "賓三",
+      "𠂤歷間B"
+    ],
+    "source": "楊郁彥：《甲骨文合集分組分類總表》，臺北：藝文印書館，2005年",
+    "method": "掃描本逐格比對字形模板讀出（score≥0.80），未能確認之格不錄"
+  }
 }

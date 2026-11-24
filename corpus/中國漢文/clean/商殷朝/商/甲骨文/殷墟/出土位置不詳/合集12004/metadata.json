@@ -121,7 +121,8 @@
           "value": "408da8f08aa3"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 68437,
@@ -157,6 +158,35 @@
           "value": "4fa19614e4e4"
         }
       ],
+      "body_start_line": 1,
+      "transcription_type": "寬式"
+    },
+    {
+      "file": "合集12004.1_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集12004/合集12004.1_ASDC.txt",
+      "title": "合集12004.1",
+      "segment": 1,
+      "source_locator": "12004.1",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "12214"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "12004.1"
+        }
+      ],
       "body_start_line": 1
     }
   ],
@@ -171,5 +201,43 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "script_group": {
+    "groups": [
+      "典賓"
+    ],
+    "source": "楊郁彥：《甲骨文合集分組分類總表》，臺北：藝文印書館，2005年",
+    "method": "掃描本逐格比對字形模板讀出（score≥0.80），未能確認之格不錄"
+  },
+  "joins": [
+    {
+      "group_id": "綴彙0326",
+      "number_in_book": "326",
+      "composition": [
+        "12004已綴入合補3530正（東文研B0313a）"
+      ],
+      "pieces": [
+        "合集12004",
+        "合補3530正",
+        "東文研B0313a"
+      ],
+      "joiner": "松丸道雄",
+      "source": "蔡哲茂：《甲骨綴合彙編（圖版篇）》，新北市：花木蘭文化出版社，2011年，〈組別號碼表〉第17頁",
+      "note": "綴合者（據〈綴合者編號〉）：松丸道雄。"
+    }
+  ],
+  "jilin_2024": {
+    "joins": [
+      {
+        "group_id": "吉大2024-5-6-0293",
+        "composition": "＜合補03530正",
+        "listed_under": [
+          "合集12004"
+        ],
+        "joiners": "松丸道雄",
+        "cited": "《綴彙》0326",
+        "source": "張凇赫：《〈甲骨文合集〉第五、六冊綜合整理》，吉林大學碩士學位論文（指導教師：吳良寶），2024年，附表2《甲骨文合集》第五、六冊綴合情況表"
+      }
+    ]
+  }
 }

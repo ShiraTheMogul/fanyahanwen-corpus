@@ -1,4 +1,4 @@
----
+﻿---
 id: 中國漢文--商殷朝--暴
 kind: polity
 title: Bao

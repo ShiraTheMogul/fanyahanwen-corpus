@@ -137,7 +137,8 @@
           "value": "c6fa404a73a7"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 77172,
@@ -173,7 +174,8 @@
           "value": "a78a43eab89f"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 77173,
@@ -209,6 +211,63 @@
           "value": "ce1dda4b2df7"
         }
       ],
+      "body_start_line": 1,
+      "transcription_type": "寬式"
+    },
+    {
+      "file": "合集27920.1_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集27920/合集27920.1_ASDC.txt",
+      "title": "合集27920.1",
+      "segment": 1,
+      "source_locator": "27920.1",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "45068"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "27920.1"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "合集27920.5_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集27920/合集27920.5_ASDC.txt",
+      "title": "合集27920.5",
+      "segment": 5,
+      "source_locator": "27920.5",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "45072"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "27920.5"
+        }
+      ],
       "body_start_line": 1
     }
   ],
@@ -224,5 +283,43 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "script_group": {
+    "groups": [
+      "無名"
+    ],
+    "source": "楊郁彥：《甲骨文合集分組分類總表》，臺北：藝文印書館，2005年",
+    "method": "掃描本逐格比對字形模板讀出（score≥0.80），未能確認之格不錄"
+  },
+  "joins": [
+    {
+      "group_id": "綴彙0301",
+      "number_in_book": "301",
+      "composition": [
+        "合補8989（合補10393重、27920＋28758）"
+      ],
+      "pieces": [
+        "合補8989",
+        "合補10393",
+        "合集27920",
+        "合集28758"
+      ],
+      "joiner": "松丸道雄",
+      "source": "蔡哲茂：《甲骨綴合彙編（圖版篇）》，新北市：花木蘭文化出版社，2011年，〈組別號碼表〉第16頁",
+      "note": "綴合者（據〈綴合者編號〉）：松丸道雄。"
+    }
+  ],
+  "jilin_2024": {
+    "thesis": [
+      {
+        "綴合": [
+          "《合集》27920+《合集》28758"
+        ],
+        "組類": [
+          "無名"
+        ],
+        "source": "董晶卉：《〈甲骨文合集〉第九、十冊綜合整理》，吉林大學碩士學位論文（指導教師：崎川隆），2024年，第二部分（圖版及釋文校訂）"
+      }
+    ]
+  }
 }

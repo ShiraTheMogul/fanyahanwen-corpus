@@ -117,7 +117,9 @@
   "categories": [
     "出土文獻",
     "甲骨文",
-    "用"
+    "用",
+    "記事刻辭",
+    "骨面刻辭（歷組）"
   ],
   "sources": [
     "https://inscription.asdc.sinica.edu.tw",
@@ -159,7 +161,8 @@
           "value": "17c9422f83ab"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 85979,
@@ -195,7 +198,8 @@
           "value": "4aa331549cc7"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 85980,
@@ -231,7 +235,8 @@
           "value": "0341d7dc413a"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 85981,
@@ -267,7 +272,8 @@
           "value": "e9e3b124da66"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 85982,
@@ -303,6 +309,91 @@
           "value": "d5433fc6f9b1"
         }
       ],
+      "body_start_line": 1,
+      "transcription_type": "寬式"
+    },
+    {
+      "file": "屯南771.3_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/小屯南地/屯南771/屯南771.3_ASDC.txt",
+      "title": "屯南771.3",
+      "segment": 3,
+      "source_locator": "771.3",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "小屯南地甲骨",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "92502"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "771.3"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "屯南771.4_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/小屯南地/屯南771/屯南771.4_ASDC.txt",
+      "title": "屯南771.4",
+      "segment": 4,
+      "source_locator": "771.4",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "小屯南地甲骨",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "92503"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "771.4"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "屯南771.8_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/小屯南地/屯南771/屯南771.8_ASDC.txt",
+      "title": "屯南771.8",
+      "segment": 8,
+      "source_locator": "771.8",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "小屯南地甲骨",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "92507"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "771.8"
+        }
+      ],
       "body_start_line": 1
     }
   ],
@@ -320,5 +411,13 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "record_inscription": [
+    {
+      "type": "骨面刻辭（歷組）",
+      "serial_in_table": 172,
+      "ocr_check": "both",
+      "source": "方稚松：《殷墟甲骨文五種記事刻辭研究》，首都師範大學博士學位論文（指導教師：黃天樹），2007年，〈論文相關材料列表〉表六"
+    }
+  ]
 }

@@ -103,6 +103,119 @@
           "value": "6c38de46891d"
         }
       ],
+      "body_start_line": 1,
+      "transcription_type": "寬式"
+    },
+    {
+      "file": "合集13758反.1_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集13758/合集13758反.1_ASDC.txt",
+      "title": "合集13758反.1",
+      "segment": 1,
+      "source_locator": "13758反.1",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "16071"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "13758反.1"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "合集13758反.3_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集13758/合集13758反.3_ASDC.txt",
+      "title": "合集13758反.3",
+      "segment": 3,
+      "source_locator": "13758反.3",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "16073"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "13758反.3"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "合集13758反.4_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集13758/合集13758反.4_ASDC.txt",
+      "title": "合集13758反.4",
+      "segment": 4,
+      "source_locator": "13758反.4",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "16074"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "13758反.4"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "合集13758正.0_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集13758/合集13758正.0_ASDC.txt",
+      "title": "合集13758正.0",
+      "segment": 0,
+      "source_locator": "13758正.0",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "16075"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "13758正.0"
+        }
+      ],
       "body_start_line": 1
     }
   ],
@@ -116,5 +229,42 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "authors": [
+    {
+      "name": "〔？｜CDP-83A4〕",
+      "role": "卜X貞"
+    },
+    {
+      "name": "爭",
+      "role": "卜X貞"
+    }
+  ],
+  "diviner_groups": [
+    {
+      "name": "〔？｜CDP-83A4〕",
+      "group": "賓",
+      "group_lipeng": null,
+      "group_chen": null,
+      "period_dong": null,
+      "basis": "同版",
+      "evidence": "97/97 pieces shared with 賓組 diviners"
+    },
+    {
+      "name": "爭",
+      "group": "賓",
+      "group_lipeng": "賓",
+      "group_chen": "賓",
+      "period_dong": "1",
+      "table_name": "爭",
+      "basis": "宋鎮豪、劉源2006"
+    }
+  ],
+  "script_group": {
+    "groups": [
+      "賓一"
+    ],
+    "source": "楊郁彥：《甲骨文合集分組分類總表》，臺北：藝文印書館，2005年",
+    "method": "掃描本逐格比對字形模板讀出（score≥0.80），未能確認之格不錄"
+  }
 }

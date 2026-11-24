@@ -1,73 +1,90 @@
-{
- "works": 64068,
- "pages": 182751,
- "chars": 1194887939,
- "empty_pages": 8914,
- "works_with_gaps": 0,
+﻿{
+ "generated": "2026-11-12 12:21",
+ "method": "build_corpus_index.py — disk walk",
+ "works": 169097,
+ "pages": 415393,
+ "chars": 1554273454,
+ "shards_built": 503,
+ "shards_missing": [],
+ "shards_without_char_counts": [],
+ "works_with_stale_sidecar_paths": 325,
+ "works_with_missing_files": 326,
+ "folders_with_txt_but_no_sidecar": [
+  "中國漢文/clean/漢朝/西漢/褚先生集",
+  "朝鮮漢文/clean"
+ ],
  "per_root": {
-  "四庫全書": {
-   "works": 2882,
-   "pages": 62750,
-   "chars": 596679127,
-   "empty": 1297
-  },
   "中國漢文": {
-   "works": 46630,
-   "pages": 91102,
-   "chars": 403172359,
-   "empty": 5718
+   "works": 152981,
+   "pages": 389753,
+   "chars": 1432582440,
+   "empty": 2249,
+   "stale_paths": 4123,
+   "missing_files": 4124
   },
-  "朝鮮漢文": {
-   "works": 2120,
-   "pages": 14935,
-   "chars": 176767237,
-   "empty": 754
+  "他漢文": {
+   "works": 21,
+   "pages": 50,
+   "chars": 24729,
+   "empty": 1,
+   "stale_paths": 0,
+   "missing_files": 0
+  },
+  "新加坡漢文": {
+   "works": 311,
+   "pages": 962,
+   "chars": 82992,
+   "empty": 0,
+   "stale_paths": 0,
+   "missing_files": 0
   },
   "日本漢文": {
-   "works": 294,
+   "works": 295,
    "pages": 853,
-   "chars": 10817784,
-   "empty": 152
+   "chars": 9096447,
+   "empty": 0,
+   "stale_paths": 3,
+   "missing_files": 3
   },
-  "維基大典": {
-   "works": 11262,
-   "pages": 11262,
-   "chars": 3641827,
-   "empty": 0
-  },
-  "越南漢文": {
-   "works": 160,
-   "pages": 376,
-   "chars": 1800288,
-   "empty": 89
-  },
-  "礦藝大典": {
-   "works": 354,
-   "pages": 354,
-   "chars": 955577,
-   "empty": 0
+  "朝鮮漢文": {
+   "works": 1637,
+   "pages": 9692,
+   "chars": 104587359,
+   "empty": 0,
+   "stale_paths": 77,
+   "missing_files": 77
   },
   "琉球漢文": {
    "works": 35,
    "pages": 107,
-   "chars": 918445,
-   "empty": 13
+   "chars": 777244,
+   "empty": 0,
+   "stale_paths": 3,
+   "missing_files": 3
   },
-  "新加坡漢文": {
-   "works": 309,
-   "pages": 962,
-   "chars": 104124,
-   "empty": 876
+  "礦藝大典": {
+   "works": 2200,
+   "pages": 2200,
+   "chars": 1336109,
+   "empty": 0,
+   "stale_paths": 0,
+   "missing_files": 0
   },
-  "他漢文": {
-   "works": 22,
-   "pages": 50,
-   "chars": 31171,
-   "empty": 15
+  "維基大典": {
+   "works": 11262,
+   "pages": 11400,
+   "chars": 4324674,
+   "empty": 0,
+   "stale_paths": 0,
+   "missing_files": 0
+  },
+  "越南漢文": {
+   "works": 355,
+   "pages": 376,
+   "chars": 1461460,
+   "empty": 0,
+   "stale_paths": 0,
+   "missing_files": 0
   }
- },
- "chars_deduplicated": 1179416287,
- "chars_double_counted": 15471652,
- "works_in_multiple_groupings": 1122,
- "note_sides": "clean only; raw/ is deprecated and is never indexed. Character counts come from char_count_clean."
+ }
 }

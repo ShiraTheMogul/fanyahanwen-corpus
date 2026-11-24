@@ -77,7 +77,25 @@
       "catalogue": "殷周金文集成",
       "source_locator": "11783",
       "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
-      "transcription_source_label": "ASDC"
+      "transcription_source_label": "ASDC",
+      "transcription_type": "寬式"
+    },
+    {
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "殷周金文暨青銅器資料庫",
+      "source_label": "ASDC青銅器庫",
+      "medium": "金文",
+      "file": "集成11783_ASDC青銅器庫.txt",
+      "path": "中國漢文/clean/商殷朝/商/金文/商代晚期/集成11783/集成11783_ASDC青銅器庫.txt",
+      "title": "集成11783",
+      "transcription_type": "寬式",
+      "reading": "史語所《殷周金文暨青銅器資料庫》釋文",
+      "alternate": true,
+      "inscription_block": 1,
+      "rubbing_source": "懷履光",
+      "line_breaks": "依資料庫「／」分行",
+      "url": "https://bronze.asdc.sinica.edu.tw/rubbing.php?11783"
     }
   ],
   "canonical_identifier": {
@@ -97,5 +115,39 @@
   "ca": "前1600–前1046年",
   "material": {
     "type": "青銅"
-  }
+  },
+  "asdc_bronze_db": {
+    "source": "中央研究院歷史語言研究所《殷周金文暨青銅器資料庫》",
+    "url": "https://bronze.asdc.sinica.edu.tw/rubbing.php?11783",
+    "record": "11783",
+    "器名": "大戈虎斧",
+    "銅器時代": "商代晚期",
+    "出土地點": [
+      "河南省安陽市大司空村",
+      "河南省安陽市大司空村"
+    ],
+    "現藏": "加拿大多倫多皇家安大略博物館\nRoyal Ontario Museum ,Toronto, Canada",
+    "image_caption": "【懷履光】頁57",
+    "inscriptions": [
+      {
+        "資料出處": "懷履光",
+        "銘文位置": "內上",
+        "銘文總字數": "2",
+        "著錄": [
+          {
+            "book": "懷履光",
+            "ref_id": "289",
+            "loc": "（1956）57頁圖版21"
+          }
+        ],
+        "備註": "《集成》：「器呈片狀。」"
+      }
+    ]
+  },
+  "vessel_type": "斧",
+  "vessel_type_source": "中央研究院歷史語言研究所《殷周金文暨青銅器資料庫》器名「大戈虎斧」",
+  "collection": "加拿大多倫多皇家安大略博物館\nRoyal Ontario Museum ,Toronto, Canada",
+  "notes": [
+    "〔中央研究院歷史語言研究所《殷周金文暨青銅器資料庫》〕現藏加拿大多倫多皇家安大略博物館\nRoyal Ontario Museum ,Toronto, Canada。"
+  ]
 }

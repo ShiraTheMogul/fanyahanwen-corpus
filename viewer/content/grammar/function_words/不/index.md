@@ -1,4 +1,4 @@
----
+﻿---
 title: 不
 id: fw-u4e0d
 kind: function_word

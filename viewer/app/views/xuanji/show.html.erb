@@ -12,6 +12,21 @@
   </div>
 </div>
 
+<%#
+  The simplified grid is DERIVED from the traditional one at display time, with
+  OpenCC t2s, one cell at a time. If libopencc is not reachable the conversion
+  returns its input unchanged, and the "simplified" grid would silently be the
+  traditional one — a failure that looks like a data problem for weeks. So the
+  controller detects it and this says so.
+%>
+<% if @simplification_unavailable %>
+  <p class="xuanji-warning">
+    <%= t("fun.xuanji.errors.simplification_unavailable",
+          default: "Simplified conversion is unavailable here, so this is the " \
+                   "traditional grid. OpenCC (libopencc) could not be reached.") %>
+  </p>
+<% end %>
+
 <div
   data-controller="xuanji"
   data-xuanji-variant-value="<%= @variant %>"
@@ -22,7 +37,18 @@
   <%= render "rightbar" %>
 
   <div class="xuanji-controls">
-    <% rules = [
+    <%#
+      康萬民's eight figures were missing from this list entirely, so the only
+      way to reach any of them was to edit ?rule= in the address bar — and even
+      then `buildPath` had no case for them and read the grid in plain rows.
+      Both halves are fixed; these are the readings whose poems he quotes, so
+      each one has been checked against his own text.
+
+      The label defaults are inline because these keys are not in the locale
+      files, which is how the rest of this application handles a key that has
+      no translation yet.
+    %>
+    <% plain_rules = [
       [t("fun.xuanji.rules.manual"), "manual"],
       [t("fun.xuanji.rules.rows_lr"), "rows_lr"],
       [t("fun.xuanji.rules.rows_rl"), "rows_rl"],
@@ -34,10 +60,176 @@
       [t("fun.xuanji.rules.kang_boundary"), "kang_boundary"]
     ] %>
 
+    <% kang_rules = [
+      [t("fun.xuanji.rules.kang_first_red",      default: "第一圖 四圍 — 七言"),           "kang_first_red"],
+      [t("fun.xuanji.rules.kang_second_red",     default: "第二圖 — 七言"),                "kang_second_red"],
+      [t("fun.xuanji.rules.kang_third_red",      default: "第三圖 縱横及斜 — 七言"),        "kang_third_red"],
+      [t("fun.xuanji.rules.kang_third_plus_red", default: "附增第三圖 — 七言"),             "kang_third_plus_red"],
+      [t("fun.xuanji.rules.kang_fourth_black",   default: "第四圖 四隅 反覆 — 三言十二句"), "kang_fourth_black"],
+      [t("fun.xuanji.rules.kang_fourth_split",   default: "第四圖 四隅 分讀 — 三言六句"),   "kang_fourth_split"],
+      [t("fun.xuanji.rules.kang_fourth_black_alt",   default: "第四圖 四隅反覆 懐歎起 — 三言十二句"), "kang_fourth_black_alt"],
+      [t("fun.xuanji.rules.kang_fourth_split_alt",   default: "第四圖 分讀 懐歎起 — 三言六句"),       "kang_fourth_split_alt"],
+      [t("fun.xuanji.rules.kang_fourth_odd",         default: "第四圖 間一句 嗟歎起 — 三言六句"),     "kang_fourth_odd"],
+      [t("fun.xuanji.rules.kang_fourth_odd_rev",     default: "第四圖 間一句反覆 懐歎起 — 三言六句"), "kang_fourth_odd_rev"],
+      [t("fun.xuanji.rules.kang_fourth_borrow1",     default: "第四圖 借一字互用 — 四言六句"),   "kang_fourth_borrow1"],
+      [t("fun.xuanji.rules.kang_fourth_borrow1_alt", default: "第四圖 借一字間一句 — 四言六句"), "kang_fourth_borrow1_alt"],
+      [t("fun.xuanji.rules.kang_fourth_borrow2",     default: "第四圖 借二字互用 — 五言六句"),   "kang_fourth_borrow2"],
+      [t("fun.xuanji.rules.kang_fourth_borrow2_alt", default: "第四圖 借二字間一句 — 五言六句"), "kang_fourth_borrow2_alt"],
+      [t("fun.xuanji.rules.kang_fifth_blue",     default: "第五圖 四塊 — 六言"),            "kang_fifth_blue"],
+      [t("fun.xuanji.rules.kang_fifth_borrowed", default: "第五圖 借字 — 四言十二句"),      "kang_fifth_borrowed"],
+      [t("fun.xuanji.rules.kang_fifth_six",      default: "第五圖 — 六言六句"),             "kang_fifth_six"],
+      [t("fun.xuanji.rules.kang_fifth_both",     default: "第五圖 左右分讀 — 六言十二句"),  "kang_fifth_both"],
+      [t("fun.xuanji.rules.kang_fifth_four",     default: "第五圖 兩邊四字 — 四言六句"),    "kang_fifth_four"],
+      [t("fun.xuanji.rules.kang_fifth_both_alt",   default: "第五圖 左右分讀 邵伯起 — 六言十二句"),   "kang_fifth_both_alt"],
+      [t("fun.xuanji.rules.kang_fifth_four12",     default: "第五圖 兩邊四字 — 四言十二句"),          "kang_fifth_four12"],
+      [t("fun.xuanji.rules.kang_fifth_four12_alt", default: "第五圖 兩邊四字羅互 — 四言十二句"),      "kang_fifth_four12_alt"],
+      [t("fun.xuanji.rules.kang_fifth_four6_alt",  default: "第五圖 兩邊分讀左右遞退 — 四言六句"),    "kang_fifth_four6_alt"],
+      [t("fun.xuanji.rules.kang_fifth_six_alt",    default: "第五圖 兩邊分讀左右遞退 — 六言六句"),    "kang_fifth_six_alt"],
+      [t("fun.xuanji.rules.kang_sixth_purple",   default: "第六圖 中方 — 五言四句"),        "kang_sixth_purple"],
+      [t("fun.xuanji.rules.kang_seventh_yellow", default: "第七圖 中方四隅及中心 — 四言四句"), "kang_seventh_yellow"],
+      [t("fun.xuanji.rules.kang_sixth_outin",    default: "第六圖 從外讀入 — 五言四句"),      "kang_sixth_outin"],
+      [t("fun.xuanji.rules.kang_sixth_inout",    default: "第六圖 從内讀出 — 五言四句"),      "kang_sixth_inout"],
+      [t("fun.xuanji.rules.kang_seventh_outin",  default: "第七圖 從外讀入 — 四言四句"),      "kang_seventh_outin"],
+      [t("fun.xuanji.rules.kang_seventh_inout",  default: "第七圖 從内讀出 — 四言四句"),      "kang_seventh_inout"],
+      [t("fun.xuanji.rules.kang_seventh_inter",  default: "第七圖 從下句間逓讀 — 四言四句"),   "kang_seventh_inter"]
+    ] %>
+
+    <%#
+      讀法三's five spines and the twenty groups 康萬民 names along them.
+
+      This figure needs its own group because it is not one reading among
+      thirteen — it holds 3,518 of 起宗's 3,752 poems and 3,788 of Kang's 4,206.
+      Nineteen poems in twenty are in here.
+
+      Each spine is one walk along the lattice, read straight through in sevens.
+      Each of the twenty 段 below is a window of four segments along a spine,
+      which is one quatrain, and the label is the pair of characters Kang uses to
+      name it: 智懷…湘津 is his own shorthand for "the reading that begins 智懷
+      and ends 湘津". Picking one gives you exactly the poem he is pointing at.
+
+      The line break is the thing to know about this figure. Its lines END on the
+      lattice rather than starting there, so row 1 reads 智懷德聖虞唐眞 and not
+      仁智懷德聖虞唐 — one cell of phase, and the difference between 讀法三之一's
+      rhyme 真臣倫津 and 讀法一's 唐章皇湘. All twenty of Kang's start anchors
+      sit at 2, 9, 16 or 23; not one sits on an intersection.
+    %>
+    <% third_spines = [
+      [t("fun.xuanji.rules.kang_third_one",   default: "讀法三之一 首行轉右邊 — 七言七句"), "kang_third_one"],
+      [t("fun.xuanji.rules.kang_third_two",   default: "讀法三之二 首列轉下邊 — 七言七句"), "kang_third_two"],
+      [t("fun.xuanji.rules.kang_third_three", default: "讀法三之三 八行轉右邊 — 七言七句"), "kang_third_three"],
+      [t("fun.xuanji.rules.kang_third_four",  default: "讀法三之四 中行轉右邊 — 七言七句"), "kang_third_four"],
+      [t("fun.xuanji.rules.kang_third_five",  default: "讀法三之五 斜行轉下邊 — 七言七句"), "kang_third_five"]
+    ] %>
+
+    <%#
+      讀法三's actual reading — 遞退 — and 附増第三圖's eight rays.
+
+      遞退一句成章: a 段 is a sequence of seven-character lines and the poems are
+      four-line windows sliding along it. 之一's 段 is thirty-two lines giving
+      twenty-two poems, which is 88 原讀 ÷ 4 段. 之二's prints the same
+      twenty-two entries with the same line counts over different characters, so
+      the traversal is geometric and the two are transposes.
+
+      All sixty-four lines of the two sequences end on a lattice crossing, and
+      all twenty-two poems of each 段 rhyme on every line under 臻深通押 — which
+      is 22 of 22 where 洪武正韻 gives 9. The selection of twenty-two windows out
+      of twenty-nine available is NOT solved; see the controller's comment.
+
+      附増第三圖 is eight rays from 心 at (15,15), and all 140 of its poems do
+      resolve against the anchors Kang prints. The three readings below are his
+      own worked examples, one per 讀法.
+    %>
+    <% third_dieci = [
+      [t("fun.xuanji.rules.kang_dieci_one",      default: "讀法三之一 遞退全段 — 三十二句"),   "kang_dieci_one"],
+      [t("fun.xuanji.rules.kang_dieci_one_p1",   default: "讀法三之一 第一首 智懷…湘津"),      "kang_dieci_one_p1"],
+      [t("fun.xuanji.rules.kang_dieci_two",      default: "讀法三之二 遞退全段 — 三十二句"),   "kang_dieci_two"],
+      [t("fun.xuanji.rules.kang_dieci_two_p1",   default: "讀法三之二 第一首 傷慘…清琴"),      "kang_dieci_two_p1"],
+      [t("fun.xuanji.rules.kang_dieci_five",     default: "讀法三之五 遞退全段 — 八十二句"),   "kang_dieci_five"],
+      [t("fun.xuanji.rules.kang_dieci_five_p1",  default: "讀法三之五 第一首 嗟中…春親"),      "kang_dieci_five_p1"],
+      [t("fun.xuanji.rules.kang_fuzeng_rays",    default: "附増第三圖 八靣 — 七言"),           "kang_fuzeng_rays"],
+      [t("fun.xuanji.rules.kang_fuzeng_first",   default: "附増第三圖 讀法一 詩興…識深"),      "kang_fuzeng_first"],
+      [t("fun.xuanji.rules.kang_fuzeng_second",  default: "附増第三圖 讀法二 詩興…南音"),      "kang_fuzeng_second"],
+      [t("fun.xuanji.rules.kang_fuzeng_third",   default: "附増第三圖 讀法三 南鄭…神麟"),      "kang_fuzeng_third"]
+    ] %>
+
+    <% third_groups = [
+      ["讀法三之一  智懷…湘津", "kang_third_one_w1"],
+      ["讀法三之一  妙顯…梁民", "kang_third_one_w2"],
+      ["讀法三之一  賢惟…長身", "kang_third_one_w3"],
+      ["讀法三之一  匹離…房人", "kang_third_one_w4"],
+      ["讀法三之二  傷慘…清琴", "kang_third_two_w1"],
+      ["讀法三之二  堂空…陽春", "kang_third_two_w2"],
+      ["讀法三之二  藏摧…故新", "kang_third_two_w3"],
+      ["讀法三之二  商絃…清純", "kang_third_two_w4"],
+      ["讀法三之三  荒滛…生民", "kang_third_three_w1"],
+      ["讀法三之三  岑幽…長身", "kang_third_three_w2"],
+      ["讀法三之三  淵重…房人", "kang_third_three_w3"],
+      ["讀法三之三  光流…剛親", "kang_third_three_w4"],
+      ["讀法三之四  南鄭…遺身", "kang_third_four_w1"],
+      ["讀法三之四  繁華…房人", "kang_third_four_w2"],
+      ["讀法三之四  詩興…剛親", "kang_third_four_w3"],
+      ["讀法三之四  時盛…望純", "kang_third_four_w4"],
+      ["讀法三之五  嗟中…春親", "kang_third_five_w1"],
+      ["讀法三之五  思傷…望純", "kang_third_five_w2"],
+      ["讀法三之五  氏辭…霜新", "kang_third_five_w3"],
+      ["讀法三之五  神輕…牆春", "kang_third_five_w4"]
+    ] %>
+
+    <% ring_poems = [
+      ["第一圖 四圍 全 — 七言十六句", "kang_first_ring"],
+      ["第二圖 四圍 全 — 七言八句",   "kang_second_ring"],
+      ["第一圖 四圍 仁智…江湘 (第一段)", "kang_first_ring_w1"],
+      ["第一圖 四圍 眞妙…山梁", "kang_first_ring_w2"],
+      ["第一圖 四圍 臣賢…路長", "kang_first_ring_w3"],
+      ["第一圖 四圍 倫匹…幽房", "kang_first_ring_w4"],
+      ["第一圖 四圍 津河…柔剛 (第二段)", "kang_first_ring_w5"],
+      ["第一圖 四圍 民生…誰望", "kang_first_ring_w6"],
+      ["第一圖 四圍 身微…冰霜", "kang_first_ring_w7"],
+      ["第一圖 四圍 人賤…面牆", "kang_first_ring_w8"],
+      ["第一圖 四圍 親所…蘭芳 (第三段)", "kang_first_ring_w9"],
+      ["第一圖 四圍 純清…絃商", "kang_first_ring_w10"],
+      ["第一圖 四圍 新故…摧藏", "kang_first_ring_w11"],
+      ["第一圖 四圍 春陽…空堂", "kang_first_ring_w12"],
+      ["第一圖 四圍 琴清…慘傷 (第四段)", "kang_first_ring_w13"],
+      ["第一圖 四圍 秦曲…虞唐", "kang_first_ring_w14"],
+      ["第一圖 四圍 音和…榮章", "kang_first_ring_w15"],
+      ["第一圖 四圍 心憂…英皇", "kang_first_ring_w16"],
+      ["第一圖 八字迴環 眞志…虞唐", "kang_first_circuit"],
+      ["第一圖 八字迴環 志篤…唐眞", "kang_first_circuit_s1"],
+      ["第一圖 八字迴環 欽所…穹蒼", "kang_first_circuit_s7"],
+      ["第一圖 右上 八字迴環 民生…山梁", "kang_first_circuit_tr"],
+      ["第一圖 右上 八字迴環 生推…桑倫 推", "kang_first_circuit_tr_s1"],
+      ["第一圖 右上 八字迴環 林西…光民", "kang_first_circuit_tr_s7"],
+      ["第一圖 右下 八字迴環 純貞…誰望", "kang_first_circuit_br"],
+      ["第一圖 右下 八字迴環 貞志…望純 推", "kang_first_circuit_br_s1"],
+      ["第一圖 右下 八字迴環 麟龍…當純 推", "kang_first_circuit_br_s7"],
+      ["第一圖 左下 八字迴環 秦王…絃商", "kang_first_circuit_bl"],
+      ["第一圖 左下 八字迴環 王懷…商琴 推", "kang_first_circuit_bl_s1"],
+      ["第一圖 左下 八字迴環 身榮…鄉秦 推", "kang_first_circuit_bl_s7"],
+      ["第二圖 欽岑…流沙", "kang_second_ring_w1"],
+      ["第二圖 㴱淵…幽遐", "kang_second_ring_w2"],
+      ["第二圖 林陽…兼加", "kang_second_ring_w3"],
+      ["第二圖 沈浮…患多", "kang_second_ring_w4"],
+      ["第二圖 麟鳳…如何", "kang_second_ring_w5"],
+      ["第二圖 神精…嵯峨", "kang_second_ring_w6"],
+      ["第二圖 身苦…網羅", "kang_second_ring_w7"],
+      ["第二圖 殷憂…英華", "kang_second_ring_w8"]
+    ] %>
+
     <label>
       <%= t("fun.xuanji.controls.rule") %>
       <%= select_tag :rule,
-            options_for_select(rules, @initial_rule || "rows_lr"),
+            grouped_options_for_select(
+              [
+                [t("fun.xuanji.rules.group_plain", default: "Plain readings"), plain_rules],
+                [t("fun.xuanji.rules.group_kang", default: "康萬民 八圖"), kang_rules],
+                [t("fun.xuanji.rules.group_third", default: "第三圖 五讀法"), third_spines],
+                [t("fun.xuanji.rules.group_third_groups", default: "第三圖 二十段"), third_groups],
+                [t("fun.xuanji.rules.group_dieci", default: "遞退及附増第三圖"), third_dieci],
+                [t("fun.xuanji.rules.group_rings", default: "第一二圖 四圍諸首"), ring_poems]
+              ],
+              @initial_rule || "rows_lr"
+            ),
             data: { xuanji_target: "rule", action: "change->xuanji#ruleChanged" } %>
     </label>
 
@@ -93,10 +285,57 @@
         aria-label="<%= t("fun.xuanji.grid_aria") %>"
         data-action="pointerdown->xuanji#pointerDown pointermove->xuanji#pointerMove pointerup->xuanji#pointerUp pointercancel->xuanji#pointerUp"
       >
+        <%#
+          第三圖, drawn as lines.
+
+          Kang says to do it this way and says why: 第三圖 is the lattice on
+          rows and columns 1, 8, 15, 22, 29 together with both diagonals, and
+          it crosses every other figure — row 15 runs straight through the
+          middle of the central square. Colouring those cells red would make
+          第三圖 fight with 第五圖, 第六圖 and 第七圖 for the same characters:
+
+            但餘圖有於此圖借字有礙　今推縱横初行八行紅書
+            余以紅線界畫即準之　讀者審焉
+
+          So the red CHARACTERS are rows and columns 1, 8, 22 and 29, and
+          第三圖 is ruled over the top in red line. That is also what makes the
+          five colours tile the square exactly — the lattice is not competing
+          for cells, it is drawn on them.
+
+          29 = 1 + 4x7, which is why the lines fall where they do and why they
+          cut the square into bands of 6, 13 and 6 each way.
+        %>
+        <% centre = ->(i) { pad + (i - 1) * cell_size + cell_size / 2.0 } %>
+        <% first = centre.(1) %>
+        <% last = centre.(@grid.width) %>
+
+        <g class="xuanji-rulings" aria-hidden="true">
+          <% [1, 8, 15, 22, 29].each do |i| %>
+            <line class="xuanji-ruling" x1="<%= first %>" y1="<%= centre.(i) %>"
+                  x2="<%= last %>" y2="<%= centre.(i) %>" />
+            <line class="xuanji-ruling" x1="<%= centre.(i) %>" y1="<%= first %>"
+                  x2="<%= centre.(i) %>" y2="<%= last %>" />
+          <% end %>
+          <%# 仁嗟斜至春親 and 琴廊斜至基津 — the two diagonals of the 采式. %>
+          <line class="xuanji-ruling xuanji-ruling-diagonal"
+                x1="<%= first %>" y1="<%= first %>" x2="<%= last %>" y2="<%= last %>" />
+          <line class="xuanji-ruling xuanji-ruling-diagonal"
+                x1="<%= first %>" y1="<%= last %>" x2="<%= last %>" y2="<%= first %>" />
+        </g>
         <% indexed = @grid.xuanji_cells.index_by { |c| [c.x, c.y] } %>
         <% @grid.height.times do |y| %>
           <% @grid.width.times do |x| %>
             <% c = indexed.fetch([x,y]) %>
+            <%#
+              康萬民's five: 朱墨青紫黄. The enum carries six because the
+              Wikisource 「fontcolor」 markup used six hex values, and the two
+              blues are both 青 — which runs from blue through turquoise, so
+              navy and teal are one colour here and always have been.
+
+              The regions those five cover tile the square exactly:
+              朱 216, 墨 144, 青 312, 紫 80, 黄 89, which is 841. See
+              Xuanji::PaintFigures, whose `audit` checks a grid against them.
+            %>
             <% canonical_color =
               case c.color
               when "red", "maroon" then "red"
@@ -117,11 +356,36 @@
             </g>
           <% end %>
         <% end %>
+
       </svg>
     </div>
 
     <div class="xuanji-output">
       <h2><%= t("fun.xuanji.extracted_text") %></h2>
+
+      <%#
+        Whether the reading rhymes, and by whose rhyme book.
+
+        康萬民 explains his own count in exactly these terms:
+
+          余増讀詩内多叶古韻　起宗所遺或於韻學有未盡諳乎此　余用古韻而讀益多也
+
+        So rhyme is not a gloss on this figure — it is the test that decides
+        whether a path through the grid is a poem. The panel shows the finals of
+        the even-numbered lines, which is where a quatrain rhymes, and then one
+        row per rhyme book: 叶 where they agree, · where they do not, ? where
+        the book does not list enough of them to say.
+
+        Several books, because no single one accounts for all his poems. 讀法四's
+        經情清明英榮 rhymes under 洪武正韻 and under 攝 and not under 王力's
+        先秦韻部; 讀法五's 妃闈飛衣誰追 is the other way about. Over 592 generated
+        paths, 洪武正韻 admits 178 and 王力 163, and the two together admit 219 —
+        so 古韻 is not looser than 今韻 but differently cut, and the count grows
+        because holding both books admits poems neither admits alone. Which is
+        what Kang says happened to 起宗.
+      %>
+      <div class="xuanji-rhyme" data-xuanji-target="rhyme" aria-live="polite"></div>
+
       <div class="corpus-reader" data-controller="corpus-reader" data-corpus-reader-target="viewbox">
         <pre data-xuanji-target="output" data-corpus-reader-target="content"></pre>
       </div>

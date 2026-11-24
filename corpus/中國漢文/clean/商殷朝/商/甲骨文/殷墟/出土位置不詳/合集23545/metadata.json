@@ -44,5 +44,58 @@
     }
   ],
   "is_compilation": false,
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "documents": [
+    {
+      "file": "合集23545_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集23545/合集23545_ASDC.txt",
+      "title": "合集23545",
+      "source_locator": "23545",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "35658"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "23545"
+        }
+      ],
+      "body_start_line": 1
+    }
+  ],
+  "authors": [
+    {
+      "name": "大",
+      "role": "卜X貞"
+    }
+  ],
+  "diviner_groups": [
+    {
+      "name": "大",
+      "group": "出",
+      "group_lipeng": "出",
+      "group_chen": "出",
+      "period_dong": "2",
+      "table_name": "大",
+      "basis": "宋鎮豪、劉源2006"
+    }
+  ],
+  "script_group": {
+    "groups": [
+      "出二"
+    ],
+    "source": "楊郁彥：《甲骨文合集分組分類總表》，臺北：藝文印書館，2005年",
+    "method": "掃描本逐格比對字形模板讀出（score≥0.80），未能確認之格不錄"
+  }
 }

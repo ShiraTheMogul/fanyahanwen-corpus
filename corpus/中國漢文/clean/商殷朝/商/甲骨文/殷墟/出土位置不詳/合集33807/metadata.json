@@ -189,7 +189,8 @@
           "value": "28b537eb78bf"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 81183,
@@ -225,7 +226,8 @@
           "value": "c8a0a52de9a6"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 81184,
@@ -261,7 +263,8 @@
           "value": "34809fde83ba"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 81185,
@@ -297,7 +300,8 @@
           "value": "0e46e6e49d5b"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 81186,
@@ -333,7 +337,8 @@
           "value": "7322a2a72cae"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 81187,
@@ -369,6 +374,35 @@
           "value": "0cff2b9ade5c"
         }
       ],
+      "body_start_line": 1,
+      "transcription_type": "寬式"
+    },
+    {
+      "file": "合集33807.1_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集33807/合集33807.1_ASDC.txt",
+      "title": "合集33807.1",
+      "segment": 1,
+      "source_locator": "33807.1",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "58426"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "33807.1"
+        }
+      ],
       "body_start_line": 1
     }
   ],
@@ -387,5 +421,12 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "script_group": {
+    "groups": [
+      "歷一"
+    ],
+    "source": "楊郁彥：《甲骨文合集分組分類總表》，臺北：藝文印書館，2005年",
+    "method": "掃描本逐格比對字形模板讀出（score≥0.80），未能確認之格不錄"
+  }
 }

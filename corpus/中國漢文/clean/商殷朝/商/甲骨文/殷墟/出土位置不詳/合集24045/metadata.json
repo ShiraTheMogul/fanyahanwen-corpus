@@ -137,7 +137,8 @@
           "value": "72acd9599479"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 75142,
@@ -173,7 +174,8 @@
           "value": "c04b4fbbc371"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 75143,
@@ -209,6 +211,63 @@
           "value": "abc5c437d83e"
         }
       ],
+      "body_start_line": 1,
+      "transcription_type": "寬式"
+    },
+    {
+      "file": "合集24045.1_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集24045/合集24045.1_ASDC.txt",
+      "title": "合集24045.1",
+      "segment": 1,
+      "source_locator": "24045.1",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "36879"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "24045.1"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "合集24045.5_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集24045/合集24045.5_ASDC.txt",
+      "title": "合集24045.5",
+      "segment": 5,
+      "source_locator": "24045.5",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "36883"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "24045.5"
+        }
+      ],
       "body_start_line": 1
     }
   ],
@@ -224,5 +283,18 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "authors": [
+    {
+      "name": "王",
+      "role": "卜X貞"
+    }
+  ],
+  "script_group": {
+    "groups": [
+      "出二"
+    ],
+    "source": "楊郁彥：《甲骨文合集分組分類總表》，臺北：藝文印書館，2005年",
+    "method": "掃描本逐格比對字形模板讀出（score≥0.80），未能確認之格不錄"
+  }
 }

@@ -120,7 +120,8 @@
           "value": "5f168cdc4d65"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 69551,
@@ -156,6 +157,63 @@
           "value": "c2f128ab8e6d"
         }
       ],
+      "body_start_line": 1,
+      "transcription_type": "寬式"
+    },
+    {
+      "file": "合集13248.1_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集13248/合集13248.1_ASDC.txt",
+      "title": "合集13248.1",
+      "segment": 1,
+      "source_locator": "13248.1",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "14799"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "13248.1"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "合集13248.3_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集13248/合集13248.3_ASDC.txt",
+      "title": "合集13248.3",
+      "segment": 3,
+      "source_locator": "13248.3",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "14801"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "13248.3"
+        }
+      ],
       "body_start_line": 1
     }
   ],
@@ -170,5 +228,26 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "script_group": {
+    "groups": [
+      "賓一"
+    ],
+    "source": "楊郁彥：《甲骨文合集分組分類總表》，臺北：藝文印書館，2005年",
+    "method": "掃描本逐格比對字形模板讀出（score≥0.80），未能確認之格不錄"
+  },
+  "jilin_2024": {
+    "joins": [
+      {
+        "group_id": "吉大2024-5-6-0256",
+        "composition": "合集11804+合補03751+合集13248",
+        "listed_under": [
+          "合集11804"
+        ],
+        "joiners": "林宏明；蔡哲茂",
+        "cited": "《契合》070；《綴三》571",
+        "source": "張凇赫：《〈甲骨文合集〉第五、六冊綜合整理》，吉林大學碩士學位論文（指導教師：吳良寶），2024年，附表2《甲骨文合集》第五、六冊綴合情況表"
+      }
+    ]
+  }
 }

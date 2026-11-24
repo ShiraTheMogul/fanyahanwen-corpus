@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 1,
   "work_id": 75732,
   "corpus_root": "中國漢文",
@@ -375,5 +375,23 @@
       "path": "中國漢文/clean/清朝/大清/居易錄/居易錄__juan_34.txt"
     }
   ],
-  "known_commentaries": []
+  "known_commentaries": [],
+  "period_phase": "清初",
+  "period_phase_opium": "清前期",
+  "period_phase_detail": {
+    "year": 1672,
+    "basis": "author (Wikisource page header: 王士禛) — Wikisource 作者:王士禛 1634–1711 [Wikisource author page]",
+    "spans": [
+      "清初",
+      "盛清"
+    ],
+    "spans_opium": [
+      "清前期"
+    ],
+    "pass": "qing_phase_fill 2026-11-13",
+    "schemes": {
+      "period_phase": "三分：清初 1644–1683、盛清 1684–1799、晚清 1800–1911",
+      "period_phase_opium": "二分（鴉片戰爭）：清前期 1644–1839、晚清 1840–1911"
+    }
+  }
 }

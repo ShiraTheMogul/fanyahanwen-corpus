@@ -1,4 +1,4 @@
----
+﻿---
 id: 中國漢文--商殷朝--戈方
 kind: polity
 title: Gefang

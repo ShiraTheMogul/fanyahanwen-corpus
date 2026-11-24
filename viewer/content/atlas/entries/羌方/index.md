@@ -1,4 +1,4 @@
----
+﻿---
 id: 中國漢文--商殷朝--羌方
 kind: polity
 title: Qiang

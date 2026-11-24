@@ -44,5 +44,55 @@
     }
   ],
   "is_compilation": false,
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "documents": [
+    {
+      "file": "合集22207_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集22207/合集22207_ASDC.txt",
+      "title": "合集22207",
+      "source_locator": "22207",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "32684"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "22207"
+        }
+      ],
+      "body_start_line": 1
+    }
+  ],
+  "script_group": {
+    "groups": [
+      "婦女類"
+    ],
+    "source": "楊郁彥：《甲骨文合集分組分類總表》，臺北：藝文印書館，2005年",
+    "method": "掃描本逐格比對字形模板讀出（score≥0.80），未能確認之格不錄"
+  },
+  "jilin_2024": {
+    "joins": [
+      {
+        "group_id": "吉大2024-7-8-0098",
+        "composition": "大系63021=子合0067正【合集20366（乙8878、史語所R044934）+合集22208（北圖1928）+合集22210（續補5.33.3不全、續補6.293.3不全、遼寧精萃6）+合集22207（續補6.140.3、北圖4181）+乙8724倒（史語所R043727）+乙8957（史語所R043918）】",
+        "listed_under": [
+          "合集20366"
+        ],
+        "joiners": "白玉崢；蔣玉斌",
+        "cited": "白玉崢、蔣玉斌綴合，參看蔣玉斌：《蔣玉斌甲骨綴合總表》(300組)第21組。蔣玉斌：《殷商子卜辭合集》0067正，北京：學苑出版社，2015年，第62頁。",
+        "source": "曾心：《〈甲骨文合集〉第七、八冊綜合整理》，吉林大學碩士學位論文（指導教師：何景成），2024年，綴合或復原表"
+      }
+    ]
+  }
 }

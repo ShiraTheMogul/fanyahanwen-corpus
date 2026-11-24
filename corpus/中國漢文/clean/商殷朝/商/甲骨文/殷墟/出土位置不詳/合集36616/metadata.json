@@ -44,5 +44,51 @@
     }
   ],
   "is_compilation": false,
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "documents": [
+    {
+      "file": "合集36616_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集36616/合集36616_ASDC.txt",
+      "title": "合集36616",
+      "source_locator": "36616",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "65065"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "36616"
+        }
+      ],
+      "body_start_line": 1
+    }
+  ],
+  "joins": [
+    {
+      "group_id": "綴彙0231",
+      "number_in_book": "231",
+      "composition": [
+        "合補13445（36616＋36763）"
+      ],
+      "pieces": [
+        "合補13445",
+        "合集36616",
+        "合集36763"
+      ],
+      "joiner": "持井康孝",
+      "source": "蔡哲茂：《甲骨綴合彙編（圖版篇）》，新北市：花木蘭文化出版社，2011年，〈組別號碼表〉第13頁",
+      "note": "綴合者（據〈綴合者編號〉）：持井康孝。"
+    }
+  ]
 }

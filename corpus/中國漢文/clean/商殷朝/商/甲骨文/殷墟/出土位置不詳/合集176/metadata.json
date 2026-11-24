@@ -162,15 +162,34 @@
     {
       "scheme": "legacy_work_id",
       "value": "107627"
+    },
+    {
+      "scheme": "甲骨文合集",
+      "value": "00176"
     }
   ],
   "categories": [
     "出土文獻",
-    "甲骨文"
+    "甲骨文",
+    "不詳"
   ],
   "sources": [
     "https://inscription.asdc.sinica.edu.tw",
-    "甲骨文合集"
+    "甲骨文合集",
+    {
+      "kind": "image_source",
+      "title": "甲骨文合集",
+      "creator": "Guo, Moruo 郭沫若",
+      "creator_role": "chief editor",
+      "contributor": "Hu, Houxuan 胡厚宣",
+      "contributor_role": "general editor",
+      "corporate_contributor": "中國社會科學院歷史研究所《甲骨文合集》編輯組",
+      "corporate_contributor_role": "compiler",
+      "date": "1978–1982",
+      "publisher": "中華書局",
+      "citation": "Guo, Moruo 郭沫若 (Chief Ed.) & Hu, Houxuan 胡厚宣 (General Ed.) (with 中國社會科學院歷史研究所《甲骨文合集》編輯組). (1978–1982). 甲骨文合集. 中華書局.",
+      "source_note": "Image witness matched to this object by the 甲骨文合集 catalogue number encoded in the source filename. The importer does not infer whether an individual source image is a rubbing, photograph, or tracing."
+    }
   ],
   "is_compilation": false,
   "documents": [
@@ -208,7 +227,8 @@
           "value": "6f3acbc87488"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 71566,
@@ -244,7 +264,8 @@
           "value": "be4cedb287c2"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 71567,
@@ -280,7 +301,8 @@
           "value": "95cf56f765ed"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 71568,
@@ -316,7 +338,8 @@
           "value": "c4c4179506b5"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 71569,
@@ -352,7 +375,8 @@
           "value": "b58f2475882f"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 71570,
@@ -388,7 +412,8 @@
           "value": "278ebb9ef6d7"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 71571,
@@ -424,7 +449,8 @@
           "value": "3e9d624378b8"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 71564,
@@ -460,6 +486,91 @@
           "value": "4ed0e37c0d77"
         }
       ],
+      "body_start_line": 1,
+      "transcription_type": "寬式"
+    },
+    {
+      "file": "合集176.1_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集176/合集176.1_ASDC.txt",
+      "title": "合集176.1",
+      "segment": 1,
+      "source_locator": "176.1",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "23836"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "176.1"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "合集176.12_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集176/合集176.12_ASDC.txt",
+      "title": "合集176.12",
+      "segment": 12,
+      "source_locator": "176.12",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "23838"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "176.12"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "合集176.2_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集176/合集176.2_ASDC.txt",
+      "title": "合集176.2",
+      "segment": 2,
+      "source_locator": "176.2",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "23839"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "176.2"
+        }
+      ],
       "body_start_line": 1
     }
   ],
@@ -480,5 +591,24 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "merged_from": [
+    "殷墟/出土位置不詳/合集00176"
+  ],
+  "jilin_2024": {
+    "thesis": [
+      {
+        "校重": [
+          "=合補1970=《天理》150"
+        ],
+        "組類": [
+          "典賓"
+        ],
+        "現藏地_簡稱": [
+          "天理"
+        ],
+        "source": "朱胄：《〈甲骨文合集〉第一、二冊綜合整理》，吉林大學碩士學位論文（指導教師：李春桃），2024年，附錄一（節選）"
+      }
+    ]
+  }
 }

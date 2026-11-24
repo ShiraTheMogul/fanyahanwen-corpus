@@ -120,7 +120,8 @@
           "value": "e211c4067b5b"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 72871,
@@ -156,7 +157,8 @@
           "value": "eeb27c934bb1"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     }
   ],
   "transcriptions": [
@@ -170,5 +172,36 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "joins": [
+    {
+      "group_id": "綴彙0581",
+      "number_in_book": "581",
+      "composition": [
+        "11832＋乙84＋21309（蔣玉斌）"
+      ],
+      "pieces": [
+        "合集11832",
+        "乙84",
+        "合集21309"
+      ],
+      "joiner": "彭裕商",
+      "source": "蔡哲茂：《甲骨綴合彙編（圖版篇）》，新北市：花木蘭文化出版社，2011年，〈組別號碼表〉第26頁",
+      "note": "綴合者（據〈綴合者編號〉）：彭裕商。"
+    }
+  ],
+  "jilin_2024": {
+    "joins": [
+      {
+        "group_id": "吉大2024-5-6-0261",
+        "composition": "合集11832+乙0084+合集21309",
+        "listed_under": [
+          "合集11832"
+        ],
+        "joiners": "彭裕商",
+        "cited": "《綴彙》0581",
+        "source": "張凇赫：《〈甲骨文合集〉第五、六冊綜合整理》，吉林大學碩士學位論文（指導教師：吳良寶），2024年，附表2《甲骨文合集》第五、六冊綴合情況表"
+      }
+    ]
+  }
 }

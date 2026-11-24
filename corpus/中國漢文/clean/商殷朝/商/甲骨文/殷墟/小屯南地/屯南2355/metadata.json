@@ -124,7 +124,8 @@
           "value": "c5e846e4f8ab"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 74492,
@@ -160,7 +161,8 @@
           "value": "692b7bea8fd3"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 74493,
@@ -196,6 +198,35 @@
           "value": "1b19dbac18e6"
         }
       ],
+      "body_start_line": 1,
+      "transcription_type": "寬式"
+    },
+    {
+      "file": "屯南2355.1_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/小屯南地/屯南2355/屯南2355.1_ASDC.txt",
+      "title": "屯南2355.1",
+      "segment": 1,
+      "source_locator": "2355.1",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "小屯南地甲骨",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "87702"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "2355.1"
+        }
+      ],
       "body_start_line": 1
     }
   ],
@@ -211,5 +242,21 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "joins": [
+    {
+      "group_id": "綴彙0354",
+      "number_in_book": "354",
+      "composition": [
+        "屯南2355＋屯南2357"
+      ],
+      "pieces": [
+        "屯南2355",
+        "屯南2357"
+      ],
+      "joiner": "肖楠",
+      "source": "蔡哲茂：《甲骨綴合彙編（圖版篇）》，新北市：花木蘭文化出版社，2011年，〈組別號碼表〉第18頁",
+      "note": "綴合者（據〈綴合者編號〉）：肖楠。"
+    }
+  ]
 }

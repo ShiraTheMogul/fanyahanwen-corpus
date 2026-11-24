@@ -44,5 +44,84 @@
     }
   ],
   "is_compilation": false,
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "documents": [
+    {
+      "file": "合集36818_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集36818/合集36818_ASDC.txt",
+      "title": "合集36818",
+      "source_locator": "36818",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "65586"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "36818"
+        }
+      ],
+      "body_start_line": 1
+    }
+  ],
+  "joins": [
+    {
+      "group_id": "綴彙0717",
+      "number_in_book": "717",
+      "composition": [
+        "36474＋36818＋36457（劉影）＋36460（李發）"
+      ],
+      "pieces": [
+        "合集36474",
+        "合集36818",
+        "合集36457",
+        "合集36460"
+      ],
+      "joiner": "門藝",
+      "source": "蔡哲茂：《甲骨綴合彙編（圖版篇）》，新北市：花木蘭文化出版社，2011年，〈組別號碼表〉第31頁",
+      "note": "綴合者（據〈綴合者編號〉）：門藝。"
+    },
+    {
+      "group_id": "綴彙0891",
+      "number_in_book": "891",
+      "composition": [
+        "36474＋36818（門藝）＋36457（劉影）＋36460"
+      ],
+      "pieces": [
+        "合集36474",
+        "合集36818",
+        "合集36457",
+        "合集36460"
+      ],
+      "joiner": "李發",
+      "source": "蔡哲茂：《甲骨綴合彙編（圖版篇）》，新北市：花木蘭文化出版社，2011年，〈組別號碼表〉第38頁",
+      "note": "綴合者（據〈綴合者編號〉）：李發。"
+    },
+    {
+      "group_id": "綴彙0717+0891補遺",
+      "number_in_book": "717+891補遺",
+      "composition": [
+        "36474＋36818（門藝）＋36457（劉影）＋36460（李發）"
+      ],
+      "pieces": [
+        "合集36474",
+        "合集36818",
+        "合集36457",
+        "合集36460"
+      ],
+      "joiner": null,
+      "source": "蔡哲茂：《甲骨綴合彙編（圖版篇）》，新北市：花木蘭文化出版社，2011年，〈組別號碼表〉第44頁",
+      "note": "原書〈組別號碼表〉末補遺。"
+    }
+  ]
 }

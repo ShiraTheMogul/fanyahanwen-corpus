@@ -44,5 +44,55 @@
     }
   ],
   "is_compilation": false,
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "documents": [
+    {
+      "file": "合集16350_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集16350/合集16350_ASDC.txt",
+      "title": "合集16350",
+      "source_locator": "16350",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "21131"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "16350"
+        }
+      ],
+      "body_start_line": 1
+    }
+  ],
+  "script_group": {
+    "groups": [
+      "典賓"
+    ],
+    "source": "楊郁彥：《甲骨文合集分組分類總表》，臺北：藝文印書館，2005年",
+    "method": "掃描本逐格比對字形模板讀出（score≥0.80），未能確認之格不錄"
+  },
+  "jilin_2024": {
+    "joins": [
+      {
+        "group_id": "吉大2024-5-6-0195",
+        "composition": "合集11485-合集16552-合集16639-[（3.0.0379+合補4856）+合補2843]-[(合集16775+合集16840)+(合集19744+3.0.0362+合集16687)]-[(合集16700+合補936)-合集16350]",
+        "listed_under": [
+          "合集11485"
+        ],
+        "joiners": "陳逸文；蔡哲茂；張軍濤",
+        "cited": "《甲编》新缀四则：https://www.xianqin.org/blog/archives/11076.html",
+        "source": "張凇赫：《〈甲骨文合集〉第五、六冊綜合整理》，吉林大學碩士學位論文（指導教師：吳良寶），2024年，附表2《甲骨文合集》第五、六冊綴合情況表"
+      }
+    ]
+  }
 }

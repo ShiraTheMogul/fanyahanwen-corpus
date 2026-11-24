@@ -155,7 +155,8 @@
           "value": "70d1e77ac06f"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 68803,
@@ -191,7 +192,8 @@
           "value": "f04b004eff59"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 68804,
@@ -227,7 +229,8 @@
           "value": "c84b5d487a38"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 68805,
@@ -263,6 +266,35 @@
           "value": "e555839de93b"
         }
       ],
+      "body_start_line": 1,
+      "transcription_type": "寬式"
+    },
+    {
+      "file": "合集12357.5_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集12357/合集12357.5_ASDC.txt",
+      "title": "合集12357.5",
+      "segment": 5,
+      "source_locator": "12357.5",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "12896"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "12357.5"
+        }
+      ],
       "body_start_line": 1
     }
   ],
@@ -279,5 +311,20 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "jilin_2024": {
+    "joins": [
+      {
+        "group_id": "吉大2024-5-6-0336",
+        "composition": "合集12357+合集12456+合集13446+英藏1017",
+        "listed_under": [
+          "合集12357",
+          "合集12456"
+        ],
+        "joiners": "蔡哲茂",
+        "cited": "《綴集》166",
+        "source": "張凇赫：《〈甲骨文合集〉第五、六冊綜合整理》，吉林大學碩士學位論文（指導教師：吳良寶），2024年，附表2《甲骨文合集》第五、六冊綴合情況表"
+      }
+    ]
+  }
 }

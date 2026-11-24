@@ -103,6 +103,35 @@
           "value": "d00ca251a94f"
         }
       ],
+      "body_start_line": 1,
+      "transcription_type": "寬式"
+    },
+    {
+      "file": "合集10282反.0_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集10282/合集10282反.0_ASDC.txt",
+      "title": "合集10282反.0",
+      "segment": 0,
+      "source_locator": "10282反.0",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "8931"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "10282反.0"
+        }
+      ],
       "body_start_line": 1
     }
   ],
@@ -116,5 +145,30 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "jilin_2024": {
+    "joins": [
+      {
+        "group_id": "吉大2024-5-6-0393",
+        "composition": "合集12670+合集10282正+合集10692正+合集12671正",
+        "listed_under": [
+          "合集12670",
+          "合集12671正"
+        ],
+        "joiners": "李愛輝",
+        "cited": "《拼五》1080",
+        "source": "張凇赫：《〈甲骨文合集〉第五、六冊綜合整理》，吉林大學碩士學位論文（指導教師：吳良寶），2024年，附表2《甲骨文合集》第五、六冊綴合情況表"
+      },
+      {
+        "group_id": "吉大2024-5-6-0394",
+        "composition": "合集12671反+合集10282反+合集",
+        "listed_under": [
+          "合集12671"
+        ],
+        "joiners": "李愛輝",
+        "cited": "《拼五》1080",
+        "source": "張凇赫：《〈甲骨文合集〉第五、六冊綜合整理》，吉林大學碩士學位論文（指導教師：吳良寶），2024年，附表2《甲骨文合集》第五、六冊綴合情況表"
+      }
+    ]
+  }
 }

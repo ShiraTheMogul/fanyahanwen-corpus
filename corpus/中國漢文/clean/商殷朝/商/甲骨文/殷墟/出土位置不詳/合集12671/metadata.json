@@ -157,7 +157,8 @@
           "value": "83f7fe0ee367"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 69109,
@@ -194,7 +195,8 @@
           "value": "d9c96c089ef3"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 69110,
@@ -231,7 +233,8 @@
           "value": "65831b2f8f4b"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 69111,
@@ -268,6 +271,91 @@
           "value": "b9fd025c309f"
         }
       ],
+      "body_start_line": 1,
+      "transcription_type": "寬式"
+    },
+    {
+      "file": "合集12671反.2_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集12671/合集12671反.2_ASDC.txt",
+      "title": "合集12671反.2",
+      "segment": 2,
+      "source_locator": "12671反.2",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "13605"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "12671反.2"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "合集12671反.3_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集12671/合集12671反.3_ASDC.txt",
+      "title": "合集12671反.3",
+      "segment": 3,
+      "source_locator": "12671反.3",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "13606"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "12671反.3"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "合集12671正.3_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集12671/合集12671正.3_ASDC.txt",
+      "title": "合集12671正.3",
+      "segment": 3,
+      "source_locator": "12671正.3",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "13609"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "12671正.3"
+        }
+      ],
       "body_start_line": 1
     }
   ],
@@ -284,5 +372,37 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "script_group": {
+    "groups": [
+      "典賓"
+    ],
+    "source": "楊郁彥：《甲骨文合集分組分類總表》，臺北：藝文印書館，2005年",
+    "method": "掃描本逐格比對字形模板讀出（score≥0.80），未能確認之格不錄"
+  },
+  "jilin_2024": {
+    "joins": [
+      {
+        "group_id": "吉大2024-5-6-0393",
+        "composition": "合集12670+合集10282正+合集10692正+合集12671正",
+        "listed_under": [
+          "合集12670",
+          "合集12671正"
+        ],
+        "joiners": "李愛輝",
+        "cited": "《拼五》1080",
+        "source": "張凇赫：《〈甲骨文合集〉第五、六冊綜合整理》，吉林大學碩士學位論文（指導教師：吳良寶），2024年，附表2《甲骨文合集》第五、六冊綴合情況表"
+      },
+      {
+        "group_id": "吉大2024-5-6-0394",
+        "composition": "合集12671反+合集10282反+合集",
+        "listed_under": [
+          "合集12671"
+        ],
+        "joiners": "李愛輝",
+        "cited": "《拼五》1080",
+        "source": "張凇赫：《〈甲骨文合集〉第五、六冊綜合整理》，吉林大學碩士學位論文（指導教師：吳良寶），2024年，附表2《甲骨文合集》第五、六冊綴合情況表"
+      }
+    ]
+  }
 }

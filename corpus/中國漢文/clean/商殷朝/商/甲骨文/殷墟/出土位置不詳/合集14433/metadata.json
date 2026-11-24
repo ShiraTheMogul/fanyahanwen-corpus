@@ -65,7 +65,9 @@
   "categories": [
     "出土文獻",
     "甲骨文",
-    "雨"
+    "雨",
+    "記事刻辭",
+    "骨臼刻辭"
   ],
   "sources": [
     "https://inscription.asdc.sinica.edu.tw",
@@ -122,7 +124,8 @@
           "value": "9ee22212a3f9"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 70389,
@@ -159,6 +162,91 @@
           "value": "60e6428126f2"
         }
       ],
+      "body_start_line": 1,
+      "transcription_type": "寬式"
+    },
+    {
+      "file": "合集14433正.1_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集14433/合集14433正.1_ASDC.txt",
+      "title": "合集14433正.1",
+      "segment": 1,
+      "source_locator": "14433正.1",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "17652"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "14433正.1"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "合集14433正.3_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集14433/合集14433正.3_ASDC.txt",
+      "title": "合集14433正.3",
+      "segment": 3,
+      "source_locator": "14433正.3",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "17654"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "14433正.3"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "合集14433臼.0_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集14433/合集14433臼.0_ASDC.txt",
+      "title": "合集14433臼.0",
+      "segment": 0,
+      "source_locator": "14433臼.0",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "17655"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "14433臼.0"
+        }
+      ],
       "body_start_line": 1
     }
   ],
@@ -173,5 +261,42 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "authors": [
+    {
+      "name": "韋",
+      "role": "卜X貞"
+    },
+    {
+      "name": "〔⿴？用｜ASDC〕",
+      "role": "卜X貞"
+    }
+  ],
+  "diviner_groups": [
+    {
+      "name": "韋",
+      "group": "賓",
+      "group_lipeng": "賓",
+      "group_chen": "賓",
+      "period_dong": "1",
+      "table_name": "韋",
+      "basis": "宋鎮豪、劉源2006"
+    }
+  ],
+  "script_group": {
+    "groups": [
+      "典賓"
+    ],
+    "source": "楊郁彥：《甲骨文合集分組分類總表》，臺北：藝文印書館，2005年",
+    "method": "掃描本逐格比對字形模板讀出（score≥0.80），未能確認之格不錄"
+  },
+  "record_inscription": [
+    {
+      "type": "骨臼刻辭",
+      "side": "臼",
+      "serial_in_table": 211,
+      "ocr_check": "both",
+      "source": "方稚松：《殷墟甲骨文五種記事刻辭研究》，首都師範大學博士學位論文（指導教師：黃天樹），2007年，〈論文相關材料列表〉表四"
+    }
+  ]
 }

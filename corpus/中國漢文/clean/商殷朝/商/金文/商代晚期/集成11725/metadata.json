@@ -77,7 +77,25 @@
       "catalogue": "殷周金文集成",
       "source_locator": "11725",
       "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
-      "transcription_source_label": "ASDC"
+      "transcription_source_label": "ASDC",
+      "transcription_type": "寬式"
+    },
+    {
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "殷周金文暨青銅器資料庫",
+      "source_label": "ASDC青銅器庫",
+      "medium": "金文",
+      "file": "集成11725_ASDC青銅器庫.txt",
+      "path": "中國漢文/clean/商殷朝/商/金文/商代晚期/集成11725/集成11725_ASDC青銅器庫.txt",
+      "title": "集成11725",
+      "transcription_type": "寬式",
+      "reading": "史語所《殷周金文暨青銅器資料庫》釋文",
+      "alternate": true,
+      "inscription_block": 1,
+      "rubbing_source": "錄遺",
+      "line_breaks": "依資料庫「／」分行",
+      "url": "https://bronze.asdc.sinica.edu.tw/rubbing.php?11725"
     }
   ],
   "canonical_identifier": {
@@ -97,5 +115,32 @@
   "ca": "前1600–前1046年",
   "material": {
     "type": "青銅"
-  }
+  },
+  "asdc_bronze_db": {
+    "source": "中央研究院歷史語言研究所《殷周金文暨青銅器資料庫》",
+    "url": "https://bronze.asdc.sinica.edu.tw/rubbing.php?11725",
+    "record": "11725",
+    "器名": "宁心鉞",
+    "銅器時代": "商代晚期",
+    "inscriptions": [
+      {
+        "資料出處": "錄遺",
+        "銘文總字數": "1",
+        "著錄": [
+          {
+            "book": "總集",
+            "ref_id": "216",
+            "loc": "7754"
+          },
+          {
+            "book": "錄遺",
+            "ref_id": "213",
+            "loc": "603"
+          }
+        ]
+      }
+    ]
+  },
+  "vessel_type": "鉞",
+  "vessel_type_source": "中央研究院歷史語言研究所《殷周金文暨青銅器資料庫》器名「宁心鉞」"
 }

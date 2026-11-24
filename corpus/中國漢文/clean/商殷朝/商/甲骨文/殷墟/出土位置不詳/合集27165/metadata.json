@@ -120,7 +120,8 @@
           "value": "3522757bc258"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 76751,
@@ -156,7 +157,8 @@
           "value": "ad3eb7ffe581"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     }
   ],
   "transcriptions": [
@@ -170,5 +172,29 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "script_group": {
+    "groups": [
+      "歷無名間"
+    ],
+    "source": "楊郁彥：《甲骨文合集分組分類總表》，臺北：藝文印書館，2005年",
+    "method": "掃描本逐格比對字形模板讀出（score≥0.80），未能確認之格不錄"
+  },
+  "joins": [
+    {
+      "group_id": "綴彙0116",
+      "number_in_book": "116",
+      "composition": [
+        "合補10381（27164＋27165）"
+      ],
+      "pieces": [
+        "合補10381",
+        "合集27164",
+        "合集27165"
+      ],
+      "joiner": "裘錫圭",
+      "source": "蔡哲茂：《甲骨綴合彙編（圖版篇）》，新北市：花木蘭文化出版社，2011年，〈組別號碼表〉第9頁",
+      "note": "綴合者（據〈綴合者編號〉）：裘錫圭。"
+    }
+  ]
 }

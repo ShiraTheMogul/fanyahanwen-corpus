@@ -314,7 +314,11 @@ module ShangAtlasArticleRewriter
   end
 
   def split_front_matter(raw)
-    lines = raw.lines
+    # `String#strip` does not remove U+FEFF — it is not whitespace — so a BOM'd
+    # article raised "no YAML front matter" here. Dropped rather than tolerated
+    # further down, so the returned front matter is clean and `atomic_write`
+    # decides where the BOM goes.
+    lines = raw.delete_prefix("\uFEFF").lines
     raise "Article has no YAML front matter" unless lines.first&.strip == "---"
 
     closing = lines.each_index.drop(1).find { |index| lines[index].strip == "---" }
@@ -333,6 +337,14 @@ module ShangAtlasArticleRewriter
 
   def atomic_write(path, content)
     path = Pathname.new(path)
+    # Han-bearing text files in this repository carry a UTF-8 BOM; JSON must
+    # not, because a leading U+FEFF is not valid JSON and both `JSON.parse` and
+    # serde_json refuse it. So the BOM goes on by extension, and goes on HERE
+    # rather than at the call sites, because this is the only writer.
+    #
+    # Without this, the first run of this script after the articles gained
+    # their BOMs would quietly take them all off again.
+    content = "\uFEFF#{content}" if path.extname == ".md" && !content.start_with?("\uFEFF")
     Tempfile.create([path.basename.to_s, ".tmp"], path.dirname.to_s, encoding: "UTF-8") do |file|
       file.write(content)
       file.flush

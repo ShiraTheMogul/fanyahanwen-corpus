@@ -188,7 +188,8 @@
           "value": "47a988b3df9f"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 69773,
@@ -224,7 +225,8 @@
           "value": "ce57c5bd257e"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 69774,
@@ -260,7 +262,8 @@
           "value": "704a1c8514e8"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 69775,
@@ -296,7 +299,8 @@
           "value": "6671625423f2"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 69776,
@@ -332,7 +336,8 @@
           "value": "06f25741ca49"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 69777,
@@ -368,6 +373,35 @@
           "value": "e1af08394e11"
         }
       ],
+      "body_start_line": 1,
+      "transcription_type": "寬式"
+    },
+    {
+      "file": "合集13598.7_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集13598/合集13598.7_ASDC.txt",
+      "title": "合集13598.7",
+      "segment": 7,
+      "source_locator": "13598.7",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "15587"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "13598.7"
+        }
+      ],
       "body_start_line": 1
     }
   ],
@@ -386,5 +420,26 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "script_group": {
+    "groups": [
+      "典賓"
+    ],
+    "source": "楊郁彥：《甲骨文合集分組分類總表》，臺北：藝文印書館，2005年",
+    "method": "掃描本逐格比對字形模板讀出（score≥0.80），未能確認之格不錄"
+  },
+  "jilin_2024": {
+    "joins": [
+      {
+        "group_id": "吉大2024-5-6-0410",
+        "composition": "合集12813正+合集13598+懷特0956+合集03529",
+        "listed_under": [
+          "合集12813正"
+        ],
+        "joiners": "蔡哲茂；林宏明（疑）",
+        "cited": "《綴集》016；甲骨新綴第四~六例：https://www.xianqin.org/blog/archives/1648.html（疑）",
+        "source": "張凇赫：《〈甲骨文合集〉第五、六冊綜合整理》，吉林大學碩士學位論文（指導教師：吳良寶），2024年，附表2《甲骨文合集》第五、六冊綴合情況表"
+      }
+    ]
+  }
 }

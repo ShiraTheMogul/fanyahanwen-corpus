@@ -155,7 +155,8 @@
           "value": "83ee0340d4ca"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 78785,
@@ -191,7 +192,8 @@
           "value": "c9ce1c6b25e9"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 78786,
@@ -227,7 +229,8 @@
           "value": "4cc278232fd1"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 78787,
@@ -263,6 +266,91 @@
           "value": "e03ddab7dc77"
         }
       ],
+      "body_start_line": 1,
+      "transcription_type": "寬式"
+    },
+    {
+      "file": "合集30133.1_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集30133/合集30133.1_ASDC.txt",
+      "title": "合集30133.1",
+      "segment": 1,
+      "source_locator": "30133.1",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "49717"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "30133.1"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "合集30133.2_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集30133/合集30133.2_ASDC.txt",
+      "title": "合集30133.2",
+      "segment": 2,
+      "source_locator": "30133.2",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "49718"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "30133.2"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "合集30133.7_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集30133/合集30133.7_ASDC.txt",
+      "title": "合集30133.7",
+      "segment": 7,
+      "source_locator": "30133.7",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "49723"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "30133.7"
+        }
+      ],
       "body_start_line": 1
     }
   ],
@@ -279,5 +367,12 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "script_group": {
+    "groups": [
+      "何一"
+    ],
+    "source": "楊郁彥：《甲骨文合集分組分類總表》，臺北：藝文印書館，2005年",
+    "method": "掃描本逐格比對字形模板讀出（score≥0.80），未能確認之格不錄"
+  }
 }

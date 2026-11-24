@@ -206,7 +206,8 @@
           "value": "9bb44992a2ad"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 80050,
@@ -242,7 +243,8 @@
           "value": "6f2016cad191"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 80051,
@@ -278,7 +280,8 @@
           "value": "a050f0214628"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 80052,
@@ -314,7 +317,8 @@
           "value": "26475f5c3260"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 80053,
@@ -350,7 +354,8 @@
           "value": "09bb094b1c6b"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 80054,
@@ -386,7 +391,8 @@
           "value": "1ed5469d75fc"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 80055,
@@ -422,6 +428,63 @@
           "value": "034468be5998"
         }
       ],
+      "body_start_line": 1,
+      "transcription_type": "寬式"
+    },
+    {
+      "file": "合集32501.7_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集32501/合集32501.7_ASDC.txt",
+      "title": "合集32501.7",
+      "segment": 7,
+      "source_locator": "32501.7",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "55015"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "32501.7"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "合集32501.9_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集32501/合集32501.9_ASDC.txt",
+      "title": "合集32501.9",
+      "segment": 9,
+      "source_locator": "32501.9",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "55017"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "32501.9"
+        }
+      ],
       "body_start_line": 1
     }
   ],
@@ -441,5 +504,45 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "script_group": {
+    "groups": [
+      "歷二"
+    ],
+    "source": "楊郁彥：《甲骨文合集分組分類總表》，臺北：藝文印書館，2005年",
+    "method": "掃描本逐格比對字形模板讀出（score≥0.80），未能確認之格不錄"
+  },
+  "joins": [
+    {
+      "group_id": "綴彙0005",
+      "number_in_book": "5",
+      "composition": [
+        "醉百247〔合補10659〔32501＋掇3－183＋合補10626（陳夢家）〕＋35200（林宏明））〕加加卅"
+      ],
+      "pieces": [
+        "合集247",
+        "合補10659",
+        "合集32501",
+        "合補10626",
+        "合集35200"
+      ],
+      "joiner": "許進雄",
+      "source": "蔡哲茂：《甲骨綴合彙編（圖版篇）》，新北市：花木蘭文化出版社，2011年，〈組別號碼表〉第5頁",
+      "note": "綴合者（據〈綴合者編號〉）：許進雄。OCR轉錄，括號未能全部對齊，請以原書為準。"
+    }
+  ],
+  "jilin_2024": {
+    "thesis": [
+      {
+        "綴合": [
+          "《合集》32501+《掇三》183",
+          "《合補》10626+《合集》32501"
+        ],
+        "組類": [
+          "歷二A"
+        ],
+        "source": "董晶卉：《〈甲骨文合集〉第九、十冊綜合整理》，吉林大學碩士學位論文（指導教師：崎川隆），2024年，第二部分（圖版及釋文校訂）"
+      }
+    ]
+  }
 }

@@ -25,7 +25,9 @@
   "categories": [
     "不詳",
     "出土文獻",
-    "甲骨文"
+    "甲骨文",
+    "記事刻辭",
+    "骨面刻辭（歷組）"
   ],
   "sources": [
     {
@@ -44,5 +46,49 @@
     }
   ],
   "is_compilation": false,
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "documents": [
+    {
+      "file": "合集35173_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集35173/合集35173_ASDC.txt",
+      "title": "合集35173",
+      "source_locator": "35173",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "62077"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "35173"
+        }
+      ],
+      "body_start_line": 1
+    }
+  ],
+  "script_group": {
+    "groups": [
+      "歷二"
+    ],
+    "source": "楊郁彥：《甲骨文合集分組分類總表》，臺北：藝文印書館，2005年",
+    "method": "掃描本逐格比對字形模板讀出（score≥0.80），未能確認之格不錄"
+  },
+  "record_inscription": [
+    {
+      "type": "骨面刻辭（歷組）",
+      "serial_in_table": 110,
+      "ocr_check": "both",
+      "source": "方稚松：《殷墟甲骨文五種記事刻辭研究》，首都師範大學博士學位論文（指導教師：黃天樹），2007年，〈論文相關材料列表〉表六"
+    }
+  ]
 }

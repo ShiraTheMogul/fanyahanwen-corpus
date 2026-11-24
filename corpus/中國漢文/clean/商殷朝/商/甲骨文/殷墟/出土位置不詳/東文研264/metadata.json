@@ -106,7 +106,8 @@
           "value": "6ed6470bb087"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     },
     {
       "document_id": 76418,
@@ -142,6 +143,63 @@
           "value": "0eca438a7b26"
         }
       ],
+      "body_start_line": 1,
+      "transcription_type": "寬式"
+    },
+    {
+      "file": "東文研264.1_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/東文研264/東文研264.1_ASDC.txt",
+      "title": "東文研264.1",
+      "segment": 1,
+      "source_locator": "264.1",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "東京大學所藏甲骨",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "99029"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "264.1"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "東文研264.3_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/東文研264/東文研264.3_ASDC.txt",
+      "title": "東文研264.3",
+      "segment": 3,
+      "source_locator": "264.3",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "東京大學所藏甲骨",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "99031"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "264.3"
+        }
+      ],
       "body_start_line": 1
     }
   ],
@@ -156,5 +214,24 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "joins": [
+    {
+      "group_id": "綴彙0337",
+      "number_in_book": "337",
+      "composition": [
+        "合補452（東文研B0264、3018＋15417）＋17333（林宏明）"
+      ],
+      "pieces": [
+        "合補452",
+        "東文研B0264",
+        "合集3018",
+        "合集15417",
+        "合集17333"
+      ],
+      "joiner": "松丸道雄",
+      "source": "蔡哲茂：《甲骨綴合彙編（圖版篇）》，新北市：花木蘭文化出版社，2011年，〈組別號碼表〉第18頁",
+      "note": "綴合者（據〈綴合者編號〉）：松丸道雄。"
+    }
+  ]
 }

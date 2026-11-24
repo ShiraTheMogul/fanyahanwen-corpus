@@ -77,7 +77,25 @@
       "catalogue": "殷周金文集成",
       "source_locator": "10880",
       "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
-      "transcription_source_label": "ASDC"
+      "transcription_source_label": "ASDC",
+      "transcription_type": "寬式"
+    },
+    {
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "殷周金文暨青銅器資料庫",
+      "source_label": "ASDC青銅器庫",
+      "medium": "金文",
+      "file": "集成10880_ASDC青銅器庫.txt",
+      "path": "中國漢文/clean/商殷朝/商/金文/商代晚期/集成10880/集成10880_ASDC青銅器庫.txt",
+      "title": "集成10880",
+      "transcription_type": "寬式",
+      "reading": "史語所《殷周金文暨青銅器資料庫》釋文",
+      "alternate": true,
+      "inscription_block": 1,
+      "rubbing_source": "考古研究所藏",
+      "line_breaks": "依資料庫「／」分行",
+      "url": "https://bronze.asdc.sinica.edu.tw/rubbing.php?10880"
     }
   ],
   "canonical_identifier": {
@@ -97,5 +115,43 @@
   "ca": "前1600–前1046年",
   "material": {
     "type": "青銅"
-  }
+  },
+  "asdc_bronze_db": {
+    "source": "中央研究院歷史語言研究所《殷周金文暨青銅器資料庫》",
+    "url": "https://bronze.asdc.sinica.edu.tw/rubbing.php?10880",
+    "record": "10880",
+    "器名": "酉e7戈",
+    "銅器時代": "商代晚期",
+    "出土地點": [
+      "河南省安陽市",
+      "河南省安陽市"
+    ],
+    "image_caption": "【鄴二】下12",
+    "inscriptions": [
+      {
+        "資料出處": "考古研究所藏",
+        "銘文位置": "內上",
+        "銘文總字數": "2",
+        "著錄": [
+          {
+            "book": "總集",
+            "ref_id": "216",
+            "loc": "7316"
+          },
+          {
+            "book": "三代",
+            "ref_id": "5",
+            "loc": "19.14.2"
+          },
+          {
+            "book": "鄴二",
+            "ref_id": "210",
+            "loc": "下12"
+          }
+        ]
+      }
+    ]
+  },
+  "vessel_type": "戈",
+  "vessel_type_source": "中央研究院歷史語言研究所《殷周金文暨青銅器資料庫》器名「酉e7戈」"
 }

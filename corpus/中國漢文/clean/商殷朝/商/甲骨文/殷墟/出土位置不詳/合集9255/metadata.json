@@ -41,15 +41,36 @@
     {
       "scheme": "legacy_unique_id",
       "value": "85ee67396661"
+    },
+    {
+      "scheme": "甲骨文合集",
+      "value": "09255"
     }
   ],
   "categories": [
     "出土文獻",
-    "甲骨文"
+    "甲骨文",
+    "不詳",
+    "記事刻辭",
+    "甲橋刻辭"
   ],
   "sources": [
     "https://inscription.asdc.sinica.edu.tw",
-    "甲骨文合集"
+    "甲骨文合集",
+    {
+      "kind": "image_source",
+      "title": "甲骨文合集",
+      "creator": "Guo, Moruo 郭沫若",
+      "creator_role": "chief editor",
+      "contributor": "Hu, Houxuan 胡厚宣",
+      "contributor_role": "general editor",
+      "corporate_contributor": "中國社會科學院歷史研究所《甲骨文合集》編輯組",
+      "corporate_contributor_role": "compiler",
+      "date": "1978–1982",
+      "publisher": "中華書局",
+      "citation": "Guo, Moruo 郭沫若 (Chief Ed.) & Hu, Houxuan 胡厚宣 (General Ed.) (with 中國社會科學院歷史研究所《甲骨文合集》編輯組). (1978–1982). 甲骨文合集. 中華書局.",
+      "source_note": "Image witness matched to this object by the 甲骨文合集 catalogue number encoded in the source filename. The importer does not infer whether an individual source image is a rubbing, photograph, or tracing."
+    }
   ],
   "is_compilation": false,
   "documents": [
@@ -86,7 +107,8 @@
           "value": "85ee67396661"
         }
       ],
-      "body_start_line": 1
+      "body_start_line": 1,
+      "transcription_type": "寬式"
     }
   ],
   "transcriptions": [
@@ -99,5 +121,24 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "merged_from": [
+    "殷墟/出土位置不詳/合集09255"
+  ],
+  "script_group": {
+    "groups": [
+      "賓一"
+    ],
+    "source": "楊郁彥：《甲骨文合集分組分類總表》，臺北：藝文印書館，2005年",
+    "method": "掃描本逐格比對字形模板讀出（score≥0.80），未能確認之格不錄"
+  },
+  "record_inscription": [
+    {
+      "type": "甲橋刻辭",
+      "position": "右甲橋",
+      "serial_in_table": 488,
+      "ocr_check": "both",
+      "source": "方稚松：《殷墟甲骨文五種記事刻辭研究》，首都師範大學博士學位論文（指導教師：黃天樹），2007年，〈論文相關材料列表〉表一"
+    }
+  ]
 }

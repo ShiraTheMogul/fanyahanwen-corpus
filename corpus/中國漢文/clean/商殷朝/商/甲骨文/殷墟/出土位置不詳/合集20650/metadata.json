@@ -101,6 +101,91 @@
           "value": "2e4b814b02dc"
         }
       ],
+      "body_start_line": 1,
+      "transcription_type": "寬式"
+    },
+    {
+      "file": "合集20650.1_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集20650/合集20650.1_ASDC.txt",
+      "title": "合集20650.1",
+      "segment": 1,
+      "source_locator": "20650.1",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "29117"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "20650.1"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "合集20650.3_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集20650/合集20650.3_ASDC.txt",
+      "title": "合集20650.3",
+      "segment": 3,
+      "source_locator": "20650.3",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "29119"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "20650.3"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "合集20650.4_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集20650/合集20650.4_ASDC.txt",
+      "title": "合集20650.4",
+      "segment": 4,
+      "source_locator": "20650.4",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "29120"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "20650.4"
+        }
+      ],
       "body_start_line": 1
     }
   ],
@@ -114,5 +199,33 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "authors": [
+    {
+      "name": "王",
+      "role": "卜X貞"
+    }
+  ],
+  "script_group": {
+    "groups": [
+      "𠂤小字"
+    ],
+    "source": "楊郁彥：《甲骨文合集分組分類總表》，臺北：藝文印書館，2005年",
+    "method": "掃描本逐格比對字形模板讀出（score≥0.80），未能確認之格不錄"
+  },
+  "jilin_2024": {
+    "joins": [
+      {
+        "group_id": "吉大2024-7-8-0137",
+        "composition": "大系1671[合集20650（吉大5）+合集20652（史購4）]",
+        "listed_under": [
+          "合集20650",
+          "合集20652"
+        ],
+        "joiners": "林宏明",
+        "cited": "林宏明：《甲骨新綴第八二例》，先秦網 2010 年 6 月 1 日：https://www.xianqin.org/blog/archives/1933.html。林宏明：《契合集》第 80，臺北：萬卷樓圖書股份有限公司，2013年，第91頁。",
+        "source": "曾心：《〈甲骨文合集〉第七、八冊綜合整理》，吉林大學碩士學位論文（指導教師：何景成），2024年，綴合或復原表"
+      }
+    ]
+  }
 }

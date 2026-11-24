@@ -47,9 +47,9 @@
   "documents": [
     {
       "document_id": 93928,
-      "file": "新收NA0250_ASDC.txt",
-      "path": "中國漢文/clean/商殷朝/商/金文/商代晚期/新收NA0250/新收NA0250_ASDC.txt",
-      "title": "新收NA0250",
+      "file": "新收NA0250_ASDC_1.txt",
+      "path": "中國漢文/clean/商殷朝/商/金文/商代晚期/新收NA0250/新收NA0250_ASDC_1.txt",
+      "title": "新收NA0250（1）",
       "medium": "金文",
       "identifiers": [
         {
@@ -77,7 +77,73 @@
       "catalogue": "新收殷周青銅器銘文暨器影彙編",
       "source_locator": "NA0250",
       "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
-      "transcription_source_label": "ASDC"
+      "transcription_source_label": "ASDC",
+      "transcription_type": "寬式"
+    },
+    {
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "source_label": "ASDC",
+      "catalogue": "新收殷周青銅器銘文暨器影彙編",
+      "medium": "金文",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "117143"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "NA0250"
+        },
+        {
+          "scheme": "no_bronze_components",
+          "value": "2"
+        }
+      ],
+      "body_start_line": 1,
+      "file": "新收NA0250_ASDC_2.txt",
+      "path": "中國漢文/clean/商殷朝/商/金文/商代晚期/新收NA0250/新收NA0250_ASDC_2.txt",
+      "title": "新收NA0250（2）",
+      "transcription_type": "寬式"
+    },
+    {
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "殷周金文暨青銅器資料庫",
+      "source_label": "ASDC青銅器庫",
+      "medium": "金文",
+      "file": "新收NA0250_ASDC青銅器庫_1.txt",
+      "path": "中國漢文/clean/商殷朝/商/金文/商代晚期/新收NA0250/新收NA0250_ASDC青銅器庫_1.txt",
+      "title": "新收NA0250",
+      "transcription_type": "寬式",
+      "reading": "史語所《殷周金文暨青銅器資料庫》釋文",
+      "alternate": true,
+      "inscription_block": 1,
+      "rubbing_source": "《考古學集刊》15〈安陽殷墟劉家莊北1046號墓〉",
+      "line_breaks": "依資料庫「／」分行",
+      "url": "https://bronze.asdc.sinica.edu.tw/rubbing.php?NA0250"
+    },
+    {
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "殷周金文暨青銅器資料庫",
+      "source_label": "ASDC青銅器庫",
+      "medium": "金文",
+      "file": "新收NA0250_ASDC青銅器庫_2.txt",
+      "path": "中國漢文/clean/商殷朝/商/金文/商代晚期/新收NA0250/新收NA0250_ASDC青銅器庫_2.txt",
+      "title": "新收NA0250",
+      "transcription_type": "寬式",
+      "reading": "史語所《殷周金文暨青銅器資料庫》釋文",
+      "alternate": true,
+      "inscription_block": 2,
+      "rubbing_source": "《考古學集刊》15〈安陽殷墟劉家莊北1046號墓〉九：9",
+      "line_breaks": "依資料庫「／」分行",
+      "url": "https://bronze.asdc.sinica.edu.tw/rubbing.php?NA0250"
     }
   ],
   "canonical_identifier": {
@@ -97,5 +163,47 @@
   "ca": "前1600–前1046年",
   "material": {
     "type": "青銅"
-  }
+  },
+  "asdc_bronze_db": {
+    "source": "中央研究院歷史語言研究所《殷周金文暨青銅器資料庫》",
+    "url": "https://bronze.asdc.sinica.edu.tw/rubbing.php?NA0250",
+    "record": "NA0250",
+    "器名": "亞丮卣",
+    "銅器時代": "商代晚期",
+    "出土年代": "1999年9月",
+    "出土地點": [
+      "河南省安陽市殷墟劉家莊北M1046：10",
+      "河南省安陽市龍安區東風鄉劉家庄村（劉庄村）"
+    ],
+    "尺寸": "通蓋高26.6、足高3.8、口徑10.3～13.4、腹徑16.2～21.2、足徑13.4～16.5cm",
+    "image_caption": "【考古學集刊】15〈安陽殷墟劉家莊北1046號墓〉圖版26：11",
+    "inscriptions": [
+      {
+        "資料出處": "《考古學集刊》15〈安陽殷墟劉家莊北1046號墓〉",
+        "銘文位置": "蓋內",
+        "銘文總字數": "2",
+        "著錄": [
+          {
+            "book": "考古學集刊",
+            "ref_id": "372",
+            "loc": "15"
+          }
+        ]
+      },
+      {
+        "資料出處": "《考古學集刊》15〈安陽殷墟劉家莊北1046號墓〉九：9",
+        "銘文位置": "器內底",
+        "銘文總字數": "2",
+        "著錄": [
+          {
+            "book": "考古學集刊",
+            "ref_id": "372",
+            "loc": "15"
+          }
+        ]
+      }
+    ]
+  },
+  "vessel_type": "卣",
+  "vessel_type_source": "中央研究院歷史語言研究所《殷周金文暨青銅器資料庫》器名「亞丮卣」"
 }

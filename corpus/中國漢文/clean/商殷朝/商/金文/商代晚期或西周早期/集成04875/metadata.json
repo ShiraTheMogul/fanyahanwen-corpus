@@ -50,9 +50,9 @@
   "documents": [
     {
       "document_id": 94186,
-      "file": "集成04875_ASDC.txt",
-      "path": "中國漢文/clean/商殷朝/商/金文/商代晚期或西周早期/集成04875/集成04875_ASDC.txt",
-      "title": "集成04875",
+      "file": "集成04875_ASDC_2.txt",
+      "path": "中國漢文/clean/商殷朝/商/金文/商代晚期或西周早期/集成04875/集成04875_ASDC_2.txt",
+      "title": "集成04875（2）",
       "medium": "金文",
       "identifiers": [
         {
@@ -80,7 +80,73 @@
       "catalogue": "殷周金文集成",
       "source_locator": "04875",
       "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
-      "transcription_source_label": "ASDC"
+      "transcription_source_label": "ASDC",
+      "transcription_type": "寬式"
+    },
+    {
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "source_label": "ASDC",
+      "catalogue": "殷周金文集成",
+      "medium": "金文",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "108615"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "04875"
+        },
+        {
+          "scheme": "no_bronze_components",
+          "value": "1"
+        }
+      ],
+      "body_start_line": 1,
+      "file": "集成04875_ASDC_1.txt",
+      "path": "中國漢文/clean/商殷朝/商/金文/商代晚期或西周早期/集成04875/集成04875_ASDC_1.txt",
+      "title": "集成04875（1）",
+      "transcription_type": "寬式"
+    },
+    {
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "殷周金文暨青銅器資料庫",
+      "source_label": "ASDC青銅器庫",
+      "medium": "金文",
+      "file": "集成04875_ASDC青銅器庫_1.txt",
+      "path": "中國漢文/clean/商殷朝/商/金文/商代晚期或西周早期/集成04875/集成04875_ASDC青銅器庫_1.txt",
+      "title": "集成04875",
+      "transcription_type": "寬式",
+      "reading": "史語所《殷周金文暨青銅器資料庫》釋文",
+      "alternate": true,
+      "inscription_block": 1,
+      "rubbing_source": "陳邦懷先生藏",
+      "line_breaks": "依資料庫「／」分行",
+      "url": "https://bronze.asdc.sinica.edu.tw/rubbing.php?04875"
+    },
+    {
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "殷周金文暨青銅器資料庫",
+      "source_label": "ASDC青銅器庫",
+      "medium": "金文",
+      "file": "集成04875_ASDC青銅器庫_2.txt",
+      "path": "中國漢文/clean/商殷朝/商/金文/商代晚期或西周早期/集成04875/集成04875_ASDC青銅器庫_2.txt",
+      "title": "集成04875",
+      "transcription_type": "寬式",
+      "reading": "史語所《殷周金文暨青銅器資料庫》釋文",
+      "alternate": true,
+      "inscription_block": 2,
+      "rubbing_source": "陳邦懷先生藏",
+      "line_breaks": "依資料庫「／」分行",
+      "url": "https://bronze.asdc.sinica.edu.tw/rubbing.php?04875"
     }
   ],
   "canonical_identifier": {
@@ -100,5 +166,51 @@
   "ca": "前1600–前1046年",
   "material": {
     "type": "青銅"
-  }
+  },
+  "aliases": [
+    "〔？｜CDP-C7FE〕仌卣"
+  ],
+  "asdc_bronze_db": {
+    "source": "中央研究院歷史語言研究所《殷周金文暨青銅器資料庫》",
+    "url": "https://bronze.asdc.sinica.edu.tw/rubbing.php?04875",
+    "record": "04875",
+    "器名": "仌卣",
+    "銅器時代": "商代晚期或西周早期",
+    "inscriptions": [
+      {
+        "資料出處": "陳邦懷先生藏",
+        "銘文總字數": "2",
+        "著錄": [
+          {
+            "book": "總集",
+            "ref_id": "216",
+            "loc": "5097"
+          },
+          {
+            "book": "錄遺",
+            "ref_id": "213",
+            "loc": "243.1-2"
+          }
+        ]
+      },
+      {
+        "資料出處": "陳邦懷先生藏",
+        "銘文總字數": "2",
+        "著錄": [
+          {
+            "book": "總集",
+            "ref_id": "216",
+            "loc": "5097"
+          },
+          {
+            "book": "錄遺",
+            "ref_id": "213",
+            "loc": "243.1-2"
+          }
+        ]
+      }
+    ]
+  },
+  "vessel_type": "卣",
+  "vessel_type_source": "中央研究院歷史語言研究所《殷周金文暨青銅器資料庫》器名「仌卣」"
 }

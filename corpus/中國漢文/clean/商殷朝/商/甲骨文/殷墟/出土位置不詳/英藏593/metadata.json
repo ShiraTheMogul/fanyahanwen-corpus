@@ -45,7 +45,9 @@
   ],
   "categories": [
     "出土文獻",
-    "甲骨文"
+    "甲骨文",
+    "記事刻辭",
+    "骨臼刻辭"
   ],
   "sources": [
     "https://inscription.asdc.sinica.edu.tw",
@@ -87,6 +89,91 @@
           "value": "d68e07093fbe"
         }
       ],
+      "body_start_line": 1,
+      "transcription_type": "寬式"
+    },
+    {
+      "file": "英藏593.1_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/英藏593/英藏593.1_ASDC.txt",
+      "title": "英藏593.1",
+      "segment": 1,
+      "source_locator": "593.1",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "英國所藏甲骨",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "97357"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "593.1"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "英藏593.3_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/英藏593/英藏593.3_ASDC.txt",
+      "title": "英藏593.3",
+      "segment": 3,
+      "source_locator": "593.3",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "英國所藏甲骨",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "97359"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "593.3"
+        }
+      ],
+      "body_start_line": 1
+    },
+    {
+      "file": "英藏593.4_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/英藏593/英藏593.4_ASDC.txt",
+      "title": "英藏593.4",
+      "segment": 4,
+      "source_locator": "593.4",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "英國所藏甲骨",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "97360"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "593.4"
+        }
+      ],
       "body_start_line": 1
     }
   ],
@@ -100,5 +187,32 @@
       ]
     }
   ],
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "joins": [
+    {
+      "group_id": "綴彙0403",
+      "number_in_book": "403",
+      "composition": [
+        "合補6539、英593（39967＋39968）,英593"
+      ],
+      "pieces": [
+        "合補6539",
+        "英593",
+        "合集39967",
+        "合集39968"
+      ],
+      "joiner": "曾毅公",
+      "source": "蔡哲茂：《甲骨綴合彙編（圖版篇）》，新北市：花木蘭文化出版社，2011年，〈組別號碼表〉第20頁",
+      "note": "綴合者（據〈綴合者編號〉）：曾毅公。"
+    }
+  ],
+  "record_inscription": [
+    {
+      "type": "骨臼刻辭",
+      "side": "臼",
+      "serial_in_table": 408,
+      "ocr_check": "both",
+      "source": "方稚松：《殷墟甲骨文五種記事刻辭研究》，首都師範大學博士學位論文（指導教師：黃天樹），2007年，〈論文相關材料列表〉表四"
+    }
+  ]
 }

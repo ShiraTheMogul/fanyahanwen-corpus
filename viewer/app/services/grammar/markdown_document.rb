@@ -53,7 +53,17 @@ module Grammar
     end
 
     def initialize(raw)
-      @raw = raw.to_s.dup.force_encoding("UTF-8").scrub
+      # A leading byte-order mark is dropped before anything else looks at the
+      # text. `split` below decides whether a document has front matter by
+      # testing `start_with?("---\n")`, and a BOM makes that false — so a
+      # BOM'd article parsed as having NO front matter, and its whole YAML
+      # block was returned as body. Silently: no exception, no warning, just an
+      # article with no title and its metadata showing as text.
+      #
+      # Everything that reads a .md in content/ comes through here, so this is
+      # the one place it has to be handled. It also covers the atlas preview,
+      # which parses markdown pasted into a form and can easily carry one.
+      @raw = raw.to_s.dup.force_encoding("UTF-8").scrub.delete_prefix("\uFEFF")
       @metadata, @body = split(@raw)
     end
 

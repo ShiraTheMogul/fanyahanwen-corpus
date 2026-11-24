@@ -4,6 +4,22 @@
   "corpus_root": "中國漢文",
   "macro_region": "中國",
   "period": "清朝",
+  "period_phase": "晚清",
+  "period_phase_opium": "晚清",
+  "period_phase_detail": {
+    "basis": "author (Wikisource page header: 彭昌) — Wikisource 《樞垣記略》卷二十五·詩文六 lists 「彭昌詩三十三首」 after 潘世恩's; the set includes 「癸丑元旦上詣壽皇殿」 and 「隨駕恭謁慕陵」 — 慕陵 is the 道光 emperor's tomb, so the 癸丑 is 1853 and the poems are 咸豐-era. (Probably 彭蘊章, 軍機大臣 1851–60, with the name garbled; not asserted.) [curated from a cited source]",
+    "spans": [
+      "晚清"
+    ],
+    "spans_opium": [
+      "晚清"
+    ],
+    "pass": "qing_phase_fill round 3, 2026-11-13",
+    "schemes": {
+      "period_phase": "三分：清初 1644–1683、盛清 1684–1799、晚清 1800–1911",
+      "period_phase_opium": "二分（鴉片戰爭）：清前期 1644–1839、晚清 1840–1911"
+    }
+  },
   "polity": "大清",
   "title": "方略館謁留侯祠",
   "work_base_title": "方略館謁留侯祠",

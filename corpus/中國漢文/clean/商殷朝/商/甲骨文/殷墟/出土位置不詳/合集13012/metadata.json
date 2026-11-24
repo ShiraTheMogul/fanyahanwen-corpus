@@ -44,5 +44,55 @@
     }
   ],
   "is_compilation": false,
-  "ca": "前1600–前1046年"
+  "ca": "前1600–前1046年",
+  "documents": [
+    {
+      "file": "合集13012_ASDC.txt",
+      "path": "中國漢文/clean/商殷朝/商/甲骨文/殷墟/出土位置不詳/合集13012/合集13012_ASDC.txt",
+      "title": "合集13012",
+      "source_locator": "13012",
+      "material_type": "transcription",
+      "language_code": "zho",
+      "transcription_source": "先秦甲骨金文簡牘詞彙資料庫",
+      "transcription_type": "寬式",
+      "source_label": "ASDC",
+      "catalogue": "甲骨文合集",
+      "identifiers": [
+        {
+          "scheme": "source_db",
+          "value": "先秦甲骨金文簡牘詞彙資料庫"
+        },
+        {
+          "scheme": "entry_number",
+          "value": "14347"
+        },
+        {
+          "scheme": "legacy_id",
+          "value": "13012"
+        }
+      ],
+      "body_start_line": 1
+    }
+  ],
+  "script_group": {
+    "groups": [
+      "賓三"
+    ],
+    "source": "楊郁彥：《甲骨文合集分組分類總表》，臺北：藝文印書館，2005年",
+    "method": "掃描本逐格比對字形模板讀出（score≥0.80），未能確認之格不錄"
+  },
+  "jilin_2024": {
+    "joins": [
+      {
+        "group_id": "吉大2024-5-6-0343",
+        "composition": "合集10948正上半+合集02967正+合集13673+乙補1601-10948正下半+合集12399+乙補3422+乙補5244+乙補6442+合集10344正-合集05654+乙補6477倒+乙補6478倒+乙5551+R033115+合集13012+乙補3420",
+        "listed_under": [
+          "合集12399"
+        ],
+        "joiners": "楊熠",
+        "cited": "《醉古》377；《醉古》302；甲骨綴合第171則：https://www.xianqin.org/blog/archives/16663.html；甲骨綴合第172-180則：https://www.xianqin.org/blog/archives/16683.html、",
+        "source": "張凇赫：《〈甲骨文合集〉第五、六冊綜合整理》，吉林大學碩士學位論文（指導教師：吳良寶），2024年，附表2《甲骨文合集》第五、六冊綴合情況表"
+      }
+    ]
+  }
 }
